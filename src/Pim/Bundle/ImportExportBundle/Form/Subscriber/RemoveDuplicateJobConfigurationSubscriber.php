@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -27,8 +28,8 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
     }
 
     /**
-     * Remove duplicated configuration from the form, it will
-     * be provided to the steps on the 'submit' event
+     * Remove duplicate configuration fields from the form
+     * Data will be passsed to the steps on the 'submit' event
      *
      * @param FormEvent $event
      */
@@ -42,18 +43,27 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
 
         $steps = $form->get('steps');
 
-        $existingConfig = array();
-        foreach (array_keys($steps->all()) as $step) {
-            $stepForm = $steps->get($step);
-            foreach (array_keys($stepForm->all()) as $stepElement) {
-                $stepElementForm = $stepForm->get($stepElement);
-                foreach (array_keys($stepElementForm->all()) as $stepElementConfig) {
-                    if (in_array($stepElementConfig, $existingConfig)) {
-                        $stepElementForm->remove($stepElementConfig);
-                    } else {
-                        $existingConfig[] = $stepElementConfig;
-                    }
-                }
+        $existingFields = array();
+        foreach ($steps->all() as $stepForm) {
+            foreach ($stepForm->all() as $stepElementForm) {
+                $this->removeDuplicateFields($stepElementForm, $existingFields);
+            }
+        }
+    }
+
+    /**
+     * Remove duplicate fields from the form
+     *
+     * @param Form  $form
+     * @param array &$existingFields
+     */
+    protected function removeDuplicateFields(Form $form, array &$existingFields)
+    {
+        foreach (array_keys($form->all()) as $field) {
+            if (in_array($field, $existingFields)) {
+                $form->remove($field);
+            } else {
+                $existingFields[] = $field;
             }
         }
     }
