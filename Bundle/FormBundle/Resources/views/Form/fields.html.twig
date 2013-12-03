@@ -58,9 +58,10 @@
             {% if excluded is not defined %}
                 {% set excluded = [] %}
             {% endif %}
-            if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
+            if ($field.length) {
                 var configurator = new Select2Config(
                     select2Config,
+                    $field[0].tagName.toLowerCase(),
                     {{ url|json_encode|raw }},
                     {{ configs.per_page|default(10) }},
                     {{ excluded|json_encode|raw }}

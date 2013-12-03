@@ -45,27 +45,29 @@ class ControllerListener
      */
     public function onKernelController(FilterControllerEvent $event)
     {
-        $controller = $event->getController();
-        /*
-         * $controller passed can be either a class or a Closure. This is not usual in Symfony2 but it may happen.
-         * If it is a class, it comes in array format
-         */
-        if (is_array($controller)) {
-            list($object, $method) = $controller;
-            $className = ClassUtils::getClass($object);
+        if (!$event->getRequest()->attributes->get('_oro_access_checked')) {
+            $controller = $event->getController();
+            /*
+             * $controller passed can be either a class or a Closure. This is not usual in Symfony2 but it may happen.
+             * If it is a class, it comes in array format
+             */
+            if (is_array($controller)) {
+                list($object, $method) = $controller;
+                $className = ClassUtils::getClass($object);
 
-            $this->logger->debug(
-                sprintf(
-                    'Invoked controller "%s::%s". (%s)',
-                    $className,
-                    $method,
-                    $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
-                )
-            );
+                $this->logger->debug(
+                    sprintf(
+                        'Invoked controller "%s::%s". (%s)',
+                        $className,
+                        $method,
+                        $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
+                    )
+                );
 
-            if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
-                if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
-                    throw new AccessDeniedException(sprintf('Access denied to %s::%s.', $className, $method));
+                if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
+                    if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
+                        throw new AccessDeniedException(sprintf('Access denied to %s::%s.', $className, $method));
+                    }
                 }
             }
         }

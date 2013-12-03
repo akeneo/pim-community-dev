@@ -1,0 +1,1 @@
+<% if (!_.isUndefined($(element).data('related-entity-name'))) { %><i class="<%= $(element).data('related-entity-icon') %> hide-text"></i>&nbsp;<%= $(element).data('related-entity-plural-label') %> (<%= highlight(text) %>)<% } else { %><%= highlight(text) %><% } %>

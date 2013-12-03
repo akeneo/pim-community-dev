@@ -29,4 +29,8 @@
   .responsive-cell {
     padding-left: 20px;
   }
+  .responsive-cell:first-child {
+    padding-right: 20px;
+    .forScreen(@mediumScreen, padding-right, 0px);
+  }
 }

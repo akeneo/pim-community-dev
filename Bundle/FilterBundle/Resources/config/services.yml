@@ -1,5 +1,5 @@
 parameters:
-    oro_filter.extension.orm_filter.class: Oro\Bundle\FilterBundle\Extension\OrmFilterExtension
+    oro_filter.extension.orm_filter.class: Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension
 
 services:
     oro_filter.extension.orm_filter:

@@ -237,6 +237,6 @@ Properties "firstName" and "lastName" are configured in search handler service.
 Default implementation of search handler is based on functionality of OroSearchBundle. If you use this implementation
 your entity should be properly configured in the way that OroSearchBundle allows.
 
-#### Dependency on OroUserBundle
+#### Dependency on OroSecurityBundle
 
 As each autocomplete could be protected using ACL-resource, there is a dependency on OroSecurityBundle, particularly on "oro_security.security_facade" service.

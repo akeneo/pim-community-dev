@@ -64,6 +64,8 @@ class Opportunity extends AbstractEntity implements Entity
             "Contact autocoplete doesn't return search value"
         );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$contact}')]")->click();
+
+        return $this;
     }
 
     public function getContact()
@@ -75,7 +77,7 @@ class Opportunity extends AbstractEntity implements Entity
 
     public function setAccount($account)
     {
-        $this->contact->click();
+        $this->account->click();
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($account);
         $this->waitForAjax();
@@ -84,6 +86,8 @@ class Opportunity extends AbstractEntity implements Entity
             "Account autocoplete doesn't return search value"
         );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$account}')]")->click();
+
+        return $this;
     }
 
     public function getAccount()

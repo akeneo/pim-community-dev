@@ -2,7 +2,7 @@ parameters:
     oro_flexibleentity.grid.listener.class:                           Oro\Bundle\FlexibleEntityBundle\Grid\EventListener
     oro_flexibleentity.grid.extension.formatter.property.class:       Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty
 
-    oro_flexibleentity.grid.extension.flexible_filter_utility.class:  Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility
+    oro_flexibleentity.grid.extension.flexible_filter_utility.class:  Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FilterUtility
 
     oro_flexibleentity.grid.extension.filter.string.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleStringFilter
     oro_flexibleentity.grid.extension.filter.choice.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleChoiceFilter

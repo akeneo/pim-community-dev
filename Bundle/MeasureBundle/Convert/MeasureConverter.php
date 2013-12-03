@@ -2,21 +2,16 @@
 namespace Oro\Bundle\MeasureBundle\Convert;
 
 use Oro\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-
 use Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-
 use Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException;
 
 /**
  * Aims to convert measures
- *
- *
  */
 class MeasureConverter
 {
-
     /**
-     * @var multitype
+     * @var array
      */
     protected $config;
 
@@ -81,7 +76,7 @@ class MeasureConverter
      * @throws Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
      * @throws Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
      */
-    protected function convertBaseToStandard($baseUnit, $value)
+    public function convertBaseToStandard($baseUnit, $value)
     {
         if (!isset($this->config[$this->family]['units'][$baseUnit])) {
             throw new UnknownMeasureException();
@@ -126,7 +121,7 @@ class MeasureConverter
      * @throws Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
      * @throws Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
      */
-    protected function convertStandardToResult($finalUnit, $value)
+    public function convertStandardToResult($finalUnit, $value)
     {
         if (!isset($this->config[$this->family]['units'][$finalUnit])) {
             throw new UnknownMeasureException();

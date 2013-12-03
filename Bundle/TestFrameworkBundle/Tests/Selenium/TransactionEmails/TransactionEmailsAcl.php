@@ -31,10 +31,9 @@ class TransactionEmailsAcl extends Selenium2TestCase
             ->submit()
             ->openRoles()
             ->add()
-            ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
             ->setOwner('Main')
-            ->setEntity('Email Notification', array('Create', 'Edit', 'Delete', 'View'))
+            ->setEntity('Email Notification', array('Create', 'Edit', 'Delete', 'View'), 'System')
             ->save()
             ->assertMessage('Role saved')
             ->close();
@@ -57,7 +56,7 @@ class TransactionEmailsAcl extends Selenium2TestCase
             ->submit()
             ->openUsers()
             ->add()
-            ->assertTitle('Create User - Users - System')
+            ->assertTitle('Create User - Users - Users Management - System')
             ->setUsername($username)
             ->enable()
             ->setOwner('Main')
@@ -71,7 +70,7 @@ class TransactionEmailsAcl extends Selenium2TestCase
             ->assertMessage('User saved')
             ->toGrid()
             ->close()
-            ->assertTitle('Users - System');
+            ->assertTitle('Users - Users Management - System');
 
         return $username;
     }
@@ -90,7 +89,7 @@ class TransactionEmailsAcl extends Selenium2TestCase
             ->submit()
             ->openTransactionEmails()
             ->add()
-            ->assertTitle('Add Notification Rule - Transaction Emails - System')
+            ->assertTitle('Add Notification Rule - Notifications - Emails - System')
             ->setEmail($email)
             ->setEntityName('User')
             ->setEvent('Entity create')
@@ -98,8 +97,8 @@ class TransactionEmailsAcl extends Selenium2TestCase
             ->setUser('admin')
             ->setGroups(array('Marketing'))
             ->save()
-            ->assertMessage('Email notification rule has been saved')
-            ->assertTitle('Transaction Emails - System')
+            ->assertMessage('Email notification rule saved')
+            ->assertTitle('Notifications - Emails - System')
             ->close();
 
         return $email;
@@ -117,7 +116,7 @@ class TransactionEmailsAcl extends Selenium2TestCase
      */
     public function testTransactionEmailAcl($aclcase, $username, $role, $email)
     {
-        $rolename = 'ROLE_NAME_' . $role;
+        $rolename = 'Label_' . $role;
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
@@ -141,9 +140,9 @@ class TransactionEmailsAcl extends Selenium2TestCase
     public function deleteAcl($login, $rolename, $username, $email)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Email Notification', array('Delete'))
+            ->setEntity('Email Notification', array('Delete'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -156,9 +155,9 @@ class TransactionEmailsAcl extends Selenium2TestCase
     public function updateAcl($login, $rolename, $username, $email)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Email Notification', array('Edit'))
+            ->setEntity('Email Notification', array('Edit'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -171,9 +170,9 @@ class TransactionEmailsAcl extends Selenium2TestCase
     public function createAcl($login, $rolename, $username)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Email Notification', array('Create'))
+            ->setEntity('Email Notification', array('Create'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -186,9 +185,9 @@ class TransactionEmailsAcl extends Selenium2TestCase
     public function viewListAcl($login, $rolename, $username)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Email Notification', array('View'))
+            ->setEntity('Email Notification', array('View'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)

@@ -26,6 +26,13 @@ function($, _, Backbone, app) {
         className: 'btn-group filter-item oro-drop',
 
         /**
+         * Is filter can be disabled
+         *
+         * @property {Boolean}
+         */
+        canDisable: true,
+
+        /**
          * Is filter enabled
          *
          * @property {Boolean}
@@ -47,6 +54,13 @@ function($, _, Backbone, app) {
         name: 'input_name',
 
         /**
+         * Placeholder for default value
+         *
+         * @property
+         */
+        placeholder: 'All',
+
+        /**
          * Label of filter
          *
          * @property {String}
@@ -54,18 +68,11 @@ function($, _, Backbone, app) {
         label: 'Input Label',
 
         /**
-         * Raw value of filter
+         * Is filter label visible
          *
-         * @property {Object}
+         * @property {Boolean}
          */
-        value: {},
-
-        /**
-         * Empty value object
-         *
-         * @property {Object}
-         */
-        emptyValue: {},
+        showLabel: true,
 
         /**
          * Parent element active class
@@ -92,7 +99,24 @@ function($, _, Backbone, app) {
             if (_.has(options, 'enabled')) {
                 this.enabled = options.enabled;
             }
+            if (_.has(options, 'canDisable')) {
+                this.canDisable = options.canDisable;
+            }
+            if (_.has(options, 'placeholder')) {
+                this.placeholder = options.placeholder;
+            }
+            if (_.has(options, 'showLabel')) {
+                this.showLabel = options.showLabel;
+            }
             this.defaultEnabled = this.enabled;
+
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {};
+            }
+            // init raw value of filter
+            this.value = _.clone(this.emptyValue);
+
             Backbone.View.prototype.initialize.apply(this, arguments);
         },
 
@@ -246,6 +270,21 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * Determines whether a filter value is empty or not
+         * Unlike isEmpty method this method should take in account only data values.
+         * For example if a filter has a string value and comparison type, the comparison type
+         * should be ignored in this method.
+         *
+         * @return {Boolean}
+         */
+        isEmptyValue: function() {
+            if (_.has(this.emptyValue, 'value') && _.has(this.value, 'value')) {
+                return app.isEqualsLoosely(this.value.value, this.emptyValue.value);
+            }
+            return true;
+        },
+
+        /**
          * Gets input value. Radio inputs are supported.
          *
          * @param {String|Object} input
@@ -310,13 +349,23 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * Get criteria hint value
+         *
+         * @return {String}
+         */
+        _getCriteriaHint: function() {
+            return '';
+        },
+
+        /**
          * Get current value formatted to display format
          *
          * @return {*}
          * @protected
          */
         _getDisplayValue: function() {
-            return this._formatDisplayValue(this.getValue());
+            var value = (arguments.length > 0) ? arguments[0] : this.getValue();
+            return this._formatDisplayValue(value);
         },
 
         /**

@@ -2,26 +2,15 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\FilterBundle\Extension\Orm\EntityFilter;
+use Oro\Bundle\FilterBundle\Filter\EntityFilter;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 class FlexibleEntityFilter extends EntityFilter
 {
     const BACKEND_TYPE_KEY = 'backend_type';
-
-    /** @var FlexibleFilterUtility */
-    protected $util;
-
-    public function __construct(FormFactoryInterface $factory, FlexibleFilterUtility $util)
-    {
-        parent::__construct($factory);
-        $this->util = $util;
-        $this->paramMap = FlexibleFilterUtility::$paramMap;
-    }
 
     public function init($name, array $params)
     {
@@ -32,24 +21,24 @@ class FlexibleEntityFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator = $this->getOperator($data['type']);
-
-            $this->util->applyFlexibleFilter(
-                $qb,
-                $this->get(FlexibleFilterUtility::FEN_KEY),
-                $this->get(self::DATA_NAME_KEY),
-                $this->extractIds($data['value']),
-                $operator
-            );
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator = $this->getOperator($data['type']);
+
+        $this->util->applyFlexibleFilter(
+            $ds,
+            $this->get(FilterUtility::FEN_KEY),
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->extractIds($data['value']),
+            $operator
+        );
+
+        return true;
     }
 
     /**
@@ -61,7 +50,8 @@ class FlexibleEntityFilter extends EntityFilter
      */
     protected function getClassName()
     {
-        $fm            = $this->util->getFlexibleManager($this->get(FlexibleFilterUtility::FEN_KEY));
+        /** @var FlexibleManager $fm */
+        $fm            = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
         $valueName     = $fm->getFlexibleValueName();
         $valueMetadata = $fm->getStorageManager()
             ->getMetadataFactory()

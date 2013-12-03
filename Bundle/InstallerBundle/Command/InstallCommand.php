@@ -119,6 +119,11 @@ class InstallCommand extends ContainerAwareCommand
             ->getRepository('OroUserBundle:Role')
             ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
+        $businessUnit = $container
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
         $passValidator = function ($value) {
             if (strlen(trim($value)) < 2) {
                 throw new \Exception('The password must be at least 2 characters long');
@@ -149,7 +154,9 @@ class InstallCommand extends ContainerAwareCommand
             ->setLastName($userLastName)
             ->setPlainPassword($userPassword)
             ->setEnabled(true)
-            ->addRole($role);
+            ->addRole($role)
+            ->setOwner($businessUnit)
+            ->addBusinessUnit($businessUnit);
 
         $container->get('oro_user.manager')->updateUser($user);
 
@@ -181,6 +188,7 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->runCommand('oro:search:create-index', $input, $output)
             ->runCommand('oro:navigation:init', $input, $output)
+            ->runCommand('fos:js-routing:dump', $input, $output, array('--target' => 'web/js/routes.js'))
             ->runCommand('oro:localization:dump', $input, $output)
             ->runCommand('assets:install', $input, $output)
             ->runCommand('assetic:dump', $input, $output)

@@ -98,6 +98,7 @@ services:
         class: %oro_search.datasource.search.class%
         arguments:
             - @doctrine.orm.entity_manager
+            - @oro_security.acl_helper
         tags:
             - { name: oro_datagrid.datasource, type: search }
 

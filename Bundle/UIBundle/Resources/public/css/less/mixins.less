@@ -46,4 +46,9 @@
     padding: @value;
   }
 }
+.forScreen (@size; padding-right; @value: 0) {
+  @media only screen and (max-width: @size) {
+    padding-right: @value;
+  }
+}
 .forScreen (@size; @_; @value) {}

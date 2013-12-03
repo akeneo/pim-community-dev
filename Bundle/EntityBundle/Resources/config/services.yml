@@ -4,6 +4,8 @@ parameters:
     oro_entity.datagrid.extension.class:                           Oro\Bundle\EntityBundle\Grid\ExtendExtension
     oro_entity.event_listener.custom_entity_grid_subscriber.class: Oro\Bundle\EntityBundle\EventListener\CustomEntityGridListener
     oro_entity.event_listener.relation_entity_grid_subscriber.class: Oro\Bundle\EntityBundle\EventListener\RelationEntityGridListener
+    oro_entity.entity_provider.class:                              Oro\Bundle\EntityBundle\Provider\EntityProvider
+    oro_entity.entity_field_provider.class:                        Oro\Bundle\EntityBundle\Provider\EntityFieldProvider
 
 services:
     oro_entity.listener.navigation_listener:
@@ -49,3 +51,17 @@ services:
             - [setRequest, [@?request=]]
         tags:
             - { name: kernel.event_subscriber }
+
+    oro_entity.entity_provider:
+        class: %oro_entity.entity_provider.class%
+        arguments:
+            - @oro_entity_config.provider.entity
+            - @oro_entity.orm.entity_class_resolver
+
+    oro_entity.entity_field_provider:
+        class: %oro_entity.entity_field_provider.class%
+        arguments:
+            - @oro_entity_config.provider.entity
+            - @oro_entity.orm.entity_class_resolver
+            - @doctrine
+            - @oro_entity.entity_provider
