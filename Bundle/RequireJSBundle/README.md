@@ -111,7 +111,7 @@ Build configuration starts in ```app/config.yml```
     oro_require_js:
         build_path: "js/oro.min.js"     # relative path from document root folder to project built
         building_timeout: 3600
-        js_engine: "node"               # can be configured to use other engine, e.g. Rhino
+        js_engine: "java -Xss10m -Xms256m -Xmx512m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main"
         build:                          # build.js's common options
             optimize: "uglify2"
             preserveLicenseComments: true
@@ -119,6 +119,12 @@ Build configuration starts in ```app/config.yml```
             useSourceUrl: true
 
 See details for [```oro_require_js.build```][example.build.js] options.
+
+It's recommended to use [NodeJS](http://nodejs.org/) for ```oro_require_js.js_engine```, instead of [Rhino](https://developer.mozilla.org/en/docs/Rhino) (JS-engine written on Java, used by default). Build process will go much faster.
+Just make sure you have NodeJS installed and then set:
+
+    oro_require_js:
+        js_engine: node
 
 Beside general build-configuration, you can set bundle specific options inside ```%BundleName%\Resources\config\requirejs.yml``` file, root section ```build```.
 

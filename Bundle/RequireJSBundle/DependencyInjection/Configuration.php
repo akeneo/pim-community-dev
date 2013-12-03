@@ -36,7 +36,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('web_root')->defaultValue('%kernel.root_dir%/../web')->end()
                 ->scalarNode('js_engine')->isRequired()->end()
                 ->scalarNode('build_path')->defaultValue('js/app.min.js')->end()
-                ->scalarNode('js_engine')->defaultValue('node')->end()
                 ->integerNode('building_timeout')->min(1)->defaultValue(60)->end()
                 ->arrayNode('build')
                     ->addDefaultsIfNotSet()

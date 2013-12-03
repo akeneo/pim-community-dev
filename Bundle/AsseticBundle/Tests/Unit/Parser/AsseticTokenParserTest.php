@@ -69,7 +69,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             array(
                 new Twig_Token(Twig_Token::NAME_TYPE, 'filter', 31),
                 new Twig_Token(Twig_Token::OPERATOR_TYPE, '=', 31),
-                new Twig_Token(Twig_Token::STRING_TYPE, 'cssrewrite, lessphp, ?cssmin', 31),
+                new Twig_Token(Twig_Token::STRING_TYPE, 'cssrewrite, lessphp, ?yui_css', 31),
                 new Twig_Token(Twig_Token::NAME_TYPE, 'debug', 31),
                 new Twig_Token(Twig_Token::OPERATOR_TYPE, '=', 31),
                 new Twig_Token(Twig_Token::NAME_TYPE, 'false', 31),

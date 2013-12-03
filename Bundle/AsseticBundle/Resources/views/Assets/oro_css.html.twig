@@ -1,6 +1,6 @@
 {# Css assetics #}
 
-{% oro_css filter='cssrewrite, lessphp, cssmin' output='css/oro.css' %}
+{% oro_css filter='cssrewrite, lessphp, yui_css' output='css/oro.css' %}
 {% set isLess = ('less' in asset_url|split('.')) %}
 {% if isLess %}
 <script type="text/javascript">localStorage.clear();</script>
