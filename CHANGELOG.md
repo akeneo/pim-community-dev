@@ -10,6 +10,7 @@
 - Improve installer to provide different data set (minimal or dev)
 - Use a form extension to apply select2 only on specified fields
 - Add real time versioning option in product import
+- Merge the configuration of import/export job steps
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
