@@ -70,7 +70,7 @@ class CalendarEventController extends RestController implements ClassResourceInt
         $calendarId  = (int)$this->getRequest()->get('calendar');
         $start       = new \DateTime($this->getRequest()->get('start'));
         $end         = new \DateTime($this->getRequest()->get('end'));
-        $subordinate = ('true' === $this->getRequest()->get('subordinate'));
+        $subordinate = (true == $this->getRequest()->get('subordinate'));
 
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
