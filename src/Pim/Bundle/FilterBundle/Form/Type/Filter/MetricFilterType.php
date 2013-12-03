@@ -2,6 +2,16 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Monolog\Logger;
+
+use Symfony\Component\Form\FormInterface;
+
+use Symfony\Component\Form\FormView;
+
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+
+use Symfony\Component\Form\AbstractType;
+
 use Oro\Bundle\FormBundle\Form\Exception\FormException;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -50,11 +60,11 @@ class MetricFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getParent()
     {
-        return NumberFilterType::NAME;
+        return FilterType::NAME;
     }
 
     /**
@@ -79,19 +89,12 @@ class MetricFilterType extends NumberFilterType
     protected function createUnitOptions(array $options)
     {
         $result = array('required' => true);
+
+        // FIXME
         $family = 'Weight';
+//         $family = $options['field_options']['family'];
         $result['choices'] = $this->measureManager->getUnitSymbolsForFamily($family);
 
         return $result;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-//     public function setDefaultOptions(OptionsResolverInterface $resolver)
-//     {
-//         parent::setDefaultOptions($resolver);
-
-//         $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
-//     }
 }

@@ -2,6 +2,14 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -17,6 +25,21 @@ use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
  */
 class MetricFilter extends NumberFilter
 {
+    /**
+     * @var MeasureConverter
+     */
+    protected $converter;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator, MeasureConverter $converter)
+    {
+        parent::__construct($translator);
+
+        $this->converter = $converter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +57,7 @@ class MetricFilter extends NumberFilter
     {
         $this->name = $name;
         $this->setOptions($options);
+        var_dump($options);
     }
 
     /**
@@ -42,6 +66,18 @@ class MetricFilter extends NumberFilter
     public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
         $data = $this->parseData($data);
+        if (!$data) {
+            return;
+        }
+
+        $operator = $this->getOperator($data['type']);
+        $unit     = $data['unit'];
+        $family   = 'Weight'; // FIXME
+
+//         var_dump($operator, $unit, $family, $data, $alias);
+
+
+//         return $data;
     }
 
     /**
@@ -51,7 +87,13 @@ class MetricFilter extends NumberFilter
      */
     public function parseData($data)
     {
+        $data = parent::parseData($data);
 
+        if (!is_array($data) || !array_key_exists('unit', $data) || !is_string($data['unit'])) {
+            return false;
+        }
+
+        return $data;
     }
 
     /**
@@ -59,8 +101,19 @@ class MetricFilter extends NumberFilter
      */
     public function getRenderSettings()
     {
+        $dataType = $this->getOption('data_type');
+
         list($formType, $formOptions) = parent::getRenderSettings();
-        $formOptions['data_type'] = MetricFilterType::DATA_DECIMAL;
+
+        switch ($dataType) {
+            case FieldDescriptionInterface::TYPE_INTEGER:
+                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
+                break;
+            case FieldDescriptionInterface::TYPE_DECIMAL:
+            default:
+                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
+                break;
+        }
 
         return array($formType, $formOptions);
     }
