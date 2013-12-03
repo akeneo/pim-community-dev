@@ -5,7 +5,9 @@ namespace Oro\Bundle\CronBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="oro_cron_schedule", uniqueConstraints={@ORM\UniqueConstraint(name="UQ_COMMAND", columns={"command"})})
+ * @ORM\Table(name="oro_cron_schedule", uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="UQ_COMMAND", columns={"command"})
+ * })
  * @ORM\Entity
  */
 class Schedule

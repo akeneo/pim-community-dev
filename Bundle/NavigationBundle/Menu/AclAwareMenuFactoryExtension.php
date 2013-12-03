@@ -122,7 +122,10 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                     $isAllowed = $this->aclCache[$routeInfo['key']];
                 } else {
                     if ($needCheck) {
-                        $isAllowed = $this->securityFacade->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                        $isAllowed = $this->securityFacade->isClassMethodGranted(
+                            $routeInfo['controller'],
+                            $routeInfo['action']
+                        );
                     }
                     $this->aclCache[$routeInfo['key']] = $isAllowed;
                 }

@@ -10,9 +10,9 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 
 abstract class SoapController extends SoapGetController implements
-     FormAwareInterface,
-     FormHandlerAwareInterface,
-     SoapApiCrudInterface
+    FormAwareInterface,
+    FormHandlerAwareInterface,
+    SoapApiCrudInterface
 {
     /**
      * {@inheritDoc}

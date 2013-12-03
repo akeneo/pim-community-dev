@@ -28,10 +28,14 @@ class PageFilteredGrid extends PageGrid
      */
     public function addFilter($filterName)
     {
-        $addFilter = $this->byXPath("{$this->filtersPath}//div[contains(@class, 'filter-box')]/button[contains(.,'Manage filters')]");
+        $addFilter = $this->byXPath(
+            "{$this->filtersPath}//div[contains(@class, 'filter-box')]/button[contains(.,'Manage filters')]"
+        );
         //expand filter list
         $addFilter->click();
-        $filter = $this->byXPath("{$this->filtersPath}//input[@title='{$filterName}'][@name='multiselect_add-filter-select']");
+        $filter = $this->byXPath(
+            "{$this->filtersPath}//input[@title='{$filterName}'][@name='multiselect_add-filter-select']"
+        );
         if (!$filter->selected()) {
             $filter->click();
         }
@@ -69,7 +73,8 @@ class PageFilteredGrid extends PageGrid
         //select criteria
         if ($condition != '') {
             //expand condition list
-            $criteria->element($this->using('xpath')->value("div/div/div/button[@class ='btn dropdown-toggle']"))->click();
+            $criteria->element($this->using('xpath')->value("div/div/div/button[@class ='btn dropdown-toggle']"))
+                ->click();
 
             $criteria->element($this->using('xpath')->value("div/div/div/ul/li/a[text()='{$condition}']"))->click();
         }

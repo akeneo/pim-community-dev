@@ -50,6 +50,12 @@ class ApiFlexibleEntityManager extends ApiEntityManager
         /** @var FlexibleEntityRepository $repository */
         $repository = $this->getFlexibleManager()->getFlexibleRepository();
 
-        return $repository->findByWithAttributesQB(array(), null, $this->getOrderBy($orderBy), $limit, $this->getOffset($page));
+        return $repository->findByWithAttributesQB(
+            array(),
+            null,
+            $this->getOrderBy($orderBy),
+            $limit,
+            $this->getOffset($page)
+        );
     }
 }

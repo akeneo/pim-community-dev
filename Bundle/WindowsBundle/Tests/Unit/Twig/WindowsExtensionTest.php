@@ -117,9 +117,12 @@ class WindowsExtensionTest extends \PHPUnit_Framework_TestCase
     public function renderDataProvider()
     {
         return array(
-            'url_without_parameters' => array('/user/create', 'test', '/user/create?_widgetContainer=test'),
-            'url_with_parameters' => array('/user/create?id=1', 'test', '/user/create?id=1&_widgetContainer=test'),
-            'url_with_parameters_and_fragment' => array('/user/create?id=1#group=date', 'test', '/user/create?id=1&_widgetContainer=test#group=date'),
+            'url_without_parameters'
+                => array('/user/create', 'test', '/user/create?_widgetContainer=test'),
+            'url_with_parameters'
+                => array('/user/create?id=1', 'test', '/user/create?id=1&_widgetContainer=test'),
+            'url_with_parameters_and_fragment'
+                => array('/user/create?id=1#group=date', 'test', '/user/create?id=1&_widgetContainer=test#group=date'),
         );
     }
 

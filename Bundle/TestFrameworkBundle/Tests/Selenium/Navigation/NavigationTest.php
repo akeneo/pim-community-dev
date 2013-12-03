@@ -72,7 +72,8 @@ class NavigationTest extends Selenium2TestCase
         $login->waitForAjax();
         //Check that user, group and roles pages added
         $login->assertElementPresent(
-            "//div[@id='history-content'][//a[contains(., 'Users')]][//a[contains(., 'Roles')]][//a[contains(., 'Groups')]]",
+            "//div[@id='history-content'][//a[contains(., 'Users')]]" .
+            "[//a[contains(., 'Roles')]][//a[contains(., 'Groups')]]",
             'Not found in History tab'
         );
     }
@@ -96,7 +97,8 @@ class NavigationTest extends Selenium2TestCase
         $login->waitForAjax();
         //Check that user, group and roles pages added
         $login->assertElementPresent(
-            "//div[@id='mostviewed-content'][//a[contains(., 'Users')]][//a[contains(., 'Roles')]][//a[contains(., 'Groups')]]",
+            "//div[@id='mostviewed-content'][//a[contains(., 'Users')]]" .
+            "[//a[contains(., 'Roles')]][//a[contains(., 'Groups')]]",
             'Not found in Most Viewed section'
         );
     }
@@ -128,7 +130,8 @@ class NavigationTest extends Selenium2TestCase
             'Not found in favorites section'
         );
         //Remove Groups page from favorites
-        $login->byXPath("//div[@id='favorite-content'][//span[contains(., 'Groups')]]//button[@class='close']")->click();
+        $login->byXPath("//div[@id='favorite-content'][//span[contains(., 'Groups')]]//button[@class='close']")
+            ->click();
         $login->waitForAjax();
         //Check that page is deleted from favorites
         $login->assertElementNotPresent(

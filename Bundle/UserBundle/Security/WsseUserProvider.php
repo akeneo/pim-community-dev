@@ -27,8 +27,12 @@ class WsseUserProvider extends Provider
      * @param string                   $nonceDir        The nonce dir
      * @param int                      $lifetime        The lifetime, in seconds
      */
-    public function __construct(UserProviderInterface $userProvider, PasswordEncoderInterface $encoder, $nonceDir = null, $lifetime = 300)
-    {
+    public function __construct(
+        UserProviderInterface $userProvider,
+        PasswordEncoderInterface $encoder,
+        $nonceDir = null,
+        $lifetime = 300
+    ) {
         parent::__construct($userProvider, $encoder, $nonceDir, $lifetime);
 
         $this->userProvider = $userProvider;

@@ -260,7 +260,9 @@ class Parser
         $operatorWord = $this->getWord($inputString);
         // check operator
         if (!in_array($operatorWord, $this->typeOperators[$typeWord])) {
-            throw new \InvalidArgumentException('Type ' . $typeWord . ' does not support operator "' . $operatorWord . '"');
+            throw new \InvalidArgumentException(
+                'Type ' . $typeWord . ' does not support operator "' . $operatorWord . '"'
+            );
         }
         $inputString = $this->trimString($inputString, $operatorWord);
 

@@ -23,7 +23,10 @@ class PdoPgsql extends BaseDriver
     public function initRepo(EntityManager $em, ClassMetadata $class)
     {
         $ormConfig = $em->getConfiguration();
-        $ormConfig->addCustomStringFunction('TsvectorTsquery', 'Oro\Bundle\SearchBundle\Engine\Orm\PdoPgsql\TsvectorTsquery');
+        $ormConfig->addCustomStringFunction(
+            'TsvectorTsquery',
+            'Oro\Bundle\SearchBundle\Engine\Orm\PdoPgsql\TsvectorTsquery'
+        );
         $ormConfig->addCustomStringFunction('TsRank', 'Oro\Bundle\SearchBundle\Engine\Orm\PdoPgsql\TsRank');
 
         parent::initRepo($em, $class);

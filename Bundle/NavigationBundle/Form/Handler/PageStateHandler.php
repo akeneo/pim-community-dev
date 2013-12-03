@@ -39,8 +39,12 @@ class PageStateHandler
      * @param ObjectManager            $manager
      * @param SecurityContextInterface $security
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, SecurityContextInterface $security)
-    {
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        SecurityContextInterface $security
+    ) {
         $this->form     = $form;
         $this->request  = $request;
         $this->manager  = $manager;

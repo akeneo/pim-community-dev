@@ -73,7 +73,10 @@ class ControllersTest extends WebTestCase
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
 
-        $crawler = $this->client->request('GET', $this->client->generate('oro_tag_update', array('id' => $result['id'])));
+        $crawler = $this->client->request(
+            'GET',
+            $this->client->generate('oro_tag_update', array('id' => $result['id']))
+        );
         $form = $crawler->selectButton('Save')->form();
         $form['oro_tag_tag_form[name]'] = 'tag758_updated';
         $form['oro_tag_tag_form[owner]'] = 1;

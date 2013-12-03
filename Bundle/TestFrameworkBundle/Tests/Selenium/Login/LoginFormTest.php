@@ -99,7 +99,8 @@ class LoginFormTest extends Selenium2TestCase
         $this->assertEquals('Dashboard', $this->title());
 
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']/li[@class='dropdown']/a")->click();
-        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']//li/a[contains(.,'Logout')]")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']//li/a[contains(.,'Logout')]")
+            ->click();
         $this->assertEquals('Login', $this->title());
     }
 
@@ -174,7 +175,10 @@ class LoginFormTest extends Selenium2TestCase
         $this->waitForAjax();
         $messageActual = $this->byXPath("//*[@id='top-page']//div[contains(@class,'alert-success')]")->text();
 
-        $this->assertEquals('An email has been sent to ...@example.com. It contains a link you must click to reset your password.', $messageActual);
+        $this->assertEquals(
+            'An email has been sent to ...@example.com. It contains a link you must click to reset your password.',
+            $messageActual
+        );
     }
 
     public function testRememberFunction()

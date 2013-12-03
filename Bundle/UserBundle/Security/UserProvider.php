@@ -47,7 +47,9 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(SecurityUserInterface $user)
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of Oro\Bundle\UserBundle\Entity\User, but got "%s".', get_class($user)));
+            throw new UnsupportedUserException(
+                sprintf('Expected an instance of Oro\Bundle\UserBundle\Entity\User, but got "%s".', get_class($user))
+            );
         }
 
         if (null === $reloadedUser = $this->userManager->findUserBy(array('id' => $user->getId()))) {

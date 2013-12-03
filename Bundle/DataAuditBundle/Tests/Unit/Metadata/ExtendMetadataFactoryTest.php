@@ -8,7 +8,9 @@ class ExtendMetadataFactoryTest extends AbstractMetadataTest
 {
     public function testExtendLoadMetadataForClass()
     {
-        $doctrineClassMetadata = $this->em->getClassMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass');
+        $doctrineClassMetadata = $this->em->getClassMetadata(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass'
+        );
 
         $metadata = $this->loggableAnnotationDriver->extendLoadMetadataForClass($doctrineClassMetadata);
 

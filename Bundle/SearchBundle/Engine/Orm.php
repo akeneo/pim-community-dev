@@ -37,8 +37,13 @@ class Orm extends AbstractEngine
      */
     protected $mapper;
 
-    public function __construct(EntityManager $em, EventDispatcher $dispatcher, ContainerInterface $container, ObjectMapper $mapper, $logQueries)
-    {
+    public function __construct(
+        EntityManager $em,
+        EventDispatcher $dispatcher,
+        ContainerInterface $container,
+        ObjectMapper $mapper,
+        $logQueries
+    ) {
         parent::__construct($em, $dispatcher, $logQueries);
 
         $this->container = $container;

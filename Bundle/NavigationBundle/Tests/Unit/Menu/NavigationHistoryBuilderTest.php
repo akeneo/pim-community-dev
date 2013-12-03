@@ -45,7 +45,8 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->manipulator = $this->getMock('Knp\Menu\Util\MenuManipulator');
-        $this->builder->expects($this->any())->method('getMenuManipulator')->will($this->returnValue($this->manipulator));
+        $this->builder->expects($this->any())->method('getMenuManipulator')
+            ->will($this->returnValue($this->manipulator));
     }
 
     public function testBuild()

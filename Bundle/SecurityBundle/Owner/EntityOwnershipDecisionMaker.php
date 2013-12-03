@@ -227,7 +227,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
      *
      * @param  int|string      $userId
      * @param  int|string|null $businessUnitId
-     * @param  bool            $deep           Specify whether subordinate business units should be checked. Defaults to false.
+     * @param  bool            $deep Specify whether subordinate business units should be checked. Defaults to false.
      * @return bool
      */
     protected function isUserBusinessUnit($userId, $businessUnitId, $deep = false)
@@ -240,7 +240,9 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
             if ($businessUnitId === $buId) {
                 return true;
             }
-            if ($deep && in_array($businessUnitId, $this->treeProvider->getTree()->getSubordinateBusinessUnitIds($buId))) {
+            if ($deep
+                && in_array($businessUnitId, $this->treeProvider->getTree()->getSubordinateBusinessUnitIds($buId))
+            ) {
                 return true;
             }
         }

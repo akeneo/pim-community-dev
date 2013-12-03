@@ -14,16 +14,27 @@ class AnnotationDriverTest extends AbstractMetadataTest
 {
     public function testExtendLoadMetadataForClass()
     {
-        $doctrineClassMetadata = $this->em->getClassMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass');
+        $doctrineClassMetadata = $this->em->getClassMetadata(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass'
+        );
 
-        $nameProperty         = new PropertyMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass', 'name');
+        $nameProperty         = new PropertyMetadata(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass',
+            'name'
+        );
         $nameProperty->method = '__toString';
 
-        $collectionProperty               = new PropertyMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass', 'collection');
+        $collectionProperty               = new PropertyMetadata(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass',
+            'collection'
+        );
         $collectionProperty->method       = '__toString';
         $collectionProperty->isCollection = true;
 
-        $collectionWithMethodNameProperty = new PropertyMetadata('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass', 'collectionWithMethodName');
+        $collectionWithMethodNameProperty = new PropertyMetadata(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass',
+            'collectionWithMethodName'
+        );
         $collectionWithMethodNameProperty->isCollection = true;
         $collectionWithMethodNameProperty->method = 'getName';
 

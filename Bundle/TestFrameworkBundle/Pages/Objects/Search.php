@@ -40,9 +40,13 @@ class Search extends Page
     public function suggestions($filter = null)
     {
         if (!is_null($filter)) {
-            $result = $this->elements($this->using("xpath")->value("//div[@class='header-search-frame']//a[contains(., '{$filter}')]"));
+            $result = $this->elements(
+                $this->using("xpath")->value("//div[@class='header-search-frame']//a[contains(., '{$filter}')]")
+            );
         } else {
-            $result = $this->elements($this->using("xpath")->value("//div[@id='search-dropdown']/ul/li/a"));
+            $result = $this->elements(
+                $this->using("xpath")->value("//div[@id='search-dropdown']/ul/li/a")
+            );
         }
 
         return $result;
@@ -70,9 +74,15 @@ class Search extends Page
     public function result($filter)
     {
         if (!is_null($filter)) {
-            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a[normalize-space(.) = '{$filter}']"));
+            $result = $this->elements(
+                $this->using("xpath")->value(
+                    "//div[@id='search-result-grid']//tr//h1/a[normalize-space(.) = '{$filter}']"
+                )
+            );
         } else {
-            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a"));
+            $result = $this->elements(
+                $this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a")
+            );
         }
 
         return $result;
@@ -93,7 +103,9 @@ class Search extends Page
      */
     public function assertEntity($entitytype, $entitycount)
     {
-        $this->assertElementPresent("//td[@class='search-entity-types-column']//a[contains(., '{$entitytype} ({$entitycount})')]");
+        $this->assertElementPresent(
+            "//td[@class='search-entity-types-column']//a[contains(., '{$entitytype} ({$entitycount})')]"
+        );
 
         return $this;
     }

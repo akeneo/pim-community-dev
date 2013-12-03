@@ -17,8 +17,10 @@ class SecurityProvider
      */
     protected $entitySecurityMetadataProvider;
 
-    public function __construct(SecurityFacade $securityFacade, EntitySecurityMetadataProvider $entitySecurityMetadataProvider)
-    {
+    public function __construct(
+        SecurityFacade $securityFacade,
+        EntitySecurityMetadataProvider $entitySecurityMetadataProvider
+    ) {
         $this->securityFacade = $securityFacade;
         $this->entitySecurityMetadataProvider = $entitySecurityMetadataProvider;
     }

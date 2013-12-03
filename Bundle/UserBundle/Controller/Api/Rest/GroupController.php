@@ -25,8 +25,18 @@ class GroupController extends RestController implements ClassResourceInterface
      *      description="Get the list of groups",
      *      resource=true
      * )
-     * @QueryParam(name="page", requirements="\d+", nullable=true, description="Page number, starting from 1. Defaults to 1.")
-     * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of items per page. defaults to 10.")
+     * @QueryParam(
+     *      name="page",
+     *      requirements="\d+",
+     *      nullable=true,
+     *      description="Page number, starting from 1. Defaults to 1."
+     * )
+     * @QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      nullable=true,
+     *      description="Number of items per page. defaults to 10."
+     * )
      * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */

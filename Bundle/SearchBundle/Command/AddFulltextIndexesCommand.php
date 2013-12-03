@@ -7,6 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
 use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\HelperInterface;
 
 class AddFulltextIndexesCommand extends ContainerAwareCommand
 {
@@ -45,7 +46,7 @@ class AddFulltextIndexesCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper|\Symfony\Component\Console\Helper\HelperInterface
+     * @return DialogHelper|HelperInterface
      */
     protected function getDialogHelper()
     {

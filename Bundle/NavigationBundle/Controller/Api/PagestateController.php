@@ -33,7 +33,9 @@ class PagestateController extends FOSRestController implements ClassResourceInte
     {
         return $this->handleView(
             $this->view(
-                $this->getDoctrine()->getRepository('OroNavigationBundle:PageState')->findBy(array('user' => $this->getUser())),
+                $this->getDoctrine()->getRepository('OroNavigationBundle:PageState')->findBy(
+                    array('user' => $this->getUser())
+                ),
                 Codes::HTTP_OK
             )
         );

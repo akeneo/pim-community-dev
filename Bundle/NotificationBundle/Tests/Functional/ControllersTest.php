@@ -75,7 +75,9 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="' . $this->templateUpdate->getId() . '">EmailBundle:' . $this->templateUpdate->getName() . '</option> </select>'
+            '<option value="' . $this->templateUpdate->getId() . '">' .
+            'EmailBundle:' . $this->templateUpdate->getName() .
+            '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
@@ -127,7 +129,9 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="' . $this->templateUpdate->getId() . '">EmailBundle:' . $this->templateUpdate->getName() . '</option> </select>'
+            '<option value="' . $this->templateUpdate->getId() . '">' .
+            'EmailBundle:' . $this->templateUpdate->getName() .
+            '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
