@@ -35,7 +35,8 @@ class ImageType extends FlexImageType
                     'attr'         => array(
                         'class'     => 'multiselect',
                         'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
-                    )
+                    ),
+                    'select2' => true
                 )
             ),
             array(

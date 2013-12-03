@@ -17,7 +17,7 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
+        'action': path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,

@@ -13,7 +13,7 @@ Feature: Create a channel
       | Code          | foo             |
       | Default label | bar             |
       | Category tree | 2014 collection |
-    And I select the currency "EUR"
-    And I select the locale "French"
+      | Currencies    | EUR             |
+      | Locales       | French          |
     And I press the "Save" button
     Then I should see flash message "Channel successfully saved"

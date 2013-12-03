@@ -29,4 +29,5 @@ parameters:
 
     installed:         true
 
-    load_demo_data:    true
+    installer_data:    PimDemoBundle:demo_dev
+    # use PimInstallerBundle:minimal for minimal data set

@@ -50,8 +50,8 @@ attributes:
         type:  pim_catalog_image
         group: media
         parameters:
-            maxFileSize: 1
-            sortOrder:   1
+            maxFileSize:       1
+            sortOrder:         1
             allowedExtensions: gif,png,jpeg,jpg
     image:
         labels:

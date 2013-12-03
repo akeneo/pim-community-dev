@@ -23,11 +23,13 @@ Feature: Browse currencies
     And I activate the GBP currency
     When I hide the filter "Code"
     And I filter by "Activated" with value "yes"
-    Then I should see activated currencies GBP, USD and EUR
+    Then the grid should contain 3 elements
+    Then I should see currencies GBP, USD and EUR
 
   Scenario: Successfully deactivate a currency
     Given I filter by "Activated" with value "yes"
-    Then I should see activated currencies USD and EUR
+    Then the grid should contain 2 elements
+    And I should see currencies USD and EUR
     When I deactivate the USD currency
     Then the grid should contain 1 element
-    And I should see activated currency EUR
+    And I should see currency EUR

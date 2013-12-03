@@ -310,8 +310,23 @@ class ProductManager extends FlexibleManager
     {
         foreach ($product->getValues() as $value) {
             if ($media = $value->getMedia()) {
-                $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
-                $this->mediaManager->handle($media, $filenamePrefix);
+                if ($id = $media->getCopyFrom()) {
+                    $source = $this
+                        ->storageManager
+                        ->getRepository('Pim\Bundle\CatalogBundle\Model\Media')
+                        ->find($id);
+
+                    if (!$source) {
+                        throw new \Exception(
+                            sprintf('Could not find media with id %d', $id)
+                        );
+                    }
+
+                    $this->mediaManager->duplicate($source, $media, $this->generateFilenamePrefix($product, $value));
+                } else {
+                    $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
+                    $this->mediaManager->handle($media, $filenamePrefix);
+                }
             }
         }
     }

@@ -42,6 +42,8 @@ class ProductValueType extends FlexibleValueType
         if ($form->getData() instanceof ProductValueInterface) {
             $this->productFormView->addChildren($form->getData(), $view);
         }
+
+        $view->vars['mode'] = isset($options['block_config']['mode']) ? $options['block_config']['mode'] : 'normal';
     }
 
     /**

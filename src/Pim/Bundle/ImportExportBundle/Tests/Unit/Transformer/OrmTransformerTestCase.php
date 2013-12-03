@@ -18,7 +18,7 @@ abstract class OrmTransformerTestCase extends \PHPUnit_Framework_TestCase
     protected $doctrine;
     protected $propertyAccessor;
     protected $guesser;
-    protected $labelTransformer;
+    protected $columnInfoTransformer;
     protected $transformers;
     protected $columnInfos;
     protected $repository;
@@ -53,9 +53,9 @@ abstract class OrmTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->guesser->expects($this->any())
             ->method('getTransformerInfo')
             ->will($this->returnCallback(array($this, 'getTransformer')));
-        $this->labelTransformer = $this
+        $this->columnInfoTransformer = $this
             ->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
-        $this->labelTransformer->expects($this->any())
+        $this->columnInfoTransformer->expects($this->any())
             ->method('transform')
             ->will($this->returnCallback(array($this, 'getColumnInfo')));
         $this->transformers = array();

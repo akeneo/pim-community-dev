@@ -278,8 +278,44 @@ div.btn-group > .has-switch {
   margin: 10px;
 }
 
+#comparison-buttons {
+  float: right;
+  position: relative;
+  padding-right: 10px;
+  text-align: right;
+  padding: 4px 9px 22px 0;
+  &.compare{
+    width: 50%;
+    border-left: 1px solid #ddd;
+  }
+}
+
 #association-buttons {
   padding-top: 7px;
+}
+
+
+.comparison {
+  width: 100%;
+  td {
+    width: 50%;
+    border-right: 1px solid darken(@color-light_grey, 5%);
+    vertical-align: top;
+    &.no-label .control-group {
+      label.control-label {
+        width: 30px;
+        &.add-on {
+          width: 135px;
+        }
+      }
+      .controls {
+        margin-left: 40px;
+        &.metric {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 }
 
 #lbCenter {
@@ -711,7 +747,7 @@ table i {
     }
   }
   textarea.input-large {
-    width: 523px;
+    width: 350px;
   }
   div.controls {
     input, select, textarea {
@@ -820,6 +856,7 @@ h1 {
   .buffer-small-right {padding-right:10px;}
   .buffer-small-bottom {padding-bottom:10px;}
   .buffer-small-left {padding-left:10px;}
+  .left-aligned {text-align: left;}
 }
 .unspaced {
   margin: 0;
@@ -940,7 +977,7 @@ code {
   font-size: 12px;
 }
 
-#locale-switcher {
+#locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
     padding: 5px 6px 3px 6px;
     margin-bottom: 0;
@@ -978,12 +1015,12 @@ code {
       }
     }
   }
-  code.flag-language {
-    padding: 4px;
-    color: @textColor;
-    background-color: transparent;
-    border: none;
-  }
+}
+code.flag-language {
+  padding: 4px;
+  color: @textColor;
+  background-color: transparent;
+  border: none;
 }
 
 div.entity-updated {
@@ -1128,13 +1165,13 @@ ul.medias label.remove-media {
       float: left;
     }
   }
-  &.prepend .selectize-input {
-    border-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  &.append .selectize-input {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
-.controls.metric.input-prepend {
+.controls.metric.input-append {
   margin-left: 10px;
   .icons-container {
     padding-top: 5px;

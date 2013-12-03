@@ -54,11 +54,6 @@ class PimFlexibleEntityExtension extends Extension
                         $entitiesConfig['entities_config'][$entity]= $entityConfig;
                     }
                 }
-                if (isset($bundleConfig['attributes_config'])) {
-                    foreach ($bundleConfig['attributes_config'] as $attributeType => $attributeConfig) {
-                        $entitiesConfig['attributes_config'][$attributeType]= $attributeConfig;
-                    }
-                }
             }
         }
 

@@ -13,4 +13,3 @@ services:
 #        arguments:
 #            - %pim_catalog.product.class%
 
-

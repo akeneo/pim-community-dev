@@ -245,45 +245,32 @@ class FlexibleQueryBuilder
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {
-        switch ($operator) {
-            case '=':
-                $condition = $this->qb->expr()->eq($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case '<':
-                $condition = $this->qb->expr()->lt($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case '<=':
-                $condition = $this->qb->expr()->lte($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case '>':
-                $condition = $this->qb->expr()->gt($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case '>=':
-                $condition = $this->qb->expr()->gte($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case 'LIKE':
-                $condition = $this->qb->expr()->like($field, $this->qb->expr()->literal($value))->__toString();
-                break;
-            case 'NOT LIKE':
-                $condition = sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
-                break;
-            case 'NULL':
-                $condition = $this->qb->expr()->isNull($field);
-                break;
-            case 'NOT NULL':
-                $condition = $this->qb->expr()->isNotNull($field);
-                break;
-            case 'IN':
-                $condition = $this->qb->expr()->in($field, $value)->__toString();
-                break;
-            case 'NOT IN':
-                $condition = $this->qb->expr()->notIn($field, $value)->__toString();
-                break;
-            default:
-                throw new FlexibleQueryException('operator '.$operator.' is not supported');
+        $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
+        if (array_key_exists($operator, $operators)) {
+            $method = $operators[$operator];
+
+            return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
         }
 
-        return $condition;
+        $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');
+        if (array_key_exists($operator, $operators)) {
+            $method = $operators[$operator];
+
+            return $this->qb->expr()->$method($field);
+        }
+
+        $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
+        if (array_key_exists($operator, $operators)) {
+            $method = $operators[$operator];
+
+            return $this->qb->expr()->$method($field, $value)->__toString();
+        }
+
+        if ($operator == 'NOT LIKE') {
+            return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
+        }
+
+        throw new FlexibleQueryException('operator '.$operator.' is not supported');
     }
 
     /**

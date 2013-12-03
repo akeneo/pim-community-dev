@@ -107,6 +107,7 @@ class ProductEditType extends AbstractType
             )
         );
     }
+
     /**
      * {@inheritdoc}
      */

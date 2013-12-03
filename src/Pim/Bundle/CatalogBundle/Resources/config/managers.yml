@@ -62,7 +62,7 @@ services:
             - '@oro_security.security_facade'
             - '%locale%'
         calls:
-            - [ "setRequest", ["@?request="] ]
+            - [ setRequest, ['@?request='] ]
 
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%

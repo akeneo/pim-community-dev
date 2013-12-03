@@ -91,7 +91,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
 
         foreach ($data as $entry) {
             fwrite($this->handler, $entry);
-            $this->stepExecution->incrementWriteCount();
+            $this->stepExecution->incrementSummaryInfo('write');
         }
     }
 

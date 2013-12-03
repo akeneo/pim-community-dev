@@ -325,6 +325,9 @@ class ProductController extends AbstractDoctrineController
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+                if ($comparisonLocale = $this->getComparisonLocale()) {
+                    $params['compareWith'] = $comparisonLocale;
+                }
 
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
@@ -337,29 +340,30 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
-        $associationProductGridManager = $this->datagridHelper->getDatagridManager('association_product');
-        $associationProductGridManager->setProduct($product);
+        $productGrid = $this->datagridHelper->getDatagridManager('association_product');
+        $productGrid->setProduct($product);
 
-        $associationGroupGridManager = $this->datagridHelper->getDatagridManager('association_group');
-        $associationGroupGridManager->setProduct($product);
+        $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
+        $groupGrid->setProduct($product);
 
         $association = null;
         if (!empty($associations)) {
             $association = reset($associations);
-            $associationProductGridManager->setAssociationId($association->getId());
-            $associationGroupGridManager->setAssociationId($association->getId());
+            $productGrid->setAssociationId($association->getId());
+            $groupGrid->setAssociationId($association->getId());
         }
 
         $routeParameters = array('id' => $product->getId());
-        $associationProductGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
-        $associationGroupGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+        $productGrid->getRouteGenerator()->setRouteParameters($routeParameters);
+        $groupGrid->getRouteGenerator()->setRouteParameters($routeParameters);
 
-        $associationProductGridView = $associationProductGridManager->getDatagrid()->createView();
-        $associationGroupGridView = $associationGroupGridManager->getDatagrid()->createView();
+        $productGridView = $productGrid->getDatagrid()->createView();
+        $groupGridView   = $groupGrid->getDatagrid()->createView();
 
         return array(
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
+            'comparisonLocale'       => $this->getComparisonLocale(),
             'channels'               => $channels,
             'attributesForm'         =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
@@ -369,8 +373,8 @@ class ProductController extends AbstractDoctrineController
             'updated'                => $this->auditManager->getNewestLogEntry($product),
             'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
-            'associationProductGrid' => $associationProductGridView,
-            'associationGroupGrid'   => $associationGroupGridView,
+            'associationProductGrid' => $productGridView,
+            'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
             'completenessHelper'     => $this->completenessHelper
         );
@@ -583,6 +587,15 @@ class ProductController extends AbstractDoctrineController
         return $dataLocale;
     }
 
+    protected function getComparisonLocale()
+    {
+        $locale = $this->getRequest()->query->get('compareWith');
+
+        if ($this->getDataLocale() !== $locale) {
+            return $locale;
+        }
+    }
+
     /**
      * Get data currency code
      *
@@ -669,9 +682,10 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
-            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
-            'currentLocale' => $this->getDataLocale()
+            'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale'    => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
         );
     }
 

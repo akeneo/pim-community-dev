@@ -34,6 +34,13 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
             $productTransformer
         );
 
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $processor->setStepExecution($stepExecution);
+
         $processor->setEnabled('enabled');
         $processor->setFamilyColumn('fml');
         $processor->setCategoriesColumn('ctg');

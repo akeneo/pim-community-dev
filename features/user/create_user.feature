@@ -17,8 +17,8 @@ Feature: Create a user
       | Password          | DoeDoe           |
       | Re-enter password | DoeDoe           |
       | E-mail            | jack@example.com |
-    And I select the status "Inactive"
-    And I select the owner "Main"
+      | Status            | Inactive         |
+      | Owner             | Main             |
     And I select the role "User"
     When I save the user
     Then there should be a "jack" user

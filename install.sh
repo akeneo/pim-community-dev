@@ -31,7 +31,7 @@ PIM_FIXTURE_PATHS="
     src/Pim/Bundle/InstallerBundle/DataFixtures
     src/Pim/Bundle/UserBundle/DataFixtures
     src/Pim/Bundle/CustomEntityBundle/DataFixtures
-    vendor/akeneo/DemoBundle/Pim/Bundle/DemoBundle/DataFixtures
+    src/Pim/Bundle/DemoBundle/DataFixtures
 "
 PIM_FIXTURES=`echo $PIM_FIXTURE_PATHS | sed -e "s# # --fixtures=#g" -e "s#^# --fixtures=#"`
 
@@ -97,9 +97,10 @@ cd $APP_ROOT
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
     php app/console oro:entity-extend:clear
-    php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
     # FIXME_MONGO: make that conditional
     php app/console doctrine:mongodb:schema:drop
+    php app/console doctrine:schema:drop --force --full-database > /dev/null 2>&1 || true
+    php app/console doctrine:database:drop --force > /dev/null 2>&1 || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console doctrine:mongodb:schema:create
@@ -118,6 +119,8 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value"
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" 2>&1 > /dev/null || true
     php app/console pim:completeness:calculate
 fi
 

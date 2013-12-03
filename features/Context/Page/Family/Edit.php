@@ -102,18 +102,6 @@ class Edit extends Form
     }
 
     /**
-     * @param string $attribute
-     *
-     * @return Edit
-     */
-    public function selectAttributeAsLabel($attribute)
-    {
-        $this->getElement('Attribute as label choices')->selectOption($attribute);
-
-        return $this;
-    }
-
-    /**
      * @param string $attributeCode
      * @param string $channelCode
      *
