@@ -5,15 +5,16 @@ jobs:
         label:     Footwear product import
         type:      import
         configuration:
-            filePath:         /tmp/product_import/product_import.csv
-            uploadAllowed:    true
-            delimiter:        ;
-            enclosure:        '"'
-            escape:           '\'
-            enabled:          true
-            categoriesColumn: categories
-            familyColumn:     family
-            groupsColumn:     groups
+            filePath:           /tmp/product_import/product_import.csv
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
     footwear_product_export:
         connector: Akeneo CSV Connector
         alias:     product_export

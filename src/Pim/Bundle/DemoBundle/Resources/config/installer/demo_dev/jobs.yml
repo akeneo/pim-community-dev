@@ -5,15 +5,16 @@ jobs:
         label:     Demo product import
         type:      import
         configuration:
-            filePath:         /tmp/product.csv
-            uploadAllowed:    true
-            delimiter:        ;
-            enclosure:        '"'
-            escape:           '\'
-            enabled:          true
-            categoriesColumn: categories
-            familyColumn:     family
-            groupsColumn:     groups
+            filePath:           /tmp/product.csv
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
     product_export:
         connector: Akeneo CSV Connector
         alias:     product_export

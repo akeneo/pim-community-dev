@@ -91,7 +91,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
         if (in_array($identifier, $this->identifiers)) {
             $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException(
-                sprintf('Twin ! the entity "%s" has already been processed', $identifier),
+                sprintf('Duplicate, the entity "%s" has already been processed', $identifier),
                 $item
             );
         }

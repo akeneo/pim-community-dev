@@ -206,7 +206,9 @@ oro_batch:
         filePath:
             label: File path
             help: Where to write the generated file on the file system
-
+        realTimeVersioning:
+            label: Real time versioning ?
+            help: Is the product history is directly updated
     category_writer:
         title: Category storage
 
