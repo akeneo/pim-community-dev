@@ -115,24 +115,21 @@ class ItemStep extends AbstractStep
      */
     public function getConfiguration()
     {
+        $stepElements = array(
+            $this->reader,
+            $this->writer,
+            $this->processor
+        );
         $configuration = array();
 
-        if ($this->reader instanceof AbstractConfigurableStepElement) {
-            $configuration['reader'] = $this->reader->getConfiguration();
-        } else {
-            $configuration['reader'] = array();
-        }
-
-        if ($this->processor instanceof AbstractConfigurableStepElement) {
-            $configuration['processor'] = $this->processor->getConfiguration();
-        } else {
-            $configuration['processor'] = array();
-        }
-
-        if ($this->writer instanceof AbstractConfigurableStepElement) {
-            $configuration['writer'] = $this->writer->getConfiguration();
-        } else {
-            $configuration['writer'] = array();
+        foreach ($stepElements as $stepElement) {
+            if ($stepElement instanceof AbstractConfigurableStepElement) {
+                foreach ($stepElement->getConfiguration() as $key => $value) {
+                    if (!isset($configuration[$key]) || $value) {
+                        $configuration[$key] = $value;
+                    }
+                }
+            }
         }
 
         return $configuration;
@@ -143,16 +140,16 @@ class ItemStep extends AbstractStep
      */
     public function setConfiguration(array $config)
     {
-        if ($this->reader instanceof AbstractConfigurableStepElement && !empty($config['reader'])) {
-            $this->reader->setConfiguration($config['reader']);
-        }
+        $stepElements = array(
+            $this->reader,
+            $this->writer,
+            $this->processor
+        );
 
-        if ($this->processor instanceof AbstractConfigurableStepElement && !empty($config['processor'])) {
-            $this->processor->setConfiguration($config['processor']);
-        }
-
-        if ($this->writer instanceof AbstractConfigurableStepElement && !empty($config['writer'])) {
-            $this->writer->setConfiguration($config['writer']);
+        foreach ($stepElements as $stepElement) {
+            if ($stepElement instanceof AbstractConfigurableStepElement) {
+                $stepElement->setConfiguration($config);
+            }
         }
     }
 
@@ -183,7 +180,15 @@ class ItemStep extends AbstractStep
 
             // Processing
             try {
-                $processedItem = $this->processor->process($item);
+                if (null === $processedItem = $this->processor->process($item)) {
+                    throw new \Exception(
+                        sprintf(
+                            'Processor %s returned unexpected value: NULL. ' .
+                            'Use Oro\Bundle\BatchBundle\Item\InvalidItemException to warn invalid value.',
+                            get_class($this->processor)
+                        )
+                    );
+                }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($stepExecution, $this->processor, $e);
 
@@ -191,11 +196,8 @@ class ItemStep extends AbstractStep
             }
 
             // Writing
-            if (null !== $processedItem) {
-                $itemsToWrite[] = $processedItem;
-                $writeCount++;
-            }
-            if (0 === $writeCount % $this->batchSize) {
+            $itemsToWrite[] = $processedItem;
+            if (0 === ++$writeCount % $this->batchSize) {
                 try {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
@@ -210,6 +212,7 @@ class ItemStep extends AbstractStep
         if (count($itemsToWrite) > 0) {
             try {
                 $this->writer->write($itemsToWrite);
+                $itemsToWrite = array();
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
             }
@@ -237,22 +240,16 @@ class ItemStep extends AbstractStep
     /**
      * Handle step execution warning
      *
-     * @param StepExecution $stepExecution
-     * @param object $element
+     * @param StepExecution        $stepExecution
+     * @param string               $class
      * @param InvalidItemException $e
      */
     private function handleStepExecutionWarning(
         StepExecution $stepExecution,
-        $element,
+        AbstractConfigurableStepElement $element,
         InvalidItemException $e
     ) {
-        if ($element instanceof AbstractConfigurableStepElement) {
-            $warningName = $element->getName();
-        } else {
-            $warningName = get_class($element);
-        }
-
-        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getItem());
+        $stepExecution->addWarning($element->getName(), $e->getMessage(), $e->getItem());
         $this->dispatchInvalidItemEvent(get_class($element), $e->getMessage(), $e->getItem());
     }
 }
