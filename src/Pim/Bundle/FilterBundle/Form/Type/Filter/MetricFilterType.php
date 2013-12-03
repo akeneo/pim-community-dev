@@ -2,27 +2,14 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Monolog\Logger;
-
-use Symfony\Component\Form\FormInterface;
-
-use Symfony\Component\Form\FormView;
-
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-
-use Symfony\Component\Form\AbstractType;
-
-use Oro\Bundle\FormBundle\Form\Exception\FormException;
-
 use Symfony\Component\Form\FormBuilderInterface;
-
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
-
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 
 /**
  * Metric filter type for products
@@ -55,7 +42,8 @@ class MetricFilterType extends NumberFilterType
      */
     public function __construct(TranslatorInterface $translator, MeasureManager $measureManager)
     {
-        $this->translator     = $translator;
+        parent::__construct($translator);
+
         $this->measureManager = $measureManager;
     }
 
