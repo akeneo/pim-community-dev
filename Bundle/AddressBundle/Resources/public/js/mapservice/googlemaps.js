@@ -21,7 +21,8 @@ function(_, Backbone, __) {
             },
             apiVersion: '3.exp',
             sensor: false,
-            apiKey: null
+            apiKey: null,
+            showWeather: true
         },
 
         mapLocationCache: {},
@@ -63,10 +64,23 @@ function(_, Backbone, __) {
                 map: this.map,
                 position: location
             });
+
+            if (this.options.showWeather) {
+                var weatherLayer = new google.maps.weather.WeatherLayer();
+                weatherLayer.setMap(this.map);
+
+                var cloudLayer = new google.maps.weather.CloudLayer();
+                cloudLayer.setMap(this.map);
+            }
         },
 
         loadGoogleMaps: function() {
             var googleMapsSettings = 'sensor=' + (this.options.sensor ? 'true' : 'false');
+
+            if (this.options.showWeather) {
+                googleMapsSettings += '&libraries=weather';
+            }
+
             if (this.options.apiKey) {
                 googleMapsSettings += '&key=' + this.options.apiKey;
             }
