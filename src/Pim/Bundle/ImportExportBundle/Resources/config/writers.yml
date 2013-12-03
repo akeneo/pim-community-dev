@@ -6,6 +6,9 @@ parameters:
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\File\FileWriter
     pim_import_export.writer.file.product.class:                    Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter
 
+    pim_import_export.writer.json.class:                            Pim\Bundle\ImportExportBundle\Writer\JSON\JSONWriter
+    pim_import_export.writer.product_json.class:                            Pim\Bundle\ImportExportBundle\Writer\JSON\ProductWriter
+    
     pim_import_export.writer.dummy.class:                           Pim\Bundle\ImportExportBundle\Writer\DummyWriter
 
 services:
@@ -57,3 +60,11 @@ services:
         class: %pim_import_export.writer.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            
+    pim_import_export.writer.json:
+        class: %pim_import_export.writer.json.class%
+        arguments:
+            - '@pim_catalog.manager.media'
+            
+    pim_import_export.writer.product_json:
+        class: %pim_import_export.writer.product_json.class%

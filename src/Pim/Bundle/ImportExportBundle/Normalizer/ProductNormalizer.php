@@ -57,6 +57,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function setChannel(Channel $channel = null)
     {
+        
         $this->channel = $channel;
 
         return $this;
@@ -125,7 +126,7 @@ class ProductNormalizer implements NormalizerInterface
                 }
             }
         }
-
+        
         $identifier = $product->getIdentifier();
 
         if ($this->router) {

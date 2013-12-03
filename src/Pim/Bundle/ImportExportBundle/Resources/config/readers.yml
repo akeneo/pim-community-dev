@@ -6,6 +6,9 @@ parameters:
     pim_import_export.reader.file.csv_product.class:                Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader
     pim_import_export.reader.file.csv_category.class:               Pim\Bundle\ImportExportBundle\Reader\File\CsvCategoryReader
 
+    pim_import_export.reader.json.class:                            Pim\Bundle\ImportExportBundle\Reader\JSON\JSONReader
+    pim_import_export.reader.json_product.class:                    Pim\Bundle\ImportExportBundle\Reader\JSON\ProductReader
+    
     pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
 
 services:
@@ -69,5 +72,16 @@ services:
     pim_import_export.reader.file.csv_group:
         class: %pim_import_export.reader.file.csv.class%
 
+    pim_import_export.reader.json:
+        class: %pim_import_export.reader.json.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            
+    pim_import_export.reader.json_product:
+        class: %pim_import_export.reader.json_product.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%upload_dir%'
+            
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
