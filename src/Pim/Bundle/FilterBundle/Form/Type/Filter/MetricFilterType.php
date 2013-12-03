@@ -79,6 +79,11 @@ class MetricFilterType extends NumberFilterType
         $builder->add('value', 'number');
     }
 
+    /**
+     * Get operator choices
+     *
+     * @return array
+     */
     protected function getOperatorChoices()
     {
         return array(
@@ -117,50 +122,17 @@ class MetricFilterType extends NumberFilterType
                 'data_type' => 'data_decimal',
                 'operator_choices' => $this->getOperatorChoices(),
                 'field_options' => array(),
-                'show_filter' => true // TODO : must be set to false
+                'formatter_options' => array()
             )
         );
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['show_filter'] = $options['show_filter'];
+        parent::buildView($view, $form, $options);
+
         $view->vars['unit']['type'] = $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
         $view->vars['value']['type'] = 'number';
         $view->vars['operator']['type'] = $this->getOperatorChoices();
-
-        $view->vars['formatter_options'] = $this->getFormatterOptions($options);
-//         $view->vars['unit']['type']  = 'choice';
-    }
-
-    protected function getFormatterOptions(array $options)
-    {
-        $dataType = self::DATA_INTEGER;
-        if (isset($options['data_type'])) {
-            $dataType = $options['data_type'];
-        }
-
-        $formatterOptions = array();
-
-        switch ($dataType) {
-            case self::DATA_DECIMAL:
-                $formatterOptions['decimals'] = 2;
-                $formatterOptions['grouping'] = true;
-                break;
-            case self::DATA_INTEGER:
-            default:
-                $formatterOptions['decimals'] = 0;
-                $formatterOptions['grouping'] = false;
-        }
-
-        $formatter = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
-
-        $formatterOptions['orderSeparator'] = $formatterOptions['grouping']
-            ? $formatter->getSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL)
-            : '';
-
-        $formatterOptions['decimalSeparator'] = $formatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-
-        return $formatterOptions;
     }
 }
