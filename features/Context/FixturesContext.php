@@ -50,6 +50,7 @@ class FixturesContext extends RawMinkContext
         'file'         => 'pim_catalog_file',
         'multiselect'  => 'pim_catalog_multiselect',
         'simpleselect' => 'pim_catalog_simpleselect',
+        'date'         => 'pim_catalog_date',
     );
 
     private $entities = array(
@@ -561,7 +562,7 @@ class FixturesContext extends RawMinkContext
             $this->getEntityManager()->refresh($attribute);
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
-            assertEquals($data['type'], $attribute->getAttributeType());
+            assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
             assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
             assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
