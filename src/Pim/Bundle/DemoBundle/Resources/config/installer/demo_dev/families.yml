@@ -11,6 +11,7 @@ families:
             - color
             - release_date
             - price
+            - weight
         attributeAsLabel: name
         requirements:
             ecommerce:

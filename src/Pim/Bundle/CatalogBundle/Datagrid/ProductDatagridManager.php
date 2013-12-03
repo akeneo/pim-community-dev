@@ -93,6 +93,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
             'filter' => FilterInterface::TYPE_CURRENCY
         );
+
+        self::$typeMatches['metric'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_TEXT,
+            'filter' => FilterInterface::TYPE_METRIC
+        );
     }
 
     /**
@@ -278,6 +283,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
             && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
+        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+            $result['field_options']['family'] = $attribute->getMetricFamily();
         }
 
         if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
@@ -596,6 +603,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin('values.metric', 'valueMetrics')
             ->leftJoin($rootAlias .'.categories', 'category');
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
