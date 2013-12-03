@@ -158,8 +158,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 message: This value should not be blank
         translations:
             - Valid: ~
-        options:
-            - Valid: ~
 
 Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
     properties:
@@ -168,10 +166,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
                 max: 64
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
-    constraints:
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
-            properties:
-                - code
     properties:
         code:
             - NotBlank: ~
