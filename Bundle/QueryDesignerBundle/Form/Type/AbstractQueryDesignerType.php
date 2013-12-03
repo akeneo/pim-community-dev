@@ -26,8 +26,8 @@ abstract class AbstractQueryDesignerType extends AbstractType
                     'constraints' => array(
                         new FilterLogicConstraint(),
                     ),
-                    'required' => false,
-                    'mapped' => false
+                    'required'    => false,
+                    'mapped'      => false
                 )
             );
 
@@ -68,10 +68,7 @@ abstract class AbstractQueryDesignerType extends AbstractType
                 $form = $event->getForm();
                 /** @var AbstractQueryDesigner $data */
                 $data = $event->getData();
-
                 $addFields($form, $data ? $data->getEntity() : null);
-
-
             }
         );
 
@@ -88,16 +85,16 @@ abstract class AbstractQueryDesignerType extends AbstractType
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) {
-                $form = $event->getForm();
+                $form        = $event->getForm();
                 $filterLogic = $form['filters_logic']->getData();
-                $definition = $form['definition']->getData();
+                $definition  = $form['definition']->getData();
 
                 $definition = json_decode($definition);
 
                 $digits = [];
                 preg_match_all('!\d+!', $filterLogic, $digits);
                 if (isset($digits[0]) && !empty($digits[0])) {
-                    $maxDigit = max($digits[0]);
+                    $maxDigit     = max($digits[0]);
                     $filtersCount = count($definition->filters);
 
                     if ($maxDigit > $filtersCount) {
@@ -108,7 +105,7 @@ abstract class AbstractQueryDesignerType extends AbstractType
                         );
                     }
 
-                    for ($i = 1; $i<=$filtersCount; $i++) {
+                    for ($i = 1; $i <= $filtersCount; $i++) {
                         if (!in_array($i, $digits[0])) {
                             $form['filters_logic']->addError(
                                 new FormError(
