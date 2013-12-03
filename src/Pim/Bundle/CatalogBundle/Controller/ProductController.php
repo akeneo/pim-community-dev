@@ -359,7 +359,6 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
             'associationProductGrid' => $associationProductGridView,
             'associationGroupGrid'   => $associationGroupGridView,
@@ -373,7 +372,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -382,6 +381,14 @@ class ProductController extends AbstractDoctrineController
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        } else {
+            return $this->render(
+                'PimCatalogBundle:Product:_history.html.twig',
+                array(
+                    'product'           => $product,
+                    'historyDatagrid'   => $historyGridView
+                )
+            );
         }
     }
 

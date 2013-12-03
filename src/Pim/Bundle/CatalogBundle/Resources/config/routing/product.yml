@@ -70,10 +70,9 @@ pim_catalog_product_configure_mass_edit_action:
     requirements:
         _method: GET
 
-
-
 pim_catalog_product_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.product:historyAction }
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_catalog.controller.product:historyAction, _format: html }
     requirements:
         id: \d+
+        _format: html|json
