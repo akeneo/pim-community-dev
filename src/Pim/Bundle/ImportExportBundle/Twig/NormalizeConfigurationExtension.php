@@ -82,6 +82,6 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             }
         }
 
-        return join('', $messages);
+        return join('', array_unique($messages));
     }
 }
