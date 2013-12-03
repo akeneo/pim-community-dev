@@ -1269,9 +1269,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = $config['writer']['filePath'];
+        $path = $config['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1279,9 +1278,9 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $delimiter = isset($config['processor']['delimiter']) ? $config['processor']['delimiter'] : ';';
-        $enclosure = isset($config['processor']['enclosure']) ? $config['processor']['enclosure'] : '"';
-        $escape    = isset($config['processor']['escape'])    ? $config['processor']['escape']    : '\\';
+        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
 
         $csvFile = new \SplFileObject($path);
         $csvFile->setFlags(
@@ -1347,9 +1346,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = dirname($config['writer']['filePath']);
+        $path = dirname($config['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(
