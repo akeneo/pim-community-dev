@@ -9,7 +9,7 @@ use Doctrine\ORM\PersistentCollection;
 /**
  * @ORM\Table(
  *  name="oro_config",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"entity", "record_id"})}
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="CONFIG_UQ_ENTITY", columns={"entity", "record_id"})}
  * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository")
  */
