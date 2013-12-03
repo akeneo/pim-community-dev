@@ -51,7 +51,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * @var boolean
      */
-    protected $realTimeVersioning;
+    protected $realTimeVersioning = true;
 
     /**
      * Entities which should not be cleared on flush
