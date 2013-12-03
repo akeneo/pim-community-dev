@@ -19,6 +19,7 @@
     "require": {
         "php": ">=5.4.4",
         "oro/platform": "dev-fix/remove_flexible_entity",
+        "apy/jsfv-bundle": "dev-master#d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev"

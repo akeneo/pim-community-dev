@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d178608e95ee0edb405b4352f2c59370",
+    "hash": "578684caa71809f45615b481dfbb79c8",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -66,6 +66,76 @@
                 "translation"
             ],
             "time": "2013-11-07 19:20:01"
+        },
+        {
+            "name": "apy/jsfv-bundle",
+            "version": "dev-master",
+            "target-dir": "APY/JsFormValidationBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Abhoryo/APYJsFormValidationBundle.git",
+                "reference": "d1c2ff7892b8c7437d9257dcee6c27b225f52c87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Abhoryo/APYJsFormValidationBundle/zipball/ecd74cfce030aeb1812277250318aacdd5483631",
+                "reference": "d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/form": "~2.1",
+                "symfony/framework-bundle": "~2.1",
+                "willdurand/expose-translation-bundle": ">=0.2.1"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "*",
+                "doctrine/doctrine-fixtures-bundle": "*",
+                "doctrine/orm": "*",
+                "jms/aop-bundle": "*",
+                "jms/di-extra-bundle": "*",
+                "liip/functional-test-bundle": "*",
+                "sensio/framework-extra-bundle": "*",
+                "symfony/assetic-bundle": "~2.1",
+                "symfony/symfony": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "APY\\JsFormValidationBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yoann Petit",
+                    "email": "abhoryo@free.fr"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Abhoryo/APYJsFormValidationBundle/graphs/contributors"
+                }
+            ],
+            "description": "Symfony2 Javascript Form Validation Bundle with localisation support",
+            "homepage": "https://github.com/Abhoryo/APYJsFormValidationBundle",
+            "keywords": [
+                "form",
+                "g11n",
+                "i18n",
+                "javascript",
+                "l10n",
+                "symfony",
+                "validation"
+            ],
+            "time": "2013-11-07 00:56:01"
         },
         {
             "name": "ass/xmlsecurity",
@@ -5526,6 +5596,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "oro/platform": 20,
+        "apy/jsfv-bundle": 20,
         "knplabs/knp-gaufrette-bundle": 20,
         "doctrine/mongodb-odm-bundle": 20,
         "behat/behat": 0
