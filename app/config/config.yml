@@ -164,3 +164,17 @@ oro_require_js:
     # it's better to set "node" as js_engine, if nodejs is installed
     js_engine: "java -Xss10m -Xms512m -Xmx1024m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main"
 
+oro_help:
+    defaults:
+        server: http://help.orocrm.com/
+        prefix: Third_Party
+    vendors:
+        Oro:
+            prefix: ~
+            alias: Platform
+        OroCRM:
+            prefix: ~
+            alias: CRM
+    routes:
+        oro_default:
+            uri: CRM/OroCRMDashboardBundle

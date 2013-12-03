@@ -31,7 +31,6 @@ class AppKernel extends Kernel
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
-            // new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
             new JDare\ClankBundle\JDareClankBundle(),
@@ -40,6 +39,7 @@ class AppKernel extends Kernel
 
             // PIM deps
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
         );
 
         // BAP bundles
@@ -78,6 +78,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\InstallerBundle\OroInstallerBundle(),
             new Oro\Bundle\ImportExportBundle\OroImportExportBundle(),
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
+            new Oro\Bundle\HelpBundle\OroHelpBundle(),
         );
 
         $bundles = array_merge($bundles, $bapBundles);
@@ -89,7 +90,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\GridBundle\PimGridBundle(),
             //new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
-            // new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
+            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\DataAuditBundle\PimDataAuditBundle(),
 
             // PIM bundles
