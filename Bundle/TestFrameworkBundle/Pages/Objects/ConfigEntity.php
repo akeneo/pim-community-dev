@@ -134,7 +134,8 @@ class ConfigEntity extends AbstractEntity implements Entity
     {
         $this->assertElementPresent(
             "//div[@class='control-group']/label[normalize-space(text()) = '{$fieldname}']",
-            'Custom entity field not found');
+            'Custom entity field not found'
+        );
 
         return $this;
     }

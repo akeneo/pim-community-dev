@@ -10,7 +10,11 @@ class OroNavigationBundleTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $container->expects($this->once())
             ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Oro\Bundle\NavigationBundle\DependencyInjection\Compiler\MenuBuilderChainPass'));
+            ->with(
+                $this->isInstanceOf(
+                    'Oro\Bundle\NavigationBundle\DependencyInjection\Compiler\MenuBuilderChainPass'
+                )
+            );
 
         $bundle = new OroNavigationBundle();
         $bundle->build($container);

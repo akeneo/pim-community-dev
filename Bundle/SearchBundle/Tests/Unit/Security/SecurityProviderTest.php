@@ -19,9 +19,10 @@ class SecurityProviderTest extends \PHPUnit_Framework_TestCase
         $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->entitySecurityMetadataProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->entitySecurityMetadataProvider
+            = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->provider = new SecurityProvider($this->securityFacade, $this->entitySecurityMetadataProvider);
     }
 

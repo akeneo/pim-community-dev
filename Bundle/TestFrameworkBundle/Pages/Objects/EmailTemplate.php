@@ -60,13 +60,17 @@ class EmailTemplate extends AbstractEntity implements Entity
      */
     public function setType($type)
     {
-        $this->type->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$type}']]/input"))->click();
+        $this->type->element(
+            $this->using('xpath')->value("div[label[normalize-space(text()) = '{$type}']]/input")
+        )->click();
         return $this;
     }
 
     public function getType()
     {
-        return $this->byXPath("//div[@id='oro_email_emailtemplate_type']/div[input[@checked = 'checked']]/label")->text();
+        return $this->byXPath(
+            "//div[@id='oro_email_emailtemplate_type']/div[input[@checked = 'checked']]/label"
+        )->text();
     }
 
     /**

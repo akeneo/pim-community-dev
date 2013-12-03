@@ -450,7 +450,9 @@ class Query
                     $fromClass = $from;
                 }
 
-                if (isset($this->mappingConfig[$fromClass]['flexible_manager']) || in_array($fromClass, $this->fields[$fieldName])) {
+                if (isset($this->mappingConfig[$fromClass]['flexible_manager'])
+                    || in_array($fromClass, $this->fields[$fieldName])
+                ) {
                     return true;
                 }
             }

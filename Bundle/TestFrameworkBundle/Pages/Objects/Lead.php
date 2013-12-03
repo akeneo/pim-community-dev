@@ -86,7 +86,10 @@ class Lead extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($contact);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$contact}')]", "Assigned to autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$contact}')]",
+            "Assigned to autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$contact}')]")->click();
     }
 
@@ -255,7 +258,10 @@ class Lead extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($value);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$value}')]", "Country's autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$value}')]",
+            "Country's autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$value}')]")->click();
         $this->waitForAjax();
 
@@ -279,7 +285,10 @@ class Lead extends AbstractEntity implements Entity
             $this->waitForAjax();
             $this->byXpath("//div[@id='select2-drop']/div/input")->value($value);
             $this->waitForAjax();
-            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$value}')]", "Country's autocoplete doesn't return search value");
+            $this->assertElementPresent(
+                "//div[@id='select2-drop']//div[contains(., '{$value}')]",
+                "Country's autocoplete doesn't return search value"
+            );
             $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$value}')]")->click();
         }
 

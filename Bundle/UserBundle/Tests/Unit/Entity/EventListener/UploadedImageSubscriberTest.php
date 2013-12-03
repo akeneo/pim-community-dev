@@ -30,7 +30,11 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testSetKernelRoot()
     {
         $subscriber = $this->getSubscriber();
-        $this->assertAttributeEquals(realpath($this->tmpRootPath . DIRECTORY_SEPARATOR . 'web'), 'webRoot', $subscriber);
+        $this->assertAttributeEquals(
+            realpath($this->tmpRootPath . DIRECTORY_SEPARATOR . 'web'),
+            'webRoot',
+            $subscriber
+        );
     }
 
     /**

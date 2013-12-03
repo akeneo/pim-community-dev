@@ -22,8 +22,12 @@ class MetricType extends AbstractAttributeType
      * @param ConstraintGuesserInterface $constraintGuesser the form type
      * @param MeasureManager             $manager           The measure manager
      */
-    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, MeasureManager $manager)
-    {
+    public function __construct(
+        $backendType,
+        $formType,
+        ConstraintGuesserInterface $constraintGuesser,
+        MeasureManager $manager
+    ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->manager = $manager;

@@ -77,8 +77,12 @@ abstract class FlexibleRestController extends RestController
      * Transform request
      *
      * Assumed post data in the following format:
-     * {entity: {"id": "21", "property_one": "Test", "attributes": {"flexible_attribute_code": "John"}}}
-     * {entity: {"id": "21", "property_one": "Test", "attributes": {"flexible_attribute_code": {"value": "John", "scope": "mobile"}}}}
+     * {entity: {"id": "21", "property_one": "Test", "attributes": {
+     *      "flexible_attribute_code": "John"
+     * }}}
+     * {entity: {"id": "21", "property_one": "Test", "attributes": {
+     *      "flexible_attribute_code": {"value": "John", "scope": "mobile"}
+     * }}}
      *
      * @param mixed $entity
      */

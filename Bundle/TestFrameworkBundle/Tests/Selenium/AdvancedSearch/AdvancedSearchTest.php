@@ -46,7 +46,8 @@ class AdvancedSearchTest extends Selenium2TestCase
         //Check that result is not null
         $result = strtolower($userData['USERNAME']);
         $login->assertElementPresent(
-            "//div[@class='container-fluid']//div[@class='search_stats alert alert-info']//h3[contains(., '{$result}')]",
+            "//div[@class='container-fluid']" .
+            "//div[@class='search_stats alert alert-info']//h3[contains(., '{$result}')]",
             'Search results does not found'
         );
     }

@@ -34,13 +34,19 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->formFactory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')
             ->getMock();
-        $this->attributeTypeFactory = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->flexibleManagerRegistry = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->subscriber = new FlexibleValueSubscriber($this->formFactory, $this->attributeTypeFactory, $this->flexibleManagerRegistry);
+        $this->attributeTypeFactory
+            = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->flexibleManagerRegistry
+            = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->subscriber = new FlexibleValueSubscriber(
+            $this->formFactory,
+            $this->attributeTypeFactory,
+            $this->flexibleManagerRegistry
+        );
     }
 
     public function testGetSubscribedEvents()

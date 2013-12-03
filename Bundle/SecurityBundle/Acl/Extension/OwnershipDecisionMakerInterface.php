@@ -49,9 +49,9 @@ interface OwnershipDecisionMakerInterface
      * Determines whether the given domain object is associated with
      * an any business unit of the given user
      *
-     * @param  object                       $user
-     * @param  object                       $domainObject
-     * @param  boolean                      $deep         Specify whether subordinate business units should be checked. Defaults to false.
+     * @param  object  $user
+     * @param  object  $domainObject
+     * @param  boolean $deep Specify whether subordinate business units should be checked. Defaults to false.
      * @return bool
      * @throws InvalidDomainObjectException
      */

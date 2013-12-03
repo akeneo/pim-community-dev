@@ -64,7 +64,9 @@ class CronCommand extends ContainerAwareCommand
                 $output->writeln('<comment>new command found, setting up schedule..</comment>');
 
                 if (!$command instanceof CronCommandInterface) {
-                    $output->writeln('<error>Unable to setup, command must be instance of CronCommandInterface</error>');
+                    $output->writeln(
+                        '<error>Unable to setup, command must be instance of CronCommandInterface</error>'
+                    );
 
                     continue;
                 }

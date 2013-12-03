@@ -27,19 +27,29 @@ class AclTranslationUpdateCommand extends ContainerAwareCommand
                  new InputArgument('locale', InputArgument::REQUIRED, 'The locale'),
                  new InputArgument('bundle', InputArgument::REQUIRED, 'The bundle where to load the messages'),
                  new InputOption(
-                     'prefix', null, InputOption::VALUE_OPTIONAL,
-                     'Override the default prefix', '__'
+                     'prefix',
+                     null,
+                     InputOption::VALUE_OPTIONAL,
+                     'Override the default prefix',
+                     '__'
                  ),
                  new InputOption(
-                     'output-format', null, InputOption::VALUE_OPTIONAL,
-                     'Override the default output format', 'yml'
+                     'output-format',
+                     null,
+                     InputOption::VALUE_OPTIONAL,
+                     'Override the default output format',
+                     'yml'
                  ),
                  new InputOption(
-                     'dump-messages', null, InputOption::VALUE_NONE,
+                     'dump-messages',
+                     null,
+                     InputOption::VALUE_NONE,
                      'Should the messages be dumped in the console'
                  ),
                  new InputOption(
-                     'force', null, InputOption::VALUE_NONE,
+                     'force',
+                     null,
+                     InputOption::VALUE_NONE,
                      'Should the update be done'
                  )
             )
