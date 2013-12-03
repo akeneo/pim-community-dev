@@ -113,7 +113,8 @@ class MetricFilterType extends NumberFilterType
     {
         parent::buildView($view, $form, $options);
 
-        $view->vars['unit']['type'] = $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
+        $view->vars['unit']['type'] =
+            $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
         $view->vars['value']['type'] = 'number';
         $view->vars['operator']['type'] = $this->getOperatorChoices();
     }
