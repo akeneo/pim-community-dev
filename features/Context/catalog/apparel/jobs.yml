@@ -17,6 +17,8 @@ jobs:
                     categoriesColumn: categories
                     familyColumn:     family
                     groupsColumn:     groups
+                writer:
+                    realTimeVersioning: true
             import_associations:
                 reader:
                     filePath:      /tmp/import/products.csv
