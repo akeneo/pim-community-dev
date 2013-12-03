@@ -9,7 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository")
  * @ORM\Table(name="oro_calendar_event",
- *      indexes={@ORM\Index(name="oro_calendar_event_idx", columns={"calendar_id", "start", "end"})})
+ *      indexes={@ORM\Index(name="oro_calendar_event_idx", columns={"calendar_id", "start_at", "end_at"})})
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Calendar Event", "plural_label"="Calendar Events"},
@@ -53,7 +53,7 @@ class CalendarEvent
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start", type="datetime")
+     * @ORM\Column(name="start_at", type="datetime")
      * @ConfigField(
      *  defaultValues={
      *      "email"={"available_in_template"=true}
@@ -65,7 +65,7 @@ class CalendarEvent
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end", type="datetime")
+     * @ORM\Column(name="end_at", type="datetime")
      * @ConfigField(
      *  defaultValues={
      *      "email"={"available_in_template"=true}

@@ -149,17 +149,15 @@
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"
             {% endif %}
-
             {% if parameters.data is defined %}
-                {% for actionName,actionValue in parameters.data %}
-                data-{{ actionName }}="{{ actionValue  }}"
+                {% for dataItemName,dataItemValue in parameters.data %}
+                data-{{ dataItemName }}="{{ dataItemValue|raw }}"
                 {% endfor %}
             {% endif %}
             {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
             {% endif %}
-           >
-           <i class="icon-trash"></i>{{ parameters.label|trans }}
+           ><i class="icon-trash"></i>{{ parameters.label|trans -}}
         </a>
     </div>
 {% endmacro %}
@@ -176,31 +174,34 @@
             'successMessage' - a message which will be shown after an operation finished
             'title' - button title
             'label' - button label
+            'visible' - determined whether the button is visible or not. Defaults to true
         ]
 #}
 {% macro clientButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined ? parameters.aCss : '' }}"
-           {% if (parameters.id is defined) %}
-           id="{{ parameters.id }}"
-           {% endif %}
-           {% if (parameters.dataId is defined) %}
-           data-id="{{ parameters.dataId }}"
-           {% endif %}
-           {% if (parameters.dataUrl is defined) %}
-           data-url="{{ parameters.dataUrl }}"
-           {% endif %}
-           {% if (parameters.successMessage is defined) %}
-           data-success-message="{{ parameters.successMessage }}"
-           {% endif %}
-           {% if parameters.dataRedirect is defined %}
-           data-redirect="{{ parameters.dataRedirect  }}"
-           {% endif %}
-           {% if (parameters.title is defined) %}
-           title="{{ parameters.title }}"
-           {% endif -%}
-           >
-           <i class="{{ parameters.iCss is defined ? parameters.iCss : '' }} hide-text">{{ parameters.label }}</i>{{ parameters.label -}}
+            {% if (parameters.id is defined) %}
+            id="{{ parameters.id }}"
+            {% endif %}
+            {% if (parameters.dataId is defined) %}
+            data-id="{{ parameters.dataId }}"
+            {% endif %}
+            {% if (parameters.dataUrl is defined) %}
+            data-url="{{ parameters.dataUrl }}"
+            {% endif %}
+            {% if (parameters.successMessage is defined) %}
+            data-success-message="{{ parameters.successMessage }}"
+            {% endif %}
+            {% if parameters.dataRedirect is defined %}
+            data-redirect="{{ parameters.dataRedirect  }}"
+            {% endif %}
+            {% if (parameters.title is defined) %}
+            title="{{ parameters.title }}"
+            {% endif -%}
+            {% if (parameters.visible is defined and not parameters.visible) %}
+            style="display: none"
+            {% endif -%}
+        ><i class="{{ parameters.iCss is defined ? parameters.iCss : '' }} hide-text">{{ parameters.label }}</i>{{ parameters.label -}}
         </a>
     </div>
 {% endmacro %}
@@ -248,18 +249,20 @@
         title - title of sub block
         data - array with data fields (i.e. form_row() or attibuteRow() data)
         isForm - flag what scroll block mut contain the form
-        useSpan - flag to indicate is subblock must have span6 css class or not
+        useSpan - flag to indicate is subblock must have css class specified in spanClass parameter or not
+        spanClass - css class name of subblock, if this parameter is not specified the css class is span6
 #}
-{% macro scrollSubblock(title, data, isForm, useSpan) %}
+{% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
+    {% set spanClass = spanClass|default('responsive-cell') %}
     {#% if useSpan is not defined or useSpan == true %}
-        {% set span = 'span6' %}
+        {% set span = spanClass %}
     {% else %}
         {% set span = '' %}
     {% endif %}
     {% if span %}
         <div class="{{ span }}">
     {% endif %#}
-    <div class="responsive-cell">
+    <div class="{{ spanClass }}">
     {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
@@ -281,20 +284,22 @@
                 'data' - array with data fields (i.e. form_row() or attibuteRow() data)
             ]
         isForm - flag what scroll block mut contain the form
+        contentAttributes - additional attributes for block content
+        useSubBlockDivider - indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
 #}
-{% macro scrollBlock(blockId, title, subblocks, isForm) %}
+{% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider) %}
     {% set cols = subblocks|length %}
     <div class="responsive-section">
         <h4 class="scrollspy-title">{{ title|trans }}</h4>
         <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
-        <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
+        <div class="row-fluid{% if (contentAttributes is defined and contentAttributes.class is defined and contentAttributes.class|length) %} {{ contentAttributes.class }}{% endif %}{% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %} row-fluid-divider{% endif %}" {{ _self.attributes(contentAttributes, ['class']) }}>
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
             {% else %}
                 <div class="form-horizontal">
             {% endif %}
                 {% for subblock in subblocks %}
-                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
+                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true, subblock.spanClass is defined ? subblock.spanClass : '') }}
                 {% endfor %}
             {% if isForm is defined and isForm == true %}
                 </fieldset>
@@ -317,6 +322,7 @@
                 [
                     'title' - title of scroll block
                     'class' - additional css class for scroll block menu item
+                    'useSubBlockDivider' - [optional] indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
                     'subblocks' - array with scroll sub blocks:
                         [
                             'title' - title of sub block
@@ -358,7 +364,7 @@
         {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
             {% for scrollBlock in dataBlocks %}
-                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
+                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.content_attr is defined ? scrollBlock.content_attr : null, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true) }}
             {% endfor %}
             {% if data.hiddenData is defined or isForm %}
                 <div class="hide">
@@ -404,4 +410,17 @@
 #}
 {% macro gridBlock(gridId) %}
     <div id="{{ gridId }}"></div>
+{% endmacro %}
+
+{#
+    Render attributes of HTML element.
+    Parameters:
+        attr - attributes
+        excludes - names of attributes which should not be rendered even if they exist in attr parameter
+#}
+{% macro attributes(attr, excludes) %}
+    {% spaceless %}
+        {% set attr = attr|default({}) %}
+        {% for attrname, attrvalue in attr %}{% if not excludes is defined or not excludes[attrname] is defined %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endif %}{% endfor %}
+    {% endspaceless %}
 {% endmacro %}

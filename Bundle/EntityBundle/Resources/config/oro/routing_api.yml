@@ -1,0 +1,7 @@
+oro_entity_api:
+    resource: "@OroEntityBundle/Controller/Api/Rest/EntityController.php"
+    type:     rest
+
+oro_entity_field_api:
+    resource: "@OroEntityBundle/Controller/Api/Rest/EntityFieldController.php"
+    type:     rest

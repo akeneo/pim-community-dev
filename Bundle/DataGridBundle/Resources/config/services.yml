@@ -10,14 +10,15 @@ parameters:
 
     oro_datagrid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
     oro_datagrid.event_listener.base_orm_relation.class: Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
+    oro_datagrid.configuration.provider.class:       Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider
+    oro_datagrid.configuration.provider.chain.class: Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider
 
 services:
     oro_datagrid.datagrid.manager:
         class: %oro_datagrid.datagrid.manager.class%
         arguments:
-            - []
+            - @oro_datagrid.configuration.provider.chain
             - @oro_datagrid.datagrid.builder
-            - @oro_datagrid.provider.resolver
             - @oro_datagrid.datagrid.request_params
 
     oro_datagrid.datagrid.builder:
@@ -37,6 +38,17 @@ services:
         class: %oro_datagrid.provider.resolver.class%
         arguments:
             - @service_container
+
+    oro_datagrid.configuration.provider:
+        class: %oro_datagrid.configuration.provider.class%
+        arguments:
+            - []
+            - @oro_datagrid.provider.resolver
+        tags:
+            - { name: oro_datagrid.configuration.provider, priority: -10 }
+
+    oro_datagrid.configuration.provider.chain:
+        class: %oro_datagrid.configuration.provider.chain.class%
 
     oro_datagrid.twig.metadata:
         class: %oro_datagrid.twig.metadata.class%

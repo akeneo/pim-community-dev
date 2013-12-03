@@ -119,10 +119,16 @@ function($, _) {
          */
         isEqualsLoosely: function (value1, value2) {
             if (!_.isObject(value1)) {
-                var equalsLoosely = (value1 || '') == (value2 || '');
-                var eitherNumber = _.isNumber(value1) || _.isNumber(value2);
-                var equalsNumbers = Number(value1) == Number(value2);
-                return equalsLoosely || (eitherNumber && equalsNumbers);
+                if (_.isNumber(value1) || _.isNumber(value2)) {
+                    var toNumber = function (v) {
+                        if (_.isString(v) && v == '') {
+                            return NaN;
+                        }
+                        return Number(v);
+                    };
+                    return (toNumber(value1) == toNumber(value2));
+                }
+                return ((value1 || '') == (value2 || ''));
 
             } else if (_.isObject(value1)) {
                 var valueKeys = _.keys(value1);

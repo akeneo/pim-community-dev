@@ -1,5 +1,11 @@
-oro_entity_bundle:
+oro_entity:
     resource:     "@OroEntityBundle/Controller"
     type:         annotation
     prefix:       /
 
+oro_entity_api:
+    resource:     "@OroEntityBundle/Resources/config/oro/routing_api.yml"
+    type:         rest
+    prefix:       api/rest/{version}
+    defaults:
+        version:  latest

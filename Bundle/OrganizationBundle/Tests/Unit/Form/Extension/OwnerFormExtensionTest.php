@@ -203,9 +203,12 @@ class OwnerFormExtensionTest extends \PHPUnit_Framework_TestCase
                 'choices' => $businessUnits,
                 'mapped' => true,
                 'required' => true,
-                'attr' => array('is_safe' => true),
                 'constraints' => array(new NotBlank()),
-                'label' => 'Owner'
+                'label' => 'Owner',
+                'configs'     => array(
+                    'is_translate_option' => false,
+                    'is_safe'             => true
+                )
             )
         );
         $this->extension->buildForm($this->builder, array());

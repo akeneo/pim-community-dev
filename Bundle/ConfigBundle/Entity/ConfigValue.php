@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(
  *  name="oro_config_value",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"name", "section", "config_id"})}
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="CONFIG_VALUE_UQ_ENTITY", columns={"name", "section", "config_id"})}
  * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository")
  */

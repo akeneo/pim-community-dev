@@ -21,7 +21,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 '<div class="horizontal clearfix">' +
                     '<select name="<%= name %>" class="filter-select-oro">' +
                         '<% _.each(choices, function (option) { %>' +
-                            '<option value="<%= option.value %>"><%= option.label %></option>' +
+                            '<option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>' +
                         '<% }); %>' +
                     '</select>' +
                 '</div>' +
@@ -48,19 +48,6 @@ function($, _, __, ChoiceFilter, localeSettings) {
             value: {
                 start: 'input[name="start"]',
                 end:   'input[name="end"]'
-            }
-        },
-
-        /**
-         * Empty data object
-         *
-         * @property
-         */
-        emptyValue: {
-            type: '',
-            value: {
-                start: '',
-                end: ''
             }
         },
 
@@ -128,6 +115,17 @@ function($, _, __, ChoiceFilter, localeSettings) {
          */
         initialize: function () {
             _.extend(this.dateWidgetOptions, this.externalWidgetOptions);
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    type: (_.isEmpty(this.choices) ? '' : _.first(this.choices).value),
+                    value: {
+                        start: '',
+                        end: ''
+                    }
+                };
+            }
+
             ChoiceFilter.prototype.initialize.apply(this, arguments);
         },
 
@@ -147,11 +145,14 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _renderCriteria: function(el) {
-            $(el).append(this.popupCriteriaTemplate({
-                name: this.name,
-                choices: this.choices,
-                inputClass: this.inputClass
-            }));
+            $(el).append(
+                this.popupCriteriaTemplate({
+                    name: this.name,
+                    choices: this.choices,
+                    selectedChoice: this.emptyValue.type,
+                    inputClass: this.inputClass
+                })
+            );
 
             $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
 
@@ -183,9 +184,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _getCriteriaHint: function() {
-            var value = this._getDisplayValue(),
-                hint = '',
-                option, start, end, type;
+            var hint = '',
+                option, start, end, type,
+                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             if (value.value) {
                 start = value.value.start;
                 end   = value.value.end;
@@ -225,7 +226,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 }
             }
 
-            return this.defaultCriteriaHint;
+            return this.placeholder;
         },
 
         /**

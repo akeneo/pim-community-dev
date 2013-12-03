@@ -1,0 +1,20 @@
+parameters:
+    oro_querydesigner.form.type.sorting_choice.class:                Oro\Bundle\QueryDesignerBundle\Form\Type\SortingChoiceType
+    oro_querydesigner.form.type.query_designer_column.class:         Oro\Bundle\QueryDesignerBundle\Form\Type\ColumnType
+    oro_querydesigner.form.type.query_designer_filter.class:         Oro\Bundle\QueryDesignerBundle\Form\Type\FilterType
+
+services:
+    oro_querydesigner.form.type.sorting_choice:
+        class: %oro_querydesigner.form.type.sorting_choice.class%
+        tags:
+            - { name: form.type, alias: oro_sorting_choice }
+
+    oro_querydesigner.form.type.query_designer_column:
+        class: %oro_querydesigner.form.type.query_designer_column.class%
+        tags:
+            - { name: form.type, alias: oro_query_designer_column }
+
+    oro_querydesigner.form.type.query_designer_filter:
+        class: %oro_querydesigner.form.type.query_designer_filter.class%
+        tags:
+            - { name: form.type, alias: oro_query_designer_filter }

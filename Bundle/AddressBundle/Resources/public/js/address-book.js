@@ -15,7 +15,7 @@ function(_, Backbone, __, mediator, messenger, dialogWidget,
     return Backbone.View.extend({
         options: {
             'mapOptions': {
-                zoom: 17
+                zoom: 12
             },
             'template': null,
             'addressListUrl': null,

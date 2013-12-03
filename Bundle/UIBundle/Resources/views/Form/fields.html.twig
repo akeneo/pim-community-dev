@@ -115,17 +115,25 @@
     {% spaceless %}
         {% for group_label, choice in options %}
             {% if choice is iterable %}
-                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                <optgroup label="{{ configs.is_translate_group is defined and not configs.is_translate_group ? group_label : group_label|trans({}, translation_domain) }}">
                     {% set options = choice %}
                     {{ block('choice_widget_options') }}
                 </optgroup>
             {% else %}
-                {% set label = choice.label|trans({}, translation_domain) %}
-                <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (attr.is_safe is defined and attr.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+                {% set label = configs.is_translate_option is defined and not configs.is_translate_option ? choice.label : choice.label|trans({}, translation_domain) %}
+                <option {{ block('choice_widget_option_attributes') }} value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (configs.is_safe is defined and configs.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
             {% endif %}
         {% endfor %}
     {% endspaceless %}
 {% endblock choice_widget_options %}
+
+{% block choice_widget_option_attributes %}
+{% spaceless %}
+    {% if choice.label.attr is defined and choice.label.attr|length > 0 %}
+        {% for attrname, attrvalue in choice.label.attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget_option_attributes %}
 
 {% block collection_render %}
     {% spaceless %}

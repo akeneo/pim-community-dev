@@ -18,27 +18,15 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         template: _.template(
             '<div class="btn filter-select filter-criteria-selector">' +
-                '<%= label %>: ' +
+                '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select>' +
-                    '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
+                    '<% _.each(options, function (option) { %>' +
+                        '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= option.label %></option>' +
+                    '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
-
-        /**
-         * Filter content options
-         *
-         * @property
-         */
-        choices: [],
-
-        /**
-         * Placeholder for default value
-         *
-         * @property
-         */
-        placeholder: 'All',
 
         /**
          * Should default value be added to options list
@@ -100,15 +88,6 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
         },
 
         /**
-         * Filter value object
-         *
-         * @property
-         */
-        emptyValue: {
-            value: ''
-        },
-
-        /**
          * Select widget menu opened flag
          *
          * @property
@@ -138,10 +117,22 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @param {Object} options
          */
         initialize: function() {
+            // init filter content options if it was not initialized so far
+            if (_.isUndefined(this.choices)) {
+                this.choices = [];
+            }
             // temp code to keep backward compatible
             this.choices = _.map(this.choices, function(option, i) {
                 return _.isString(option) ? {value: i, label: option} : option;
             });
+
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    value: ''
+                };
+            }
+
             AbstractFilter.prototype.initialize.apply(this, arguments);
         },
 
@@ -161,9 +152,12 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             this.$el.append(
                 this.template({
                     label: this.label,
+                    showLabel: this.showLabel,
                     options: options,
                     placeholder: this.placeholder,
-                    nullLink: this.nullLink
+                    nullLink: this.nullLink,
+                    canDisable: this.canDisable,
+                    emptyValue: this.emptyValue
                 })
             );
 
@@ -229,6 +223,19 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                 }
             });
             return elements.join(', ');
+        },
+
+        /**
+         * Get criteria hint value
+         *
+         * @return {String}
+         */
+        _getCriteriaHint: function() {
+            var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+            var choice = _.find(this.choices, function (c) {
+                return (c.value == value.value);
+            });
+            return !_.isUndefined(choice) ? choice.label : this.placeholder;
         },
 
         /**

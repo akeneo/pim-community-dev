@@ -76,27 +76,7 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
-        $validator = $this->getValidator();
-
-        // Override mail notifier recipient email
-        if ($email = $input->getOption('email')) {
-            $errors = $validator->validateValue($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $this
-                ->getMailNotifier()
-                ->setRecipientEmail($email);
-        }
-
-        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
-            );
-        }
+        $this->validate($input, $jobInstance);
 
         $executionId = $input->getArgument('execution');
         if ($executionId) {
@@ -135,6 +115,34 @@ class BatchCommand extends ContainerAwareCommand
                     '<error>An error occured during the %s execution.</error>',
                     $jobInstance->getType()
                 )
+            );
+        }
+    }
+
+    /**
+     * Validate job instance
+     */
+    protected function validate(InputInterface $input, JobInstance $jobInstance)
+    {
+        $validator = $this->getValidator();
+
+        // Override mail notifier recipient email
+        if ($email = $input->getOption('email')) {
+            $errors = $validator->validateValue($email, new Assert\Email());
+            if (count($errors) > 0) {
+                throw new \RuntimeException(
+                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+                );
+            }
+            $this
+                ->getMailNotifier()
+                ->setRecipientEmail($email);
+        }
+
+        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
             );
         }
     }
