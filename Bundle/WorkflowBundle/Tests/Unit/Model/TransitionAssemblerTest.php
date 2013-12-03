@@ -160,6 +160,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider configurationDataProvider
      * @param array $configuration
      * @param array $transitionDefinition
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function testAssemble(array $configuration, array $transitionDefinition)
     {

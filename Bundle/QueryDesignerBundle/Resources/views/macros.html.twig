@@ -154,5 +154,5 @@
 {% endmacro %}
 
 {% macro query_designer_column_chain_template(id) %}
-    <script type="text/html" id="{{ id }}"><% _.each(obj, function (column, index, list) { %><% if (!_.isUndefined(column.entity.icon) && !_.isNull(column.entity.icon) && column.entity.icon != '') { %><i class="<%= column.entity.icon %> hide-text"></i><% } else { %>&#32;<% } %><%= column.entity.label %>&nbsp;<%= column.label %>&nbsp;<% if (index < list.length - 1) { %>><% } %><% }) %></script>
+    <script type="text/html" id="{{ id }}"><% _.each(obj, function (column, index, list) { %><% if (!_.isUndefined(column.entity.icon) && !_.isNull(column.entity.icon) && column.entity.icon != '') { %><i class="<%= column.entity.icon %> hide-text"></i><% } else { %>&#32;<% } %><%= column.entity.label %>&nbsp;<b><%= column.label %></b>&nbsp;<% if (index < list.length - 1) { %>><% } %><% }) %></script>
 {% endmacro %}
