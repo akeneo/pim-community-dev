@@ -4,6 +4,7 @@ namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
