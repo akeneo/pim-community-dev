@@ -1,4 +1,5 @@
 Pim\Bundle\CatalogBundle\Model\Media:
+    type: embeddedDocument
     fields:
         id:
             id: true

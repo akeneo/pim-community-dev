@@ -1,4 +1,5 @@
 Pim\Bundle\CatalogBundle\Model\ProductValue:
+    type: embeddedDocument
     indexes:
         value_idx:
             options:

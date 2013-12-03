@@ -5,6 +5,9 @@
 services:
     pim_catalog.object_manager.product:
         alias: "doctrine.odm.mongodb.document_manager"
+
+    pim_catalog.object_manager.group:
+        alias: "doctrine.odm.mongodb.document_manager"
 #
 #    pim_catalog.repository.product:
 #        class: %pim_catalog.repository.product.class%

@@ -5,6 +5,9 @@
 services:
     pim_catalog.object_manager.product:
         alias: "doctrine.orm.entity_manager"
+
+    pim_catalog.object_manager.group:
+        alias: "doctrine.orm.entity_manager"
 #
 #    pim_catalog.repository.product:
 #        class: %pim_catalog.repository.product.class%

@@ -1,4 +1,5 @@
 Pim\Bundle\CatalogBundle\Model\Product:
+    type: document
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
     collection: pim_catalog_product
     fields:
