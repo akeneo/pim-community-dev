@@ -31,6 +31,12 @@ class HeterogeneousProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcess()
     {
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->processor->setStepExecution($stepExecution);
         $this->processor->setDelimiter(';');
         $this->processor->setEnclosure('"');
         $this->processor->setWithHeader(true);

@@ -40,8 +40,9 @@ class DateType extends FlexDateType
                         'datetime' => 'Datetime'
                     ),
                     'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
+                    'read_only' => (bool) $attribute->getId(),
+                    'select2'   => true
+                ),
             ),
             array(
                 'name'      => 'dateMin',

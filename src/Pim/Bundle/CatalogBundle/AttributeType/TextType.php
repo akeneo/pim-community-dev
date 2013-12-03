@@ -36,7 +36,8 @@ class TextType extends FlexTextType
                         'email'  => 'E-mail',
                         'url'    => 'URL',
                         'regexp' => 'Regular expression'
-                    )
+                    ),
+                    'select2' => true
                 )
             ),
             array(

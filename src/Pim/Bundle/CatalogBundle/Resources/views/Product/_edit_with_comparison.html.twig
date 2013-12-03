@@ -1,0 +1,56 @@
+<table class="comparison">
+    {% for attributeView in groupView.attributes if attributeView.locale is null or attributeView.locale == dataLocale %}
+    <tr>
+        <td>
+            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+                {% if attributeView.values is defined %}
+                    {% for scope, subvalue in attributeView.values %}
+                        <div class="control-group" data-field="{{ attributeView.code }}">
+                            {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="control-group" data-field="{{ attributeView.code }}">
+                        {{ form_widget(attributeView.value) }}
+                    </div>
+                {% endif %}
+                {% if attributeView.isRemovable %}
+                    <i {{ elements.deleteLinkAttributes(
+                        path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
+                        path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
+                        'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
+                        '',
+                        'flash.product.attribute removed'|trans
+                        )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                {% endif %}
+                {% if attributeView.allowValueCreation and resource_granted('pim_catalog_attribute_edit') %}
+                    <a id="add-option-link-{{ attributeView.id }}" data-form="dialog" data-form-url="{{ path('pim_catalog_productattribute_create_option', { id: attributeView.id, dataLocale: dataLocale }) }}" class="btn btn-small icons-holder add-attribute-option" href="javascript:void(0);" data-toggle="tooltip" data-original-title="{{ 'Add an option'|trans }}">
+                        <i class="icon-plus"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </td>
+        <td class="no-label">
+            {% if attributeView.locale is not null %}
+                {% for comparisonView in groupView.attributes if comparisonView.locale == comparisonLocale %}
+                    {% if comparisonView.code == attributeView.code %}
+                        <div class="attribute-field {{ comparisonView.classes|default([])|keys|join(' ') }}">
+                            {% if comparisonView.values is defined %}
+                                {% for scope, subvalue in comparisonView.values %}
+                                    <div class="control-group" data-field="{{ comparisonView.code }}">
+                                        {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="control-group" data-field="{{ comparisonView.code }}">
+                                    {{ form_widget(comparisonView.value) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

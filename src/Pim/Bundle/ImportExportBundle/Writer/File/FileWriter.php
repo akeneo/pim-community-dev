@@ -91,7 +91,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
 
         foreach ($data as $entry) {
             fwrite($this->handler, $entry);
-            $this->stepExecution->incrementWriteCount();
+            $this->stepExecution->incrementSummaryInfo('write');
         }
     }
 
@@ -111,7 +111,12 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array(
-            'filePath' => array()
+            'filePath' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.export.filePath.label',
+                    'help'  => 'pim_import_export.export.filePath.help'
+                )
+            )
         );
     }
 

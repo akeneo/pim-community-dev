@@ -2,13 +2,18 @@
 
 ## Features
 - Import product associations (CSV)
+- Compare and copy values between a product translations
 
 ## Improvements
 - Improve the user experience for family management
 - Update import / export detail view
 - Improve installer to provide different data set (minimal or dev)
+- Use a form extension to apply select2 only on specified fields
+- Add real time versioning option in product import
+- Merge the configuration of import/export job steps
 
 ## Bug fixes
+- Fix issue that miss some pending versionable entities
 
 ## BC breaks
 

@@ -66,7 +66,7 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->writer->setFilePath(self::EXPORT_PATH);
 
         $this->stepExecution->expects($this->exactly(2))
-            ->method('incrementWriteCount');
+            ->method('incrementSummaryInfo');
 
         $this->writer->write(array('foo', 'bar'));
     }

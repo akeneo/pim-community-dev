@@ -73,6 +73,21 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function addFieldAttributeType(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'attributeType',
+            'choice',
+            array(
+                'choices' => $this->getAttributeTypeChoices(),
+                'select2' => true
+            )
+        );
+    }
+
+    /**
      * Add a field for label
      * @param FormBuilderInterface $builder
      */
@@ -100,10 +115,11 @@ class ProductAttributeType extends AttributeType
             'group',
             'entity',
             array(
-                'class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
-                'required' => false,
-                'multiple' => false,
-                'empty_value' => AttributeGroup::DEFAULT_GROUP_CODE
+                'class'       => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
+                'required'    => false,
+                'multiple'    => false,
+                'empty_value' => AttributeGroup::DEFAULT_GROUP_CODE,
+                'select2'     => true
             )
         );
     }

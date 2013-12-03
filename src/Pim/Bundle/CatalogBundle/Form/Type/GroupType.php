@@ -59,7 +59,8 @@ class GroupType extends AbstractType
                             ->setParameter('variant', 'VARIANT');
                     },
                     'multiple' => false,
-                    'expanded' => false
+                    'expanded' => false,
+                    'select2'  => true
                 )
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
@@ -105,7 +106,8 @@ class GroupType extends AbstractType
                     'query_builder' => function (ProductAttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },
-                    'help'     => 'pim_catalog.group.axis.help'
+                    'help'     => 'pim_catalog.group.axis.help',
+                    'select2'  => true
                 )
             )
             ->addEventSubscriber(new DisableFieldSubscriber('attributes'));

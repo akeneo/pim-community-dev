@@ -753,34 +753,19 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $registry    = $this->getContainer()->get('oro_batch.connectors');
         $jobInstance = $this->getJobInstance($code);
-        $job         = $registry->getJob($jobInstance);
-        $steps       = $job->getSteps();
-        $stepNamePattern = 'pim_import_export.jobs.'.$jobInstance->getAlias().'.%s.title';
+        $configuration = $jobInstance->getRawConfiguration();
 
-        foreach ($table->getHash() as $data) {
-            $value = $this->replacePlaceholders($data['value']);
+        foreach ($table->getRowsHash() as $property => $value) {
+            $value = $this->replacePlaceholders($value);
             if (in_array($value, array('yes', 'no'))) {
                 $value = 'yes' === $value;
             }
-            $stepName = sprintf($stepNamePattern, $data['step']);
-            $config[$stepName][$data['element']][$data['property']] = $value;
+
+            $configuration[$property] = $value;
         }
 
-        foreach (array_keys($config) as $stepName) {
-            $config[$stepName] = array_merge(
-                array('reader' => array(), 'processor' => array(), 'writer' => array()),
-                $config[$stepName]
-            );
-            foreach ($steps as $step) {
-                if ($step->getName() == $stepName) {
-                    $step->setConfiguration($config[$stepName]);
-                }
-            }
-        }
-        $jobInstance->setJob($job);
-
+        $jobInstance->setRawConfiguration($configuration);
         $this->flush();
     }
 
@@ -1008,14 +993,11 @@ class FixturesContext extends RawMinkContext
      */
     public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
     {
-        $path = $this
+        $configuration = $this
             ->getJobInstance($code)
-            ->getJob()
-            ->getSteps()[0]
-            ->getReader()
-            ->getFilePath();
+            ->getRawConfiguration();
 
-        $path = dirname($path);
+        $path = dirname($configuration['filePath']);
 
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);

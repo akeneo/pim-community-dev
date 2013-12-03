@@ -74,6 +74,9 @@ class DisableFieldSubscriber implements EventSubscriberInterface
         if ($label = $config->getOption('label')) {
             $options['label'] = $label;
         }
+        if ($select2 = $config->getOption('select2')) {
+            $options['select2'] = $select2;
+        }
 
         $form->add($this->fieldName, null, $options);
     }

@@ -71,7 +71,6 @@ define(
                     }
                 });
 
-                $(formId).find('select').select2({ allowClear: true });
                 $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 
