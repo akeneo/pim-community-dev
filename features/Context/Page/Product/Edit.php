@@ -409,9 +409,12 @@ class Edit extends Form
     {
         $languages = $this->getElement('Comparison dropdown')->findAll('css', 'ul.dropdown-menu li .title');
 
-        return array_map(function ($language) {
-            return $language->getText();
-        }, $languages);
+        return array_map(
+            function ($language) {
+                return $language->getText();
+            },
+            $languages
+        );
     }
 
     public function compareWith($language)
@@ -523,5 +526,4 @@ class Edit extends Form
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
     }
-
 }

@@ -51,8 +51,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
         }
 
         foreach ($data as $name => $value) {
-            if (
-                $this->currentLocale
+            if ($this->currentLocale
                 && $this->isTranslatable($value->getAttribute())
                 && !$this->isInCurrentLocale($value)
                 && !$this->isInComparisonLocale($value)
@@ -61,12 +60,16 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
             }
 
             if ($this->isInComparisonLocale($value)) {
-                $form->add($name, 'pim_product_value', array(
-                    'disabled'     => true,
-                    'block_config' => array(
-                        'mode' => 'comparison'
+                $form->add(
+                    $name,
+                    'pim_product_value',
+                    array(
+                        'disabled'     => true,
+                        'block_config' => array(
+                            'mode' => 'comparison'
+                        )
                     )
-                ));
+                );
             }
         }
     }
