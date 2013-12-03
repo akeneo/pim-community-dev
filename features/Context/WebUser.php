@@ -924,7 +924,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getCurrentPage()->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see "%s" next to the %s property, but saw "%s"',

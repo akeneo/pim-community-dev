@@ -1,12 +1,12 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% macro configuration(config, violations) %}
+{% macro configuration(config, violations, jobType) %}
 <table class="configuration">
     <thead></thead>
     <tbody>
         {% for element, value in config %}
             <tr>
-                <td><b>{{ element|trans }}</b></td>
+                <td><b>{{ 'pim_import_export.%s.%s.label'|format(jobType, element)|trans }}</b></td>
                 <td>{{ value|normalizeValue }} {{ getViolations(violations, element) }}</td>
             </tr>
         {% endfor %}
@@ -43,7 +43,7 @@
     {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
         {{ form_start(form, {
             'id': 'pim_importexport_import_upload',
-            'action': path('pim_importexport_import_launch', { id: jobInstance.id }),
+            'action': launchRoute,
             'attr': {
                 'class': 'form-upload hide'
             }
@@ -58,7 +58,7 @@
 
     <div class="row-fluid tab-content">
         <div class="tab-pane active">
-            {% set configuration = _self.configuration(jobInstance.job.configuration, violations) %}
+            {% set configuration = _self.configuration(jobInstance.job.configuration, violations, action) %}
             {{ elements.accordion({ 'Configuration': configuration }, 1, true) }}
         </div>
     </div>
