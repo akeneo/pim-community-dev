@@ -604,6 +604,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin('values.metric', 'valueMetrics')
             ->leftJoin($rootAlias .'.categories', 'category');
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";

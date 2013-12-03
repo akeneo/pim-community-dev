@@ -43,21 +43,21 @@ class MetricFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function initialize($name, array $options = array())
     {
-        return array(
-            'form_type' => MetricFilterType::NAME
-        );
+        $this->name = $name;
+        $this->setOptions($options);
+        $this->family = $options['field_options']['family'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize($name, array $options = array())
+    public function getDefaultOptions()
     {
-        $this->name = $name;
-        $this->setOptions($options);
-        var_dump($options);
+        return array(
+            'form_type' => MetricFilterType::NAME
+        );
     }
 
     /**
@@ -72,9 +72,20 @@ class MetricFilter extends NumberFilter
 
         $operator = $this->getOperator($data['type']);
         $unit     = $data['unit'];
-        $family   = 'Weight'; // FIXME
 
-//         var_dump($operator, $unit, $family, $data, $alias);
+        $newAlias = 'valueMetrics'; // FIXME with static property count
+
+        // Convert value to base unit
+        $this->converter->setFamily($this->family);
+        $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
+
+        $paramValue = $this->getNewParameterName($proxyQuery);
+        $exprCmp = $this->createCompareFieldExpression('baseData', $newAlias, $operator, $paramValue);
+        $this->applyFilterToClause($proxyQuery, $exprCmp);
+        $proxyQuery->setParameter($paramValue, $baseValue);
+
+
+//         $expr = $this->createCompareFieldExpression($field, $alias, $operator, $parameterName)
 
 
 //         return $data;
