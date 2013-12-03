@@ -229,5 +229,6 @@ attributes:
             useableAsGridColumn: true
             useableAsGridFilter: true
             sortOrder:           10
-            metricFamily:       Weight
-            defaultMetricUnit: GRAM
+            metricFamily:        Weight
+            defaultMetricUnit:   GRAM
+            decimalsAllowed:     true
