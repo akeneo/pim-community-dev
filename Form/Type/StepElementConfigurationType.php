@@ -39,16 +39,6 @@ class StepElementConfigurationType extends AbstractType
                         array(
                             'auto_initialize' => false,
                             'required'        => false,
-                            'label'           => sprintf(
-                                'oro_batch.%s.%s.label',
-                                $stepElement->getName(),
-                                $field
-                            ),
-                            'help' => sprintf(
-                                'oro_batch.%s.%s.help',
-                                $stepElement->getName(),
-                                $field
-                            )
                         ),
                         $config['options']
                     );
