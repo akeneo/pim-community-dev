@@ -16,9 +16,6 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             type: boolean
             column: is_variant
     oneToMany:
-        groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Group
-            mappedBy: type
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
             mappedBy: foreignKey

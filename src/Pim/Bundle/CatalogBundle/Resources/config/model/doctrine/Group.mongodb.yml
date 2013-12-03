@@ -16,7 +16,7 @@ Pim\Bundle\CatalogBundle\Model\Group:
         translations:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Group\GroupTranslation
+            targetDocument: Pim\Bundle\CatalogBundle\Model\GroupTranslation
             cascade: persist
         products:
             reference: true

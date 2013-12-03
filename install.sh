@@ -98,8 +98,11 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
     php app/console oro:entity-extend:clear
     php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
+    # FIXME_MONGO: make that conditional
+    php app/console doctrine:mongodb:schema:drop
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
+    php app/console doctrine:mongodb:schema:create
     php app/console cache:clear
     echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction

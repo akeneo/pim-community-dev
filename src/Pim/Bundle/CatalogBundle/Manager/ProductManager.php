@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -38,11 +39,17 @@ class ProductManager extends FlexibleManager
     protected $builder;
 
     /**
+     * @var EntityManager Used for purely entity stuff
+     */
+    protected $entityManager;
+
+    /**
      * Constructor
      *
      * @param string                   $flexibleName         Entity name
      * @param array                    $flexibleConfig       Global flexible entities configuration array
      * @param ObjectManager            $storageManager       Storage manager
+     * @param EntityManager            $entityManager        EntityManager
      * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
      * @param MediaManager             $mediaManager         Media manager
@@ -53,6 +60,7 @@ class ProductManager extends FlexibleManager
         $flexibleName,
         $flexibleConfig,
         ObjectManager $storageManager,
+        EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
@@ -67,6 +75,7 @@ class ProductManager extends FlexibleManager
             $attributeTypeFactory
         );
 
+        $this->entityManager        = $entityManager;
         $this->mediaManager         = $mediaManager;
         $this->completenessManager  = $completenessManager;
         $this->builder              = $builder;
@@ -374,5 +383,45 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getAttributeRepository()
+    {
+        return $this->entityManager->getRepository($this->getAttributeName());
+    }
+
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getAttributeOptionRepository()
+    {
+        return $this->entityManager->getRepository($this->getAttributeOptionName());
+    }
+
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getAttributeOptionValueRepository()
+    {
+        return $this->entityManager->getRepository($this->getAttributeOptionValueName());
+    }
+
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getFlexibleValueRepository()
+    {
+        return $this->entityManager->getRepository($this->getFlexibleValueName());
     }
 }

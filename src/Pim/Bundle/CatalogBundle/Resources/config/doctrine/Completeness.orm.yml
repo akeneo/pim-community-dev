@@ -7,7 +7,7 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
             columns:
                 - channel_id
                 - locale_id
-                - product_id
+#                - product_id
     fields:
         id:
             type: integer
@@ -37,11 +37,12 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
-        product:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-            inversedBy: completenesses
-            joinColumns:
-                product_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-                    nullable: false
+# FIXME_MONGO: keep a reference to product here
+#        product:
+#            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+#            inversedBy: completenesses
+#            joinColumns:
+#                product_id:
+#                    referencedColumnName: id
+#                    onDelete: CASCADE
+#                    nullable: false
