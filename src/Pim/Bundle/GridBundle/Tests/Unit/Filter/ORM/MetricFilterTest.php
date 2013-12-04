@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
 
-use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
-
-use Pim\Bundle\GridBundle\Filter\ORM\MetricFilter;
-
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
+
+use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Pim\Bundle\GridBundle\Filter\ORM\MetricFilter;
 
 /**
  * Test related class
@@ -30,16 +29,16 @@ class MetricFilterTest extends FilterTestCase
         return new MetricFilter($this->getTranslatorMock(), $this->getMeasureConverterMock());
     }
 
+    /**
+     * Get measure converter mock
+     * @return \Oro\Bundle\MeasureBundle\Convert\MeasureConverter
+     */
     protected function getMeasureConverterMock()
     {
         return $this
             ->getMockBuilder('Oro\Bundle\MeasureBundle\Convert\MeasureConverter')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $measureConfig = $this->getMeasureConfig();
-
-        return new MeasureConverter($measureConfig);
     }
 
     /**
