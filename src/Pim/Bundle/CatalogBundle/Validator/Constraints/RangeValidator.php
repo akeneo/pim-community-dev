@@ -63,30 +63,28 @@ class RangeValidator extends BaseRangeValidator
             return;
         }
 
-        $propertyPath = 'data';
+        $message = null;
+        $params  = array();
 
         if (!is_numeric($value)) {
-            $this->context->addViolationAt($propertyPath, $constraint->invalidMessage, array(
-                '{{ value }}' => $value,
-            ));
-
-            return;
-        }
-
-        if (null !== $constraint->max && $value > $constraint->max) {
-            $this->context->addViolationAt($propertyPath, $constraint->maxMessage, array(
+            $message = $constraint->invalidMessage;
+            $params  = array('{{ value }}' => $value);
+        } elseif (null !== $constraint->max && $value > $constraint->max) {
+            $message = $constraint->maxMessage;
+            $params = array(
                 '{{ value }}' => $value,
                 '{{ limit }}' => $constraint->max,
-            ));
-
-            return;
-        }
-
-        if (null !== $constraint->min && $value < $constraint->min) {
-            $this->context->addViolationAt($propertyPath, $constraint->minMessage, array(
+            );
+        } elseif (null !== $constraint->min && $value < $constraint->min) {
+            $message = $constraint->minMessage;
+            $params = array(
                 '{{ value }}' => $value,
                 '{{ limit }}' => $constraint->min,
-            ));
+            );
+        }
+
+        if (null !== $message) {
+            $this->context->addViolationAt('data', $message, $params);
         }
     }
 }
