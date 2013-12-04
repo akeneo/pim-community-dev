@@ -158,7 +158,9 @@ class AclWalker extends TreeWalkerAdapter
 
         $conditionalFactors = [];
 
-        $joinConditionsArray = is_array($condition->getJoinConditions()) ? $condition->getJoinConditions() : array($condition->getJoinConditions());
+        $joinConditionsArray = is_array($condition->getJoinConditions())
+            ? $condition->getJoinConditions()
+            : array($condition->getJoinConditions());
         foreach ($joinConditionsArray as $joinCondition) {
             $rightExpression = new ArithmeticExpression();
             $pathExpression = new PathExpression(
@@ -173,7 +175,10 @@ class AclWalker extends TreeWalkerAdapter
             $conditionalFactors[] = $factor;
         }
         $conditionalFactors[] = $this->getConditionalFactor($condition);
-        $associationDeclaration = new RangeVariableDeclaration($condition->getEntityClass(), $condition->getEntityAlias());
+        $associationDeclaration = new RangeVariableDeclaration(
+            $condition->getEntityClass(),
+            $condition->getEntityAlias()
+        );
 
         $newJoin = new Join($join->joinType, $associationDeclaration);
         $newJoin->conditionalExpression = new ConditionalTerm($conditionalFactors);

@@ -432,4 +432,32 @@ class Query
         $clearedString = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9:*_]/s', ' ', $clearedString)));
         return $clearedString;
     }
+
+    /**
+     * Check if field is correct field in mapping config
+     *
+     * @param string $fieldName
+     *
+     * @return bool
+     */
+    /*private function checkFieldInConfig($fieldName)
+    {
+        if (isset($this->fields[$fieldName])) {
+            foreach ($this->from as $from) {
+                if (strpos($from, ':') !== false) {
+                    $fromClass = $this->em->getMetadataFactory()->getMetadataFor($from)->getName();
+                } else {
+                    $fromClass = $from;
+                }
+
+                if (isset($this->mappingConfig[$fromClass]['flexible_manager'])
+                    || in_array($fromClass, $this->fields[$fieldName])
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }*/
 }

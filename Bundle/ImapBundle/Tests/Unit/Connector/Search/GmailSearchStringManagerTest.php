@@ -99,13 +99,20 @@ class GmailSearchStringManagerTest extends \PHPUnit_Framework_TestCase
         $sampleQuery->value('product');
 
         return array(
-            'one word + DEFAULT_MATCH' => array('product', SearchQueryMatch::DEFAULT_MATCH, '"product"'),
-            'one word + SUBSTRING_MATCH' => array('product', SearchQueryMatch::SUBSTRING_MATCH, '"product"'),
-            'one word + EXACT_MATCH' => array('product', SearchQueryMatch::EXACT_MATCH, '"+product"'),
-            'two words + DEFAULT_MATCH' => array('my product', SearchQueryMatch::DEFAULT_MATCH, '"\\"my product\\""'),
-            'two words + SUBSTRING_MATCH' => array('my product', SearchQueryMatch::SUBSTRING_MATCH, '"\\"my product\\""'),
-            'two words + EXACT_MATCH' => array('my product', SearchQueryMatch::EXACT_MATCH, '"+\\"my product\\""'),
-            'SearchQuery as value + DEFAULT_MATCH' => array($sampleQuery, SearchQueryMatch::DEFAULT_MATCH, '"product"'),
+            'one word + DEFAULT_MATCH'
+                => array('product', SearchQueryMatch::DEFAULT_MATCH, '"product"'),
+            'one word + SUBSTRING_MATCH'
+                => array('product', SearchQueryMatch::SUBSTRING_MATCH, '"product"'),
+            'one word + EXACT_MATCH'
+                => array('product', SearchQueryMatch::EXACT_MATCH, '"+product"'),
+            'two words + DEFAULT_MATCH'
+                => array('my product', SearchQueryMatch::DEFAULT_MATCH, '"\\"my product\\""'),
+            'two words + SUBSTRING_MATCH'
+                => array('my product', SearchQueryMatch::SUBSTRING_MATCH, '"\\"my product\\""'),
+            'two words + EXACT_MATCH'
+                => array('my product', SearchQueryMatch::EXACT_MATCH, '"+\\"my product\\""'),
+            'SearchQuery as value + DEFAULT_MATCH'
+                => array($sampleQuery, SearchQueryMatch::DEFAULT_MATCH, '"product"'),
         );
     }
 

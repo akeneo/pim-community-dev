@@ -80,7 +80,7 @@ class WorkflowAttributesType extends AbstractType
      */
     protected function addEventListeners(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['attribute_default_values']) {
+        if (!empty($options['attribute_default_values'])) {
             $this->defaultValuesListener->initialize(
                 $options['workflow_item'],
                 $options['attribute_default_values']

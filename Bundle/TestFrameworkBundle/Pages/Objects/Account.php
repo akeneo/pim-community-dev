@@ -144,7 +144,10 @@ class Account extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($country);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$country}')]", "Country's autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$country}')]",
+            "Country's autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$country}')]")->click();
         $this->waitForAjax();
 
@@ -163,7 +166,10 @@ class Account extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$state}')]", "Country's autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$state}')]",
+            "Country's autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$state}')]")->click();
 
         return $this;

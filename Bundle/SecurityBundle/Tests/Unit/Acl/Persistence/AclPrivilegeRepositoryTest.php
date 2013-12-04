@@ -387,7 +387,15 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($sid))
             ->will(
                 $this->returnCallback(
-                    function ($sid, $oid, $mask) use (&$thisLink, &$expectations, &$triggeredExpectationsForSetPermission) {
+                    function (
+                        $sid,
+                        $oid,
+                        $mask
+                    ) use (
+                        &$thisLink,
+                        &$expectations,
+                        &$triggeredExpectationsForSetPermission
+                    ) {
                         /** @var ObjectIdentity $oid */
                         $expectedMask = null;
 
@@ -445,7 +453,15 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($sid))
             ->will(
                 $this->returnCallback(
-                    function ($sid, $oid, $mask) use (&$thisLink, &$expectations, &$triggeredExpectationsForDeletePermission) {
+                    function (
+                        $sid,
+                        $oid,
+                        $mask
+                    ) use (
+                        &$thisLink,
+                        &$expectations,
+                        &$triggeredExpectationsForDeletePermission
+                    ) {
                         /** @var ObjectIdentity $oid */
                         $expectedMask = null;
 

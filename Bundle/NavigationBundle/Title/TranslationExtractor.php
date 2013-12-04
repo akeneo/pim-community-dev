@@ -69,7 +69,9 @@ class TranslationExtractor implements ExtractorInterface
         $resultRoutes = array();
         /** @var \Symfony\Component\Routing\Route $route */
         foreach ($routes as $name => $route) {
-            if ($this->getBundleNameFromString($dir) == $this->getBundleNameFromString($route->getDefault('_controller'))) {
+            if ($this->getBundleNameFromString($dir) ==
+                $this->getBundleNameFromString($route->getDefault('_controller'))
+            ) {
                 $resultRoutes[] = $name;
             }
         }

@@ -50,7 +50,9 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->entityConfig = new Config(new EntityConfigId(DemoEntity::ENTITY_NAME, 'testScope'));
-        $this->fieldConfig  = new Config(new FieldConfigId(DemoEntity::ENTITY_NAME, 'testScope', 'testField', 'string'));
+        $this->fieldConfig  = new Config(
+            new FieldConfigId(DemoEntity::ENTITY_NAME, 'testScope', 'testField', 'string')
+        );
 
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()

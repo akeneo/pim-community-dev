@@ -52,11 +52,16 @@ class DoctrineParamConverter extends BaseParamConverter
             $controller = $request->attributes->get('_controller');
             if ($object && strpos($controller, '::') !== false) {
                 $controllerData = explode('::', $controller);
-                $permission = $this->securityFacade->getClassMethodAnnotationPermission($controllerData[0], $controllerData[1]);
+                $permission = $this->securityFacade->getClassMethodAnnotationPermission(
+                    $controllerData[0],
+                    $controllerData[1]
+                );
 
                 if ($permission) {
                     if (!$this->securityFacade->isGranted($permission, $object)) {
-                        throw new AccessDeniedException('You do not get ' . $permission . ' permission for this object');
+                        throw new AccessDeniedException(
+                            'You do not get ' . $permission . ' permission for this object'
+                        );
                     } else {
                         $request->attributes->set('_oro_access_checked', true);
                     }

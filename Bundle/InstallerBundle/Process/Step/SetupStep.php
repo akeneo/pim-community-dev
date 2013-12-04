@@ -24,7 +24,10 @@ class SetupStep extends AbstractStep
 
         if ($form->isValid()) {
             // pass "load demo fixtures" flag to the next step
-            $context->getStorage()->set('loadFixtures', $form->has('loadFixtures') && $form->get('loadFixtures')->getData());
+            $context->getStorage()->set(
+                'loadFixtures',
+                $form->has('loadFixtures') && $form->get('loadFixtures')->getData()
+            );
 
             $user = $form->getData();
             $role = $this

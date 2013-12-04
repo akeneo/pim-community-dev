@@ -13,9 +13,9 @@ use Doctrine\Common\Util\ClassUtils;
 use FOS\Rest\Util\Codes;
 
 abstract class RestController extends RestGetController implements
-     FormAwareInterface,
-     FormHandlerAwareInterface,
-     RestApiCrudInterface
+    FormAwareInterface,
+    FormHandlerAwareInterface,
+    RestApiCrudInterface
 {
     /**
      * Edit entity

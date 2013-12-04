@@ -192,7 +192,9 @@ class User extends AbstractEntity implements Entity
     public function setRoles($roles = array())
     {
         foreach ($roles as $role) {
-            $this->roles->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$role}']]/input"))->click();
+            $this->roles->element(
+                $this->using('xpath')->value("div[label[normalize-space(text()) = '{$role}']]/input")
+            )->click();
         }
 
         return $this;
@@ -207,7 +209,9 @@ class User extends AbstractEntity implements Entity
     public function setGroups($groups = array())
     {
         foreach ($groups as $group) {
-            $this->groups->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input"))->click();
+            $this->groups->element(
+                $this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input")
+            )->click();
         }
 
         return $this;
@@ -242,7 +246,9 @@ class User extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//ul[@class='dropdown-menu']//a[contains(normalize-space(.), 'My User')]")->click();
         $this->waitPageToLoad();
-        $this->assertElementPresent("//div[label[normalize-space(text()) = 'User name']]//div/p[normalize-space(text()) = '$userName']");
+        $this->assertElementPresent(
+            "//div[label[normalize-space(text()) = 'User name']]//div/p[normalize-space(text()) = '$userName']"
+        );
         return $this;
     }
 
@@ -258,17 +264,21 @@ class User extends AbstractEntity implements Entity
 
     public function checkHistoryWindow()
     {
-        $this->byXpath("//div[@class='navigation clearfix navbar-extra navbar-extra-right']//a[contains(., 'Change History')]")->click();
+        $this->byXpath(
+            "//div[@class='navigation clearfix navbar-extra navbar-extra-right']//a[contains(., 'Change History')]"
+        )->click();
         $this->waitForAjax();
         $this->assertElementPresent(
-            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
+            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ".
+            "ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
         );
         $this->byXpath(
             "//div[@class='ui-dialog-titlebar-buttonpane']/button[@title='close']"
         )->click();
         $this->waitForAjax();
         $this->assertElementNotPresent(
-            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
+            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all " .
+            "ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
         );
 
         return $this;

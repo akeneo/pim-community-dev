@@ -18,10 +18,12 @@ class UniqueAddressTypesValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->validate(false, $constraint);
     }
 
+    //@codingStandardsIgnoreStart
     /**
      * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
      * @expectedExceptionMessage Expected argument of type Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress, array given
      */
+    //@codingStandardsIgnoreEnd
     public function testValidateExceptionWhenInvalidArgumentElementType()
     {
         $constraint = $this->getMock('Symfony\Component\Validator\Constraint');

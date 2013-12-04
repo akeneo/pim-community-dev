@@ -240,7 +240,8 @@ class TagsAcl extends Selenium2TestCase
             ->open(array($username))
             ->edit()
             ->assertElementNotPresent(
-                "//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]/a[@class='select2-search-choice-close']"
+                "//div[@id='s2id_oro_user_user_form_tags']//li[contains(., '{$tagname}')]" .
+                "/a[@class='select2-search-choice-close']"
             );
     }
 
@@ -257,7 +258,9 @@ class TagsAcl extends Selenium2TestCase
             ->submit()
             ->openUsers()
             ->add()
-            ->assertElementNotPresent("//div[@class='select2-container select2-container-multi select2-container-disabled']");
+            ->assertElementNotPresent(
+                "//div[@class='select2-container select2-container-multi select2-container-disabled']"
+            );
     }
 
     /**

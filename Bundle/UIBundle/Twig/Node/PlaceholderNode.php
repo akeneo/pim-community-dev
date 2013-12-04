@@ -42,13 +42,16 @@ class PlaceholderNode extends \Twig_Node
         /*if (isset($this->placeholder['label'])) {
             $compiler
                 ->write('echo \'<div>\';')
-                ->write('echo $this->env->getExtension(\'translator\')->getTranslator()->trans("' . $this->placeholder['label'] . '");')
+                ->write('echo $this->env->getExtension(\'translator\')->getTranslator()
+                    ->trans("' . $this->placeholder['label'] . '");')
                 ->write("echo '</div>';\n")
             ;
         }*/
         if (isset($this->placeholder['items']) && count($this->placeholder['items'])) {
             foreach ($this->placeholder['items'] as $item) {
-                //$compiler->raw('echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';');
+                //$compiler->raw(
+                //    'echo \'<div id = "block-' . $blockData['name'] . '" class="' . $this->wrapClassName . '" >\';'
+                //);
                 if (array_key_exists('template', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['template'], $this->lineno);
                     $block = new Twig_Node_Include($expression, $this->variables, true, $this->lineno, $this->tag);

@@ -27,7 +27,9 @@ class Navigation extends Page
 
     public function tab($tab)
     {
-        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[normalize-space(.) = '{$tab}']")));
+        $this->test->moveto(
+            $this->tabs->element($this->using('xpath')->value("ul/li/a[normalize-space(.) = '{$tab}']"))
+        );
         $this->xpathMenu = "//div[@id = 'main-menu']/ul" . "/li[a[normalize-space(.) = '{$tab}']]";
         return $this;
     }

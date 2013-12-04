@@ -61,7 +61,11 @@ class LoggableManagerTest extends AbstractMetadataTest
         $loggableCollectionClass = new LoggableCollectionClass();
         $loggableCollectionClass->setName('testCollectionName');
 
-        $collection = new PersistentCollection($this->em, get_class($loggableCollectionClass), array($loggableCollectionClass));
+        $collection = new PersistentCollection(
+            $this->em,
+            get_class($loggableCollectionClass),
+            array($loggableCollectionClass)
+        );
         $collection->setDirty(true);
         $this->loggableClass->setCollection($collection);
 
@@ -91,17 +95,25 @@ class LoggableManagerTest extends AbstractMetadataTest
 
         $this->loggableManager->setUsername($user);
 
-        $this->setExpectedException('InvalidArgumentException', 'Username must be a string, or object should have method: getUsername');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Username must be a string, or object should have method: getUsername'
+        );
         $wrongUser = new \stdClass();
         $this->loggableManager->setUsername($wrongUser);
     }
 
     public function testGetConfig()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClassWrong');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClassWrong'
+        );
         $this->loggableManager->getConfig('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClassWrong');
 
-        $resultConfig = $this->loggableManager->getConfig('Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass');
+        $resultConfig = $this->loggableManager->getConfig(
+            'Oro\Bundle\DataAuditBundle\Tests\Unit\Fixture\LoggableClass'
+        );
 
         $this->assertEquals($this->config, $resultConfig);
     }

@@ -20,13 +20,19 @@ class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $nodeMapping = $this->readAttribute($this->builder, 'nodeMapping');
         $this->assertArrayHasKey('menu', $nodeMapping);
-        $this->assertEquals('Oro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition', $nodeMapping['menu']);
+        $this->assertEquals(
+            'Oro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            $nodeMapping['menu']
+        );
     }
 
     public function testMenuNode()
     {
         $nodeDefinition = $this->builder->menuNode('test');
-        $this->assertInstanceOf('Oro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition', $nodeDefinition);
+        $this->assertInstanceOf(
+            'Oro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            $nodeDefinition
+        );
         $this->assertEquals('test', $nodeDefinition->getNode()->getName());
     }
 }

@@ -33,7 +33,8 @@ class WindowsStateController extends FOSRestController
      */
     public function cgetAction()
     {
-        $items = $this->getDoctrine()->getRepository('OroWindowsBundle:WindowsState')->findBy(array('user' => $this->getUser()));
+        $items = $this->getDoctrine()->getRepository('OroWindowsBundle:WindowsState')
+            ->findBy(array('user' => $this->getUser()));
 
         return $this->handleView(
             $this->view($items, is_array($items) ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND)
@@ -142,7 +143,8 @@ class WindowsStateController extends FOSRestController
         $postArray = $this->getRequest()->request->all();
         if (is_array($postArray) && array_key_exists('data', $postArray)) {
             if (array_key_exists('url', $postArray['data'])) {
-                $postArray['data']['cleanUrl'] = str_replace($this->getRequest()->server->get('SCRIPT_NAME'), '', $postArray['data']['url']);
+                $postArray['data']['cleanUrl']
+                    = str_replace($this->getRequest()->server->get('SCRIPT_NAME'), '', $postArray['data']['url']);
             }
         } else {
             throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Wrong JSON inside POST body');

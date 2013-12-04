@@ -61,7 +61,8 @@ class Role extends AbstractEntity implements Entity
             $this->accesslevel = $this->select(
                 $this->byXpath(
                     "//div[strong/text() = '{$entityName}']/ancestor::tr//select" .
-                    "[contains(@name, '[$action][accessLevel')]")
+                    "[contains(@name, '[$action][accessLevel')]"
+                )
             );
             $this->accesslevel->selectOptionByLabel($accesslevel);
         }
@@ -83,8 +84,8 @@ class Role extends AbstractEntity implements Entity
             $this->moveto($xpath);
             $xpath->click();
             $this->waitForAjax();
-            $this->accesslevel = $this->select($this->byXpath(
-                "//div[strong/text() = '{$name}']/following-sibling::div//select")
+            $this->accesslevel = $this->select(
+                $this->byXpath("//div[strong/text() = '{$name}']/following-sibling::div//select")
             );
             $this->accesslevel->selectOptionByLabel($accesslevel);
         }

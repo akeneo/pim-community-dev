@@ -56,7 +56,10 @@ class TransactionEmail extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($template);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$template}')]", "Template autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$template}')]",
+            "Template autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$template}')]")->click();
 
         return $this;
@@ -87,7 +90,9 @@ class TransactionEmail extends AbstractEntity implements Entity
     public function setGroups($groups = array())
     {
         foreach ($groups as $group) {
-            $this->groups->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input"))->click();
+            $this->groups->element(
+                $this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input")
+            )->click();
         }
 
         return $this;

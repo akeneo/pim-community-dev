@@ -70,7 +70,9 @@ class JobManager
         if ($dataPerCharacteristic) {
             $statisticData = array(array_merge(array('Time'), $chars = array_keys($dataPerCharacteristic)));
             $startTime     = strtotime($dataPerCharacteristic[$chars[0]][0][0]);
-            $endTime       = strtotime($dataPerCharacteristic[$chars[0]][count($dataPerCharacteristic[$chars[0]])-1][0]);
+            $endTime       = strtotime(
+                $dataPerCharacteristic[$chars[0]][count($dataPerCharacteristic[$chars[0]])-1][0]
+            );
             $scaleFactor   = $endTime - $startTime > 300 ? 1/60 : 1;
 
             // This assumes that we have the same number of rows for each characteristic.

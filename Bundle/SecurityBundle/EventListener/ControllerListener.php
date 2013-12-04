@@ -60,7 +60,8 @@ class ControllerListener
                         'Invoked controller "%s::%s". (%s)',
                         $className,
                         $method,
-                        $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
+                        $event->getRequestType() ===
+                        HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
                     )
                 );
 

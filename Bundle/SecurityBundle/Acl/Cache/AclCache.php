@@ -18,8 +18,11 @@ class AclCache extends DoctrineAclCache
      * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param string $prefix
      */
-    public function __construct(CacheProvider $cache, PermissionGrantingStrategyInterface $permissionGrantingStrategy, $prefix = DoctrineAclCache::PREFIX)
-    {
+    public function __construct(
+        CacheProvider $cache,
+        PermissionGrantingStrategyInterface $permissionGrantingStrategy,
+        $prefix = DoctrineAclCache::PREFIX
+    ) {
         $this->cache = $cache;
         $this->cache->setNamespace($prefix);
         parent::__construct($this->cache, $permissionGrantingStrategy, $prefix);

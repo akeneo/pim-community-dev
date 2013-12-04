@@ -18,7 +18,9 @@ class FilterLogicValidator extends ConstraintValidator
 
         $openParenthesesCount = substr_count($value, '(');
         $closeParenthesesCount = substr_count($value, ')');
-        if (($openParenthesesCount > 0 || $closeParenthesesCount > 0) &&  $openParenthesesCount !== $closeParenthesesCount) {
+        if (($openParenthesesCount > 0 || $closeParenthesesCount > 0)
+            &&  $openParenthesesCount !== $closeParenthesesCount
+        ) {
             if ($openParenthesesCount > $closeParenthesesCount) {
                 $this->context->addViolation('Extra open parenthesis');
             } else {
