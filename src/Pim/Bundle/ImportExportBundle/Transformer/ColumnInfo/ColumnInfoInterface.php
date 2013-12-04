@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
 
 /**
  * Interface for column info
@@ -19,7 +18,7 @@ interface ColumnInfoInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @throws ColumnLabelException
+     * @throws \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
      */
     public function setAttribute(ProductAttribute $attribute);
 

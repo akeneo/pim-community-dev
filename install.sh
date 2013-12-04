@@ -97,8 +97,8 @@ cd $APP_ROOT
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
     php app/console oro:entity-extend:clear
-    php app/console doctrine:schema:drop --force --full-database 2>&1 > /dev/null || true
-    php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
+    php app/console doctrine:schema:drop --force --full-database > /dev/null 2>&1 || true
+    php app/console doctrine:database:drop --force > /dev/null 2>&1 || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console cache:clear
@@ -116,6 +116,8 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value"
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" 2>&1 > /dev/null || true
     php app/console pim:completeness:calculate
 fi
 

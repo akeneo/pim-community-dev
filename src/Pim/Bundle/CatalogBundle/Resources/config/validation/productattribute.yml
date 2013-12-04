@@ -2,6 +2,15 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - attributeType
+                - scopable
+                - localizable
+                - dateType
+                - metricFamily
+                - unique
         - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric:
             groups:
                 - pim_catalog_metric

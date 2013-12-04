@@ -49,6 +49,11 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
+     * @var boolean
+     */
+    protected $realTimeVersioning = true;
+
+    /**
      * Entities which should not be cleared on flush
      *
      * @var array
@@ -88,7 +93,35 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return array(
+            'realTimeVersioning' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.realTimeVersioning.label',
+                    'help'  => 'pim_import_export.import.realTimeVersioning.help'
+                )
+            )
+        );
+    }
+
+    /**
+     * Set real time versioning
+     *
+     * @param boolean $realTime
+     */
+    public function setRealTimeVersioning($realTime)
+    {
+        $this->realTimeVersioning = $realTime;
+    }
+
+    /**
+     * Is real time versioning
+     *
+     * @return boolean
+     */
+    public function isRealTimeVersioning()
+    {
+        return $this->realTimeVersioning;
     }
 
     /**
@@ -96,7 +129,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
-        $this->addVersionListener->setRealTimeVersioning(false);
+        $this->addVersionListener->setRealTimeVersioning($this->realTimeVersioning);
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
