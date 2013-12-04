@@ -353,7 +353,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function getDefaultTree()
     {
-        $defaultTree = (string) $this->getUser()->getValue('defaulttree');
+        $defaultTree = 'default'; // TODO: (string) $this->getUser()->getValue('defaulttree');
         if (!$defaultTree) {
             throw new \Exception('User must have a default tree defined');
         }
