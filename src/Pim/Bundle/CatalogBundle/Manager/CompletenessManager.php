@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -197,7 +196,7 @@ class CompletenessManager
      *
      * @param ProductInterface $product
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     protected function getCompletenessQB(ProductInterface $product)
     {

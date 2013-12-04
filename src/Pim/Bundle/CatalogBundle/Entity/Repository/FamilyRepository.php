@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
@@ -16,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 class FamilyRepository extends EntityRepository
 {
     /**
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function buildAllWithTranslations()
     {
@@ -48,7 +47,7 @@ class FamilyRepository extends EntityRepository
     /**
      * @param integer $id
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     protected function buildOneWithAttributes($id)
     {
@@ -67,7 +66,7 @@ class FamilyRepository extends EntityRepository
      * @param Family $family
      * @param type   $localeCode
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getFullRequirementsQB(Family $family, $localeCode)
     {

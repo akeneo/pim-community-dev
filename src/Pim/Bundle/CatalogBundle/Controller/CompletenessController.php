@@ -75,7 +75,6 @@ class CompletenessController
      */
     public function completenessAction($id)
     {
-        $t = new \Symfony\Component\Stopwatch\Stopwatch;
         $product = $this->productManager->getFlexibleRepository()->getFullProduct($id);
         $channels = $this->channelManager->getFullChannels();
         $locales = $this->localeManager->getUserLocales();
