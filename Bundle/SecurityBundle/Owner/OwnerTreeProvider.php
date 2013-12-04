@@ -75,7 +75,7 @@ class OwnerTreeProvider
             if ($this->cache) {
                 $treeData = $this->cache->fetch(self::CACHE_KEY);
             }
-            if (!$treeData) {
+            if (!$treeData && $this->checkDatabase()) {
                 $treeData = new OwnerTree();
                 $this->fillTree($treeData);
 
@@ -111,5 +111,31 @@ class OwnerTreeProvider
                 $tree->addUserBusinessUnit($user->getId(), $businessUnit->getId());
             }
         }
+    }
+
+    /**
+     * Check if user table exists in db
+     *
+     * @return bool
+     */
+    protected function checkDatabase()
+    {
+        $tableName  = $this->em->getClassMetadata('Oro\Bundle\UserBundle\Entity\User')->getTableName();
+        $result = false;
+        try {
+            $conn = $this->em->getConnection();
+
+            if (!$conn->isConnected()) {
+                $this->em->getConnection()->connect();
+            }
+
+            $result = $conn->isConnected() && (bool)array_intersect(
+                array($tableName),
+                $this->em->getConnection()->getSchemaManager()->listTableNames()
+            );
+        } catch (\PDOException $e) {
+        }
+
+        return $result;
     }
 }
