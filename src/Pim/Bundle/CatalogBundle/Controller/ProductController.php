@@ -575,7 +575,9 @@ class ProductController extends AbstractDoctrineController
     {
         $dataLocale = $this->getRequest()->get('dataLocale');
         if ($dataLocale === null) {
-            $dataLocale = (string) $this->getUser()->getValue('cataloglocale');
+            return 'en_US';
+            // TODO : to fix
+            //$dataLocale = (string) $this->getUser()->getValue('cataloglocale');
         }
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
@@ -622,6 +624,9 @@ class ProductController extends AbstractDoctrineController
     {
         $dataScope = $this->getRequest()->get('dataScope');
         if ($dataScope === null) {
+            return 'ecommerce';
+
+            // TODO : to fix
             $dataScope = (string) $this->getUser()->getValue('catalogscope');
         }
         if (!$dataScope) {

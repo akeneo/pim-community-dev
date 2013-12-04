@@ -116,6 +116,9 @@ class ChannelManager
     {
         $user = $this->securityContext->getToken()->getUser();
 
+        return 'ecommerce';
+
+        // TODO : to fix
         return (string) $user->getValue('catalogscope');
     }
 }
