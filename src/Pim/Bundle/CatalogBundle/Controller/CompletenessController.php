@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller for completeness
@@ -69,7 +69,8 @@ class CompletenessController
     /**
      * Displays completeness for a product
      *
-     * @param  int      $id
+     * @param int $id
+     *
      * @return Response
      */
     public function completenessAction($id)
