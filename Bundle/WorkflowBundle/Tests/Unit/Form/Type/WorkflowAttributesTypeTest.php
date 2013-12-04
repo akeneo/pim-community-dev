@@ -59,7 +59,7 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
         $sourceWorkflowData = null
     ) {
         // Check default values listener is subscribed or not subscribed
-        if (empty($formOptions['attribute_default_values'])) {
+        if (!empty($formOptions['attribute_default_values'])) {
             $this->defaultValuesListener->expects($this->once())
                 ->method('initialize')
                 ->with(
