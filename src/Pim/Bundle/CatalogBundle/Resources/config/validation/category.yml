@@ -1,6 +1,9 @@
 Pim\Bundle\CatalogBundle\Entity\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
     properties:
         code:
             - NotBlank: ~

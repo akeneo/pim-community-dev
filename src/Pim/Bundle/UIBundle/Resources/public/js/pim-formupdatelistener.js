@@ -50,6 +50,10 @@ define(
 
             $form.on('change', formUpdated);
             $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
+            $form.on('refresh', function() {
+                self.updated = false;
+                $('#updated').addClass('hide');
+            });
 
             $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
             $form.on('click', 'a[href^="/"]:not(".no-hash")', linkClicked);

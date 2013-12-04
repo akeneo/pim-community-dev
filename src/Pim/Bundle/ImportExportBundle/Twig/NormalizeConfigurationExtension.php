@@ -68,28 +68,20 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      * a given field (e.g: channel) of an element (e.g: reader) of a step (e.g: 0)
      *
      * @param ConstraintViolationList $violations
-     * @param integer                 $step
      * @param string                  $element
-     * @param string                  $field
      *
      * @return string The violation messages separated by a space character
      */
-    public function getViolationsFunction($violations, $step, $element, $field)
+    public function getViolationsFunction($violations, $element)
     {
-        $currentPropertyPath = sprintf('job.steps[%d].%s.%s', $step, strtolower($element), $field);
-        $messages            = array();
+        $messages = array();
 
         foreach ($violations as $violation) {
-            if ($currentPropertyPath === $violation->getPropertyPath()) {
-                $messages[] = $violation->getMessage();
+            if (preg_match(sprintf('/[.]%s$/', $element), $violation->getPropertyPath())) {
+                $messages[] = sprintf('<span class="label label-important">%s</span>', $violation->getMessage());
             }
         }
 
-        if (count($messages)) {
-            $spanStart = '<span class="label label-important">';
-            $spanEnd   = '</span>';
-
-            return $spanStart . join("$spanEnd&nbsp;$spanStart", $messages) . $spanEnd;
-        }
+        return join('&nbsp;', array_unique($messages));
     }
 }

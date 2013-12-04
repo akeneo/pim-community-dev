@@ -30,9 +30,6 @@ class MediaType extends AbstractType
                 array(
                     'required' => false,
                     'label'    => 'Remove media',
-                    'attr'     => array(
-                        'class' => 'noswitch',
-                    )
                 )
             )
             ->add('id', 'hidden')

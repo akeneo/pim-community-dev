@@ -3,6 +3,7 @@
 ## Features
 - Import product associations (CSV)
 - Compare and copy values between a product translations
+- Create metric filter
 
 ## Improvements
 - Improve the user experience for family management
@@ -10,6 +11,8 @@
 - Improve installer to provide different data set (minimal or dev)
 - Use a form extension to apply select2 only on specified fields
 - Add real time versioning option in product import
+- Merge the configuration of import/export job steps
+- Implements save of base unit and data for metric entity
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities

@@ -97,6 +97,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_catalog.validator.valid_locale_fallback_validator }
 
+    pim_catalog.validator.immutable:
+        class: Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_validator }
+
     # Locale helper
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper

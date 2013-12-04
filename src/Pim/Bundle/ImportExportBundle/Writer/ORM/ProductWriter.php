@@ -94,7 +94,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array(
-            'realTimeVersioning' => array('type' => 'switch')
+            'realTimeVersioning' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.realTimeVersioning.label',
+                    'help'  => 'pim_import_export.import.realTimeVersioning.help'
+                )
+            )
         );
     }
 

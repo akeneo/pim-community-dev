@@ -51,6 +51,14 @@ services:
             - '@translator'
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_currency }
+            
+    pim_grid.orm.filter.type.metric:
+        class: Pim\Bundle\GridBundle\Filter\ORM\MetricFilter
+        arguments:
+            - '@translator'
+            - '@oro_measure.measure_converter'
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_metric }
 
     pim_grid.orm.filter.type.scope:
         class: Pim\Bundle\GridBundle\Filter\ORM\ScopeFilter

@@ -148,12 +148,31 @@ class ProductProcessor extends AbstractTransformerProcessor
     public function getConfigurationFields()
     {
         return array(
-            'enabled'             => array(
-                'type' => 'switch',
+            'enabled' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.enabled.label',
+                    'help'  => 'pim_import_export.import.enabled.help'
+                )
             ),
-            'categoriesColumn'    => array(),
-            'familyColumn'        => array(),
-            'groupsColumn'        => array(),
+            'categoriesColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.categoriesColumn.label',
+                    'help'  => 'pim_import_export.import.categoriesColumn.help'
+                )
+            ),
+            'familyColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.familyColumn.label',
+                    'help'  => 'pim_import_export.import.familyColumn.help'
+                )
+            ),
+            'groupsColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.groupsColumn.label',
+                    'help'  => 'pim_import_export.import.groupsColumn.help'
+                )
+            ),
         );
     }
 
