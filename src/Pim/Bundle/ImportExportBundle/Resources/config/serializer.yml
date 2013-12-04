@@ -29,6 +29,10 @@ parameters:
 
     pim_serializer.normalizer.label_translation.class:      Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer
     pim_serializer.normalizer.flat_label_translation.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer
+    
+    pim_serializer.normalizer.object_attributes.class:      Pim\Bundle\ImportExportBundle\Normalizer\ObjectAttributesNormalizer
+
+    
 
 services:
     pim_serializer:
@@ -179,6 +183,9 @@ services:
         class: %pim_serializer.normalizer.get_set_method.class%
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.object_attributes:
+        class: %pim_serializer.normalizer.object_attributes.class%
 
     # Encoders
     pim_serializer.encoder.xml:

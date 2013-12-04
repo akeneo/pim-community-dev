@@ -2,6 +2,8 @@ parameters:
     pim_import_export.processor.csv_serializer.homogeneous.class:   Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor
     pim_import_export.processor.csv_serializer.heterogeneous.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_import_export.processor.csv_serializer.product.class:       Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor
+    pim_import_export.processor.json_normalizer.product.class:      Pim\Bundle\ImportExportBundle\Processor\JSONNormalizer\ProductProcessor
+    pim_import_export.processor.json_normalizer.class:              Pim\Bundle\ImportExportBundle\Processor\JSONNormalizer\JSONNormalizer
 
     pim_import_export.processor.transformer.class:                  Pim\Bundle\ImportExportBundle\Processor\TransformerProcessor
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
@@ -29,6 +31,17 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
+            
+    pim_import_export.processor.json_normalizer.product:
+        class: %pim_import_export.processor.json_normalizer.product.class%
+        arguments:
+            - '@pim_serializer.normalizer.product'
+            - '@pim_catalog.manager.channel'
+            
+    pim_import_export.processor.json_normalizer:
+        class: %pim_import_export.processor.json_normalizer.class%
+        arguments:
+            - '@pim_serializer.normalizer.get_set_method'
 
     pim_import_export.processor.dummy:
         class: %pim_import_export.processor.dummy.class%
