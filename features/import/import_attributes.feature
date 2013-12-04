@@ -52,3 +52,26 @@ Feature: Import attributes
       | image        | image_upload       | Image upload       | media     | 0      | 0                      | 0                      | 0               | 0           | gif,png            |           |               |                     |
       | date         | release            | Release date       | info      | 0      | 1                      | 1                      | 0               | 0           |                    | datetime  |               |                     |
       | metric       | length             | Length             | info      | 0      | 0                      | 0                      | 0               | 0           |                    |           | Length        | CENTIMETER          |
+
+  Scenario: Fail to change immutable properties of attributes during the import
+    Given an "apparel" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV to import:
+      | type                   | pim_catalog_date | pim_catalog_metric |
+      | code                   | release_date     | weight             |
+      | unique                 | no               | no                 |
+      | useable_as_grid_column | yes              | yes                |
+      | useable_as_grid_filter | yes              | yes                |
+      | is_translatable        | yes              | no                 |
+      | is_scopable            | no               | no                 |
+      | date_type              | time             |                    |
+      | metric_family          |                  | Length             |
+      | default_metric_unit    |                  | METER              |
+      | allowed_extensions     |                  |                    |
+    And the following job "attribute_import" configuration:
+      | filePath | {{ file to import }} |
+    When I am on the "attribute_import" import job page
+    And I launch the import job
+    And I wait for the job to finish
+    Then I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.dateType: This property may not be changed."
+    And I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.metricFamily: This property may not be changed."
