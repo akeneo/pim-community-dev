@@ -45,14 +45,20 @@ class OwnerTreeProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->em->expects($this->at(0))
+        $this->em->expects($this->any())
             ->method('getRepository')
-            ->with($this->equalTo('Oro\Bundle\UserBundle\Entity\User'))
-            ->will($this->returnValue($userRepo));
-        $this->em->expects($this->at(1))
-            ->method('getRepository')
-            ->with($this->equalTo('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit'))
-            ->will($this->returnValue($buRepo));
+            ->will(
+                $this->returnCallback(
+                    function ($repoName) use ($userRepo, $buRepo) {
+                        if ($repoName == 'Oro\Bundle\UserBundle\Entity\User') {
+                            return $userRepo;
+                        }
+                        if ($repoName == 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit') {
+                            return $buRepo;
+                        }
+                    }
+                )
+            );
 
         list($users, $bUnits) = $this->getTestData();
 
@@ -63,6 +69,34 @@ class OwnerTreeProviderTest extends \PHPUnit_Framework_TestCase
         $buRepo->expects($this->any())
             ->method('findAll')
             ->will($this->returnValue($bUnits));
+
+        $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->em->expects($this->any())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($metadata));
+        $metadata->expects($this->any())
+            ->method('getTableName')
+            ->will($this->returnValue('test'));
+        $connection = $this->getMockBuilder('Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->em->expects($this->any())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+        $connection->expects($this->any())
+            ->method('isConnected')
+            ->will($this->returnValue(true));
+        $schemaManager = $this->getMockBuilder('Doctrine\DBAL\Schema\MySqlSchemaManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $connection->expects($this->any())
+            ->method('getSchemaManager')
+            ->will($this->returnValue($schemaManager));
+        $schemaManager->expects($this->any())
+            ->method('listTableNames')
+            ->will($this->returnValue(array('test')));
 
         $this->treeProvider->warmUpCache();
         $tree = $this->treeProvider->getTree();
