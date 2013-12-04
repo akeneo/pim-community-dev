@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
 
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
-
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
+use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
 use Pim\Bundle\GridBundle\Filter\ORM\MetricFilter;
@@ -172,5 +171,39 @@ class MetricFilterTest extends FilterTestCase
                 array('field_options' => array('family' => 'Weight'))
             )
         );
+    }
+
+    /**
+     * Data provider for getRenderSettings method
+     * @return array
+     */
+    public function getRenderSettingsDataProvider()
+    {
+        return array(
+            'default' => array(
+                array('field_options' => array('family' => 'Weight')),
+                array(
+                    MetricFilterType::NAME,
+                    array(
+                        'show_filter'   => false,
+                        'data_type'     => MetricFilterType::DATA_DECIMAL,
+                        'field_options' => array('family' => 'Weight')
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * Test related method
+     * @param array $options
+     * @param array $expectedRenderSettings
+     *
+     * @dataProvider getRenderSettingsDataProvider
+     */
+    public function testGetRenderSettings($options, $expectedRenderSettings)
+    {
+        $this->model->initialize(self::TEST_NAME, $options);
+        $this->assertEquals($expectedRenderSettings, $this->model->getRenderSettings());
     }
 }
