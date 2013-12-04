@@ -18,11 +18,22 @@ class MetricConverter
     /** @var MeasureConverter */
     protected $converter;
 
+    /**
+     * Constructor
+     *
+     * @param MeasureConverter $converter
+     */
     public function __construct(MeasureConverter $converter)
     {
         $this->converter = $converter;
     }
 
+    /**
+     * Convert all the products metric values into the channel configured conversion units
+     *
+     * @param array   $products
+     * @param Channel $channel
+     */
     public function convert(array $products, Channel $channel)
     {
         $channelUnits = $channel->getConversionUnits();

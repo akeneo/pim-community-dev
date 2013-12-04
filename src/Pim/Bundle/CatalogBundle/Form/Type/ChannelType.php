@@ -113,6 +113,14 @@ class ChannelType extends AbstractType
         return $this;
     }
 
+    /**
+     * Create conversion units field
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     *
+     * @return ChannelType
+     */
     protected function addConversionUnitFields(FormBuilderInterface $builder, array $options)
     {
         $builder->add(

@@ -1447,7 +1447,7 @@ class FixturesContext extends RawMinkContext
 
             case $this->attributeTypes['metric']:
                 list($data, $unit) = explode(' ', $data);
-                $metric = new Metric;
+                $metric = new Metric();
                 $metric->setFamily($attribute->getMetricFamily());
                 $metric->setData($data);
                 $metric->setUnit($unit);

@@ -46,6 +46,9 @@ class ConversionUnitsType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_catalog_conversion_units';

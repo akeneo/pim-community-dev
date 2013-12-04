@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * A normalizer to transform a product entity into a flat array

@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Converter\MetricConverter;
  */
 class MetricConverterTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->measureConverter = $this->getMeasureConverterMock();
         $this->converter = new MetricConverter($this->measureConverter);

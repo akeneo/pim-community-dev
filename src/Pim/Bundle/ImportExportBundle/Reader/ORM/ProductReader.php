@@ -8,7 +8,6 @@ use Pim\Bundle\ImportExportBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -37,7 +36,7 @@ class ProductReader extends Reader
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /* @var MeasureConverter */
+    /* @var MetricConverter */
     protected $metricConverter;
 
     /**
