@@ -3,6 +3,7 @@
 ## Features
 - Import product associations (CSV)
 - Compare and copy values between a product translations
+- Create metric filter
 
 ## Improvements
 - Improve the user experience for family management
@@ -10,6 +11,8 @@
 - Improve installer to provide different data set (minimal or dev)
 - Use a form extension to apply select2 only on specified fields
 - Add real time versioning option in product import
+- Merge the configuration of import/export job steps
+- Implements save of base unit and data for metric entity
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
@@ -55,6 +58,7 @@
 - Versioning of installed entities (from demo bundle)
 - For csv export of products, only export values related to selected channel and related locales
 - Fix locale activation/deactivation based on locales used by channels
+- Fix issue with 100 products csv import
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

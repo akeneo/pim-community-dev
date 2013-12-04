@@ -81,7 +81,7 @@ require(
                 }).trigger('change');
 
                 if (preventUpdate) {
-                    $('#updated').addClass('hide');
+                    $(formName).trigger('refresh');
                 }
             }
 
