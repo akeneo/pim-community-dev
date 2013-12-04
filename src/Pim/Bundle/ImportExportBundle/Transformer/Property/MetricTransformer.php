@@ -19,6 +19,10 @@ class MetricTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        if (!isset($options['family'])) {
+            throw new \InvalidArgumentException('Missing required option "family"');
+        }
+
         $value = trim($value);
         if (empty($value)) {
             return;
