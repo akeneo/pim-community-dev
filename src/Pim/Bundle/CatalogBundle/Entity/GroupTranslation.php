@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;

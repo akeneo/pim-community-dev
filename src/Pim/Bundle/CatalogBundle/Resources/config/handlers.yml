@@ -39,7 +39,7 @@ services:
         arguments:
             - '@pim_catalog.form.group'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.object_manager.group'
 
     pim_catalog.form.handler.group_type:
         class: %pim_catalog.form.handler.group_type.class%

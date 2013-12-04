@@ -1,9 +1,0 @@
-Pim\Bundle\CatalogBundle\Model\GroupTranslation:
-    type: embeddedDocument
-    fields:
-        id:
-            id: true
-        label:
-            type: string
-        locale:
-            type: string

@@ -19,6 +19,18 @@ class ProductRepository extends DocumentRepository
      */
     protected $flexibleConfig;
 
+    /**
+     * Locale code
+     * @var string
+     */
+    protected $locale;
+
+
+    /**
+     * Scope code
+     * @var string
+     */
+    protected $scope;
 
     /**
      * Get flexible entity config
@@ -40,6 +52,62 @@ class ProductRepository extends DocumentRepository
     public function setFlexibleConfig($config)                                  
     {
         $this->flexibleConfig = $config;
+
+        return $this;
+    }
+
+    /**
+     * Return asked locale code or default one
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        if (!$this->locale) {
+            $this->locale = $this->flexibleConfig['default_locale'];
+        }
+
+        return $this->locale;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setLocale($code)
+    {
+        $this->locale = $code;
+
+        return $this;
+    }
+
+    /**
+     * Return asked scope code or default one
+     *
+     * @return string
+     */
+    public function getScope()
+    {
+        if (!$this->scope) {
+            $this->scope = $this->flexibleConfig['default_scope'];
+        }
+
+        return $this->scope;
+    }
+
+    /**
+     * Set scope code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setScope($code)
+    {
+        $this->scope = $code;
 
         return $this;
     }

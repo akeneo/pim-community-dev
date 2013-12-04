@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -210,7 +210,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Model\GroupTranslation';
+        return 'Pim\Bundle\CatalogBundle\Entity\GroupTranslation';
     }
 
     /**

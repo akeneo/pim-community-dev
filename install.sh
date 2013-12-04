@@ -116,12 +116,13 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:entity-extend:update-config
     php app/console cache:clear
     php app/console doctrine:schema:update --force
-    php app/console oro:search:create-index
-    php app/console pim:search:reindex en_US
-    php app/console pim:versioning:refresh
-    php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value"
-    php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" 2>&1 > /dev/null || true
-    php app/console pim:completeness:calculate
+    # FIXME_MONGO Makes it conditional
+    #php app/console oro:search:create-index
+    #php app/console pim:search:reindex en_US
+    #php app/console pim:versioning:refresh
+    #php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value"
+    #php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" 2>&1 > /dev/null || true
+    #php app/console pim:completeness:calculate
 fi
 
 if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then

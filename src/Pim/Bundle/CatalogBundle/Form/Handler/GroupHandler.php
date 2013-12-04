@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Form handler for group
