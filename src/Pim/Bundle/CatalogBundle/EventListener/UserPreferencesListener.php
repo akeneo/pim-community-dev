@@ -74,6 +74,8 @@ class UserPreferencesListener implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
+        return; // Todo : user to fix
+
         $this->manager = $args->getEntityManager();
         $this->uow = $this->manager->getUnitOfWork();
         foreach ($this->uow->getScheduledEntityInsertions() as $entity) {

@@ -134,6 +134,8 @@ class UserContextListener implements EventSubscriberInterface
      */
     protected function getDataScope(Request $request)
     {
+        return 'mobile'; // TODO: to fix
+
         $dataScope = $request->get('dataScope');
         if ($dataScope === null) {
             $dataScope = (string) $this->getUser()->getValue('catalogscope');
@@ -152,7 +154,7 @@ class UserContextListener implements EventSubscriberInterface
      */
     protected function getCatalogLocale()
     {
-        return (string) $this->getUser()->getValue('cataloglocale');
+        return 'en_US'; // TODO : to fix (string) $this->getUser()->getValue('cataloglocale');
     }
 
     /**
