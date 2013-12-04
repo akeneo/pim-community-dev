@@ -48,7 +48,7 @@
                 {{ elements.accordion({ 'General Properties': generalProperties }) }}
 
                 {% set conversionOptions %}
-                    Pick a conversion unit for each metric family:
+                    {{ 'pim_catalog.channel.pick_conversion_unit'|trans }}
                     {% for conversionUnitForm in form.conversionUnits %}
                         {{ form_row(conversionUnitForm) }}
                     {% endfor %}
