@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog) {
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask) {
         'use strict';
         var initialized = false;
         return function() {
@@ -10,12 +10,18 @@ define(
             }
             initialized = true;
             function loadTab(tab) {
-                var target = $(tab.getAttribute('href'))
-                if (!target.attr("data-loaded") && target.attr("data-url")) {
-                    $.get(target.attr("data-url"), function(data) {
-                        target.html(data)
-                        target.attr("data-loaded", 1)
-                    })
+                var target = $(tab.getAttribute('href'));
+                if (!target.attr('data-loaded') && target.attr('data-url')) {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container'));
+                    loadingMask.show();
+
+                    $.get(target.attr('data-url'), function(data) {
+                        target.html(data);
+                        target.attr('data-loaded', 1);
+                        loadingMask.hide();
+                        loadingMask.$el.remove();
+                    });
                 }
             }
             function pageInit() {
@@ -74,7 +80,7 @@ define(
                         var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                         if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                             $activeTab.tab('show');
-                            loadTab($activeTab[0])
+                            loadTab($activeTab[0]);
                             sessionStorage.removeItem('activeTab');
                         }
                     }
@@ -158,10 +164,10 @@ define(
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });
-                
-                $("a[data-toggle='tab']").on("show.bs.tab", function() {
-                    loadTab(this)
-                })
+
+                $("a[data-toggle='tab']").on('show.bs.tab', function() {
+                    loadTab(this);
+                });
             }
 
             $(function(){
