@@ -623,7 +623,7 @@ attributes:
         parameters:
             metricFamily:      Temperature
             sortOrder:         6
-            defaultMetricUnit: CELCIUS
+            defaultMetricUnit: CELSIUS
             negativeAllowed:   false
             numberMax:         100
     weight:

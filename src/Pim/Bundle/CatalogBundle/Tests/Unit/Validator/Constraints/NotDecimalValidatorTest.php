@@ -139,8 +139,8 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $context->expects($this->once())
-            ->method('addViolation')
-            ->with($constraint->message);
+            ->method('addViolationAt')
+            ->with('data', $constraint->message);
 
         $this->target->initialize($context);
         $this->target->validate($value, $constraint);

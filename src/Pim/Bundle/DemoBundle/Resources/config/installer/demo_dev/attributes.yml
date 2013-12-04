@@ -219,3 +219,16 @@ attributes:
                 labels:
                     en_US: White
                     fr_FR: Blanc
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+        type:  pim_catalog_metric
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           10
+            metricFamily:        Weight
+            defaultMetricUnit:   GRAM
+            decimalsAllowed:     true

@@ -23,21 +23,15 @@ Feature: Import invalid products
     honda-civic;15EUR
     """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
+      | filePath          | {{ file to import }} |
+      | uploadAllowed     | no                   |
+      | delimiter         | ;                    |
+      | enclosure         | "                    |
+      | escape            | \                    |
+      | enabled           | yes                  |
+      | categories column | categories           |
+      | family column     | families             |
+      | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job

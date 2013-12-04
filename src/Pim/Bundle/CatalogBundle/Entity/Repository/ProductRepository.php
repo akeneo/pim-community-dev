@@ -167,4 +167,28 @@ class ProductRepository extends FlexibleEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * Returns a full product with all relations
+     *
+     * @param int $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
+    public function getFullProduct($id)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->select('p, f, v, pr, m, o, os')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.prices', 'pr')
+            ->leftJoin('v.media', 'm')
+            ->leftJoin('v.option', 'o')
+            ->leftJoin('v.options', 'os')
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

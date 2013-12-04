@@ -34,7 +34,6 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\CatalogBundle\Helper\CompletenessHelper;
 
 /**
  * Product Controller
@@ -76,11 +75,6 @@ class ProductController extends AbstractDoctrineController
     private $securityFacade;
 
     /**
-     * @var CompletenessHelper
-     */
-    private $completenessHelper;
-
-    /**
      * @staticvar int
      */
     const BATCH_SIZE = 250;
@@ -102,7 +96,6 @@ class ProductController extends AbstractDoctrineController
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
      * @param SecurityFacade           $securityFacade
-     * @param CompletenessHelper       $completenessHelper
      */
     public function __construct(
         Request $request,
@@ -118,8 +111,7 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade,
-        CompletenessHelper $completenessHelper
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -138,7 +130,6 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
-        $this->completenessHelper   = $completenessHelper;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -373,12 +364,10 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
             'associationProductGrid' => $productGridView,
             'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
-            'completenessHelper'     => $this->completenessHelper
         );
     }
 
@@ -388,7 +377,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -397,6 +386,14 @@ class ProductController extends AbstractDoctrineController
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        } else {
+            return $this->render(
+                'PimCatalogBundle:Product:_history.html.twig',
+                array(
+                    'product'           => $product,
+                    'historyDatagrid'   => $historyGridView
+                )
+            );
         }
     }
 

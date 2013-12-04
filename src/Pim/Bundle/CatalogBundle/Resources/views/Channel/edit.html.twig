@@ -46,6 +46,14 @@
                     {{ form_row(form.category) }}
                 {% endset %}
                 {{ elements.accordion({ 'General Properties': generalProperties }) }}
+
+                {% set conversionOptions %}
+                    {{ 'pim_catalog.channel.pick_conversion_unit'|trans }}
+                    {% for conversionUnitForm in form.conversionUnits %}
+                        {{ form_row(conversionUnitForm) }}
+                    {% endfor %}
+                {% endset %}
+                {{ elements.accordion({ 'Conversion Options': conversionOptions }, 2) }}
             </div>
             {% if form.vars.value.id %}
                 <div class="tab-pane" id="history">
