@@ -5,6 +5,7 @@
 - Compare and copy values between a product translations
 - Create metric filter
 - Convert metric values into the conversion unit selected for the channel during export
+- Allow filtering and sorting by metric values
 
 ## Improvements
 - Improve the user experience for family management
