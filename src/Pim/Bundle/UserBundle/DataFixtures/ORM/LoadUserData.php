@@ -42,8 +42,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container      = $container;
-        $this->userManager    = $container->get('oro_user.manager');
-        $this->userRepository = $this->userManager->getFlexibleRepository();
+        // $this->userManager    = $container->get('oro_user.manager');
+        // $this->userRepository = $this->userManager->getFlexibleRepository();
     }
 
     /**
@@ -51,6 +51,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
+        return;
+
         $users = $this->userRepository->findAll();
 
         $localeCodes   = $this->getLocaleManager()->getActiveCodes();

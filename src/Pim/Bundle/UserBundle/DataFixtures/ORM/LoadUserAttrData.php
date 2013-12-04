@@ -38,8 +38,8 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container      = $container;
-        $this->userManager    = $container->get('oro_user.manager');
-        $this->userRepository = $this->userManager->getFlexibleRepository();
+        // $this->userManager    = $container->get('oro_user.manager');
+        // $this->userRepository = $this->userManager->getFlexibleRepository();
     }
 
     /**
@@ -49,6 +49,8 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+        return ;
+
         $storageManager = $this->userManager->getStorageManager();
 
         $attribute = $this->createAttributeWithOptions(
