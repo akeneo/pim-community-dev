@@ -62,6 +62,8 @@
         'oro/pageable-collection':                'pimgrid/js/pageable-collection',
         'oro/navigation-orig':                    'oronavigation/js/navigation',
         'oro/navigation':                         'pimnavigation/js/navigation',
+        'oro/navigation/dotmenu/view-orig':       'oronavigation/js/navigation/dotmenu/view',
+        'oro/navigation/dotmenu/view':            'pimnavigation/js/navigation/dotmenu/view',
         'oro/datagrid/reset-collection-action':   'pimgrid/js/datagrid/action/reset-collection-action',
         'pim/datagrid/toolbar':                   'pimgrid/js/datagrid/pim-toolbar'
     };
@@ -77,4 +79,5 @@
     for (var alias in paths) {
         require.paths[alias] = paths[alias];
     }
+
 </script>

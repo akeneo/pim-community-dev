@@ -78,5 +78,3 @@ parameters:
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
 
     doctrine.orm.cache.apc.class:  Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-
-    pim_catalog.helper.completeness.class: Pim\Bundle\CatalogBundle\Helper\CompletenessHelper

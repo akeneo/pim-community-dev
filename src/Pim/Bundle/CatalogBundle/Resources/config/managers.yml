@@ -84,6 +84,8 @@ services:
         arguments:
             - '@doctrine'
             - '@pim_catalog.doctrine.completeness_query_builder'
+            - '@validator'
+            - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%

@@ -23,7 +23,7 @@
     {% else %}
         {% set titleMissing %}
         <ul>
-            {% for attribute in completenessHelper.missingAttributes(product, locale, channel) %}
+            {% for attribute in missingAttributes %}
                 <li>{{ attribute.label }}</li>
             {% endfor %}
         </ul>
