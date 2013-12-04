@@ -3,8 +3,9 @@
 {% set title = 'products'|trans %}
 
 {% block head_script %}
-    {{ parent() }}
-    {% embed 'PimGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
+    {{ parent() }}A
+    {# FIXME_MONGO : Datagrid... #}
+    {# % embed 'PimGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
         {% block javascript_grid_type "pim/datagrid/grid" %}
         {% block javascript_grid_options %}
             exportActions: {
@@ -25,7 +26,7 @@
                 dataLocale: {{ app.request.get("dataLocale")|json_encode|raw }},
             {% endif %}
         {% endblock %}
-    {% endembed %}
+    {% endembed % #}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
     <script type="text/javascript">
         require(

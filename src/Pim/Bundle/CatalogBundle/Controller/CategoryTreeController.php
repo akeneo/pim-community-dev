@@ -24,6 +24,8 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
+use Doctrine\Common\Collection\ArrayCollection;
+
 /**
  * Category Tree Controller
  *
@@ -201,7 +203,9 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listItemsAction(Category $category)
     {
-        return array('products' => $category->getProducts());
+        //FIXME_MONGO: relation broken between Categories and products
+        //return array('products' => $category->getProducts());
+        return array('products' => new ArrayCollection());
     }
 
     /**

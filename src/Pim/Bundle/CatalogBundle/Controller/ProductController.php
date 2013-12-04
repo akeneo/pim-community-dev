@@ -153,11 +153,12 @@ class ProductController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->datagridHelper->getDatagridManager('product');
-        $gridManager->setFilterTreeId($request->get('treeId', 0));
-        $gridManager->setFilterCategoryId($request->get('categoryId', 0));
-        $gridManager->setIncludeSub($request->get('includeSub', 0));
-        $datagrid = $gridManager->getDatagrid();
+        // FIXME_MONGO: gridManager
+        //$gridManager = $this->datagridHelper->getDatagridManager('product');
+        //$gridManager->setFilterTreeId($request->get('treeId', 0));
+        //$gridManager->setFilterCategoryId($request->get('categoryId', 0));
+        //$gridManager->setIncludeSub($request->get('includeSub', 0));
+        //$datagrid = $gridManager->getDatagrid();
 
         switch ($request->getRequestFormat()) {
             case 'json':
@@ -195,7 +196,8 @@ class ProductController extends AbstractDoctrineController
         }
 
         $params = array(
-            'datagrid'   => $datagrid->createView(),
+            'datagrid'   => "FIXME_MONGO: Datagrid non compatible with MongoDB",
+            //'datagrid'   => $datagrid->createView(),
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
             'dataScope'  => $this->getDataScope()
