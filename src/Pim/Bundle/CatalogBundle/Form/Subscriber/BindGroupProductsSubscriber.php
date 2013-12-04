@@ -52,11 +52,11 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
     private function bindProducts(Group $group, array $appendProducts, array $removeProducts)
     {
         foreach ($appendProducts as $product) {
-            $product->addGroup($group);
+            $group->addProduct($product);
         }
 
         foreach ($removeProducts as $product) {
-            $product->removeGroup($group);
+            $group->removeProduct($product);
         }
     }
 }

@@ -51,6 +51,24 @@ class ChannelManager
     }
 
     /**
+     * Get full channels with locales and currencies
+     *
+     * @return array
+     */
+    public function getFullChannels()
+    {
+        return $this
+            ->objectManager
+            ->getRepository('PimCatalogBundle:Channel')
+            ->createQueryBuilder('ch')
+            ->select('ch, lo, cu')
+            ->leftJoin('ch.locales', 'lo')
+            ->leftJoin('ch.currencies', 'cu')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Get channel by code
      *
      * @param string $code

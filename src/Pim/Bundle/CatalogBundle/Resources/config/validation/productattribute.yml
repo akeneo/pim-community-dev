@@ -163,7 +163,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
     properties:
         label:
             - Length:
-                max: 64
+                max: 100
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     properties:

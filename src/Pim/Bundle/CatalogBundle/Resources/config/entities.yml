@@ -10,3 +10,4 @@ parameters:
     pim_catalog.entity.association.class:               Pim\Bundle\CatalogBundle\Entity\Association
     pim_catalog.entity.product_association.class:       Pim\Bundle\CatalogBundle\Entity\ProductAssociation
     pim_catalog.entity.product_attribute_option.class:  Pim\Bundle\CatalogBundle\Entity\AttributeOption
+    pim_catalog.entity.completeness.class:              Pim\Bundle\CatalogBundle\Entity\Completeness

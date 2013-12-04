@@ -19,4 +19,4 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
     properties:
         label:
             - Length:
-                max: 64
+                max: 100
