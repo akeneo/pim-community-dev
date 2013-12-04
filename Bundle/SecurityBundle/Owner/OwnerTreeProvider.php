@@ -39,12 +39,20 @@ class OwnerTreeProvider
         $this->em = $em;
     }
 
+
     /**
+     * Get ACL tree
+     *
      * @return OwnerTree
+     * @throws \Exception
      */
     public function getTree()
     {
         $this->ensureTreeLoaded();
+
+        if ($this->tree === null) {
+            throw new \Exception('ACL tree cache was not warmed');
+        }
 
         return $this->tree;
     }
