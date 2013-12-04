@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
 
+use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
@@ -35,10 +37,46 @@ class MetricFilterTest extends FilterTestCase
      */
     protected function getMeasureConverterMock()
     {
-        return $this
-            ->getMockBuilder('Oro\Bundle\MeasureBundle\Convert\MeasureConverter')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $measureConfig = $this->initializeMeasureConfig();
+        $measureConverter = new MeasureConverter(array('measures_config' => $measureConfig));
+
+        return $measureConverter;
+    }
+
+    /**
+     * Initialize config
+     * @return array
+     */
+    protected function initializeMeasureConfig()
+    {
+        return array(
+            'Length' => array(
+                'standard' => 'METER',
+                'units'    => array(
+                    'KILOMETER' => array(
+                        'convert' => array(array('mul' => 1000)),
+                        'symbol'  => 'km'
+                    ),
+                    'METER'     => array(
+                        'convert' => array(array('mul' => 1)),
+                        'symbol'  => 'm'
+                    )
+                )
+            ),
+            'Weight' => array(
+                'standard' => 'KILOGRAM',
+                'units'    => array(
+                    'GRAM'     => array(
+                        'convert' => array(array('mul' => 0.001)),
+                        'symbol'  => 'g'
+                    ),
+                    'KILOGRAM' => array(
+                        'convert' => array(array('mul' => 1)),
+                        'symbol'  => 'kg'
+                    )
+                )
+            )
+        );
     }
 
     /**
@@ -113,6 +151,24 @@ class MetricFilterTest extends FilterTestCase
             'no_unit' => array(
                 'data' => array('value' => 5),
                 'expectProxyQueryCalls' => array(),
+                array('field_options' => array('family' => 'Weight'))
+            ),
+            'not_string_unit' => array(
+                'data' => array('value' => 10, 'unit' => 1),
+                'expectProxyQueryCalls' => array(),
+                array('field_options' => array('family' => 'Weight'))
+            ),
+            'valid_data' => array(
+                'data' => array('value' => 10, 'unit' => 'GRAM'),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array(
+                        'andWhere',
+                        array($this->getExpressionFactory()->eq('valueMetrics.baseData', ':'. self::TEST_NAME .'_p1')),
+                        null
+                    ),
+                    array('setParameter', array(self::TEST_NAME .'_p1', '0.010'), null)
+                ),
                 array('field_options' => array('family' => 'Weight'))
             )
         );
