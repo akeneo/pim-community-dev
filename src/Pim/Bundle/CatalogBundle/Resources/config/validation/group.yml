@@ -3,6 +3,11 @@ Pim\Bundle\CatalogBundle\Model\Group:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
             message: Product "%product%" cannot be added to the the variant group "%variant group%" because it already contains another product with values "%values%".
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - type
+                - attributes
     properties:
         code:
             - NotBlank: ~
