@@ -188,7 +188,7 @@ measures_config:
     Temperature:
         standard: KELVIN
         units:
-            CELCIUS:
+            CELSIUS:
                 convert: [{add: 273.15}]
                 symbol: °C
             FAHRENHEIT:

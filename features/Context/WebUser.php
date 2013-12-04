@@ -1400,6 +1400,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I should see "([^"]*)" fields:$/
+     */
+    public function iShouldSeeFields($groupField, TableNode $fields)
+    {
+        foreach ($fields->getRows() as $data) {
+            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+        }
+    }
+
+    /**
      * @param integer $y
      */
     private function scrollContainerTo($y)

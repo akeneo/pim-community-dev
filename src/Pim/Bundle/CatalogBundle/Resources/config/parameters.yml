@@ -11,6 +11,7 @@ parameters:
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
     pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
+    pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
 
     pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
     pim_catalog.doctrine.completeness_query_builder.class:  Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder
