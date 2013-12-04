@@ -17,8 +17,8 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -67,7 +67,7 @@ class FixturesContext extends RawMinkContext
         'Locale'          => 'PimCatalogBundle:Locale',
         'GroupType'       => 'PimCatalogBundle:GroupType',
         'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Model\Group',
+        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
     );
 
     private $placeholderValues = array();
