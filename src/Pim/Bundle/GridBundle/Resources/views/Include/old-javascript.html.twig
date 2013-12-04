@@ -45,7 +45,7 @@
 
 {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
 
-require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
+require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry', 'oro/loading-mask',
     '{% block javascript_grid_type "oro/datagrid/grid" %}', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
     'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/integer-cell', 'oro/datagrid/boolean-cell',
     'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell', 'oro/datagrid/percent-cell',
