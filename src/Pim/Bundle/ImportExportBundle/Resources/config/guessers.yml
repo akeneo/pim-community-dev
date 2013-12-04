@@ -48,7 +48,7 @@ services:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
 
     pim_import_export.transformer.guesser.metric:
-        class: %pim_import_export.transformer.guesser.attribute.class%
+        class: Pim\Bundle\ImportExportBundle\Transformer\Guesser\MetricAttributeGuesser
         public: false
         arguments:
             - '@pim_import_export.transformer.property.metric'
