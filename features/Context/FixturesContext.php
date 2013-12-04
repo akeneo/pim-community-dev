@@ -1010,6 +1010,38 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @return null
+     * @Given /^the following CSV to import:$/
+     */
+    public function theFollowingCSVToImport(TableNode $table)
+    {
+        $delimiter = ';';
+
+        $data = $table->getRowsHash();
+        $columns = join($delimiter, array_keys($data));
+
+        $rows = array();
+        foreach ($data as $key => $values) {
+            foreach ($values as $index => $value) {
+                $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
+                $rows[$index][] = $value;
+            }
+        }
+        $rows = array_map(
+            function ($row) use ($delimiter) {
+                return join($delimiter, $row);
+            },
+            $rows
+        );
+
+        array_unshift($rows, $columns);
+
+        return $this->theFollowingFileToImport(new PyStringNode(join("\n", $rows)));
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *
