@@ -4,6 +4,7 @@
 - Import product associations (CSV)
 - Compare and copy values between a product translations
 - Create metric filter
+- Convert metric values into the conversion unit selected for the channel during export
 
 ## Improvements
 - Improve the user experience for family management
