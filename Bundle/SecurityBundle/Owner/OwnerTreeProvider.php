@@ -39,7 +39,6 @@ class OwnerTreeProvider
         $this->em = $em;
     }
 
-
     /**
      * Get ACL tree
      *
