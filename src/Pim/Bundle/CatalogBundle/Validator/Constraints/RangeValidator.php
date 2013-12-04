@@ -8,7 +8,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
- * Constraint
+ * Validator for range constraint
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -44,9 +44,45 @@ class RangeValidator extends BaseRangeValidator
         }
 
         if ($value instanceof Metric || $value instanceof ProductPrice) {
-            $value = $value->getData();
+            $this->validateData($value->getData(), $constraint);
+        } else {
+            parent::validate($value, $constraint);
+        }
+    }
+
+    /**
+     * Validate the data property of a Metric or ProductPrice value
+     * and add the violation to the 'data' property path
+     *
+     * @param mixed      $value
+     * @param Constraint $constraint
+     */
+    protected function validateData($value, Constraint $constraint)
+    {
+        $propertyPath = 'data';
+
+        if (!is_numeric($value)) {
+            $this->context->addViolationAt($propertyPath, $constraint->invalidMessage, array(
+                '{{ value }}' => $value,
+            ));
+
+            return;
         }
 
-        parent::validate($value, $constraint);
+        if (null !== $constraint->max && $value > $constraint->max) {
+            $this->context->addViolationAt($propertyPath, $constraint->maxMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->max,
+            ));
+
+            return;
+        }
+
+        if (null !== $constraint->min && $value < $constraint->min) {
+            $this->context->addViolationAt($propertyPath, $constraint->minMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->min,
+            ));
+        }
     }
 }
