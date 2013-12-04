@@ -14,6 +14,8 @@
 - Add real time versioning option in product import
 - Merge the configuration of import/export job steps
 - Implements save of base unit and data for metric entity
+- Metric values are now exported in two distinct columns (value and unit)
+- Metric values can now be imported through two distinct columns ([https://github.com/akeneo/pim-community-dev/blob/42371c0d6c70801a4a23a7aa8cf87e18f417c4a8/features/import/import_products.feature#L170-L198](examples))
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
