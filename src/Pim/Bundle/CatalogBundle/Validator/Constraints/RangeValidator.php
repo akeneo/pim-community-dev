@@ -59,6 +59,10 @@ class RangeValidator extends BaseRangeValidator
      */
     protected function validateData($value, Constraint $constraint)
     {
+        if (null === $value) {
+            return;
+        }
+
         $propertyPath = 'data';
 
         if (!is_numeric($value)) {
