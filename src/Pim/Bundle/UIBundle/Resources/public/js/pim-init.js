@@ -9,7 +9,15 @@ define(
                 return;
             }
             initialized = true;
-
+            function loadTab(tab) {
+                var target = $(tab.getAttribute('href'))
+                if (!target.attr("data-loaded") && target.attr("data-url")) {
+                    $.get(target.attr("data-url"), function(data) {
+                        target.html(data)
+                        target.attr("data-loaded", 1)
+                    })
+                }
+            }
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -66,6 +74,7 @@ define(
                         var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                         if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                             $activeTab.tab('show');
+                            loadTab($activeTab[0])
                             sessionStorage.removeItem('activeTab');
                         }
                     }
@@ -149,6 +158,10 @@ define(
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });
+                
+                $("a[data-toggle='tab']").on("show.bs.tab", function() {
+                    loadTab(this)
+                })
             }
 
             $(function(){

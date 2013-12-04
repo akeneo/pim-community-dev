@@ -1,17 +1,47 @@
-{% set showableCompleteness = false %}
-{% for completeness in value %}
-    {% if completeness.locale.code == localeCode and completeness.channel.code == channelCode %}
-        {% set showableCompleteness = true %}
-        {% if completeness.ratio == 100 %}
-            {% set class = 'success' %}
-        {% elseif completeness.ratio == 0 %}
-            {% set class = 'important' %}
-        {% else %}
-            {% set class = 'warning' %}
-        {% endif %}
-        <span class="label label-{{ class }}">{{ completeness.ratio }}%</span>
-    {% endif %}
-{% endfor %}
-{% if not showableCompleteness %}
- -
-{% endif%}
+<body>
+<div class="tab-content container-fluid">
+    <table id="progress-table" class="table table-bordered groups">
+        <thead>
+            <th width="8%">{{ 'Locales'|upper }}</th>
+            {% for channel in channels %}
+                <th class="channel" width="150">{{ channel.label|upper }}</th>
+            {% endfor %}
+            <th>&nbsp;</th>
+        </thead>
+
+        <tbody>
+            {% for locale in locales %}
+            <tr>
+                <td>{{ locale.code|flag(true) }}</td>
+                {% for channel in channels %}
+                <td>
+                    {% include 'PimCatalogBundle:Completeness:_healthbar.html.twig'
+                        with {
+                            'channel': channel,
+                            'locale': locale,
+                            'completeness': completenesses[locale.code][channel.code]['completeness'],
+                            'missingAttributes': completenesses[locale.code][channel.code]['missing'],
+                            'product': product
+                    } %}
+                </td>
+                {% endfor %}
+                <td>&nbsp;</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="legend">
+        <div class="row-fluid">
+            <div class="pull-left progress-bars">
+                <div class="progress">
+                    <div class="bar bar-disabled" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="pull-left progress-legend">
+                <span>{{ 'pim_catalog.completeness.legend.locale_not_associated'|trans }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
