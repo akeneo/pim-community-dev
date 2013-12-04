@@ -3632,12 +3632,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "4f84da1059eb831f778841adc27fe3c8f59ae8f6"
+                "reference": "8316bbdbf008b6909c6c3df041e0bc7bd4182d52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/4f84da1059eb831f778841adc27fe3c8f59ae8f6",
-                "reference": "4f84da1059eb831f778841adc27fe3c8f59ae8f6",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/8316bbdbf008b6909c6c3df041e0bc7bd4182d52",
+                "reference": "8316bbdbf008b6909c6c3df041e0bc7bd4182d52",
                 "shasum": ""
             },
             "require": {
@@ -3699,7 +3699,7 @@
                 "source": "https://github.com/laboro/platform/tree/fix/remove_flexible_entity",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-12-03 16:59:03"
+            "time": "2013-12-04 16:18:48"
         },
         {
             "name": "phpcollection/phpcollection",
