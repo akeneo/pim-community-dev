@@ -924,7 +924,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getCurrentPage()->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see "%s" next to the %s property, but saw "%s"',
@@ -1269,9 +1269,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = $config['writer']['filePath'];
+        $path = $config['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1279,9 +1278,9 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $delimiter = isset($config['processor']['delimiter']) ? $config['processor']['delimiter'] : ';';
-        $enclosure = isset($config['processor']['enclosure']) ? $config['processor']['enclosure'] : '"';
-        $escape    = isset($config['processor']['escape'])    ? $config['processor']['escape']    : '\\';
+        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
 
         $csvFile = new \SplFileObject($path);
         $csvFile->setFlags(
@@ -1347,9 +1346,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = dirname($config['writer']['filePath']);
+        $path = dirname($config['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(
@@ -1366,6 +1364,39 @@ class WebUser extends RawMinkContext
                 );
             }
         }
+    }
+
+    /**
+     * @When /^I compare values with the "([^"]*)" translation$/
+     */
+    public function iCompareValuesWithTheTranslation($language)
+    {
+        $this->getCurrentPage()->compareWith($language);
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see comparison languages "([^"]*)"$/
+     */
+    public function iShouldSeeComparisonLanguages($languages)
+    {
+        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+    }
+
+    /**
+     * @Given /^I select translations for "([^"]*)"$/
+     */
+    public function iSelectTranslationsFor($field)
+    {
+        $this->getCurrentPage()->selectTranslation($field);
+    }
+
+    /**
+     * @Given /^I copy (\w+) translations$/
+     */
+    public function iCopyTranslations($mode)
+    {
+        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
     }
 
     /**

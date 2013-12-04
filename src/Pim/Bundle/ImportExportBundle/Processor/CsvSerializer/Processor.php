@@ -6,6 +6,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * An abstract processor to serialize data into csv
@@ -18,7 +20,9 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class Processor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+abstract class Processor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @Assert\NotBlank
@@ -38,6 +42,11 @@ abstract class Processor extends AbstractConfigurableStepElement implements Item
      * @var boolean
      */
     protected $withHeader = true;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * Constructor
@@ -115,11 +124,33 @@ abstract class Processor extends AbstractConfigurableStepElement implements Item
     public function getConfigurationFields()
     {
         return array(
-            'delimiter' => array(),
-            'enclosure' => array(),
+            'delimiter' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.export.delimiter.label',
+                    'help'  => 'pim_import_export.export.delimiter.help'
+                )
+            ),
+            'enclosure' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.export.enclosure.label',
+                    'help'  => 'pim_import_export.export.enclosure.help'
+                )
+            ),
             'withHeader' => array(
                 'type' => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.export.withHeader.label',
+                    'help'  => 'pim_import_export.export.withHeader.help'
+                )
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

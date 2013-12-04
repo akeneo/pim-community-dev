@@ -33,7 +33,7 @@
 
                 $('form div.currency').currencyField();
 
-                $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
+                $('#default_channel').css('padding', '0').on('change', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     mediator.trigger('scopablefield:changescope', $(this).val());
@@ -146,6 +146,61 @@
 
                 $('a[data-toggle="tab"]').on('shown', setFullHeight);
                 setFullHeight();
+
+                function copyValue() {
+                    $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').each(function() {
+                        var $source = $(this);
+                        var sourceId = $(this).attr('id');
+                        if (!sourceId) {
+                            return;
+                        }
+                        var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
+                        var $target = $('#' + targetId);
+
+                        if ($source.is('select') && $source.parent().hasClass('metric')) {
+                            $target.get(0).selectize.setValue($source.get(0).selectize.getValue());
+                        } else if ($source.is('input[type=checkbox]')) {
+                            $target.parent().parent().bootstrapSwitch('setState', $source.is(':checked'));
+                        } else if ($source.is('input[type=file]')) {
+                            $('#' + targetId.replace(/file$/, 'copyFrom'))
+                                .val($('#' + sourceId.replace(/file$/, 'id')).val())
+                                .trigger('change');
+
+                            $target.siblings('.upload-info').html(
+                                $source.siblings('.upload-info').html()
+                            );
+                            $target.parent()
+                                .find('.remove-upload')
+                                .removeClass('hide')
+                                .click(function() {
+                                    $('#' + targetId.replace(/file$/, 'copyFrom')).removeAttr('value');
+                                    $(this).off('click');
+                                });
+                            ;
+                            $target.addClass('hide');
+                            $target.parent().removeClass('empty');
+                            $target.parent().find('a[rel=slimbox]').slimbox();
+                        } else {
+                            $target.val($('#' + sourceId).val()).trigger('change');
+                        }
+                    });
+                }
+
+                $('.copy').click(function(event) {
+                    event.preventDefault();
+                    switch($(this).data('target')) {
+                        case 'all':
+                            $('.comparison tr').each(function() {
+                                $('td:nth-child(2)', this).each(copyValue);
+                            });
+                            break;
+
+                        case 'selected':
+                            $('.comparison input.comparisonSelection:checked').each(function() {
+                                $(this).parent().parent().find('.controls').each(copyValue);
+                            });
+                    }
+                });
             });
         }
     );

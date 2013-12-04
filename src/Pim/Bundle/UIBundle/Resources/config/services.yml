@@ -4,6 +4,11 @@ services:
         tags:
             - { name: form.type_extension, alias: form }
 
+    pim_ui.form.extension.select2:
+        class: Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension
+        tags:
+            - { name: form.type_extension, alias: form }
+
     pim_ui.form.type.switch:
         class: Pim\Bundle\UIBundle\Form\Type\SwitchType
         tags:

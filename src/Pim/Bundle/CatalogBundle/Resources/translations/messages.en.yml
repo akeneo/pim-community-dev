@@ -441,6 +441,11 @@ pim_catalog.group:
         ADDITIONAL: Additional
         RELATED:    Related
 
+# Product comparison
+pim_catalog.product:
+    no_comparison_locale_available: 'No other locale is available for comparison'
+    no_compared_media: 'No media available for comparison'
+
 # Product view
 Group: Group
 View group: View group

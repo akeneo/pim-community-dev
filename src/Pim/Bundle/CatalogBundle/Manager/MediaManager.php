@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Model\Media;
 use Gaufrette\Filesystem;
+use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
 /**
@@ -17,17 +17,10 @@ use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
  */
 class MediaManager
 {
-    /**
-     * File system
-     * @var \Gaufrette\Filesystem
-     */
+    /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * Upload directory
-     *
-     * @var string
-     */
+    /** @var string */
     protected $uploadDirectory;
 
     /**
@@ -53,13 +46,34 @@ class MediaManager
                 if ($media->getFilename() && $this->fileExists($media)) {
                     $this->delete($media);
                 }
-                $this->upload($media, $this->generateFilename($file, $filenamePrefix));
+                $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();
+                $this->upload($media, $this->generateFilename($filename, $filenamePrefix));
             } elseif ($media->isRemoved() && $this->fileExists($media)) {
                 $this->delete($media);
             }
         } catch (\Exception $e) {
             throw new MediaManagementException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    /**
+     * Duplicate a media information into another one
+     *
+     * @param Media  $source
+     * @param Media  $target
+     * @param string $filenamePrefix
+     */
+    public function duplicate(Media $source, Media $target, $filenamePrefix)
+    {
+        $target->setFile(new File($source->getFilePath()));
+        $this->upload(
+            $target,
+            $this->generateFilename(
+                $source->getOriginalFilename(),
+                $filenamePrefix
+            )
+        );
+        $target->setOriginalFilename($source->getOriginalFilename());
     }
 
     /**
@@ -126,13 +140,9 @@ class MediaManager
      *
      * @return string
      */
-    protected function generateFilename(File $file, $filenamePrefix)
+    protected function generateFilename($filename, $filenamePrefix)
     {
-        return sprintf(
-            '%s-%s',
-            $filenamePrefix,
-            $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename()
-        );
+        return sprintf('%s-%s', $filenamePrefix, $filename);
     }
 
     /**

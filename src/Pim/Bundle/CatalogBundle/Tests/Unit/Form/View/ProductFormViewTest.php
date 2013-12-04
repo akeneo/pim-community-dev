@@ -61,13 +61,15 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    42 => array(
+                    'name_' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
                         'label'              => 'Name',
                         'sortOrder'          => 0,
                         'value'              => $view,
+                        'id'                 => 42,
+                        'locale'             => null,
                     ),
                 ),
             ),
@@ -131,21 +133,25 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    42 => array(
+                    'name_' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
                         'label'              => 'Name',
                         'sortOrder'          => 0,
-                        'value'              => $nameView
+                        'value'              => $nameView,
+                        'id'                 => 42,
+                        'locale'             => null,
                     ),
-                    1337 => array(
+                    'color_' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'color',
                         'label'              => 'Color',
                         'sortOrder'          => 0,
                         'value'              => $colorView,
+                        'id'                 => 1337,
+                        'locale'             => null,
                     ),
                 ),
             ),
@@ -203,12 +209,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    42 => array(
+                    'name_' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
                         'label'              => 'Name',
                         'sortOrder'          => 0,
+                        'id'                 => 42,
+                        'locale'             => null,
                         'classes'            => array(
                             'scopable' => true
                         ),
@@ -240,8 +248,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             array(
                 'id'            => 42,
                 'virtualGroup'  => $group,
-                'code'          => 'name',
-                'label'         => 'Name',
+                'code'          => 'price',
+                'label'         => 'Price',
                 'sortOrder'     => 0,
                 'scopable'      => false,
                 'attributeType' => 'pim_catalog_price_collection'
@@ -263,11 +271,13 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    42 => array(
+                    'price_' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
-                        'code'               => 'name',
-                        'label'              => 'Name',
+                        'code'               => 'price',
+                        'label'              => 'Price',
+                        'id'                 => 42,
+                        'locale'             => null,
                         'sortOrder'          => 0,
                         'classes'            => array(
                             'currency' => true
@@ -279,92 +289,6 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($formView, $this->formView->getView());
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
-     */
-    private function getValueMock(array $options)
-    {
-        $options = array_merge(
-            array(
-                'attribute' => null,
-                'removable' => null,
-                'scope'     => null,
-            ),
-            $options
-        );
-
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
-
-        $value->expects($this->any())
-            ->method('getAttribute')
-            ->will($this->returnValue($options['attribute']));
-
-        $value->expects($this->any())
-            ->method('isRemovable')
-            ->will($this->returnValue($options['removable']));
-
-        $value->expects($this->any())
-            ->method('getScope')
-            ->will($this->returnValue($options['scope']));
-
-        return $value;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-     */
-    private function getAttributeMock(array $options)
-    {
-        $options = array_merge(
-            array(
-                'id'            => null,
-                'virtualGroup'  => null,
-                'code'          => null,
-                'label'         => null,
-                'sortOrder'     => null,
-                'scopable'      => null,
-                'attributeType' => null,
-            ),
-            $options
-        );
-
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
-
-        $attribute->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue($options['id']));
-
-        $attribute->expects($this->any())
-            ->method('getVirtualGroup')
-            ->will($this->returnValue($options['virtualGroup']));
-
-        $attribute->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue($options['code']));
-
-        $attribute->expects($this->any())
-            ->method('getLabel')
-            ->will($this->returnValue($options['label']));
-
-        $attribute->expects($this->any())
-            ->method('getSortOrder')
-            ->will($this->returnValue($options['sortOrder']));
-
-        $attribute->expects($this->any())
-            ->method('isScopable')
-            ->will($this->returnValue($options['scopable']));
-
-        $attribute->expects($this->any())
-            ->method('getAttributeType')
-            ->will($this->returnValue($options['attributeType']));
-
-        return $attribute;
     }
 
     /**
@@ -440,7 +364,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             array(
                 'id'           => 1987,
                 'virtualGroup' => $otherGroup,
-                'code'         => 'release date',
+                'code'         => 'release_date',
                 'label'        => 'Release date',
                 'sortOrder'    => 20,
                 'scopable'     => false,
@@ -483,8 +407,172 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($weightValue, $weightView);
 
         $result = $this->formView->getView();
-        $this->assertEquals(array(1337, 42, 14), array_keys($result[1]['attributes']));
-        $this->assertEquals(array(73, 1987), array_keys($result[2]['attributes']));
+        $this->assertEquals(array('color_', 'name_', 'price_'), array_keys($result[1]['attributes']));
+        $this->assertEquals(array('weight_', 'release_date_'), array_keys($result[2]['attributes']));
+    }
+
+    public function testAddLocalizableChildren()
+    {
+        $group = $this->getGroupMock(
+            array(
+                'id'    => 1,
+                'label' => 'General',
+            )
+        );
+
+        $attribute = $this->getAttributeMock(
+            array(
+                'id'           => 42,
+                'virtualGroup' => $group,
+                'code'         => 'name',
+                'label'        => 'Name',
+                'sortOrder'    => 0,
+                'scopable'     => false,
+            )
+        );
+
+        $valueFr = $this->getValueMock(
+            array(
+                'attribute' => $attribute,
+                'removable' => true,
+                'locale'    => 'fr_FR'
+            )
+        );
+
+        $valueEn = $this->getValueMock(
+            array(
+                'attribute' => $attribute,
+                'removable' => true,
+                'locale'    => 'en_US'
+            )
+        );
+
+        $viewFr = $this->getMock('Symfony\Component\Form\FormView');
+        $viewEn = $this->getMock('Symfony\Component\Form\FormView');
+
+        $this->formView->addChildren($valueFr, $viewFr);
+        $this->formView->addChildren($valueEn, $viewEn);
+
+        $formView = array(
+            1 => array(
+                'label'      => 'General',
+                'attributes' => array(
+                    'name_fr_FR' => array(
+                        'isRemovable'        => true,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'value'              => $viewFr,
+                        'id'                 => 42,
+                        'locale'             => 'fr_FR',
+                    ),
+                    'name_en_US' => array(
+                        'isRemovable'        => true,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'value'              => $viewEn,
+                        'id'                 => 42,
+                        'locale'             => 'en_US',
+                    ),
+                ),
+            ),
+        );
+
+        $this->assertEquals($formView, $this->formView->getView());
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
+    private function getValueMock(array $options)
+    {
+        $options = array_merge(
+            array(
+                'attribute' => null,
+                'removable' => null,
+                'scope'     => null,
+                'locale'    => null,
+            ),
+            $options
+        );
+
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
+
+        $value->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($options['attribute']));
+
+        $value->expects($this->any())
+            ->method('isRemovable')
+            ->will($this->returnValue($options['removable']));
+
+        $value->expects($this->any())
+            ->method('getScope')
+            ->will($this->returnValue($options['scope']));
+
+        $value->expects($this->any())
+            ->method('getLocale')
+            ->will($this->returnValue($options['locale']));
+
+        return $value;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
+    private function getAttributeMock(array $options)
+    {
+        $options = array_merge(
+            array(
+                'id'            => null,
+                'virtualGroup'  => null,
+                'code'          => null,
+                'label'         => null,
+                'sortOrder'     => null,
+                'scopable'      => null,
+                'attributeType' => null,
+            ),
+            $options
+        );
+
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+
+        $attribute->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($options['id']));
+
+        $attribute->expects($this->any())
+            ->method('getVirtualGroup')
+            ->will($this->returnValue($options['virtualGroup']));
+
+        $attribute->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue($options['code']));
+
+        $attribute->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnValue($options['label']));
+
+        $attribute->expects($this->any())
+            ->method('getSortOrder')
+            ->will($this->returnValue($options['sortOrder']));
+
+        $attribute->expects($this->any())
+            ->method('isScopable')
+            ->will($this->returnValue($options['scopable']));
+
+        $attribute->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue($options['attributeType']));
+
+        return $attribute;
     }
 
     /**

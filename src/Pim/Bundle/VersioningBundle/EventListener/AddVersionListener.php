@@ -148,17 +148,11 @@ class AddVersionListener implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if (!$this->realTimeVersioning) {
-            $this->versionableEntities = array();
-
-            return;
-        }
-
         $em = $args->getEntityManager();
         if (!empty($this->versionableEntities)) {
             if ($this->username) {
                 $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
-                if (!$user) {
+                if (!$user and $this->realTimeVersioning) {
                     $this->versionableEntities = array();
 
                     return;

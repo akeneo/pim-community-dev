@@ -20,6 +20,8 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerIn
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @abstract
  */
 abstract class AbstractOrmTransformer
 {
@@ -41,7 +43,7 @@ abstract class AbstractOrmTransformer
     /**
      * @var ColumnInfoTransformerInterface
      */
-    protected $labelTransformer;
+    protected $columnInfoTransformer;
 
     /**
      * @var array
@@ -64,18 +66,18 @@ abstract class AbstractOrmTransformer
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $labelTransformer
+     * @param ColumnInfoTransformerInterface $columnInfoTransformer
      */
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $labelTransformer
+        ColumnInfoTransformerInterface $columnInfoTransformer
     ) {
         $this->doctrine = $doctrine;
         $this->propertyAccessor = $propertyAccessor;
         $this->guesser = $guesser;
-        $this->labelTransformer = $labelTransformer;
+        $this->columnInfoTransformer = $columnInfoTransformer;
     }
 
     /**
@@ -126,7 +128,7 @@ abstract class AbstractOrmTransformer
     protected function setProperties($class, $entity, array $data)
     {
         foreach ($data as $label => $value) {
-            $columnInfo = $this->labelTransformer->transform($class, $label);
+            $columnInfo = $this->columnInfoTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {

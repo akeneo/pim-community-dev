@@ -64,6 +64,8 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     public function process($products)
     {
+        $this->stepExecution->addSummaryInfo('write', count($products));
+
         $csv =  $this->serializer->serialize(
             $products,
             'csv',
@@ -101,10 +103,13 @@ class ProductProcessor extends HeterogeneousProcessor
             parent::getConfigurationFields(),
             array(
                 'channel' => array(
-                    'type' => 'choice',
+                    'type'    => 'choice',
                     'options' => array(
-                        'choices' => $this->channelManager->getChannelChoices(),
-                        'required' => true
+                        'choices'  => $this->channelManager->getChannelChoices(),
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_import_export.export.channel.label',
+                        'help'     => 'pim_import_export.export.channel.help'
                     )
                 )
             )

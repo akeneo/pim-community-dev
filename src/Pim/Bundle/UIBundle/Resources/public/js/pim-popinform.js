@@ -27,7 +27,6 @@ define(
             opts.noneSelectedText = opts.title;
 
             var $select = $el.find('select');
-            $select.select2('destroy');
 
             $select.multiselect(opts).multiselectfilter({
                 label: false,

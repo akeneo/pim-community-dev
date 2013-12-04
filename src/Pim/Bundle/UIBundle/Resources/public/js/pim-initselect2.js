@@ -3,27 +3,29 @@ define(
     function ($, _) {
         'use strict';
 
-        return function () {
-            var $form = $('form');
-            $form.find('input.multiselect').each(function () {
-                var $el   = $(this),
-                    value = _.map(_.compact($el.val().split(',')), $.trim),
+        return function (id) {
+            var $el = $('#' + id),
+                options = {};
+
+            if ($el.hasClass('multiselect')) {
+                var value = _.map(_.compact($el.val().split(',')), $.trim),
                     tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
-                tags = _.union(tags, value).sort();
-                $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
-            });
-
-            $('select').each(function () {
-                var $el    = $(this),
-                    $empty = $el.children('[value=""]');
-                if ($empty.length && $empty.html()) {
-                    $el.attr('data-placeholder', $empty.html());
-                    $empty.html('');
+                    tags = _.union(tags, value).sort();
+                options = { tags: tags, tokenSeparators: [',', ' '] };
+            } else {
+                if ($el.attr('data-placeholder') && $el.attr('data-placeholder').length) {
+                    options = { allowClear: true };
+                } else {
+                    var $empty = $el.children('[value=""]');
+                    if ($empty.length && $empty.html()) {
+                        $el.attr('data-placeholder', $empty.html());
+                        $empty.html('');
+                        options = { allowClear: true };
+                    }
                 }
-            });
+            }
 
-            $form.find('select[data-placeholder]').select2({ allowClear: true });
-            $form.find('select:not(.select2-offscreen)').select2();
+            $el.select2(options);
         };
     }
 );

@@ -3641,12 +3641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "89db0b78b712aef87506dc07990575ae224ae2e2"
+                "reference": "7ef1aae60e9768b6ce69124bd0360300818b5a8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/89db0b78b712aef87506dc07990575ae224ae2e2",
-                "reference": "89db0b78b712aef87506dc07990575ae224ae2e2",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/7ef1aae60e9768b6ce69124bd0360300818b5a8a",
+                "reference": "7ef1aae60e9768b6ce69124bd0360300818b5a8a",
                 "shasum": ""
             },
             "require": {
@@ -3708,7 +3708,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta4",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-11-07 08:24:58"
+            "time": "2013-12-03 15:28:48"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -5989,7 +5989,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "oro/platform": 20,
-        "akeneo/demobundle": 20,
         "knplabs/knp-gaufrette-bundle": 20,
         "doctrine/mongodb-odm-bundle": 20,
         "behat/behat": 0

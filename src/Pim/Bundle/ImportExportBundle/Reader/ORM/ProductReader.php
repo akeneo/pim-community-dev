@@ -103,10 +103,13 @@ class ProductReader extends Reader
     {
         return array(
             'channel' => array(
-                'type' => 'choice',
+                'type'    => 'choice',
                 'options' => array(
-                    'choices' => $this->channelManager->getChannelChoices(),
-                    'required' => true
+                    'choices'  => $this->channelManager->getChannelChoices(),
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_import_export.export.channel.label',
+                    'help'     => 'pim_import_export.export.channel.help'
                 )
             )
         );
