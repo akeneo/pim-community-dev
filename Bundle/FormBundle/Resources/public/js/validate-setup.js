@@ -199,8 +199,8 @@ function($, _, __, tools) {
     });
 
     $.fn.validateDelegate = _.wrap($.fn.validateDelegate, function (validateDelegate, delegate, type, handler) {
-        return validateDelegate.call(this, delegate, type, function (event) {
-            return this[0] && this[0].form && handler.call(this, event);
+        return validateDelegate.call(this, delegate, type, function () {
+            return this[0] && this[0].form && handler.apply(this, arguments);
         });
     });
 });
