@@ -91,14 +91,14 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
                         {% if column.type == constant(columnTypePrefix ~ 'TYPE_DATE') %}
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD",
-                                displayFormat: {{ oro_config_moment_dateformat()|json_encode|raw }}
+                                displayFormat: {{ "YYYY-MM-DD"|json_encode|raw }} {# TODO #}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
-                                displayFormat: {{ oro_config_moment_datetimeformat()|json_encode|raw }},
+                                displayFormat: {{ "YYYY-MM-DD hh:mm:ss"|json_encode|raw }}, {# TODO #}
                                 displayInUTC:  true,
-                                displayTimeZone: {{ oro_config_timezone()|json_encode|raw }}
+                                displayTimeZone: {{ 'UTC'|json_encode|raw }} {# TODO #}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell
