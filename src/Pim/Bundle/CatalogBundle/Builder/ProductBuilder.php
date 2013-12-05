@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
@@ -38,6 +40,16 @@ class ProductBuilder
     protected $currencyManager;
 
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * @var array
      */
     protected $scopeRows = null;
@@ -57,10 +69,17 @@ class ProductBuilder
      *
      * @param string          $productClass    Entity name
      * @param ObjectManager   $objectManager   Storage manager
+     * @param ChannelManager  $channelManager  Channel Manager
+     * @param LocaleManager   $localManager    Locale Manager
      * @param CurrencyManager $currencyManager Currency manager
      */
-    public function __construct($productClass, ObjectManager $objectManager, CurrencyManager $currencyManager)
-    {
+    public function __construct(
+        $productClass,
+        ObjectManager $objectManager,
+        ChannelManager $channelManager,
+        LocaleManager $localeManager,
+        CurrencyManager $currencyManager
+    ) {
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
         $this->currencyManager = $currencyManager;
@@ -304,7 +323,7 @@ class ProductBuilder
     protected function getLocaleRows()
     {
         if (!$this->localeRows) {
-            $locales = $this->objectManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
+            $locales = $this->localeManager->getActivatedLocales();
             $this->localeRows = array();
             foreach ($locales as $locale) {
                 $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
@@ -322,7 +341,7 @@ class ProductBuilder
     protected function getScopeRows()
     {
         if (!$this->scopeRows) {
-            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $channels = $this->channelManager->getChannels();
             $this->scopeRows = array();
             foreach ($channels as $channel) {
                 $this->scopeRows[] = array('locale' => null, 'scope' => $channel->getCode());
@@ -340,7 +359,7 @@ class ProductBuilder
     protected function getScopeToLocaleRows()
     {
         if (!$this->scopeToLocaleRows) {
-            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $channels = $this->channelManager->getChannels();
             $this->scopeToLocaleRows = array();
             foreach ($channels as $channel) {
                 foreach ($channel->getLocales() as $locale) {
