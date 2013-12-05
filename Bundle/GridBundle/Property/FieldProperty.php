@@ -66,6 +66,10 @@ class FieldProperty extends AbstractProperty
             return $value;
         }
 
+        if (is_object($value) && is_callable(array($value, '__toString'))) {
+            $value = $value->__toString();
+        }
+
         $result = $this->convertValue($value);
 
         if (is_object($result) && is_callable(array($result, '__toString'))) {
