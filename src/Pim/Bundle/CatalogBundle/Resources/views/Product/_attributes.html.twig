@@ -28,10 +28,7 @@
         <div id="comparison-switcher" class="btn-group">
 
             <button class="btn dropdown-toggle" data-toggle="dropdown">
-                {{ 'Translate'|trans }}
-                {% if comparisonLocale is not null %}
-                    : {{ comparisonLocale|flag }} {{ locale_label(comparisonLocale) }}
-                {% endif %}
+                {{ 'Translate'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
                 <span class="caret"></span>
             </button>
 
@@ -39,14 +36,12 @@
                 {% for locale in locales if locale != dataLocale %}
                     <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
                         <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
-                            <span class="icon pull-left">
+                            <span class="indicator">
                                 {% if locale == comparisonLocale %}
                                     <i class="icon-circle"></i>
                                 {% endif %}
                             </span>
-                            <span class="code">
-                                {{ locale.code|flag }}
-                            </span>
+                            {{ locale.code|flag }}
                             <span class="title">{{ locale_label(locale.code) }}</span>
                         </a>
                     </li>

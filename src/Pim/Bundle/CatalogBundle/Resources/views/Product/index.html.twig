@@ -91,15 +91,13 @@
             <ul class="dropdown-menu">
                 {% for locale in locales %}
                     <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                        <a href="{{ path('pim_catalog_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale.code }}">
-                            <span class="icon pull-left">
+                        <a href="{{ path('pim_catalog_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
                                 {% if locale.code == dataLocale %}
                                     <i class="icon-circle"></i>
                                 {% endif %}
                             </span>
-                            <span class="code">
-                                {{ locale.code|flag }}
-                            </span>
+                            {{ locale.code|flag }}
                         </a>
                     </li>
                 {% endfor %}
