@@ -35,11 +35,6 @@ class ProductBuilder
     protected $objectManager;
 
     /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
      * @var ChannelManager
      */
     protected $channelManager;
@@ -48,6 +43,11 @@ class ProductBuilder
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var CurrencyManager
+     */
+    protected $currencyManager;
 
     /**
      * @var array
@@ -75,13 +75,15 @@ class ProductBuilder
      */
     public function __construct(
         $productClass,
-        ObjectManager $objectManager,
-        ChannelManager $channelManager,
-        LocaleManager $localeManager,
+        ObjectManager   $objectManager,
+        ChannelManager  $channelManager,
+        LocaleManager   $localeManager,
         CurrencyManager $currencyManager
     ) {
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
+        $this->channelManager  = $channelManager;
+        $this->localeManager   = $localeManager;
         $this->currencyManager = $currencyManager;
     }
 
@@ -323,7 +325,7 @@ class ProductBuilder
     protected function getLocaleRows()
     {
         if (!$this->localeRows) {
-            $locales = $this->localeManager->getActivatedLocales();
+            $locales = $this->localeManager->getActiveLocales();
             $this->localeRows = array();
             foreach ($locales as $locale) {
                 $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
