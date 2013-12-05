@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit;
 
-use Symfony\Component\Yaml\Yaml;
-
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 

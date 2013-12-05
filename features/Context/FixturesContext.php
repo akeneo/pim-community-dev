@@ -1356,7 +1356,7 @@ class FixturesContext extends RawMinkContext
             } else {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
                         $data['label']
                     )
                 );
