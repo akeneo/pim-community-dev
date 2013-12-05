@@ -61,6 +61,25 @@
         {% endif %}
     </div>
     <div id="attribute-buttons">
+
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" href="javascript:void(0);" title="{{ 'Scope'|trans }}" data-toggle="dropdown">
+                <i class="icon-eye-open"></i>
+                <span>{{ 'Scope'|trans }}</span>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                {% for channel in channels %}
+                    <li><a href="javascript:void(0);" data-scope="{{ channel.code }}">{{ channel.label }}</a></li>
+                {% endfor %}
+            </ul>
+            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand">
+                <i class="icon-collapse"></i>
+            </a>
+            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Collapse all channels'|trans }}" data-action="collapse">
+                <i class="icon-collapse-top"></i>
+            </a>
+        </div>
+
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
                 <i class="icon-eye-open"></i>
