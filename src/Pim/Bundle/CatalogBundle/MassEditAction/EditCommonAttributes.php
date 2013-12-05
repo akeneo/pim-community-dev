@@ -378,6 +378,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         if (null === $metric = $productValue->getMetric()) {
             $metric = new Metric();
+            $metric->setFamily($value->getAttribute()->getMetricFamily());
             $productValue->setMetric($metric);
         }
         $metric->setUnit($value->getMetric()->getUnit());
