@@ -32,6 +32,13 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             $this->transformer,
             'class'
         );
+
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->processor->setStepExecution($stepExecution);
+
         $this->entity = new \stdClass;
     }
 
