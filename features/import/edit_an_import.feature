@@ -32,9 +32,9 @@ Feature: Edit an import
     And I uncheck the "Enable the product?" switch
     And I uncheck the "Real time versioning?" switch
     And I press the "Save" button
-    Then I should see "File /tmp/file.csv"
+    Then I should see "File /file.csv"
     And I should see "Allow file upload No"
-    And I should see "Delimiter \"
+    And I should see "Delimiter |"
     And I should see "Enclosure '"
     And I should see "Escape \\"
     And I should see "Real time versioning? No"
