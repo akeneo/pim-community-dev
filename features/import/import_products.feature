@@ -23,10 +23,11 @@ Feature: Execute a job
       | code  | label     | attributes | type   |
       | CROSS | Bag Cross |            | X_SELL |
     And the following attributes:
-      | code        | label       | type     |
-      | name        | Name        | text     |
-      | description | Description | textarea |
-      | prices      | Prices      | prices   |
+      | code        | label       | type     | metric family | default metric unit |
+      | name        | Name        | text     |               |                     |
+      | description | Description | textarea |               |                     |
+      | prices      | Prices      | prices   |               |                     |
+      | weight      | Weight      | metric   | Weight        | KILOGRAM            |
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
@@ -165,3 +166,33 @@ Feature: Execute a job
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | prices | 100.00 EUR, 90.00 USD |
+
+  Scenario: Successfully import products metrics
+    Given the following file to import:
+      """
+      sku;weight
+      SKU-001;4000 GRAM
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | {{ file to import }} |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the job to finish
+    Then there should be 1 products
+    And the product "SKU-001" should have the following value:
+      | weight | 4000.0000 GRAM |
+
+  Scenario: Successfully import products metrics splitting the data and unit
+    Given the following file to import:
+      """
+      sku;weight;weight-unit
+      SKU-001;4000;GRAM
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | {{ file to import }} |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the job to finish
+    Then there should be 1 products
+    And the product "SKU-001" should have the following value:
+      | weight | 4000.0000 GRAM |

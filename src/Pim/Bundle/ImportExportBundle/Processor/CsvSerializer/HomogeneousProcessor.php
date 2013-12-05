@@ -16,7 +16,8 @@ class HomogeneousProcessor extends Processor
      */
     public function process($item)
     {
-        $this->stepExecution->addSummaryInfo('write', count($item));
+        $nbItems = count($item) - ($this->isWithHeader() ? 1 : 0);
+        $this->stepExecution->addSummaryInfo('write', $nbItems);
 
         return $this->serializer->serialize(
             $item,

@@ -35,6 +35,16 @@ class ProductBuilder
     protected $objectManager;
 
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * @var CurrencyManager
      */
     protected $currencyManager;
@@ -82,6 +92,8 @@ class ProductBuilder
     ) {
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
+        $this->channelManager  = $channelManager;
+        $this->localeManager   = $localeManager;
         $this->currencyManager = $currencyManager;
     }
 
@@ -323,7 +335,11 @@ class ProductBuilder
     protected function getLocaleRows()
     {
         if (!$this->localeRows) {
+<<<<<<< HEAD
             $locales = $this->localeManager->getActivatedLocales();
+=======
+            $locales = $this->localeManager->getActiveLocales();
+>>>>>>> master
             $this->localeRows = array();
             foreach ($locales as $locale) {
                 $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);

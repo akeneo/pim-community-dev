@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
  * Test related class
@@ -12,7 +12,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricTypeTest extends TypeTestCase
+class MetricTypeTest extends AbstractFormTypeTest
 {
 
     /**
@@ -21,6 +21,7 @@ class MetricTypeTest extends TypeTestCase
     protected function setUp()
     {
         parent::setUp();
+
         $this->measureManager = $this->getMock('Oro\Bundle\MeasureBundle\Manager\MeasureManager');
         $this->type = new MetricType('', '', $this->measureManager);
         $this->form = $this->factory->create($this->type);

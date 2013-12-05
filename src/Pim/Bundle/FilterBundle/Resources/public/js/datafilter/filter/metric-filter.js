@@ -70,7 +70,7 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="unitfilter choicefilter">' +
+                '<div class="metricfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
@@ -82,7 +82,7 @@ define(
                                     '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="unit_type" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="metric_type" id="<%= name %>" value=""/>' +
                         '</div>' +
 
                         '<input type="text" name="value" value="">' +
@@ -97,7 +97,7 @@ define(
                                     '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="unit_unit" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="metric_unit" id="<%= name %>" value=""/>' +
                         '</div>' +
                     '</div>' +
                     '<button class="btn btn-primary filter-update" type="button">Update</button>' +
@@ -110,8 +110,8 @@ define(
              * @property {Object}
              */
             criteriaValueSelectors: {
-                unit: 'input[name="unit_unit"]',
-                type:     'input[name="unit_type"]',
+                unit: 'input[name="metric_unit"]',
+                type:     'input[name="metric_type"]',
                 value:    'input[name="value"]'
             },
 
