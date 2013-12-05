@@ -15,6 +15,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 360 GRAM
     sku-001:
         sku: sku-001
         family: mug
@@ -31,6 +32,7 @@ products:
         short_description-fr_FR-mobile: 'Tenetur sed at vitae ipsam.'
         size: ''
         unique_color: ''
+        weight: 688 GRAM
     sku-002:
         sku: sku-002
         family: mug
@@ -47,6 +49,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 485 GRAM
     sku-003:
         sku: sku-003
         family: mug
@@ -63,6 +66,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 842 GRAM
     sku-004:
         sku: sku-004
         family: dress
@@ -79,6 +83,7 @@ products:
         short_description-fr_FR-mobile: 'Et et assumenda odit.'
         size: XS
         unique_color: uc_green
+        weight: 384 GRAM
     sku-005:
         sku: sku-005
         family: mug
@@ -95,6 +100,7 @@ products:
         short_description-fr_FR-mobile: 'Velit sit ex molestias alias.'
         size: ''
         unique_color: ''
+        weight: 486 GRAM
     sku-006:
         sku: sku-006
         family: mug
@@ -111,6 +117,7 @@ products:
         short_description-fr_FR-mobile: 'Autem iusto aliquid quis.'
         size: ''
         unique_color: ''
+        weight: 669 GRAM
     sku-007:
         sku: sku-007
         family: dress
@@ -127,6 +134,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_yellow
+        weight: 123 GRAM
     sku-008:
         sku: sku-008
         family: dress
@@ -143,6 +151,7 @@ products:
         short_description-fr_FR-mobile: 'Natus quam sequi non eos corporis quod.'
         size: XL
         unique_color: ''
+        weight: 617 GRAM
     sku-009:
         sku: sku-009
         family: shoe
@@ -159,6 +168,7 @@ products:
         short_description-fr_FR-mobile: 'Ratione error voluptates voluptatem omnis.'
         size: ''
         unique_color: ''
+        weight: 101 GRAM
     sku-010:
         sku: sku-010
         family: shoe
@@ -175,6 +185,7 @@ products:
         short_description-fr_FR-mobile: 'Qui sit mollitia est sed aliquid.'
         size: ''
         unique_color: ''
+        weight: 616 GRAM
     sku-011:
         sku: sku-011
         family: shirt
@@ -191,6 +202,7 @@ products:
         short_description-fr_FR-mobile: 'Eum non illo fugiat.'
         size: XL
         unique_color: ''
+        weight: 158 GRAM
     sku-012:
         sku: sku-012
         family: shoe
@@ -207,6 +219,7 @@ products:
         short_description-fr_FR-mobile: 'Ut atque rem quaerat porro omnis ut.'
         size: XL
         unique_color: ''
+        weight: 636 GRAM
     sku-013:
         sku: sku-013
         family: dress
@@ -223,6 +236,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: uc_black
+        weight: 162 GRAM
     sku-014:
         sku: sku-014
         family: dress
@@ -239,6 +253,7 @@ products:
         short_description-fr_FR-mobile: 'Doloremque dolores voluptatem quisquam.'
         size: S
         unique_color: uc_purple
+        weight: 398 GRAM
     sku-015:
         sku: sku-015
         family: dress
@@ -255,6 +270,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight: 447 GRAM
     sku-016:
         sku: sku-016
         family: shoe
@@ -271,6 +287,7 @@ products:
         short_description-fr_FR-mobile: 'Quasi est iusto dolorem eum ea aspernatur.'
         size: XL
         unique_color: ''
+        weight: 975 GRAM
     sku-017:
         sku: sku-017
         family: shoe
@@ -287,6 +304,7 @@ products:
         short_description-fr_FR-mobile: 'Laborum consequatur officiis sed doloremque blanditiis.'
         size: S
         unique_color: ''
+        weight: 355 GRAM
     sku-018:
         sku: sku-018
         family: shoe
@@ -303,6 +321,7 @@ products:
         short_description-fr_FR-mobile: 'Praesentium delectus delectus ratione autem.'
         size: ''
         unique_color: ''
+        weight: 494 GRAM
     sku-019:
         sku: sku-019
         family: mug
@@ -319,6 +338,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 135 GRAM
     sku-020:
         sku: sku-020
         family: mug
@@ -335,6 +355,7 @@ products:
         short_description-fr_FR-mobile: 'Quis vel temporibus repudiandae rem.'
         size: ''
         unique_color: ''
+        weight: 130 GRAM
     sku-021:
         sku: sku-021
         family: shirt
@@ -351,6 +372,7 @@ products:
         short_description-fr_FR-mobile: 'Aut eum ducimus praesentium omnis.'
         size: S
         unique_color: ''
+        weight: 393 GRAM
     sku-022:
         sku: sku-022
         family: mug
@@ -367,6 +389,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 485 GRAM
     sku-023:
         sku: sku-023
         family: mug
@@ -383,6 +406,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 836 GRAM
     sku-024:
         sku: sku-024
         family: mug
@@ -399,6 +423,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 514 GRAM
     sku-025:
         sku: sku-025
         family: shirt
@@ -415,6 +440,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight: 329 GRAM
     sku-026:
         sku: sku-026
         family: shoe
@@ -431,6 +457,7 @@ products:
         short_description-fr_FR-mobile: 'Dolores et minima quos.'
         size: XL
         unique_color: ''
+        weight: 829 GRAM
     sku-027:
         sku: sku-027
         family: shoe
@@ -447,6 +474,7 @@ products:
         short_description-fr_FR-mobile: 'Excepturi porro repellat qui.'
         size: ''
         unique_color: ''
+        weight: 836 GRAM
     sku-028:
         sku: sku-028
         family: shoe
@@ -463,6 +491,7 @@ products:
         short_description-fr_FR-mobile: 'Quaerat tempore consequatur quos quia soluta aut.'
         size: L
         unique_color: ''
+        weight: 484 GRAM
     sku-029:
         sku: sku-029
         family: mug
@@ -479,6 +508,7 @@ products:
         short_description-fr_FR-mobile: 'Eveniet nobis corrupti officiis vero natus velit.'
         size: ''
         unique_color: ''
+        weight: 511 GRAM
     sku-030:
         sku: sku-030
         family: shoe
@@ -495,6 +525,7 @@ products:
         short_description-fr_FR-mobile: 'Sint consequatur quis assumenda et ipsam natus.'
         size: ''
         unique_color: ''
+        weight: 588 GRAM
     sku-031:
         sku: sku-031
         family: dress
@@ -511,6 +542,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: uc_purple
+        weight: 859 GRAM
     sku-032:
         sku: sku-032
         family: shirt
@@ -527,6 +559,7 @@ products:
         short_description-fr_FR-mobile: 'Minus perferendis aut cumque unde.'
         size: M
         unique_color: ''
+        weight: 615 GRAM
     sku-033:
         sku: sku-033
         family: dress
@@ -543,6 +576,7 @@ products:
         short_description-fr_FR-mobile: 'Sit velit modi porro numquam.'
         size: XL
         unique_color: uc_purple
+        weight: 200 GRAM
     sku-034:
         sku: sku-034
         family: shirt
@@ -559,6 +593,7 @@ products:
         short_description-fr_FR-mobile: 'Necessitatibus et quibusdam autem.'
         size: ''
         unique_color: ''
+        weight: 97 GRAM
     sku-035:
         sku: sku-035
         family: shoe
@@ -575,6 +610,7 @@ products:
         short_description-fr_FR-mobile: 'A culpa voluptatem voluptatem molestiae.'
         size: L
         unique_color: ''
+        weight: 822 GRAM
     sku-036:
         sku: sku-036
         family: mug
@@ -591,6 +627,7 @@ products:
         short_description-fr_FR-mobile: 'Autem sint similique est.'
         size: ''
         unique_color: ''
+        weight: 515 GRAM
     sku-037:
         sku: sku-037
         family: dress
@@ -607,6 +644,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: uc_white
+        weight: 822 GRAM
     sku-038:
         sku: sku-038
         family: shoe
@@ -623,6 +661,7 @@ products:
         short_description-fr_FR-mobile: 'Earum ipsa sit voluptatibus qui.'
         size: XL
         unique_color: ''
+        weight: 833 GRAM
     sku-039:
         sku: sku-039
         family: dress
@@ -639,6 +678,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_green
+        weight: 143 GRAM
     sku-040:
         sku: sku-040
         family: shirt
@@ -655,6 +695,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: ''
+        weight: 124 GRAM
     sku-041:
         sku: sku-041
         family: shirt
@@ -671,6 +712,7 @@ products:
         short_description-fr_FR-mobile: 'Nihil ex praesentium asperiores quam.'
         size: XL
         unique_color: ''
+        weight: 896 GRAM
     sku-042:
         sku: sku-042
         family: dress
@@ -687,6 +729,7 @@ products:
         short_description-fr_FR-mobile: 'Dolor eum est possimus dolores consectetur iusto.'
         size: S
         unique_color: ''
+        weight: 706 GRAM
     sku-043:
         sku: sku-043
         family: mug
@@ -703,6 +746,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 920 GRAM
     sku-044:
         sku: sku-044
         family: shoe
@@ -719,6 +763,7 @@ products:
         short_description-fr_FR-mobile: 'Dolorum fugiat eveniet vitae autem quis voluptas.'
         size: ''
         unique_color: ''
+        weight: 688 GRAM
     sku-045:
         sku: sku-045
         family: mug
@@ -735,6 +780,7 @@ products:
         short_description-fr_FR-mobile: 'Odit voluptas aut temporibus.'
         size: ''
         unique_color: ''
+        weight: 634 GRAM
     sku-046:
         sku: sku-046
         family: dress
@@ -751,6 +797,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_red
+        weight: 428 GRAM
     sku-047:
         sku: sku-047
         family: mug
@@ -767,6 +814,7 @@ products:
         short_description-fr_FR-mobile: 'Dolores perferendis amet ut non.'
         size: ''
         unique_color: ''
+        weight: 873 GRAM
     sku-048:
         sku: sku-048
         family: shirt
@@ -783,6 +831,7 @@ products:
         short_description-fr_FR-mobile: 'Dolores aliquid quos culpa voluptate.'
         size: S
         unique_color: ''
+        weight: 590 GRAM
     sku-049:
         sku: sku-049
         family: shirt
@@ -799,6 +848,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: ''
+        weight: 77 GRAM
     sku-050:
         sku: sku-050
         family: shoe
@@ -815,6 +865,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 83 GRAM
     sku-051:
         sku: sku-051
         family: mug
@@ -831,6 +882,7 @@ products:
         short_description-fr_FR-mobile: 'Aut eos quia error in.'
         size: ''
         unique_color: ''
+        weight: 389 GRAM
     sku-052:
         sku: sku-052
         family: dress
@@ -847,6 +899,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: ''
+        weight: 376 GRAM
     sku-053:
         sku: sku-053
         family: mug
@@ -863,6 +916,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 824 GRAM
     sku-054:
         sku: sku-054
         family: mug
@@ -879,6 +933,7 @@ products:
         short_description-fr_FR-mobile: 'Eos non et repellendus.'
         size: ''
         unique_color: ''
+        weight: 844 GRAM
     sku-055:
         sku: sku-055
         family: shirt
@@ -895,6 +950,7 @@ products:
         short_description-fr_FR-mobile: 'Aut nihil quia officiis deleniti fuga.'
         size: XS
         unique_color: ''
+        weight: 519 GRAM
     sku-056:
         sku: sku-056
         family: dress
@@ -911,6 +967,7 @@ products:
         short_description-fr_FR-mobile: 'Beatae nesciunt sapiente maxime.'
         size: ''
         unique_color: uc_green
+        weight: 554 GRAM
     sku-057:
         sku: sku-057
         family: mug
@@ -927,6 +984,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 123 GRAM
     sku-058:
         sku: sku-058
         family: shirt
@@ -943,6 +1001,7 @@ products:
         short_description-fr_FR-mobile: 'Nisi laboriosam consequatur quo a ducimus voluptatem.'
         size: M
         unique_color: ''
+        weight: 550 GRAM
     sku-059:
         sku: sku-059
         family: mug
@@ -959,6 +1018,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 760 GRAM
     sku-060:
         sku: sku-060
         family: shoe
@@ -975,6 +1035,7 @@ products:
         short_description-fr_FR-mobile: 'Voluptas in error voluptatem omnis et.'
         size: M
         unique_color: ''
+        weight: 747 GRAM
     sku-061:
         sku: sku-061
         family: shoe
@@ -991,6 +1052,7 @@ products:
         short_description-fr_FR-mobile: 'Pariatur dolores recusandae voluptates tenetur accusantium.'
         size: M
         unique_color: ''
+        weight: 395 GRAM
     sku-062:
         sku: sku-062
         family: mug
@@ -1007,6 +1069,7 @@ products:
         short_description-fr_FR-mobile: 'Enim ratione fugit quos.'
         size: ''
         unique_color: ''
+        weight: 390 GRAM
     sku-063:
         sku: sku-063
         family: mug
@@ -1023,6 +1086,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 75 GRAM
     sku-064:
         sku: sku-064
         family: shirt
@@ -1039,6 +1103,7 @@ products:
         short_description-fr_FR-mobile: 'Sint occaecati corporis ex est natus.'
         size: ''
         unique_color: ''
+        weight: 283 GRAM
     sku-065:
         sku: sku-065
         family: mug
@@ -1055,6 +1120,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 489 GRAM
     sku-066:
         sku: sku-066
         family: shirt
@@ -1071,6 +1137,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight: 931 GRAM
     sku-067:
         sku: sku-067
         family: dress
@@ -1087,6 +1154,7 @@ products:
         short_description-fr_FR-mobile: 'Illum quia culpa cupiditate nobis optio perferendis.'
         size: S
         unique_color: uc_red
+        weight: 553 GRAM
     sku-068:
         sku: sku-068
         family: shoe
@@ -1103,6 +1171,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: ''
+        weight: 206 GRAM
     sku-069:
         sku: sku-069
         family: mug
@@ -1119,6 +1188,7 @@ products:
         short_description-fr_FR-mobile: 'Qui iure dolorum aut commodi.'
         size: ''
         unique_color: ''
+        weight: 854 GRAM
     sku-070:
         sku: sku-070
         family: mug
@@ -1135,6 +1205,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 461 GRAM
     sku-071:
         sku: sku-071
         family: shoe
@@ -1151,6 +1222,7 @@ products:
         short_description-fr_FR-mobile: 'Hic alias recusandae molestias at aperiam libero.'
         size: ''
         unique_color: ''
+        weight: 584 GRAM
     sku-072:
         sku: sku-072
         family: dress
@@ -1167,6 +1239,7 @@ products:
         short_description-fr_FR-mobile: 'Qui recusandae cumque et.'
         size: ''
         unique_color: uc_blue
+        weight: 561 GRAM
     sku-073:
         sku: sku-073
         family: shirt
@@ -1183,6 +1256,7 @@ products:
         short_description-fr_FR-mobile: 'Non excepturi et autem nihil.'
         size: S
         unique_color: ''
+        weight: 882 GRAM
     sku-074:
         sku: sku-074
         family: dress
@@ -1199,6 +1273,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_purple
+        weight: 844 GRAM
     sku-075:
         sku: sku-075
         family: dress
@@ -1215,6 +1290,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: S
         unique_color: uc_red
+        weight: 492 GRAM
     sku-076:
         sku: sku-076
         family: mug
@@ -1231,6 +1307,7 @@ products:
         short_description-fr_FR-mobile: 'Explicabo incidunt atque esse ut.'
         size: ''
         unique_color: ''
+        weight: 864 GRAM
     sku-077:
         sku: sku-077
         family: shoe
@@ -1247,6 +1324,7 @@ products:
         short_description-fr_FR-mobile: 'Quas alias et dignissimos earum nam.'
         size: M
         unique_color: ''
+        weight: 248 GRAM
     sku-078:
         sku: sku-078
         family: mug
@@ -1263,6 +1341,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 624 GRAM
     sku-079:
         sku: sku-079
         family: dress
@@ -1279,6 +1358,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_white
+        weight: 227 GRAM
     sku-080:
         sku: sku-080
         family: dress
@@ -1295,6 +1375,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_green
+        weight: 110 GRAM
     sku-081:
         sku: sku-081
         family: mug
@@ -1311,6 +1392,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 899 GRAM
     sku-082:
         sku: sku-082
         family: mug
@@ -1327,6 +1409,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 735 GRAM
     sku-083:
         sku: sku-083
         family: shoe
@@ -1343,6 +1426,7 @@ products:
         short_description-fr_FR-mobile: 'Et esse laborum voluptas qui eligendi.'
         size: XL
         unique_color: ''
+        weight: 617 GRAM
     sku-084:
         sku: sku-084
         family: shoe
@@ -1359,6 +1443,7 @@ products:
         short_description-fr_FR-mobile: 'Deserunt ut dolorem tempora sunt quod.'
         size: ''
         unique_color: ''
+        weight: 186 GRAM
     sku-085:
         sku: sku-085
         family: shirt
@@ -1375,6 +1460,7 @@ products:
         short_description-fr_FR-mobile: 'Nihil nam deleniti mollitia recusandae aspernatur.'
         size: S
         unique_color: ''
+        weight: 361 GRAM
     sku-086:
         sku: sku-086
         family: dress
@@ -1391,6 +1477,7 @@ products:
         short_description-fr_FR-mobile: 'Adipisci iste inventore optio voluptatem hic.'
         size: XL
         unique_color: uc_purple
+        weight: 243 GRAM
     sku-087:
         sku: sku-087
         family: mug
@@ -1407,6 +1494,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 602 GRAM
     sku-088:
         sku: sku-088
         family: mug
@@ -1423,6 +1511,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 9 GRAM
     sku-089:
         sku: sku-089
         family: dress
@@ -1439,6 +1528,7 @@ products:
         short_description-fr_FR-mobile: 'Sunt asperiores temporibus doloribus consequuntur molestiae.'
         size: ''
         unique_color: ''
+        weight: 149 GRAM
     sku-090:
         sku: sku-090
         family: shoe
@@ -1455,6 +1545,7 @@ products:
         short_description-fr_FR-mobile: 'Praesentium sit nobis culpa voluptas voluptatum fugit.'
         size: XL
         unique_color: ''
+        weight: 846 GRAM
     sku-091:
         sku: sku-091
         family: shoe
@@ -1471,6 +1562,7 @@ products:
         short_description-fr_FR-mobile: 'Aut minima eveniet odit expedita qui.'
         size: XS
         unique_color: ''
+        weight: 858 GRAM
     sku-092:
         sku: sku-092
         family: dress
@@ -1487,6 +1579,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 64 GRAM
     sku-093:
         sku: sku-093
         family: dress
@@ -1503,6 +1596,7 @@ products:
         short_description-fr_FR-mobile: 'Iure tenetur velit error assumenda mollitia.'
         size: M
         unique_color: uc_green
+        weight: 897 GRAM
     sku-094:
         sku: sku-094
         family: shirt
@@ -1519,6 +1613,7 @@ products:
         short_description-fr_FR-mobile: 'Optio illum harum dolore et.'
         size: S
         unique_color: ''
+        weight: 317 GRAM
     sku-095:
         sku: sku-095
         family: shoe
@@ -1535,6 +1630,7 @@ products:
         short_description-fr_FR-mobile: 'Et tempore et a et.'
         size: ''
         unique_color: ''
+        weight: 83 GRAM
     sku-096:
         sku: sku-096
         family: dress
@@ -1551,6 +1647,7 @@ products:
         short_description-fr_FR-mobile: 'Veniam quasi occaecati atque quam dolores omnis.'
         size: M
         unique_color: uc_purple
+        weight: 14 GRAM
     sku-097:
         sku: sku-097
         family: dress
@@ -1567,6 +1664,7 @@ products:
         short_description-fr_FR-mobile: 'Repellendus consequatur quia similique placeat.'
         size: ''
         unique_color: uc_yellow
+        weight: 414 GRAM
     sku-098:
         sku: sku-098
         family: mug
@@ -1583,6 +1681,7 @@ products:
         short_description-fr_FR-mobile: 'Veniam modi itaque quaerat aliquam.'
         size: ''
         unique_color: ''
+        weight: 429 GRAM
     sku-099:
         sku: sku-099
         family: computer
@@ -1599,6 +1698,7 @@ products:
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight: 429 GRAM
         processor_brand: 'Intel'
         core_number: '4'
         height: '166.50'
