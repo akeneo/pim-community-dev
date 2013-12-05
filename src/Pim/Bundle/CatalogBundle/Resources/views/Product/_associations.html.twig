@@ -1,118 +1,121 @@
-{% set productListenerParameters = {
-    'columnName': 'has_association',
-    'selectors': {
-        'included': '#' ~ form.productAssociations.children|first.appendProducts.vars.id,
-        'excluded': '#' ~ form.productAssociations.children|first.removeProducts.vars.id
-    }
-} %}
-
-{% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
-
-{% set groupListenerParameters = {
-    'columnName': 'has_association',
-    'selectors': {
-        'included': '#' ~ form.productAssociations.children|first.appendGroups.vars.id,
-        'excluded': '#' ~ form.productAssociations.children|first.removeGroups.vars.id
-    }
-} %}
-
-{% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
-
-<script type="text/javascript">
-    require(
-        ['jquery', 'underscore', 'pim/datagrid/parameter-setter', 'oro/mediator'],
-        function($, _, Setter, mediator) {
-            'use strict';
-            $(function() {
-                $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
-                    var associationId = $(this).attr('id').replace(/^\D+/g, '');
-                    changeAssociation(associationId);
-                });
-
-                var dataGrids = {
-                    'product': {
-                        'name': '{{ associationProductGrid.datagrid.name }}',
-                        'appendField': 'appendProducts',
-                        'removeField': 'removeProducts'
-                    },
-                    'group': {
-                        'name': '{{ associationGroupGrid.datagrid.name }}',
-                        'appendField': 'appendGroups',
-                        'removeField': 'removeGroups'
-                    }
-                };
-
-                function changeAssociation(associationId) {
-                    var $idField = $('#{{ form.productAssociations.vars.id }}').find('input[type="hidden"][value="' + associationId + '"]');
-
-                    _.each(dataGrids, function(datagrid) {
-                        var appendFieldId = '#' + $idField.siblings('[id$="' + datagrid.appendField + '"]').attr('id'),
-                            removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
-                            mediator.trigger('column_form_listener:set_selectors', datagrid.name, { included: appendFieldId, excluded: removeFieldId });
-                            Setter.setParameter(datagrid.name, 'associationId', associationId, true);
-                    });
-                }
-
-                $('#association-buttons').on('click', 'button[data-target-association]', function() {
-                    var targetAssociation = $(this).attr('data-target-association');
-
-                    _.each(_.keys(dataGrids), function(gridType) {
-                        var $grid = $('#association-' + gridType + '-grid');
-                        if (gridType === targetAssociation) {
-                            $grid.removeClass('hide');
-                        } else {
-                            $grid.addClass('hide');
-                        }
-                    });
-
-                    $(this).addClass('hide').siblings('[data-target-association]').removeClass('hide');
-                });
-
-                // Trigger the shown event on the tab activated by restoring the form state
-                $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
-            });
+{% if associations is empty %}
+    <div>{% trans %}No associations{% endtrans %}</div>
+{% else %}
+    {% set productListenerParameters = {
+        'columnName': 'has_association',
+        'selectors': {
+            'included': '#pim_product_edit_productAssociations_0_appendProducts',
+            'excluded': '#pim_product_edit_productAssociations_0_removeProducts'
         }
-    );
-</script>
+    } %}
 
-<div id="association-list" class="tab-groups">
-    <ul class="nav nav-list">
-        {% for association in associations %}
-            <li class="tab{% if loop.first %} active{% endif %}">
-                <a id="association-link-{{ association.id }}" href="#association-tab-{{ association.id }}" data-toggle="tab">
-                    {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
-                    {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
-                    <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
-                    {{ association.label }} ({{ associationCount }})
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+    {% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
 
-<div class="tab-content fullheight">
-    <div id="association-buttons" class="navbar-extra pull-right">
-        <button type="button" class="btn pull-right hide" data-target-association="product">
-            <i class="icon-random"></i>
-            {{ 'info.association.show products'|trans }}
-        </button>
-        <button type="button" class="btn pull-right" data-target-association="group">
-            <i class="icon-random"></i>
-            {{ 'info.association.show groups'|trans }}
-        </button>
+    {% set groupListenerParameters = {
+        'columnName': 'has_association',
+        'selectors': {
+            'included': '#pim_product_edit_productAssociations_0_appendGroups',
+            'excluded': '#pim_product_edit_productAssociations_0_removeGroups'
+        }
+    } %}
+
+    {% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/datagrid/parameter-setter', 'oro/mediator'],
+            function($, _, Setter, mediator) {
+                'use strict';
+                $(function() {
+                    $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
+                        var associationId = $(this).attr('id').replace(/^\D+/g, '');
+                        changeAssociation(associationId);
+                    });
+
+                    var dataGrids = {
+                        'product': {
+                            'name': '{{ associationProductGrid.datagrid.name }}',
+                            'appendField': 'appendProducts',
+                            'removeField': 'removeProducts'
+                        },
+                        'group': {
+                            'name': '{{ associationGroupGrid.datagrid.name }}',
+                            'appendField': 'appendGroups',
+                            'removeField': 'removeGroups'
+                        }
+                    };
+
+                    function changeAssociation(associationId) {
+                        var $idField = $('#pim_product_edit_productAssociations').find('input[type="hidden"][value="' + associationId + '"]');
+
+                        _.each(dataGrids, function(datagrid) {
+                            var appendFieldId = '#' + $idField.siblings('[id$="' + datagrid.appendField + '"]').attr('id'),
+                                removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
+                                mediator.trigger('column_form_listener:set_selectors', datagrid.name, { included: appendFieldId, excluded: removeFieldId });
+                                Setter.setParameter(datagrid.name, 'associationId', associationId, true);
+                        });
+                    }
+
+                    $('#association-buttons').on('click', 'button[data-target-association]', function() {
+                        var targetAssociation = $(this).attr('data-target-association');
+
+                        _.each(_.keys(dataGrids), function(gridType) {
+                            var $grid = $('#association-' + gridType + '-grid');
+                            if (gridType === targetAssociation) {
+                                $grid.removeClass('hide');
+                            } else {
+                                $grid.addClass('hide');
+                            }
+                        });
+
+                        $(this).addClass('hide').siblings('[data-target-association]').removeClass('hide');
+                    });
+
+                    // Trigger the shown event on the tab activated by restoring the form state
+                    $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+                });
+            }
+        );
+    </script>
+
+    <div id="association-list" class="tab-groups">
+        <ul class="nav nav-list">
+            {% for association in associations %}
+                <li class="tab{% if loop.first %} active{% endif %}">
+                    <a id="association-link-{{ association.id }}" href="#association-tab-{{ association.id }}" data-toggle="tab">
+                        {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
+                        {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
+                        <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
+                        {{ association.label }} ({{ associationCount }})
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
-    {% for association in associations %}
-         <div id="association-tab-{{ association.id }}" class="tab-pane">
-            <h3 class="unspaced">
-                {{ association.label }}
-                <span class="muted small">
-                    {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
-                    {{ 'info.product.number of associations'|trans({ '%productCount%': currentAssociation.products|length, '%groupCount%': currentAssociation.groups|length }) }}
-                </span>
-            </h3>
+
+    <div class="tab-content fullheight">
+        <div id="association-buttons" class="navbar-extra pull-right">
+            <button type="button" class="btn pull-right hide" data-target-association="product">
+                <i class="icon-random"></i>
+                {{ 'info.association.show products'|trans }}
+            </button>
+            <button type="button" class="btn pull-right" data-target-association="group">
+                <i class="icon-random"></i>
+                {{ 'info.association.show groups'|trans }}
+            </button>
         </div>
-    {% endfor %}
-    <div id="association-product-grid"></div>
-    <div id="association-group-grid" class="hide"></div>
-    {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
-</div>
+        {% for association in associations %}
+             <div id="association-tab-{{ association.id }}" class="tab-pane">
+                <h3 class="unspaced">
+                    {{ association.label }}
+                    <span class="muted small">
+                        {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
+                        {{ 'info.product.number of associations'|trans({ '%productCount%': currentAssociation.products|length, '%groupCount%': currentAssociation.groups|length }) }}
+                    </span>
+                </h3>
+            </div>
+        {% endfor %}
+        <div id="association-product-grid"></div>
+        <div id="association-group-grid" class="hide"></div>
+    </div>
+{% endif %}
