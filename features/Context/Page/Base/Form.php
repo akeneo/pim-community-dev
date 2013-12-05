@@ -316,7 +316,7 @@ class Form extends Base
 
         if (!$accordionContent->findField($field)) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find a %s field inside the %s accordion group', $field, $groupField)
+                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
             );
         }
     }
