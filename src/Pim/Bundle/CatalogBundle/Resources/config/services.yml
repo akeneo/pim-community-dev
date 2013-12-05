@@ -1,8 +1,9 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
-    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
-    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
-    pim_catalog.form.subscriber.add_attribute_requirements.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_catalog.imagine.local_dir_resolver.class:                   Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.event_listener.progress.class:                      Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.event_listener.create_attribute_requirement.class:  Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
+    pim_catalog.form.subscriber.add_attribute_requirements.class:   Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_catalog.event_listener.mongodb.set_values_attributes.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetValuesAttributesSubscriber
 
 services:
     # Attribute property types
@@ -51,6 +52,13 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.mongodb.set_values_attributes:
+        class: %pim_catalog.event_listener.mongodb.set_values_attributes.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_listener.progress:
         class: %pim_catalog.event_listener.progress.class%

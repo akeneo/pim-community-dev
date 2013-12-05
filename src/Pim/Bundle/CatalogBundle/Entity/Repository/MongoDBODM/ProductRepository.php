@@ -111,4 +111,15 @@ class ProductRepository extends DocumentRepository
 
         return $this;
     }
+
+    /**
+     * @{inheritdoc}
+     */
+    public function findWithSortedAttribute($id)
+    {
+        // FIXME_MONGO Shortcut, but must do the same thing
+        // that the parent
+        return $this->find($id);
+    }
+
 }
