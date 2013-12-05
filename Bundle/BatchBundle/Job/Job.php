@@ -310,16 +310,6 @@ class Job implements JobInterface
     }
 
     /**
-     * A convenience method to synchronize the configuration between steps
-     * Calls 'getConfiguration' to aggregate the step configuration and
-     * 'setConFiguration' to pass the complete configuration to all of the steps
-     */
-    public function syncConfiguration()
-    {
-        $this->setConfiguration($this->getConfiguration());
-    }
-
-    /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
      * successfully processed if it exists, and null if none were processed.
