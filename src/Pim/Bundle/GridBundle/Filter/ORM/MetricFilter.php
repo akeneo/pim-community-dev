@@ -103,16 +103,7 @@ class MetricFilter extends NumberFilter
         $dataType = $this->getOption('data_type');
 
         list($formType, $formOptions) = parent::getRenderSettings();
-
-        switch ($dataType) {
-            case FieldDescriptionInterface::TYPE_INTEGER:
-                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
-                break;
-            case FieldDescriptionInterface::TYPE_DECIMAL:
-            default:
-                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
-                break;
-        }
+        $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
 
         return array($formType, $formOptions);
     }
