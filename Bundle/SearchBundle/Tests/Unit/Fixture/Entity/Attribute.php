@@ -24,7 +24,7 @@ class Attribute
         $this->code = 'test_attribute';
     }
 
-    public function getSearchable()
+    public function isSearchable()
     {
         return $this->searchable;
     }
