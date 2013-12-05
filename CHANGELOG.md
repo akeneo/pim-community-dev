@@ -22,7 +22,7 @@
 - Fix issue that miss some pending versionable entities
 
 ## BC breaks
-
+- Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
