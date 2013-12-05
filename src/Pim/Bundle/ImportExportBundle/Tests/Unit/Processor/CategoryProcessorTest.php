@@ -21,7 +21,14 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
      */
     public function createProcessor()
     {
-        return new CategoryProcessor($this->em, $this->validator);
+        $processor = new CategoryProcessor($this->em, $this->validator);
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $processor->setStepExecution($stepExecution);
+
+        return $processor;
     }
 
     /**
