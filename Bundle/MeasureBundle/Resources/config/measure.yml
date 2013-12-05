@@ -188,7 +188,7 @@ measures_config:
     Temperature:
         standard: KELVIN
         units:
-            CELCIUS:
+            CELSIUS:
                 convert: [{'add': 273.15}]
                 symbol: °C
             FAHRENHEIT:
@@ -287,4 +287,3 @@ measures_config:
             TON:
                 convert: [{'mul': 1000}]
                 symbol: t
-                
