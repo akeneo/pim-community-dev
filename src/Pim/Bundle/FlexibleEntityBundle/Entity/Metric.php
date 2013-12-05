@@ -216,6 +216,6 @@ class Metric
      */
     public function __toString()
     {
-        return $this->data.' '.$this->unit;
+        return ($this->data !== null) ? ($this->data.' '.$this->unit) : '';
     }
 }
