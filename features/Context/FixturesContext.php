@@ -1144,9 +1144,9 @@ class FixturesContext extends RawMinkContext
      * @param Channel   $channel
      * @param TableNode $conversionUnits
      *
-     * @Given /^I have configured (channel "(?:[^"]*)") with the following conversion options:$/
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
      */
-    public function iHaveConfiguredChannelWithTheFollowingConversionOptions(Channel $channel, TableNode $conversionUnits)
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
         $channel->setConversionUnits($conversionUnits->getRowsHash());
 
