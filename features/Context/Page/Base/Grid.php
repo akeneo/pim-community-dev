@@ -628,4 +628,37 @@ class Grid extends Index
 
         $filter->find('css', 'button.filter-update')->click();
     }
+
+    /**
+     * @param string $filterName The name of the metric filter
+     * @param string $action     Type of filtering (>, >=, etc.)
+     * @param double $value      Value to filter
+     * @param string $unit       Unit on which to filter
+     */
+    public function filterPerMetric($filterName, $action, $value, $unit)
+    {
+        $filter = $this->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->fillField('value', $value);
+
+        $buttons = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
+        $actionButton = array_shift($buttons);
+        $unitButton = array_shift($buttons);
+
+        // Open the dropdown menu with unit list and click on $unit line
+        $unitButton->click();
+        $unitButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $unit))->click();
+
+        // Open the dropdown menu with action list and click on $action line
+        $actionButton->click();
+        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
+
+        $filter->find('css', 'button.filter-update')->click();
+    }
 }
