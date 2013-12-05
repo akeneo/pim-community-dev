@@ -16,6 +16,9 @@ products:
         size: ''
         unique_color: ''
         weight: 360 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-001:
         sku: sku-001
         family: mug
@@ -33,6 +36,9 @@ products:
         size: ''
         unique_color: ''
         weight: 688 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-002:
         sku: sku-002
         family: mug
@@ -50,6 +56,9 @@ products:
         size: ''
         unique_color: ''
         weight: 485 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-003:
         sku: sku-003
         family: mug
@@ -67,6 +76,9 @@ products:
         size: ''
         unique_color: ''
         weight: 842 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-004:
         sku: sku-004
         family: dress
@@ -84,6 +96,9 @@ products:
         size: XS
         unique_color: uc_green
         weight: 384 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-005:
         sku: sku-005
         family: mug
@@ -101,6 +116,9 @@ products:
         size: ''
         unique_color: ''
         weight: 486 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-006:
         sku: sku-006
         family: mug
@@ -118,6 +136,9 @@ products:
         size: ''
         unique_color: ''
         weight: 669 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-007:
         sku: sku-007
         family: dress
@@ -135,6 +156,9 @@ products:
         size: XS
         unique_color: uc_yellow
         weight: 123 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-008:
         sku: sku-008
         family: dress
@@ -152,6 +176,9 @@ products:
         size: XL
         unique_color: ''
         weight: 617 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-009:
         sku: sku-009
         family: shoe
@@ -169,6 +196,9 @@ products:
         size: ''
         unique_color: ''
         weight: 101 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-010:
         sku: sku-010
         family: shoe
@@ -186,6 +216,9 @@ products:
         size: ''
         unique_color: ''
         weight: 616 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-011:
         sku: sku-011
         family: shirt
@@ -203,6 +236,9 @@ products:
         size: XL
         unique_color: ''
         weight: 158 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-012:
         sku: sku-012
         family: shoe
@@ -220,6 +256,9 @@ products:
         size: XL
         unique_color: ''
         weight: 636 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-013:
         sku: sku-013
         family: dress
@@ -237,6 +276,9 @@ products:
         size: L
         unique_color: uc_black
         weight: 162 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-014:
         sku: sku-014
         family: dress
@@ -254,6 +296,9 @@ products:
         size: S
         unique_color: uc_purple
         weight: 398 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-015:
         sku: sku-015
         family: dress
@@ -271,6 +316,9 @@ products:
         size: XS
         unique_color: ''
         weight: 447 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-016:
         sku: sku-016
         family: shoe
@@ -288,6 +336,9 @@ products:
         size: XL
         unique_color: ''
         weight: 975 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-017:
         sku: sku-017
         family: shoe
@@ -305,6 +356,9 @@ products:
         size: S
         unique_color: ''
         weight: 355 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-018:
         sku: sku-018
         family: shoe
@@ -322,6 +376,9 @@ products:
         size: ''
         unique_color: ''
         weight: 494 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-019:
         sku: sku-019
         family: mug
@@ -339,6 +396,9 @@ products:
         size: ''
         unique_color: ''
         weight: 135 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-020:
         sku: sku-020
         family: mug
@@ -356,6 +416,9 @@ products:
         size: ''
         unique_color: ''
         weight: 130 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-021:
         sku: sku-021
         family: shirt
@@ -373,6 +436,9 @@ products:
         size: S
         unique_color: ''
         weight: 393 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-022:
         sku: sku-022
         family: mug
@@ -390,6 +456,9 @@ products:
         size: ''
         unique_color: ''
         weight: 485 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-023:
         sku: sku-023
         family: mug
@@ -407,6 +476,9 @@ products:
         size: ''
         unique_color: ''
         weight: 836 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-024:
         sku: sku-024
         family: mug
@@ -424,6 +496,9 @@ products:
         size: ''
         unique_color: ''
         weight: 514 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-025:
         sku: sku-025
         family: shirt
@@ -441,6 +516,9 @@ products:
         size: XS
         unique_color: ''
         weight: 329 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-026:
         sku: sku-026
         family: shoe
@@ -458,6 +536,9 @@ products:
         size: XL
         unique_color: ''
         weight: 829 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-027:
         sku: sku-027
         family: shoe
@@ -475,6 +556,9 @@ products:
         size: ''
         unique_color: ''
         weight: 836 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-028:
         sku: sku-028
         family: shoe
@@ -492,6 +576,9 @@ products:
         size: L
         unique_color: ''
         weight: 484 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-029:
         sku: sku-029
         family: mug
@@ -509,6 +596,9 @@ products:
         size: ''
         unique_color: ''
         weight: 511 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-030:
         sku: sku-030
         family: shoe
@@ -526,6 +616,9 @@ products:
         size: ''
         unique_color: ''
         weight: 588 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-031:
         sku: sku-031
         family: dress
@@ -543,6 +636,9 @@ products:
         size: XL
         unique_color: uc_purple
         weight: 859 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-032:
         sku: sku-032
         family: shirt
@@ -560,6 +656,9 @@ products:
         size: M
         unique_color: ''
         weight: 615 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-033:
         sku: sku-033
         family: dress
@@ -577,6 +676,9 @@ products:
         size: XL
         unique_color: uc_purple
         weight: 200 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-034:
         sku: sku-034
         family: shirt
@@ -594,6 +696,9 @@ products:
         size: ''
         unique_color: ''
         weight: 97 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-035:
         sku: sku-035
         family: shoe
@@ -611,6 +716,9 @@ products:
         size: L
         unique_color: ''
         weight: 822 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-036:
         sku: sku-036
         family: mug
@@ -628,6 +736,9 @@ products:
         size: ''
         unique_color: ''
         weight: 515 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-037:
         sku: sku-037
         family: dress
@@ -645,6 +756,9 @@ products:
         size: XL
         unique_color: uc_white
         weight: 822 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-038:
         sku: sku-038
         family: shoe
@@ -662,6 +776,9 @@ products:
         size: XL
         unique_color: ''
         weight: 833 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-039:
         sku: sku-039
         family: dress
@@ -679,6 +796,9 @@ products:
         size: ''
         unique_color: uc_green
         weight: 143 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-040:
         sku: sku-040
         family: shirt
@@ -696,6 +816,9 @@ products:
         size: L
         unique_color: ''
         weight: 124 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-041:
         sku: sku-041
         family: shirt
@@ -713,6 +836,9 @@ products:
         size: XL
         unique_color: ''
         weight: 896 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-042:
         sku: sku-042
         family: dress
@@ -730,6 +856,9 @@ products:
         size: S
         unique_color: ''
         weight: 706 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-043:
         sku: sku-043
         family: mug
@@ -747,6 +876,9 @@ products:
         size: ''
         unique_color: ''
         weight: 920 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-044:
         sku: sku-044
         family: shoe
@@ -764,6 +896,9 @@ products:
         size: ''
         unique_color: ''
         weight: 688 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-045:
         sku: sku-045
         family: mug
@@ -781,6 +916,9 @@ products:
         size: ''
         unique_color: ''
         weight: 634 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-046:
         sku: sku-046
         family: dress
@@ -798,6 +936,9 @@ products:
         size: ''
         unique_color: uc_red
         weight: 428 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-047:
         sku: sku-047
         family: mug
@@ -815,6 +956,9 @@ products:
         size: ''
         unique_color: ''
         weight: 873 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-048:
         sku: sku-048
         family: shirt
@@ -832,6 +976,9 @@ products:
         size: S
         unique_color: ''
         weight: 590 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-049:
         sku: sku-049
         family: shirt
@@ -849,6 +996,9 @@ products:
         size: L
         unique_color: ''
         weight: 77 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-050:
         sku: sku-050
         family: shoe
@@ -866,6 +1016,9 @@ products:
         size: ''
         unique_color: ''
         weight: 83 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-051:
         sku: sku-051
         family: mug
@@ -883,6 +1036,9 @@ products:
         size: ''
         unique_color: ''
         weight: 389 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-052:
         sku: sku-052
         family: dress
@@ -900,6 +1056,9 @@ products:
         size: XL
         unique_color: ''
         weight: 376 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-053:
         sku: sku-053
         family: mug
@@ -917,6 +1076,9 @@ products:
         size: ''
         unique_color: ''
         weight: 824 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-054:
         sku: sku-054
         family: mug
@@ -934,6 +1096,9 @@ products:
         size: ''
         unique_color: ''
         weight: 844 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-055:
         sku: sku-055
         family: shirt
@@ -951,6 +1116,9 @@ products:
         size: XS
         unique_color: ''
         weight: 519 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-056:
         sku: sku-056
         family: dress
@@ -968,6 +1136,9 @@ products:
         size: ''
         unique_color: uc_green
         weight: 554 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-057:
         sku: sku-057
         family: mug
@@ -985,6 +1156,9 @@ products:
         size: ''
         unique_color: ''
         weight: 123 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-058:
         sku: sku-058
         family: shirt
@@ -1002,6 +1176,9 @@ products:
         size: M
         unique_color: ''
         weight: 550 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-059:
         sku: sku-059
         family: mug
@@ -1019,6 +1196,9 @@ products:
         size: ''
         unique_color: ''
         weight: 760 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-060:
         sku: sku-060
         family: shoe
@@ -1036,6 +1216,9 @@ products:
         size: M
         unique_color: ''
         weight: 747 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-061:
         sku: sku-061
         family: shoe
@@ -1053,6 +1236,9 @@ products:
         size: M
         unique_color: ''
         weight: 395 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-062:
         sku: sku-062
         family: mug
@@ -1070,6 +1256,9 @@ products:
         size: ''
         unique_color: ''
         weight: 390 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-063:
         sku: sku-063
         family: mug
@@ -1087,6 +1276,9 @@ products:
         size: ''
         unique_color: ''
         weight: 75 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-064:
         sku: sku-064
         family: shirt
@@ -1104,6 +1296,9 @@ products:
         size: ''
         unique_color: ''
         weight: 283 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-065:
         sku: sku-065
         family: mug
@@ -1121,6 +1316,9 @@ products:
         size: ''
         unique_color: ''
         weight: 489 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-066:
         sku: sku-066
         family: shirt
@@ -1138,6 +1336,9 @@ products:
         size: XS
         unique_color: ''
         weight: 931 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-067:
         sku: sku-067
         family: dress
@@ -1155,6 +1356,9 @@ products:
         size: S
         unique_color: uc_red
         weight: 553 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-068:
         sku: sku-068
         family: shoe
@@ -1172,6 +1376,9 @@ products:
         size: XL
         unique_color: ''
         weight: 206 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-069:
         sku: sku-069
         family: mug
@@ -1189,6 +1396,9 @@ products:
         size: ''
         unique_color: ''
         weight: 854 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-070:
         sku: sku-070
         family: mug
@@ -1206,6 +1416,9 @@ products:
         size: ''
         unique_color: ''
         weight: 461 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-071:
         sku: sku-071
         family: shoe
@@ -1223,6 +1436,9 @@ products:
         size: ''
         unique_color: ''
         weight: 584 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-072:
         sku: sku-072
         family: dress
@@ -1240,6 +1456,9 @@ products:
         size: ''
         unique_color: uc_blue
         weight: 561 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-073:
         sku: sku-073
         family: shirt
@@ -1257,6 +1476,9 @@ products:
         size: S
         unique_color: ''
         weight: 882 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-074:
         sku: sku-074
         family: dress
@@ -1274,6 +1496,9 @@ products:
         size: XS
         unique_color: uc_purple
         weight: 844 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-075:
         sku: sku-075
         family: dress
@@ -1291,6 +1516,9 @@ products:
         size: S
         unique_color: uc_red
         weight: 492 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-076:
         sku: sku-076
         family: mug
@@ -1308,6 +1536,9 @@ products:
         size: ''
         unique_color: ''
         weight: 864 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-077:
         sku: sku-077
         family: shoe
@@ -1325,6 +1556,9 @@ products:
         size: M
         unique_color: ''
         weight: 248 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-078:
         sku: sku-078
         family: mug
@@ -1342,6 +1576,9 @@ products:
         size: ''
         unique_color: ''
         weight: 624 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-079:
         sku: sku-079
         family: dress
@@ -1359,6 +1596,9 @@ products:
         size: ''
         unique_color: uc_white
         weight: 227 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-080:
         sku: sku-080
         family: dress
@@ -1376,6 +1616,9 @@ products:
         size: XS
         unique_color: uc_green
         weight: 110 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-081:
         sku: sku-081
         family: mug
@@ -1393,6 +1636,9 @@ products:
         size: ''
         unique_color: ''
         weight: 899 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-082:
         sku: sku-082
         family: mug
@@ -1410,6 +1656,9 @@ products:
         size: ''
         unique_color: ''
         weight: 735 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-083:
         sku: sku-083
         family: shoe
@@ -1427,6 +1676,9 @@ products:
         size: XL
         unique_color: ''
         weight: 617 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-084:
         sku: sku-084
         family: shoe
@@ -1444,6 +1696,9 @@ products:
         size: ''
         unique_color: ''
         weight: 186 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-085:
         sku: sku-085
         family: shirt
@@ -1461,6 +1716,9 @@ products:
         size: S
         unique_color: ''
         weight: 361 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-086:
         sku: sku-086
         family: dress
@@ -1478,6 +1736,9 @@ products:
         size: XL
         unique_color: uc_purple
         weight: 243 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-087:
         sku: sku-087
         family: mug
@@ -1495,6 +1756,9 @@ products:
         size: ''
         unique_color: ''
         weight: 602 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-088:
         sku: sku-088
         family: mug
@@ -1512,6 +1776,9 @@ products:
         size: ''
         unique_color: ''
         weight: 9 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-089:
         sku: sku-089
         family: dress
@@ -1529,6 +1796,9 @@ products:
         size: ''
         unique_color: ''
         weight: 149 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-090:
         sku: sku-090
         family: shoe
@@ -1546,6 +1816,9 @@ products:
         size: XL
         unique_color: ''
         weight: 846 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-091:
         sku: sku-091
         family: shoe
@@ -1563,6 +1836,9 @@ products:
         size: XS
         unique_color: ''
         weight: 858 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-092:
         sku: sku-092
         family: dress
@@ -1580,6 +1856,9 @@ products:
         size: ''
         unique_color: ''
         weight: 64 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-093:
         sku: sku-093
         family: dress
@@ -1597,6 +1876,9 @@ products:
         size: M
         unique_color: uc_green
         weight: 897 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-094:
         sku: sku-094
         family: shirt
@@ -1614,6 +1896,9 @@ products:
         size: S
         unique_color: ''
         weight: 317 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-095:
         sku: sku-095
         family: shoe
@@ -1631,6 +1916,9 @@ products:
         size: ''
         unique_color: ''
         weight: 83 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-096:
         sku: sku-096
         family: dress
@@ -1648,6 +1936,9 @@ products:
         size: M
         unique_color: uc_purple
         weight: 14 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-097:
         sku: sku-097
         family: dress
@@ -1665,6 +1956,9 @@ products:
         size: ''
         unique_color: uc_yellow
         weight: 414 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-098:
         sku: sku-098
         family: mug
@@ -1682,6 +1976,9 @@ products:
         size: ''
         unique_color: ''
         weight: 429 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-099:
         sku: sku-099
         family: computer
