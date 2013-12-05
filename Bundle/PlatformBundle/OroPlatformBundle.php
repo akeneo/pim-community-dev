@@ -6,5 +6,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OroPlatformBundle extends Bundle
 {
-    const VERSION = '1.0.0-beta4';
+    const VERSION = '1.0.0-beta5';
 }
