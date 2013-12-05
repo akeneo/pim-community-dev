@@ -24,8 +24,10 @@ class ParametrizedException extends \Exception implements ParametrizedExceptionI
     /**
      * Constructor
      *
-     * @param string $messageTemplate
-     * @param array  $messageParameters
+     * @param string     $messageTemplate
+     * @param array      $messageParameters
+     * @param string     $code
+     * @param \Exception $previous
      */
     public function __construct(
         $messageTemplate,
@@ -35,6 +37,7 @@ class ParametrizedException extends \Exception implements ParametrizedExceptionI
     ) {
         $this->messageTemplate = $messageTemplate;
         $this->messageParameters = $messageParameters;
+
         parent::__construct(strtr($messageTemplate, $messageParameters), $code, $previous);
     }
 

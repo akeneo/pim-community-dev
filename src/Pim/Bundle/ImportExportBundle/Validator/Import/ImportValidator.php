@@ -31,7 +31,6 @@ class ImportValidator implements ImportValidatorInterface
      * Constructor
      *
      * @param ValidatorInterface  $validator
-     * @param TranslatorInterface $translator
      */
     public function __construct(ValidatorInterface $validator)
     {

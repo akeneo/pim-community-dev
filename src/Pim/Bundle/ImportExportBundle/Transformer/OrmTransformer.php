@@ -14,10 +14,10 @@ class OrmTransformer extends AbstractOrmTransformer
     /**
      * Transforms an array into an entity
      *
-     * @param  string $class
-     * @param  array  $data
-     * @param  array  $mapping
-     * @param  array  $defaults
+     * @param string $class
+     * @param array  $data
+     * @param array  $defaults
+     *
      * @return object
      */
     public function transform($class, array $data, array $defaults = array())
@@ -44,7 +44,8 @@ class OrmTransformer extends AbstractOrmTransformer
     /**
      * Creates an entity of the given class
      *
-     * @param  string $class
+     * @param string $class
+     *
      * @return object
      */
     protected function create($class)
