@@ -4,7 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Conversion units form type
@@ -15,35 +16,44 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ConversionUnitsType extends AbstractType
 {
+    /** @var MeasureManager */
+    protected $measureManager;
+
     /**
-     * {@inheritdoc}
+     * Constructor
+     *
+     * @param MeasureManager $measureManager
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __construct(MeasureManager $measureManager, EntityManager $entityManager)
     {
-        foreach ($options['units']['measures_config'] as $family => $config) {
-            $builder->add(
-                $family,
-                'choice',
-                array(
-                    'choices'     => array_combine(array_keys($config['units']), array_keys($config['units'])),
-                    'empty_value' => 'Do not convert',
-                    'required'    => false,
-                    'select2'     => true,
-                )
-            );
-        }
+        $this->measureManager = $measureManager;
+        $this->entityManager  = $entityManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $resolver->setDefaults(
-            array(
-                'units' => array()
-            )
-        );
+        $metricAttributes = $this->entityManager
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\ProductAttribute')
+            ->findBy(array('attributeType' => 'pim_catalog_metric'));
+
+        foreach ($metricAttributes as $attribute) {
+            if ($config = $this->measureManager->getFamilyConfig($attribute->getMetricFamily())) {
+                $builder->add(
+                    $attribute->getCode(),
+                    'choice',
+                    array(
+                        'choices'     => array_combine(array_keys($config['units']), array_keys($config['units'])),
+                        'empty_value' => 'Do not convert',
+                        'required'    => false,
+                        'select2'     => true,
+                        'label'       => $attribute->getLabel()
+                    )
+                );
+            }
+        }
     }
 
     /**
