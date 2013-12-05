@@ -232,3 +232,16 @@ attributes:
             metricFamily:        Weight
             defaultMetricUnit:   GRAM
             decimalsAllowed:     true
+    washing_temperature:
+        labels:
+            en_US: Washing Temperature
+            fr_FR: Température de lavage
+        type:  pim_catalog_metric
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           10
+            metricFamily:        Temperature
+            defaultMetricUnit:   CELSIUS
+            decimalsAllowed:     true
