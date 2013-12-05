@@ -75,9 +75,9 @@ class ProductBuilder
      */
     public function __construct(
         $productClass,
-        ObjectManager   $objectManager,
-        ChannelManager  $channelManager,
-        LocaleManager   $localeManager,
+        ObjectManager $objectManager,
+        ChannelManager $channelManager,
+        LocaleManager $localeManager,
         CurrencyManager $currencyManager
     ) {
         $this->productClass    = $productClass;
