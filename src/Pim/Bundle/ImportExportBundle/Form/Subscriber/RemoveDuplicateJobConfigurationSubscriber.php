@@ -52,6 +52,25 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
     }
 
     /**
+     * Synchronize the configuration to all the steps of the job
+     * to make it available to steps that duplicate configuration
+     *
+     * @param FormEvent $event
+     */
+    public function submit(FormEvent $event)
+    {
+        $job = $event->getData();
+        if (null === $job) {
+            return;
+        }
+
+        $form = $event->getForm()->get('steps');
+
+        $configuration = $this->extractJobConfiguration($form);
+        $job->setConfiguration($configuration);
+    }
+
+    /**
      * Remove duplicate fields from the form
      *
      * @param Form  $form
@@ -69,18 +88,24 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
     }
 
     /**
-     * Synchronize the configuration to all the steps of the job
-     * to make it available to steps that duplicate configuration
+     * Extract the updated job configuration from the job steps form
      *
-     * @param FormEvent $event
+     * @param Form $form
+     *
+     * @return array
      */
-    public function submit(FormEvent $event)
+    protected function extractJobConfiguration(Form $form)
     {
-        $job = $event->getData();
-        if (null === $job) {
-            return;
+        $configuration = array();
+
+        foreach ($form->all() as $stepForm) {
+            foreach ($stepForm->all() as $stepElementForm) {
+                foreach ($stepElementForm->all() as $element => $valueForm) {
+                    $configuration[$element] = $valueForm->getData();
+                }
+            }
         }
 
-        $job->syncConfiguration();
+        return $configuration;
     }
 }
