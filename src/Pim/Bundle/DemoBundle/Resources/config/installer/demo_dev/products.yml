@@ -1585,17 +1585,20 @@ products:
         unique_color: ''
     sku-099:
         sku: sku-099
-        family: mug
+        family: computer
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: MugStore
-        name-en_US: 'Enim quia est saepe.'
-        name-fr_FR: 'Voluptatem consectetur unde ipsa.'
-        price: '45.34 EUR,99.30 USD'
-        release_date: 10/07/2013
+        color: ''
+        manufacturer: ''
+        name-en_US: 'My computer'
+        name-fr_FR: 'Mon ordinateur'
+        price: '300.00 EUR,480.00 USD'
+        release_date: ''
         enabled: '1'
-        short_description-en_US-mobile: 'Et iusto enim et accusamus.'
-        short_description-fr_FR-mobile: 'Magni voluptas consectetur laborum tenetur facilis.'
+        short_description-en_US-mobile: ''
+        short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        processor_brand: 'Intel'
+        core_number: '4'
+        height: '166.50'
