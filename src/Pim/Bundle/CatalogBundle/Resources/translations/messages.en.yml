@@ -447,7 +447,7 @@ pim_catalog.product:
     no_compared_media: 'No media available for comparison'
 
 # Channel form
-pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric family:'
+pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attributes that will be used during product export'
 
 # Product view
 Group: Group

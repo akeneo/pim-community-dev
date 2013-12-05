@@ -9,22 +9,14 @@ Feature: Convert metric values during export
 
   Scenario: Succesfully display metric conversion configuration for a channel
     Given I am on the "tablet" channel page
-    Then I should see "Conversion Options" fields:
-      | Area        |
-      | Binary      |
-      | Frequency   |
-      | Length      |
-      | Power       |
-      | Speed       |
-      | Temperature |
-      | Volume      |
-      | Weight      |
+    Then I should see "Pick a conversion unit for each metric attributes that will be used during product export" fields:
+      | Washing temperature |
+      | Weight              |
 
   @javascript
   Scenario: Succesfully convert metric values
     Given I have configured channel "ecommerce" with the following conversion options:
-      | Weight | GRAM  |
-      | Volume | LITER |
+      | weight | GRAM |
     And the following products:
       | sku          | family  | categories      |
       | tshirt-white | tshirts | 2014_collection |
