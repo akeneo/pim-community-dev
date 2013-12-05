@@ -50,16 +50,6 @@ class ProductBuilder
     protected $currencyManager;
 
     /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
-
-    /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var array
      */
     protected $scopeRows = null;
