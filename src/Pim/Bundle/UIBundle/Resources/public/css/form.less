@@ -676,6 +676,12 @@ table i {
   }
 }
 
+.metric {
+  .input-large {
+    width: 110px;
+  }
+}
+
 .attribute-field.scopable {
   margin-bottom: 10px;
   >div {
@@ -831,10 +837,7 @@ h1 {
     float: left;
     font-size: 14px;
     font-weight: bold;
-    line-height: 18px;
-  }
-  .locale-switcher {
-    height: 30px;
+    line-height: 20px;
   }
 }
 .navbar-title { line-height: 33px; }
@@ -969,15 +972,6 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
-code {
-  color: @textColor;
-}
-
-.popover-title {
-  padding-left: 14px;
-  font-size: 12px;
-}
-
 #locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
     padding: 5px 6px 3px 6px;
@@ -991,6 +985,10 @@ code {
       font-size: 14px;
       vertical-align: middle;
     }
+    .flag-language .language {
+      width: auto;
+      padding-right: 3px;
+    }
   }
   .dropdown-menu {
     padding: 0;
@@ -1000,28 +998,49 @@ code {
       &:hover, &:active, &:focus {
         background: #f1f1f1;
       }
-      span.icon {
+      span.indicator {
+        display: inline-block;
         width: 25px;
-        min-height: 1px;
-      }
-      span.code {
-        color: @textColor + #444;
+        padding: 0 5px;
+        font-size: 9px;
+        i {
+          color: @textColor + #333;
+        }
       }
       span.title {
-        float: none;
-        margin: 0 10px;
-        padding-right: 20px;
-        font-size: 12px;
+        padding: 0 5px;
         font-weight: bold;
       }
     }
   }
+  .flag-language {
+    color: @textColor;
+    background-color: transparent;
+    border: none;
+    .flag {
+      display: inline-block;
+      vertical-align: bottom;
+      margin-bottom: 5px;
+    }
+    .language {
+      color: @textColor + #333;
+      padding-left: 5px;
+      font-size: 12px;
+      font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+      vertical-align: bottom;
+      width: 30px;
+      display: inline-block;
+    }
+  }
 }
-code.flag-language {
-  padding: 4px;
-  color: @textColor;
-  background-color: transparent;
-  border: none;
+#comparison-switcher .dropdown-toggle .flag-language {
+  .flag {
+    vertical-align: middle;
+    margin-top: 2px;
+  }
+  .language {
+    padding-left: 0;
+  }
 }
 
 div.entity-updated {
@@ -1132,12 +1151,6 @@ button.pimmultiselect {
 }
 .ui-multiselect-optgroup-label a:hover {
   color: @textColor;
-}
-
-ul.medias label.remove-media {
-  display: inline;
-  float: none;
-  margin-left: 10px;
 }
 
 .attribute-requirement {

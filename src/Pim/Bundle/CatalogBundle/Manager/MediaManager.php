@@ -124,10 +124,10 @@ class MediaManager
             $attribute->getCode()
         );
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $target .= '/' . $value->getLocale();
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $target .= '/' . $value->getScope();
         }
 

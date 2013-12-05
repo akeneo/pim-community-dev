@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 
 /**
  * Tests related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductTransformerTest extends OrmTransformerTestCase
+class ORMProductTransformerTest extends ORMTransformerTestCase
 {
     protected $productManager;
     protected $attributeCache;
@@ -60,10 +60,10 @@ class OrmProductTransformerTest extends OrmTransformerTestCase
             ->method('getAttributes')
             ->will($this->returnCallback(array($this, 'getAttributes')));
 
-        $this->addAttribute('identifier', OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
+        $this->addAttribute('identifier', ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
         $this->addColumn('identifier', true, false);
 
-        $this->transformer = new OrmProductTransformer(
+        $this->transformer = new ORMProductTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,

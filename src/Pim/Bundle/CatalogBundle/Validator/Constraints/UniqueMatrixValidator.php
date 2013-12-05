@@ -19,11 +19,11 @@ class UniqueMatrixValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity->getUnique() === true) {
-            if ($entity->getScopable()) {
+        if ($entity->isUnique() === true) {
+            if ($entity->isScopable()) {
                 $this->context->addViolationAt('scopable', $constraint->scopableMessage);
             }
-            if ($entity->getTranslatable()) {
+            if ($entity->isTranslatable()) {
                 $this->context->addViolationAt('translatable', $constraint->translatableMessage);
             }
         }

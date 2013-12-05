@@ -30,7 +30,7 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        if ($attribute->getRequired()) {
+        if ($attribute->isRequired()) {
             $constraints[] = new Constraints\NotBlank();
         }
 

@@ -5,6 +5,7 @@
 - Compare and copy values between a product translations
 - Create metric filter
 - Convert metric values into the conversion unit selected for the channel during export
+- Allow filtering and sorting by metric values
 
 ## Improvements
 - Improve the user experience for family management
@@ -21,7 +22,7 @@
 - Fix issue that miss some pending versionable entities
 
 ## BC breaks
-
+- Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
