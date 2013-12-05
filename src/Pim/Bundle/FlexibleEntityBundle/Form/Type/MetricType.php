@@ -25,7 +25,6 @@ class MetricType extends AbstractType
         if ($options['default_unit']) {
             $unitOptions['preferred_choices'] = $options['default_unit'];
         }
-        $options['family'] = 'Weight';
 
         $builder
             ->add('id', 'hidden')
