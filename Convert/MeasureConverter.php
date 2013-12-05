@@ -81,7 +81,7 @@ class MeasureConverter
         if (!isset($this->config[$this->family]['units'][$baseUnit])) {
             throw new UnknownMeasureException(
                 sprintf(
-                    'Could not find metric unit %s in family %s',
+                    'Could not find metric unit "%s" in family "%s"',
                     $baseUnit,
                     $this->family
                 )
@@ -130,7 +130,13 @@ class MeasureConverter
     public function convertStandardToResult($finalUnit, $value)
     {
         if (!isset($this->config[$this->family]['units'][$finalUnit])) {
-            throw new UnknownMeasureException();
+            throw new UnknownMeasureException(
+                sprintf(
+                    'Could not find metric unit "%s" in family "%s"',
+                    $finalUnit,
+                    $this->family
+                )
+            );
         }
         $conversionConfig = $this->config[$this->family]['units'][$finalUnit]['convert'];
         $convertedValue = $value;
