@@ -79,7 +79,13 @@ class MeasureConverter
     public function convertBaseToStandard($baseUnit, $value)
     {
         if (!isset($this->config[$this->family]['units'][$baseUnit])) {
-            throw new UnknownMeasureException();
+            throw new UnknownMeasureException(
+                sprintf(
+                    'Could not find metric unit %s in family %s',
+                    $baseUnit,
+                    $this->family
+                )
+            );
         }
         $conversionConfig = $this->config[$this->family]['units'][$baseUnit]['convert'];
         $convertedValue = $value;
