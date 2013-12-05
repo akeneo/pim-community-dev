@@ -26,8 +26,12 @@ define(
                 }
             }
             function pageInit($target) {
-                if (!$target) {
-                    $target = $("body")
+                var partialInit;
+                if ($target) {
+                    partialInit = true;
+                } else {
+                    $target = $("body");
+                    partialInit = false;
                 }
                 // Place code that we need to run on every page load here
 
@@ -60,7 +64,6 @@ define(
                     var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
                         $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
                         activeGroup;
-
                     if ($activeGroup.length) {
                         activeGroup = $activeGroup.attr('href');
                         if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
@@ -80,7 +83,7 @@ define(
                 }
 
                 function restoreFormState() {
-                    if (sessionStorage.activeTab) {
+                    if (!partialInit && sessionStorage.activeTab) {
                         var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                         if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                             $activeTab.tab('show');
@@ -106,7 +109,6 @@ define(
 
                 if (typeof Storage !== 'undefined') {
                     restoreFormState();
-
                     $target.find('a[data-toggle="tab"]').on('shown', saveFormState);
                 }
 
