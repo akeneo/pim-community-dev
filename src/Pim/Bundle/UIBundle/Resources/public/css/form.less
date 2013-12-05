@@ -975,15 +975,6 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
-code {
-  color: @textColor;
-}
-
-.popover-title {
-  padding-left: 14px;
-  font-size: 12px;
-}
-
 #locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
     padding: 5px 6px 3px 6px;
@@ -1023,11 +1014,14 @@ code {
     }
   }
 }
-code.flag-language {
+.flag-language {
   padding: 4px;
   color: @textColor;
   background-color: transparent;
   border: none;
+  .flag {
+    display: inline-block;
+  }
 }
 
 div.entity-updated {

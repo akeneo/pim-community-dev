@@ -51,14 +51,12 @@
                     {% for locale in locales %}
                         <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
                             <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
-                                <span class="icon pull-left">
-                                    {% if locale == dataLocale %}
-                                        <i class="icon-bullet"></i>
+                                <span class="indicator">
+                                    {% if locale.code == dataLocale %}
+                                        <i class="icon-circle"></i>
                                     {% endif %}
                                 </span>
-                                <span class="code">
-                                    {{ locale.code|flag }}
-                                </span>
+                                {{ locale.code|flag }}
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
