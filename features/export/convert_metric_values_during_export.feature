@@ -9,7 +9,7 @@ Feature: Convert metric values during export
 
   Scenario: Succesfully display metric conversion configuration for a channel
     Given I am on the "tablet" channel page
-    Then I should see "Pick a conversion unit for each metric attributes that will be used during product export" fields:
+    Then I should see "Pick a conversion unit for each metric attribute that will be used during product export" fields:
       | Washing temperature |
       | Weight              |
 
