@@ -83,8 +83,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
         }
 
         $identifier = $this->getIdentifier($entity);
