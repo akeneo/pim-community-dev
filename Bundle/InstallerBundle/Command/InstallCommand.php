@@ -96,7 +96,12 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('doctrine:schema:create', $input, $output)
             ->runCommand('oro:entity-config:init', $input, $output)
             ->runCommand('oro:entity-extend:init', $input, $output)
-            ->runCommand('oro:entity-extend:update-config', $input, $output)
+            ->runCommand(
+                'oro:entity-extend:update-config',
+                $input,
+                $output,
+                array('--process-isolation' => true)
+            )
             ->runCommand(
                 'doctrine:schema:update',
                 $input,
