@@ -79,6 +79,7 @@ class InstallCommand extends ContainerAwareCommand
 
     /**
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function setupStep(InputInterface $input, OutputInterface $output)
     {
