@@ -3541,12 +3541,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "3a45ba782f7dcacf059c4dbc8486da4a718ebe6a"
+                "reference": "6948236b6cc9de546758d0ddb15c1037fd4239fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/3a45ba782f7dcacf059c4dbc8486da4a718ebe6a",
-                "reference": "3a45ba782f7dcacf059c4dbc8486da4a718ebe6a",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/6948236b6cc9de546758d0ddb15c1037fd4239fd",
+                "reference": "6948236b6cc9de546758d0ddb15c1037fd4239fd",
                 "shasum": ""
             },
             "require": {
@@ -3608,7 +3608,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta4",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-12-05 15:16:58"
+            "time": "2013-12-05 17:43:30"
         },
         {
             "name": "phpcollection/phpcollection",
