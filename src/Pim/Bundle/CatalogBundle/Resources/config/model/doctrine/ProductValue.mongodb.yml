@@ -33,14 +33,14 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         scope:
             type: string
         # References ORM ProductAttribute code
-        attribute:
-            type: string
+        attributeId:
+            type: int
         # References ORM AttributeOption code for single select
-        option:
-            type: string
+        #optionId:
+        #    type: int
         # References ORM AttributeOption code for multi selects
-        options:
-            type: collection
+        #options:
+        #    type: collection
         media:
             embedded: true
             type: one
