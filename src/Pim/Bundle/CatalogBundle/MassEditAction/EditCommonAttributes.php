@@ -212,7 +212,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
                 if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->getUnique() ||
+                    $attribute->isUnique() ||
                     false === $product->getValue($attribute->getCode())) {
                     /**
                      * Attribute is not available for mass editing if:
@@ -323,8 +323,8 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         return $product->getValue(
             $value->getAttribute()->getCode(),
-            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->getScopable() ? $value->getScope() : null
+            $value->getAttribute()->isTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->isScopable() ? $value->getScope() : null
         );
     }
 
@@ -393,7 +393,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function addValues(ProductAttribute $attribute)
     {
         $locale = $this->getLocale();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
                 $key = $attribute->getCode().'_'.$channel->getCode();
                 $this->values[$key] = $this->createValue($attribute, $locale, $channel);
@@ -417,11 +417,11 @@ class EditCommonAttributes extends AbstractMassEditAction
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
         }
 
-        if ($channel && $attribute->getScopable()) {
+        if ($channel && $attribute->isScopable()) {
             $value->setScope($channel->getCode());
         }
 

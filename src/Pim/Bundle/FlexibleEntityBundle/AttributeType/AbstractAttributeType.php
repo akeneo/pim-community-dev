@@ -144,7 +144,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     {
         return array(
             'label'           => $value->getAttribute()->getLabel(),
-            'required'        => $value->getAttribute()->getRequired(),
+            'required'        => $value->getAttribute()->isRequired(),
             'auto_initialize' => false
         );
     }

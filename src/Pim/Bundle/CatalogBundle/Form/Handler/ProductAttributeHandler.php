@@ -108,7 +108,7 @@ class ProductAttributeHandler
 
         $locales = $this->getLocaleCodes();
         foreach ($entity->getOptions() as $option) {
-            if ($option->getTranslatable()) {
+            if ($option->isTranslatable()) {
                 $existingLocales = array();
                 foreach ($option->getOptionValues() as $value) {
                     $existingLocales[] = $value->getLocale();

@@ -93,11 +93,11 @@ class ProductFormView
     protected function getAttributeClasses(ProductAttribute $attribute)
     {
         $classes = array();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $classes['scopable'] = true;
         }
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $classes['translatable'] = true;
         }
 
@@ -127,7 +127,7 @@ class ProductFormView
             'locale'             => $value->getLocale(),
         );
 
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $attributeView['values'] = array_merge(
                 $this->getAttributeValues($attribute, $value->getLocale()),
                 array($value->getScope() => $view)
