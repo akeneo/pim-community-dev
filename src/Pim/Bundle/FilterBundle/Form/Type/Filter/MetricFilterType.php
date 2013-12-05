@@ -117,7 +117,7 @@ class MetricFilterType extends NumberFilterType
 
         $unitChoices = $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
 
-        $view->vars['unit']['type'] = $unitChoices;
+        $view->vars['unit']['type'] = array_combine(array_keys($unitChoices), array_keys($unitChoices));
         $view->vars['value']['type'] = 'number';
         $view->vars['operator']['type'] = $this->getOperatorChoices();
     }

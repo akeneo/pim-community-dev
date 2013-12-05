@@ -94,7 +94,7 @@ define(
                             '</button>' +
                             '<ul class="dropdown-menu">' +
                                 '<% _.each(units, function (hint, value) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= _.__(hint) %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
                             '<input class="name_input" type="hidden" name="metric_unit" id="<%= name %>" value=""/>' +
