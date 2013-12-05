@@ -65,5 +65,4 @@ class MetricAttributeGuesserTest extends GuesserTestCase
             ->method('getAttribute')
             ->will($this->returnValue($this->attribute));
     }
-
 }
