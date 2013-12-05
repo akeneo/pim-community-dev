@@ -179,6 +179,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $attribute
      * @param string $locale
      * @param string $scope
+     *
+     * @return array|boolean
      */
     protected function filterValues($attribute, $locale, $scope)
     {

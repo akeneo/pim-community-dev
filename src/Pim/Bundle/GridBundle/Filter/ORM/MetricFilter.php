@@ -21,13 +21,12 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
  */
 class MetricFilter extends NumberFilter
 {
-    /**
-     * @var MeasureConverter
-     */
+    /** @var MeasureConverter $converter */
     protected $converter;
 
     /**
      * @param TranslatorInterface $translator
+     * @param MeasureConverter    $converter
      */
     public function __construct(TranslatorInterface $translator, MeasureConverter $converter)
     {
