@@ -23,7 +23,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer')
+        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
             ->disableOriginalConstructor()
             ->getMock();
         $this->processor = new TransformerProcessor(
