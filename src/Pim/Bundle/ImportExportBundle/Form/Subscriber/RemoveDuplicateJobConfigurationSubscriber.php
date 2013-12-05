@@ -81,6 +81,11 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $job->syncConfiguration();
+        $configuration = array();
+        foreach ($job->getSteps() as $step) {
+            $configuration = array_merge($step->getConfiguration(), $configuration);
+        }
+
+        $job->setConfiguration($configuration);
     }
 }
