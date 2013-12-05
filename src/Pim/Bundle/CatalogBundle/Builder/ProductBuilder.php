@@ -70,7 +70,7 @@ class ProductBuilder
      * @param string          $productClass    Entity name
      * @param ObjectManager   $objectManager   Storage manager
      * @param ChannelManager  $channelManager  Channel Manager
-     * @param LocaleManager   $localManager    Locale Manager
+     * @param LocaleManager   $localeManager   Locale Manager
      * @param CurrencyManager $currencyManager Currency manager
      */
     public function __construct(
