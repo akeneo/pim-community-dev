@@ -19,6 +19,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductValueType extends FlexibleValueType
 {
+    /**
+     * @var ProductFormView $productFormView
+     */
     protected $productFormView;
 
     /**

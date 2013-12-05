@@ -45,6 +45,8 @@ class CompletenessManager
      *
      * @param RegistryInterface        $doctrine
      * @param CompletenessQueryBuilder $completenessQB
+     * @param ValidatorInterface       $validator
+     * @param string                   $class
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -107,9 +109,11 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param  ProductInterface $product
-     * @param  array            $channels
-     * @param  array            $locales
+     * @param ProductInterface $product
+     * @param array            $channels
+     * @param array            $locales
+     * @param string           $localeCode
+     *
      * @return array
      */
     public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
