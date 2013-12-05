@@ -17,21 +17,6 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterf
 class MetricAttributeGuesser extends AttributeGuesser
 {
     /**
-     * Constructor
-     *
-     * @param PropertyTransformerInterface $transformer
-     * @param string                       $class
-     * @param string                       $backendType
-     */
-    public function __construct(
-        PropertyTransformerInterface $transformer,
-        $class,
-        $backendType
-    ) {
-        parent::__construct($transformer, $class, $backendType);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
