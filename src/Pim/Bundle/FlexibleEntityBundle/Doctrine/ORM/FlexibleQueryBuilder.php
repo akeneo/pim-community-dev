@@ -380,6 +380,22 @@ class FlexibleQueryBuilder
             $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
             $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
+        } elseif ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+
+            // join to value
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
+
+            $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode().$this->aliasCounter;
+            $this->qb->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasMetric);
+
+            $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
+
         } else {
             // join to value and sort on
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);

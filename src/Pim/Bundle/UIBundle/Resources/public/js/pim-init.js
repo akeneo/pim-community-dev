@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog) {
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask) {
         'use strict';
         var initialized = false;
         return function() {
@@ -9,7 +9,21 @@ define(
                 return;
             }
             initialized = true;
+            function loadTab(tab) {
+                var target = $(tab.getAttribute('href'));
+                if (!target.attr('data-loaded') && target.attr('data-url')) {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container'));
+                    loadingMask.show();
 
+                    $.get(target.attr('data-url'), function(data) {
+                        target.html(data);
+                        target.attr('data-loaded', 1);
+                        loadingMask.hide();
+                        loadingMask.$el.remove();
+                    });
+                }
+            }
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -66,6 +80,7 @@ define(
                         var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                         if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                             $activeTab.tab('show');
+                            loadTab($activeTab[0]);
                             sessionStorage.removeItem('activeTab');
                         }
                     }
@@ -76,7 +91,7 @@ define(
                             $activeGroup.tab('show');
                             sessionStorage.removeItem('activeGroup');
                         } else {
-                            var $tree = $('[data-selected-tree]');
+                            var $tree = $('div[data-selected-tree]');
                             if ($tree.length && !$('.loading-mask').is(':visible')) {
                                 $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
                                 sessionStorage.removeItem('activeGroup');
@@ -145,9 +160,13 @@ define(
                     }
                 });
 
-                $('[data-form-toggle]').on('click', function () {
+                $('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
+                });
+
+                $("a[data-toggle='tab']").on('show.bs.tab', function() {
+                    loadTab(this);
                 });
             }
 

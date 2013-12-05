@@ -68,8 +68,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->context->expects($this->once())
-            ->method('addViolation')
+            ->method('addViolationAt')
             ->with(
+                'data',
                 $constraint->maxMessage,
                 array(
                     '{{ value }}' => 150,

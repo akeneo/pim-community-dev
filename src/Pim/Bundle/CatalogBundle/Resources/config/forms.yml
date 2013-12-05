@@ -31,6 +31,8 @@ services:
         arguments:
             - pim_catalog_channel_form
             - pim_catalog_channel
+            - null
+            - {units: %oro_measure.measures_config%}
 
     pim_catalog.form.currency:
         class:           Symfony\Component\Form\Form

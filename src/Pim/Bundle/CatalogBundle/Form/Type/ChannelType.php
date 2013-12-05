@@ -58,6 +58,7 @@ class ChannelType extends AbstractType
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
+            ->addConversionUnitFields($builder, $options)
             ->addEventSubscribers($builder);
     }
 
@@ -106,6 +107,27 @@ class ChannelType extends AbstractType
                 'query_builder' => function (CurrencyRepository $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
+            )
+        );
+
+        return $this;
+    }
+
+    /**
+     * Create conversion units field
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     *
+     * @return ChannelType
+     */
+    protected function addConversionUnitFields(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'conversionUnits',
+            'pim_catalog_conversion_units',
+            array(
+                'units' => $options['units']
             )
         );
 
@@ -215,7 +237,8 @@ class ChannelType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel',
+                'units'      => array()
             )
         );
     }

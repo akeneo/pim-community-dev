@@ -83,19 +83,29 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
         }
 
         $identifier = $this->getIdentifier($entity);
         if (in_array($identifier, $this->identifiers)) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(
-                sprintf('Duplicate, the entity "%s" has already been processed', $identifier),
-                $item
-            );
+            $this->skipItem($item, sprintf('Duplicate, the entity "%s" has already been processed', $identifier));
         }
         $this->identifiers[] = $identifier;
+    }
+
+    /**
+     * Skip an item with a detail message
+     *
+     * @param mixed  $item
+     * @param string $message
+     *
+     * @throws InvalidItemException
+     */
+    protected function skipItem($item, $message)
+    {
+        $this->stepExecution->incrementSummaryInfo('skip');
+
+        throw new InvalidItemException($message, $item);
     }
 
     /**

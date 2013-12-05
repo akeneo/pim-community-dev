@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
@@ -18,7 +18,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
-     * @var OrmProductTransformer
+     * @var ORMProductTransformer
      */
     protected $transformer;
 
@@ -52,12 +52,12 @@ class ProductProcessor extends AbstractTransformerProcessor
      *
      * @param ImportValidatorInterface $validator
      * @param TranslatorInterface      $translator
-     * @param OrmProductTransformer    $transformer
+     * @param ORMProductTransformer    $transformer
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
-        OrmProductTransformer $transformer
+        ORMProductTransformer $transformer
     ) {
         parent::__construct($validator, $translator);
         $this->transformer = $transformer;
@@ -210,5 +210,25 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected function getTransformerErrors()
     {
         return $this->transformer->getErrors();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function mapValues(array &$values)
+    {
+        parent::mapValues($values);
+
+        foreach ($values as $key => $value) {
+            if (1 === preg_match('/-unit$/', $key)) {
+                $metricValueKey = substr($key, 0, -5);
+                if (!isset($values[$metricValueKey])) {
+                    throw new \Exception(sprintf('Could not find matching metric value key for unit key "%s"', $value));
+                }
+
+                $values[$metricValueKey] .= sprintf(' %s', $value);
+                unset($values[$key]);
+            }
+        }
     }
 }

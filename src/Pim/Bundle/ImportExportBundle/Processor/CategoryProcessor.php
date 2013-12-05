@@ -121,7 +121,7 @@ class CategoryProcessor extends AbstractEntityProcessor
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
 
         } else {
             $this->entities[] = $category;

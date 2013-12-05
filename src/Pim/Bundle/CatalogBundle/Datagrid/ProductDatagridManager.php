@@ -397,7 +397,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setProperty(
             new TwigTemplateProperty(
                 $fieldCompleteness,
-                'PimCatalogBundle:Completeness:_completeness.html.twig',
+                'PimCatalogBundle:Completeness:_datagridCompleteness.html.twig',
                 array(
                     'localeCode'  => $this->flexibleManager->getLocale(),
                     'channelCode' => $this->flexibleManager->getScope()
@@ -612,6 +612,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('values')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
+            ->addSelect('valueMetrics')
             ->addSelect('category')
             ->addSelect('pGroup');
 

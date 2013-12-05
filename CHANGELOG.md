@@ -4,6 +4,8 @@
 - Import product associations (CSV)
 - Compare and copy values between a product translations
 - Create metric filter
+- Convert metric values into the conversion unit selected for the channel during export
+- Allow filtering and sorting by metric values
 
 ## Improvements
 - Improve the user experience for family management
@@ -13,6 +15,8 @@
 - Add real time versioning option in product import
 - Merge the configuration of import/export job steps
 - Implements save of base unit and data for metric entity
+- Metric values are now exported in two distinct columns (value and unit)
+- Metric values can now be imported through two distinct columns ([examples](https://github.com/akeneo/pim-community-dev/blob/42371c0d6c70801a4a23a7aa8cf87e18f417c4a8/features/import/import_products.feature#L170-L198))
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
@@ -58,6 +62,7 @@
 - Versioning of installed entities (from demo bundle)
 - For csv export of products, only export values related to selected channel and related locales
 - Fix locale activation/deactivation based on locales used by channels
+- Fix issue with 100 products csv import
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

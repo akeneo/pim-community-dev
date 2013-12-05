@@ -1,6 +1,9 @@
 Pim\Bundle\CatalogBundle\Entity\GroupType:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
     properties:
         code:
             - NotBlank: ~
@@ -8,7 +11,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Group type code may contain only letters, numbers and underscores.
             - Length:
-                max: 50
+                max: 100
         translations:
             - Valid: ~
 

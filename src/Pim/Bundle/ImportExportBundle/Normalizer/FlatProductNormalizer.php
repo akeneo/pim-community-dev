@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -163,6 +164,13 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $this->normalizeCollectionData($data);
         } elseif ($data instanceof Media) {
             $data = $this->mediaManager->getExportPath($data);
+        } elseif ($data instanceof Metric) {
+            $fieldName = $this->getFieldValue($value);
+
+            return array(
+                $fieldName                     => $data->getData(),
+                sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
+            );
         }
 
         return array($this->getFieldValue($value) => (string) $data);

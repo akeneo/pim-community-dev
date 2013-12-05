@@ -3,6 +3,11 @@ Pim\Bundle\CatalogBundle\Model\Group:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
             message: Product "%product%" cannot be added to the the variant group "%variant group%" because it already contains another product with values "%values%".
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - type
+                - attributes
     properties:
         code:
             - NotBlank: ~
@@ -10,7 +15,7 @@ Pim\Bundle\CatalogBundle\Model\Group:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Group code may contain only letters, numbers and underscores.
             - Length:
-                max: 50
+                max: 100
         translations:
             - Valid: ~
         attributes:

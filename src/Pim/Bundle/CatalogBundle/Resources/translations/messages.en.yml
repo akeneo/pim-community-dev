@@ -446,6 +446,9 @@ pim_catalog.product:
     no_comparison_locale_available: 'No other locale is available for comparison'
     no_compared_media: 'No media available for comparison'
 
+# Channel form
+pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric family:'
+
 # Product view
 Group: Group
 View group: View group

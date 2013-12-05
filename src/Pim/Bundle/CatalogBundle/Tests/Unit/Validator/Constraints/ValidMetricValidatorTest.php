@@ -35,7 +35,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
             'Temperature' => array(
                 'standard' => 'KELVIN',
                 'units' => array(
-                    'CELCIUS' => array(),
+                    'CELSIUS' => array(),
                     'KELVIN' => array(),
                     'RANKINE' => array(),
                     'REAUMUR' => array()
@@ -115,7 +115,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('METER'),
-            array('CELCIUS'),
+            array('CELSIUS'),
             array('invalid_family')
         );
     }

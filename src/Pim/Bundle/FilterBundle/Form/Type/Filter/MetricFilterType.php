@@ -86,7 +86,9 @@ class MetricFilterType extends NumberFilterType
         $result = array('required' => true);
 
         $family = $options['field_options']['family'];
-        $result['choices'] = $this->measureManager->getUnitSymbolsForFamily($family);
+
+        $choices = $this->measureManager->getUnitSymbolsForFamily($family);
+        $result['choices'] = array_combine(array_keys($choices), array_keys($choices));
 
         return $result;
     }
@@ -113,8 +115,9 @@ class MetricFilterType extends NumberFilterType
     {
         parent::buildView($view, $form, $options);
 
-        $view->vars['unit']['type'] =
-            $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
+        $unitChoices = $this->measureManager->getUnitSymbolsForFamily($options['field_options']['family']);
+
+        $view->vars['unit']['type'] = $unitChoices;
         $view->vars['value']['type'] = 'number';
         $view->vars['operator']['type'] = $this->getOperatorChoices();
     }

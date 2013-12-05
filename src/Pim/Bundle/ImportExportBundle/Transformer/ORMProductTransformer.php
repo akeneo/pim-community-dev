@@ -15,13 +15,13 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 
 /**
- * Specialized OrmTransformer for products
+ * Specialized ORMTransformer for products
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductTransformer extends AbstractOrmTransformer
+class ORMProductTransformer extends AbstractORMTransformer
 {
     /**
      * @staticvar the identifier attribute type

@@ -298,4 +298,26 @@ class Form extends Base
             $icon->click();
         }
     }
+
+    public function findFieldInAccordion($groupField, $field)
+    {
+        $accordion = $this->find(
+            'css',
+            sprintf('.accordion-heading a:contains("%s")', $groupField)
+        );
+
+        if (!$accordion) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find accordion %s', $groupField)
+            );
+        }
+
+        $accordionContent = $this->find('css', $accordion->getAttribute('href'));
+
+        if (!$accordionContent->findField($field)) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find a %s field inside the %s accordion group', $field, $groupField)
+            );
+        }
+    }
 }

@@ -182,6 +182,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $this->getCurrentPage()->visitTab($tab);
+        $this->wait();
     }
 
     /**
@@ -1397,6 +1398,16 @@ class WebUser extends RawMinkContext
     public function iCopyTranslations($mode)
     {
         $this->getCurrentPage()->copyTranslations(ucfirst($mode));
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" fields:$/
+     */
+    public function iShouldSeeFields($groupField, TableNode $fields)
+    {
+        foreach ($fields->getRows() as $data) {
+            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+        }
     }
 
     /**
