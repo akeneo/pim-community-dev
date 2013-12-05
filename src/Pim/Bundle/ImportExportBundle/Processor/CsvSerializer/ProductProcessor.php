@@ -64,7 +64,8 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     public function process($products)
     {
-        $this->stepExecution->addSummaryInfo('write', count($products));
+        $nbItems = count($products) - ($this->isWithHeader() ? 1 : 0);
+        $this->stepExecution->addSummaryInfo('write', $nbItems);
 
         $csv =  $this->serializer->serialize(
             $products,
