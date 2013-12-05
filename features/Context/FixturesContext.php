@@ -586,12 +586,12 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
