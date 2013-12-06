@@ -8,7 +8,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Value for a product attribute
@@ -25,12 +24,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      */
     protected $attribute;
-
-    /**
-     * @var attribute_id that will be stored for the link with the attribute
-     * We use this approach as this class can be stored in a RDBMS or in NoSQL DB
-     */
-    protected $attributeId;
 
     /**
      * @var ProductInterface $entity
@@ -122,47 +115,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
         parent::__construct();
 
         $this->prices = new ArrayCollection();
-    }
-
-    /**
-     * Get the current attribute id
-     *
-     * @return int attributeId
-     */
-    public function getAttributeId()
-    {
-        return $this->attributeId;
-    }
-
-    /**
-     * Set the current attribute id
-     *
-     * @param int attribute id
-     *
-     * @return ProductValue
-     */
-    public function setAttributeId($attributeId)
-    {
-        $this->attributeId = $attributeId;
-
-        return $this;
-    }
-
-    /**
-     * Set the current attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return ProductValue
-     */
-    public function setAttribute(AbstractAttribute $attribute = null)
-    {
-        if (null != $attribute) {
-            $this->attributeId = $attribute->getId();
-            $this->attribute = $attribute;
-        };
-
-        return $this;
     }
 
     /**
