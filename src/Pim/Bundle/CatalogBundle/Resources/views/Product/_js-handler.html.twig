@@ -50,6 +50,8 @@
 
                 $('[data-toggle="popover"]').popover();
 
+                {# FIXME_MONGO Should work, but form.enabled does not seems to be known... #}
+                {#
                 $('#switch_status').on('click', function () {
                     var $field = $('#{{ form.enabled.vars.id }}'),
                         $status = $('.status-enabled').find('.badge');
@@ -63,6 +65,7 @@
                         $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
                     }
                 });
+                #}
 
                 {% if resource_granted('pim_catalog_product_change_family') %}
                     {% set familyWidget %}

@@ -66,11 +66,14 @@
                 </ul>
             </div>
             <div class="status-enabled pull-left">
+                {# FIXME_MONGO Should work, but error with Method "enabled" for object "..FormView" does not exist
+                {#
                 {% if form.enabled.vars.value %}
                     <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
                 {% else %}
                     <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
                 {% endif %}
+                #}
             </div>
         {% endset %}
 
