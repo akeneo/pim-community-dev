@@ -176,10 +176,10 @@ class CompletenessManager
         foreach ($localeCodes as $localeCode) {
             $constraint = new ProductValueNotBlank(array('channel' => $channel));
             $valueCode = $attribute->getCode();
-            if ($attribute->getTranslatable()) {
+            if ($attribute->isTranslatable()) {
                 $valueCode .= '_' .$localeCode;
             }
-            if ($attribute->getScopable()) {
+            if ($attribute->isScopable()) {
                 $valueCode .= '_' . $channel->getCode();
             }
             $missing = false;

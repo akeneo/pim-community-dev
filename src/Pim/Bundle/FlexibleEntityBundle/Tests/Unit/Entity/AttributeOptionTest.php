@@ -94,17 +94,17 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
         $attOpt = new AttributeOption();
 
         // assert default value
-        $this->assertTrue($attOpt->getTranslatable());
+        $this->assertTrue($attOpt->isTranslatable());
 
         // assert false value
         $obj = $attOpt->setTranslatable(false);
         $this->assertInstanceOf(self::$attOptClass, $obj);
-        $this->assertFalse($attOpt->getTranslatable());
+        $this->assertFalse($attOpt->isTranslatable());
 
         // assert true value
         $obj = $attOpt->setTranslatable(true);
         $this->assertInstanceOf(self::$attOptClass, $obj);
-        $this->assertTrue($attOpt->getTranslatable());
+        $this->assertTrue($attOpt->isTranslatable());
     }
 
     /**

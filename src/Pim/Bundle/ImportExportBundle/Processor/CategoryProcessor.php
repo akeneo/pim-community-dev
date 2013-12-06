@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
