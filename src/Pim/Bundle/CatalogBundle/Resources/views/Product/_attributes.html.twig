@@ -61,8 +61,7 @@
         {% endif %}
     </div>
     <div id="attribute-buttons">
-
-        <div class="btn-group">
+        <div class="btn-group channel-switcher">
             <a class="btn dropdown-toggle" href="javascript:void(0);" title="{{ 'Scope'|trans }}" data-toggle="dropdown">
                 <i class="icon-eye-open"></i>
                 <span>{{ 'Scope'|trans }}</span>
@@ -72,34 +71,9 @@
                     <li><a href="javascript:void(0);" data-scope="{{ channel.code }}">{{ channel.label }}</a></li>
                 {% endfor %}
             </ul>
-            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand">
-                <i class="icon-collapse"></i>
+            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand" data-collapse-title="{{ 'Collapse all channels'|trans }}" data-expand-title="{{ 'Expand all channels'|trans }}">
+                <i class="icon-caret-right"></i>
             </a>
-            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Collapse all channels'|trans }}" data-action="collapse">
-                <i class="icon-collapse-top"></i>
-            </a>
-        </div>
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
-                <i class="icon-eye-open"></i>
-                <i class="icon-caret-down"></i>
-            </a>
-            <div class="dropdown-menu channel pull-right">
-                <h5>{{ 'Scope'|trans }}</h5>
-                <div>
-                    <span id="channel-controls">
-                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                        <select id="default_channel">
-                            {% for channel in channels %}
-                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                </div>
-            </div>
         </div>
     </div>
 
