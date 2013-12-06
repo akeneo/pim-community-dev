@@ -144,11 +144,11 @@ class ProductController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        //$gridManager = $this->datagridHelper->getDatagridManager('product');
-        //$gridManager->setFilterTreeId($request->get('treeId', 0));
-        //$gridManager->setFilterCategoryId($request->get('categoryId', 0));
-        //$gridManager->setIncludeSub($request->get('includeSub', 0));
-        //$datagrid = $gridManager->getDatagrid();
+        $gridManager = $this->datagridHelper->getDatagridManager('product');
+        $gridManager->setFilterTreeId($request->get('treeId', 0));
+        $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+        $gridManager->setIncludeSub($request->get('includeSub', 0));
+        $datagrid = $gridManager->getDatagrid();
 
         switch ($request->getRequestFormat()) {
             case 'json':
@@ -186,8 +186,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $params = array(
-            'datagrid'   => "FIXME_MONGO: Datagrid non compatible with MongoDB",
-            //'datagrid'   => $datagrid->createView(),
+            'datagrid'   => $datagrid->createView(),
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
             'dataScope'  => $this->getDataScope()
@@ -332,9 +331,6 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
-        // FIXME_MONGO Datagrid for assocation currently broken
-        // (and maybe do a separate method for that part of the action
-        /*
         $productGrid = $this->datagridHelper->getDatagridManager('association_product');
         $productGrid->setProduct($product);
 
@@ -354,7 +350,6 @@ class ProductController extends AbstractDoctrineController
 
         $productGridView = $productGrid->getDatagrid()->createView();
         $groupGridView   = $groupGrid->getDatagrid()->createView();
-        */
 
         return array(
             'form'                   => $form->createView(),
@@ -365,15 +360,11 @@ class ProductController extends AbstractDoctrineController
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'                => $product,
             'trees'                  => $trees,
-            // FIXME_MONGO: AuditManager not able to get Product from EntityManager
-            //'created'                => $this->auditManager->getOldestLogEntry($product),
-            //'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'created'                => null,
-            'updated'                => null,
+            'created'                => $this->auditManager->getOldestLogEntry($product),
+            'updated'                => $this->auditManager->getNewestLogEntry($product),
             'associations'           => $associations,
-            // FIXME_MONGO
-            //'associationProductGrid' => $productGridView,
-            //'associationGroupGrid'   => $groupGridView,
+            'associationProductGrid' => $productGridView,
+            'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
         );
     }
