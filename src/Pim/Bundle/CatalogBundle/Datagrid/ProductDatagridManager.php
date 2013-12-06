@@ -454,10 +454,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
             $editAction = array(
                 'name'         => 'edit',
-                'type'         => ActionInterface::TYPE_REDIRECT,
+                'type'         => ActionInterface::TYPE_TAB_REDIRECT,
                 'acl_resource' => 'pim_catalog_product_edit',
                 'options'      => array(
                     'label' => $this->translate('Edit attributes of the product'),
+                    'tab'   => '#attributes',
                     'icon'  => 'edit',
                     'link'  => 'edit_link'
                 )

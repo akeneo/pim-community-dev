@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask', 'pim/saveformstate',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask) {
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, saveformstate) {
         'use strict';
         var initialized = false;
         return function() {
@@ -50,61 +50,6 @@ define(
                 $('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
                 });
-
-                // Save and restore activated form tabs and groups
-                function saveFormState() {
-                    var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
-                        $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
-                        activeGroup;
-
-                    if ($activeGroup.length) {
-                        activeGroup = $activeGroup.attr('href');
-                        if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
-                            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null;
-                        }
-                    } else {
-                        activeGroup = null;
-                    }
-
-                    if (activeTab) {
-                        sessionStorage.activeTab = activeTab;
-                    }
-
-                    if (activeGroup) {
-                        sessionStorage.activeGroup = activeGroup;
-                    }
-                }
-
-                function restoreFormState() {
-                    if (sessionStorage.activeTab) {
-                        var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
-                        if ($activeTab.length && !$('.loading-mask').is(':visible')) {
-                            $activeTab.tab('show');
-                            loadTab($activeTab[0]);
-                            sessionStorage.removeItem('activeTab');
-                        }
-                    }
-
-                    if (sessionStorage.activeGroup) {
-                        var $activeGroup = $('a[href=' + sessionStorage.activeGroup + ']');
-                        if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
-                            $activeGroup.tab('show');
-                            sessionStorage.removeItem('activeGroup');
-                        } else {
-                            var $tree = $('div[data-selected-tree]');
-                            if ($tree.length && !$('.loading-mask').is(':visible')) {
-                                $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
-                                sessionStorage.removeItem('activeGroup');
-                            }
-                        }
-                    }
-                }
-
-                if (typeof Storage !== 'undefined') {
-                    restoreFormState();
-
-                    $('a[data-toggle="tab"]').on('shown', saveFormState);
-                }
 
                 // Initialize slimbox
                 if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
@@ -167,6 +112,10 @@ define(
 
                 $("a[data-toggle='tab']").on('show.bs.tab', function() {
                     loadTab(this);
+                });
+
+                $('form.form-horizontal').each(function() {
+                    saveformstate($(this).attr('id'));
                 });
             }
 
