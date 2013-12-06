@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
@@ -104,9 +103,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @return Product
      */
-    public function setFamily(Family $family)
+    public function setFamily($family)
     {
-        $this->familyId = $family->getId();
         $this->family = $family;
 
         return $this;
