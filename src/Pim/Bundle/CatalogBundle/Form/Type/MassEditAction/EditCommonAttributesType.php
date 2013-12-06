@@ -20,12 +20,12 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 class EditCommonAttributesType extends AbstractType
 {
     /**
-     * @var ProductFormView
+     * @var ProductFormView $productFormView
      */
     protected $productFormView;
 
     /**
-     * @var LocaleHelper
+     * @var LocaleHelper $localeHelper
      */
     protected $localeHelper;
 

@@ -45,6 +45,8 @@ class AttributeCache
      * Sets the attributes and identifierAttributes properties
      *
      * @param array $columnsInfo
+     *
+     * @return array|null
      */
     public function getAttributes($columnsInfo)
     {

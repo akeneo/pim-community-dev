@@ -35,7 +35,8 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Constructor
      *
-     * @param MeasureConverter $converter
+     * @param MeasureConverter $converter the measure converter
+     * @param MeasureManager   $manager   the measure manager
      */
     public function __construct(MeasureConverter $converter, MeasureManager $manager)
     {

@@ -71,7 +71,7 @@ class ProductImportValidator extends ImportValidator
      * Validates a ProductValue
      *
      * @param ProductInterface    $product
-     * @param ColumnInfoInterface $attribute
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ConstraintViolationListInterface
      */

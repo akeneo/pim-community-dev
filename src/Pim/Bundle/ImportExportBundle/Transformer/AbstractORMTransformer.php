@@ -92,6 +92,8 @@ abstract class AbstractORMTransformer
 
     /**
      * Returns the errors for the last imported entity
+     *
+     * @return array
      */
     public function getErrors()
     {
@@ -103,6 +105,7 @@ abstract class AbstractORMTransformer
      *
      * @param string $class
      * @param array  $data
+     * @param array  $defaults
      *
      * @throws InvalidItemException
      * @return object
@@ -144,8 +147,7 @@ abstract class AbstractORMTransformer
      *
      * @param object                       $entity
      * @param ColumnInfoInterface          $columnInfo
-     * @param PropertyTransformerInterface $transformer
-     * @param array                        $transformerOptions
+     * @param array                        $transformerInfo
      * @param mixed                        $value
      *
      * @return array|null
@@ -214,11 +216,10 @@ abstract class AbstractORMTransformer
     /**
      * Finds or creates an entity for given class and data
      *
-     * @abstract
-     *
      * @param string $class
      * @param array  $data
      *
+     * @abstract
      * @return object
      */
     abstract protected function getEntity($class, array $data);
