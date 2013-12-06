@@ -195,9 +195,6 @@ class ProductBuilder
      */
     protected function getProductValueClass()
     {
-        //FIXME_MONGO
-        return "Pim\Bundle\CatalogBundle\Model\ProductValue";
-
         if (!$this->productValueClass) {
             $meta = $this->objectManager->getClassMetadata($this->productClass);
             $associations = $meta->getAssociationMappings();
