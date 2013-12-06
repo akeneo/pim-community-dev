@@ -4,8 +4,10 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Common\EventSubscriber;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Inject ORM attribute object into ProductValue loaded from MongoDB
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetValuesAttributesSubscriber implements EventSubscriber
+class InjectORMReferencesSubscriber implements EventSubscriber
 {
 
     /**
@@ -45,27 +47,62 @@ class SetValuesAttributesSubscriber implements EventSubscriber
     }
 
     /**
-     * After load, we add the reference to attribute inside the value
-     * in order to be able to lazyload it when needed
+     * After load, adds ORM references to document
      *
      * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $value = $args->getDocument();
+        $document = $args->getDocument();
+        $documentManager = $args->getDocumentManager();
 
-        if ($value instanceof ProductValueInterface) {
-            $documentManager = $args->getDocumentManager();
-            // FIXME_MONGO: get the productValue classname from ProductManager (can be something else)
-            $valueMetadata = $documentManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\ProductValue');
-
-            $attributeReflProp = $valueMetadata->reflClass->getProperty('attribute');
-            $attributeReflProp->setAccessible(true);
-
-            $attributeReflProp->setValue(
-                $value,
-                $this->entityManager->getReference('PimCatalogBundle:ProductAttribute', $value->getAttributeId())
-            );
+        if ($document instanceof ProductValueInterface) {
+            $this->setAttributeReference($document, $documentManager);
+        } else if ($document instanceof ProductInterface) {
+            $this->setFamilyReference($document, $documentManager);
         }
     }
+
+    /**
+     * Add the reference to attribute inside the value
+     * in order to be able to lazyload it when needed
+     *
+     * @param ProductValueInterface $value
+     * @param DocumentManager       $documentManager
+     */
+    protected function setAttributeReference(ProductValueInterface $value, DocumentManager $documentManager)
+    {
+        // FIXME_MONGO: get the productValue classname from ProductManager (can be something else)
+        $valueMetadata = $documentManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\ProductValue');
+
+        $attributeReflProp = $valueMetadata->reflClass->getProperty('attribute');
+        $attributeReflProp->setAccessible(true);
+
+        $attributeReflProp->setValue(
+            $value,
+            $this->entityManager->getReference('PimCatalogBundle:ProductAttribute', $value->getAttributeId())
+        );
+    }
+
+    /**
+     * Add the reference to family inside the value
+     *
+     * @param ProductInterface $product
+     * @param DocumentManager  $documentManager
+     */
+    protected function setFamilyReference(ProductInterface $product, DocumentManager $documentManager)
+    {
+        // FIXME_MONGO: get the productValue classname from ProductManager (can be something else)
+        $productMetadata = $documentManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\Product');
+
+        $familyReflProp = $productMetadata->reflClass->getProperty('family');
+        $familyReflProp->setAccessible(true);
+
+        $familyReflProp->setValue(
+            $product,
+            $this->entityManager->getReference('PimCatalogBundle:Family', $product->getFamilyId())
+        );
+    }
+
+
 }

@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 
 /**
  * Product manager
@@ -104,6 +106,8 @@ class ProductManager extends FlexibleManager
 
         return $this;
     }
+
+
 
     /**
      * Find a product by id
@@ -288,7 +292,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProduct()
     {
-        $product =  parent::createFlexible();
+        $product = $this->createFlexible();
 
         return $product;
     }
@@ -300,7 +304,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProductValue()
     {
-        return parent::createFlexibleValue();
+        return $this->createFlexibleValue();
     }
 
     /**
@@ -354,6 +358,8 @@ class ProductManager extends FlexibleManager
      */
     public function ensureAllAssociations(ProductInterface $product)
     {
+        //FIXME_MONGO
+        return;
         $missingAssociations = $this->storageManager
             ->getRepository('PimCatalogBundle:Association')
             ->findMissingAssociations($product);
@@ -401,6 +407,12 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * FIXME_MONGO: Use an AttributeManager instead of using the same
+     * objectManager than the one used by the FlexibleEntity
+     *
+     * All methods overload below are linked to that issue
+     */
+    /**
      * Return related repository
      *
      * @return ObjectRepository
@@ -439,4 +451,36 @@ class ProductManager extends FlexibleManager
     {
         return $this->entityManager->getRepository($this->getFlexibleValueName());
     }
+
+    /**
+     * Get the entity manager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    
+    public function createFlexible()
+    {
+        $class = $this->getFlexibleName();
+        $attributeClass = $this->getAttributeName();
+        $valueClass = $this->getFlexibleValueName();
+
+        $flexible = new $class();
+        $flexible->setLocale($this->getLocale());
+        $flexible->setScope($this->getScope());
+
+        $codeToAttributeData = $this->getEntityManager()->getRepository($attributeClass)->getCodeToAttributes($class);
+        $flexible->setAllAttributes($codeToAttributeData);
+        $flexible->setValueClass($valueClass);
+
+        $event = new FilterFlexibleEvent($this, $flexible);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
+
+        return $flexible;
+    }
+
 }

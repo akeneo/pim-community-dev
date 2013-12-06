@@ -14,7 +14,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
         updated:
             type: date
         # Family references ORM family code
-        family:
+        familyId:
             type: int
         # Collection to references ORM groups code
         #groups:

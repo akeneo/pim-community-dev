@@ -195,6 +195,9 @@ class ProductBuilder
      */
     protected function getProductValueClass()
     {
+        //FIXME_MONGO
+        return "Pim\Bundle\CatalogBundle\Model\ProductValue";
+
         if (!$this->productValueClass) {
             $meta = $this->objectManager->getClassMetadata($this->productClass);
             $associations = $meta->getAssociationMappings();
@@ -325,11 +328,7 @@ class ProductBuilder
     protected function getLocaleRows()
     {
         if (!$this->localeRows) {
-<<<<<<< HEAD
-            $locales = $this->localeManager->getActivatedLocales();
-=======
             $locales = $this->localeManager->getActiveLocales();
->>>>>>> master
             $this->localeRows = array();
             foreach ($locales as $locale) {
                 $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);

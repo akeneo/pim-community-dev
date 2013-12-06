@@ -19,12 +19,3 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
                     referencedColumnName: id
                     nullable: false
                     onDelete: CASCADE
-# FIXME_MONGO: keep a reference to a product here
-#        owner:
-#            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-#            inversedBy: productAssociations
-#            joinColumns:
-#                owner_id:
-#                    referencedColumnName: id
-#                    nullable: false
-#                    onDelete: CASCADE

@@ -245,8 +245,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     public function getLabel($locale = null)
     {
-        // FIXME_MONGO
-        return (string) $this->getIdentifier()->getData();
         if ($this->family) {
             if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
                 if ($locale) {

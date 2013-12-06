@@ -164,7 +164,8 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->productManager->getStorageManager();
+        // FIXME_MONGO: We really need an attribute manager instead of using the ProductManager
+        $em = $this->productManager->getEntityManager();
         $groups = $em->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {

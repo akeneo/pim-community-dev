@@ -16,8 +16,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             type: string
         integer:
             type: int
-            nullable: true
-            column: value_integer
         decimal:
             type: float
         boolean:
