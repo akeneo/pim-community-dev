@@ -40,10 +40,6 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        // FIXME_MONGO: Validator does not seems to have access to the right ManagerRegistry
-        // in MongoDB mode
-        return true;
-
         $entity = $this->getEntity();
         if (!$entity instanceof ProductValueInterface || empty($value)) {
             return;
