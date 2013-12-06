@@ -8,9 +8,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
-        productOwnerId:
-            type: integer
-            column: product_owner_id
     manyToOne:
         association:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
@@ -19,3 +16,36 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
                     referencedColumnName: id
                     nullable: false
                     onDelete: CASCADE
+        owner:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            inversedBy: productAssociations
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+    manyToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Group
+            joinTable:
+                name: pim_catalog_product_association_group
+                joinColumns:
+                    productassociation_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            joinTable:
+                name: pim_catalog_product_association_product
+                joinColumns:
+                    productassociation_id:
+                        onDelete: CASCADE
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

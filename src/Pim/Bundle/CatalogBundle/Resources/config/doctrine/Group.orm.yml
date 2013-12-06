@@ -33,9 +33,9 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 inverseJoinColumns:
                     attribute_id:
                         referencedColumnName: id
-#        products:
-#            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-#            mappedBy: groups
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            mappedBy: groups
     oneToMany:
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
