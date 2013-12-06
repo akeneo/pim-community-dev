@@ -5,7 +5,6 @@ services:
         arguments:
             - %pim_catalog.entity.product.class%
             - %pim_flexibleentity.flexible_config%
-            - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@pim_flexibleentity.attributetype.factory'
@@ -32,7 +31,7 @@ services:
         class: %pim_catalog.builder.product.class%
         arguments:
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
