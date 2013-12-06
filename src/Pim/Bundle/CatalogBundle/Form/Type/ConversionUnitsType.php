@@ -40,12 +40,12 @@ class ConversionUnitsType extends AbstractType
             ->findBy(array('attributeType' => 'pim_catalog_metric'));
 
         foreach ($metricAttributes as $attribute) {
-            if ($config = $this->measureManager->getFamilyConfig($attribute->getMetricFamily())) {
+            if ($units = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())) {
                 $builder->add(
                     $attribute->getCode(),
                     'choice',
                     array(
-                        'choices'     => array_combine(array_keys($config['units']), array_keys($config['units'])),
+                        'choices'     => array_combine(array_keys($units), array_keys($units)),
                         'empty_value' => 'Do not convert',
                         'required'    => false,
                         'select2'     => true,

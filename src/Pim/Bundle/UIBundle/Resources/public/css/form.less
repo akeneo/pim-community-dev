@@ -197,7 +197,7 @@ span.handle, td.handle {
     tr.group {
       font-weight: bold;
       cursor: pointer;
-      background-color: #ffffff;
+      background-color: @backgroundColor-white;
       border-bottom: 1px solid #d8d8d8;
     }
     tr {
@@ -277,6 +277,11 @@ div.btn-group > .has-switch {
 #attribute-buttons {
   float: right;
   margin: 10px;
+  .channel-switcher .dropdown-toggle {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+  }
 }
 
 #comparison-buttons {
@@ -466,7 +471,7 @@ div.btn-group > .has-switch {
           }
           a {
             display: block;
-            color: #444444;
+            color: @textColor;
             &:hover {
               text-decoration: none;
             }
@@ -545,7 +550,7 @@ div.ui-dialog {
   border-radius: 6px 6px 0 0;
 }
 .modal-header h3{
-  color: #fff;
+  color: @backgroundColor-white;
 }
 
 .modal-primary {
@@ -559,7 +564,7 @@ div.ui-dialog {
     border-radius: 6px 6px 0 0;
   }
   .modal-header h3 {
-    font: #fff;
+    font: @backgroundColor-white;
   }
 }
 
@@ -677,8 +682,8 @@ table i {
 }
 
 .metric {
-  .input-large {
-    width: 110px;
+  .selectize-input {
+    width: 180px;
   }
 }
 
@@ -794,7 +799,7 @@ h1 {
   font-size: 18px;
   font-weight: normal;
   line-height: 33px;
-  color: #999;
+  color: @textColor + #555;
 }
 .page-title {
   padding: 10px 7px 10px 12px;
@@ -812,7 +817,7 @@ h1 {
   .sub-title {
     float: left;
     font-size: 18px;
-    color: #999;
+    color: @textColor + #555;
   }
   .separator {
     float: left;
@@ -821,7 +826,7 @@ h1 {
     color: #999;
   }
   ul.inline {
-    color: #777;
+    color: @textColor + #333;
       li {
         padding: 0 10px;
         font-size: 11px;
@@ -1116,7 +1121,7 @@ button.pimmultiselect {
         padding: 5px;
         margin: 3px;
         font-size: 12px;
-        color: #999;
+        color: @textColor + #555;
         border-color: #d6d6d6;
       }
     }

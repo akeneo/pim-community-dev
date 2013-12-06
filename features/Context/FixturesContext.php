@@ -1023,7 +1023,7 @@ class FixturesContext extends RawMinkContext
         $columns = join($delimiter, array_keys($data));
 
         $rows = array();
-        foreach ($data as $key => $values) {
+        foreach ($data as $values) {
             foreach ($values as $index => $value) {
                 $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
@@ -1141,13 +1141,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I have configured channel "([^"]*)" with the following conversion options:$/
+     * @param Channel   $channel
+     * @param TableNode $conversionUnits
+     *
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
      */
-    public function iHaveConfiguredChannelWithTheFollowingConversionOptions($channel, TableNode $conversionUnits)
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
-        $this
-            ->getEntityOrException('Channel', $channel)
-            ->setConversionUnits($conversionUnits->getRowsHash());
+        $channel->setConversionUnits($conversionUnits->getRowsHash());
 
         $this->flush();
     }

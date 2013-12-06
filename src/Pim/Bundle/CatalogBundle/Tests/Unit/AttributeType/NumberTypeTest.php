@@ -25,4 +25,97 @@ class NumberTypeTest extends AttributeTypeTestCase
     {
         return new NumberType($this->backendType, $this->formType, $this->guesser);
     }
+
+    /**
+     * Data provider for build value form type method
+     *
+     * @static
+     *
+     * @return array
+     */
+    public static function buildValueFormTypeDataProvider()
+    {
+        return array(
+            'decimals_allowed'     => array(
+                array('is_decimals_allowed' => true),
+                array('precision' => 4)
+            ),
+            'decimals_now_allowed' => array(
+                array('is_decimals_allowed' => false),
+                array('precision' => 0)
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @dataProvider buildValueFormTypeDataProvider
+     */
+    public function testBuildValueFormType($attributeOptions, $expectedResult)
+    {
+        $factory = $this->getFormFactoryMock();
+        $data = 5;
+        $value = $this->getFlexibleValueMock(
+            array(
+                'data'        => $data,
+                'backendType' => $this->backendType,
+                'attribute_options' => $attributeOptions
+            )
+        );
+
+        $factory
+            ->expects($this->once())
+            ->method('createNamed')
+            ->with(
+                $this->backendType,
+                $this->formType,
+                $data,
+                array_merge(
+                    array(
+                        'constraints'     => array('constraints'),
+                        'label'           => null,
+                        'required'        => null,
+                        'auto_initialize' => false
+                    ),
+                    $expectedResult
+                )
+            );
+
+        $this->target->buildValueFormType($factory, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    {
+        $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
+
+        if (!isset($attributeOptions['is_decimals_allowed'])) {
+            $attributeOptions['is_decimals_allowed'] = true;
+        }
+        $attribute
+            ->expects($this->any())
+            ->method('isDecimalsAllowed')
+            ->will($this->returnValue($attributeOptions['is_decimals_allowed']));
+
+        return $attribute;
+    }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            10,
+            $attFormType
+        );
+    }
 }

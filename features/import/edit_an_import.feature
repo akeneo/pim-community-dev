@@ -21,18 +21,18 @@ Feature: Edit an import
     Given I am on the "footwear_product_import" import job edit page
     Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product?, Categories column, Family column, Groups column and Real time versioning? fields
     When I fill in the following information:
-      | File              | /file.csv |
-      | Delimiter         | \|        |
-      | Enclosure         | '         |
-      | Escape            | \\        |
-      | Categories column | cat       |
-      | Family column     | fam       |
-      | Groups column     | grp       |
+      | File              | file.csv |
+      | Delimiter         | \|       |
+      | Enclosure         | '        |
+      | Escape            | \\       |
+      | Categories column | cat      |
+      | Family column     | fam      |
+      | Groups column     | grp      |
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product?" switch
     And I uncheck the "Real time versioning?" switch
     And I press the "Save" button
-    Then I should see "File /file.csv"
+    Then I should see "File file.csv"
     And I should see "Allow file upload No"
     And I should see "Delimiter |"
     And I should see "Enclosure '"

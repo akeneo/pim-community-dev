@@ -15,7 +15,7 @@ Feature: Convert metric values during export
 
   @javascript
   Scenario: Succesfully convert metric values
-    Given I have configured channel "ecommerce" with the following conversion options:
+    Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
     And the following products:
       | sku          | family  | categories      |
