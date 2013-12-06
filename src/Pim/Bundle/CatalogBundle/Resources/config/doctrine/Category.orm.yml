@@ -79,3 +79,8 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                     onDelete: 'SET NULL'
             gedmo:
                 - treeParent
+    manyToMany:
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            mappedBy: categories
+            fetch: EXTRA_LAZY

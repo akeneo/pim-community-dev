@@ -50,12 +50,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     protected $family;
 
     /**
-     * @var family_id that will be stored to keep the link with
-     * the family.
-     */
-    protected $familyId;
-
-    /**
      * @var ArrayCollection $categories
      */
     protected $categories;
@@ -92,31 +86,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->groups              = new ArrayCollection();
         $this->productAssociations = new ArrayCollection();
     }
-
-    /**
-     * Get the current family id
-     *
-     * @return int familyId
-     */
-    public function getFamilyId()
-    {
-        return $this->familyId;
-    }
-
-    /**
-     * Set the current family id
-     *
-     * @param int family id
-     *
-     * @return Product
-     */
-    public function setFamilyId($familyId)
-    {
-        $this->familyId = $familyId;
-
-        return $this;
-    }
-
 
     /**
      * Get family

@@ -43,8 +43,6 @@ class CategoryRepository extends SegmentRepository
      */
     public function countProductsLinked(Category $category, $onlyActual = true, $includeNode = true)
     {
-        //FIXME_MONGO countProductsLinked should be done on the product side
-        return 0;
         $qb = ($onlyActual) ?
             $this->getNodeQueryBuilder($category) :
             $this->getAllChildrenQueryBuilder($category, $includeNode);
@@ -122,11 +120,6 @@ class CategoryRepository extends SegmentRepository
      */
     public function getProductsCountByTree(ProductInterface $product)
     {
-        // FIXME_MONGO
-        // Must be replace by a call to product repository that will do the same query for ORM
-        // and a MongoDB specific one for MongoDB ODM
-        return array();
-
         $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
