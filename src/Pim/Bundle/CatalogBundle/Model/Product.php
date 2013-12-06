@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
@@ -47,6 +48,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
      */
     protected $family;
+
+    /**
+     * @var family_id that will be stored to keep the link with
+     * the family.
+     */
+    protected $familyId;
 
     /**
      * @var ArrayCollection $categories
@@ -87,6 +94,31 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     }
 
     /**
+     * Get the current family id
+     *
+     * @return int familyId
+     */
+    public function getFamilyId()
+    {
+        return $this->familyId;
+    }
+
+    /**
+     * Set the current family id
+     *
+     * @param int family id
+     *
+     * @return Product
+     */
+    public function setFamilyId($familyId)
+    {
+        $this->familyId = $familyId;
+
+        return $this;
+    }
+
+
+    /**
      * Get family
      *
      * @return Family
@@ -103,8 +135,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @return Product
      */
-    public function setFamily($family)
+    public function setFamily(Family $family)
     {
+        $this->familyId = $family->getId();
         $this->family = $family;
 
         return $this;
@@ -212,6 +245,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      */
     public function getLabel($locale = null)
     {
+        // FIXME_MONGO
+        return (string) $this->getIdentifier()->getData();
         if ($this->family) {
             if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
                 if ($locale) {

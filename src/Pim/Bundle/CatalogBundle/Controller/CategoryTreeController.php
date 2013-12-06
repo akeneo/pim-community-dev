@@ -203,9 +203,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listItemsAction(Category $category)
     {
-        //FIXME_MONGO: relation broken between Categories and products
-        //return array('products' => $category->getProducts());
-        return array('products' => new ArrayCollection());
+        return array('products' => $category->getProducts());
     }
 
     /**

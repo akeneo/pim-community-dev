@@ -24,7 +24,7 @@ class ProductCreateType extends FlexibleType
         $builder
             ->add('values', 'collection')
             ->add(
-                'family',
+                'familyId',
                 null,
                 array(
                     'select2' => true,
