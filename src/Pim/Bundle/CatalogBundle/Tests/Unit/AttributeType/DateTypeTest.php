@@ -25,4 +25,75 @@ class DateTypeTest extends AttributeTypeTestCase
     {
         return new DateType($this->backendType, $this->formType, $this->guesser);
     }
+
+    /**
+     * Data provider for build value form type method
+     *
+     * @static
+     *
+     * @return array
+     */
+    public static function buildValueFormTypeDataProvider()
+    {
+        return array(
+            array(
+                array(),
+                array('widget' => 'single_text', 'input' => 'datetime')
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @dataProvider buildValueFormTypeDataProvider
+     */
+    public function testBuildValueFormType($attributeOptions, $expectedResult)
+    {
+        $factory = $this->getFormFactoryMock();
+        $data = '12/06/2013';
+        $value = $this->getFlexibleValueMock(
+            array(
+                'data'        => $data,
+                'backendType' => $this->backendType,
+                'attribute_options' => $attributeOptions
+            )
+        );
+
+        $factory
+            ->expects($this->once())
+            ->method('createNamed')
+            ->with(
+                $this->backendType,
+                $this->formType,
+                $data,
+                array_merge(
+                    array(
+                        'constraints'     => array('constraints'),
+                        'label'           => null,
+                        'required'        => null,
+                        'auto_initialize' => false
+                    ),
+                    $expectedResult
+                )
+            );
+
+        $this->target->buildValueFormType($factory, $value);
+    }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            9,
+            $attFormType
+        );
+    }
 }

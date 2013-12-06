@@ -73,7 +73,7 @@ pim_import_export:
             label: Groups column
             help: Name of the groups column
         realTimeVersioning:
-            label: Real time versioning ?
+            label: Real time versioning?
             help: Is the product history directly updated
         circularRefsChecked:
             label: Check circular references

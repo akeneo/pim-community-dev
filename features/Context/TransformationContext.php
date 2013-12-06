@@ -40,6 +40,18 @@ class TransformationContext extends RawMinkContext
     /**
      * @param string $code
      *
+     * @Transform /^channel "([^"]*)"$/
+     *
+     * @return Channel
+     */
+    public function castChannelCodeToChannel($code)
+    {
+        return $this->getFixturesContext()->getChannel($code);
+    }
+
+    /**
+     * @param string $code
+     *
      * @Transform /^"([^"]*)" attribute group$/
      *
      * @return AttributeGroup

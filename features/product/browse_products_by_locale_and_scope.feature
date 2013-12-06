@@ -32,7 +32,7 @@ Feature: Browse products by locale and scope
     And I am on the products page
 
   Scenario: Successfully display english data on products page
-    Given I switch the locale to "en_US"
+    Given I switch the locale to "English (United States)"
     Then I should see product postit
     When I filter by "Channel" with value "E-Commerce"
     Then the row "postit" should contain:
@@ -52,7 +52,7 @@ Feature: Browse products by locale and scope
       | family      | furniture  |
 
   Scenario: Successfully display french data on products page
-    Given I switch the locale to "fr_FR"
+    Given I switch the locale to "French (France)"
     Then I should see product postit
     When I filter by "Channel" with value "E-Commerce"
     Then the row "postit" should contain:

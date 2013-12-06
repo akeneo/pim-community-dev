@@ -23,16 +23,25 @@ class MetricConverterTest extends \PHPUnit_Framework_TestCase
     {
         $shoe = $this->getProductMock(
             array(
-                $this->getProductValueMock($metric = $this->getMetricMock('Weight', 'KILOGRAM', 1)),
-                $this->getProductValueMock($this->getMetricMock('Surface', 'METER_SQUARE', 10)),
-                $this->getProductValueMock('foo'),
+                $this->getProductValueMock(
+                    $this->getAttributeMock('weight'),
+                    $metric = $this->getMetricMock('Weight', 'KILOGRAM', 1)
+                ),
+                $this->getProductValueMock(
+                    $this->getAttributeMock('surface'),
+                    $this->getMetricMock('Surface', 'METER_SQUARE', 10)
+                ),
+                $this->getProductValueMock(
+                    $this->getAttributeMock('bar'),
+                    'foo'
+                ),
             )
         );
         $products = array(
             $shoe
         );
 
-        $channel = $this->getChannelMock(array('Weight' => 'GRAM'));
+        $channel = $this->getChannelMock(array('weight' => 'GRAM'));
 
         $this->measureConverter->expects($this->once())->method('setFamily');
         $this->measureConverter
@@ -66,9 +75,13 @@ class MetricConverterTest extends \PHPUnit_Framework_TestCase
         return $product;
     }
 
-    private function getProductValueMock($data)
+    private function getProductValueMock($attribute, $data)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
+
+        $value->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($attribute));
 
         $value->expects($this->any())
             ->method('getData')
@@ -97,5 +110,16 @@ class MetricConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($conversionUnits));
 
         return $channel;
+    }
+
+    protected function getAttributeMock($code)
+    {
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+
+        $attribute->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue($code));
+
+        return $attribute;
     }
 }

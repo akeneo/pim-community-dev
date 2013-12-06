@@ -40,8 +40,9 @@ class MetricConverter
         foreach ($products as $product) {
             foreach ($product->getValues() as $value) {
                 $data = $value->getData();
-                if ($data instanceof Metric && isset($channelUnits[$data->getFamily()])) {
-                    $channelUnit = $channelUnits[$data->getFamily()];
+                $attribute = $value->getAttribute();
+                if ($data instanceof Metric && isset($channelUnits[$attribute->getCode()])) {
+                    $channelUnit = $channelUnits[$attribute->getCode()];
                     $this->converter->setFamily($data->getFamily());
                     $data->setData(
                         $this->converter->convert($data->getUnit(), $channelUnit, $data->getData())

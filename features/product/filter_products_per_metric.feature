@@ -35,10 +35,10 @@ Feature: Filter products per metric
     And I should see products postit and book
     And I should be able to use the following filters:
       | filter | value      | result          |
-      | Weight | >= 200 g   | book            |
-      | Weight | > 120 g    | book            |
-      | Weight | = 120 g    | postit          |
-      | Weight | < 200 g    | postit          |
-      | Weight | <= 120 g   | postit          |
-      | Weight | <= 0.25 kg | postit and book |
-      | Weight | > 4 kg     |                 |
+      | Weight | >= 200 Gram      | book            |
+      | Weight | > 120 Gram       | book            |
+      | Weight | = 120 Gram       | postit          |
+      | Weight | < 200 Gram       | postit          |
+      | Weight | <= 120 Gram      | postit          |
+      | Weight | <= 0.25 Kilogram | postit and book |
+      | Weight | > 4 Kilogram     |                 |

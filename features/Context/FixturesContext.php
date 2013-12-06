@@ -586,12 +586,12 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
@@ -1023,7 +1023,7 @@ class FixturesContext extends RawMinkContext
         $columns = join($delimiter, array_keys($data));
 
         $rows = array();
-        foreach ($data as $key => $values) {
+        foreach ($data as $values) {
             foreach ($values as $index => $value) {
                 $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
@@ -1141,13 +1141,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I have configured channel "([^"]*)" with the following conversion options:$/
+     * @param Channel   $channel
+     * @param TableNode $conversionUnits
+     *
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
      */
-    public function iHaveConfiguredChannelWithTheFollowingConversionOptions($channel, TableNode $conversionUnits)
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
-        $this
-            ->getEntityOrException('Channel', $channel)
-            ->setConversionUnits($conversionUnits->getRowsHash());
+        $channel->setConversionUnits($conversionUnits->getRowsHash());
 
         $this->flush();
     }

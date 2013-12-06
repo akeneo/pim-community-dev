@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
 
 /**
  * Tests related class
@@ -11,14 +11,14 @@ use Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmTransformerTest extends OrmTransformerTestCase
+class ORMTransformerTest extends ORMTransformerTestCase
 {
     protected $transformer;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = new OrmTransformer(
+        $this->transformer = new ORMTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,

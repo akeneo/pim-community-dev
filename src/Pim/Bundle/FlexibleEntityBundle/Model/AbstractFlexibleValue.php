@@ -138,7 +138,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Translat
      */
     public function setLocale($locale)
     {
-        if ($locale and $this->getAttribute() and $this->getAttribute()->getTranslatable() === false) {
+        if ($locale and $this->getAttribute() and $this->getAttribute()->isTranslatable() === false) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new FlexibleConfigurationException(
                 "This value '".$this->getId()."' can't be localized, see attribute '".$attributeCode."' configuration"
@@ -163,7 +163,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Translat
      */
     public function setScope($scope)
     {
-        if ($scope and $this->getAttribute() and $this->getAttribute()->getScopable() === false) {
+        if ($scope and $this->getAttribute() and $this->getAttribute()->isScopable() === false) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new FlexibleConfigurationException(
                 "This value '".$this->getId()."' can't be scopped, see attribute '".$attributeCode."' configuration"

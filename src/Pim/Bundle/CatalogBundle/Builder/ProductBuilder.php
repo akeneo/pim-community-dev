@@ -75,9 +75,9 @@ class ProductBuilder
      */
     public function __construct(
         $productClass,
-        ObjectManager   $objectManager,
-        ChannelManager  $channelManager,
-        LocaleManager   $localeManager,
+        ObjectManager $objectManager,
+        ChannelManager $channelManager,
+        LocaleManager $localeManager,
         CurrencyManager $currencyManager
     ) {
         $this->productClass    = $productClass;
@@ -257,13 +257,13 @@ class ProductBuilder
     protected function getExpectedValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
-        if ($attribute->getScopable() and $attribute->getTranslatable()) {
+        if ($attribute->isScopable() and $attribute->isTranslatable()) {
             $requiredValues = $this->getScopeToLocaleRows();
 
-        } elseif ($attribute->getScopable()) {
+        } elseif ($attribute->isScopable()) {
             $requiredValues = $this->getScopeRows();
 
-        } elseif ($attribute->getTranslatable()) {
+        } elseif ($attribute->isTranslatable()) {
             $requiredValues = $this->getLocaleRows();
 
         } else {

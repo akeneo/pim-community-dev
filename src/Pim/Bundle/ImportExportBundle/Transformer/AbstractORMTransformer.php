@@ -23,7 +23,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerIn
  *
  * @abstract
  */
-abstract class AbstractOrmTransformer
+abstract class AbstractORMTransformer
 {
     /**
      * @var RegistryInterface

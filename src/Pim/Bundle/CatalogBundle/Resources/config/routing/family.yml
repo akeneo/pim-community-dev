@@ -37,7 +37,8 @@ pim_catalog_family_removeproductattribute:
     methods: [DELETE]
 
 pim_catalog_family_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.family:historyAction }
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_catalog.controller.family:historyAction, _format: html }
     requirements:
         id: \d+
+        _format: html|json
