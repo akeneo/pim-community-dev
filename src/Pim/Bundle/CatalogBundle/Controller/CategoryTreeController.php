@@ -24,8 +24,6 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
-use Doctrine\Common\Collection\ArrayCollection;
-
 /**
  * Category Tree Controller
  *
