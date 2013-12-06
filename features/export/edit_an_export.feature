@@ -21,14 +21,14 @@ Feature: Edit an export
     Given I am on the "footwear_product_export" export job edit page
     Then I should see the Channel, Delimiter, Enclosure, With header and File path fields
     When I fill in the following information:
-      | Channel   | Tablet    |
-      | Delimiter | \|        |
-      | Enclosure | '         |
-      | File path | /file.csv |
+      | Channel   | Tablet   |
+      | Delimiter | \|       |
+      | Enclosure | '        |
+      | File path | file.csv |
     And I uncheck the "With header" switch
     And I press the "Save" button
     Then I should see "Channel tablet"
-    And I should see "File path /file.csv"
+    And I should see "File path file.csv"
     And I should see "Delimiter |"
     And I should see "Enclosure '"
     And I should see "With header No"
