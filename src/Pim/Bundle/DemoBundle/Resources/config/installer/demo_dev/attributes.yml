@@ -138,7 +138,6 @@ attributes:
             useableAsGridColumn: true
             useableAsGridFilter: true
             sortOrder:           1
-            translatable:        true
         options:
             Red:
                 labels:
