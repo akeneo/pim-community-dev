@@ -45,11 +45,12 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
         return array(
             array(
                 array(
-                    'code'       => 'channel_code',
-                    'label'      => 'channel_label',
-                    'currencies' => 'EUR,USD',
-                    'locales'    => 'fr_FR,en_US',
-                    'category'   => 'My_Tree'
+                    'code'             => 'channel_code',
+                    'label'            => 'channel_label',
+                    'currencies'       => 'EUR,USD',
+                    'locales'          => 'fr_FR,en_US',
+                    'category'         => 'My_Tree',
+                    'conversion_units' => 'weight: KILOGRAM, washing_temperature: '
                 )
             )
         );
