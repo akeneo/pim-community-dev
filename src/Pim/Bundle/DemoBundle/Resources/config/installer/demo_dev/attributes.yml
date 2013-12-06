@@ -35,6 +35,7 @@ attributes:
             numberMax:           500
             sortOrder:           1
             decimalsAllowed:     true
+            translatable:        true
     short_description:
         labels:
             en_US: Short Description
@@ -91,8 +92,9 @@ attributes:
         type:  pim_catalog_image
         group: seo
         parameters:
-            maxFileSize: 2000
-            sortOrder: 2
+            translatable:      true
+            maxFileSize:       2000
+            sortOrder:         2
             allowedExtensions: 'gif,jpeg,png'
     size:
         labels:
@@ -136,6 +138,7 @@ attributes:
             useableAsGridColumn: true
             useableAsGridFilter: true
             sortOrder:           1
+            translatable:        true
         options:
             Red:
                 labels:
@@ -167,6 +170,7 @@ attributes:
             useableAsGridColumn: true
             useableAsGridFilter: true
             sortOrder:           10
+            translatable:        true
         options:
             MyMug:
                 labels:
@@ -232,6 +236,7 @@ attributes:
             metricFamily:        Weight
             defaultMetricUnit:   GRAM
             decimalsAllowed:     true
+            translatable:        true
     washing_temperature:
         labels:
             en_US: Washing Temperature
@@ -244,4 +249,36 @@ attributes:
             sortOrder:           10
             metricFamily:        Temperature
             defaultMetricUnit:   CELSIUS
+            decimalsAllowed:     true
+    processor_brand:
+        labels:
+            en_US: Processor brand
+            fr_FR: Marque processeur
+        type:  pim_catalog_text
+        group: general
+        parameters:
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            sortOrder:           200
+    core_number:
+        labels:
+            en_US: Core number
+            fr_FR: Nombre de coeurs
+        type:  pim_catalog_number
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           100
+            decimalsAllowed:     false
+    height:
+        labels:
+            en_US: Height
+            fr_FR: Hauteur
+        type:  pim_catalog_number
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           100
             decimalsAllowed:     true

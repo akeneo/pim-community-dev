@@ -102,4 +102,20 @@ class NumberTypeTest extends AttributeTypeTestCase
 
         return $attribute;
     }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            10,
+            $attFormType
+        );
+    }
 }
