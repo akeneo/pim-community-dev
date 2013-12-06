@@ -250,3 +250,35 @@ attributes:
             metricFamily:        Temperature
             defaultMetricUnit:   CELSIUS
             decimalsAllowed:     true
+    processor_brand:
+        labels:
+            en_US: Processor brand
+            fr_FR: Marque processeur
+        type:  pim_catalog_text
+        group: general
+        parameters:
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            sortOrder:           200
+    core_number:
+        labels:
+            en_US: Core number
+            fr_FR: Nombre de coeurs
+        type:  pim_catalog_number
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           100
+            decimalsAllowed:     false
+    height:
+        labels:
+            en_US: Height
+            fr_FR: Hauteur
+        type:  pim_catalog_number
+        group: general
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           100
+            decimalsAllowed:     true

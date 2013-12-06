@@ -57,7 +57,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
-            $this->stepExecution->incrementSummaryInfo('skip');
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+            }
             throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
         }
 
