@@ -396,13 +396,10 @@ class CategoryExtension extends \Twig_Extension
      */
     protected function countProducts(CategoryInterface $category, $includeSub)
     {
-        return 0;
-        /** FIXME_MONGO
         return $this
             ->categoryManager
             ->getEntityRepository()
             ->countProductsLinked($category, !$includeSub);
-        */
     }
 
     /**

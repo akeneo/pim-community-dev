@@ -144,7 +144,6 @@ class ProductController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        // FIXME_MONGO: gridManager
         //$gridManager = $this->datagridHelper->getDatagridManager('product');
         //$gridManager->setFilterTreeId($request->get('treeId', 0));
         //$gridManager->setFilterCategoryId($request->get('categoryId', 0));
@@ -333,6 +332,9 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
+        // FIXME_MONGO Datagrid for assocation currently broken
+        // (and maybe do a separate method for that part of the action
+        /*
         $productGrid = $this->datagridHelper->getDatagridManager('association_product');
         $productGrid->setProduct($product);
 
@@ -352,6 +354,7 @@ class ProductController extends AbstractDoctrineController
 
         $productGridView = $productGrid->getDatagrid()->createView();
         $groupGridView   = $groupGrid->getDatagrid()->createView();
+        */
 
         return array(
             'form'                   => $form->createView(),
@@ -362,11 +365,15 @@ class ProductController extends AbstractDoctrineController
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'                => $product,
             'trees'                  => $trees,
-            'created'                => $this->auditManager->getOldestLogEntry($product),
-            'updated'                => $this->auditManager->getNewestLogEntry($product),
+            // FIXME_MONGO: AuditManager not able to get Product from EntityManager
+            //'created'                => $this->auditManager->getOldestLogEntry($product),
+            //'updated'                => $this->auditManager->getNewestLogEntry($product),
+            'created'                => null,
+            'updated'                => null,
             'associations'           => $associations,
-            'associationProductGrid' => $productGridView,
-            'associationGroupGrid'   => $groupGridView,
+            // FIXME_MONGO
+            //'associationProductGrid' => $productGridView,
+            //'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
         );
     }
@@ -645,7 +652,7 @@ class ProductController extends AbstractDoctrineController
 
         if (!$product) {
             throw $this->createNotFoundException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
 
