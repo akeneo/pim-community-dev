@@ -1,8 +1,6 @@
 <div class="tab-pane active" id="attributes">
     {% include 'PimCatalogBundle:Product:_attributes.html.twig' %}
 </div>
-{#FIXME MONGO: NO ASSOCIATION CURRENTLY #}
-{#
 {% if resource_granted("pim_catalog_product_categories_view") %}
     <div class="tab-pane" id="categories">
        {% include 'PimCatalogBundle:Product:_associateCategories.html.twig' %}
@@ -20,4 +18,3 @@
 
 <div class="tab-pane" id="history" data-url="{{ path('pim_catalog_product_history', { id: product.id }) }}">
 </div>
-#}
