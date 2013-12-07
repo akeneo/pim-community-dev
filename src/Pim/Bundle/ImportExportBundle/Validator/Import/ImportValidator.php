@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -30,7 +29,7 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * Constructor
      *
-     * @param ValidatorInterface  $validator
+     * @param ValidatorInterface $validator
      */
     public function __construct(ValidatorInterface $validator)
     {

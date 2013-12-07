@@ -135,8 +135,8 @@ abstract class FlexibleDatagridManager extends DatagridManager
     /**
      * Create field by flexible attribute
      *
-     * @param AbstractAttribute         $attribute
-     * @param array                     $options
+     * @param AbstractAttribute $attribute
+     * @param array             $options
      *
      * @return FieldDescriptionInterface
      */

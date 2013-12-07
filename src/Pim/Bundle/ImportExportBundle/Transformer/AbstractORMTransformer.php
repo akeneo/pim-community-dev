@@ -9,7 +9,6 @@ use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -145,10 +144,10 @@ abstract class AbstractORMTransformer
      *
      * Returns an array with the error and its parameters, or null if no error encountered
      *
-     * @param object                       $entity
-     * @param ColumnInfoInterface          $columnInfo
-     * @param array                        $transformerInfo
-     * @param mixed                        $value
+     * @param object              $entity
+     * @param ColumnInfoInterface $columnInfo
+     * @param array               $transformerInfo
+     * @param mixed               $value
      *
      * @return array|null
      */
