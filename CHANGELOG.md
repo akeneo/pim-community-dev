@@ -3,13 +3,13 @@
 ## Features
 - Import product associations (CSV)
 - Compare and copy values between a product translations
-- Create metric filter
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
 
 ## Improvements
 - Improve the user experience for family management
-- Update import / export detail view
+- Update import / export detail view by adding a summary
+- Merge configurations in the first tab of import / export edit view
 - Improve installer to provide different data set (minimal or dev)
 - Use a form extension to apply select2 only on specified fields
 - Add real time versioning option in product import
