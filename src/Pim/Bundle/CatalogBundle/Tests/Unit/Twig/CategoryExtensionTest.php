@@ -114,6 +114,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      * @param array   $trees
      * @param integer $selectedTreeId
      * @param boolean $resultCount
+     * @param array   $expectedResult
      *
      * @dataProvider dataProviderListTrees
      */

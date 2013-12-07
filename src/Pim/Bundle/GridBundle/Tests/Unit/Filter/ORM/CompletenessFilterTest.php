@@ -8,8 +8,7 @@ use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
 use Pim\Bundle\GridBundle\Filter\ORM\CompletenessFilter;
 
 /**
- *
- * Enter description here ...
+ * Test related class
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

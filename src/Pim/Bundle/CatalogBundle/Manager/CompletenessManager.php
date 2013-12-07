@@ -161,7 +161,7 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                $completenesses
+     * @param array                &$completenesses
      * @param AttributeRequirement $requirement
      * @param ArrayCollection      $productValues
      * @param array                $localeCodes
