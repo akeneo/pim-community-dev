@@ -19,9 +19,6 @@ products:
         processor_brand: ''
         core_number: ''
         height: ''
-        processor_brand: ''
-        core_number: ''
-        height: ''
     sku-001:
         sku: sku-001
         family: mug
