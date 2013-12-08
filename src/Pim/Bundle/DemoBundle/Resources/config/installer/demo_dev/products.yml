@@ -11,34 +11,20 @@ products:
         price-en_US: '43.21 EUR,19.70 USD'
         release_date: 12/28/2012
         enabled: '1'
-        short_description-en_US-mobile: ''
-        short_description-fr_FR-mobile: ''
-        size: ''
-        unique_color: ''
         weight-en_US: 360 GRAM
-        processor_brand: ''
-        core_number: ''
-        height: ''
+        height: '21.00'
     sku-001:
         sku: sku-001
-        family: mug
+        family: computer
         groups: ''
         categories: 'laptops'
-        color-en_US: 'Blue,Green,Orange'
-        manufacturer-en_US: ''
         name-en_US: 'Ut commodi atque.'
         name-fr_FR: 'Hic itaque quos excepturi et.'
-        price-en_US: '75.03 EUR,38.14 USD'
-        release_date: ''
+        price-en_US: '375.03 EUR,488.14 USD'
         enabled: '1'
-        short_description-en_US-mobile: 'Quidem quaerat et ipsam.'
-        short_description-fr_FR-mobile: 'Tenetur sed at vitae ipsam.'
-        size: ''
-        unique_color: ''
-        weight-en_US: 1.2 KILOGRAM
-        processor_brand: ''
-        core_number: ''
-        height: ''
+        processor_brand: 'Intel'
+        core_number: '4'
+        height: '150.55'
     sku-002:
         sku: sku-002
         family: mug
