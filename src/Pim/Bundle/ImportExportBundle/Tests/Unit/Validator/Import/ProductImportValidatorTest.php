@@ -50,6 +50,11 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->will($this->returnValue(ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
     }
 
+    /**
+     * Test related method
+     *
+     * @return null
+     */
     public function testValidate()
     {
         $columns = array(
@@ -119,6 +124,12 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
     }
 
+    /**
+     * @param string  $label
+     * @param boolean $withAttribute
+     *
+     * @return ColumnInfoInterface
+     */
     protected function getColumnInfoMock($label, $withAttribute = true)
     {
         $column = parent::getColumnInfoMock($label);
@@ -143,6 +154,14 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
         return $column;
     }
+
+    /**
+     * @param string $name
+     * @param string $locale
+     * @param string $scope
+     *
+     * @return ProductValueInterface
+     */
     public function getProductValue($name, $locale, $scope)
     {
         $this->assertEquals('locale', $locale);

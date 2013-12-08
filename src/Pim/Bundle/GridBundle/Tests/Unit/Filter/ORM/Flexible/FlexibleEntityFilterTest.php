@@ -96,10 +96,10 @@ class FlexibleEntityFilterTest extends FlexibleFilterTestCase
     }
 
     /**
-     * @dataProvider filterWithIncorrectDataProvider
-     *
      * @param array $data
      * @param array $expectRepositoryCalls
+     *
+     * @dataProvider filterWithIncorrectDataProvider
      */
     public function testFilterWithIncorrectData(array $data = array(), array $expectRepositoryCalls = array())
     {

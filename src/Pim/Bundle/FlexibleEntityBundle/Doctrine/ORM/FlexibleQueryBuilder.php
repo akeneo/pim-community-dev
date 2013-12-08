@@ -422,7 +422,7 @@ class FlexibleQueryBuilder
     /**
      * Reapply joins from a set of joins got from getDQLPart('join')
      *
-     * @param array joinsSet
+     * @param array $joinsSet
      */
     protected function applyJoins($joinsSet)
     {

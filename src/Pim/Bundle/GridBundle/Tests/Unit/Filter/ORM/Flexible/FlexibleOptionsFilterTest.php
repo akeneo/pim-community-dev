@@ -72,9 +72,10 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
     }
 
     /**
-     * @dataProvider getRenderSettingsDataProvider
      * @param array $flexibleOptionsData
      * @param array $expectedRenderSettings
+     *
+     * @dataProvider getRenderSettingsDataProvider
      */
     public function testGetRenderSettings(array $flexibleOptionsData, array $expectedRenderSettings)
     {
@@ -105,7 +106,8 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
     }
 
     /**
-     * @param  array $data
+     * @param array $data
+     *
      * @return array
      */
     private function createFlexibleOptions(array $data)

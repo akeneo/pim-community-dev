@@ -32,6 +32,9 @@ class FixtureReferenceTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer->setReferenceRepository($this->referenceRepository);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetFixtureEntity()
     {
         $this->referenceRepository->expects($this->once())
@@ -48,6 +51,9 @@ class FixtureReferenceTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('success', $this->transformer->getEntity('class', 'code'));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetTransformerEntity()
     {
         $this->referenceRepository->expects($this->once())

@@ -117,7 +117,6 @@ class ChannelType extends AbstractType
      * Create conversion units field
      *
      * @param FormBuilderInterface $builder
-     * @param array                $options
      *
      * @return ChannelType
      */
