@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Pim\Bundle\CustomEntityBundle\Configuration\Registry;
-use Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer;
 use Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer;
 
 /**
@@ -49,7 +48,7 @@ class LoadCustomEntities extends AbstractFixture implements ContainerAwareInterf
     {
         $fd = fopen($filePath, 'r');
         $labels = array_map('trim', fgetcsv($fd, 0, ';'));
-        $transformer = $this->getOrmTransformer();
+        $transformer = $this->getORMTransformer();
         while ($row = fgetcsv($fd, 0, ';')) {
             $object = $transformer->transform(
                 $class,
@@ -106,9 +105,9 @@ class LoadCustomEntities extends AbstractFixture implements ContainerAwareInterf
     /**
      * Returns the ORM transformer
      *
-     * @return OrmTransformer
+     * @return \Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer
      */
-    protected function getOrmTransformer()
+    protected function getORMTransformer()
     {
         return $this->container->get('pim_import_export.transformer.orm');
     }

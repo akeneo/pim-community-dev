@@ -20,12 +20,23 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
     public function testTransform()
     {
         $transformer = new MetricTransformer();
-        $this->assertEquals(null, $transformer->transform(''));
-        $this->assertEquals(null, $transformer->transform(' '));
+        $this->assertEquals(null, $transformer->transform('', array('family' => 'foo')));
+        $this->assertEquals(null, $transformer->transform(' ', array('family' => 'foo')));
         $m = new Metric();
         $m->setData(15.2);
         $m->setUnit('KILOGRAM');
-        $this->assertEquals($m, $transformer->transform('15.2 KILOGRAM'));
+        $m->setFamily('foo');
+        $this->assertEquals($m, $transformer->transform('15.2 KILOGRAM', array('family' => 'foo')));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Missing required option "family"
+     */
+    public function testTransformWithoutFamily()
+    {
+        $transformer = new MetricTransformer();
+        $transformer->transform('15.2 KILOGRAM');
     }
 
     /**
@@ -35,6 +46,6 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
     public function testUnvalidTransform()
     {
         $transformer = new MetricTransformer();
-        $transformer->transform('15.2');
+        $transformer->transform('15.2', array('family' => 'foo'));
     }
 }

@@ -26,6 +26,9 @@ class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
      */
     private $containerBuilder;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->compiler = new AddFlexibleManagerCompilerPass();
@@ -33,10 +36,10 @@ class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
     }
 
     /**
-     * @dataProvider processDataProvider
-     *
      * @param array $containerData
      * @param array $expectedDefinitions
+     *
+     * @dataProvider processDataProvider
      */
     public function testProcess(
         array $containerData,
@@ -150,11 +153,11 @@ class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
     }
 
     /**
-     * @dataProvider processErrorDataProvider
-     *
      * @param array  $containerData
      * @param string $exceptionName
      * @param string $exceptionMessage
+     *
+     * @dataProvider processErrorDataProvider
      */
     public function testProcessError(array $containerData, $exceptionName, $exceptionMessage)
     {

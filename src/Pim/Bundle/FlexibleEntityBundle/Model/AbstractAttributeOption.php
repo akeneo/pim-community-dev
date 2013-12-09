@@ -142,11 +142,11 @@ abstract class AbstractAttributeOption implements TranslatableInterface
     }
 
     /**
-     * Get translatable
+     * Is translatable
      *
      * @return boolean $translatable
      */
-    public function getTranslatable()
+    public function isTranslatable()
     {
         return $this->translatable;
     }

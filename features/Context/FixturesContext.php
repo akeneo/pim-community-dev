@@ -4,6 +4,9 @@ namespace Context;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
+use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -20,9 +23,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
-use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Gherkin\Node\PyStringNode;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * A context for creating entities
@@ -469,6 +470,28 @@ class FixturesContext extends RawMinkContext
                         }
 
                         $value->setData($optionValue);
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['metric']) {
+                        $metric = $value->getData();
+
+                        if (false === strpos($data['value'], ' ')) {
+                            throw new \InvalidArgumentException(
+                                sprintf(
+                                    'Metric value does not match expected format "<data> <unit>": %s',
+                                    $data['value']
+                                )
+                            );
+                        }
+                        list($data, $unit) = explode(' ', $data['value']);
+
+                        if (!$metric) {
+                            $metric = new Metric();
+                            $metric->setFamily($value->getAttribute()->getMetricFamily());
+                        }
+
+                        $metric->setData($data);
+                        $metric->setUnit($unit);
+
+                        $value->setMetric($metric);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -563,12 +586,12 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
@@ -1000,7 +1023,7 @@ class FixturesContext extends RawMinkContext
         $columns = join($delimiter, array_keys($data));
 
         $rows = array();
-        foreach ($data as $key => $values) {
+        foreach ($data as $values) {
             foreach ($values as $index => $value) {
                 $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
@@ -1115,6 +1138,19 @@ class FixturesContext extends RawMinkContext
             }
         )->toArray();
         assertEquals($this->listToArray($categoryCodes), $categories);
+    }
+
+    /**
+     * @param Channel   $channel
+     * @param TableNode $conversionUnits
+     *
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
+     */
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
+    {
+        $channel->setConversionUnits($conversionUnits->getRowsHash());
+
+        $this->flush();
     }
 
     /**
@@ -1321,7 +1357,7 @@ class FixturesContext extends RawMinkContext
             } else {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
                         $data['label']
                     )
                 );
@@ -1408,7 +1444,15 @@ class FixturesContext extends RawMinkContext
                         $value->addOption($option);
                     }
                 }
+                break;
 
+            case $this->attributeTypes['metric']:
+                list($data, $unit) = explode(' ', $data);
+                $metric = new Metric();
+                $metric->setFamily($attribute->getMetricFamily());
+                $metric->setData($data);
+                $metric->setUnit($unit);
+                $value->setData($metric);
                 break;
 
             default:

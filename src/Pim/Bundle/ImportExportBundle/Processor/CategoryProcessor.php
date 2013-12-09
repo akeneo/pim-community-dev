@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -121,7 +120,7 @@ class CategoryProcessor extends AbstractEntityProcessor
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
 
         } else {
             $this->entities[] = $category;

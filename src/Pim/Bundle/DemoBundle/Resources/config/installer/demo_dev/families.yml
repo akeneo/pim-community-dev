@@ -95,3 +95,24 @@ families:
                 - name
                 - unique_color
                 - size
+    computer:
+        labels:
+            en_US: Computer
+            fr_FR: Ordinateur
+        attributes:
+            - sku
+            - name
+            - processor_brand
+            - core_number
+            - height
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - processor_brand
+                - core_number
+                - height
+                - price
+            mobile:
+                - name

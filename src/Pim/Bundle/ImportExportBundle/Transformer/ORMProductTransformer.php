@@ -15,13 +15,13 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 
 /**
- * Specialized OrmTransformer for products
+ * Specialized ORMTransformer for products
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductTransformer extends AbstractOrmTransformer
+class ORMProductTransformer extends AbstractORMTransformer
 {
     /**
      * @staticvar the identifier attribute type
@@ -52,6 +52,11 @@ class OrmProductTransformer extends AbstractOrmTransformer
      * @var boolean
      */
     protected $initialized=false;
+
+    /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
 
     /**
      * @var array
@@ -100,6 +105,16 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $this->initializeAttributes($data);
 
         return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
+    }
+
+    /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
     }
 
     /**
@@ -201,7 +216,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->initialized) {
+        if ($this->heterogeneous === false and $this->initialized) {
             return;
         }
 

@@ -191,7 +191,6 @@ class FamilyController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->familyForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
             'attributesForm'  => $this->getAvailableProductAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
@@ -212,6 +211,13 @@ class FamilyController extends AbstractDoctrineController
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        } else {
+            return $this->render(
+                'PimCatalogBundle:Family:_history.html.twig',
+                array(
+                    'historyDatagrid'   => $historyGridView
+                )
+            );
         }
     }
 

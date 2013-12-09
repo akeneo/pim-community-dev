@@ -6,7 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
@@ -21,13 +20,12 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
  */
 class MetricFilter extends NumberFilter
 {
-    /**
-     * @var MeasureConverter
-     */
+    /** @var MeasureConverter $converter */
     protected $converter;
 
     /**
      * @param TranslatorInterface $translator
+     * @param MeasureConverter    $converter
      */
     public function __construct(TranslatorInterface $translator, MeasureConverter $converter)
     {
@@ -103,16 +101,7 @@ class MetricFilter extends NumberFilter
         $dataType = $this->getOption('data_type');
 
         list($formType, $formOptions) = parent::getRenderSettings();
-
-        switch ($dataType) {
-            case FieldDescriptionInterface::TYPE_INTEGER:
-                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
-                break;
-            case FieldDescriptionInterface::TYPE_DECIMAL:
-            default:
-                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
-                break;
-        }
+        $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
 
         return array($formType, $formOptions);
     }

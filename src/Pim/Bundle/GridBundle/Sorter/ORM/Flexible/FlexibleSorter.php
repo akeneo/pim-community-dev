@@ -38,8 +38,9 @@ class FlexibleSorter extends Sorter
     }
 
     /**
-     * @param  FieldDescriptionInterface $field
-     * @param  string                    $direction
+     * @param FieldDescriptionInterface $field
+     * @param string                    $direction
+     *
      * @throws \LogicException
      */
     public function initialize(FieldDescriptionInterface $field, $direction = null)

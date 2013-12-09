@@ -15,6 +15,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
+            - '@pim_import_export.converter.metric'
 
     pim_import_export.reader.orm.category:
         class: %pim_import_export.reader.orm.entity.class%

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -67,18 +66,10 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
     {
         $attribute = $this->findAttribute($item['attribute']);
         if (!$attribute) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(
-                sprintf('The "%s" attribute not exists.', $item['attribute']),
-                $item
-            );
+            $this->skipItem($item, sprintf('The "%s" attribute not exists.', $item['attribute']));
         }
         if (!in_array($attribute->getBackendType(), array('option', 'options'))) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(
-                sprintf('The "%s" attribute cant contain option', $item['attribute']),
-                $item
-            );
+            $this->skipItem($item, sprintf('The "%s" attribute cant contain option', $item['attribute']));
         }
 
         $option = $this->findOption($attribute, $item['code']);

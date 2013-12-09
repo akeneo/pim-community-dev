@@ -3,22 +3,27 @@
 ## Features
 - Import product associations (CSV)
 - Compare and copy values between a product translations
-- Create metric filter
+- Convert metric values into the conversion unit selected for the channel during export
+- Allow filtering and sorting by metric values
 
 ## Improvements
 - Improve the user experience for family management
-- Update import / export detail view
+- Update import / export detail view by adding a summary
 - Improve installer to provide different data set (minimal or dev)
 - Use a form extension to apply select2 only on specified fields
 - Add real time versioning option in product import
-- Merge the configuration of import/export job steps
-- Implements save of base unit and data for metric entity
+- Merge the configuration of import/export job steps in the first tab of the edit view
+- Implement save of base unit and data for metric entity
+- Metric values are now exported in two distinct columns (value and unit)
+- Metric values can now be imported through two distinct columns ([examples](https://github.com/akeneo/pim-community-dev/blob/42371c0d6c70801a4a23a7aa8cf87e18f417c4a8/features/import/import_products.feature#L170-L198))
+- Ajaxify the completeness tab of product edit form
+- Change the channel switcher and collapse/expand modes on product edit view
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
 
 ## BC breaks
-
+- Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

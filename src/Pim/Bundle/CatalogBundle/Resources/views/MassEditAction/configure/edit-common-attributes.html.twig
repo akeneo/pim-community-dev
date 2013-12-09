@@ -8,6 +8,9 @@
                 ['pim/initselect2'],
                 function (initSelect2) {
                     initSelect2('{{ form.operation.locale.vars.id }}');
+                    {% if form.operation.vars.groups is empty %}
+                        $('a.next').hide();
+                    {% endif %}
                 }
             );
         </script>
@@ -22,7 +25,7 @@
 
         <h4>{{ groupView.label }}</h4>
 
-        {% for attributeId, attributeView in groupView.attributes %}
+        {% for attributeView in groupView.attributes %}
             <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
                 {% if attributeView.values is defined %}
                     {% for scope, subvalue in attributeView.values %}
@@ -35,7 +38,7 @@
                         {{ form_widget(attributeView.value) }}
                     </div>
                 {% endif %}
-                <i class="icon-remove remove-attribute" data-id="{{ attributeId }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                <i class="icon-remove remove-attribute" data-id="{{ attributeView.id }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
             </div>
         {% endfor %}
 
@@ -83,7 +86,7 @@
                     };
                     opts.selectedText = opts.title;
                     opts.noneSelectedText = opts.title;
-                    var $el = $('#pim_catalog_mass_edit_action_operation_attributesToDisplay')
+                    var $el = $('#{{ form.operation.attributesToDisplay.vars.id }}')
                         .addClass('pimmultiselect')
                         .multiselect(opts)
                         .multiselectfilter({

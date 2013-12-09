@@ -242,7 +242,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         return $attribute;

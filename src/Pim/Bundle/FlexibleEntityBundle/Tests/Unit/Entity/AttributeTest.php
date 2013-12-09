@@ -100,23 +100,23 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testGetRequired()
+    public function testIsRequired()
     {
         // false by default
-        $this->assertFalse($this->attribute->getRequired());
+        $this->assertFalse($this->attribute->isRequired());
         $this->attribute->setRequired(true);
-        $this->assertTrue($this->attribute->getRequired());
+        $this->assertTrue($this->attribute->isRequired());
     }
 
     /**
      * Test related method
      */
-    public function testGetUnique()
+    public function testIsUnique()
     {
         // false by default
-        $this->assertFalse($this->attribute->getUnique());
+        $this->assertFalse($this->attribute->isUnique());
         $this->attribute->setUnique(true);
-        $this->assertTrue($this->attribute->getUnique());
+        $this->assertTrue($this->attribute->isUnique());
     }
 
     /**
@@ -125,9 +125,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testTranslatable()
     {
         // false by default
-        $this->assertFalse($this->attribute->getTranslatable());
+        $this->assertFalse($this->attribute->isTranslatable());
         $this->attribute->setTranslatable(true);
-        $this->assertTrue($this->attribute->getTranslatable());
+        $this->assertTrue($this->attribute->isTranslatable());
     }
 
     /**
@@ -136,9 +136,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testSearchable()
     {
         // false by default
-        $this->assertFalse($this->attribute->getSearchable());
+        $this->assertFalse($this->attribute->isSearchable());
         $this->attribute->setSearchable(true);
-        $this->assertTrue($this->attribute->getSearchable());
+        $this->assertTrue($this->attribute->isSearchable());
     }
 
     /**
@@ -147,9 +147,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testScopable()
     {
         // false by default
-        $this->assertFalse($this->attribute->getScopable());
+        $this->assertFalse($this->attribute->isScopable());
         $this->attribute->setScopable(true);
-        $this->assertTrue($this->attribute->getScopable());
+        $this->assertTrue($this->attribute->isScopable());
     }
 
     /**

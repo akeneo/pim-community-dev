@@ -185,11 +185,6 @@ services:
         tags:
             - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }
 
-    pim_catalog.helper.completeness:
-        class: %pim_catalog.helper.completeness.class%
-        arguments:
-            - '@validator'
-
     pim_catalog.doctrine.completeness_query_builder:
         class: %pim_catalog.doctrine.completeness_query_builder.class%
         arguments:

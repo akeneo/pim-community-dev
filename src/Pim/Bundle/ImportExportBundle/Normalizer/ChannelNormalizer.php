@@ -26,11 +26,12 @@ class ChannelNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         return array(
-            'code'       => $object->getCode(),
-            'label'      => $this->normalizeLabel($object),
-            'currencies' => $this->normalizeCurrencies($object),
-            'locales'    => $this->normalizeLocales($object),
-            'category'   => $this->normalizeCategoryTree($object)
+            'code'             => $object->getCode(),
+            'label'            => $this->normalizeLabel($object),
+            'currencies'       => $this->normalizeCurrencies($object),
+            'locales'          => $this->normalizeLocales($object),
+            'category'         => $this->normalizeCategoryTree($object),
+            'conversion_units' => $this->normalizeConversionUnits($object),
         );
     }
 
@@ -98,5 +99,22 @@ class ChannelNormalizer implements NormalizerInterface
     protected function normalizeCategoryTree(Channel $channel)
     {
         return $channel->getCategory()->getCode();
+    }
+
+    /**
+     * Returns conversion units
+     *
+     * @param Channel $channel
+     *
+     * @return array
+     */
+    protected function normalizeConversionUnits(Channel $channel)
+    {
+        $result = array();
+        foreach ($channel->getConversionUnits() as $family => $unit) {
+            $result[] = sprintf('%s: %s', $family, $unit);
+        }
+
+        return implode(', ', $result);
     }
 }

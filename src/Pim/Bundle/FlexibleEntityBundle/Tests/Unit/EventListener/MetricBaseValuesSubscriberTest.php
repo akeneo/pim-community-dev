@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit;
 
-use Symfony\Component\Yaml\Yaml;
-
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
@@ -29,30 +27,50 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $config = $this->initializeConfig();
+        $config = $this->initializeMeasureConfig();
 
-        $converter = new MeasureConverter($config);
+        $converter = new MeasureConverter(array('measures_config' => $config));
         $manager   = new MeasureManager();
-        $manager->setMeasureConfig($config['measures_config']);
+        $manager->setMeasureConfig($config);
 
         $this->metricSubscriber = new MetricBaseValuesSubscriber($converter, $manager);
     }
 
     /**
-     * Initialize a configuration for metrics
-     *
-     * @throws \Exception
+     * Initialize config
      *
      * @return array
      */
-    protected function initializeConfig()
+    protected function initializeMeasureConfig()
     {
-        $configFile = realpath(dirname(__FILE__) .'/../../Resources/config/measure.yml');
-        if (!file_exists($configFile)) {
-            throw new \Exception('Config file not exists');
-        }
-
-        return Yaml::parse($configFile);
+        return array(
+            'Length' => array(
+                'standard' => 'METER',
+                'units'    => array(
+                    'KILOMETER' => array(
+                        'convert' => array(array('mul' => 1000)),
+                        'symbol'  => 'km'
+                    ),
+                    'METER'     => array(
+                        'convert' => array(array('mul' => 1)),
+                        'symbol'  => 'm'
+                    )
+                )
+            ),
+            'Weight' => array(
+                'standard' => 'KILOGRAM',
+                'units'    => array(
+                    'GRAM'     => array(
+                        'convert' => array(array('mul' => 0.001)),
+                        'symbol'  => 'g'
+                    ),
+                    'KILOGRAM' => array(
+                        'convert' => array(array('mul' => 1)),
+                        'symbol'  => 'kg'
+                    )
+                )
+            )
+        );
     }
 
     /**

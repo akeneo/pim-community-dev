@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
 
-use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
-
-use Pim\Bundle\GridBundle\Filter\ORM\MetricFilter;
-
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
+use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+
+use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Pim\Bundle\GridBundle\Filter\ORM\MetricFilter;
 
 /**
  * Test related class
@@ -30,16 +30,39 @@ class MetricFilterTest extends FilterTestCase
         return new MetricFilter($this->getTranslatorMock(), $this->getMeasureConverterMock());
     }
 
+    /**
+     * Get measure converter mock
+     * @return \Oro\Bundle\MeasureBundle\Convert\MeasureConverter
+     */
     protected function getMeasureConverterMock()
     {
-        return $this
-            ->getMockBuilder('Oro\Bundle\MeasureBundle\Convert\MeasureConverter')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $measureConfig = $this->initializeMeasureConfig();
+        $measureConverter = new MeasureConverter(array('measures_config' => $measureConfig));
 
-        $measureConfig = $this->getMeasureConfig();
+        return $measureConverter;
+    }
 
-        return new MeasureConverter($measureConfig);
+    /**
+     * Initialize config
+     * @return array
+     */
+    protected function initializeMeasureConfig()
+    {
+        return array(
+            'Weight' => array(
+                'standard' => 'KILOGRAM',
+                'units'    => array(
+                    'GRAM'     => array(
+                        'convert' => array(array('mul' => 0.001)),
+                        'symbol'  => 'g'
+                    ),
+                    'KILOGRAM' => array(
+                        'convert' => array(array('mul' => 1)),
+                        'symbol'  => 'kg'
+                    )
+                )
+            )
+        );
     }
 
     /**
@@ -115,7 +138,59 @@ class MetricFilterTest extends FilterTestCase
                 'data' => array('value' => 5),
                 'expectProxyQueryCalls' => array(),
                 array('field_options' => array('family' => 'Weight'))
+            ),
+            'not_string_unit' => array(
+                'data' => array('value' => 10, 'unit' => 1),
+                'expectProxyQueryCalls' => array(),
+                array('field_options' => array('family' => 'Weight'))
+            ),
+            'valid_data' => array(
+                'data' => array('value' => 10, 'unit' => 'GRAM'),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array(
+                        'andWhere',
+                        array($this->getExpressionFactory()->eq('valueMetrics.baseData', ':'. self::TEST_NAME .'_p1')),
+                        null
+                    ),
+                    array('setParameter', array(self::TEST_NAME .'_p1', '0.010'), null)
+                ),
+                array('field_options' => array('family' => 'Weight'))
             )
         );
+    }
+
+    /**
+     * Data provider for getRenderSettings method
+     * @return array
+     */
+    public function getRenderSettingsDataProvider()
+    {
+        return array(
+            'default' => array(
+                array('field_options' => array('family' => 'Weight')),
+                array(
+                    MetricFilterType::NAME,
+                    array(
+                        'show_filter'   => false,
+                        'data_type'     => MetricFilterType::DATA_DECIMAL,
+                        'field_options' => array('family' => 'Weight')
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * Test related method
+     * @param array $options
+     * @param array $expectedRenderSettings
+     *
+     * @dataProvider getRenderSettingsDataProvider
+     */
+    public function testGetRenderSettings($options, $expectedRenderSettings)
+    {
+        $this->model->initialize(self::TEST_NAME, $options);
+        $this->assertEquals($expectedRenderSettings, $this->model->getRenderSettings());
     }
 }

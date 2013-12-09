@@ -4,1598 +4,1984 @@ products:
         family: mug
         groups: ''
         categories: 'desktops'
-        color: 'Red,Blue,Purple'
-        manufacturer: MyMug
+        color-en_US: 'Red,Blue,Purple'
+        manufacturer-en_US: MyMug
         name-en_US: 'Iusto ea sint.'
         name-fr_FR: 'Neque eveniet quasi accusantium.'
-        price: '43.21 EUR,19.70 USD'
+        price-en_US: '43.21 EUR,19.70 USD'
         release_date: 12/28/2012
         enabled: '1'
-        short_description-en_US-mobile: ''
-        short_description-fr_FR-mobile: ''
-        size: ''
-        unique_color: ''
+        weight-en_US: 360 GRAM
+        height: '21.00'
     sku-001:
         sku: sku-001
-        family: mug
+        family: computer
         groups: ''
         categories: 'laptops'
-        color: 'Blue,Green,Orange'
-        manufacturer: ''
         name-en_US: 'Ut commodi atque.'
         name-fr_FR: 'Hic itaque quos excepturi et.'
-        price: '75.03 EUR,38.14 USD'
-        release_date: ''
+        price-en_US: '375.03 EUR,488.14 USD'
         enabled: '1'
-        short_description-en_US-mobile: 'Quidem quaerat et ipsam.'
-        short_description-fr_FR-mobile: 'Tenetur sed at vitae ipsam.'
-        size: ''
-        unique_color: ''
+        processor_brand: 'Intel'
+        core_number: '4'
+        height: '150.55'
     sku-002:
         sku: sku-002
         family: mug
         groups: ''
         categories: 'shoes_male,shoes_male_eu'
-        color: 'Red,Purple'
-        manufacturer: MugStore
+        color-en_US: 'Red,Purple'
+        manufacturer-en_US: MugStore
         name-en_US: ''
         name-fr_FR: ''
-        price: '20.40 EUR,25.02 USD'
+        price-en_US: '20.40 EUR,25.02 USD'
         release_date: 10/30/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 0.485 KILOGRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-003:
         sku: sku-003
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: MyMug
+        color-en_US: 'Blue,Green,Orange'
+        manufacturer-en_US: MyMug
         name-en_US: 'Ratione repellat rerum aut.'
         name-fr_FR: 'Nihil vitae ad.'
-        price: '5.75 EUR,32.88 USD'
+        price-en_US: '5.75 EUR,32.88 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 842 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-004:
         sku: sku-004
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Dolor voluptatem facilis.'
         name-fr_FR: 'Adipisci nam fugiat est.'
-        price: '39.24 EUR,78.07 USD'
+        price-en_US: '39.24 EUR,78.07 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Nesciunt in aspernatur ab eveniet.'
         short_description-fr_FR-mobile: 'Et et assumenda odit.'
         size: XS
         unique_color: uc_green
+        weight-en_US: 384 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-005:
         sku: sku-005
         family: mug
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: MyMug
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: MyMug
         name-en_US: 'Voluptatum ullam non.'
         name-fr_FR: 'Voluptatem id fuga explicabo.'
-        price: '95.38 EUR,58.61 USD'
+        price-en_US: '95.38 EUR,58.61 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Voluptates necessitatibus voluptas perferendis amet alias tempora.'
         short_description-fr_FR-mobile: 'Velit sit ex molestias alias.'
         size: ''
         unique_color: ''
+        weight-en_US: 486 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-006:
         sku: sku-006
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MugStore
+        color-en_US: ''
+        manufacturer-en_US: MugStore
         name-en_US: ''
         name-fr_FR: ''
-        price: '72.91 EUR,32.81 USD'
+        price-en_US: '72.91 EUR,32.81 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Alias corrupti temporibus voluptates molestiae impedit.'
         short_description-fr_FR-mobile: 'Autem iusto aliquid quis.'
         size: ''
         unique_color: ''
+        weight-en_US: 669 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-007:
         sku: sku-007
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Qui tenetur odit impedit.'
         name-fr_FR: 'Consequatur illo dolorem omnis nemo.'
-        price: '69.43 EUR,93.56 USD'
+        price-en_US: '69.43 EUR,93.56 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_yellow
+        weight-en_US: 123 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-008:
         sku: sku-008
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '49.79 EUR,47.07 USD'
+        price-en_US: '49.79 EUR,47.07 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolores fugiat est cum consequatur.'
         short_description-fr_FR-mobile: 'Natus quam sequi non eos corporis quod.'
         size: XL
         unique_color: ''
+        weight-en_US: 617 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-009:
         sku: sku-009
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Suscipit praesentium recusandae aut.'
         short_description-fr_FR-mobile: 'Ratione error voluptates voluptatem omnis.'
         size: ''
         unique_color: ''
+        weight-en_US: 101 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-010:
         sku: sku-010
         family: shoe
         groups: ''
         categories: ''
-        color: 'Blue,Green,Purple'
-        manufacturer: ''
+        color-en_US: 'Blue,Green,Purple'
+        manufacturer-en_US: ''
         name-en_US: 'Consequatur dolore tempore.'
         name-fr_FR: 'Nesciunt voluptatem sapiente id.'
-        price: '66.64 EUR,35.59 USD'
+        price-en_US: '66.64 EUR,35.59 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Temporibus reprehenderit natus est culpa.'
         short_description-fr_FR-mobile: 'Qui sit mollitia est sed aliquid.'
         size: ''
         unique_color: ''
+        weight-en_US: 616 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-011:
         sku: sku-011
         family: shirt
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '51.84 EUR,60.97 USD'
+        price-en_US: '51.84 EUR,60.97 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Nihil tempora veniam sed.'
         short_description-fr_FR-mobile: 'Eum non illo fugiat.'
         size: XL
         unique_color: ''
+        weight-en_US: 158 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-012:
         sku: sku-012
         family: shoe
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Nihil minima dolores soluta.'
         name-fr_FR: 'Iste tenetur illum.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Quae odio quis vero.'
         short_description-fr_FR-mobile: 'Ut atque rem quaerat porro omnis ut.'
         size: XL
         unique_color: ''
+        weight-en_US: 636 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-013:
         sku: sku-013
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Aperiam et reprehenderit.'
         name-fr_FR: 'Qui repellendus eum.'
-        price: '62.41 EUR,52.30 USD'
+        price-en_US: '62.41 EUR,52.30 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: uc_black
+        weight-en_US: 162 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-014:
         sku: sku-014
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Velit ipsum minus.'
         name-fr_FR: 'Et dicta eligendi doloremque.'
-        price: '97.95 EUR,9.37 USD'
+        price-en_US: '97.95 EUR,9.37 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Aperiam excepturi aperiam porro.'
         short_description-fr_FR-mobile: 'Doloremque dolores voluptatem quisquam.'
         size: S
         unique_color: uc_purple
+        weight-en_US: 398 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-015:
         sku: sku-015
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '9.12 EUR,44.30 USD'
+        price-en_US: '9.12 EUR,44.30 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight-en_US: 447 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-016:
         sku: sku-016
         family: shoe
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: ''
+        color-en_US: 'Blue,Green,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '96.95 EUR,25.20 USD'
+        price-en_US: '96.95 EUR,25.20 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Laboriosam veniam et laborum.'
         short_description-fr_FR-mobile: 'Quasi est iusto dolorem eum ea aspernatur.'
         size: XL
         unique_color: ''
+        weight-en_US: 975 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-017:
         sku: sku-017
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Natus tenetur aut hic.'
         name-fr_FR: 'Distinctio aut at.'
-        price: '55.10 EUR,62.53 USD'
+        price-en_US: '55.10 EUR,62.53 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Cumque nobis quam aut.'
         short_description-fr_FR-mobile: 'Laborum consequatur officiis sed doloremque blanditiis.'
         size: S
         unique_color: ''
+        weight-en_US: 355 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-018:
         sku: sku-018
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '61.82 EUR,17.07 USD'
+        price-en_US: '61.82 EUR,17.07 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Et est dicta nihil unde.'
         short_description-fr_FR-mobile: 'Praesentium delectus delectus ratione autem.'
         size: ''
         unique_color: ''
+        weight-en_US: 494 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-019:
         sku: sku-019
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MyMug
+        color-en_US: ''
+        manufacturer-en_US: MyMug
         name-en_US: 'Veritatis qui esse.'
         name-fr_FR: 'Expedita et alias exercitationem.'
-        price: '93.12 EUR,7.11 USD'
+        price-en_US: '93.12 EUR,7.11 USD'
         release_date: 11/04/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 135 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-020:
         sku: sku-020
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MugStore
+        color-en_US: ''
+        manufacturer-en_US: MugStore
         name-en_US: 'Ducimus id ut.'
         name-fr_FR: 'Voluptatum et velit.'
-        price: '79.83 EUR,15.82 USD'
+        price-en_US: '79.83 EUR,15.82 USD'
         release_date: 03/26/2013
         enabled: '1'
         short_description-en_US-mobile: 'Facere ea commodi aliquid.'
         short_description-fr_FR-mobile: 'Quis vel temporibus repudiandae rem.'
         size: ''
         unique_color: ''
+        weight-en_US: 130 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-021:
         sku: sku-021
         family: shirt
         groups: ''
         categories: ''
-        color: 'Green,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Green,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Excepturi fugiat mollitia quia.'
         name-fr_FR: 'Harum ipsa quam tempora.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Repellendus enim et sit ipsum dolor et assumenda.'
         short_description-fr_FR-mobile: 'Aut eum ducimus praesentium omnis.'
         size: S
         unique_color: ''
+        weight-en_US: 393 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-022:
         sku: sku-022
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: ''
+        color-en_US: 'Blue,Green,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Sit tempora fuga.'
         name-fr_FR: 'Natus illum autem dignissimos.'
-        price: '88.42 EUR,76.15 USD'
+        price-en_US: '88.42 EUR,76.15 USD'
         release_date: 07/30/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 485 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-023:
         sku: sku-023
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MyMug
+        color-en_US: ''
+        manufacturer-en_US: MyMug
         name-en_US: ''
         name-fr_FR: ''
-        price: '33.56 EUR,5.70 USD'
+        price-en_US: '33.56 EUR,5.70 USD'
         release_date: 01/14/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 836 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-024:
         sku: sku-024
         family: mug
         groups: ''
         categories: ''
-        color: 'Red,Blue,Purple'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Purple'
+        manufacturer-en_US: ''
         name-en_US: 'Sapiente autem non eum.'
         name-fr_FR: 'Qui voluptatem repellat.'
-        price: '84.81 EUR,42.72 USD'
+        price-en_US: '84.81 EUR,42.72 USD'
         release_date: 04/09/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 514 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-025:
         sku: sku-025
         family: shirt
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Eos laudantium sed nisi.'
         name-fr_FR: 'Accusantium aut eligendi.'
-        price: '55.47 EUR,38.72 USD'
+        price-en_US: '55.47 EUR,38.72 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight-en_US: 329 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-026:
         sku: sku-026
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Qui sed dolores tempore quidem.'
         name-fr_FR: 'Inventore unde in labore.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'In et dolores culpa sit facilis aperiam.'
         short_description-fr_FR-mobile: 'Dolores et minima quos.'
         size: XL
         unique_color: ''
+        weight-en_US: 829 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-027:
         sku: sku-027
         family: shoe
         groups: ''
         categories: ''
-        color: 'Blue,Orange'
-        manufacturer: ''
+        color-en_US: 'Blue,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '78.43 EUR,60.67 USD'
+        price-en_US: '78.43 EUR,60.67 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Quia qui repudiandae ut hic dolor.'
         short_description-fr_FR-mobile: 'Excepturi porro repellat qui.'
         size: ''
         unique_color: ''
+        weight-en_US: 836 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-028:
         sku: sku-028
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '7.46 EUR,11.28 USD'
+        price-en_US: '7.46 EUR,11.28 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Est beatae ea incidunt libero ut.'
         short_description-fr_FR-mobile: 'Quaerat tempore consequatur quos quia soluta aut.'
         size: L
         unique_color: ''
+        weight-en_US: 484 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-029:
         sku: sku-029
         family: mug
         groups: ''
         categories: ''
-        color: 'Red,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Est et optio quod distinctio.'
         name-fr_FR: 'Et ipsa tempora.'
-        price: ''
+        price-en_US: ''
         release_date: 11/07/2013
         enabled: '1'
         short_description-en_US-mobile: 'Tenetur explicabo voluptatem aut placeat.'
         short_description-fr_FR-mobile: 'Eveniet nobis corrupti officiis vero natus velit.'
         size: ''
         unique_color: ''
+        weight-en_US: 511 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-030:
         sku: sku-030
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '59.63 EUR,52.17 USD'
+        price-en_US: '59.63 EUR,52.17 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Distinctio voluptates ut sed nostrum magni amet.'
         short_description-fr_FR-mobile: 'Sint consequatur quis assumenda et ipsam natus.'
         size: ''
         unique_color: ''
+        weight-en_US: 588 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-031:
         sku: sku-031
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Nihil voluptatem.'
         name-fr_FR: 'Et molestias.'
-        price: '66.93 EUR,21.62 USD'
+        price-en_US: '66.93 EUR,21.62 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: uc_purple
+        weight-en_US: 859 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-032:
         sku: sku-032
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Blue'
-        manufacturer: ''
+        color-en_US: 'Red,Blue'
+        manufacturer-en_US: ''
         name-en_US: 'Voluptatibus sequi in.'
         name-fr_FR: 'Laborum earum sunt.'
-        price: '8.48 EUR,34.11 USD'
+        price-en_US: '8.48 EUR,34.11 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Perferendis repellendus eos nobis est eum.'
         short_description-fr_FR-mobile: 'Minus perferendis aut cumque unde.'
         size: M
         unique_color: ''
+        weight-en_US: 615 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-033:
         sku: sku-033
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Vel qui nobis.'
         name-fr_FR: 'Est corporis necessitatibus.'
-        price: '95.02 EUR,42.71 USD'
+        price-en_US: '95.02 EUR,42.71 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Sunt provident quidem dolorum ipsam et.'
         short_description-fr_FR-mobile: 'Sit velit modi porro numquam.'
         size: XL
         unique_color: uc_purple
+        weight-en_US: 200 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-034:
         sku: sku-034
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Blue,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Debitis quia quo.'
         name-fr_FR: 'Assumenda et quo sit.'
-        price: '30.76 EUR,75.92 USD'
+        price-en_US: '30.76 EUR,75.92 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Hic eligendi officiis doloremque sunt.'
         short_description-fr_FR-mobile: 'Necessitatibus et quibusdam autem.'
         size: ''
         unique_color: ''
+        weight-en_US: 97 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-035:
         sku: sku-035
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Blue,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Eligendi at similique maxime.'
         name-fr_FR: 'Rerum possimus voluptatum harum aut.'
-        price: '71.62 EUR,86.85 USD'
+        price-en_US: '71.62 EUR,86.85 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ratione consequatur non beatae deleniti doloribus.'
         short_description-fr_FR-mobile: 'A culpa voluptatem voluptatem molestiae.'
         size: L
         unique_color: ''
+        weight-en_US: 822 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-036:
         sku: sku-036
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MugStore
+        color-en_US: ''
+        manufacturer-en_US: MugStore
         name-en_US: ''
         name-fr_FR: ''
-        price: '94.51 EUR,67.29 USD'
+        price-en_US: '94.51 EUR,67.29 USD'
         release_date: 03/24/2013
         enabled: '1'
         short_description-en_US-mobile: 'Nostrum accusamus sit corporis qui voluptatum quia.'
         short_description-fr_FR-mobile: 'Autem sint similique est.'
         size: ''
         unique_color: ''
+        weight-en_US: 515 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-037:
         sku: sku-037
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Eum sit enim et.'
         name-fr_FR: 'Eos ipsam ad.'
-        price: '72.01 EUR,60.35 USD'
+        price-en_US: '72.01 EUR,60.35 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: uc_white
+        weight-en_US: 822 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-038:
         sku: sku-038
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Eum rerum et sint qui.'
         short_description-fr_FR-mobile: 'Earum ipsa sit voluptatibus qui.'
         size: XL
         unique_color: ''
+        weight-en_US: 833 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-039:
         sku: sku-039
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '30.93 EUR,33.48 USD'
+        price-en_US: '30.93 EUR,33.48 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_green
+        weight-en_US: 143 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-040:
         sku: sku-040
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Green,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Green,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '50.93 EUR,87.88 USD'
+        price-en_US: '50.93 EUR,87.88 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: ''
+        weight-en_US: 124 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-041:
         sku: sku-041
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Blue'
-        manufacturer: ''
+        color-en_US: 'Red,Blue'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '94.03 EUR,24.69 USD'
+        price-en_US: '94.03 EUR,24.69 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Veritatis itaque aut molestiae consequuntur.'
         short_description-fr_FR-mobile: 'Nihil ex praesentium asperiores quam.'
         size: XL
         unique_color: ''
+        weight-en_US: 896 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-042:
         sku: sku-042
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Non ut recusandae.'
         name-fr_FR: 'Perspiciatis rerum velit accusantium.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Exercitationem sit saepe reiciendis.'
         short_description-fr_FR-mobile: 'Dolor eum est possimus dolores consectetur iusto.'
         size: S
         unique_color: ''
+        weight-en_US: 706 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-043:
         sku: sku-043
         family: mug
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Exercitationem optio error.'
         name-fr_FR: 'Quia molestiae aut.'
-        price: '80.01 EUR,69.23 USD'
+        price-en_US: '80.01 EUR,69.23 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 920 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-044:
         sku: sku-044
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Blue'
-        manufacturer: ''
+        color-en_US: 'Red,Blue'
+        manufacturer-en_US: ''
         name-en_US: 'Laudantium doloremque.'
         name-fr_FR: 'Ipsam quae voluptatum.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Voluptatum aperiam ex deserunt et.'
         short_description-fr_FR-mobile: 'Dolorum fugiat eveniet vitae autem quis voluptas.'
         size: ''
         unique_color: ''
+        weight-en_US: 688 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-045:
         sku: sku-045
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: 'Consequatur impedit aut et.'
         name-fr_FR: 'Vero eum consequuntur et.'
-        price: '88.57 EUR,28.34 USD'
+        price-en_US: '88.57 EUR,28.34 USD'
         release_date: 12/15/2012
         enabled: '1'
         short_description-en_US-mobile: 'Ut reprehenderit sed quaerat sed consequatur aut.'
         short_description-fr_FR-mobile: 'Odit voluptas aut temporibus.'
         size: ''
         unique_color: ''
+        weight-en_US: 634 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-046:
         sku: sku-046
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_red
+        weight-en_US: 428 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-047:
         sku: sku-047
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Purple,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Purple,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: 'Quia maxime iste.'
         name-fr_FR: 'Incidunt quam quibusdam.'
-        price: '71.28 EUR,85.16 USD'
+        price-en_US: '71.28 EUR,85.16 USD'
         release_date: 02/16/2013
         enabled: '1'
         short_description-en_US-mobile: 'Culpa veritatis error rerum.'
         short_description-fr_FR-mobile: 'Dolores perferendis amet ut non.'
         size: ''
         unique_color: ''
+        weight-en_US: 873 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-048:
         sku: sku-048
         family: shirt
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '97.49 EUR,36.57 USD'
+        price-en_US: '97.49 EUR,36.57 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Libero fugiat quas et aspernatur voluptatem voluptatibus.'
         short_description-fr_FR-mobile: 'Dolores aliquid quos culpa voluptate.'
         size: S
         unique_color: ''
+        weight-en_US: 590 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-049:
         sku: sku-049
         family: shirt
         groups: ''
         categories: ''
-        color: 'Blue,Orange'
-        manufacturer: ''
+        color-en_US: 'Blue,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Eos voluptatem aliquid corporis.'
         name-fr_FR: 'Labore provident autem.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: L
         unique_color: ''
+        weight-en_US: 77 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-050:
         sku: sku-050
         family: shoe
         groups: ''
         categories: ''
-        color: 'Blue,Green'
-        manufacturer: ''
+        color-en_US: 'Blue,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Aut doloremque et ut.'
         name-fr_FR: 'Qui dolor quae odio.'
-        price: '85.81 EUR,24.74 USD'
+        price-en_US: '85.81 EUR,24.74 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 83 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-051:
         sku: sku-051
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MyMug
+        color-en_US: ''
+        manufacturer-en_US: MyMug
         name-en_US: 'Nulla voluptas fugiat.'
         name-fr_FR: 'Labore qui consequatur iste.'
-        price: '9.44 EUR,98.59 USD'
+        price-en_US: '9.44 EUR,98.59 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Repudiandae ut maiores labore ex inventore laudantium.'
         short_description-fr_FR-mobile: 'Aut eos quia error in.'
         size: ''
         unique_color: ''
+        weight-en_US: 389 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-052:
         sku: sku-052
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Eius cupiditate dolor.'
         name-fr_FR: 'Magni commodi iusto.'
-        price: '49.39 EUR,44.89 USD'
+        price-en_US: '49.39 EUR,44.89 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: ''
+        weight-en_US: 376 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-053:
         sku: sku-053
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Green,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: 'Qui id.'
         name-fr_FR: 'Excepturi voluptatum consequatur voluptatem.'
-        price: '87.15 EUR,20.13 USD'
+        price-en_US: '87.15 EUR,20.13 USD'
         release_date: 06/20/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 824 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-054:
         sku: sku-054
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MyMug
+        color-en_US: ''
+        manufacturer-en_US: MyMug
         name-en_US: 'Sequi ea sint.'
         name-fr_FR: 'Vero molestias dicta dolorum.'
-        price: ''
+        price-en_US: ''
         release_date: 05/12/2013
         enabled: '1'
         short_description-en_US-mobile: 'Aut enim autem eum in rerum consequatur.'
         short_description-fr_FR-mobile: 'Eos non et repellendus.'
         size: ''
         unique_color: ''
+        weight-en_US: 844 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-055:
         sku: sku-055
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Nemo totam sed modi consequatur.'
         name-fr_FR: 'Autem voluptatibus nemo laboriosam.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Commodi amet debitis adipisci.'
         short_description-fr_FR-mobile: 'Aut nihil quia officiis deleniti fuga.'
         size: XS
         unique_color: ''
+        weight-en_US: 519 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-056:
         sku: sku-056
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Non officiis omnis.'
         name-fr_FR: 'Ratione non maiores.'
-        price: '10.28 EUR,21.86 USD'
+        price-en_US: '10.28 EUR,21.86 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolorem ipsa fugit magnam nesciunt.'
         short_description-fr_FR-mobile: 'Beatae nesciunt sapiente maxime.'
         size: ''
         unique_color: uc_green
+        weight-en_US: 554 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-057:
         sku: sku-057
         family: mug
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: MyMug
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: MyMug
         name-en_US: 'Quo ipsa fugiat consectetur.'
         name-fr_FR: 'Est qui voluptas.'
-        price: '89.56 EUR,51.65 USD'
+        price-en_US: '89.56 EUR,51.65 USD'
         release_date: 04/29/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 123 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-058:
         sku: sku-058
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Green,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Green,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Magnam odio molestiae.'
         name-fr_FR: 'Facilis non.'
-        price: '16.18 EUR,44.05 USD'
+        price-en_US: '16.18 EUR,44.05 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Animi itaque ullam aut ut.'
         short_description-fr_FR-mobile: 'Nisi laboriosam consequatur quo a ducimus voluptatem.'
         size: M
         unique_color: ''
+        weight-en_US: 550 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-059:
         sku: sku-059
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Green'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Green'
+        manufacturer-en_US: MugStore
         name-en_US: 'Accusamus sequi expedita.'
         name-fr_FR: 'Enim voluptatem sit vel inventore.'
-        price: '49.63 EUR,9.65 USD'
+        price-en_US: '49.63 EUR,9.65 USD'
         release_date: 08/21/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 760 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-060:
         sku: sku-060
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Blue'
-        manufacturer: ''
+        color-en_US: 'Red,Blue'
+        manufacturer-en_US: ''
         name-en_US: 'In quos id ut.'
         name-fr_FR: 'Aut modi nesciunt minus praesentium.'
-        price: '81.34 EUR,42.99 USD'
+        price-en_US: '81.34 EUR,42.99 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ducimus dolores quisquam unde ad sint.'
         short_description-fr_FR-mobile: 'Voluptas in error voluptatem omnis et.'
         size: M
         unique_color: ''
+        weight-en_US: 747 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-061:
         sku: sku-061
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Blue,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Asperiores totam dolore.'
         name-fr_FR: 'Molestiae doloribus expedita.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolor quo saepe aperiam eveniet aut necessitatibus.'
         short_description-fr_FR-mobile: 'Pariatur dolores recusandae voluptates tenetur accusantium.'
         size: M
         unique_color: ''
+        weight-en_US: 395 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-062:
         sku: sku-062
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Fugiat ut sed ipsum.'
         name-fr_FR: 'Quibusdam consequatur aliquid vero.'
-        price: '12.54 EUR,96.27 USD'
+        price-en_US: '12.54 EUR,96.27 USD'
         release_date: 06/09/2013
         enabled: '1'
         short_description-en_US-mobile: 'Sunt qui saepe temporibus.'
         short_description-fr_FR-mobile: 'Enim ratione fugit quos.'
         size: ''
         unique_color: ''
+        weight-en_US: 390 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-063:
         sku: sku-063
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MugStore
+        color-en_US: ''
+        manufacturer-en_US: MugStore
         name-en_US: 'Reiciendis beatae nihil eum non.'
         name-fr_FR: 'Blanditiis est.'
-        price: ''
+        price-en_US: ''
         release_date: 07/07/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 75 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-064:
         sku: sku-064
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Blue,Purple'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Purple'
+        manufacturer-en_US: ''
         name-en_US: 'Voluptatem consequatur eveniet labore.'
         name-fr_FR: 'Officiis id sed.'
-        price: '40.36 EUR,35.68 USD'
+        price-en_US: '40.36 EUR,35.68 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Excepturi molestias nihil enim.'
         short_description-fr_FR-mobile: 'Sint occaecati corporis ex est natus.'
         size: ''
         unique_color: ''
+        weight-en_US: 283 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-065:
         sku: sku-065
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Purple'
-        manufacturer: MyMug
+        color-en_US: 'Blue,Purple'
+        manufacturer-en_US: MyMug
         name-en_US: 'Voluptatem deserunt veritatis.'
         name-fr_FR: 'Rerum aut consectetur est.'
-        price: '61.52 EUR,39.97 USD'
+        price-en_US: '61.52 EUR,39.97 USD'
         release_date: 10/04/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 489 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-066:
         sku: sku-066
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Blue,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Ad voluptas earum ducimus.'
         name-fr_FR: 'Nihil corrupti nihil.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: ''
+        weight-en_US: 931 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-067:
         sku: sku-067
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Facilis perspiciatis labore qui.'
         name-fr_FR: 'Necessitatibus velit repudiandae libero.'
-        price: '14.07 EUR,14.56 USD'
+        price-en_US: '14.07 EUR,14.56 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Hic nihil aut ab.'
         short_description-fr_FR-mobile: 'Illum quia culpa cupiditate nobis optio perferendis.'
         size: S
         unique_color: uc_red
+        weight-en_US: 553 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-068:
         sku: sku-068
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '9.54 EUR,6.61 USD'
+        price-en_US: '9.54 EUR,6.61 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XL
         unique_color: ''
+        weight-en_US: 206 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-069:
         sku: sku-069
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Purple,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Purple,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: 'Cumque veritatis.'
         name-fr_FR: 'Laborum minima vel.'
-        price: '99.57 EUR,15.09 USD'
+        price-en_US: '99.57 EUR,15.09 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Et debitis rerum eveniet quas sed pariatur.'
         short_description-fr_FR-mobile: 'Qui iure dolorum aut commodi.'
         size: ''
         unique_color: ''
+        weight-en_US: 854 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-070:
         sku: sku-070
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: ''
         name-fr_FR: ''
-        price: '9.11 EUR,84.52 USD'
+        price-en_US: '9.11 EUR,84.52 USD'
         release_date: 10/13/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 461 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-071:
         sku: sku-071
         family: shoe
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Et voluptas et.'
         name-fr_FR: 'Sed quam modi.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Non praesentium nostrum asperiores vel eos.'
         short_description-fr_FR-mobile: 'Hic alias recusandae molestias at aperiam libero.'
         size: ''
         unique_color: ''
+        weight-en_US: 584 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-072:
         sku: sku-072
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Beatae voluptatem voluptas.'
         name-fr_FR: 'Amet mollitia assumenda sapiente.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Qui a ad sit et.'
         short_description-fr_FR-mobile: 'Qui recusandae cumque et.'
         size: ''
         unique_color: uc_blue
+        weight-en_US: 561 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-073:
         sku: sku-073
         family: shirt
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Atque facere veniam.'
         name-fr_FR: 'Ea sit quidem fugiat.'
-        price: '54.72 EUR,64.90 USD'
+        price-en_US: '54.72 EUR,64.90 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Vero quia consequuntur nam non error.'
         short_description-fr_FR-mobile: 'Non excepturi et autem nihil.'
         size: S
         unique_color: ''
+        weight-en_US: 882 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-074:
         sku: sku-074
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Accusamus sunt saepe.'
         name-fr_FR: 'Reprehenderit eos qui.'
-        price: '34.92 EUR,83.76 USD'
+        price-en_US: '34.92 EUR,83.76 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_purple
+        weight-en_US: 844 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-075:
         sku: sku-075
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Placeat est et enim qui.'
         name-fr_FR: 'Beatae odio voluptas.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: S
         unique_color: uc_red
+        weight-en_US: 492 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-076:
         sku: sku-076
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: MyMug
+        color-en_US: ''
+        manufacturer-en_US: MyMug
         name-en_US: 'Distinctio dolorem amet.'
         name-fr_FR: 'Repudiandae vel id.'
-        price: ''
+        price-en_US: ''
         release_date: 05/28/2013
         enabled: '1'
         short_description-en_US-mobile: 'Pariatur non vel maiores culpa.'
         short_description-fr_FR-mobile: 'Explicabo incidunt atque esse ut.'
         size: ''
         unique_color: ''
+        weight-en_US: 864 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-077:
         sku: sku-077
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Error itaque voluptas quia.'
         name-fr_FR: 'Vitae a asperiores.'
-        price: '19.60 EUR,99.01 USD'
+        price-en_US: '19.60 EUR,99.01 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ipsum rerum aliquam dicta atque.'
         short_description-fr_FR-mobile: 'Quas alias et dignissimos earum nam.'
         size: M
         unique_color: ''
+        weight-en_US: 248 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-078:
         sku: sku-078
         family: mug
         groups: ''
         categories: ''
-        color: 'Green,Purple'
-        manufacturer: MyMug
+        color-en_US: 'Green,Purple'
+        manufacturer-en_US: MyMug
         name-en_US: 'Quidem consequatur possimus.'
         name-fr_FR: 'Non rerum est.'
-        price: '18.52 EUR,23.59 USD'
+        price-en_US: '18.52 EUR,23.59 USD'
         release_date: 07/19/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 624 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-079:
         sku: sku-079
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Iure qui dolor molestiae.'
         name-fr_FR: 'Maxime qui maiores optio.'
-        price: '92.53 EUR,97.60 USD'
+        price-en_US: '92.53 EUR,97.60 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: uc_white
+        weight-en_US: 227 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-080:
         sku: sku-080
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Tenetur minima laborum tempora.'
         name-fr_FR: 'Labore molestiae veritatis ut.'
-        price: '76.50 EUR,94.49 USD'
+        price-en_US: '76.50 EUR,94.49 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: XS
         unique_color: uc_green
+        weight-en_US: 110 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-081:
         sku: sku-081
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Blue,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Voluptate rerum.'
         name-fr_FR: 'Voluptatum sint error repudiandae.'
-        price: '72.69 EUR,20.65 USD'
+        price-en_US: '72.69 EUR,20.65 USD'
         release_date: 07/01/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 899 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-082:
         sku: sku-082
         family: mug
         groups: ''
         categories: ''
-        color: 'Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Et libero ratione quia ut.'
         name-fr_FR: 'Doloribus et ut.'
-        price: '48.26 EUR,92.07 USD'
+        price-en_US: '48.26 EUR,92.07 USD'
         release_date: 05/22/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 735 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-083:
         sku: sku-083
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Qui praesentium praesentium est quas.'
         name-fr_FR: 'Unde optio voluptate.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Iusto delectus quas iure molestias suscipit.'
         short_description-fr_FR-mobile: 'Et esse laborum voluptas qui eligendi.'
         size: XL
         unique_color: ''
+        weight-en_US: 617 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-084:
         sku: sku-084
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Blue,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Blue,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Accusamus et et.'
         name-fr_FR: 'Nam itaque consequatur voluptas.'
-        price: '50.80 EUR,52.23 USD'
+        price-en_US: '50.80 EUR,52.23 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'In labore consequatur aut placeat sit voluptas.'
         short_description-fr_FR-mobile: 'Deserunt ut dolorem tempora sunt quod.'
         size: ''
         unique_color: ''
+        weight-en_US: 186 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-085:
         sku: sku-085
         family: shirt
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '30.75 EUR,78.24 USD'
+        price-en_US: '30.75 EUR,78.24 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Totam sed dolor quibusdam et hic ut.'
         short_description-fr_FR-mobile: 'Nihil nam deleniti mollitia recusandae aspernatur.'
         size: S
         unique_color: ''
+        weight-en_US: 361 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-086:
         sku: sku-086
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Soluta illum iusto.'
         name-fr_FR: 'Facere quia est pariatur.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Aut cupiditate hic delectus.'
         short_description-fr_FR-mobile: 'Adipisci iste inventore optio voluptatem hic.'
         size: XL
         unique_color: uc_purple
+        weight-en_US: 243 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-087:
         sku: sku-087
         family: mug
         groups: ''
         categories: ''
-        color: 'Red,Green'
-        manufacturer: MyMug
+        color-en_US: 'Red,Green'
+        manufacturer-en_US: MyMug
         name-en_US: ''
         name-fr_FR: ''
-        price: '5.23 EUR,41.66 USD'
+        price-en_US: '5.23 EUR,41.66 USD'
         release_date: 07/10/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 602 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-088:
         sku: sku-088
         family: mug
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: '71.46 EUR,41.08 USD'
+        price-en_US: '71.46 EUR,41.08 USD'
         release_date: 06/30/2013
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 9 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-089:
         sku: sku-089
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Et quas expedita.'
         name-fr_FR: 'In incidunt aliquid.'
-        price: '25.38 EUR,59.56 USD'
+        price-en_US: '25.38 EUR,59.56 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Natus et et laudantium.'
         short_description-fr_FR-mobile: 'Sunt asperiores temporibus doloribus consequuntur molestiae.'
         size: ''
         unique_color: ''
+        weight-en_US: 149 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-090:
         sku: sku-090
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Green'
-        manufacturer: ''
+        color-en_US: 'Red,Green'
+        manufacturer-en_US: ''
         name-en_US: 'Laborum soluta atque.'
         name-fr_FR: 'Minus et.'
-        price: '13.64 EUR,60.07 USD'
+        price-en_US: '13.64 EUR,60.07 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Quia ratione itaque deleniti veritatis cumque necessitatibus.'
         short_description-fr_FR-mobile: 'Praesentium sit nobis culpa voluptas voluptatum fugit.'
         size: XL
         unique_color: ''
+        weight-en_US: 846 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-091:
         sku: sku-091
         family: shoe
         groups: ''
         categories: ''
-        color: 'Red,Purple,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Purple,Orange'
+        manufacturer-en_US: ''
         name-en_US: 'Ex tenetur laboriosam natus alias.'
         name-fr_FR: 'Officia numquam et sunt.'
-        price: '48.20 EUR,98.32 USD'
+        price-en_US: '48.20 EUR,98.32 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Sed commodi voluptatem reprehenderit esse velit dolorem.'
         short_description-fr_FR-mobile: 'Aut minima eveniet odit expedita qui.'
         size: XS
         unique_color: ''
+        weight-en_US: 858 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-092:
         sku: sku-092
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Saepe dolorum eius culpa.'
         name-fr_FR: 'Hic optio cumque autem.'
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
         short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 64 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-093:
         sku: sku-093
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Dolorem nostrum suscipit ea.'
         name-fr_FR: 'At repellendus vero consectetur.'
-        price: '57.28 EUR,70.57 USD'
+        price-en_US: '57.28 EUR,70.57 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Non rerum enim ut a atque.'
         short_description-fr_FR-mobile: 'Iure tenetur velit error assumenda mollitia.'
         size: M
         unique_color: uc_green
+        weight-en_US: 897 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-094:
         sku: sku-094
         family: shirt
         groups: ''
         categories: ''
-        color: 'Red,Orange'
-        manufacturer: ''
+        color-en_US: 'Red,Orange'
+        manufacturer-en_US: ''
         name-en_US: ''
         name-fr_FR: ''
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Molestias laudantium veniam nam quis.'
         short_description-fr_FR-mobile: 'Optio illum harum dolore et.'
         size: S
         unique_color: ''
+        weight-en_US: 317 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-095:
         sku: sku-095
         family: shoe
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Dolore laudantium.'
         name-fr_FR: 'Natus dolores autem eaque.'
-        price: '41.42 EUR,28.91 USD'
+        price-en_US: '41.42 EUR,28.91 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Impedit rem soluta nihil.'
         short_description-fr_FR-mobile: 'Et tempore et a et.'
         size: ''
         unique_color: ''
+        weight-en_US: 83 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-096:
         sku: sku-096
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Vel suscipit autem asperiores.'
         name-fr_FR: 'Sed et aut totam.'
-        price: '98.19 EUR,99.22 USD'
+        price-en_US: '98.19 EUR,99.22 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Doloremque alias officia impedit quia et.'
         short_description-fr_FR-mobile: 'Veniam quasi occaecati atque quam dolores omnis.'
         size: M
         unique_color: uc_purple
+        weight-en_US: 14 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-097:
         sku: sku-097
         family: dress
         groups: ''
         categories: ''
-        color: ''
-        manufacturer: ''
+        color-en_US: ''
+        manufacturer-en_US: ''
         name-en_US: 'Sint sed.'
         name-fr_FR: 'Praesentium laudantium aut eum aut.'
-        price: '64.23 EUR,88.08 USD'
+        price-en_US: '64.23 EUR,88.08 USD'
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolore sunt sit et iure.'
         short_description-fr_FR-mobile: 'Repellendus consequatur quia similique placeat.'
         size: ''
         unique_color: uc_yellow
+        weight-en_US: 414 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-098:
         sku: sku-098
         family: mug
         groups: ''
         categories: ''
-        color: 'Blue,Orange'
-        manufacturer: MugStore
+        color-en_US: 'Blue,Orange'
+        manufacturer-en_US: MugStore
         name-en_US: ''
         name-fr_FR: ''
-        price: ''
+        price-en_US: ''
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Repudiandae aut rerum quia.'
         short_description-fr_FR-mobile: 'Veniam modi itaque quaerat aliquam.'
         size: ''
         unique_color: ''
+        weight-en_US: 429 GRAM
+        processor_brand: ''
+        core_number: ''
+        height: ''
     sku-099:
         sku: sku-099
-        family: mug
+        family: computer
         groups: ''
         categories: ''
-        color: 'Blue,Green,Orange'
-        manufacturer: MugStore
-        name-en_US: 'Enim quia est saepe.'
-        name-fr_FR: 'Voluptatem consectetur unde ipsa.'
-        price: '45.34 EUR,99.30 USD'
+        color-en_US: ''
+        manufacturer-en_US: ''
+        name-en_US: 'My computer'
+        name-fr_FR: 'Mon ordinateur'
+        price-en_US: '45.34 EUR,99.30 USD'
         release_date: 10/07/2013
         enabled: '1'
-        short_description-en_US-mobile: 'Et iusto enim et accusamus.'
-        short_description-fr_FR-mobile: 'Magni voluptas consectetur laborum tenetur facilis.'
+        short_description-en_US-mobile: ''
+        short_description-fr_FR-mobile: ''
         size: ''
         unique_color: ''
+        weight-en_US: 274 GRAM
+        processor_brand: 'Intel'
+        core_number: '4'
+        height: '166.50'

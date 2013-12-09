@@ -77,6 +77,20 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $action
+     * @param string $value
+     * @param string $unit
+     *
+     * @Then /^I filter by "(Length|Temperature|Weight)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([a-zA-Z_]+)"$/
+     */
+    public function iFilterByMetric($filterName, $action, $value, $unit)
+    {
+        $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
+        $this->wait();
+    }
+
+    /**
      * @param string $code
      *
      * @Given /^I filter by "category" with value "([^"]*)"$/

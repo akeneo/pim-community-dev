@@ -250,6 +250,7 @@ class Form extends Base
                     $field = $this->find('css', sprintf('#%s', $for));
                     try {
                         $field->focus();
+                        $field->setValue('');
                     } catch (UnsupportedDriverActionException $e) {
                     }
                     if ($field->getTagName() === 'select') {
@@ -296,6 +297,28 @@ class Form extends Base
     {
         if ($icon = $label->getParent()->find('css', '.icon-caret-right')) {
             $icon->click();
+        }
+    }
+
+    public function findFieldInAccordion($groupField, $field)
+    {
+        $accordion = $this->find(
+            'css',
+            sprintf('.accordion-heading a:contains("%s")', $groupField)
+        );
+
+        if (!$accordion) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find accordion %s', $groupField)
+            );
+        }
+
+        $accordionContent = $this->find('css', $accordion->getAttribute('href'));
+
+        if (!$accordionContent->findField($field)) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
+            );
         }
     }
 }
