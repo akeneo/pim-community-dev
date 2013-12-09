@@ -1389,15 +1389,23 @@ class WebUser extends RawMinkContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()->selectTranslation($field);
+        $this->getCurrentPage()->manualSelectTranslation($field);
     }
 
     /**
-     * @Given /^I copy (\w+) translations$/
+     * @Given /^I select (.*) translations$/
      */
-    public function iCopyTranslations($mode)
+    public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
+        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+    }
+
+    /**
+     * @Given /^I copy selected translations$/
+     */
+    public function iCopySelectedTranslations()
+    {
+        $this->getCurrentPage()->copySelectedTranslations();
     }
 
     /**
