@@ -31,7 +31,7 @@ class InjectORMReferencesSubscriber implements EventSubscriber
      */
     public function __construct(EntityManager $entityManager)
     {
-        $this->entityManager = $entityManager; 
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -58,7 +58,7 @@ class InjectORMReferencesSubscriber implements EventSubscriber
 
         if ($document instanceof ProductValueInterface) {
             $this->setAttributeReference($document, $documentManager);
-        } else if ($document instanceof ProductInterface) {
+        } elseif ($document instanceof ProductInterface) {
             $this->setFamilyReference($document, $documentManager);
         }
     }
@@ -103,6 +103,4 @@ class InjectORMReferencesSubscriber implements EventSubscriber
             $this->entityManager->getReference('PimCatalogBundle:Family', $product->getFamilyId())
         );
     }
-
-
 }

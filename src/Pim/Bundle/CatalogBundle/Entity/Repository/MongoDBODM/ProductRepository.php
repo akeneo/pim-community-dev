@@ -49,7 +49,7 @@ class ProductRepository extends DocumentRepository
      *
      * @return FlexibleEntityRepository
      */
-    public function setFlexibleConfig($config)                                  
+    public function setFlexibleConfig($config)
     {
         $this->flexibleConfig = $config;
 
@@ -121,5 +121,4 @@ class ProductRepository extends DocumentRepository
         // than the parent
         return $this->find($id);
     }
-
 }
