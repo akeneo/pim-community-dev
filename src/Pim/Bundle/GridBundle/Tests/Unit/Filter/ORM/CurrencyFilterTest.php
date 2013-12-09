@@ -97,6 +97,15 @@ class CurrencyFilterTest extends FilterTestCase
             'not_alphanumeric_currency' => array(
                 'data' => array('value' => 5, 'currency' => 5),
                 'expectProxyQueryCalls' => array()
+            ),
+            'valid_data' => array(
+                'data' => array('value' => 5, 'currency' => 'EUR'),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'currency'),
+                    array('setParameter', array(self::TEST_NAME .'_currency', 'EUR'), null),
+                    array('getUniqueParameterId', array(), 'value'),
+                    array('setParameter', array(self::TEST_NAME .'_value', 5), null)
+                )
             )
         );
     }

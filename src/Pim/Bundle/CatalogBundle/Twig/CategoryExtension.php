@@ -97,7 +97,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array             $categories
      * @param CategoryInterface $parent
-     * @param boolean           $withProductsCount
+     * @param boolean           $withProductCount
      * @param boolean           $includeSub
      *
      * @return array
@@ -235,9 +235,10 @@ class CategoryExtension extends \Twig_Extension
      * )
      *
      * @param CategoryInterface $category
-     * @param CategoryInterface $selectedCategory
+     * @param array             $selectedIds
      * @param boolean           $withProductCount
      * @param boolean           $includeSub
+     * @param array             $children
      *
      * @return array
      */
@@ -277,6 +278,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $tree
      * @param integer           $selectedTreeId
+     * @param boolean           $includeSub
      *
      * @return array
      */
@@ -336,9 +338,8 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format category and count selected children
      *
-     * @param array   $category
-     * @param array   $selectedIds
-     * @param boolean $count
+     * @param array $category
+     * @param array $selectedIds
      *
      * @return array
      */
@@ -368,18 +369,19 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * Returns category label with(out?) count and can include sub-categories
+     * Returns category label with|without children count
+     * including|excluding sub-categories
      *
      * @param CategoryInterface $category
-     * @param boolean           $count      predicate to add the count or not
-     * @param boolean           $includeSub include sub-categories for the count
+     * @param boolean           $withCount
+     * @param boolean           $includeSub
      *
      * @return string
      */
-    protected function getLabel(CategoryInterface $category, $count = false, $includeSub = false)
+    protected function getLabel(CategoryInterface $category, $withCount = false, $includeSub = false)
     {
         $label = $category->getLabel();
-        if ($count) {
+        if ($withCount) {
             $label = $label .' ('. $this->countProducts($category, $includeSub) .')';
         }
 

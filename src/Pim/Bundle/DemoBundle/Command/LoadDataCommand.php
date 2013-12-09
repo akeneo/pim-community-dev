@@ -19,6 +19,9 @@ class LoadDataCommand extends ContainerAwareCommand
 {
     private $insertedNodesCount = 0;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -35,6 +38,9 @@ class LoadDataCommand extends ContainerAwareCommand
             ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('purge-table')) {

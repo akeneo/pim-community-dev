@@ -250,6 +250,7 @@ class Form extends Base
                     $field = $this->find('css', sprintf('#%s', $for));
                     try {
                         $field->focus();
+                        $field->setValue('');
                     } catch (UnsupportedDriverActionException $e) {
                     }
                     if ($field->getTagName() === 'select') {
@@ -316,7 +317,7 @@ class Form extends Base
 
         if (!$accordionContent->findField($field)) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find a %s field inside the %s accordion group', $field, $groupField)
+                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
             );
         }
     }

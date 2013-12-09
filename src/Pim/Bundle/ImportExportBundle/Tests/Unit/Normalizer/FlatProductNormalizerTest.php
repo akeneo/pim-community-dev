@@ -83,7 +83,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                     $this->getAttributeMock('elements'),
                     new ArrayCollection(array('roue', 'poignées', 'benne'))
                 ),
-                $this->getValueMock($this->getAttributeMock('visual'), $media)
+                $this->getValueMock($this->getAttributeMock('visual'), $media),
+                $this->getValueMock($this->getAttributeMock('weight'), $this->getMetricMock('73', 'KILOGRAM')),
             )
         );
         $identifier = $this->getValueMock(
@@ -94,17 +95,19 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
 
         $result = array(
-            'sku'           => 'KB0001',
-            'family'        => 'garden-tool',
-            'groups'        => null,
-            'categories'    => 'cat1, cat2, cat3',
-            'elements'      => 'roue,poignées,benne',
-            'exportedAt'    => $now->format('m/d/Y'),
-            'name-en_US'    => 'Wheelbarrow',
-            'name-es_ES'    => 'Carretilla',
-            'name-fr_FR'    => 'Brouette',
-            'visual'        => 'files/media.jpg',
-            'enabled'       => (int) true
+            'sku'         => 'KB0001',
+            'family'      => 'garden-tool',
+            'groups'      => null,
+            'categories'  => 'cat1, cat2, cat3',
+            'elements'    => 'roue,poignées,benne',
+            'exportedAt'  => $now->format('m/d/Y'),
+            'name-en_US'  => 'Wheelbarrow',
+            'name-es_ES'  => 'Carretilla',
+            'name-fr_FR'  => 'Brouette',
+            'visual'      => 'files/media.jpg',
+            'weight'      => '73',
+            'weight-unit' => 'KILOGRAM',
+            'enabled'     => (int) true
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -377,11 +380,11 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         $attribute->expects($this->any())
-            ->method('getScopable')
+            ->method('isScopable')
             ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
@@ -424,5 +427,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getMetricMock($data, $unit)
+    {
+        $metric = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
+
+        $metric->expects($this->any())->method('getData')->will($this->returnValue($data));
+        $metric->expects($this->any())->method('getUnit')->will($this->returnValue($unit));
+
+        return $metric;
     }
 }

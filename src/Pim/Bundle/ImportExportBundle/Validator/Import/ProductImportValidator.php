@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
 
 /**
@@ -71,7 +71,7 @@ class ProductImportValidator extends ImportValidator
      * Validates a ProductValue
      *
      * @param ProductInterface    $product
-     * @param ColumnInfoInterface $attribute
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ConstraintViolationListInterface
      */
@@ -124,7 +124,7 @@ class ProductImportValidator extends ImportValidator
     {
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
                 return $columnInfo->getLabel();
             }
         }

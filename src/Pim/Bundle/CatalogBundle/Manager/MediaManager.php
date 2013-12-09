@@ -38,6 +38,8 @@ class MediaManager
     /**
      * @param Media  $media
      * @param string $filenamePrefix
+     *
+     * @throws MediaManagementException
      */
     public function handle(Media $media, $filenamePrefix)
     {
@@ -124,10 +126,10 @@ class MediaManager
             $attribute->getCode()
         );
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $target .= '/' . $value->getLocale();
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $target .= '/' . $value->getScope();
         }
 
@@ -135,7 +137,7 @@ class MediaManager
     }
 
     /**
-     * @param File   $file
+     * @param File   $filename
      * @param string $filenamePrefix
      *
      * @return string

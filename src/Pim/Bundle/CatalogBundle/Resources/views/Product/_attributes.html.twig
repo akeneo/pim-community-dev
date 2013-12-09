@@ -28,10 +28,7 @@
         <div id="comparison-switcher" class="btn-group">
 
             <button class="btn dropdown-toggle" data-toggle="dropdown">
-                {{ 'Translate'|trans }}
-                {% if comparisonLocale is not null %}
-                    : {{ comparisonLocale|flag }} {{ locale_label(comparisonLocale) }}
-                {% endif %}
+                {{ 'Translate'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
                 <span class="caret"></span>
             </button>
 
@@ -39,14 +36,12 @@
                 {% for locale in locales if locale != dataLocale %}
                     <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
                         <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
-                            <span class="icon pull-left">
+                            <span class="indicator">
                                 {% if locale == comparisonLocale %}
-                                    <i class="icon-bullet"></i>
+                                    <i class="icon-circle"></i>
                                 {% endif %}
                             </span>
-                            <span class="code">
-                                {{ locale.code|flag }}
-                            </span>
+                            {{ locale.code|flag }}
                             <span class="title">{{ locale_label(locale.code) }}</span>
                         </a>
                     </li>
@@ -66,26 +61,19 @@
         {% endif %}
     </div>
     <div id="attribute-buttons">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+        <div class="btn-group channel-switcher">
+            <a class="btn dropdown-toggle" href="javascript:void(0);" title="{{ 'Scope'|trans }}" data-toggle="dropdown">
                 <i class="icon-eye-open"></i>
-                <i class="icon-caret-down"></i>
+                <span>{{ 'Scope'|trans }}</span>
             </a>
-            <div class="dropdown-menu channel pull-right">
-                <h5>{{ 'Scope'|trans }}</h5>
-                <div>
-                    <span id="channel-controls">
-                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                        <select id="default_channel">
-                            {% for channel in channels %}
-                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                </div>
-            </div>
+            <ul class="dropdown-menu pull-right">
+                {% for channel in channels %}
+                    <li><a href="javascript:void(0);" data-scope="{{ channel.code }}">{{ channel.label }}</a></li>
+                {% endfor %}
+            </ul>
+            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand" data-collapse-title="{{ 'Collapse all channels'|trans }}" data-expand-title="{{ 'Expand all channels'|trans }}">
+                <i class="icon-caret-right"></i>
+            </a>
         </div>
     </div>
 

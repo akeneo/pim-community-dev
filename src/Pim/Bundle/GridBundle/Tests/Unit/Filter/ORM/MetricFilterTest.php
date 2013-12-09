@@ -49,19 +49,6 @@ class MetricFilterTest extends FilterTestCase
     protected function initializeMeasureConfig()
     {
         return array(
-            'Length' => array(
-                'standard' => 'METER',
-                'units'    => array(
-                    'KILOMETER' => array(
-                        'convert' => array(array('mul' => 1000)),
-                        'symbol'  => 'km'
-                    ),
-                    'METER'     => array(
-                        'convert' => array(array('mul' => 1)),
-                        'symbol'  => 'm'
-                    )
-                )
-            ),
             'Weight' => array(
                 'standard' => 'KILOGRAM',
                 'units'    => array(

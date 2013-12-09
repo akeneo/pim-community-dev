@@ -98,7 +98,7 @@ define(
                             $activeGroup.tab('show');
                             sessionStorage.removeItem('activeGroup');
                         } else {
-                            var $tree = $('[data-selected-tree]');
+                            var $tree = $('div[data-selected-tree]');
                             if ($tree.length && !$('.loading-mask').is(':visible')) {
                                 $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
                                 sessionStorage.removeItem('activeGroup');
@@ -166,7 +166,7 @@ define(
                     }
                 });
 
-                $target.find('[data-form-toggle]').on('click', function () {
+                $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });

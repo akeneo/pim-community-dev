@@ -9,7 +9,6 @@ use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -23,7 +22,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerIn
  *
  * @abstract
  */
-abstract class AbstractOrmTransformer
+abstract class AbstractORMTransformer
 {
     /**
      * @var RegistryInterface
@@ -92,6 +91,8 @@ abstract class AbstractOrmTransformer
 
     /**
      * Returns the errors for the last imported entity
+     *
+     * @return array
      */
     public function getErrors()
     {
@@ -103,6 +104,7 @@ abstract class AbstractOrmTransformer
      *
      * @param string $class
      * @param array  $data
+     * @param array  $defaults
      *
      * @throws InvalidItemException
      * @return object
@@ -142,11 +144,10 @@ abstract class AbstractOrmTransformer
      *
      * Returns an array with the error and its parameters, or null if no error encountered
      *
-     * @param object                       $entity
-     * @param ColumnInfoInterface          $columnInfo
-     * @param PropertyTransformerInterface $transformer
-     * @param array                        $transformerOptions
-     * @param mixed                        $value
+     * @param object              $entity
+     * @param ColumnInfoInterface $columnInfo
+     * @param array               $transformerInfo
+     * @param mixed               $value
      *
      * @return array|null
      */
@@ -214,11 +215,10 @@ abstract class AbstractOrmTransformer
     /**
      * Finds or creates an entity for given class and data
      *
-     * @abstract
-     *
      * @param string $class
      * @param array  $data
      *
+     * @abstract
      * @return object
      */
     abstract protected function getEntity($class, array $data);

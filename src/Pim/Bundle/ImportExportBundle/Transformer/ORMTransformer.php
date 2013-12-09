@@ -9,15 +9,15 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmTransformer extends AbstractOrmTransformer
+class ORMTransformer extends AbstractORMTransformer
 {
     /**
      * Transforms an array into an entity
      *
-     * @param  string $class
-     * @param  array  $data
-     * @param  array  $mapping
-     * @param  array  $defaults
+     * @param string $class
+     * @param array  $data
+     * @param array  $defaults
+     *
      * @return object
      */
     public function transform($class, array $data, array $defaults = array())
@@ -44,7 +44,8 @@ class OrmTransformer extends AbstractOrmTransformer
     /**
      * Creates an entity of the given class
      *
-     * @param  string $class
+     * @param string $class
+     *
      * @return object
      */
     protected function create($class)

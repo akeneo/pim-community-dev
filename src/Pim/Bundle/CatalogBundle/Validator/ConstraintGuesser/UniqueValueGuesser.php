@@ -39,7 +39,7 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        if ($attribute->getUnique()) {
+        if ($attribute->isUnique()) {
             $constraints[] = new UniqueValue();
         }
 

@@ -27,6 +27,11 @@ class AttributeCacheListener implements EventSubscriber
         return array('onFlush');
     }
 
+    /**
+     * @param OnFlushEventArgs $eventArgs
+     *
+     * @return null
+     */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
         $entityManager = $eventArgs->getEntityManager();
