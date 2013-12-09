@@ -102,6 +102,10 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             length: 255
             nullable: true
             column: allowed_extensions
+        minimumInputLength:
+            type: smallint
+            nullable: false
+            default: 0
         required:
             type: boolean
             column: is_required

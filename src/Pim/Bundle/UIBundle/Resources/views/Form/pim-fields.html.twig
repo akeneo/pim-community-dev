@@ -34,6 +34,7 @@
         {% if form|is_flexible %}
             {{ block('form_row_flex') }}
         {% else %}
+            {% block field_form_row %}
             <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
                 {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
                 <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
@@ -43,6 +44,7 @@
                     {% endif %}
                 </div>
             </div>
+            {% endblock %}
         {% endif %}
     {% endspaceless %}
 {% endblock form_row %}
@@ -295,3 +297,7 @@
         {% endif %}
     </div>
 {% endblock pim_attribute_requirement_widget %}
+
+{% block pim_ajax_entity_row %}
+    {{ block('field_form_row') }}
+{% endblock %}

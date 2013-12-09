@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -23,13 +22,10 @@ class OptionSimpleSelectType extends AbstractAttributeType
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
-        $options['empty_value']   = '';
-        $options['class']         = 'PimCatalogBundle:AttributeOption';
-        $options['query_builder'] = function (EntityRepository $repository) use ($attribute) {
-            return $repository->findAllForAttribute($attribute);
-        };
-        $options['expanded'] = false;
-        $options['multiple'] = false;
+        $options['class']                = 'PimCatalogBundle:AttributeOption';
+        $options['collection_id']        = $attribute->getId();
+        $options['required']             = false;
+        $options['minimum_input_length'] = $attribute->getMinimumInputLength();
 
         return $options;
     }
@@ -43,6 +39,12 @@ class OptionSimpleSelectType extends AbstractAttributeType
             array(
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
+            ),
+            array(
+                'name'      => 'minimumInputLength',
+                'fieldType' => 'number',
+                'options'   => array(
+                )
             ),
             array(
                 'name'      => 'options',
