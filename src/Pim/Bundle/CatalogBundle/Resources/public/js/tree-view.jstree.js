@@ -88,9 +88,11 @@ define(
 
             function updateGrid(treeId, categoryId, includeSub) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
-                if (collection.setCategory(treeId, categoryId, includeSub)) {
-                    $('.grid-toolbar .icon-refresh').click();
-                }
+                return;
+                // TODO:
+                // if (collection.setCategory(treeId, categoryId, includeSub)) {
+                //     $('.grid-toolbar .icon-refresh').click();
+                // }
             }
 
             this.init = function () {
