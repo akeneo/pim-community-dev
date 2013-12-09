@@ -374,7 +374,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Group
+     * @return Group
      */
     protected function createGroup($code)
     {
