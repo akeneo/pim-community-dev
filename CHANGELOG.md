@@ -21,6 +21,7 @@
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
+- Allow to remove a translation setting it to empty
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
