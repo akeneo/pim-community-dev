@@ -43,6 +43,11 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected $groupsColumn  = 'groups';
 
     /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
+
+    /**
      * @var StepExecution
      */
     protected $stepExecution;
@@ -62,6 +67,7 @@ class ProductProcessor extends AbstractTransformerProcessor
         parent::__construct($validator, $translator);
         $this->transformer = $transformer;
     }
+
     /**
      * Set wether or not the created product should be activated or not
      *
@@ -140,6 +146,27 @@ class ProductProcessor extends AbstractTransformerProcessor
     public function getFamilyColumn()
     {
         return $this->familyColumn;
+    }
+
+    /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
+        $this->transformer->setHeterogeneous($heterogeneous);
+    }
+
+    /**
+     * Wether or not the products are heterogeneous
+     *
+     * @return bool
+     */
+    public function isHeterogeneous()
+    {
+        return $this->heterogeneous;
     }
 
     /**

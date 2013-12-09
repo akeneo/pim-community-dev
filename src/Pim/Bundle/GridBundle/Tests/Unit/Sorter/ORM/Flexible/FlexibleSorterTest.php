@@ -29,6 +29,9 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
      */
     protected $flexibleRegistry;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->flexibleRegistry = $this->getMockBuilder(
@@ -38,12 +41,18 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
         $this->flexibleSorter = new FlexibleSorter($this->flexibleRegistry);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         unset($this->flexibleRegistry);
         unset($this->flexibleSorter);
     }
 
+    /**
+     * Test related method
+     */
     public function testInitialize()
     {
         $entityName = 'Test';
@@ -75,6 +84,9 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
         $this->flexibleSorter->initialize($fieldDescription);
     }
 
+    /**
+     * Test related method
+     */
     public function testApply()
     {
         $entityName = 'TestEntity';
@@ -114,8 +126,9 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string                                                    $flexibleName
-     * @param  string                                                    $fieldName
+     * @param string $flexibleName
+     * @param string $fieldName
+     *
      * @return FieldDescription|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createFieldDescription($flexibleName, $fieldName = null)

@@ -40,7 +40,10 @@ class LoadProductData extends AbstractInstallerFixture
      */
     protected function getProductProcessor()
     {
-        return $this->container->get('pim_import_export.processor.product');
+        $processor = $this->container->get('pim_import_export.processor.product');
+        $processor->setHeterogeneous(true);
+
+        return $processor;
     }
 
     /**

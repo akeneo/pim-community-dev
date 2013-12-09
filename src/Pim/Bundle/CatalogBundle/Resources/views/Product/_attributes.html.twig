@@ -28,7 +28,7 @@
         <div id="comparison-switcher" class="btn-group">
 
             <button class="btn dropdown-toggle" data-toggle="dropdown">
-                {{ 'Translate'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
+                {{ 'Translate from'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
                 <span class="caret"></span>
             </button>
 

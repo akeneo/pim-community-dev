@@ -16,6 +16,9 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
  */
 class MetricType extends AbstractAttributeType
 {
+    /**
+     * @var MeasureManager $manager
+     */
     protected $manager;
 
     /**

@@ -54,6 +54,11 @@ class ORMProductTransformer extends AbstractORMTransformer
     protected $initialized=false;
 
     /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
+
+    /**
      * @var array
      */
     protected $propertyColumnsInfo;
@@ -100,6 +105,16 @@ class ORMProductTransformer extends AbstractORMTransformer
         $this->initializeAttributes($data);
 
         return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
+    }
+
+    /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
     }
 
     /**
@@ -201,7 +216,7 @@ class ORMProductTransformer extends AbstractORMTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->initialized) {
+        if ($this->heterogeneous === false and $this->initialized) {
             return;
         }
 

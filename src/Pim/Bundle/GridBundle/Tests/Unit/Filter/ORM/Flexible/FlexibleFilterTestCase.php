@@ -51,6 +51,9 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $flexibleRegistry;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->flexibleEntityRepository = $this->createFlexibleEntityRepository();
@@ -74,7 +77,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  FlexibleEntityRepository                                 $entityRepository
+     * @param FlexibleEntityRepository $entityRepository
+     *
      * @return FlexibleManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function createFlexibleManager(FlexibleEntityRepository $entityRepository)
@@ -101,8 +105,9 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  FlexibleManager                                                  $flexibleManager
-     * @param  string                                                           $flexibleName
+     * @param FlexibleManager $flexibleManager
+     * @param string          $flexibleName
+     *
      * @return FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function createFlexibleRegistry(FlexibleManager $flexibleManager, $flexibleName)
@@ -120,7 +125,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $flexibleRegistry
+     * @param FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $flexibleRegistry
+     *
      * @return AbstractFlexibleFilter
      */
     abstract protected function createTestFilter($flexibleRegistry);
@@ -131,9 +137,10 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     abstract public function filterDataProvider();
 
     /**
-     * @dataProvider filterDataProvider
      * @param array $data
      * @param array $expectRepositoryCalls
+     *
+     * @dataProvider filterDataProvider
      */
     public function testFilter(array $data, array $expectRepositoryCalls)
     {
@@ -159,7 +166,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  array $options
+     * @param array $options
+     *
      * @return array
      */
     protected function getFilterInitializeOptions(array $options = array())
@@ -183,7 +191,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  mixed      $queryBuilder
+     * @param mixed $queryBuilder
+     *
      * @return ProxyQuery
      */
     protected function createProxyQuery($queryBuilder = null)

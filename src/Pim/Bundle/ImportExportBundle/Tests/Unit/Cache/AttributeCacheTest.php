@@ -65,10 +65,8 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string  $code
-     * @param boolean $translatable
-     * @param boolean $scopable
-     * @param string  $attributeType
+     * @param string $code
+     * @param string $attributeType
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
