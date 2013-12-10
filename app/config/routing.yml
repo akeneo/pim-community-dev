@@ -21,10 +21,6 @@ oro_default:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
 
-oro_ui:
-    resource: "@OroUIBundle/Resources/config/routing.yml"
-    prefix:   /ui
-
 oro_form:
     resource: "@OroFormBundle/Resources/config/routing.yml"
     prefix:   /

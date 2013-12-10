@@ -1,3 +1,7 @@
 pim_ui_ajaxentity_list:
     path: /list.json
     defaults: { _controller: pim_ui.controller.ajax_option:listAction, _format: json }
+
+oro_ui:
+    resource: "@OroUIBundle/Resources/config/routing.yml"
+    prefix:   /ui
