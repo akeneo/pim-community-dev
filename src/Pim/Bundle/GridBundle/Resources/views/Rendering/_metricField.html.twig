@@ -1,1 +1,3 @@
-{{ value.metric.data|default('') }} {{ value.metric.unit|default('')|trans }}
+{% if value %}
+    {{ value.metric.data }} {{ value.metric.unit|default('')|trans }}
+{% endif %}
