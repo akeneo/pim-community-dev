@@ -625,10 +625,10 @@ class ProductController extends AbstractDoctrineController
     {
         $dataScope = $this->getRequest()->get('dataScope');
         if ($dataScope === null) {
-            return 'ecommerce';
-
-            // TODO : to fix
-            $dataScope = (string) $this->getUser()->getValue('catalogscope');
+            $catalogScope = $this->getUser()->getCatalogScope();
+            if ($catalogScope) {
+                $dataScope = $catalogScope->getCode();
+            }
         }
         if (!$dataScope) {
             throw new \Exception('User must have a catalog scope defined');

@@ -239,8 +239,9 @@ class LocaleManager
             return null;
         }
 
-        $user = $this->securityContext->getToken()->getUser();
-        $localeCode = 'en_US'; // TODO (string) $user->getValue('cataloglocale');
+        $catalogLocale = $this->securityContext->getToken()->getUser()->getCatalogLocale();
+        $localeCode    = $catalogLocale ? $catalogLocale->getCode() : null;
+
         $userLocales = $this->getUserLocales();
 
         foreach ($userLocales as $locale) {
