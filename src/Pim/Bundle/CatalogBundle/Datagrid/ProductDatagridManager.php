@@ -189,7 +189,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $field = parent::createFlexibleField($attribute, $options);
 
-        if ($attribute->getBackendType() === 'metric' && $attribute->getCode() == 'weight') {
+        if ($attribute->getBackendType() === 'metric') {
             $field->setProperty(
                 new FlexibleTwigTemplateProperty($field, 'PimGridBundle:Rendering:_metricField.html.twig')
             );
