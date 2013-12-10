@@ -180,7 +180,7 @@ Feature: Execute a job
     And I wait for the job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
-      | weight | 4000.0000 GRAM |
+      | weight | 4000 GRAM |
 
   Scenario: Successfully import products metrics splitting the data and unit
     Given the following file to import:
@@ -195,4 +195,4 @@ Feature: Execute a job
     And I wait for the job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
-      | weight | 4000.0000 GRAM |
+      | weight | 4000 GRAM |
