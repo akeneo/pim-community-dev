@@ -3,7 +3,6 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Element\Element;
 
 /**
@@ -25,6 +24,7 @@ class Form extends Base
         $this->elements = array_merge(
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
+                'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Validation errors'               => array('css' => '.validation-tooltip'),
@@ -53,7 +53,11 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $this->getElement('Tabs')->clickLink($tab);
+        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+        $tabs->clickLink($tab);
     }
 
     /**
@@ -295,6 +299,12 @@ class Form extends Base
         }
     }
 
+    /**
+     * @param string $groupField
+     * @param string $field
+     *
+     * @throws \InvalidArgumentException
+     */
     public function findFieldInAccordion($groupField, $field)
     {
         $accordion = $this->find(
