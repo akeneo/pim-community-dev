@@ -23,7 +23,6 @@ define(
                 });
 
                 $form.find('select[data-placeholder]').select2({ allowClear: true });
-                $form.find('select:not(.select2-offscreen)').select2();
                 $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
                     self.initSelect.call(self, $(this));
                 });
