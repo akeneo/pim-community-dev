@@ -201,12 +201,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapBundle.git",
-                "reference": "63831ab54d4a22bbc704d4dabb7e58e8f849cbdb"
+                "reference": "5bcb710e9c0aaf3713231f09cc910ad90204be07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/63831ab54d4a22bbc704d4dabb7e58e8f849cbdb",
-                "reference": "63831ab54d4a22bbc704d4dabb7e58e8f849cbdb",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/5bcb710e9c0aaf3713231f09cc910ad90204be07",
+                "reference": "5bcb710e9c0aaf3713231f09cc910ad90204be07",
                 "shasum": ""
             },
             "require": {
@@ -259,7 +259,7 @@
                 "soap",
                 "soap-bundle"
             ],
-            "time": "2013-12-02 15:02:29"
+            "time": "2013-12-10 14:25:09"
         },
         {
             "name": "besimple/soap-common",
@@ -268,12 +268,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "a28d340a6c736223ce06677c926a0ec2eca96230"
+                "reference": "274f9bbb55222f799241be89d03a5536bda43c4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/a28d340a6c736223ce06677c926a0ec2eca96230",
-                "reference": "a28d340a6c736223ce06677c926a0ec2eca96230",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/274f9bbb55222f799241be89d03a5536bda43c4e",
+                "reference": "274f9bbb55222f799241be89d03a5536bda43c4e",
                 "shasum": ""
             },
             "require": {
@@ -321,7 +321,7 @@
                 "soap",
                 "soap-common"
             ],
-            "time": "2013-12-02 15:02:29"
+            "time": "2013-12-07 23:23:30"
         },
         {
             "name": "besimple/soap-server",
@@ -389,12 +389,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapWsdl.git",
-                "reference": "0152693d22de80cd71aba27fb964075ed7d3ef1e"
+                "reference": "8a964e2c38a2afaa7bcb6c2be58d85b229c453f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapWsdl/zipball/0152693d22de80cd71aba27fb964075ed7d3ef1e",
-                "reference": "0152693d22de80cd71aba27fb964075ed7d3ef1e",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapWsdl/zipball/8a964e2c38a2afaa7bcb6c2be58d85b229c453f2",
+                "reference": "8a964e2c38a2afaa7bcb6c2be58d85b229c453f2",
                 "shasum": ""
             },
             "require": {
@@ -432,7 +432,7 @@
                 "soap",
                 "soap-wsdl"
             ],
-            "time": "2013-12-02 14:35:36"
+            "time": "2013-12-10 14:25:09"
         },
         {
             "name": "cboden/ratchet",
@@ -3560,12 +3560,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "21a0774265fbd79d5d145580a2d757c964ce6ab3"
+                "reference": "7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/21a0774265fbd79d5d145580a2d757c964ce6ab3",
-                "reference": "21a0774265fbd79d5d145580a2d757c964ce6ab3",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e",
+                "reference": "7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e",
                 "shasum": ""
             },
             "require": {
@@ -3626,7 +3626,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-12-05 20:36:37"
+            "time": "2013-12-10 12:18:30"
         },
         {
             "name": "oro/platform",
@@ -3634,12 +3634,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "c06eb37866c7cfa1132a375d4be9a6b05fc91c88"
+                "reference": "eab2d4346dae408bdd4638ccebfdd09375576d20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/c06eb37866c7cfa1132a375d4be9a6b05fc91c88",
-                "reference": "c06eb37866c7cfa1132a375d4be9a6b05fc91c88",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/eab2d4346dae408bdd4638ccebfdd09375576d20",
+                "reference": "eab2d4346dae408bdd4638ccebfdd09375576d20",
                 "shasum": ""
             },
             "require": {
@@ -3701,7 +3701,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta5",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-12-09 09:01:51"
+            "time": "2013-12-10 16:44:56"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4674,12 +4674,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "d5984bbb0592f9cda85e95f3f57a196d301a39d2"
+                "reference": "6387fc457792f38189bdd5729b500772bbddfa4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/d5984bbb0592f9cda85e95f3f57a196d301a39d2",
-                "reference": "d5984bbb0592f9cda85e95f3f57a196d301a39d2",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6387fc457792f38189bdd5729b500772bbddfa4d",
+                "reference": "6387fc457792f38189bdd5729b500772bbddfa4d",
                 "shasum": ""
             },
             "require": {
@@ -4715,7 +4715,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-12-06 15:28:39"
+            "time": "2013-12-10 10:23:00"
         },
         {
             "name": "willdurand/expose-translation-bundle",
@@ -5318,12 +5318,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkSelenium2Driver.git",
-                "reference": "594038718c08a458e81137494642bc1a872db1a9"
+                "reference": "1a00db27d403920afa65718313cb2571b74df98b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkSelenium2Driver/zipball/594038718c08a458e81137494642bc1a872db1a9",
-                "reference": "594038718c08a458e81137494642bc1a872db1a9",
+                "url": "https://api.github.com/repos/Behat/MinkSelenium2Driver/zipball/1a00db27d403920afa65718313cb2571b74df98b",
+                "reference": "1a00db27d403920afa65718313cb2571b74df98b",
                 "shasum": ""
             },
             "require": {
@@ -5368,7 +5368,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2013-12-02 21:28:03"
+            "time": "2013-12-10 15:14:01"
         },
         {
             "name": "behat/symfony2-extension",
