@@ -78,8 +78,8 @@ class GroupType extends AbstractType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Model\\GroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Model\\Group',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
             )
         );
@@ -151,7 +151,7 @@ class GroupType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Group'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
             )
         );
     }
