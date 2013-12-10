@@ -134,11 +134,12 @@ class UserContextListener implements EventSubscriberInterface
      */
     protected function getDataScope(Request $request)
     {
-        return 'mobile'; // TODO: to fix
-
         $dataScope = $request->get('dataScope');
         if ($dataScope === null) {
-            $dataScope = (string) $this->getUser()->getValue('catalogscope');
+            $catalogScope = $this->getUser()->getCatalogScope();
+            if ($catalogScope) {
+                $dataScope = $catalogScope->getCode();
+            }
         }
         if (!$dataScope) {
             throw new \Exception('User must have a catalog scope defined');
@@ -154,7 +155,9 @@ class UserContextListener implements EventSubscriberInterface
      */
     protected function getCatalogLocale()
     {
-        return 'en_US'; // TODO : to fix (string) $this->getUser()->getValue('cataloglocale');
+        $catalogLocale = $this->getUser()->getCatalogLocale();
+
+        return $catalogLocale ? $catalogLocale->getCode() : null;
     }
 
     /**
