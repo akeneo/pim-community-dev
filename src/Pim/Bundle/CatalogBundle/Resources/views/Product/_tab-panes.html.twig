@@ -7,9 +7,8 @@
     </div>
 {% endif %}
 
-{% if associations is not empty and resource_granted("pim_catalog_product_associations_view") %}
-    <div class="tab-pane" id="associations">
-       {% include 'PimCatalogBundle:Product:_associations.html.twig' %}
+{% if resource_granted("pim_catalog_product_associations_view") %}
+    <div class="tab-pane" id="associations" data-url="{{ path('pim_catalog_product_associations', { id: product.id }) }}">
     </div>
 {% endif %}
 
