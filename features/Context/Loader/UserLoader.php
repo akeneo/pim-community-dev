@@ -89,9 +89,20 @@ class UserLoader extends LoadUserData
             $user->addRole($this->getOrCreateRole($role));
         }
 
-        $user->addValue($this->getAttributeValue('cataloglocale', $data['cataloglocale']));
-        $user->addValue($this->getAttributeValue('catalogscope', $data['catalogscope']));
-        $user->addValue($this->getAttributeValue('defaulttree', $data['defaulttree']));
+        $catalogLocale = $this->getLocaleManager()->getLocaleByCode($data['catalogLocale']);
+        $user->setCatalogLocale($catalogLocale);
+
+        $catalogScope = $this->getChannelManager()->getChannelByCode($data['catalogScope']);
+        $user->setCatalogScope($catalogScope);
+
+        $trees = $this->getCategoryManager()->getTrees();
+        foreach ($trees as $tree) {
+            if ($tree->getCode() === $data['defaultTree']) {
+                $defaultTree = $tree;
+                break;
+            }
+        }
+        $user->setDefaultTree($defaultTree);
 
         $this->userManager->updateUser($user);
     }
@@ -115,23 +126,5 @@ class UserLoader extends LoadUserData
         }
 
         return $role;
-    }
-
-    /**
-     * @param string $attributeCode
-     * @param string $value
-     *
-     * @return FlexibleValueInterface
-     */
-    protected function getAttributeValue($attributeCode, $value)
-    {
-        $attribute       = $this->findAttribute($attributeCode);
-        $attributeOption = $this->findAttributeOptionWithValue($attribute, $value);
-        $attributeValue  = $this->userManager->createFlexibleValue();
-
-        $attributeValue->setAttribute($attribute);
-        $attributeValue->setOption($attributeOption);
-
-        return $attributeValue;
     }
 }
