@@ -248,7 +248,7 @@ attributes:
             useableAsGridFilter: true
             sortOrder:           10
             metricFamily:        Temperature
-            defaultMetricUnit:   CELCIUS
+            defaultMetricUnit:   CELSIUS
             decimalsAllowed:     true
     processor_brand:
         labels:
