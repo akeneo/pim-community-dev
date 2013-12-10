@@ -168,7 +168,8 @@ class FlatProductNormalizer implements NormalizerInterface
             $fieldName = $this->getFieldValue($value);
 
             return array(
-                $fieldName                     => $data->getData(),
+                $fieldName =>
+                    $value->getAttribute()->isDecimalsAllowed() ? $data->getData() : (int) $data->getData(),
                 sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
             );
         }
