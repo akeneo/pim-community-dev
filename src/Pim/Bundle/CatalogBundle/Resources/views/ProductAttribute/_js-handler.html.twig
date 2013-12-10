@@ -29,7 +29,7 @@ require(
                 $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
-                initSelect2.init();
+                initSelect2.init($(formName));
 
                 initializeOptions();
                 $(formName+'_attributeType').on('change', function() {
