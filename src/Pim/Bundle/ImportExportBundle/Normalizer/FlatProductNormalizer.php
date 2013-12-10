@@ -213,7 +213,8 @@ class FlatProductNormalizer implements NormalizerInterface
                 $result[] = $item->getCode();
             } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
                 if ($item->getData() !== null) {
-                    $result[] = (string) $item;
+                    $result[] = $item->getValue()->getAttribute()->isDecimalsAllowed()
+                        ? (string) $item : (int) $item->getData() .' '. $item->getCurrency();
                 }
             } else {
                 $result[] = (string) $item;
