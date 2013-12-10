@@ -22,16 +22,16 @@
                         var callback = function(data) {
                             if (data.status) {
                                 var $select = $field.siblings('input.pim-ajax-entity'),
-                                    selectData = { id: data.option.id, text: data.option.label }
+                                    selectData = { id: data.option.id, text: data.option.label };
                                 if ($select.attr("data-multiple")) {
                                     selectData = (function(newElement) {
                                         var selectData = $select.select2("data");
                                         selectData.push(newElement);
-                                        
+
                                         return selectData;
-                                    })(selectData)
+                                    })(selectData);
                                 }
-                                $select.select2("data", selectData)
+                                $select.select2("data", selectData);
                             } else {
                                 messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
                             }
@@ -150,7 +150,7 @@
                 function setFullHeight() {
                     $('.fullheight').each(function () {
                         $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
-                    })
+                    });
                 }
 
                 $('a[data-toggle="tab"]').on('shown', setFullHeight);

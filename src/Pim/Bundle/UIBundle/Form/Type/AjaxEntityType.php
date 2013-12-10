@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -11,9 +9,21 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
- * Ajax choice type
+ * Ajax entity type
+ * 
+ * Defined options are :
+ *   - multiple:                True for multiple fields
+ *   - transformer_options:     Extra options which should be passed to the transformer
+ *   - collection_id:           The collection id which should be passed to the AjaxOptionController
+ *   - route:                   The route for the AjaxOptionController list action
+ *   - route_parameters:        Extra parameters for this route
+ *   - minimum_input_length:    The minimum query length before a search is run
+ *   - url:                     URL for the list action (optional, resolved from route and route_parameters)
+ *   - locale:                  The locale of the results (optional, queried through the LocaleManager)
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

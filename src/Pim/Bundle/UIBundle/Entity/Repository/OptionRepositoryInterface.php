@@ -3,7 +3,9 @@
 namespace Pim\Bundle\UIBundle\Entity\Repository;
 
 /**
- * Interface for option repositories
+ * Interface for option repositories. 
+ * 
+ * Should be applied on the repositories of all entities used in AJAX choice fields.
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
