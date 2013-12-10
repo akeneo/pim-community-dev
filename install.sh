@@ -111,7 +111,6 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:entity-config:init
     php app/console oro:entity-extend:init
     php app/console oro:entity-extend:update-config
-    php app/console cache:clear
     php app/console doctrine:schema:update --force
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
