@@ -4,13 +4,12 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 
 /**
  * Aims to add/remove locales, channels and trees to user preference choices
@@ -42,6 +41,11 @@ class UserPreferencesListener implements EventSubscriber
     private $metadata = array();
 
     /**
+     * @var array
+     */
+    private $deactivatedLocales = array();
+
+    /**
      * Inject service container
      *
      * @param ContainerInterface $container
@@ -64,6 +68,7 @@ class UserPreferencesListener implements EventSubscriber
     {
         return array(
             'onFlush',
+            'postFlush',
         );
     }
 
@@ -74,13 +79,8 @@ class UserPreferencesListener implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        return; // Todo : user to fix
-
         $this->manager = $args->getEntityManager();
         $this->uow = $this->manager->getUnitOfWork();
-        foreach ($this->uow->getScheduledEntityInsertions() as $entity) {
-            $this->prePersist($entity);
-        }
         foreach ($this->uow->getScheduledEntityUpdates() as $entity) {
             $this->preUpdate($entity);
         }
@@ -90,18 +90,16 @@ class UserPreferencesListener implements EventSubscriber
     }
 
     /**
-     * Before insert
+     * Post flush
      *
-     * @param object $entity
+     * @param PostFlushEventArgs $args
      */
-    protected function prePersist($entity)
+    public function postFlush(PostFlushEventArgs $args)
     {
-        if ($entity instanceof Channel) {
-            $this->addOptionValue('catalogscope', $entity->getCode());
-        }
+        $this->manager = $args->getEntityManager();
 
-        if ($entity instanceof Category && $entity->isRoot()) {
-            $this->addOptionValue('defaulttree', $entity->getCode());
+        if (!empty($this->deactivatedLocales)) {
+            $this->onLocalesDeactivated();
         }
     }
 
@@ -113,11 +111,11 @@ class UserPreferencesListener implements EventSubscriber
     protected function preRemove($entity)
     {
         if ($entity instanceof Channel) {
-            $this->removeOption('catalogscope', $entity->getCode());
+            $this->onChannelRemoved($entity);
         }
 
         if ($entity instanceof Category && $entity->isRoot()) {
-            $this->removeOption('defaulttree', $entity->getCode());
+            $this->onTreeRemoved($entity);
         }
     }
 
@@ -128,15 +126,8 @@ class UserPreferencesListener implements EventSubscriber
      */
     protected function preUpdate($entity)
     {
-        if ($entity instanceof Locale) {
-            $changeset = $this->uow->getEntityChangeSet($entity);
-            if (isset($changeset['activated'])) {
-                if ($changeset['activated'][1]) {
-                    $this->addOptionValue('cataloglocale', $entity->getCode());
-                } else {
-                    $this->removeOption('cataloglocale', $entity->getCode());
-                }
-            }
+        if ($entity instanceof Locale && !$entity->isActivated()) {
+            $this->deactivatedLocales[] = $entity->getCode();
         }
     }
 
@@ -167,93 +158,91 @@ class UserPreferencesListener implements EventSubscriber
     }
 
     /**
-     * Add a value as user attribute option for new locale, scope (=channel) or tree (=category)
+     * Update catalog scope of users using a channel that will be removed
      *
-     * @param string $attributeCode
-     * @param string $optionValue
-     */
-    protected function addOptionValue($attributeCode, $optionValue)
-    {
-        $userManager = $this->container->get('oro_user.manager');
-        $attribute = $userManager->getFlexibleRepository()->findAttributeByCode($attributeCode);
-        if ($attribute) {
-            $option = $userManager->createAttributeOption();
-            $value  = $userManager->createAttributeOptionValue()->setValue($optionValue);
-            $option->addOptionValue($value);
-            $attribute->addOption($option);
-            $this->computeChangeset($option);
-            $this->computeChangeset($value);
-        }
-    }
-
-    /**
-     * Remove a value as user attribute option for removed locale, scope (=channel) or tree (=category)
-     *
-     * @param string $attributeCode
-     * @param string $value
+     * @param Channel $channel
      *
      * @return null
      */
-    protected function removeOption($attributeCode, $value)
+    protected function onChannelRemoved(Channel $channel)
     {
-        $flexRepository = $this->container->get('oro_user.manager')->getFlexibleRepository();
-        $attribute = $flexRepository->findAttributeByCode($attributeCode);
+        $users  = $this->findUsersBy(array('field_catalogScope' => $channel));
+        $scopes = $this->container->get('pim_catalog.manager.channel')->getChannels();
 
-        if ($attribute) {
-            $removedOption = $attribute->getOptions()->filter(
-                function ($option) use ($value) {
-                    return $option->getOptionValue()->getValue() == $value;
+        $defaultScope = current(
+            array_filter(
+                $scopes,
+                function ($scope) use ($channel) {
+                    return $scope->getCode() !== $channel->getCode();
                 }
-            )->first();
-
-            if (!$removedOption) {
-                return;
-            }
-
-            $defaultOption = $attribute->getOptions()->filter(
-                function ($option) use ($removedOption) {
-                    return $option !== $removedOption;
-                }
-            )->first();
-
-            if (!$defaultOption) {
-                throw new LastAttributeOptionDeletedException(
-                    sprintf('Tried to delete last %s attribute option', $attributeCode)
-                );
-            }
-
-            $this->updateUserPreferences($attributeCode, $removedOption, $defaultOption);
-
-            $attribute->removeOption($removedOption);
-            $this->uow->scheduleForDelete($removedOption);
-        }
-    }
-
-    /**
-     * Sets user preferences to a new option if the previously selected option is deleted
-     *
-     * @param string          $attributeCode
-     * @param AttributeOption $removedOption
-     * @param AttributeOption $newOption
-     *
-     * @return null
-     */
-    protected function updateUserPreferences($attributeCode, AttributeOption $removedOption, AttributeOption $newOption)
-    {
-        $flexRepository = $this->container->get('oro_user.manager')->getFlexibleRepository();
-
-        $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
-        $flexRepository->applyFilterByAttribute(
-            $usersQB,
-            $attributeCode,
-            array($removedOption->getId()), // $removedOption->getValue()->getId()
-            'IN'
+            )
         );
-        $users = $usersQB->getQuery()->getResult();
+
         foreach ($users as $user) {
-            $value = $user->getValue($attributeCode);
-            $value->setData($newOption);
-            $this->computeChangeset($value);
+            $user->setCatalogScope($defaultScope);
+            $this->computeChangeset($user);
         }
+    }
+
+    /**
+     * Update default tree of users using a tree that will be removed
+     *
+     * @param Category $category
+     *
+     * @return null
+     */
+    protected function onTreeRemoved(Category $category)
+    {
+        $users = $this->findUsersBy(array('field_defaultTree' => $category));
+        $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
+
+        $defaultTree = current(
+            array_filter(
+                $trees,
+                function ($tree) use ($category) {
+                    return $tree->getCode() !== $category->getCode();
+                }
+            )
+        );
+
+        foreach ($users as $user) {
+            $user->setDefaultTree($defaultTree);
+            $this->computeChangeset($user);
+        }
+    }
+
+    /**
+     * Update catalog locale of users using a deactivated locale
+     */
+    protected function onLocalesDeactivated()
+    {
+        $localeManager = $this->container->get('pim_catalog.manager.locale');
+        $activeLocales = $localeManager->getActiveLocales();
+        $defaultLocale = current($activeLocales);
+
+        foreach ($this->deactivatedLocales as $localeCode) {
+            $deactivatedLocale = $localeManager->getLocaleByCode($localeCode);
+            $users = $this->findUsersBy(array('field_catalogLocale' => $deactivatedLocale));
+
+            foreach ($users as $user) {
+                $user->setCatalogLocale($defaultLocale);
+                $this->manager->persist($user);
+            }
+        }
+        $this->deactivatedLocales = array();
+
+        $this->manager->flush();
+    }
+
+    /**
+     * Return users matching the specified criteria
+     *
+     * @param array $criteria
+     *
+     * @return array
+     */
+    protected function findUsersBy(array $criteria)
+    {
+        return $this->container->get('oro_user.manager')->getRepository()->findBy($criteria);
     }
 }
