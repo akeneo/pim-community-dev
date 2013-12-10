@@ -14,14 +14,13 @@ Oro\Bundle\UserBundle\Entity\User:
                 email:
                     available_in_template: false
                 extend:
-                    owner: Custom
-                    is_extend: false
-                    extend: true
-                    is_deleted: 0
-                    is_inverse: 0
+                    owner:         Custom
+                    is_extend:     false
+                    extend:        true
+                    is_deleted:    false
+                    is_inverse:    false
                     target_entity: Pim\Bundle\CatalogBundle\Entity\Locale
-                    target_field: code
-                    relation_key: manyToOne|Oro\Bundle\UserBundle\Entity\User|Pim\Bundle\CatalogBundle\Entity\Locale|catalogLocale
+                    target_field:  code
         catalogScope:
             type: manyToOne
             configs:
@@ -36,14 +35,13 @@ Oro\Bundle\UserBundle\Entity\User:
                 email:
                     available_in_template: false
                 extend:
-                    owner: Custom
-                    is_extend: false
-                    extend: true
-                    is_deleted: 0
-                    is_inverse: 0
+                    owner:         Custom
+                    is_extend:     false
+                    extend:        true
+                    is_deleted:    false
+                    is_inverse:    false
                     target_entity: Pim\Bundle\CatalogBundle\Entity\Channel
-                    target_field: code
-                    relation_key: manyToOne|Oro\Bundle\UserBundle\Entity\User|Pim\Bundle\CatalogBundle\Entity\Channel|catalogScope
+                    target_field:  code
         defaultTree:
             type: manyToOne
             configs:
@@ -58,11 +56,10 @@ Oro\Bundle\UserBundle\Entity\User:
                 email:
                     available_in_template: false
                 extend:
-                    owner: Custom
-                    is_extend: false
-                    extend: true
-                    is_deleted: 0
-                    is_inverse: 0
+                    owner:         Custom
+                    is_extend:     false
+                    extend:        true
+                    is_deleted:    false
+                    is_inverse:    false
                     target_entity: Pim\Bundle\CatalogBundle\Entity\Category
-                    target_field: code
-                    relation_key: manyToOne|Oro\Bundle\UserBundle\Entity\User|Pim\Bundle\CatalogBundle\Entity\Category|defaultTree
+                    target_field:  code
