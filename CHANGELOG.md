@@ -18,12 +18,14 @@
 - Metric values can now be imported through two distinct columns ([examples](https://github.com/akeneo/pim-community-dev/blob/42371c0d6c70801a4a23a7aa8cf87e18f417c4a8/features/import/import_products.feature#L170-L198))
 - Ajaxify the completeness tab of product edit form
 - Change the channel switcher and collapse/expand modes on product edit view
+- Add a loading mask when loading quick creation form
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
+- Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

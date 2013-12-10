@@ -652,7 +652,7 @@ class ProductController extends AbstractDoctrineController
 
         if (!$product) {
             throw $this->createNotFoundException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
 

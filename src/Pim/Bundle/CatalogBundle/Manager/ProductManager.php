@@ -279,7 +279,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProduct()
     {
-        $product =  parent::createFlexible();
+        $product = $this->createFlexible();
 
         return $product;
     }
@@ -291,7 +291,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProductValue()
     {
-        return parent::createFlexibleValue();
+        return $this->createFlexibleValue();
     }
 
     /**

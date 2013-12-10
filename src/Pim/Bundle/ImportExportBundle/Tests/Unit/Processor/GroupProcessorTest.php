@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Model\Group;
-use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\ImportExportBundle\Processor\GroupProcessor;
 
 /**

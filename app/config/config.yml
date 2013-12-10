@@ -79,9 +79,9 @@ doctrine:
 doctrine_mongodb:
     connections:
         default:
-#            server: "%mongodb_server%"
+            server: "%mongodb_server%"
             server: ~
-#    default_database: "%mongodb_database%"
+    default_database: "%mongodb_database%"
     default_database: ~
     document_managers:
         default:
@@ -142,6 +142,10 @@ lexik_maintenance:
         class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
         options:
             file_path:        %kernel.root_dir%/cache/lock
+
+pim_catalog:
+#    storage_driver: 'doctrine/mongodb-odm'
+    storage_driver: 'doctrine/orm'
 
 oro_batch:
     enable_mail_notification: true

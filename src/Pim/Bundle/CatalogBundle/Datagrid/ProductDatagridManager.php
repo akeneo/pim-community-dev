@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
@@ -23,9 +19,13 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+use Pim\Bundle\GridBundle\Property\FlexibleTwigTemplateProperty;
 
 /**
  * Grid manager
@@ -180,6 +180,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ),
             new UrlProperty('delete_link', $this->router, 'pim_catalog_product_remove', array('id')),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createFlexibleField(AbstractAttribute $attribute, array $options = array())
+    {
+        $field = parent::createFlexibleField($attribute, $options);
+
+        if ($attribute->getBackendType() === 'metric') {
+            $field->setProperty(
+                new FlexibleTwigTemplateProperty($field, 'PimGridBundle:Rendering:_metricField.html.twig')
+            );
+        }
+
+        return $field;
     }
 
     /**
@@ -416,7 +432,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function createGroupField()
     {
         $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Model\Group')->getChoices();
+        $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->getChoices();
 
         $field = new FieldDescription();
         $field->setName('pGroup');

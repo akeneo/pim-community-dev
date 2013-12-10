@@ -73,8 +73,8 @@ pim_import_export:
             label: Groups column
             help: Name of the groups column
         realTimeVersioning:
-            label: Real time versioning?
-            help: Is the product history directly updated
+            label: Real time history update ?
+            help: Means that the product history is automatically updated, can be switched off to improve performances
         circularRefsChecked:
             label: Check circular references
             help: If yes, data will be processed to make sure that there are no circular references between the categories

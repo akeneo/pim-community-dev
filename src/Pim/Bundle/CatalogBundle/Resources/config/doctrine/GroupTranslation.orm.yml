@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\GroupTranslation:
+Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     type: entity
     table: pim_catalog_group_translation
     uniqueConstraints:
@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Model\GroupTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Group
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             inversedBy: translations
             joinColumns:
                 foreign_key:

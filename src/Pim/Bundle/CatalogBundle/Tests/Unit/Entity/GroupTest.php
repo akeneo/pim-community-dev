@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\Group;
-use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -192,7 +192,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($this->group->addTranslation($newTranslation));
         $this->assertCount(1, $this->group->getTranslations());
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Model\GroupTranslation',
+            'Pim\Bundle\CatalogBundle\Entity\GroupTranslation',
             $this->group->getTranslations()->first()
         );
 
@@ -206,10 +206,10 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert entity
      *
-     * @param Pim\Bundle\CatalogBundle\Model\Group $entity
+     * @param Group $entity
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Group', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Group', $entity);
     }
 }
