@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
@@ -374,7 +374,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Group
+     * @return Group
      */
     protected function createGroup($code)
     {

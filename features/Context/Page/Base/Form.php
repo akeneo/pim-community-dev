@@ -248,11 +248,6 @@ class Form extends Base
                     $field->selectOption($value);
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
-                    try {
-                        $field->focus();
-                        $field->setValue('');
-                    } catch (UnsupportedDriverActionException $e) {
-                    }
                     if ($field->getTagName() === 'select') {
                         $field->selectOption($value);
                     } else {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a group entity into a flat array
