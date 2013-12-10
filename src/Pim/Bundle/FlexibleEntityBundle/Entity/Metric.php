@@ -209,6 +209,16 @@ class Metric
         return $this;
     }
 
+    public function getDataAsString()
+    {
+        if ($this->data === null) {
+            return '';
+        }
+
+        return rtrim(rtrim(sprintf('%f', $this->data), '0'), '.');
+    }
+
+
     /**
      * To string
      *
@@ -216,6 +226,14 @@ class Metric
      */
     public function __toString()
     {
-        return ($this->data !== null) ? ($this->data.' '.$this->unit) : '';
+        if ($this->data === null) {
+            return '';
+        }
+
+        return sprintf(
+            '%s %s',
+            rtrim(rtrim(sprintf('%f', $this->data), '0'), '.'),
+            $this->unit
+        );
     }
 }

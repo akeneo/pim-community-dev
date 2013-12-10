@@ -51,25 +51,25 @@ Feature: Export products
     And I wait for the job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;name-en_US;name-en_GB;name-fr_FR;name-de_DE;description-en_US-ecommerce;description-en_GB-ecommerce;description-fr_FR-ecommerce;description-de_DE-ecommerce;price;size;color;manufacturer;country_of_manufacture;material;categories;enabled;family;groups;additional_colors;cost;customer_rating-ecommerce;customs_tax-de_DE;handmade;image;number_in_stock-ecommerce;release_date-ecommerce;thumbnail;washing_temperature;weight
-    tshirt-white;"White t-shirt";"White t-shirt";"T-shirt blanc";"Weißes T-Shirt";"A stylish white t-shirt";"An elegant white t-shirt";"Un T-shirt blanc élégant";"Ein elegantes weißes T-Shirt";"10.00 EUR,9.00 GBP,15.00 USD";size_M;white;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
-    tshirt-black;"Black t-shirt";"Black t-shirt";"T-shirt noir";"Schwarzes T-Shirt";"A stylish black t-shirt";"An elegant black t-shirt";"Un T-shirt noir élégant";"Ein elegantes schwarzes T-Shirt";"10.00 EUR,9.00 GBP,15.00 USD";size_L;black;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
+    sku;family;groups;categories;additional_colors;color;cost;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price;release_date-ecommerce;size;thumbnail;washing_temperature;weight;enabled
+    tshirt-white;tshirts;;2013_collection,2014_collection,2015_collection;;white;;usa;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;;;1
+    tshirt-black;tshirts;;2013_collection,2014_collection,2015_collection;;black;;usa;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;"10.00 EUR,9.00 GBP,15.00 USD";;size_L;;;;1
     """
     When I am on the "tablet_product_export" export job page
     And I launch the export job
     And I wait for the job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;name-en_US;name-en_GB;description-en_US-tablet;description-en_GB-tablet;price;size;color;manufacturer;country_of_manufacture;material;categories;enabled;family;groups;additional_colors;cost;customer_rating-tablet;handmade;image;number_in_stock-tablet;release_date-tablet;thumbnail;washing_temperature;weight
-    tshirt-white;"White t-shirt";"White t-shirt";;;"10.00 EUR,9.00 GBP,15.00 USD";size_M;white;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;
-    tshirt-black;"Black t-shirt";"Black t-shirt";;;"10.00 EUR,9.00 GBP,15.00 USD";size_L;black;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;
+    sku;family;groups;categories;additional_colors;color;cost;country_of_manufacture;customer_rating-tablet;description-en_GB-tablet;description-en_US-tablet;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price;release_date-tablet;size;thumbnail;washing_temperature;weight;enabled
+    tshirt-white;tshirts;;2013_collection,2014_collection,2015_collection;;white;;usa;;;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;;;1
+    tshirt-black;tshirts;;2013_collection,2014_collection,2015_collection;;black;;usa;;;;;;;;american_apparel;cotton;"Black t-shirt";"Black t-shirt";;"10.00 EUR,9.00 GBP,15.00 USD";;size_L;;;;1
     """
     When I am on the "print_product_export" export job page
     And I launch the export job
     And I wait for the job to finish
     Then exported file of "print_product_export" should contain:
     """
-    sku;name-en_US;name-de_DE;description-en_US-print;description-de_DE-print;price;size;color;manufacturer;country_of_manufacture;material;categories;enabled;family;groups;additional_colors;cost;customer_rating-print;customs_tax-de_DE;handmade;image;number_in_stock-print;release_date-print;thumbnail;washing_temperature;weight
-    tshirt-white;"White t-shirt";"Weißes T-Shirt";"A really stylish white t-shirt";"Ein sehr elegantes weißes T-Shirt";"10.00 EUR,9.00 GBP,15.00 USD";size_M;white;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
-    tshirt-black;"Black t-shirt";"Schwarzes T-Shirt";"A really stylish black t-shirt";"Ein sehr elegantes schwarzes T-Shirt";"10.00 EUR,9.00 GBP,15.00 USD";size_L;black;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
+    sku;family;groups;categories;additional_colors;color;cost;country_of_manufacture;customer_rating-print;customs_tax-de_DE;description-de_DE-print;description-en_US-print;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price;release_date-print;size;thumbnail;washing_temperature;weight;enabled
+    tshirt-white;tshirts;;2013_collection,2014_collection,2015_collection;;white;;usa;;;"Ein sehr elegantes weißes T-Shirt";"A really stylish white t-shirt";;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;;;1
+    tshirt-black;tshirts;;2013_collection,2014_collection,2015_collection;;black;;usa;;;"Ein sehr elegantes schwarzes T-Shirt";"A really stylish black t-shirt";;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";;"10.00 EUR,9.00 GBP,15.00 USD";;size_L;;;;1
     """
