@@ -572,9 +572,10 @@ class ProductController extends AbstractDoctrineController
     {
         $dataLocale = $this->getRequest()->get('dataLocale');
         if ($dataLocale === null) {
-            return 'en_US';
-            // TODO : to fix
-            //$dataLocale = (string) $this->getUser()->getValue('cataloglocale');
+            $catalogLocale = $this->getUser()->getCatalogLocale();
+            if ($catalogLocale) {
+                $dataLocale = $catalogLocale->getCode();
+            }
         }
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
