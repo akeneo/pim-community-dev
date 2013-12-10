@@ -34,7 +34,8 @@ define(
                         multiple: false,
                         allowClear: false
                     },
-                    self = this;
+                    self = this,
+                    values = null;
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
                 }
@@ -43,14 +44,20 @@ define(
                     options.placeholder = " ";
                 }
                 if ("0" === $select.attr('data-min-input-length')) {
+                    
                     options.query = function(query) {
-                        $.get(
-                            $select.attr('data-url'), 
-                            self.getAjaxParameters($select),
-                            function(data) {
-                                query.callback(self.getSelectOptions(data, options));
-                            }
-                        );
+                        if (null === values) {
+                            $.get(
+                                $select.attr('data-url'), 
+                                self.getAjaxParameters($select),
+                                function(data) {
+                                    values = self.getSelectOptions(data, options);
+                                    query.callback(values);
+                                }
+                            );
+                        } else {
+                            query.callback(values)
+                        }
                     };
                 } else {
                     options.minimumInputLength = $select.attr('data-min-input-length');
