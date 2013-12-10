@@ -144,7 +144,7 @@ class CompletenessManager
         }
         $requirements = $this->doctrine
             ->getRepository(get_class($family))
-            ->getFullRequirementsQB($family, $locale)
+            ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
             ->getResult();
 
