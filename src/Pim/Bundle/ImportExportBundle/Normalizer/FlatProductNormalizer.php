@@ -172,6 +172,10 @@ class FlatProductNormalizer implements NormalizerInterface
                     $value->getAttribute()->isDecimalsAllowed() ? $data->getData() : (int) $data->getData(),
                 sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
             );
+        } elseif (is_numeric($data)) {
+            $data = $value->getAttribute()->isDecimalsAllowed() ? $data : (int) $data;
+
+            return array($this->getFieldValue($value) => $data);
         }
 
         return array($this->getFieldValue($value) => (string) $data);
