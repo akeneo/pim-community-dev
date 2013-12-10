@@ -329,28 +329,6 @@ class ProductController extends AbstractDoctrineController
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
 
-        $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
-
-        $productGrid = $this->datagridHelper->getDatagridManager('association_product');
-        $productGrid->setProduct($product);
-
-        $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
-        $groupGrid->setProduct($product);
-
-        $association = null;
-        if (!empty($associations)) {
-            $association = reset($associations);
-            $productGrid->setAssociationId($association->getId());
-            $groupGrid->setAssociationId($association->getId());
-        }
-
-        $routeParameters = array('id' => $product->getId());
-        $productGrid->getRouteGenerator()->setRouteParameters($routeParameters);
-        $groupGrid->getRouteGenerator()->setRouteParameters($routeParameters);
-
-        $productGridView = $productGrid->getDatagrid()->createView();
-        $groupGridView   = $groupGrid->getDatagrid()->createView();
-
         return array(
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
@@ -362,9 +340,6 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'associations'           => $associations,
-            'associationProductGrid' => $productGridView,
-            'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
         );
     }
@@ -503,50 +478,6 @@ class ProductController extends AbstractDoctrineController
         $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
-    }
-
-    /**
-     * List product associations for the provided product
-     *
-     * @param Request $request The request object
-     * @param integer $id      Product id
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_product_associations_view")
-     * @return Response
-     */
-    public function listProductAssociationsAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_product');
-        $datagridManager->setProduct($product);
-
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-    }
-
-    /**
-     * List group associations for the provided product
-     *
-     * @param Request $request The request object
-     * @param integer $id      Product id
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_product_associations_view")
-     * @return Response
-     */
-    public function listGroupAssociationsAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_group');
-        $datagridManager->setProduct($product);
-
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**
