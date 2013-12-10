@@ -69,7 +69,7 @@ pim_catalog_product_completeness:
     path: /{id}/completeness
     defaults: { _controller: pim_catalog.controller.completeness:completenessAction }
     requirements:
-        id: \d+
+        id: "[0-9a-f]+"
 
 pim_catalog_product_configure_mass_edit_action:
     path: /batch
@@ -81,5 +81,5 @@ pim_catalog_product_history:
     path: /{id}/history.{_format}
     defaults: { _controller: pim_catalog.controller.product:historyAction, _format: html }
     requirements:
-        id: \d+
+        id: "[0-9a-f]+"
         _format: html|json

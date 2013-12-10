@@ -120,4 +120,16 @@ class ProductRepository extends DocumentRepository
         // than the parent
         return $this->find($id);
     }
+
+    /**
+     * Returns a full product
+     *
+     * @param string $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
+    public function getFullProduct($id)
+    {
+        return $this->find($id);
+    }
 }

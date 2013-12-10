@@ -21,6 +21,9 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
         requiredCount:
             type: integer
             column: required_count
+        productId:
+            type: string
+            column: product_id
     manyToOne:
         locale:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
@@ -33,14 +36,6 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
             joinColumns:
                 channel_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-                    nullable: false
-        product:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-            inversedBy: completenesses
-            joinColumns:
-                product_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false

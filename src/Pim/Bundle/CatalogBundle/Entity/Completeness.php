@@ -49,6 +49,11 @@ class Completeness
     protected $requiredCount = 0;
 
     /**
+     * @var int|string
+     */
+    protected $productId;
+
+    /**
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected $product;
@@ -184,6 +189,30 @@ class Completeness
     }
 
     /**
+     * Get the associated product id
+     *
+     * @return int|string productId
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * Set the current product id
+     *
+     * @param int|string product id
+     *
+     * @return Completeness
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+
+        return $this;
+    }
+
+    /**
      * Getter product
      *
      * @return Product
@@ -202,6 +231,7 @@ class Completeness
      */
     public function setProduct(ProductInterface $product)
     {
+        $this->productId = $product->getId();
         $this->product = $product;
 
         return $this;
