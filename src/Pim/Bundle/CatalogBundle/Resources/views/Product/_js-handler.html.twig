@@ -32,6 +32,7 @@
                                     })(selectData);
                                 }
                                 $select.select2("data", selectData);
+                                 messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
                             } else {
                                 messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
                             }
