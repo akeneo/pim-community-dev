@@ -6,7 +6,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 
 /**
  * Tests related class
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -14,7 +14,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected $repository;
-    
+
     protected function setUp()
     {
         $this->repository = $this->getMock('Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface');
@@ -42,12 +42,13 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($object, $locale) {
                         $this->assertEquals('locale', $locale);
+
                         return '_' . $object->id . '_';
                     }
                 )
             );
     }
-    
+
     protected function createTransformer($multiple)
     {
         $options = array(
@@ -55,23 +56,24 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
             'multiple'      => $multiple,
             'locale'        => 'locale'
         );
+
         return new AjaxEntityTransformer($this->repository, $options);
     }
-    
+
     protected function createObject($id)
     {
-        $createObject = function($id) {
+        $createObject = function ($id) {
             if (null === $id) {
                 return null;
             }
 
             $object = new \stdClass;
-            $object->id = $id;        
+            $object->id = $id;
 
             return $object;
         };
-        
-        return is_array($id) 
+
+        return is_array($id)
             ? array_map($createObject, $id)
             : $createObject($id);
     }
@@ -94,7 +96,7 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = $this->createTransformer($multiple);
         $this->assertEquals($expected, $transformer->reverseTransform($data));
     }
-    
+
     public function getTransformData()
     {
         return array(
@@ -113,19 +115,19 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = $this->createTransformer($multiple);
         $this->assertEquals($expected, $transformer->transform($data));
     }
-    
+
     public function getGetOptionsData()
     {
         return array(
             'single'        => array(1, array('id' =>1, 'text' => '_1_'), false),
             'single_empty'  => array(null, null, false),
             'multiple'      => array(
-                array(1, 2, 3), 
+                array(1, 2, 3),
                 array(
                     array('id' => 1, 'text' => '_1_'),
                     array('id' => 2, 'text' => '_2_'),
                     array('id' => 3, 'text' => '_3_')
-                ), 
+                ),
                 true
             ),
         );
@@ -140,5 +142,5 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = $this->createTransformer($multiple);
         $result = $transformer->getOptions($data);
         $this->assertEquals($expected, $result);
-    }    
+    }
 }

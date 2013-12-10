@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Tests related class
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -30,7 +30,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'option2' => 'option2'
         )
     );
-    
+
     protected $transformerOptions = array(
         'class'                 => 'class',
         'multiple'              => 'multiple',
@@ -39,7 +39,6 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
         'option1' => 'value1',
         'option2' => 'option2'
     );
-
 
     protected function setUp()
     {
@@ -53,7 +52,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
                         foreach ($parameters as $key => $value) {
                             $route .= "&$key=$value";
                         }
-                        
+
                         return $route;
                     }
                 )
@@ -72,7 +71,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($transformerOptions) {
                         $this->assertEquals($this->transformerOptions, $transformerOptions);
-                        
+
                         return $this->transformer;
                     }
                 )
@@ -89,7 +88,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('locale'));
         $this->type = new AjaxEntityType($this->router, $this->transformerFactory, $this->localeManager);
     }
-    
+
     public function testBuildForm()
     {
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
@@ -100,7 +99,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($this->transformer));
         $this->type->buildForm($builder, $this->options);
     }
-    
+
     public function getSetDefaultOptionsData()
     {
         return array(

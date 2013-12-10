@@ -14,7 +14,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
  * Ajax entity type
- * 
+ *
  * Defined options are :
  *   - multiple:                True for multiple fields
  *   - transformer_options:     Extra options which should be passed to the transformer
