@@ -44,16 +44,23 @@ pim_catalog_product_listcategories:
         category_id: \d+
         _format: json
 
+pim_catalog_product_associations:
+    path: /{id}/associations
+    defaults: { _controller: pim_catalog.controller.product_associations:associationsAction }
+    requirements:
+        id: \d+
+
+
 pim_catalog_product_list_product_associations:
     path: /{id}/list-product-associations.{_format}
-    defaults: { _controller: pim_catalog.controller.product:listProductAssociationsAction, _format: json }
+    defaults: { _controller: pim_catalog.controller.product_associations:listProductAssociationsAction, _format: json }
     requirements:
         id: \d+
         _format: json
 
 pim_catalog_product_list_group_associations:
     path: /{id}/list-group-associations.{_format}
-    defaults: { _controller: pim_catalog.controller.product:listGroupAssociationsAction, _format: json }
+    defaults: { _controller: pim_catalog.controller.product_associations:listGroupAssociationsAction, _format: json }
     requirements:
         id: \d+
         _format: json
