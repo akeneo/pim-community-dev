@@ -184,20 +184,33 @@
                     });
                 }
 
-                $('.copy').click(function(event) {
+                $('.copy-selection').click(function(event) {
                     event.preventDefault();
                     switch($(this).data('target')) {
                         case 'all':
-                            $('.comparison tr').each(function() {
-                                $('td:nth-child(2)', this).each(copyValue);
+                            $('.comparison input.comparisonSelection:not(:checked)').each(function() {
+                                $(this).prop('checked', true);
                             });
                             break;
 
-                        case 'selected':
+                        case 'current-tab':
+                            $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
+                                $(this).prop('checked', true);
+                            });
+                            break;
+
+                        case 'none':
                             $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).parent().parent().find('.controls').each(copyValue);
+                                $(this).prop('checked', false);
                             });
                     }
+                });
+
+                $('a#copy-selection').click(function(event) {
+                    event.preventDefault();
+                    $('.comparison input.comparisonSelection:checked').each(function() {
+                        $(this).parent().parent().find('.controls').each(copyValue);
+                    });
                 });
             });
         }

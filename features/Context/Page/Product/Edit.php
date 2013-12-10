@@ -30,15 +30,16 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Locales dropdown'    => array('css' => '#locale-switcher'),
-                'Locales selector'    => array('css' => '#pim_product_locales'),
-                'Enable switcher'     => array('css' => '#switch_status'),
-                'Image preview'       => array('css' => '#lbImage'),
-                'Completeness'        => array('css' => 'div#completeness'),
-                'Category pane'       => array('css' => '#categories'),
-                'Category tree'       => array('css' => '#trees'),
-                'Comparison dropdown' => array('css' => '#comparison-switcher'),
-                'Copy dropdown'       => array('css' => '#copy-switcher'),
+                'Locales dropdown'        => array('css' => '#locale-switcher'),
+                'Locales selector'        => array('css' => '#pim_product_locales'),
+                'Enable switcher'         => array('css' => '#switch_status'),
+                'Image preview'           => array('css' => '#lbImage'),
+                'Completeness'            => array('css' => 'div#completeness'),
+                'Category pane'           => array('css' => '#categories'),
+                'Category tree'           => array('css' => '#trees'),
+                'Comparison dropdown'     => array('css' => '#comparison-switcher'),
+                'Copy selection dropdown' => array('css' => '#copy-selection-switcher'),
+                'Copy translations link'  => array('css' => 'a#copy-selection'),
             )
         );
     }
@@ -432,24 +433,44 @@ class Edit extends Form
         )->click();
     }
 
-    public function copyTranslations($mode)
+    /**
+     * Automatically select translations given the specified mode
+     *
+     * @param string $mode
+     */
+    public function autoSelectTranslations($mode)
     {
         $this
-            ->getElement('Copy dropdown')
-            ->find('css', 'button:contains("Copy")')
+            ->getElement('Copy selection dropdown')
+            ->find('css', 'button:contains("Select")')
             ->click();
 
-        $this
-            ->getElement('Copy dropdown')
-            ->find('css', sprintf('a:contains("%s")', $mode))
-            ->click();
+        $selector = $this
+            ->getElement('Copy selection dropdown')
+            ->find('css', sprintf('a:contains("%s")', $mode));
+
+        if (!$selector) {
+            throw new \InvalidArgumentException(sprintf('Translation copy mode "%s" not found', $mode));
+        }
+
+        $selector->click();
     }
 
-    public function selectTranslation($field)
+    /**
+     * Manually select translation given the specified field label
+     *
+     * @param string $field
+     */
+    public function manualSelectTranslation($field)
     {
         $this
             ->find('css', sprintf('tr:contains("%s") .comparisonSelection', $field))
             ->check();
+    }
+
+    public function copySelectedTranslations()
+    {
+        $this->getElement('Copy translations link')->click();
     }
 
     /**
