@@ -216,6 +216,14 @@ class Metric
      */
     public function __toString()
     {
-        return ($this->data !== null) ? ($this->data.' '.$this->unit) : '';
+        if ($this->data === null) {
+            return '';
+        }
+
+        return sprintf(
+            '%s %s',
+            rtrim(rtrim(sprintf('%f', $this->data), '0'), '.'),
+            $this->unit
+        );
     }
 }
