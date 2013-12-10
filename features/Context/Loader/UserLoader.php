@@ -3,6 +3,7 @@
 namespace Context\Loader;
 
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -77,13 +78,23 @@ class UserLoader extends LoadUserData
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
+        $unit = $this
+            ->userManager
+            ->getStorageManager()
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
         $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)
-            ->setApi($api);
+            ->setApi($api)
+            ->setOwner($unit)
+            ->setBusinessUnits(
+                new ArrayCollection(array($unit))
+            );
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));
