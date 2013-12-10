@@ -4,8 +4,8 @@ define(
         'use strict';
 
         return _.extend({
-            init: function () {
-                var $form = $('form'), self = this;
+            init: function ($target) {
+                var $form = $target.find('form'), self = this;
                 $form.find('input.multiselect').each(function () {
                     var $el   = $(this),
                         value = _.map(_.compact($el.val().split(',')), $.trim),
@@ -14,7 +14,7 @@ define(
                     $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
                 });
 
-                $('select').each(function () {
+                $target.find('select').each(function () {
                     var $el    = $(this),
                         $empty = $el.children('[value=""]');
                     if ($empty.length && $empty.html()) {
@@ -25,7 +25,7 @@ define(
 
                 $form.find('select[data-placeholder]').select2({ allowClear: true });
                 $form.find('select:not(.select2-offscreen)').select2();
-                $form.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
+                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
                     self.initSelect.call(self, $(this));
                 });
             },

@@ -21,7 +21,7 @@ define(
                 });
 
                 // Apply Select2
-                initSelect2.init();
+                initSelect2.init($("body"));
 
                 // Apply bootstrapSwitch
                 $('.switch:not(.has-switch)').bootstrapSwitch();
