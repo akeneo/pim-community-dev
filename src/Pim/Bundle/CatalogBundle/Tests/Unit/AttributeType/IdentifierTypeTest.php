@@ -24,4 +24,20 @@ class IdentifierTypeTest extends AttributeTypeTestCase
     {
         return new IdentifierType($this->backendType, $this->formType, $this->guesser);
     }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            9,
+            $attFormType
+        );
+    }
 }

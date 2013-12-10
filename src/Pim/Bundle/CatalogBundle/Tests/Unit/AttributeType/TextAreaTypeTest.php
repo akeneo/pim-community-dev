@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\AttributeType\TextType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\TextAreaType;
 
 /**
  * Test related class
@@ -12,17 +12,33 @@ use Pim\Bundle\CatalogBundle\AttributeType\TextType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextTypeTest extends AttributeTypeTestCase
+class TextAreaTypeTest extends AttributeTypeTestCase
 {
-    protected $name = 'pim_catalog_text';
-    protected $backendType = AbstractAttributeType::BACKEND_TYPE_VARCHAR;
-    protected $formType = 'text';
+    protected $name = 'pim_catalog_textarea';
+    protected $backendType = AbstractAttributeType::BACKEND_TYPE_TEXT;
+    protected $formType = 'textarea';
 
     /**
      * {@inheritdoc}
      */
     protected function createAttributeType()
     {
-        return new TextType($this->backendType, $this->formType, $this->guesser);
+        return new TextAreaType($this->backendType, $this->formType, $this->guesser);
+    }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            8,
+            $attFormType
+        );
     }
 }

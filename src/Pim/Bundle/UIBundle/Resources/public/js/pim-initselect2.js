@@ -2,7 +2,6 @@ define(
     ['jquery', 'underscore', 'jquery.select2'],
     function ($, _) {
         'use strict';
-
         return _.extend({
             init: function ($target) {
                 var $form = $target.find('form'), self = this;

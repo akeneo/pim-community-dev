@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NoResultException;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -192,7 +192,7 @@ class ProductManager extends FlexibleManager
             'LEFT JOIN v.prices pr ' .
             'WHERE p.id=:id'
         )
-            ->setParameter('attributes', $attributes)
+            ->setParameter('attributes', array_values($attributes))
             ->setParameter('id', $id)
             ->getSingleResult();
     }
@@ -279,7 +279,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProduct()
     {
-        $product =  parent::createFlexible();
+        $product = $this->createFlexible();
 
         return $product;
     }
@@ -291,7 +291,7 @@ class ProductManager extends FlexibleManager
      */
     public function createProductValue()
     {
-        return parent::createFlexibleValue();
+        return $this->createFlexibleValue();
     }
 
     /**
@@ -301,8 +301,23 @@ class ProductManager extends FlexibleManager
     {
         foreach ($product->getValues() as $value) {
             if ($media = $value->getMedia()) {
-                $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
-                $this->mediaManager->handle($media, $filenamePrefix);
+                if ($id = $media->getCopyFrom()) {
+                    $source = $this
+                        ->storageManager
+                        ->getRepository('Pim\Bundle\CatalogBundle\Model\Media')
+                        ->find($id);
+
+                    if (!$source) {
+                        throw new \Exception(
+                            sprintf('Could not find media with id %d', $id)
+                        );
+                    }
+
+                    $this->mediaManager->duplicate($source, $media, $this->generateFilenamePrefix($product, $value));
+                } else {
+                    $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
+                    $this->mediaManager->handle($media, $filenamePrefix);
+                }
             }
         }
     }

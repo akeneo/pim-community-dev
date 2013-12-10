@@ -5,8 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 /**
  * Ensure that all attribute requirements are displayed for a family
@@ -17,17 +21,17 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var Channel[]
+     */
     protected $channels;
-    protected $attributes;
 
     /**
-     * @param array|ArrayCollection $channels
-     * @param array|ArrayCollection $attributes
+     * @param ChannelManager $channelManager
      */
-    public function __construct($channels, $attributes)
+    public function __construct(ChannelManager $channelManager)
     {
-        $this->channels   = $channels;
-        $this->attributes = $attributes;
+        $this->channels = $channelManager->getChannels();
     }
 
     /**
@@ -56,12 +60,9 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 
         $requirements = array();
 
-        foreach ($this->attributes as $attribute) {
+        foreach ($family->getAttributes() as $attribute) {
             foreach ($this->channels as $channel) {
-                $requirement = new AttributeRequirement();
-                $requirement->setChannel($channel);
-                $requirement->setAttribute($attribute);
-                $requirement->setFamily($family);
+                $requirement = $this->createAttributeRequirement($channel, $attribute, $family);
 
                 $key = $family->getAttributeRequirementKeyFor(
                     $attribute->getCode(),
@@ -74,6 +75,25 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
         $requirements = array_merge($requirements, $family->getAttributeRequirements());
 
         $family->setAttributeRequirements($requirements);
+    }
+
+    /**
+     * Create attribute requirement entity
+     *
+     * @param Channel          $channel
+     * @param ProductAttribute $attribute
+     * @param Family           $family
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     */
+    protected function createAttributeRequirement(Channel $channel, ProductAttribute $attribute, Family $family)
+    {
+        $requirement = new AttributeRequirement();
+        $requirement->setChannel($channel);
+        $requirement->setAttribute($attribute);
+        $requirement->setFamily($family);
+
+        return $requirement;
     }
 
     /**

@@ -2,14 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-
-use Pim\Bundle\CatalogBundle\Entity\Product;
-
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
-
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**

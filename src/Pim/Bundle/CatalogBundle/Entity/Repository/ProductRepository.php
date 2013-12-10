@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
@@ -166,5 +166,29 @@ class ProductRepository extends FlexibleEntityRepository
             ->setParameter('channel', $channel->getId())
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * Returns a full product with all relations
+     *
+     * @param int $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
+    public function getFullProduct($id)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->select('p, f, v, pr, m, o, os')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.prices', 'pr')
+            ->leftJoin('v.media', 'm')
+            ->leftJoin('v.option', 'o')
+            ->leftJoin('v.options', 'os')
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

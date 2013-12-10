@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -52,7 +51,11 @@ class CategoryProcessor extends AbstractEntityProcessor
     {
         return array(
             'circularRefsChecked' => array(
-                'type' => 'switch',
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.circularRefsChecked.label',
+                    'help'  => 'pim_import_export.import.circularRefsChecked.help'
+                )
             ),
         );
     }
@@ -117,7 +120,7 @@ class CategoryProcessor extends AbstractEntityProcessor
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
 
         } else {
             $this->entities[] = $category;

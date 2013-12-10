@@ -27,7 +27,6 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -35,7 +34,6 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\CatalogBundle\Helper\CompletenessHelper;
 
 /**
  * Product Controller
@@ -77,11 +75,6 @@ class ProductController extends AbstractDoctrineController
     private $securityFacade;
 
     /**
-     * @var CompletenessHelper
-     */
-    private $completenessHelper;
-
-    /**
      * @staticvar int
      */
     const BATCH_SIZE = 250;
@@ -103,7 +96,6 @@ class ProductController extends AbstractDoctrineController
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
      * @param SecurityFacade           $securityFacade
-     * @param CompletenessHelper       $completenessHelper
      */
     public function __construct(
         Request $request,
@@ -119,8 +111,7 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade,
-        CompletenessHelper $completenessHelper
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -139,7 +130,6 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
-        $this->completenessHelper   = $completenessHelper;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -325,6 +315,9 @@ class ProductController extends AbstractDoctrineController
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+                if ($comparisonLocale = $this->getComparisonLocale()) {
+                    $params['compareWith'] = $comparisonLocale;
+                }
 
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
@@ -337,29 +330,30 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
-        $associationProductGridManager = $this->datagridHelper->getDatagridManager('association_product');
-        $associationProductGridManager->setProduct($product);
+        $productGrid = $this->datagridHelper->getDatagridManager('association_product');
+        $productGrid->setProduct($product);
 
-        $associationGroupGridManager = $this->datagridHelper->getDatagridManager('association_group');
-        $associationGroupGridManager->setProduct($product);
+        $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
+        $groupGrid->setProduct($product);
 
         $association = null;
         if (!empty($associations)) {
             $association = reset($associations);
-            $associationProductGridManager->setAssociationId($association->getId());
-            $associationGroupGridManager->setAssociationId($association->getId());
+            $productGrid->setAssociationId($association->getId());
+            $groupGrid->setAssociationId($association->getId());
         }
 
         $routeParameters = array('id' => $product->getId());
-        $associationProductGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
-        $associationGroupGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+        $productGrid->getRouteGenerator()->setRouteParameters($routeParameters);
+        $groupGrid->getRouteGenerator()->setRouteParameters($routeParameters);
 
-        $associationProductGridView = $associationProductGridManager->getDatagrid()->createView();
-        $associationGroupGridView = $associationGroupGridManager->getDatagrid()->createView();
+        $productGridView = $productGrid->getDatagrid()->createView();
+        $groupGridView   = $groupGrid->getDatagrid()->createView();
 
         return array(
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
+            'comparisonLocale'       => $this->getComparisonLocale(),
             'channels'               => $channels,
             'attributesForm'         =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
@@ -367,12 +361,10 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
-            'associationProductGrid' => $associationProductGridView,
-            'associationGroupGrid'   => $associationGroupGridView,
+            'associationProductGrid' => $productGridView,
+            'associationGroupGrid'   => $groupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
-            'completenessHelper'     => $this->completenessHelper
         );
     }
 
@@ -382,7 +374,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -391,6 +383,14 @@ class ProductController extends AbstractDoctrineController
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        } else {
+            return $this->render(
+                'PimCatalogBundle:Product:_history.html.twig',
+                array(
+                    'product'           => $product,
+                    'historyDatagrid'   => $historyGridView
+                )
+            );
         }
     }
 
@@ -458,7 +458,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function removeProductAttributeAction($productId, $attributeId)
     {
-        $product   = $this->findOr404('PimCatalogBundle:Product', $productId);
+        $product   = $this->findOr404('Pim\Bundle\CatalogBundle\Model\Product', $productId);
         $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
 
         if ($product->isAttributeRemovable($attribute)) {
@@ -501,9 +501,7 @@ class ProductController extends AbstractDoctrineController
         }
         $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
-        $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
-
-        return array('trees' => $treesData);
+        return array('trees' => $trees, 'categories' => $categories);
     }
 
     /**
@@ -586,6 +584,18 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * @return string
+     */
+    protected function getComparisonLocale()
+    {
+        $locale = $this->getRequest()->query->get('compareWith');
+
+        if ($this->getDataLocale() !== $locale) {
+            return $locale;
+        }
+    }
+
+    /**
      * Get data currency code
      *
      * @throws \Exception
@@ -635,7 +645,7 @@ class ProductController extends AbstractDoctrineController
 
         if (!$product) {
             throw $this->createNotFoundException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
 
@@ -671,9 +681,10 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
-            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
-            'currentLocale' => $this->getDataLocale()
+            'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale'    => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
         );
     }
 

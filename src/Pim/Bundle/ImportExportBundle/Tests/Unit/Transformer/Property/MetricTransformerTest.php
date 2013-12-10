@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * Tests related class
@@ -20,21 +20,32 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
     public function testTransform()
     {
         $transformer = new MetricTransformer();
-        $this->assertEquals(null, $transformer->transform(''));
-        $this->assertEquals(null, $transformer->transform(' '));
+        $this->assertEquals(null, $transformer->transform('', array('family' => 'foo')));
+        $this->assertEquals(null, $transformer->transform(' ', array('family' => 'foo')));
         $m = new Metric();
         $m->setData(15.2);
         $m->setUnit('KILOGRAM');
-        $this->assertEquals($m, $transformer->transform('15.2 KILOGRAM'));
+        $m->setFamily('foo');
+        $this->assertEquals($m, $transformer->transform('15.2 KILOGRAM', array('family' => 'foo')));
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Missing required option "family"
+     */
+    public function testTransformWithoutFamily()
+    {
+        $transformer = new MetricTransformer();
+        $transformer->transform('15.2 KILOGRAM');
+    }
+
+    /**
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage Malformed metric: 15.2
      */
     public function testUnvalidTransform()
     {
         $transformer = new MetricTransformer();
-        $transformer->transform('15.2');
+        $transformer->transform('15.2', array('family' => 'foo'));
     }
 }

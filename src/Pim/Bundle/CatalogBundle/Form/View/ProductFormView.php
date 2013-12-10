@@ -18,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 class ProductFormView
 {
     /**
-     * @var array A list of the attribute types for which creating a new option is allowed
+     * A list of the attribute types for which creating a new option is allowed
+     *
+     * @var array
      */
     private $choiceAttributeTypes = array(
         'pim_catalog_multiselect',
@@ -93,11 +95,11 @@ class ProductFormView
     protected function getAttributeClasses(ProductAttribute $attribute)
     {
         $classes = array();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $classes['scopable'] = true;
         }
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $classes['translatable'] = true;
         }
 
@@ -118,16 +120,18 @@ class ProductFormView
         $group     = $attribute->getVirtualGroup();
 
         $attributeView = array(
+            'id'                 => $attribute->getId(),
             'isRemovable'        => $value->isRemovable(),
             'code'               => $attribute->getCode(),
             'label'              => $attribute->getLabel(),
             'sortOrder'          => $attribute->getSortOrder(),
-            'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)
+            'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
+            'locale'             => $value->getLocale(),
         );
 
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $attributeView['values'] = array_merge(
-                $this->getAttributeValues($attribute),
+                $this->getAttributeValues($attribute, $value->getLocale()),
                 array($value->getScope() => $view)
             );
         } else {
@@ -139,22 +143,23 @@ class ProductFormView
             $attributeView['classes'] = $classes;
         }
 
-        $this->view[$group->getId()]['attributes'][$attribute->getId()] = $attributeView;
+        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
     }
 
     /**
      * @param ProductAttribute $attribute
+     * @param string           $locale
      *
      * @return ArrayCollection
      */
-    protected function getAttributeValues(ProductAttribute $attribute)
+    protected function getAttributeValues(ProductAttribute $attribute, $locale)
     {
         $group = $attribute->getVirtualGroup();
-        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getId()]['values'])) {
+        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {
             return array();
         }
 
-        return $this->view[$group->getId()]['attributes'][$attribute->getId()]['values'];
+        return $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'];
     }
 
     /**

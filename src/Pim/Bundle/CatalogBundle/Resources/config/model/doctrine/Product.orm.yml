@@ -1,0 +1,75 @@
+Pim\Bundle\CatalogBundle\Model\Product:
+    type: entity
+    table: pim_catalog_product
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        enabled:
+            type: boolean
+            column: is_enabled
+        created:
+            type: datetime
+        updated:
+            type: datetime
+    manyToOne:
+        family:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            inversedBy: products
+            cascade:
+                - persist
+                - refresh
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+    manyToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_group_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        categories:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_category_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        productAssociations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAssociation
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+        completenesses:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Completeness
+            mappedBy: product
+            cascade:
+                - persist
+                - refresh
+        values:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            mappedBy: entity
+            cascade:
+                - remove
+                - persist
+                - refresh

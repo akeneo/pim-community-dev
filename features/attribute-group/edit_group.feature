@@ -7,13 +7,10 @@ Feature: Edit an attribute group
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for an attribute group
-    Given I am on the "info" attribute group page
-    Then I should see the Code field
-    And the field Code should be disabled
-
   Scenario: Successfully edit an attribute group
     Given I am on the "sizes" attribute group page
+    Then I should see the Code field
+    And the field Code should be disabled
     When I fill in the following information:
       | English (United States) | My sizes |
     And I press the "Save" button

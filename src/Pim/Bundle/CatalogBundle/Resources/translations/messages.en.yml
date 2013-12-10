@@ -373,7 +373,7 @@ Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit
 Group types:                                 Group types
 Group types | Create:                        Group types | Create
-Group types %grouptype.label% | Edit:        Group types %grouptype.label% | Edit
+Group types %group type.label% | Edit:       Group types %group type.label% | Edit
 
 
 pim_catalog_identifier:       Identifier
@@ -440,6 +440,14 @@ pim_catalog.group:
         X_SELL:     X-Sell
         ADDITIONAL: Additional
         RELATED:    Related
+
+# Product comparison
+pim_catalog.product:
+    no_comparison_locale_available: 'No other locale is available for comparison'
+    no_compared_media: 'No media available for comparison'
+
+# Channel form
+pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attribute that will be used during product export'
 
 # Product view
 Group: Group

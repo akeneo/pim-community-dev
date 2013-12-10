@@ -13,16 +13,4 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/configuration/family/create';
-
-    /**
-     * @param string $name
-     * @param string $locale
-     *
-     * @return string
-     */
-    public function getFieldLocator($name, $locale)
-    {
-        return sprintf('pim_family_%s_%s', strtolower($name), $locale);
-    }
 }

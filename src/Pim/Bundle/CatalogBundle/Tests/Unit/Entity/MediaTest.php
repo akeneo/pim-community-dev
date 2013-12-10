@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
  * Test related class

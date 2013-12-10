@@ -45,7 +45,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->stepExecution
             ->expects($this->exactly(3))
-            ->method('incrementReadCount');
+            ->method('incrementSummaryInfo');
 
         $this->assertEquals(
             array('firstname' => 'Severin', 'lastname' => 'Gero', 'age' => '28'),

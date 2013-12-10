@@ -11,6 +11,7 @@ parameters:
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
     pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
+    pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
 
     pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
     pim_catalog.doctrine.completeness_query_builder.class:  Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder
@@ -20,8 +21,11 @@ parameters:
     pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
 
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
-    pim_catalog.form.type.family.class:                     Pim\Bundle\CatalogBundle\Form\Type\FamilyType
     pim_catalog.form.type.attribute_group.class:            Pim\Bundle\CatalogBundle\Form\Type\AttributeGroupType
+
+    pim_catalog.form.handler.family.class:                  Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler
+    pim_catalog.manager.family.class:                       Pim\Bundle\CatalogBundle\Manager\FamilyManager
+    pim_catalog.form.type.family.class:                     Pim\Bundle\CatalogBundle\Form\Type\FamilyType
 
     pim_catalog.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
@@ -75,5 +79,3 @@ parameters:
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
 
     doctrine.orm.cache.apc.class:  Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-
-    pim_catalog.helper.completeness.class: Pim\Bundle\CatalogBundle\Helper\CompletenessHelper

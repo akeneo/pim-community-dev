@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for category form
@@ -51,7 +51,7 @@ class CategoryType extends AbstractSegmentType
 
         $this->addLabelField($builder);
 
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
+        $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 
     /**

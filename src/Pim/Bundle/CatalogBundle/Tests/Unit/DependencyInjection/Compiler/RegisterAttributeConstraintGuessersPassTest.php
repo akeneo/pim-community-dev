@@ -69,7 +69,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
 
         $container->expects($this->any())
             ->method('hasDefinition')
-            ->with('oro_flexibleentity.validator.attribute_constraint_guesser')
+            ->with('pim_flexibleentity.validator.attribute_constraint_guesser')
             ->will($this->returnValue(null !== $definition));
 
         if ($definition) {

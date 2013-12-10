@@ -4,196 +4,153 @@ jobs:
         alias:     product_import
         label:     Product import
         type:      import
-        steps:
-            import:
-                reader:
-                    filePath:      /tmp/import/products.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
-                processor:
-                    enabled:          true
-                    categoriesColumn: categories
-                    familyColumn:     family
-                    groupsColumn:     groups
+        configuration:
+            filePath:          /tmp/import/products.csv
+            uploadAllowed:     true
+            delimiter:         ;
+            enclosure:         '"'
+            escape:            '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
     ecommerce_product_export:
         connector: Akeneo CSV Connector
         alias:     product_export
         label:     Product export for ecommerce
         type:      export
-        steps:
-            export:
-                reader:
-                    channel: ecommerce
-                processor:
-                    channel:    ecommerce
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/products_ecommerce.csv
+        configuration:
+            channel:    ecommerce
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/products_ecommerce.csv
     tablet_product_export:
         connector: Akeneo CSV Connector
         alias:     product_export
         label:     Product export for tablet
         type:      export
-        steps:
-            export:
-                reader:
-                    channel: tablet
-                processor:
-                    channel:    tablet
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/products_tablet.csv
+        configuration:
+            channel:    tablet
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/products_tablet.csv
     print_product_export:
         connector: Akeneo CSV Connector
         alias:     product_export
         label:     Product export for print
         type:      export
-        steps:
-            export:
-                reader:
-                    channel: print
-                processor:
-                    channel:    print
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/products_print.csv
+        configuration:
+            channel:    print
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/products_print.csv
     category_import:
         connector: Akeneo CSV Connector
         alias:     category_import
         label:     Category import
         type:      import
-        steps:
-            import:
-                reader:
-                    filePath:      /tmp/import/categories.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
-                processor:
-                    circularRefsChecked: true
+        configuration:
+            filePath:            /tmp/import/categories.csv
+            uploadAllowed:       true
+            delimiter:           ;
+            enclosure:           '"'
+            escape:              '\'
+            circularRefsChecked: true
     category_export:
         connector: Akeneo CSV Connector
         alias:     category_export
         label:     Category export
         type:      export
-        steps:
-            export:
-                processor:
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/categories.csv
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/categories.csv
     association_import:
         connector: Akeneo CSV Connector
         alias:     association_import
         label:     Association import
         type:      import
-        steps:
-            import:
-                 reader:
-                    filePath:      /tmp/import/associations.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
+        configuration:
+            filePath:      /tmp/import/associations.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     association_export:
         connector: Akeneo CSV Connector
         alias:     association_export
         label:     Association export
         type:      export
-        steps:
-            export:
-                processor:
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/associations.csv
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/associations.csv
     group_import:
         connector: Akeneo CSV Connector
         alias:     group_import
         label:     Group import
         type:      import
-        steps:
-            import:
-                reader:
-                    filePath:      /tmp/import/groups.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
+        configuration:
+            filePath:      /tmp/import/groups.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     group_export:
         connector: Akeneo CSV Connector
         alias:     group_export
         label:     Group export
         type:      export
-        steps:
-            export:
-                processor:
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/groups.csv
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:  /tmp/export/groups.csv
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     attribute_import
         label:     Attribute import
         type:      import
-        steps:
-            import:
-                reader:
-                    filePath:      /tmp/import/attributes.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
+        configuration:
+            filePath:      /tmp/import/attributes.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     attribute_export:
         connector: Akeneo CSV Connector
         alias:     attribute_export
         label:     Attribute export
         type:      export
-        steps:
-            export:
-                processor:
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/attributes.csv
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/attributes.csv
     option_import:
         connector: Akeneo CSV Connector
         alias:     attribute_option_import
         label:     Option import
         type:      import
-        steps:
-            import:
-                reader:
-                    filePath:      /tmp/import/options.csv
-                    uploadAllowed: true
-                    delimiter:     ;
-                    enclosure:     '"'
-                    escape:        '\'
+        configuration:
+            filePath:      /tmp/import/options.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     option_export:
         connector: Akeneo CSV Connector
         alias:     attribute_option_export
         label:     Option export
         type:      export
-        steps:
-            export:
-                processor:
-                    delimiter:  ;
-                    enclosure:  '"'
-                    withHeader: true
-                writer:
-                    filePath: /tmp/export/options.csv
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/export/options.csv

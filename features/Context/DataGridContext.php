@@ -63,59 +63,48 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
      * @param string $action
      * @param string $value
      * @param string $currency
      *
-     * @When /^I filter per price (>|>=|=|<|<=) "([^"]*)" and currency "([^"]*)"$/
+     * @When /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([A-Z]{3})"$/
      */
-    public function iFilterPerPrice($action, $value, $currency)
+    public function iFilterByPrice($filterName, $action, $value, $currency)
     {
-        $this->datagrid->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($filterName, $action, $value, $currency);
+        $this->wait();
+    }
+
+    /**
+     * @param string $filterName
+     * @param string $action
+     * @param string $value
+     * @param string $unit
+     *
+     * @Then /^I filter by "(Length|Temperature|Weight)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([a-zA-Z_]+)"$/
+     */
+    public function iFilterByMetric($filterName, $action, $value, $unit)
+    {
+        $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
         $this->wait();
     }
 
     /**
      * @param string $code
      *
-     * @Given /^I filter per category "([^"]*)"$/
+     * @Given /^I filter by "category" with value "([^"]*)"$/
      */
-    public function iFilterPerCategory($code)
+    public function iFilterByCategory($code)
     {
-        $category = $this->getFixturesContext()->getCategory($code);
-        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
-    }
+        if (strtolower($code) === 'unclassified') {
+            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
+        } else {
+            $category = $this->getFixturesContext()->getCategory($code);
+            $this->getCurrentPage()->clickCategoryFilterLink($category);
+        }
 
-    /**
-     * @Given /^I filter per unclassified category$/
-     */
-    public function iFilterPerUnclassifiedCategory()
-    {
-        $this->wait();
-        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per family ([^"]*)$/
-     */
-    public function iFilterPerFamily($code)
-    {
-        $this->datagrid->filterPerFamily($code);
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per channel ([^"]*)$/
-     */
-    public function iFilterPerChannel($code)
-    {
-        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 
@@ -199,7 +188,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShowTheFilter($filterName)
     {
-        $this->datagrid->showFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->showFilter($filterName);
+        }
     }
 
     /**
@@ -209,7 +200,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheFilter($filterName)
     {
-        $this->datagrid->hideFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->hideFilter($filterName);
+        }
     }
 
     /**
@@ -301,20 +294,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeAbleToUseTheFollowingFilters(TableNode $table)
     {
-        $data = $table->getHash();
-
-        $filters = array_unique(
-            array_map(
-                function ($item) {
-                    return $item['filter'];
-                },
-                $data
-            )
-        );
-
         $steps = array();
 
-        foreach ($data as $item) {
+        foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
             $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
@@ -371,6 +353,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
      * @Then /^I should see users? (.*)$/
+     * @Then /^I should see famil(?:y|ies) (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -399,6 +382,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should not see group(?: type)?s? (.*)$/
      * @Then /^I should not see associations? (.*)$/
+     * @Then /^I should not see famil(?:y|ies) (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -421,36 +405,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/
+     * @Then /^I filter by "((?!category)[^"]*)" with value "([^">=<]*)"$/
      */
     public function iFilterBy($filterName, $value)
     {
-        $this->datagrid->filterBy($filterName, $value);
-        $this->wait();
-    }
+        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with) ([^">=<]*)$/';
+        $operator = false;
 
-    /**
-     * @param string $filterName
-     * @param string $operatorName
-     * @param string $value
-     *
-     * @Then /^I filter by "([^"]*)" with operator "([^"]*)" and value "([^"]*)"$/
-     */
-    public function iFilterByWithOperator($filterName, $operatorName, $value)
-    {
-        $operators = array(
-            'contains' => Grid::FILTER_CONTAINS,
-            'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
-            'is equal to' => Grid::FILTER_IS_EQUAL_TO,
-            'starts with' => Grid::FILTER_STARTS_WITH,
-            'ends with' => Grid::FILTER_ENDS_WITH
-        );
+        $matches = array();
+        if (preg_match($operatorPattern, $value, $matches)) {
+            $operator = $matches[1];
+            $value    = $matches[2];
 
-        if (!isset($operators[$operatorName])) {
-            throw new \InvalidArgumentException("Operator $operatorName is unknown.");
+            $operators = array(
+                'contains'         => Grid::FILTER_CONTAINS,
+                'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
+                'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
+                'starts with'      => Grid::FILTER_STARTS_WITH,
+                'ends with'        => Grid::FILTER_ENDS_WITH
+            );
+
+            $operator = $operators[$operator];
         }
-
-        $operator = $operators[$operatorName];
 
         $this->datagrid->filterBy($filterName, $value, $operator);
         $this->wait();

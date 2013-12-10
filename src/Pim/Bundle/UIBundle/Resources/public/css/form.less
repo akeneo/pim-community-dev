@@ -83,10 +83,11 @@ form.form-signin {
 
 .icons-container {
   display: inline-block;
+  margin-top: 6px;
   margin-left: 5px;
   font-size: 17px;
   color: @textColor + #333;
-  vertical-align: middle;
+  vertical-align: top;
   i {
     outline: none;
     &[data-dialog] {
@@ -196,7 +197,7 @@ span.handle, td.handle {
     tr.group {
       font-weight: bold;
       cursor: pointer;
-      background-color: #ffffff;
+      background-color: @backgroundColor-white;
       border-bottom: 1px solid #d8d8d8;
     }
     tr {
@@ -276,10 +277,51 @@ div.btn-group > .has-switch {
 #attribute-buttons {
   float: right;
   margin: 10px;
+  .channel-switcher .dropdown-toggle {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+  }
+}
+
+#comparison-buttons {
+  float: right;
+  position: relative;
+  padding-right: 10px;
+  text-align: right;
+  padding: 4px 9px 22px 0;
+  &.compare{
+    width: 50%;
+    border-left: 1px solid #ddd;
+  }
 }
 
 #association-buttons {
   padding-top: 7px;
+}
+
+
+.comparison {
+  width: 100%;
+  td {
+    width: 50%;
+    border-right: 1px solid darken(@color-light_grey, 5%);
+    vertical-align: top;
+    &.no-label .control-group {
+      label.control-label {
+        width: 30px;
+        &.add-on {
+          width: 135px;
+        }
+      }
+      .controls {
+        margin-left: 40px;
+        &.metric {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 }
 
 #lbCenter {
@@ -429,7 +471,7 @@ div.btn-group > .has-switch {
           }
           a {
             display: block;
-            color: #444444;
+            color: @textColor;
             &:hover {
               text-decoration: none;
             }
@@ -508,7 +550,7 @@ div.ui-dialog {
   border-radius: 6px 6px 0 0;
 }
 .modal-header h3{
-  color: #fff;
+  color: @backgroundColor-white;
 }
 
 .modal-primary {
@@ -522,7 +564,7 @@ div.ui-dialog {
     border-radius: 6px 6px 0 0;
   }
   .modal-header h3 {
-    font: #fff;
+    font: @backgroundColor-white;
   }
 }
 
@@ -639,6 +681,12 @@ table i {
   }
 }
 
+.metric {
+  .selectize-input {
+    width: 180px;
+  }
+}
+
 .attribute-field.scopable {
   margin-bottom: 10px;
   >div {
@@ -711,7 +759,7 @@ table i {
     }
   }
   textarea.input-large {
-    width: 523px;
+    width: 350px;
   }
   div.controls {
     input, select, textarea {
@@ -746,12 +794,16 @@ table i {
   }
 }
 
+#copy-selection-switcher, #copy-selection {
+  margin-left: 10px;
+}
+
 // ORO page titles
 h1 {
   font-size: 18px;
   font-weight: normal;
   line-height: 33px;
-  color: #999;
+  color: @textColor + #555;
 }
 .page-title {
   padding: 10px 7px 10px 12px;
@@ -769,7 +821,7 @@ h1 {
   .sub-title {
     float: left;
     font-size: 18px;
-    color: #999;
+    color: @textColor + #555;
   }
   .separator {
     float: left;
@@ -778,7 +830,7 @@ h1 {
     color: #999;
   }
   ul.inline {
-    color: #777;
+    color: @textColor + #333;
       li {
         padding: 0 10px;
         font-size: 11px;
@@ -794,10 +846,7 @@ h1 {
     float: left;
     font-size: 14px;
     font-weight: bold;
-    line-height: 18px;
-  }
-  .locale-switcher {
-    height: 30px;
+    line-height: 20px;
   }
 }
 .navbar-title { line-height: 33px; }
@@ -820,6 +869,7 @@ h1 {
   .buffer-small-right {padding-right:10px;}
   .buffer-small-bottom {padding-bottom:10px;}
   .buffer-small-left {padding-left:10px;}
+  .left-aligned {text-align: left;}
 }
 .unspaced {
   margin: 0;
@@ -931,16 +981,7 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
-code {
-  color: @textColor;
-}
-
-.popover-title {
-  padding-left: 14px;
-  font-size: 12px;
-}
-
-#locale-switcher {
+#locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
     padding: 5px 6px 3px 6px;
     margin-bottom: 0;
@@ -953,6 +994,10 @@ code {
       font-size: 14px;
       vertical-align: middle;
     }
+    .flag-language .language {
+      width: auto;
+      padding-right: 3px;
+    }
   }
   .dropdown-menu {
     padding: 0;
@@ -962,27 +1007,48 @@ code {
       &:hover, &:active, &:focus {
         background: #f1f1f1;
       }
-      span.icon {
+      span.indicator {
+        display: inline-block;
         width: 25px;
-        min-height: 1px;
-      }
-      span.code {
-        color: @textColor + #444;
+        padding: 0 5px;
+        font-size: 9px;
+        i {
+          color: @textColor + #333;
+        }
       }
       span.title {
-        float: none;
-        margin: 0 10px;
-        padding-right: 20px;
-        font-size: 12px;
+        padding: 0 5px;
         font-weight: bold;
       }
     }
   }
-  code.flag-language {
-    padding: 4px;
+  .flag-language {
     color: @textColor;
     background-color: transparent;
     border: none;
+    .flag {
+      display: inline-block;
+      vertical-align: bottom;
+      margin-bottom: 5px;
+    }
+    .language {
+      color: @textColor + #333;
+      padding-left: 5px;
+      font-size: 12px;
+      font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+      vertical-align: bottom;
+      width: 30px;
+      display: inline-block;
+    }
+  }
+}
+#comparison-switcher .dropdown-toggle .flag-language {
+  .flag {
+    vertical-align: middle;
+    margin-top: 2px;
+  }
+  .language {
+    padding-left: 0;
   }
 }
 
@@ -1059,7 +1125,7 @@ button.pimmultiselect {
         padding: 5px;
         margin: 3px;
         font-size: 12px;
-        color: #999;
+        color: @textColor + #555;
         border-color: #d6d6d6;
       }
     }
@@ -1096,12 +1162,6 @@ button.pimmultiselect {
   color: @textColor;
 }
 
-ul.medias label.remove-media {
-  display: inline;
-  float: none;
-  margin-left: 10px;
-}
-
 .attribute-requirement {
   height: 20px;
   text-align: center;
@@ -1128,13 +1188,13 @@ ul.medias label.remove-media {
       float: left;
     }
   }
-  &.prepend .selectize-input {
-    border-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  &.append .selectize-input {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
-.controls.metric.input-prepend {
+.controls.metric.input-append {
   margin-left: 10px;
   .icons-container {
     padding-top: 5px;

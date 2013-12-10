@@ -194,11 +194,11 @@ class FormValidationScriptGenerator extends OroFormValidationScriptGenerator
             }
         }
 
-        $formViewsWithConstraints = $this->filterFormViewsWithConstraints($formView);
-        foreach ($formViewsWithConstraints as $formViewsWithConstraint) {
-            foreach ($formViewsWithConstraint->vars['constraints'] as $constraint) {
+        $viewsWithConstraints = $this->filterFormViewsWithConstraints($formView);
+        foreach ($viewsWithConstraints as $viewWithConstraints) {
+            foreach ($viewWithConstraints->vars['constraints'] as $constraint) {
                 $this->addFieldConstraint(
-                    $formViewsWithConstraint,
+                    $viewWithConstraints,
                     $fieldsConstraints,
                     $constraint
                 );

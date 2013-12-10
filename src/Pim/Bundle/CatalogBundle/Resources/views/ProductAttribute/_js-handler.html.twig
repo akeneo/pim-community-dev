@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, _, initSelect2) {
+    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    function ($, _) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
@@ -30,7 +30,6 @@ require(
                 $('[data-toggle="tooltip"]').tooltip();
 
                 initSelect2.init($(formName));
-
                 initializeOptions();
                 $(formName+'_attributeType').on('change', function() {
                     updateForm();
@@ -59,6 +58,8 @@ require(
                 if ($(formName+'_availableLocales').val()) {
                     $(formName+'_availableLocales').parent().parent().show();
                     $('#limitLocales-switch').bootstrapSwitch('setState', true);
+                } else {
+                    $(formName+'_availableLocales').parent().parent().hide();
                 }
 
                 $('#limitLocales-switch').on('switch-change', function (e, data) {
@@ -81,7 +82,7 @@ require(
                 }).trigger('change');
 
                 if (preventUpdate) {
-                    $('#updated').addClass('hide');
+                    $(formName).trigger('refresh');
                 }
             }
 

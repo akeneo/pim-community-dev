@@ -30,15 +30,16 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Locales dropdown' => array('css' => '#locale-switcher'),
-                'Locales selector' => array('css' => '#pim_product_locales'),
-                'Enable switcher'  => array('css' => '#switch_status'),
-                'Updates grid'     => array('css' => '#history table.grid'),
-                'Image preview'    => array('css' => '#lbImage'),
-                'Completeness'     => array('css' => 'div#completeness'),
-                'Updates grid'     => array('css' => '#history table.grid'),
-                'Category pane'    => array('css' => '#categories'),
-                'Category tree'    => array('css' => '#trees'),
+                'Locales dropdown'        => array('css' => '#locale-switcher'),
+                'Locales selector'        => array('css' => '#pim_product_locales'),
+                'Enable switcher'         => array('css' => '#switch_status'),
+                'Image preview'           => array('css' => '#lbImage'),
+                'Completeness'            => array('css' => 'div#completeness'),
+                'Category pane'           => array('css' => '#categories'),
+                'Category tree'           => array('css' => '#trees'),
+                'Comparison dropdown'     => array('css' => '#comparison-switcher'),
+                'Copy selection dropdown' => array('css' => '#copy-selection-switcher'),
+                'Copy translations link'  => array('css' => 'a#copy-selection'),
             )
         );
     }
@@ -130,22 +131,19 @@ class Edit extends Form
     public function findField($name)
     {
         $currency = null;
-        if (false !== strpos($name, ' in ')) {
+        if (false !== strpos($name, ' in ')) { // Price in EUR
             list($name, $currency) = explode(' in ', $name);
+
+            return $this->findPriceField($name, $currency);
+        } elseif (2 === str_word_count($name)) { // mobile Description
+            list($scope, $name) = str_word_count($name, 1);
+
+            return $this->findScopedField($name, $scope);
         }
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        if ($currency) {
-            $label = $label
-                ->getParent()
-                ->find('css', sprintf('label:contains("%s")', $currency));
-            if (!$label) {
-                throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-            }
         }
 
         $field = $label->getParent()->find('css', 'input');
@@ -199,14 +197,6 @@ class Edit extends Form
         $this->getElement('Enable switcher')->click();
 
         return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function countUpdates()
-    {
-        return count($this->getElement('Updates grid')->findAll('css', 'tbody tr'));
     }
 
     /**
@@ -276,38 +266,6 @@ class Edit extends Form
         } else {
             throw new \InvalidArgumentException(sprintf('Completeness for locale %s not found', $code));
         }
-    }
-
-    /**
-     * Find a completeness cell from column and row (channel and locale codes)
-     * @param string $columnCode (channel code)
-     * @param string $rowCode    (locale code)
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    protected function findCompletenessCell($columnCode, $rowCode)
-    {
-        $completenessTable = $this->findCompletenessContent();
-
-        $columnIdx = 0;
-        foreach ($completenessTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === $columnCode) {
-                $columnIdx = $index;
-                break;
-            }
-        }
-        if ($columnIdx === 0) {
-            throw new \InvalidArgumentException(sprintf('Column %s not found', $columnCode));
-        }
-
-        $cells = $completenessTable->findAll('css', sprintf('tbody tr:contains("%s") td', $rowCode));
-        if (!$cells || count($cells) < $columnIdx) {
-            throw new \InvalidArgumentException(sprintf('Row %s not found', $rowCode));
-        }
-
-        return $cells[$columnIdx];
     }
 
     /**
@@ -400,14 +358,6 @@ class Edit extends Form
     }
 
     /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
-    }
-
-    /**
      * @param string $category
      *
      * @return CategoryView
@@ -449,5 +399,152 @@ class Edit extends Form
         }
 
         return $elt;
+    }
+
+    /**
+     * Find comparison language labels
+     *
+     * @return string[]
+     */
+    public function getComparisonLanguages()
+    {
+        $languages = $this->getElement('Comparison dropdown')->findAll('css', 'ul.dropdown-menu li .title');
+
+        return array_map(
+            function ($language) {
+                return $language->getText();
+            },
+            $languages
+        );
+    }
+
+    public function compareWith($language)
+    {
+        $this->getElement('Comparison dropdown')->find('css', 'button:contains("Translate")')->click();
+        if (!in_array($language, $this->getComparisonLanguages())) {
+            throw new \InvalidArgumentException(
+                sprintf('Language "%s" is not available for comparison', $language)
+            );
+        }
+
+        $this->getElement('Comparison dropdown')->find(
+            'css',
+            sprintf('ul.dropdown-menu a:contains("%s")', $language)
+        )->click();
+    }
+
+    /**
+     * Automatically select translations given the specified mode
+     *
+     * @param string $mode
+     */
+    public function autoSelectTranslations($mode)
+    {
+        $this
+            ->getElement('Copy selection dropdown')
+            ->find('css', 'button:contains("Select")')
+            ->click();
+
+        $selector = $this
+            ->getElement('Copy selection dropdown')
+            ->find('css', sprintf('a:contains("%s")', $mode));
+
+        if (!$selector) {
+            throw new \InvalidArgumentException(sprintf('Translation copy mode "%s" not found', $mode));
+        }
+
+        $selector->click();
+    }
+
+    /**
+     * Manually select translation given the specified field label
+     *
+     * @param string $field
+     */
+    public function manualSelectTranslation($field)
+    {
+        $this
+            ->find('css', sprintf('tr:contains("%s") .comparisonSelection', $field))
+            ->check();
+    }
+
+    public function copySelectedTranslations()
+    {
+        $this->getElement('Copy translations link')->click();
+    }
+
+    /**
+     * Find a completeness cell from column and row (channel and locale codes)
+     * @param string $columnCode (channel code)
+     * @param string $rowCode    (locale code)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function findCompletenessCell($columnCode, $rowCode)
+    {
+        $completenessTable = $this->findCompletenessContent();
+
+        $columnIdx = 0;
+        foreach ($completenessTable->findAll('css', 'thead th') as $index => $header) {
+            if ($header->getText() === $columnCode) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+        if ($columnIdx === 0) {
+            throw new \InvalidArgumentException(sprintf('Column %s not found', $columnCode));
+        }
+
+        $cells = $completenessTable->findAll('css', sprintf('tbody tr:contains("%s") td', $rowCode));
+        if (!$cells || count($cells) < $columnIdx) {
+            throw new \InvalidArgumentException(sprintf('Row %s not found', $rowCode));
+        }
+
+        return $cells[$columnIdx];
+    }
+
+    protected function findPriceField($name, $currency)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $label = $label
+            ->getParent()
+            ->find('css', sprintf('label:contains("%s")', $currency));
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $field = $label->getParent()->find('css', 'input');
+
+        if (!$field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
+        }
+
+        return $field;
+    }
+
+    protected function findScopedField($name, $scope)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $scopeLabel = $label
+            ->getParent()
+            ->find('css', sprintf('label:contains("%s")', $scope));
+
+        if (!$scopeLabel) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
     }
 }

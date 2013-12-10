@@ -24,4 +24,35 @@ class FileTypeTest extends AttributeTypeTestCase
     {
         return new FileType($this->backendType, $this->formType, $this->guesser);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    {
+        $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
+
+        $attribute
+            ->expects($this->any())
+            ->method('getAllowedExtensions')
+            ->will($this->returnValue(array('pdf', 'odt', 'doc', 'xls')));
+
+        return $attribute;
+    }
+
+    /**
+     * Test related method
+     */
+    public function testBuildAttributeFormTypes()
+    {
+        $attFormType = $this->target->buildAttributeFormTypes(
+            $this->getFormFactoryMock(),
+            $this->getAttributeMock(null, null)
+        );
+
+        $this->assertCount(
+            6,
+            $attFormType
+        );
+    }
 }

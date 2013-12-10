@@ -12,20 +12,20 @@ pim_catalog_product_edit:
     path: /{id}/edit
     defaults: { _controller: pim_catalog.controller.product:editAction }
     requirements:
-        id: \d+
+        id: "[0-9a-f]+"
 
 pim_catalog_product_addproductattributes:
     path: /{id}/attributes
     defaults: { _controller: pim_catalog.controller.product:addProductAttributesAction }
     requirements:
-        id: \d+
+        id: "[0-9a-f]+"
     methods: [POST]
 
 pim_catalog_product_removeproductattribute:
     path: /{productId}/attribute/{attributeId}/remove
     defaults: { _controller: pim_catalog.controller.product:removeProductAttributeAction }
     requirements:
-        productId: \d+
+        productId: "[0-9a-f]+"
         attributeId: \d+
     methods: [DELETE]
 
@@ -58,6 +58,12 @@ pim_catalog_product_list_group_associations:
         id: \d+
         _format: json
 
+pim_catalog_product_completeness:
+    path: /{id}/completeness
+    defaults: { _controller: pim_catalog.controller.completeness:completenessAction }
+    requirements:
+        id: \d+
+
 pim_catalog_product_configure_mass_edit_action:
     path: /batch
     defaults: { _controller: PimCatalogBundle:Product:configureMassEditAction }
@@ -65,7 +71,8 @@ pim_catalog_product_configure_mass_edit_action:
         _method: GET
 
 pim_catalog_product_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.product:historyAction }
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_catalog.controller.product:historyAction, _format: html }
     requirements:
         id: \d+
+        _format: html|json

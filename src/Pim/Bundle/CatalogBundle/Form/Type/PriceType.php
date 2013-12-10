@@ -32,7 +32,7 @@ class PriceType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductPrice'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice'
             )
         );
     }

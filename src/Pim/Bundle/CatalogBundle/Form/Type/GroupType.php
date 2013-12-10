@@ -7,8 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\GroupSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 
 /**
@@ -25,7 +24,9 @@ class GroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code');
+        $builder
+            ->add('code')
+            ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         $this->addTypeField($builder);
 
@@ -34,11 +35,6 @@ class GroupType extends AbstractType
         $this->addAttributesField($builder);
 
         $this->addProductsField($builder);
-
-        $builder
-            ->addEventSubscriber(new GroupSubscriber())
-            ->addEventSubscriber(new DisableCodeFieldSubscriber())
-            ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
     /**
@@ -50,21 +46,24 @@ class GroupType extends AbstractType
      */
     protected function addTypeField(FormBuilderInterface $builder)
     {
-        $builder->add(
-            'type',
-            'entity',
-            array(
-                'class' => 'PimCatalogBundle:GroupType',
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository
-                        ->buildAll()
-                        ->andWhere('group_type.code != :variant')
-                        ->setParameter('variant', 'VARIANT');
-                },
-                'multiple' => false,
-                'expanded' => false
+        $builder
+            ->add(
+                'type',
+                'entity',
+                array(
+                    'class' => 'PimCatalogBundle:GroupType',
+                    'query_builder' => function (EntityRepository $repository) {
+                        return $repository
+                            ->buildAll()
+                            ->andWhere('group_type.code != :variant')
+                            ->setParameter('variant', 'VARIANT');
+                    },
+                    'multiple' => false,
+                    'expanded' => false,
+                    'select2'  => true
+                )
             )
-        );
+            ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
     }
 
     /**
@@ -95,20 +94,23 @@ class GroupType extends AbstractType
      */
     protected function addAttributesField(FormBuilderInterface $builder)
     {
-        $builder->add(
-            'attributes',
-            'entity',
-            array(
-                'label'    => 'Axis',
-                'required' => true,
-                'multiple' => true,
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-                'query_builder' => function (ProductAttributeRepository $repository) {
-                    return $repository->findAllAxisQB();
-                },
-                'help'     => 'pim_catalog.group.axis.help'
+        $builder
+            ->add(
+                'attributes',
+                'entity',
+                array(
+                    'label'    => 'Axis',
+                    'required' => true,
+                    'multiple' => true,
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'query_builder' => function (ProductAttributeRepository $repository) {
+                        return $repository->findAllAxisQB();
+                    },
+                    'help'     => 'pim_catalog.group.axis.help',
+                    'select2'  => true
+                )
             )
-        );
+            ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
 
     /**
@@ -118,27 +120,28 @@ class GroupType extends AbstractType
      */
     protected function addProductsField(FormBuilderInterface $builder)
     {
-        $builder->add(
-            'appendProducts',
-            'oro_entity_identifier',
-            array(
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
-                'required' => false,
-                'mapped'   => false,
-                'multiple' => true
+        $builder
+            ->add(
+                'appendProducts',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true
+                )
             )
-        );
-
-        $builder->add(
-            'removeProducts',
-            'oro_entity_identifier',
-            array(
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
-                'required' => false,
-                'mapped'   => false,
-                'multiple' => true
+            ->add(
+                'removeProducts',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true
+                )
             )
-        );
+            ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
     /**

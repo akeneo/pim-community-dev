@@ -128,10 +128,8 @@ class LocaleHelper
         $localeLabel = $this->getLocaleLabel($code, $locale);
 
         return sprintf(
-            '<img src="%s" class="flag flag-%s" alt="%s" /><code class="flag-language">%s</code>',
-            '/bundles/pimui/images/blank.gif',
+            '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',
             strtolower(\Locale::getRegion($code)),
-            $localeLabel,
             $fullLabel ? $localeLabel : \Locale::getPrimaryLanguage($code)
         );
     }

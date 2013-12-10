@@ -102,7 +102,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidMetric()
     {
-        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Metric');
+        $value = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
         $value->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(100));
@@ -126,7 +126,7 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidMetric()
     {
-        $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Metric');
+        $value = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
         $value->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(100.5));
@@ -139,8 +139,8 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $context->expects($this->once())
-            ->method('addViolation')
-            ->with($constraint->message);
+            ->method('addViolationAt')
+            ->with('data', $constraint->message);
 
         $this->target->initialize($context);
         $this->target->validate($value, $constraint);

@@ -2,7 +2,7 @@
 
 namespace Context\Page\Family;
 
-use Context\Page\Family\Creation;
+use Context\Page\Base\Form;
 
 /**
  * Family edit page
@@ -11,7 +11,7 @@ use Context\Page\Family\Creation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Edit extends Creation
+class Edit extends Form
 {
     /**
      * @var string $path
@@ -28,9 +28,8 @@ class Edit extends Creation
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attributes'                      => array('css' => '#attributes table'),
-                'Attribute as label choices'      => array('css' => '#pim_family_attributeAsLabel'),
-                'Updates grid'                    => array('css' => '#history table.grid'),
+                'Attributes'                 => array('css' => '#attributes table'),
+                'Attribute as label choices' => array('css' => '#pim_catalog_family_form_attributeAsLabel'),
             )
         );
     }
@@ -103,18 +102,6 @@ class Edit extends Creation
     }
 
     /**
-     * @param string $attribute
-     *
-     * @return Edit
-     */
-    public function selectAttributeAsLabel($attribute)
-    {
-        $this->getElement('Attribute as label choices')->selectOption($attribute);
-
-        return $this;
-    }
-
-    /**
      * @param string $attributeCode
      * @param string $channelCode
      *
@@ -122,7 +109,7 @@ class Edit extends Creation
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $selector = '#pim_family_attributeRequirements_%s_%s_required';
+        $selector = '#pim_catalog_family_form_attributeRequirements_%s_%s_required';
         $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
         if (!$checkbox) {
             throw new \RuntimeException(
@@ -179,13 +166,5 @@ class Edit extends Creation
         }
 
         return $cells[$columnIdx];
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 }

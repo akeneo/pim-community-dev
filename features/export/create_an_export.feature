@@ -14,10 +14,9 @@ Feature: Create an export
     When I fill in the following information:
       | Code  | mobile_product_export |
       | Label | Mobile product export |
-    And I visit the "Configuration" tab
     And I fill in the following information:
-        | File path | /tmp/export.csv |
-    And I select the channel "Mobile"
+      | Channel   | Mobile          |
+      | File path | /tmp/export.csv |
     And I check "With header"
     And I save the export
     Then I should see "Export profile - Mobile product export"

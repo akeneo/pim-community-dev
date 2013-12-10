@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Product form type
@@ -30,6 +30,7 @@ class ProductType extends FlexibleType
                 'by_reference'       => false,
                 'cascade_validation' => true,
                 'currentLocale'      => $options['currentLocale'],
+                'comparisonLocale'   => $options['comparisonLocale'],
             )
         );
     }
@@ -41,7 +42,8 @@ class ProductType extends FlexibleType
     {
         $resolver->setDefaults(
             array(
-                'currentLocale' => null,
+                'currentLocale'    => null,
+                'comparisonLocale' => null,
             )
         );
     }

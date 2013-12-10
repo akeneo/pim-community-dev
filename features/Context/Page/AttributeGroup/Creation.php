@@ -25,18 +25,9 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Updates grid' => array('css' => '#history table.grid'),
-                'Attributes'     => array('css' => '#attributes table'),
+                'Attributes' => array('css' => '#attributes table'),
             )
         );
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 
     /**

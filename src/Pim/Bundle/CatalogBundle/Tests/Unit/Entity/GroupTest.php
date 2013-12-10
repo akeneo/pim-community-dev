@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\Product;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Test related class
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 class GroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Group
+     * @var Group
      */
     protected $group;
 
@@ -161,13 +161,13 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $newProduct = new Product();
         $this->assertEntity($this->group->addProduct($newProduct));
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\Product',
+            'Pim\Bundle\CatalogBundle\Model\Product',
             $this->group->getProducts()->first()
         );
 
         $this->assertEntity($this->group->removeProduct($newProduct));
         $this->assertNotInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\Product',
+            'Pim\Bundle\CatalogBundle\Model\Product',
             $this->group->getProducts()->first()
         );
         $this->assertCount(0, $this->group->getProducts());
@@ -206,7 +206,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert entity
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Group $entity
+     * @param Group $entity
      */
     protected function assertEntity($entity)
     {

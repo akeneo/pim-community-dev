@@ -24,3 +24,6 @@ parameters:
     upload_dir:        %kernel.root_dir%/uploads_test/product
 
     installed:         true
+
+    installer_data:    PimDemoBundle:demo_dev
+    # use PimInstallerBundle:minimal for minimal data set

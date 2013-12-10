@@ -56,3 +56,11 @@ services:
             - '@pim_catalog.form.association'
             - '@request'
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.form.handler.family:
+        class: %pim_catalog.form.handler.family.class%
+        scope: request
+        arguments:
+            - '@pim_catalog.form.family'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

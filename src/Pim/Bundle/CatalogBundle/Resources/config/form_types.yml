@@ -30,7 +30,7 @@ services:
         class:     %pim_catalog.form.type.product_value.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@oro_flexibleentity.value_form.value_subscriber'
+            - '@pim_flexibleentity.value_form.value_subscriber'
             - '@pim_catalog.form.type.product.view'
         tags:
             - { name: form.type, alias: pim_product_value }
@@ -51,12 +51,14 @@ services:
     pim_catalog.form.type.attribute_group:
         class: %pim_catalog.form.type.attribute_group.class%
         tags:
-            - { name: form.type, alias: pim_attribute_group }
+            - { name: form.type, alias: pim_catalog_attribute_group }
 
     pim_catalog.form.type.family:
         class: %pim_catalog.form.type.family.class%
         tags:
-            - { name: form.type, alias: pim_family }
+            - { name: form.type, alias: pim_catalog_family }
+        arguments:
+            - '@pim_catalog.form.subscriber.attribute_requirements'
 
     pim_catalog.form.type.wysiwyg:
         class: %pim_catalog.form.type.product_value_wysiwyg.class%
@@ -133,6 +135,14 @@ services:
         class: %pim_catalog.form.type.product_association.class%
         tags:
             - { name: form.type, alias: pim_catalog_product_association }
+
+    pim_catalog.form.type.conversion_units:
+        class: %pim_catalog.form.type.conversion_units.class%
+        arguments:
+            - '@oro_measure.manager'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: form.type, alias: pim_catalog_conversion_units }
 
     # Form extensions
     pim_catalog.extension.type.image:

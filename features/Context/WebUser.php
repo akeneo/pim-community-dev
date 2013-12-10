@@ -9,9 +9,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Mink\Element\Element;
 
 /**
@@ -72,41 +72,14 @@ class WebUser extends RawMinkContext
     /**
      * @param string $entity
      *
-     * @Given /^I create a new (\w+)$/
+     * @Given /^I create a new ([^"]*)$/
      */
     public function iCreateANew($entity)
     {
-        $entity = ucfirst($entity);
+        $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
-    }
-
-     /**
-      * @Given /^I create a new product group$/
-      */
-    public function iCreateANewProductGroup()
-    {
-        $entity = 'ProductGroup';
-        $this->iCreateANew($entity);
-    }
-
-    /**
-     * @Given /^I create a new group type$/
-     */
-    public function iCreateANewGroupType()
-    {
-        $entity = 'GroupType';
-        $this->iCreateANew($entity);
-    }
-
-    /**
-     * @Given /^I create a new variant group$/
-     */
-    public function iCreateANewVariantGroup()
-    {
-        $entity = 'VariantGroup';
-        $this->iCreateANew($entity);
     }
 
     /**
@@ -209,6 +182,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $this->getCurrentPage()->visitTab($tab);
+        $this->wait();
     }
 
     /**
@@ -225,77 +199,15 @@ class WebUser extends RawMinkContext
     /* -------------------- Other methods -------------------- */
 
     /**
-     * @param string $deactivated
      * @param string $currencies
      *
-     * @Then /^I should see (de)?activated currency (.*)$/
-     * @Then /^I should see (de)?activated currencies (.*)$/
+     * @When /^I (?:de)?activate the (.*) currenc(?:y|ies)$/
      */
-    public function iShouldSeeActivatedCurrencies($deactivated, $currencies)
+    public function iToggleTheCurrencies($currencies)
     {
-        $currencies = $this->listToArray($currencies);
-
-        foreach ($currencies as $currency) {
-            if ($deactivated) {
-                if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not deactivated.', $currency));
-                }
-            } else {
-                if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
-                }
-            }
-        }
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @When /^I activate the (.*) currency$/
-     */
-    public function iActivateTheCurrency($currencies)
-    {
-        $this->getPage('Currency index')->activateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @When /^I deactivate the (.*) currency$/
-     */
-    public function iDeactivateTheCurrency($currencies)
-    {
-        $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @param string $deactivated
-     * @param string $locales
-     *
-     * @throws ExpectationException
-     *
-     * @When /^I should see (de)?activated locales? (.*)$/
-     */
-    public function iShouldSeeActivatedLocales($deactivated, $locales)
-    {
-        $locales = $this->listToArray($locales);
-
-        foreach ($locales as $locale) {
-            if ($deactivated) {
-                if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
-                    throw $this->createExpectationException(
-                        sprintf('Locale "%s" is not deactivated', $locale)
-                    );
-                }
-            } else {
-                if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
-                    throw $this->createExpectationException(
-                        sprintf('Locale "%s" is not activated', $locale)
-                    );
-                }
-            }
+        foreach ($this->listToArray($currencies) as $currency) {
+            $this->getCurrentPage()->clickOnAction($currency, 'Change status');
+            $this->wait();
         }
     }
 
@@ -328,28 +240,6 @@ class WebUser extends RawMinkContext
                 );
             }
         }
-    }
-
-    /**
-     * @param string $action
-     * @param string $identifier
-     * @param string $entityType
-     *
-     * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
-     */
-    public function iTryToDoActionFromTheGrid($action, $identifier, $entityType)
-    {
-        $entityType = ucfirst(strtolower($entityType));
-        $entityPage = $entityType.' index';
-
-        $page = $this->getPage($entityPage);
-        if (!$page) {
-            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $entityPage));
-        }
-
-        $action = ucfirst(strtolower($action));
-
-        $page->clickOnAction($identifier, $action);
     }
 
     /**
@@ -566,7 +456,8 @@ class WebUser extends RawMinkContext
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
-        return $this->getCurrentPage()->fillField($field, $value);
+        $this->getCurrentPage()->fillField($field, $value);
+        $this->wait();
     }
 
     /**
@@ -761,88 +652,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $attribute
-     *
-     * @Given /^I choose "([^"]*)" as the label of the family$/
-     */
-    public function iChooseAsTheLabelOfTheFamily($attribute)
-    {
-        $this->getPage('Family edit')->selectAttributeAsLabel($attribute)->save();
-    }
-
-    /**
-     * @param string $type
-     *
-     * @When /^I select the attribute type "([^"]*)"$/
-     */
-    public function iSelectTheAttributeType($type)
-    {
-        $this->getPage('Attribute creation')->selectAttributeType($type);
-
-        $this->wait();
-    }
-
-    /**
-     * @param string $channel
-     *
-     * @Given /^I select the channel "([^"]*)"$/
-     */
-    public function iSelectChannel($channel)
-    {
-        $this->getPage('Export creation')->selectChannel($channel);
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @Given /^I select the locale "([^"]*)"$/
-     */
-    public function iSelectLocale($locale)
-    {
-        $this->getPage('Channel creation')->selectLocale($locale);
-    }
-
-    /**
-     * @param string $currency
-     *
-     * @Given /^I select the currency "([^"]*)"$/
-     */
-    public function iSelectCurrency($currency)
-    {
-        $this->getPage('Channel creation')->selectCurrency($currency);
-    }
-
-    /**
-     * @param string $axis
-     *
-     * @Given /^I select the axis "([^"]*)"$/
-     */
-    public function iSelectAxis($axis)
-    {
-        $this->getCurrentPage()->selectAxis($axis);
-    }
-
-    /**
-     * @param string $status
-     *
-     * @Given /^I select the status "([^"]*)"$/
-     */
-    public function iSelectStatus($status)
-    {
-        $this->getPage('User creation')->selectStatus($status);
-    }
-
-    /**
-     * @param string $owner
-     *
-     * @Given /^I select the owner "([^"]*)"$/
-     */
-    public function iSelectOwner($owner)
-    {
-        $this->getPage('User creation')->selectOwner($owner);
-    }
-
-    /**
      * @param string $role
      *
      * @Given /^I select the role "([^"]*)"$/
@@ -854,29 +663,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $popin
      * @param TableNode $table
-     * @param Element   $element
      *
-     * @Given /^I fill in the following information:$/
+     * @Given /^I fill in the following information(| in the popin):$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
+    public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
+        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^I fill in the following information in the popin?:$/
-     */
-    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
-    {
-        $this->iFillInTheFollowingInformation(
-            $table,
-            $this->getCurrentPage()->find('css', '.ui-dialog')
-        );
     }
 
     /**
@@ -939,7 +736,7 @@ class WebUser extends RawMinkContext
     public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
     {
         foreach ($table->getRowsHash() as $type => $fields) {
-            $this->iSelectTheAttributeType($type);
+            $this->iChangeTheTo('Attribute type', $type);
             try {
                 $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
             } catch (ExpectationException $e) {
@@ -1070,39 +867,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $channel
-     * @param string $not
-     * @param string $category
-     *
-     * @Given /^the channel (.*) is (not )?able to export category (.*)$/
-     */
-    public function theChannelIsAbleToExportCategory($channel, $not, $category)
-    {
-        $expected = (bool) $not;
-        $actual = $this->getPage('Channel index')->channelCanExport($channel, $category);
-
-        if ($expected !== $actual) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting channel %s %sto be able to export category %s',
-                    $channel,
-                    $not,
-                    $category
-                )
-            );
-        }
-    }
-
-    /**
      * @param integer $count
      *
-     * @Then /^there should be (\d+) update$/
-     * @Then /^there should be (\d+) updates$/
+     * @Then /^there should be (\d+) updates?$/
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $countUpdates));
+        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
         }
     }
 
@@ -1153,7 +925,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getCurrentPage()->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see "%s" next to the %s property, but saw "%s"',
@@ -1181,7 +953,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 60;
+        $timeout = 120;
 
         while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
             sleep(3);
@@ -1191,7 +963,7 @@ class WebUser extends RawMinkContext
         }
 
         if ($refreshLink) {
-            throw $this->createExpectationException("The job didn't finish in 1 minute");
+            throw $this->createExpectationException("The job didn't finish in 2 minutes");
         }
     }
 
@@ -1498,9 +1270,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = $config['writer']['filePath'];
+        $path = $config['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1508,9 +1279,9 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $delimiter = isset($config['processor']['delimiter']) ? $config['processor']['delimiter'] : ';';
-        $enclosure = isset($config['processor']['enclosure']) ? $config['processor']['enclosure'] : '"';
-        $escape    = isset($config['processor']['escape'])    ? $config['processor']['escape']    : '\\';
+        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
 
         $csvFile = new \SplFileObject($path);
         $csvFile->setFlags(
@@ -1576,9 +1347,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = dirname($config['writer']['filePath']);
+        $path = dirname($config['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(
@@ -1594,6 +1364,57 @@ class WebUser extends RawMinkContext
                     sprintf('File \"%s\" doesn\'t exist', $file)
                 );
             }
+        }
+    }
+
+    /**
+     * @When /^I compare values with the "([^"]*)" translation$/
+     */
+    public function iCompareValuesWithTheTranslation($language)
+    {
+        $this->getCurrentPage()->compareWith($language);
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see comparison languages "([^"]*)"$/
+     */
+    public function iShouldSeeComparisonLanguages($languages)
+    {
+        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+    }
+
+    /**
+     * @Given /^I select translations for "([^"]*)"$/
+     */
+    public function iSelectTranslationsFor($field)
+    {
+        $this->getCurrentPage()->manualSelectTranslation($field);
+    }
+
+    /**
+     * @Given /^I select (.*) translations$/
+     */
+    public function iSelectTranslations($mode)
+    {
+        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+    }
+
+    /**
+     * @Given /^I copy selected translations$/
+     */
+    public function iCopySelectedTranslations()
+    {
+        $this->getCurrentPage()->copySelectedTranslations();
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" fields:$/
+     */
+    public function iShouldSeeFields($groupField, TableNode $fields)
+    {
+        foreach ($fields->getRows() as $data) {
+            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
         }
     }
 

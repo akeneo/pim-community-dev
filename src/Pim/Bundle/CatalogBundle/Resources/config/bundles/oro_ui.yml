@@ -1,6 +1,6 @@
 oro_ui:
     settings:
         application_name:
-            value: "Akeneo"
+            value: Akeneo
         application_title:
-            value: "Akeneo"
+            value: Akeneo

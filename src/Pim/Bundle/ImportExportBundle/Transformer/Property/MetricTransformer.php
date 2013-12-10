@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Metric attribute transformer
@@ -19,17 +19,23 @@ class MetricTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        if (!isset($options['family'])) {
+            throw new \InvalidArgumentException('Missing required option "family"');
+        }
+
         $value = trim($value);
         if (empty($value)) {
-            $metric = null;
-        } else {
-            if (false === strpos($value, ' ')) {
-                throw new InvalidValueException('Malformed metric: %value%', array('%value%'=>$value));
-            }
-            list($data, $unit) = preg_split('/ +/', $value);
-            $metric = new Metric();
-            $metric->setData($data)->setUnit($unit);
+            return;
         }
+
+        if (false === strpos($value, ' ')) {
+            throw new PropertyTransformerException('Malformed metric: %value%', array('%value%' => $value));
+        }
+        list($data, $unit) = preg_split('/ +/', $value);
+
+        $metric = new Metric();
+        $metric->setData($data)->setUnit($unit);
+        $metric->setFamily($options['family']);
 
         return $metric;
     }

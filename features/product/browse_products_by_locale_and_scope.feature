@@ -14,10 +14,10 @@ Feature: Browse products by locale and scope
       | postit | furniture |
     And a "postit" product
     And the following attributes:
-      | label       | required | translatable | scopable | useable as grid column |
-      | name        | no       | yes          | no       | yes                    |
-      | image       | no       | no           | yes      | yes                    |
-      | description | no       | yes          | yes      | yes                    |
+      | label       | translatable | scopable | useable as grid column |
+      | name        | yes          | no       | yes                    |
+      | image       | no           | yes      | yes                    |
+      | description | yes          | yes      | yes                    |
     And the following product values:
       | product | attribute   | locale | scope     | value                    |
       | postit  | sku         |        |           | postit                   |
@@ -31,23 +31,19 @@ Feature: Browse products by locale and scope
     And I am logged in as "admin"
     And I am on the products page
 
-  Scenario: Successfully display english ecommerce products data on products page
-    Given I switch the locale to "en_US"
-    And I filter by "Channel" with value "E-Commerce"
+  Scenario: Successfully display english data on products page
+    Given I switch the locale to "English (United States)"
     Then I should see product postit
-    And the row "postit" should contain:
+    When I filter by "Channel" with value "E-Commerce"
+    Then the row "postit" should contain:
       | column      | value                    |
       | sku         | postit                   |
       | name        | Post it                  |
       | image       | large.jpeg               |
       | description | My ecommerce description |
       | family      | furniture                |
-
-  Scenario: Successfully display english mobile products data on products page
-    Given I switch the locale to "en_US"
-    And I filter by "Channel" with value "Mobile"
-    Then I should see product postit
-    And the row "postit" should contain:
+    When I filter by "Channel" with value "Mobile"
+    Then the row "postit" should contain:
       | column      | value      |
       | SKU         | postit     |
       | name        | Post it    |
@@ -55,23 +51,19 @@ Feature: Browse products by locale and scope
       | description |            |
       | family      | furniture  |
 
-  Scenario: Successfully display french ecommerce products data on products page
-    Given I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "E-Commerce"
+  Scenario: Successfully display french data on products page
+    Given I switch the locale to "French (France)"
     Then I should see product postit
-    And the row "postit" should contain:
+    When I filter by "Channel" with value "E-Commerce"
+    Then the row "postit" should contain:
       | column        | value                    |
       | SKU           | postit                   |
       | [name]        | Etiquette                |
       | [image]       | large.jpeg               |
       | [description] | Ma description ecommerce |
       | family        | furniture                |
-
-  Scenario: Successfully display french mobile products data on products page
-    Given I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "Mobile"
-    Then I should see product postit
-    And the row "postit" should contain:
+    When I filter by "Channel" with value "Mobile"
+    Then the row "postit" should contain:
       | column        | value                 |
       | SKU           | postit                |
       | [name]        | Etiquette             |

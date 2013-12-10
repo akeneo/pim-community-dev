@@ -2,15 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -23,9 +19,13 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+use Pim\Bundle\GridBundle\Property\FlexibleTwigTemplateProperty;
 
 /**
  * Grid manager
@@ -92,6 +92,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         self::$typeMatches['prices'] = array(
             'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
             'filter' => FilterInterface::TYPE_CURRENCY
+        );
+
+        self::$typeMatches['metric'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_TEXT,
+            'filter' => FilterInterface::TYPE_METRIC
         );
     }
 
@@ -175,6 +180,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ),
             new UrlProperty('delete_link', $this->router, 'pim_catalog_product_remove', array('id')),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createFlexibleField(AbstractAttribute $attribute, array $options = array())
+    {
+        $field = parent::createFlexibleField($attribute, $options);
+
+        if ($attribute->getBackendType() === 'metric') {
+            $field->setProperty(
+                new FlexibleTwigTemplateProperty($field, 'PimGridBundle:Rendering:_metricField.html.twig')
+            );
+        }
+
+        return $field;
     }
 
     /**
@@ -278,6 +299,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
             && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
+        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+            $result['field_options']['family'] = $attribute->getMetricFamily();
         }
 
         if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
@@ -390,7 +413,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setProperty(
             new TwigTemplateProperty(
                 $fieldCompleteness,
-                'PimCatalogBundle:Completeness:_completeness.html.twig',
+                'PimCatalogBundle:Completeness:_datagridCompleteness.html.twig',
                 array(
                     'localeCode'  => $this->flexibleManager->getLocale(),
                     'channelCode' => $this->flexibleManager->getScope()
@@ -409,7 +432,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function createGroupField()
     {
         $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoices();
+        $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->getChoices();
 
         $field = new FieldDescription();
         $field->setName('pGroup');
@@ -596,6 +619,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin('values.metric', 'valueMetrics')
             ->leftJoin($rootAlias .'.categories', 'category');
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
@@ -604,6 +628,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('values')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
+            ->addSelect('valueMetrics')
             ->addSelect('category')
             ->addSelect('pGroup');
 

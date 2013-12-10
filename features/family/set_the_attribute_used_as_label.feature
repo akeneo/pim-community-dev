@@ -16,14 +16,18 @@ Feature: Set the attribute used as label
       | Description | Bags     | textarea |
     And I am logged in as "admin"
 
-  Scenario: Fail to set a non-text attribute as the family label
+  Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page
     Then eligible attributes as label should be Id, Brand and Model
 
+  @javascript
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page
-    And I choose "Brand" as the label of the family
-    Then I should see "Family successfully updated"
+    And I fill in the following information:
+      | Attribute used as label | Brand |
+    And I save the family
+    Then I am on the families page
+    And I should see "Brand"
 
   Scenario: Succesfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label

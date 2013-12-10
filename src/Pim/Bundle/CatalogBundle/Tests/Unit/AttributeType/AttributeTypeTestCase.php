@@ -21,7 +21,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->guesser = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
+        $this->guesser = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue(true));
@@ -36,7 +36,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      * Create attribute type to test
      *
      * @abstract
-     * @return \Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
     abstract protected function createAttributeType();
 
@@ -81,7 +81,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
         if (!$this->target) {
             throw new \Exception(sprintf('You must override the setUp() method and provide a $target instance.'));
         }
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
+        $this->assertInstanceOf('Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface
      */
     protected function getFlexibleValueMock(array $options)
     {
@@ -107,18 +107,25 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
                 'data'         => null,
                 'defaultValue' => null,
                 'backendType'  => null,
+                'attribute_options' => array()
             ),
             $options
         );
 
         $value = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
+            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
             array('getAttribute', 'getData')
+        );
+
+        $attributeMock = $this->getAttributeMock(
+            $options['backendType'],
+            $options['defaultValue'],
+            $options['attribute_options']
         );
 
         $value->expects($this->any())
             ->method('getAttribute')
-            ->will($this->returnValue($this->getAttributeMock($options['backendType'], $options['defaultValue'])));
+            ->will($this->returnValue($attributeMock));
 
         $value->expects($this->any())
             ->method('getData')
@@ -130,12 +137,13 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param string $backendType
      * @param mixed  $defaultValue
+     * @param array  $attributeOptions
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
-    protected function getAttributeMock($backendType, $defaultValue)
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
     {
-        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

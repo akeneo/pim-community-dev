@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Multi options (select) attribute type
@@ -26,7 +26,6 @@ class OptionMultiSelectType extends AbstractAttributeType
         $options['collection_id']        = $attribute->getId();
         $options['multiple']             = true;
         $options['minimum_input_length'] = $attribute->getMinimumInputLength();
-
         return $options;
     }
 

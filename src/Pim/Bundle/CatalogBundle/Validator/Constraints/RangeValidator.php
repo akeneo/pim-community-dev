@@ -4,11 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Constraint;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
- * Constraint
+ * Validator for range constraint
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -44,9 +44,47 @@ class RangeValidator extends BaseRangeValidator
         }
 
         if ($value instanceof Metric || $value instanceof ProductPrice) {
-            $value = $value->getData();
+            $this->validateData($value->getData(), $constraint);
+        } else {
+            parent::validate($value, $constraint);
+        }
+    }
+
+    /**
+     * Validate the data property of a Metric or ProductPrice value
+     * and add the violation to the 'data' property path
+     *
+     * @param mixed      $value
+     * @param Constraint $constraint
+     */
+    protected function validateData($value, Constraint $constraint)
+    {
+        if (null === $value) {
+            return;
         }
 
-        parent::validate($value, $constraint);
+        $message = null;
+        $params  = array();
+
+        if (!is_numeric($value)) {
+            $message = $constraint->invalidMessage;
+            $params  = array('{{ value }}' => $value);
+        } elseif (null !== $constraint->max && $value > $constraint->max) {
+            $message = $constraint->maxMessage;
+            $params = array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->max,
+            );
+        } elseif (null !== $constraint->min && $value < $constraint->min) {
+            $message = $constraint->minMessage;
+            $params = array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->min,
+            );
+        }
+
+        if (null !== $message) {
+            $this->context->addViolationAt('data', $message, $params);
+        }
     }
 }

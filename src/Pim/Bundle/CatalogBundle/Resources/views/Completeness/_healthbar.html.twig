@@ -1,0 +1,38 @@
+<div class="progress-cell">
+{% if product.getFamily is null %}
+    {{ 'Waiting for calculation'|trans }}
+{% elseif completeness is null %}
+    {{ 'Not yet calculated'|trans }}
+{% else %}
+    {% set titleProgressBar = 'pim_catalog.completeness.progress_bar.title'|transchoice(completeness.requiredCount, {'%ratio%': completeness.ratio|number_format(0)}) %}
+    <div class="progress" data-toggle="tooltip" data-original-title="{{ titleProgressBar }}">
+        {% if channel.hasLocale(locale) == false %}
+            {% set progressClass = 'bar-disabled' %}
+        {% elseif completeness.ratio == 100 %}
+            {% set progressClass = 'bar-success' %}
+        {% elseif completeness.ratio == 0 %}
+            {% set progressClass = 'bar-danger' %}
+        {% else %}
+            {% set progressClass = 'bar-warning' %}
+        {% endif %}
+        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%;"></div>
+    </div>
+
+    {% if completeness.missingCount == 0 %}
+        <div class="center">{{ 'pim_catalog.completeness.subtitle'|transchoice(completeness.missingCount) }}</div>
+    {% else %}
+        {% set titleMissing %}
+        <ul>
+            {% for attribute in missingAttributes %}
+                <li>{{ attribute.label }}</li>
+            {% endfor %}
+        </ul>
+        {% endset %}
+        <div class="center" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="hover" data-content="{{ titleMissing|raw }}"
+            data-original-title="{{ 'pim_catalog.completeness.missing_attributes'|transchoice(completeness.missingCount) }}:">
+            <span class="progress-info">{{ 'pim_catalog.completeness.subtitle'|transchoice(completeness.missingCount) }}</span>
+        </div>
+    {% endif %}
+
+{% endif %}
+</div>

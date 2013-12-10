@@ -1,7 +1,6 @@
 Pim\Bundle\CatalogBundle\Entity\Completeness:
     type: entity
     table: pim_catalog_completeness
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CompletenessRepository
     uniqueConstraints:
         searchunique_idx:
             columns:
@@ -38,7 +37,7 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
                     onDelete: CASCADE
                     nullable: false
         product:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             inversedBy: completenesses
             joinColumns:
                 product_id:

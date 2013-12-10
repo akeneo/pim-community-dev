@@ -73,7 +73,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage No entity of class "class" with code "code"
      */
     public function testFailingSingleTransform()
@@ -102,7 +102,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage No entity of class "class" with code "code2"
      */
     public function testFailingMultipleTransform()

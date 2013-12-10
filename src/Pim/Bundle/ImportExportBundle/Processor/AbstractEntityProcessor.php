@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
  * Abstract entity processor to validate entity and create/update it
@@ -21,7 +23,9 @@ use Oro\Bundle\BatchBundle\Item\InvalidItemException;
  *
  * @abstract
  */
-abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * Entity manager
@@ -79,18 +83,29 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            $this->skipItem($item, implode(', ', $messages));
         }
 
         $identifier = $this->getIdentifier($entity);
         if (in_array($identifier, $this->identifiers)) {
-            throw new InvalidItemException(
-                sprintf('Twin ! the entity "%s" has already been processed', $identifier),
-                $item
-            );
+            $this->skipItem($item, sprintf('Duplicate, the entity "%s" has already been processed', $identifier));
         }
         $this->identifiers[] = $identifier;
+    }
+
+    /**
+     * Skip an item with a detail message
+     *
+     * @param mixed  $item
+     * @param string $message
+     *
+     * @throws InvalidItemException
+     */
+    protected function skipItem($item, $message)
+    {
+        $this->stepExecution->incrementSummaryInfo('skip');
+
+        throw new InvalidItemException($message, $item);
     }
 
     /**
@@ -103,5 +118,13 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     protected function getIdentifier($entity)
     {
         return $entity->getCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

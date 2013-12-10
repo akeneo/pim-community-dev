@@ -78,10 +78,9 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
             $orderedTables[] = $class->getQuotedTableName($platform);
         }
 
+        $orderedTables = array_diff($orderedTables, $this->excludedTables);
+
         foreach ($orderedTables as $tbl) {
-            if (in_array($tbl, $this->excludedTables)) {
-                continue;
-            }
             if ($this->purgeMode === self::PURGE_MODE_DELETE) {
                 $this->em->getConnection()->executeUpdate("DELETE FROM " . $tbl);
             } else {

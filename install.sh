@@ -30,7 +30,8 @@ ORO_FIXTURES=`echo $ORO_FIXTURE_BUNDLES | sed -e "s# # --fixtures=$ORO_BUNDLE_PA
 PIM_FIXTURE_PATHS="
     src/Pim/Bundle/InstallerBundle/DataFixtures
     src/Pim/Bundle/UserBundle/DataFixtures
-    vendor/akeneo/DemoBundle/Pim/Bundle/DemoBundle/DataFixtures
+    src/Pim/Bundle/CustomEntityBundle/DataFixtures
+    src/Pim/Bundle/DemoBundle/DataFixtures
 "
 PIM_FIXTURES=`echo $PIM_FIXTURE_PATHS | sed -e "s# # --fixtures=#g" -e "s#^# --fixtures=#"`
 
@@ -96,8 +97,8 @@ cd $APP_ROOT
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
     php app/console oro:entity-extend:clear
-    php app/console doctrine:schema:drop --force --full-database 2>&1 > /dev/null || true
-    php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
+    php app/console doctrine:schema:drop --force --full-database > /dev/null 2>&1 || true
+    php app/console doctrine:database:drop --force > /dev/null 2>&1 || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console cache:clear

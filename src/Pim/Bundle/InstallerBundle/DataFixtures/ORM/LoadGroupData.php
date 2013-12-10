@@ -44,7 +44,7 @@ class LoadGroupData extends AbstractInstallerFixture
      * @param string $code
      * @param array  $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     protected function createGroup($code, $data)
     {

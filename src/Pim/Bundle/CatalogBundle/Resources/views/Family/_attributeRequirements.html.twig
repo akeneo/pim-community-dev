@@ -16,7 +16,7 @@
         </thead>
 
         {% set colspan = channels|length + 2 %}
-        {% for groupLabel, attributes in family.groupedAttributes %}
+        {% for groupLabel, attributes in form.vars.value.groupedAttributes %}
         <tbody>
             <tr class="group">
                 <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
@@ -38,8 +38,8 @@
                 <td>
                     {% if attribute.attributeType != 'pim_catalog_identifier' %}
                         <a {{ elements.deleteLinkAttributes(
-                                path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}),
-                                path('pim_catalog_family_edit', {'id': family.id, 'boost': 'now'|date('U') }),
+                                path('pim_catalog_family_removeproductattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
+                                path('pim_catalog_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),
                                 'confirmation.remove.attribute'|trans({ '%name%': attribute.label }),
                                 '',
                                 'flash.family.attribute removed'|trans

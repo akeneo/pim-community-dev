@@ -12,7 +12,6 @@ Feature: Create an import
     When I fill in the following information:
       | Code  | mobile_product_import |
       | Label | Mobile product import |
-    And I visit the "Configuration" tab
     And I save the import
     Then I should see "Import profile - Mobile product import"
 

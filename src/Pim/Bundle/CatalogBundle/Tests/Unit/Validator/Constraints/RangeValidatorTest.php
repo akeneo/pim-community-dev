@@ -47,7 +47,7 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->never())
             ->method('addViolation');
 
-        $price = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductPrice');
+        $price = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductPrice');
         $price->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(50));
@@ -68,8 +68,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->context->expects($this->once())
-            ->method('addViolation')
+            ->method('addViolationAt')
             ->with(
+                'data',
                 $constraint->maxMessage,
                 array(
                     '{{ value }}' => 150,
@@ -77,7 +78,7 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $price = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductPrice');
+        $price = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductPrice');
         $price->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(150));

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Product creation form type
@@ -23,7 +23,16 @@ class ProductCreateType extends FlexibleType
 
         $builder
             ->add('values', 'collection')
-            ->add('family');
+            ->add(
+                'family',
+                null,
+                array(
+                    'select2' => true,
+                    'attr'    => array(
+                        'data-placeholder' => 'Choose a family'
+                    )
+                )
+            );
     }
 
     /**

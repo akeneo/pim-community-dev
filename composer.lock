@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "65bb9eaf998d9b60aeb3fdfefe594848",
+    "hash": "ffbd521143e7f4a4852410d04c2405c7",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -66,58 +66,6 @@
                 "translation"
             ],
             "time": "2013-10-07 19:50:34"
-        },
-        {
-            "name": "akeneo/DemoBundle",
-            "version": "dev-master",
-            "target-dir": "Pim/Bundle/DemoBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "b87042e6249ad0f34d8eadcc906b8146516fa0c5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/b87042e6249ad0f34d8eadcc906b8146516fa0c5",
-                "reference": "b87042e6249ad0f34d8eadcc906b8146516fa0c5",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": "~1.2",
-                "nelmio/alice": "1.2.*",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.*"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Pim\\Bundle\\DemoBundle": ""
-                }
-            },
-            "license": [
-                "OSL"
-            ],
-            "description": "Demo Bundle",
-            "homepage": "https://github.com/akeneo/DemoBundle",
-            "keywords": [
-                "Data",
-                "Demo",
-                "Generator"
-            ],
-            "support": {
-                "source": "https://github.com/akeneo/DemoBundle/tree/master",
-                "issues": "https://github.com/akeneo/DemoBundle/issues"
-            },
-            "time": "2013-10-23 14:10:59"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -1256,6 +1204,218 @@
             "time": "2013-03-07 12:15:25"
         },
         {
+            "name": "doctrine/mongodb",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/mongodb.git",
+                "reference": "401796e7a5ec3cea099d993fd0034235b917f1a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/mongodb/zipball/401796e7a5ec3cea099d993fd0034235b917f1a8",
+                "reference": "401796e7a5ec3cea099d993fd0034235b917f1a8",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": ">=2.1.0,<2.5-dev",
+                "php": ">=5.3.2"
+            },
+            "suggest": {
+                "ext-mongo": ">=1.2.12,<1.6-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\MongoDB": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                },
+                {
+                    "name": "Jonathan H. Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                },
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com",
+                    "homepage": "http://jmikola.net"
+                }
+            ],
+            "description": "Doctrine MongoDB Abstraction Layer",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "mongodb",
+                "persistence"
+            ],
+            "time": "2013-11-01 17:12:21"
+        },
+        {
+            "name": "doctrine/mongodb-odm",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/mongodb-odm.git",
+                "reference": "4a2d7755c225f5b27f69e3ef0187ae0caec24aea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/4a2d7755c225f5b27f69e3ef0187ae0caec24aea",
+                "reference": "4a2d7755c225f5b27f69e3ef0187ae0caec24aea",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "doctrine/collections": "~1.0",
+                "doctrine/common": "2.4.*",
+                "doctrine/inflector": "~1.0",
+                "doctrine/mongodb": "1.0.*",
+                "php": ">=5.3.2",
+                "symfony/console": "~2.0"
+            },
+            "require-dev": {
+                "symfony/yaml": "~2.0"
+            },
+            "suggest": {
+                "symfony/yaml": "Enables the YAML metadata mapping driver"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\ODM\\MongoDB": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                },
+                {
+                    "name": "Jonathan H. Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                },
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com",
+                    "homepage": "http://jmikola.net"
+                }
+            ],
+            "description": "Doctrine MongoDB Object Document Mapper",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "mongodb",
+                "odm",
+                "persistence"
+            ],
+            "time": "2013-10-28 17:53:12"
+        },
+        {
+            "name": "doctrine/mongodb-odm-bundle",
+            "version": "dev-master",
+            "target-dir": "Doctrine/Bundle/MongoDBBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
+                "reference": "b7d25d7fab0149942d3a19c73c0544ef54b1bab7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/b7d25d7fab0149942d3a19c73c0544ef54b1bab7",
+                "reference": "b7d25d7fab0149942d3a19c73c0544ef54b1bab7",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/mongodb-odm": "~1.0.0-beta5@dev",
+                "php": ">=5.3.2",
+                "symfony/doctrine-bridge": "~2.1",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/options-resolver": "~2.1"
+            },
+            "require-dev": {
+                "doctrine/data-fixtures": "@dev",
+                "symfony/form": "~2.1",
+                "symfony/yaml": "~2.1"
+            },
+            "suggest": {
+                "doctrine/data-fixtures": "Load data fixtures"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Bundle\\MongoDBBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                },
+                {
+                    "name": "Jonathan H. Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris@symfony.com"
+                }
+            ],
+            "description": "Symfony2 Doctrine MongoDB Bundle",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "mongodb",
+                "persistence",
+                "symfony"
+            ],
+            "time": "2013-10-28 20:35:52"
+        },
+        {
             "name": "doctrine/orm",
             "version": "2.3.x-dev",
             "source": {
@@ -1600,52 +1760,6 @@
                 "rest"
             ],
             "time": "2013-05-06 10:33:17"
-        },
-        {
-            "name": "fzaninotto/faker",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "2355fcf8d19de6eaa562f809150e4ddace90d985"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/2355fcf8d19de6eaa562f809150e4ddace90d985",
-                "reference": "2355fcf8d19de6eaa562f809150e4ddace90d985",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Faker": "src/",
-                    "Faker\\PHPUnit": "test/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "time": "2013-10-10 13:40:29"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -3354,60 +3468,6 @@
             "time": "2013-04-05 18:55:56"
         },
         {
-            "name": "nelmio/alice",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nelmio/alice",
-                "reference": "1.2.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/nelmio/alice/archive/1.2.0.zip",
-                "reference": "1.2.0",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": ">=1.0,<2.0",
-                "php": ">=5.3",
-                "symfony/yaml": ">=2.0,<3.0"
-            },
-            "require-dev": {
-                "doctrine/common": ">=2.3,<3.0",
-                "phpunit/phpunit": "3.7.*",
-                "symfony/form": ">=2.1,<3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Nelmio\\Alice\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nelmio",
-                    "homepage": "http://nelm.io"
-                }
-            ],
-            "description": "Expressive fixtures generator",
-            "keywords": [
-                "Fixture",
-                "data",
-                "orm",
-                "test"
-            ],
-            "time": "2013-01-06 16:19:42"
-        },
-        {
             "name": "nelmio/api-doc-bundle",
             "version": "dev-master",
             "target-dir": "Nelmio/ApiDocBundle",
@@ -3477,16 +3537,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_beta3",
+            "version": "dev-maintenance/pim_beta4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544"
+                "reference": "b10b53400e7c0d33475bb75c9db3542e9b5c9304"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/51c4583eb141b7617cdf5308cd61e60d43056544",
-                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/b10b53400e7c0d33475bb75c9db3542e9b5c9304",
+                "reference": "b10b53400e7c0d33475bb75c9db3542e9b5c9304",
                 "shasum": ""
             },
             "require": {
@@ -3545,10 +3605,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta3",
+                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta4",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-10-28 08:41:50"
+            "time": "2013-12-05 17:43:30"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -5663,6 +5723,52 @@
             "time": "2013-07-09 08:46:53"
         },
         {
+            "name": "fzaninotto/faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "2355fcf8d19de6eaa562f809150e4ddace90d985"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/2355fcf8d19de6eaa562f809150e4ddace90d985",
+                "reference": "2355fcf8d19de6eaa562f809150e4ddace90d985",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Faker": "src/",
+                    "Faker\\PHPUnit": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2013-10-10 13:40:29"
+        },
+        {
             "name": "instaclick/php-webdriver",
             "version": "1.1",
             "source": {
@@ -5769,6 +5875,60 @@
             "time": "2013-09-12 13:09:33"
         },
         {
+            "name": "nelmio/alice",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/alice",
+                "reference": "1.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/nelmio/alice/archive/1.2.0.zip",
+                "reference": "1.2.0",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": ">=1.0,<2.0",
+                "php": ">=5.3",
+                "symfony/yaml": ">=2.0,<3.0"
+            },
+            "require-dev": {
+                "doctrine/common": ">=2.3,<3.0",
+                "phpunit/phpunit": "3.7.*",
+                "symfony/form": ">=2.1,<3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Nelmio\\Alice\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                }
+            ],
+            "description": "Expressive fixtures generator",
+            "keywords": [
+                "Fixture",
+                "data",
+                "orm",
+                "test"
+            ],
+            "time": "2013-01-06 16:19:42"
+        },
+        {
             "name": "sensiolabs/behat-page-object-extension",
             "version": "dev-master",
             "source": {
@@ -5829,12 +5989,12 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "oro/platform": 20,
-        "akeneo/demobundle": 20,
         "knplabs/knp-gaufrette-bundle": 20,
+        "doctrine/mongodb-odm-bundle": 20,
         "behat/behat": 0
     },
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.4"
     },
     "platform-dev": [
 

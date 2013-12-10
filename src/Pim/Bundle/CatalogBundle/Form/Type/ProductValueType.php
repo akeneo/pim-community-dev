@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -19,6 +19,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductValueType extends FlexibleValueType
 {
+    /**
+     * @var ProductFormView $productFormView
+     */
     protected $productFormView;
 
     /**
@@ -42,6 +45,8 @@ class ProductValueType extends FlexibleValueType
         if ($form->getData() instanceof ProductValueInterface) {
             $this->productFormView->addChildren($form->getData(), $view);
         }
+
+        $view->vars['mode'] = isset($options['block_config']['mode']) ? $options['block_config']['mode'] : 'normal';
     }
 
     /**

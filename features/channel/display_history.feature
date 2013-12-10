@@ -12,16 +12,16 @@ Feature: Display the channel history
       | Code          | foo             |
       | Default label | bar             |
       | Category tree | 2014 collection |
-    And I select the currency "EUR"
-    And I select the locale "French (France)"
+      | Currencies    | EUR             |
+      | Locales       | French (France) |
     And I press the "Save" button
     When I am on the "foo" channel page
     And I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | property      | value           |
-      | create | 1       | code          | foo             |
-      | create | 1       | label         | bar             |
-      | create | 1       | category | 2014_collection |
-      | create | 1       | currencies    | EUR             |
-      | create | 1       | locales       | fr_FR           |
+      | action | version | property   | value           |
+      | create | 1       | code       | foo             |
+      | create | 1       | label      | bar             |
+      | create | 1       | category   | 2014_collection |
+      | create | 1       | currencies | EUR             |
+      | create | 1       | locales    | fr_FR           |

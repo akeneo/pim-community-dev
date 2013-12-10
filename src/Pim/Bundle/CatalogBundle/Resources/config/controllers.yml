@@ -13,6 +13,7 @@ parameters:
     pim_catalog.controller.media.class:             Pim\Bundle\CatalogBundle\Controller\MediaController
     pim_catalog.controller.variant_group.class:     Pim\Bundle\CatalogBundle\Controller\VariantGroupController
     pim_catalog.controller.group_type.class:        Pim\Bundle\CatalogBundle\Controller\GroupTypeController
+    pim_catalog.controller.completeness.class:      Pim\Bundle\CatalogBundle\Controller\CompletenessController
 
 services:
     pim_catalog.controller.abstract:
@@ -74,6 +75,8 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.form.handler.family'
+            - '@pim_catalog.form.family'
 
     pim_catalog.controller.locale:
         scope: request
@@ -106,7 +109,6 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
-            - '@pim_catalog.helper.completeness'
 
     pim_catalog.controller.mass_edit_action:
         scope: request
@@ -162,3 +164,12 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.group_type'
             - '@pim_catalog.form.group_type'
+
+    pim_catalog.controller.completeness:
+        class: %pim_catalog.controller.completeness.class%
+        arguments:
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
+            - '@templating'

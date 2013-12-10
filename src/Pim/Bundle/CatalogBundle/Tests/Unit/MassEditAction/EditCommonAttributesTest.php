@@ -269,7 +269,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
     }
 
     /**
@@ -304,11 +304,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($type));
 
         $attribute->expects($this->any())
-            ->method('getScopable')
+            ->method('isScopable')
             ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         $attribute->expects($this->any())
@@ -375,11 +375,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param mixed $scope
      * @param array $prices
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getProductValueMock($attribute, $data, $scope = null, array $prices = array())
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -422,12 +422,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $currency
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductPrice
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductPrice
      */
     protected function getProductPriceMock($currency)
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\ProductPrice')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductPrice')
             ->setConstructorArgs(array(null, $currency))
             ->getMock();
     }

@@ -50,8 +50,8 @@ attributes:
         type:  pim_catalog_image
         group: media
         parameters:
-            maxFileSize: 1
-            sortOrder:   1
+            maxFileSize:       1
+            sortOrder:         1
             allowedExtensions: gif,png,jpeg,jpg
     image:
         labels:
@@ -65,6 +65,19 @@ attributes:
             maxFileSize: 2
             sortOrder:   2
             allowedExtensions: gif,png,jpeg,jpg
+    legend:
+        labels:
+            en_US: Legend
+            en_GB: Legend
+            fr_FR: Légende
+            de_DE: Legende
+        type:  pim_catalog_text
+        group: media
+        parameters:
+            translatable:        true
+            useableAsGridColumn: false
+            useableAsGridFilter: false
+            sortOrder:           3
     price:
         labels:
             en_US: Price
@@ -623,7 +636,7 @@ attributes:
         parameters:
             metricFamily:      Temperature
             sortOrder:         6
-            defaultMetricUnit: CELCIUS
+            defaultMetricUnit: CELSIUS
             negativeAllowed:   false
             numberMax:         100
     weight:

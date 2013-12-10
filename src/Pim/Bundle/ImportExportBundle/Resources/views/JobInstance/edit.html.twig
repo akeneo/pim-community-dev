@@ -38,9 +38,6 @@
         {{ elements.form_errors(form) }}
 
         {% set navbarTabs = ['General properties'] %}
-        {% for step in form.job.steps %}
-            {% set navbarTabs = navbarTabs|merge([step.vars.value.name]) %}
-        {% endfor %}
         {% if form.vars.value.id %}
              {% set navbarTabs = navbarTabs|merge(['History']) %}
         {% endif %}
@@ -49,19 +46,22 @@
 
         <div class="row-fluid tab-content">
             <div class="tab-pane buffer-top active" id="general-properties">
-                {{ form_row(form.code) }}
-                {{ form_row(form.label) }}
-            </div>
 
-            {% set accordionCount = 0 %}
-            {% for step in form.job.steps %}
-                <div class="tab-pane" id="{{ step.vars.value.name|replace({' ': '-', '.': '-'}) }}">
-                    {% for child in step.children %}
-                        {% set accordionCount = accordionCount + 1 %}
-                        {{ elements.accordion({ (child.vars.label): form_widget(child) }, accordionCount) }}
+                {% set properties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.label) }}
+                {% endset %}
+                {{ elements.accordion({ 'Properties': properties }, 1) }}
+
+                {% set globalSettings %}
+                    {% for step in form.job.steps %}
+                        {% for child in step.children %}
+                            {{ form_widget(child) }}
+                        {% endfor %}
                     {% endfor %}
-                </div>
-            {% endfor %}
+                {% endset %}
+                {{ elements.accordion({ 'Global settings': globalSettings }, 2) }}
+            </div>
 
             {% if form.vars.value.id %}
             <div class="tab-pane" id="history">

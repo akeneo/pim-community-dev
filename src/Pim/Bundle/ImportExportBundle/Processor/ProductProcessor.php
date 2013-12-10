@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
  * Product import processor
@@ -16,8 +15,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
- StepExecutionAwareInterface
+class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
      * @var ORMProductTransformer
@@ -45,6 +43,11 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
     protected $groupsColumn  = 'groups';
 
     /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
+
+    /**
      * @var StepExecution
      */
     protected $stepExecution;
@@ -52,10 +55,16 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
     /**
      * Constructor
      *
-     * @param ORMProductTransformer $transformer
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface      $translator
+     * @param ORMProductTransformer    $transformer
      */
-    public function __construct(ORMProductTransformer $transformer)
-    {
+    public function __construct(
+        ImportValidatorInterface $validator,
+        TranslatorInterface $translator,
+        ORMProductTransformer $transformer
+    ) {
+        parent::__construct($validator, $translator);
         $this->transformer = $transformer;
     }
 
@@ -140,43 +149,113 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
     }
 
     /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
+        $this->transformer->setHeterogeneous($heterogeneous);
+    }
+
+    /**
+     * Wether or not the products are heterogeneous
+     *
+     * @return bool
+     */
+    public function isHeterogeneous()
+    {
+        return $this->heterogeneous;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
     {
         return array(
-            'enabled'             => array(
-                'type' => 'switch',
+            'enabled' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.enabled.label',
+                    'help'  => 'pim_import_export.import.enabled.help'
+                )
             ),
-            'categoriesColumn'    => array(),
-            'familyColumn'        => array(),
-            'groupsColumn'        => array(),
+            'categoriesColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.categoriesColumn.label',
+                    'help'  => 'pim_import_export.import.categoriesColumn.help'
+                )
+            ),
+            'familyColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.familyColumn.label',
+                    'help'  => 'pim_import_export.import.familyColumn.help'
+                )
+            ),
+            'groupsColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.groupsColumn.label',
+                    'help'  => 'pim_import_export.import.groupsColumn.help'
+                )
+            ),
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    protected function transform($item)
     {
-        return $this->transformer->getProduct(
-            $item,
-            array(
-                'family'        => $this->familyColumn,
-                'categories'    => $this->categoriesColumn,
-                'groups'        => $this->groupsColumn
-            ),
-            array(
-                'enabled'       => $this->enabled
-            )
+        return $this->transformer->transform($item, array('enabled' => $this->enabled));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapping()
+    {
+        return array(
+            $this->familyColumn     => 'family',
+            $this->categoriesColumn => 'categories',
+            $this->groupsColumn     => 'groups'
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    protected function getTransformedColumnsInfo()
     {
-        $this->stepExecution = $stepExecution;
+        return $this->transformer->getTransformedColumnsInfo();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTransformerErrors()
+    {
+        return $this->transformer->getErrors();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function mapValues(array &$values)
+    {
+        parent::mapValues($values);
+
+        foreach ($values as $key => $value) {
+            if (1 === preg_match('/-unit$/', $key)) {
+                $metricValueKey = substr($key, 0, -5);
+                if (!isset($values[$metricValueKey])) {
+                    throw new \Exception(sprintf('Could not find matching metric value key for unit key "%s"', $value));
+                }
+
+                $values[$metricValueKey] .= sprintf(' %s', $value);
+                unset($values[$key]);
+            }
+        }
     }
 }

@@ -5,7 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
 
 /**
  * Job instance form type
@@ -23,6 +24,7 @@ class JobInstanceType extends AbstractType
     {
         $builder
             ->add('code', 'text')
+            ->addEventSubscriber(new DisableFieldSubscriber('code'))
             ->add('label')
             ->add(
                 'job',
@@ -32,7 +34,8 @@ class JobInstanceType extends AbstractType
                     'by_reference' => false,
                 )
             )
-            ->addEventSubscriber(new DisableCodeFieldSubscriber());
+            ->get('job')
+            ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());
     }
 
     /**

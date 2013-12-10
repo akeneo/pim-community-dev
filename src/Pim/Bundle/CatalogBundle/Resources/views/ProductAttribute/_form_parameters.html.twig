@@ -30,13 +30,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="control-group" style="display: none;">
-            {{ form_label(form.availableLocales, null, { 'label_attr': {'class': 'control-label'} }) }}
-            <div class="controls">
-                {{ form_widget(form.availableLocales, {'attr' : { 'class': 'input-large' }}) }}
-            </div>
-        </div>
+        {{ form_row(form.availableLocales) }}
     {% endif %}
 
     {% set optionalFields = ['dateType', 'dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',

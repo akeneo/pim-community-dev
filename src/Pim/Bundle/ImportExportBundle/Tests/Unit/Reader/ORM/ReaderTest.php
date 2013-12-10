@@ -52,10 +52,6 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     {
         $query = $this->getQueryMock(array('foo', 'bar'));
         $this->reader->setQuery($query);
-        $this->stepExecution->expects($this->once())
-            ->method('setReadCount')
-            ->with(2);
-
         $this->assertEquals(array('foo', 'bar'), $this->reader->read());
         $this->assertNull($this->reader->read());
     }

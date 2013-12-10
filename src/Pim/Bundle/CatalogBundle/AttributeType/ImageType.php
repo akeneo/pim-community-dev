@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageType as OroImageType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageType as FlexImageType;
 
 /**
  * Image attribute type
@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageType as OroImageType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImageType extends OroImageType
+class ImageType extends FlexImageType
 {
     /**
      * {@inheritdoc}
@@ -35,7 +35,8 @@ class ImageType extends OroImageType
                     'attr'         => array(
                         'class'     => 'multiselect',
                         'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
-                    )
+                    ),
+                    'select2' => true
                 )
             ),
             array(

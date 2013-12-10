@@ -31,9 +31,8 @@ class ProductEditType extends AbstractType
      *
      * @param \Pim\Bundle\CatalogBundle\Form\View\ProductFormView $productFormView
      */
-    public function __construct(
-        ProductFormView $productFormView
-    ) {
+    public function __construct(ProductFormView $productFormView)
+    {
         $this->productFormView = $productFormView;
     }
 
@@ -107,6 +106,7 @@ class ProductEditType extends AbstractType
             )
         );
     }
+
     /**
      * {@inheritdoc}
      */

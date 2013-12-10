@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
 /**
@@ -130,7 +130,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     protected function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
     {
-        /** @var $options \Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption[] */
+        /** @var $options \Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption[] */
         $options = $this->userManager->getAttributeOptionRepository()->findBy(
             array('attribute' => $attribute)
         );

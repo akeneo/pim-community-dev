@@ -33,12 +33,12 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'csv',  false),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'csv',  false),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', true),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\ProductInterface', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', false),
             array('stdClass', 'json', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
@@ -157,11 +157,11 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductLocale
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     private function getLocaleMock($code)
     {
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductLocale', array('getCode'));
+        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', array('getCode'));
 
         $locale->expects($this->any())
                  ->method('getCode')
@@ -178,7 +178,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     private function getProductMock(ArrayCollection $values = null)
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $product->expects($this->any())
             ->method('getValues')
@@ -209,7 +209,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     private function getValueMock($attribute = null, $data = null, $locale = null)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -242,7 +242,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         return $attribute;

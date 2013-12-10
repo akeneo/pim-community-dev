@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
@@ -51,7 +50,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         $sku = $item[$identifier->getCode()];
         $product = $this->findProduct($sku);
         if (!$product) {
-            throw new InvalidItemException("The main product doesn't exist", $item);
+            $this->skipItem($item, "The main product doesn't exist");
         }
 
         $associationsData = $this->prepareAssociationData($item);
@@ -60,7 +59,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         foreach ($associationsData as $code => $associationData) {
             $association = $this->findAssociation($code);
             if (!$association) {
-                throw new InvalidItemException(sprintf("The association %s doesn't exist", $code), $item);
+                $this->skipItem($item, sprintf("The association %s doesn't exist", $code));
             }
 
             $productAssociation = $this->getProductAssociation($product, $association);
@@ -92,15 +91,9 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         foreach ($skus as $sku) {
             $related = $this->findProduct($sku);
             if (!$related) {
-                throw new InvalidItemException(
-                    sprintf("The related product %s doesn't exist", $sku),
-                    $item
-                );
+                $this->skipItem($item, sprintf("The related product %s doesn't exist", $sku));
             } elseif ($related->getIdentifier() === $productIdentifier) {
-                throw new InvalidItemException(
-                    sprintf("The product can't %s be associated with itself", $sku),
-                    $item
-                );
+                $this->skipItem($item, sprintf("The product can't %s be associated with itself", $sku));
             }
             $association->addProduct($related);
         }
@@ -119,10 +112,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         foreach ($groupCodes as $groupCode) {
             $related = $this->findGroup($groupCode);
             if (!$related) {
-                throw new InvalidItemException(
-                    sprintf("The related group %s doesn't exist", $groupCode),
-                    $item
-                );
+                $this->skipItem($item, sprintf("The related group %s doesn't exist", $groupCode));
             }
             $association->addGroup($related);
         }
@@ -198,7 +188,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:Group')
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
             ->findOneBy(array('code' => $code));
     }
 

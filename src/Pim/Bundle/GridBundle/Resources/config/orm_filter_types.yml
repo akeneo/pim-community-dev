@@ -2,12 +2,63 @@ parameters:
     oro_grid.route.default_generator.class: Pim\Bundle\GridBundle\Route\SetterRouteGenerator
 
 services:
+
+    pim_grid.orm.filter.type.flexible_number:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleNumberFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.number"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_number }
+
+    pim_grid.orm.filter.type.flexible_boolean:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleBooleanFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.boolean"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_boolean }
+
+    pim_grid.orm.filter.type.flexible_string:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleStringFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.string"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_string }
+
+    pim_grid.orm.filter.type.flexible_date_range:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleDateRangeFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.date_range"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_date_range }
+
+    pim_grid.orm.filter.type.flexible_datetime_range:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleDateTimeRangeFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.datetime_range"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_datetime_range }
+
+    pim_grid.orm.filter.type.flexible_options:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleOptionsFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.choice"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_options }
+
+    pim_grid.orm.filter.type.flexible_entity:
+        class:     Pim\Bundle\GridBundle\Filter\ORM\Flexible\FlexibleEntityFilter
+        arguments: ["@pim_flexibleentity.registry", "@oro_grid.orm.filter.type.entity"]
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_flexible_entity }
+
     pim_grid.orm.filter.type.currency:
         class: Pim\Bundle\GridBundle\Filter\ORM\CurrencyFilter
         arguments:
             - '@translator'
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_currency }
+
+    pim_grid.orm.filter.type.metric:
+        class: Pim\Bundle\GridBundle\Filter\ORM\MetricFilter
+        arguments:
+            - '@translator'
+            - '@oro_measure.measure_converter'
+        tags:
+            - { name: oro_grid.filter.type, alias: pim_grid_orm_metric }
 
     pim_grid.orm.filter.type.scope:
         class: Pim\Bundle\GridBundle\Filter\ORM\ScopeFilter

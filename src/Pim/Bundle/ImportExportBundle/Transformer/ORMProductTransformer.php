@@ -2,23 +2,32 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 
 /**
- * Transforms a CSV product in an entity
+ * Specialized ORMTransformer for products
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductTransformer
+class ORMProductTransformer extends AbstractORMTransformer
 {
+    /**
+     * @staticvar the identifier attribute type
+     */
+    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
+
     /**
      * @var ProductManager
      */
@@ -30,151 +39,93 @@ class ORMProductTransformer
     protected $attributeCache;
 
     /**
-     * @var ProductImportValidator
+     * @var array
      */
-    protected $productValidator;
+    protected $attributes;
 
     /**
-     * @var PropertyAccessorInterface
+     * @var ProductAttribute
      */
-    protected $propertyAccessor;
+    protected $identifierAttribute;
+
+    /**
+     * @var boolean
+     */
+    protected $initialized=false;
+
+    /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
 
     /**
      * @var array
      */
-    protected $propertyTransformers = array();
+    protected $propertyColumnsInfo;
 
     /**
      * @var array
      */
-    protected $attributeTransformers = array();
+    protected $attributeColumnsInfo;
 
     /**
      * Constructor
      *
-     * @param ProductManager            $productManager
-     * @param ProductImportValidator    $productValidator
-     * @param AttributeCache            $attributeCache
-     * @param PropertyAccessorInterface $propertyAccessor
+     * @param RegistryInterface              $doctrine
+     * @param PropertyAccessorInterface      $propertyAccessor
+     * @param GuesserInterface               $guesser
+     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param ProductManager                 $productManager
+     * @param AttributeCache                 $attributeCache
      */
     public function __construct(
+        RegistryInterface $doctrine,
+        PropertyAccessorInterface $propertyAccessor,
+        GuesserInterface $guesser,
+        ColumnInfoTransformerInterface $columnInfoTransformer,
         ProductManager $productManager,
-        ProductImportValidator $productValidator,
-        AttributeCache $attributeCache,
-        PropertyAccessorInterface $propertyAccessor
+        AttributeCache $attributeCache
     ) {
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
         $this->productManager = $productManager;
-        $this->productValidator = $productValidator;
         $this->attributeCache = $attributeCache;
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
-     * Returns a ProductInterface object from an array of scalar values
+     * Transforms an array in a product
      *
-     * @param array $values   the values to transform
-     * @param array $mapping  a mapping of columns which should be renamed
-     * @param array $defaults default values for the object
+     * @param array $data
+     * @param array $defaults
      *
-     * @return ProductInterface
      * @throws InvalidItemException
-     */
-    public function getProduct(array $values, array $mapping = array(), array $defaults = array())
-    {
-
-        $this->mapValues($values, $mapping);
-        $attributeValues = array_diff_key($values, $this->propertyTransformers);
-        foreach (array_keys($attributeValues) as $key) {
-            if (strpos($key, '_groups') !== false || strpos($key, '_products') !== false) {
-                unset($attributeValues[$key]);
-            }
-        }
-        $propertyValues = array_intersect_key($values, $this->propertyTransformers);
-
-        if (!$this->attributeCache->isInitialized()) {
-            $this->attributeCache->initialize(array_keys($attributeValues));
-        }
-
-        $product = $this->createOrLoadProduct($values);
-
-        $this->setDefaultValues($product, $defaults);
-        $errors = array_merge(
-            $this->setPropertyValues($product, $propertyValues),
-            $this->setAttributeValues($product, $attributeValues)
-        );
-        if (count($errors)) {
-            throw new InvalidItemException(implode("\n", $errors), $values);
-        }
-
-        return $product;
-    }
-
-    /**
-     * Adds a property transformer
-     *
-     * @param string                       $propertyPath
-     * @param PropertyTransformerInterface $transformer
-     * @param array                        $options
-     */
-    public function addPropertyTransformer(
-        $propertyPath,
-        Property\PropertyTransformerInterface $transformer,
-        array $options = array()
-    ) {
-        $this->propertyTransformers[$propertyPath] = array(
-            'transformer' => $transformer,
-            'options'     => $options
-        );
-    }
-
-    /**
-     * Adds an attribute transformer
-     *
-     * @param string                                                                           $backendType
-     * @param \Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface $transformer
-     * @param array                                                                            $options
-     */
-    public function addAttributeTransformer(
-        $backendType,
-        Property\PropertyTransformerInterface $transformer,
-        array $options = array()
-    ) {
-        $this->attributeTransformers[$backendType] = array(
-            'transformer' => $transformer,
-            'options'     => $options
-        );
-    }
-
-    /**
-     * Remaps values according to $mapping
-     *
-     * @param array &$values
-     * @param array $mapping
-     */
-    protected function mapValues(array &$values, array $mapping)
-    {
-        foreach ($mapping as $oldName => $newName) {
-            if ($oldName != $newName && isset($values[$oldName])) {
-                $values[$newName] = $values[$oldName];
-                unset($values[$oldName]);
-            }
-        }
-    }
-
-    /**
-     * Loads a product from the database, or creates if it doesn't exist
-     *
-     * @param array $values
-     *
      * @return ProductInterface
      */
-    protected function createOrLoadProduct(array $values)
+    public function transform(array $data, array $defaults = array())
     {
-        $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
+        $this->initializeAttributes($data);
+
+        return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
+    }
+
+    /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getEntity($class, array $data)
+    {
         $product = $this->productManager->getImportProduct(
-            $this->attributeCache->getAttributes(),
-            $identifierAttribute,
-            $values[$identifierAttribute->getCode()]
+            $this->attributes,
+            $this->identifierAttribute,
+            $data[$this->identifierAttribute->getCode()]
         );
 
         if (!$product) {
@@ -185,126 +136,120 @@ class ORMProductTransformer
     }
 
     /**
-     * Sets the values for the properties
-     *
-     * @param ProductInterface $product
-     * @param array            $values
-     *
-     * @return array an array of errors
+     * {@inheritdoc}
      */
-    protected function setPropertyValues(ProductInterface $product, array $values)
+    protected function setProperties($class, $entity, array $data)
     {
-        $errors = array();
+        $flexibleValueClass = $this->productManager->getFlexibleValueName();
 
-        foreach ($values as $propertyPath => $value) {
-            try {
-                $this->propertyAccessor->setValue(
-                    $product,
-                    $propertyPath,
-                    $this->getTransformedValue($value, $this->propertyTransformers[$propertyPath])
-                );
-            } catch (InvalidValueException $ex) {
-                $errors[] = $this->productValidator->getTranslatedExceptionMessage($propertyPath, $ex);
+        foreach ($this->propertyColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
+            $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
+            $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
+            if ($error) {
+                $this->errors[$label] = array($error);
             }
         }
 
-        return array_merge(
-            $errors,
-            $this->productValidator->validateProductProperties($product, $values)
-        );
-    }
-
-    /**
-     * Sets the default values of the product
-     *
-     * @param ProductInterface $product
-     * @param type             $defaults
-     */
-    protected function setDefaultValues(ProductInterface $product, $defaults)
-    {
-        foreach ($defaults as $propertyPath => $value) {
-            $this->propertyAccessor->setValue($product, $propertyPath, $value);
-        }
-    }
-
-    /**
-     * Sets the values of the attributes
-     *
-     * @param ProductInterface $product
-     * @param array            $attributeValues
-     *
-     * @return array an array of errors
-     */
-    protected function setAttributeValues(ProductInterface $product, array $attributeValues)
-    {
-        $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($product);
-        $columns = $this->attributeCache->getColumns();
-        $errors = array();
-        foreach ($attributeValues as $columnCode => $columnValue) {
-            $columnInfo = $columns[$columnCode];
-            try {
-                if ('' != trim($columnValue) || in_array($columnInfo['code'], $requiredAttributeCodes)) {
-                    $backendType = $columnInfo['attribute']->getBackendType();
-                    $transformerConfig = isset($this->attributeTransformers[$backendType])
-                            ? $this->attributeTransformers[$backendType]
-                            : $this->attributeTransformers['default'];
-                    $value = $this->getTransformedValue($columnValue, $transformerConfig);
-                    $this->setAttributeValue($product, $value, $columnInfo, $transformerConfig);
-                    $errors = array_merge(
-                        $errors,
-                        $this->productValidator->validateProductValue(
-                            $columnCode,
-                            $columnInfo['attribute'],
-                            $value
-                        )
-                    );
+        $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
+        foreach ($this->attributeColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
+            $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
+            $value = $data[$label];
+            if ('' !== trim($value) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
+                $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
+                if ($error) {
+                    $this->errors[$label] = array($error);
                 }
-            } catch (InvalidValueException $ex) {
-                $errors[] = $this->productValidator->getTranslatedExceptionMessage($columnCode, $ex);
             }
         }
-        $this->productManager->handleMedia($product);
-
-        return $errors;
     }
 
     /**
-     * Sets the value for a given attribute
+     * Sets a product value
+     *
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
+     * @param array               $transformerInfo
+     * @param mixed               $value
+     *
+     * @return array
+     */
+    protected function setProductValue(
+        ProductInterface $product,
+        ColumnInfoInterface $columnInfo,
+        array $transformerInfo,
+        $value
+    ) {
+        if ($transformerInfo[0] instanceof SkipTransformer) {
+            return array();
+        }
+        $productValue = $this->getProductValue($product, $columnInfo);
+
+        return parent::setProperty($productValue, $columnInfo, $transformerInfo, $value);
+    }
+
+    /**
+     * Returns a ProductValue
      *
      * @param ProductInterface $product
-     * @param mixed            $value
      * @param array            $columnInfo
-     * @param array            $transformerConfig
+     *
+     * @return ProductValueInterface
      */
-    protected function setAttributeValue(
-        ProductInterface $product,
-        $value,
-        array $columnInfo,
-        array $transformerConfig = null
-    ) {
-        $productValue = $product->getValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
+    protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
+    {
+        $productValue = $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
         if (!$productValue) {
-            $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
+            $productValue = $product
+                ->createValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
             $product->addValue($productValue);
         }
 
-        if ($transformerConfig && $transformerConfig['transformer'] instanceof Property\ProductValueUpdaterInterface) {
-            $transformerConfig['transformer']->updateProductValue($productValue, $value, $transformerConfig['options']);
-        } else {
-            $productValue->setData($value);
-        }
+        return $productValue;
     }
 
     /**
-     * Returns a transformed value
+     * Initializes the attribute cache
      *
-     * @param string $value
-     * @param array  $transformerConfig
-     *
-     * @return type
+     * @param array $data
      */
-    protected function getTransformedValue($value, array $transformerConfig)
+    protected function initializeAttributes($data)
     {
-        return $transformerConfig['transformer']->transform($value, $transformerConfig['options']);
+        if ($this->heterogeneous === false and $this->initialized) {
+            return;
+        }
+
+        $class = $this->productManager->getFlexibleName();
+        $columnsInfo = $this->columnInfoTransformer->transform($class, array_keys($data));
+        $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
+        $this->attributeColumnsInfo = array();
+        $this->propertyColumnsInfo = array();
+        foreach ($columnsInfo as $columnInfo) {
+            $columnName = $columnInfo->getName();
+            if (isset($this->attributes[$columnName])) {
+                $attribute = $this->attributes[$columnName];
+                $columnInfo->setAttribute($attribute);
+                $this->attributeColumnsInfo[] = $columnInfo;
+                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+                    $this->identifierAttribute = $attribute;
+                }
+            } else {
+                $this->propertyColumnsInfo[] = $columnInfo;
+            }
+        }
+        $this->initialized = true;
+    }
+
+    /**
+     * Clears the cache
+     */
+    public function reset()
+    {
+        $this->attributes = null;
+        $this->identifierAttribute = null;
+        $this->attributeColumnsInfo = null;
+        $this->propertyColumnsInfo = null;
+        $this->initialized = false;
     }
 }

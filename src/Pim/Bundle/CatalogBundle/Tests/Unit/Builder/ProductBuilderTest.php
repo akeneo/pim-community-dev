@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Builder;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -93,9 +93,50 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductBuilder()
     {
-        $productClass = 'Pim\Bundle\CatalogBundle\Entity\Product';
+        $productClass = 'Pim\Bundle\CatalogBundle\Model\Product';
 
-        return new ProductBuilder($productClass, $this->getObjectManagerMock(), $this->getCurrencyManagerMock());
+        return new ProductBuilder(
+            $productClass,
+            $this->getObjectManagerMock(),
+            $this->getChannelManagerMock(),
+            $this->getLocaleManagerMock(),
+            $this->getCurrencyManagerMock()
+        );
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     */
+    protected function getChannelManagerMock()
+    {
+        $manager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $manager->expects($this->any())
+            ->method('getChannels')
+            ->will($this->returnValue($this->getChannels()));
+
+        return $manager;
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManagerMock()
+    {
+        $manager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $manager
+            ->expects($this->any())
+            ->method('getActiveLocales')
+            ->will($this->returnValue($this->getLocales()));
+
+        return $manager;
     }
 
     /**
@@ -129,13 +170,6 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->any())
             ->method('getClassMetadata')
             ->will($this->returnValue($this->getClassMetadataMock()));
-        $repos = array(
-            array('PimCatalogBundle:Locale', $this->getLocaleRepositoryMock()),
-            array('PimCatalogBundle:Channel', $this->getChannelRepositoryMock()),
-        );
-        $mock->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValueMap($repos));
 
         return $mock;
     }
@@ -156,7 +190,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getAssociationMappings')
             ->will(
                 $this->returnValue(
-                    array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue'))
+                    array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Model\ProductValue'))
                 )
             );
 
@@ -177,23 +211,6 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Doctrine\ORM\EntityRepository
-     */
-    protected function getLocaleRepositoryMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock
-            ->expects($this->any())
-            ->method('getActivatedLocales')
-            ->will($this->returnValue($this->getLocales()));
-
-        return $mock;
-    }
-
-    /**
      * @return array
      */
     protected function getChannels()
@@ -211,22 +228,5 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         return $channels;
-    }
-
-    /**
-     * @return Doctrine\ORM\EntityRepository
-     */
-    protected function getChannelRepositoryMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock
-            ->expects($this->any())
-            ->method('findAll')
-            ->will($this->returnValue($this->getChannels()));
-
-        return $mock;
     }
 }

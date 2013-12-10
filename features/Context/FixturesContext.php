@@ -4,6 +4,9 @@ namespace Context;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
+use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -12,17 +15,15 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Media;
-use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Gherkin\Node\PyStringNode;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * A context for creating entities
@@ -50,10 +51,10 @@ class FixturesContext extends RawMinkContext
         'file'         => 'pim_catalog_file',
         'multiselect'  => 'pim_catalog_multiselect',
         'simpleselect' => 'pim_catalog_simpleselect',
+        'date'         => 'pim_catalog_date',
     );
 
     private $entities = array(
-        'Product'         => 'PimCatalogBundle:Product',
         'Attribute'       => 'PimCatalogBundle:ProductAttribute',
         'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption' => 'PimCatalogBundle:AttributeOption',
@@ -66,8 +67,9 @@ class FixturesContext extends RawMinkContext
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'Locale'          => 'PimCatalogBundle:Locale',
-        'ProductGroup'    => 'PimCatalogBundle:Group',
         'GroupType'       => 'PimCatalogBundle:GroupType',
+        'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
+        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
     );
 
     private $placeholderValues = array();
@@ -292,8 +294,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following families:$/
-     * @Given /^the following family:$/
+     * @Given /^the following famil(?:y|ies):$/
      */
     public function theFollowingFamilies(TableNode $table)
     {
@@ -363,21 +364,6 @@ class FixturesContext extends RawMinkContext
         foreach ($entities as $entity) {
             $this->remove($entity, false);
         }
-        $this->flush();
-    }
-
-    /**
-     * @param string $product
-     * @param string $family
-     *
-     * @Given /^the product "([^"]*)" belongs to the family "([^"]*)"$/
-     */
-    public function theProductBelongsToTheFamily($product, $family)
-    {
-        $product = $this->getProduct($product);
-        $family  = $this->getFamily($family);
-
-        $product->setFamily($family);
         $this->flush();
     }
 
@@ -484,6 +470,28 @@ class FixturesContext extends RawMinkContext
                         }
 
                         $value->setData($optionValue);
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['metric']) {
+                        $metric = $value->getData();
+
+                        if (false === strpos($data['value'], ' ')) {
+                            throw new \InvalidArgumentException(
+                                sprintf(
+                                    'Metric value does not match expected format "<data> <unit>": %s',
+                                    $data['value']
+                                )
+                            );
+                        }
+                        list($data, $unit) = explode(' ', $data['value']);
+
+                        if (!$metric) {
+                            $metric = new Metric();
+                            $metric->setFamily($value->getAttribute()->getMetricFamily());
+                        }
+
+                        $metric->setData($data);
+                        $metric->setUnit($unit);
+
+                        $value->setMetric($metric);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -577,13 +585,13 @@ class FixturesContext extends RawMinkContext
             $this->getEntityManager()->refresh($attribute);
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
-            assertEquals($data['type'], $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
+            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
@@ -769,34 +777,19 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $registry    = $this->getContainer()->get('oro_batch.connectors');
         $jobInstance = $this->getJobInstance($code);
-        $job         = $registry->getJob($jobInstance);
-        $steps       = $job->getSteps();
-        $stepNamePattern = 'pim_import_export.jobs.'.$jobInstance->getAlias().'.%s.title';
+        $configuration = $jobInstance->getRawConfiguration();
 
-        foreach ($table->getHash() as $data) {
-            $value = $this->replacePlaceholders($data['value']);
+        foreach ($table->getRowsHash() as $property => $value) {
+            $value = $this->replacePlaceholders($value);
             if (in_array($value, array('yes', 'no'))) {
                 $value = 'yes' === $value;
             }
-            $stepName = sprintf($stepNamePattern, $data['step']);
-            $config[$stepName][$data['element']][$data['property']] = $value;
+
+            $configuration[$property] = $value;
         }
 
-        foreach (array_keys($config) as $stepName) {
-            $config[$stepName] = array_merge(
-                array('reader' => array(), 'processor' => array(), 'writer' => array()),
-                $config[$stepName]
-            );
-            foreach ($steps as $step) {
-                if ($step->getName() == $stepName) {
-                    $step->setConfiguration($config[$stepName]);
-                }
-            }
-        }
-        $jobInstance->setJob($job);
-
+        $jobInstance->setRawConfiguration($configuration);
         $this->flush();
     }
 
@@ -1017,6 +1010,38 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @return null
+     * @Given /^the following CSV to import:$/
+     */
+    public function theFollowingCSVToImport(TableNode $table)
+    {
+        $delimiter = ';';
+
+        $data = $table->getRowsHash();
+        $columns = join($delimiter, array_keys($data));
+
+        $rows = array();
+        foreach ($data as $values) {
+            foreach ($values as $index => $value) {
+                $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
+                $rows[$index][] = $value;
+            }
+        }
+        $rows = array_map(
+            function ($row) use ($delimiter) {
+                return join($delimiter, $row);
+            },
+            $rows
+        );
+
+        array_unshift($rows, $columns);
+
+        return $this->theFollowingFileToImport(new PyStringNode(join("\n", $rows)));
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *
@@ -1024,14 +1049,11 @@ class FixturesContext extends RawMinkContext
      */
     public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
     {
-        $path = $this
+        $configuration = $this
             ->getJobInstance($code)
-            ->getJob()
-            ->getSteps()[0]
-            ->getReader()
-            ->getFilePath();
+            ->getRawConfiguration();
 
-        $path = dirname($path);
+        $path = dirname($configuration['filePath']);
 
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
@@ -1116,6 +1138,19 @@ class FixturesContext extends RawMinkContext
             }
         )->toArray();
         assertEquals($this->listToArray($categoryCodes), $categories);
+    }
+
+    /**
+     * @param Channel   $channel
+     * @param TableNode $conversionUnits
+     *
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
+     */
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
+    {
+        $channel->setConversionUnits($conversionUnits->getRowsHash());
+
+        $this->flush();
     }
 
     /**
@@ -1322,7 +1357,7 @@ class FixturesContext extends RawMinkContext
             } else {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
                         $data['label']
                     )
                 );
@@ -1409,7 +1444,15 @@ class FixturesContext extends RawMinkContext
                         $value->addOption($option);
                     }
                 }
+                break;
 
+            case $this->attributeTypes['metric']:
+                list($data, $unit) = explode(' ', $data);
+                $metric = new Metric();
+                $metric->setFamily($attribute->getMetricFamily());
+                $metric->setData($data);
+                $metric->setUnit($unit);
+                $value->setData($metric);
                 break;
 
             default:

@@ -9,7 +9,7 @@ pim_ui:
 pim_customentity:
     prefix: /enrich
     resource: "@PimCustomEntityBundle/Resources/config/routing.yml"
-    
+
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
