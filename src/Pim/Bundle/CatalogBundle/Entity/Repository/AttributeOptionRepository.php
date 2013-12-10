@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as FlexAttributeOptionRepository;
 
 /**
