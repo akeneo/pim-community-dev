@@ -18,6 +18,7 @@
 - Metric values can now be imported through two distinct columns ([examples](https://github.com/akeneo/pim-community-dev/blob/42371c0d6c70801a4a23a7aa8cf87e18f417c4a8/features/import/import_products.feature#L170-L198))
 - Ajaxify the completeness tab of product edit form
 - Change the channel switcher and collapse/expand modes on product edit view
+- Add a loading mask when loading quick creation form
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
