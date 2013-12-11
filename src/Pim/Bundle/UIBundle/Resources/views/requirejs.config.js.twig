@@ -1,27 +1,3 @@
-var shims = {
-    'jquery.slimbox': {
-        deps: ['jquery']
-    },
-    'bootstrap.bootstrapswitch': {
-        deps: ['jquery']
-    },
-    'selectize': {
-        deps: ['jquery', 'sifter', 'microplugin']
-    },
-    'jquery.sidebarize': {
-        deps: ['jquery']
-    },
-    'jquery.currencyfield': {
-        deps: ['jquery']
-    },
-    'jquery.wizard': {
-        deps: ['jquery']
-    },
-    'jstree/jquery.jstree.nested_switch': {
-        deps: ['jquery.jstree']
-    }
-};
-
 var paths = {
     'jquery-ui':                              'pimui/lib//jquery/jquery-ui-1.10.3.custom.min',
     'jquery.uniform':                         'pimui/lib/jquery/jquery.uniform.min',
@@ -68,12 +44,7 @@ var paths = {
 };
 
 var config = {};
-config.shim = {};
 config.paths = {};
-
-for (var alias in shims) {
-    config.shim[alias] = shims[alias];
-}
 
 for (var alias in paths) {
     config.paths[alias] = paths[alias];

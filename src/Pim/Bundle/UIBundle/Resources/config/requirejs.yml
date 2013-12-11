@@ -25,7 +25,7 @@ config:
                 - 'jquery.jstree'
 
     paths:
-#        'jquery-ui':                              'pimui/lib/jquery/jquery-ui-1.10.3.custom.min'
+        'jquery-ui-full':                          'pimui/lib/jquery/jquery-ui-1.10.3.custom.min'
 #        'jquery.uniform':                         'pimui/lib/jquery/jquery.uniform.min'
         'jquery.slimbox':                         'bundles/pimui/js/slimbox2'
         'bootstrap.bootstrapswitch':              'bundles/oroui/lib/bootstrap/js/bootstrap.switch'
