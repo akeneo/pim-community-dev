@@ -112,11 +112,24 @@ class OroRequirements extends SymfonyRequirements
             'Install the <strong>JRE</strong>.'
         );
 
-        $this->addOroRequirement(
-            is_writable($baseDir . '/web/bundles'),
-            'web/bundles/ directory must be writable',
-            'Change the permissions of the "<strong>web/bundles/</strong>" directory so that the web server can write into it.'
+        $directories = array(
+            'web/bundles',
+            'app/cache',
+            'app/logs',
+            'app/entities',
+            'app/import',
+            'app/export',
+            'app/emails',
+            'web/bundles',
+            'app/uploads/product'
         );
+        foreach ($directories as $directory) {
+            $this->addOroRequirement(
+                is_writable($baseDir.'/'.$directory),
+                $directory.' directory must be writable',
+                'Change the permissions of the "<strong>'.$directory.'</strong>" directory so that the web server can write into it.'
+            );
+        }
     }
 
     /**
