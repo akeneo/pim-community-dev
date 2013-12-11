@@ -62,10 +62,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 - refresh
         completenesses:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Completeness
-            mappedBy: product
-            cascade:
-                - persist
-                - refresh
+            mappedBy: productId
         values:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             mappedBy: entity
