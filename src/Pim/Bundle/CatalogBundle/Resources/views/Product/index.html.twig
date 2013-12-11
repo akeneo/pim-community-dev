@@ -108,7 +108,12 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale }}" data-node-id="{{ app.request.get("categoryId") }}" data-tree-id="{{ app.request.get("treeId") }}" data-include-sub="{{ app.request.get("includeSub") }}"></div>
+        <div id="tree"
+            data-datalocale="{{ dataLocale }}"
+            data-node-id="{{ app.request.get("categoryId") }}"
+            data-tree-id="{{ app.request.get("treeId") }}"
+            data-include-sub="{{ app.request.get("includeSub") }}">
+        </div>
         <div id="product-grid"></div>
     </div>
 
