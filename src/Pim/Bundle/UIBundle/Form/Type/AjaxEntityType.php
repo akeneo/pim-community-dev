@@ -78,6 +78,14 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getParent()
+    {
+        return 'hidden';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer($this->getTransformer($options));
@@ -159,11 +167,7 @@ class AjaxEntityType extends AbstractType
 
         return $transformerOptions;
     }
-
-    public function getParent()
-    {
-        return 'hidden';
-    }
+    
     /**
      * Returns the list route parameters
      *
@@ -181,6 +185,13 @@ class AjaxEntityType extends AbstractType
         return $parameters;
     }
 
+    /**
+     * Returns the form type's transformer
+     * 
+     * @param array $options
+     * 
+     * @return \Symfony\Component\Form\DataTransformerInterface
+     */
     protected function getTransformer(array $options)
     {
         return $this->transformerFactory->create($this->getTransformerOptions($options));

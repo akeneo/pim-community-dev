@@ -159,7 +159,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
      */
     protected $translations;
 
-
     protected $required;
 
     protected $unique;
