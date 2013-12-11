@@ -174,9 +174,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
 
     protected function initBufferSize()
     {
-        if ($this->query &&
-            $this->getQuery()->getMaxResults() &&
-            $this->getQuery()->getMaxResults() < $this->bufferSize) {
+        if ($this->query && $this->getQuery()->getMaxResults() && $this->getQuery()->getMaxResults() < $this->bufferSize) {
             $this->bufferSize = $this->getQuery()->getMaxResults();
         }
     }
