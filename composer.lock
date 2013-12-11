@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d7d2daa2a4e3212047d47ca5c4839eaa",
+    "hash": "9f1934294ce164ccb81725431a66000d",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3560,12 +3560,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e"
+                "reference": "c3097c743940ed69b365fadd0afe63d883dffcfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e",
-                "reference": "7380f95fa5b8ea4ddd0bd7f32bde137a17a29b7e",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/c3097c743940ed69b365fadd0afe63d883dffcfc",
+                "reference": "c3097c743940ed69b365fadd0afe63d883dffcfc",
                 "shasum": ""
             },
             "require": {
@@ -3626,7 +3626,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2013-12-10 12:18:30"
+            "time": "2013-12-11 00:59:59"
         },
         {
             "name": "oro/platform",
@@ -4953,27 +4953,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "v2.4.6"
+                "reference": "f1d2964667cf4b21bb6c2c1564f26829a6954155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/v2.4.6",
-                "reference": "v2.4.6",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/f1d2964667cf4b21bb6c2c1564f26829a6954155",
+                "reference": "f1d2964667cf4b21bb6c2c1564f26829a6954155",
                 "shasum": ""
             },
             "require": {
-                "behat/gherkin": ">=2.2.9,<2.3",
+                "behat/gherkin": "~2.2.9",
                 "php": ">=5.3.1",
-                "symfony/config": ">=2.0,<3.0",
-                "symfony/console": ">=2.0,<3.0",
-                "symfony/dependency-injection": ">=2.0,<3.0",
-                "symfony/event-dispatcher": ">=2.0,<3.0",
-                "symfony/finder": ">=2.0,<3.0",
-                "symfony/translation": ">=2.0,<3.0",
-                "symfony/yaml": ">=2.0,<3.0"
+                "symfony/config": "~2.0",
+                "symfony/console": "~2.0",
+                "symfony/dependency-injection": "~2.0",
+                "symfony/event-dispatcher": "~2.0",
+                "symfony/finder": "~2.0",
+                "symfony/translation": "~2.0",
+                "symfony/yaml": "~2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=3.7.19.0,<3.8"
+                "phpunit/phpunit": "~3.7.19"
             },
             "suggest": {
                 "behat/mink-extension": "for integration with Mink testing framework",
@@ -5089,26 +5089,26 @@
         },
         {
             "name": "behat/gherkin",
-            "version": "dev-develop",
+            "version": "v2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb"
+                "reference": "cca2c477921ca38578d6e9759ea5e450f29c2d8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb",
-                "reference": "c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/cca2c477921ca38578d6e9759ea5e450f29c2d8f",
+                "reference": "cca2c477921ca38578d6e9759ea5e450f29c2d8f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1",
-                "symfony/finder": "~2.0"
+                "symfony/finder": ">=2.0,<2.4-dev"
             },
             "require-dev": {
-                "symfony/config": ">=2.0,<3.0",
-                "symfony/translation": ">=2.0,<3.0",
-                "symfony/yaml": ">=2.0,<3.0"
+                "symfony/config": ">=2.0,<2.4-dev",
+                "symfony/translation": ">=2.0,<2.4-dev",
+                "symfony/yaml": ">=2.0,<2.4-dev"
             },
             "suggest": {
                 "symfony/config": "If you want to use Config component to manage resources",
@@ -5146,7 +5146,7 @@
                 "Symfony2",
                 "parser"
             ],
-            "time": "2013-05-09 15:20:54"
+            "time": "2013-03-02 10:38:40"
         },
         {
             "name": "behat/mink",
@@ -5154,12 +5154,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Mink.git",
-                "reference": "7e31f096958b74ac3a50096804f2760800f634ae"
+                "reference": "84989995c66216c5abe6940c82a60adcd0331094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Mink/zipball/7e31f096958b74ac3a50096804f2760800f634ae",
-                "reference": "7e31f096958b74ac3a50096804f2760800f634ae",
+                "url": "https://api.github.com/repos/Behat/Mink/zipball/84989995c66216c5abe6940c82a60adcd0331094",
+                "reference": "84989995c66216c5abe6940c82a60adcd0331094",
                 "shasum": ""
             },
             "require": {
@@ -5201,7 +5201,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2013-12-07 20:02:42"
+            "time": "2013-12-11 09:40:07"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -5260,16 +5260,16 @@
         },
         {
             "name": "behat/mink-extension",
-            "version": "dev-master",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "6ed67ce283cd5ee882fefefd9358a670a13d404c"
+                "reference": "b4522f19fe96d423883f2e3650615e19d3a48c05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/6ed67ce283cd5ee882fefefd9358a670a13d404c",
-                "reference": "6ed67ce283cd5ee882fefefd9358a670a13d404c",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/b4522f19fe96d423883f2e3650615e19d3a48c05",
+                "reference": "b4522f19fe96d423883f2e3650615e19d3a48c05",
                 "shasum": ""
             },
             "require": {
@@ -5278,7 +5278,7 @@
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": ">=1.0,<2.0"
+                "behat/mink-goutte-driver": "~1.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -5310,7 +5310,7 @@
                 "test",
                 "web"
             ],
-            "time": "2013-06-04 17:35:37"
+            "time": "2013-06-04 12:18:22"
         },
         {
             "name": "behat/mink-selenium2-driver",
@@ -5538,12 +5538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "2a8de8aabc6631ab83e1fe282bb93107b64685de"
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/2a8de8aabc6631ab83e1fe282bb93107b64685de",
-                "reference": "2a8de8aabc6631ab83e1fe282bb93107b64685de",
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
                 "shasum": ""
             },
             "require": {
@@ -5601,7 +5601,8 @@
         "apy/jsfv-bundle": 20,
         "knplabs/knp-gaufrette-bundle": 20,
         "doctrine/mongodb-odm-bundle": 20,
-        "behat/behat": 0
+        "behat/behat": 0,
+        "sensiolabs/behat-page-object-extension": 20
     },
     "platform": {
         "php": ">=5.4.4"
