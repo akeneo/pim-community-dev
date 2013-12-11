@@ -102,49 +102,29 @@
                 {% endif %}
 
                 {% for group in form.vars.value.groups %}
-                    {% set productList %}
-                    {% spaceless %}
-                    <div class="clearfix"><div class="container-fluid"><div class="grid-container">
-                        {% if group.products|length > 0 %}
-                        <table class="grid table table-hover table-bordered table-condensed groups">
-                            <thead>
-                                <tr>
-                                    <th>{{ group.products[0].identifier.attribute.label }}</th>
-                                    <th>{{ 'Label'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for product in group.products %}
-                                    <tr>
-                                        <td><a href="{{ path('pim_catalog_product_edit', {'id': product.id}) }}">{{ product.identifier }}</a></td>
-                                        <td>{{ product.label }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% endif %}
-                    </div></div></div>
-                    {% endspaceless %}
-                    {% endset %}
-
                     $('#group-products-{{ group.id }}').on('click', function (event) {
                         event.preventDefault();
+                        $.get(
+                            {{ path('pim_catalog_group_productlist', { id: group.id })|json_encode|raw }},
+                            function (content) {
+                                var groupDoAction = function () {
+                                    console.debug("here")
+                                    var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                                    $groupLink.appendTo($('#{{ form.vars.id }}')).click();
+                                };
 
-                        var groupDoAction = function () {
-                            var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
-                            $groupLink.appendTo($('#{{ form.vars.id }}')).click();
-                        };
+                                var groupModal = new Backbone.BootstrapModal({
+                                    allowCancel: true,
+                                    cancelText: '{{ "Close"|trans }}',
+                                    title: '{{ "Group"|trans }} {{ group.label }}',
+                                    content: content,
+                                    okText: '{{ "View group"|trans }}'
+                                });
 
-                        var groupModal = new Backbone.BootstrapModal({
-                            allowCancel: true,
-                            cancelText: '{{ "Close"|trans }}',
-                            title: '{{ "Group"|trans }} {{ group.label }}',
-                            content: '{{ productList|raw }}',
-                            okText: '{{ "View group"|trans }}'
-                        });
-
-                        groupModal.on('ok', groupDoAction);
-                        groupModal.open();
+                                groupModal.on('ok', groupDoAction);
+                                groupModal.open();
+                            }
+                        )
                     });
                 {% endfor %}
 

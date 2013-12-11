@@ -132,8 +132,9 @@ services:
     pim_catalog.controller.group:
         scope: request
         class: %pim_catalog.controller.group.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_catalog.controller.abstract
         arguments:
+            - '@pim_catalog.manager.group'
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
@@ -159,11 +160,7 @@ services:
     pim_catalog.controller.variant_group:
         scope: request
         class: %pim_catalog.controller.variant_group.class%
-        parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_grid.datagrid.helper'
-            - '@pim_catalog.form.handler.group'
-            - '@pim_catalog.form.group'
+        parent: pim_catalog.controller.group
 
     pim_catalog.controller.group_type:
         scope: request

@@ -1,0 +1,31 @@
+<body>
+<div class="clearfix">
+    <div class="container-fluid">
+        <div class="grid-container">
+            {% if products|length > 0 %}
+                <table class="grid table table-hover table-bordered table-condensed groups">
+                    <thead>
+                        <tr>
+                            <th>{{ products[0].identifier.attribute.label }}</th>
+                            <th>{{ 'Label'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td><a href="{{ path('pim_catalog_product_edit', {'id': product.id}) }}">{{ product.identifier }}</a></td>
+                                <td>{{ product.label }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% if products|length < productCount %}
+                            <tr>
+                                <td colspan="2">{{ "%count% more products..."|trans({'%count%': productCount - products|length}) }}</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
