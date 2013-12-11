@@ -85,7 +85,7 @@ class InjectORMReferencesSubscriber implements EventSubscriber
     }
 
     /**
-     * Add the reference to family inside the value
+     * Add the reference to family inside the product
      *
      * @param ProductInterface $product
      * @param DocumentManager  $documentManager
