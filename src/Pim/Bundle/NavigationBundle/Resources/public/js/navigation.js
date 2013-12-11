@@ -5,7 +5,7 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation', 'oro/app', 'oro/messenger', 'underscore'],
+    ['oronavigation/js/navigation', 'oro/app', 'oro/messenger', 'underscore'],
     function(OroNavigation, app, messenger, _) {
 
         var QUERY_STRING_REGEX = /^[^\?]+\??/,
