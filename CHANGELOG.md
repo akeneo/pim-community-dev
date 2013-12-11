@@ -19,6 +19,7 @@
 - Ajaxify the completeness tab of product edit form
 - Change the channel switcher and collapse/expand modes on product edit view
 - Add a loading mask when loading quick creation form
+- Allow to switch configuration between ORM and ODM
 
 ## Bug fixes
 - Fix issue that miss some pending versionable entities
