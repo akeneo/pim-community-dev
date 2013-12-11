@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,10 +16,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 
 /**
  * Group controller
@@ -29,8 +29,18 @@ use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupController extends AbstractDoctrineController
+class GroupController extends AbstractController
 {
+    /**
+     * @staticvar int The maximum number of group products to be displayed
+     */
+    const MAX_PRODUCTS = 5;
+
+    /**
+     * @var GroupManager
+     */
+    protected $groupManager;
+
     /**
      * @var DatagridHelperInterface
      */
@@ -56,7 +66,7 @@ class GroupController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param GroupManager             $groupManager
      * @param DatagridHelperInterface  $datagridHelper
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
@@ -69,7 +79,7 @@ class GroupController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        GroupManager $groupManager,
         DatagridHelperInterface $datagridHelper,
         GroupHandler $groupHandler,
         Form $groupForm
@@ -81,10 +91,10 @@ class GroupController extends AbstractDoctrineController
             $securityContext,
             $formFactory,
             $validator,
-            $translator,
-            $doctrine
+            $translator
         );
 
+        $this->groupManager   = $groupManager;
         $this->datagridHelper = $datagridHelper;
         $this->groupHandler   = $groupHandler;
         $this->groupForm      = $groupForm;
@@ -102,7 +112,7 @@ class GroupController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
+        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
         $datagrid = $this->datagridHelper->getDatagrid('group', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat())
@@ -201,14 +211,28 @@ class GroupController extends AbstractDoctrineController
      */
     public function removeAction(Group $group)
     {
-        $this->getManager()->remove($group);
-        $this->getManager()->flush();
+        $this->groupManager->remove($group);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_catalog_group_index');
         }
+    }
+
+    /**
+     * Display the products of a group
+     *
+     * @param Group $group
+     *
+     * @return array
+     *
+     * @AclAncestor("pim_catalog_product_edit")
+     * @Template("PimCatalogBundle:Group:_productList.html.twig")
+     */
+    public function productListAction(Group $group)
+    {
+        return $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
     }
 
     /**
