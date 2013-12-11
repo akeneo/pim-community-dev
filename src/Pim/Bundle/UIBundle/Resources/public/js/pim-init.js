@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
-     'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask) {
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask', 
+     'pim/initselect2', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2) {
         'use strict';
         var initialized = false;
         return function() {
@@ -41,6 +41,9 @@ define(
                         $(this).appendTo(target).attr('tabIndex', -1);
                     }
                 });
+
+                // Apply Select2
+                initSelect2.init($target);
 
                 // Apply bootstrapSwitch
                 $target.find('.switch:not(.has-switch)').bootstrapSwitch();
