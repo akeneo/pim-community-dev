@@ -204,6 +204,13 @@
                         $(this).parent().parent().find('.controls').each(copyValue);
                     });
                 });
+
+                // submit form
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+                    $('#pim_product_edit').attr('action', $('#pim_product_edit').attr('action') +"&action="+ action);
+                    $('#pim_product_edit').submit();
+                });
             });
         }
     );
