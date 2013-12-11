@@ -2,7 +2,7 @@
  * Custom javascript form validation for PIM
  */
 
-require(['jquery', 'oro/translator', 'jquery.bind-first', 'bootstrap-tooltip'],
+require(['jquery', 'oro/translator', 'bootstrap-tooltip'],
 function($, __){
 {% block before %}{% endblock %}
 
@@ -206,7 +206,7 @@ var jsfv = new function () {
                 field = jsfv.id(field);
             }
 {% block onFirstEvent %}
-            $(field).bindFirst(eventType, handler);
+            $(field).bind(eventType, handler);
 {% endblock %}
         },
 {% for fieldName, constraints in fieldConstraints %}

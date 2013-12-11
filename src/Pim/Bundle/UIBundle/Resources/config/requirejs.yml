@@ -55,4 +55,3 @@ config:
         pim/datagrid/product-delete-action: pimgrid/js/datagrid/action/product-delete-action
         pim/datagrid/parameter-setter:      pimgrid/js/datagrid/parameter-setter
         pim/datagrid/toolbar:               pimgrid/js/datagrid/pim-toolbar
-        jquery.bind-first:                  pimjsformvalidation/js/jquery.bind-first-0.2.0.min
