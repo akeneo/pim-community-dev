@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,8 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 
 /**
  * Variant group controller
@@ -31,7 +28,7 @@ class VariantGroupController extends GroupController
     public function indexAction(Request $request)
     {
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
+        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
         $datagrid = $this->datagridHelper->getDatagrid('variant_group', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat())
@@ -53,8 +50,8 @@ class VariantGroupController extends GroupController
             return $this->redirectToRoute('pim_catalog_variant_group_index');
         }
 
-        $groupType = $this
-            ->getRepository('PimCatalogBundle:GroupType')
+        $groupType = $this->groupManager
+            ->getGroupTypeRepository()
             ->findOneBy(array('code' => 'VARIANT'));
 
         $group = new Group();
