@@ -100,6 +100,16 @@ class GroupManager
     }
 
     /**
+     * Returns the group type repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getGroupTypeRepository()
+    {
+        return $this->doctrine->getRepository('PimCatalogBundle:GroupType');
+    }
+
+    /**
      * Removes a group
      *
      * @param Group $group

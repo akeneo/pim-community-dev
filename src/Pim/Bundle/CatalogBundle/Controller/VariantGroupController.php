@@ -50,8 +50,8 @@ class VariantGroupController extends GroupController
             return $this->redirectToRoute('pim_catalog_variant_group_index');
         }
 
-        $groupType = $this
-            ->getRepository('PimCatalogBundle:GroupType')
+        $groupType = $this->groupManager
+            ->getGroupTypeRepository()
             ->findOneBy(array('code' => 'VARIANT'));
 
         $group = new Group();
