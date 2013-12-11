@@ -5,7 +5,7 @@ pim_catalog:
 
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
-    
+
 pim_customentity:
     prefix: /enrich
     resource: "@PimCustomEntityBundle/Resources/config/routing.yml"
