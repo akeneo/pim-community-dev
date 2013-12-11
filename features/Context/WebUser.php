@@ -400,20 +400,30 @@ class WebUser extends RawMinkContext
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
-            for ($i = 0; $i <2; $i++) {
+            for ($i = 0; $i < 2; $i++) {
                 if (!$field->getParent()) {
                     break;
                 }
                 $field = $field->getParent();
             }
-            if ($select  = $field->find('css', 'select')) {
+            if ($select = $field->find('css', 'select')) {
                 $actual = $select->find('css', 'option[selected]')->getHtml();
             } else {
                 $actual = $field->find('css', '.select2-chosen')->getHtml();
             }
         } elseif (strpos($class, 'select2-input') !== false) {
-            $field   = $field->getParent()->getParent()->getParent()->getParent()->find('css', 'select');
-            $options = $field->findAll('css', 'option[selected]');
+            for ($i = 0; $i < 4; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $options = $field->findAll('css', 'option[selected]');
+            } else {
+                $options = $field->findAll('css', 'li.select2-search-choice div');
+            }
+            
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
