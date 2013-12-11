@@ -58,8 +58,6 @@ config:
         'pim/datagrid/parameter-setter':          'bundles/pimgrid/js/datagrid/parameter-setter'
 #        'oro/datagrid/router-orig':               'orogrid/js/datagrid/router'
 #        'oro/datagrid/router':                    'pimgrid/js/datagrid/router'
-#        'oro/pageable-collection-orig':           'orogrid/js/pageable-collection'
-#        'oro/pageable-collection':                'pimgrid/js/pageable-collection'
 #        'oro/navigation-orig':                    'oronavigation/js/navigation'
 #        'oro/navigation':                         'pimnavigation/js/navigation'
 #        'oro/datagrid/reset-collection-action':   'pimgrid/js/datagrid/action/reset-collection-action'

@@ -17,7 +17,7 @@ define(
 
             var getTreeUrl = function() {
                 return Routing.generate('pim_catalog_categorytree_listtree', { _format: 'json', dataLocale: dataLocale, select_node_id: selectedNodeOrTree, include_sub: +includeChildren });
-            }
+            };
 
             this.config = {
                 core: {
@@ -88,11 +88,9 @@ define(
 
             function updateGrid(treeId, categoryId, includeSub) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
-                return;
-                // TODO:
-                // if (collection.setCategory(treeId, categoryId, includeSub)) {
-                //     $('.grid-toolbar .icon-refresh').click();
-                // }
+                if (collection.setCategory(treeId, categoryId, includeSub)) {
+                    $('.grid-toolbar .icon-refresh').click();
+                }
             }
 
             this.init = function () {
