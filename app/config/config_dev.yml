@@ -26,5 +26,5 @@ oro_assetic:
 swiftmailer:
     disable_delivery: true
 
-#parameters:
-#    apy_js_form_validation.yui_js: false
+parameters:
+    apy_js_form_validation.yui_js: false
