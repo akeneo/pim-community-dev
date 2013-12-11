@@ -82,8 +82,7 @@ define(
                 if (data === null) {
                     return this.baseUrl;
                 }
-                return;
-                // TODO: return this.collection.setCategoryInUrl(this.baseUrl.concat('?'+data));
+                return this.collection.setCategoryInUrl(this.baseUrl.concat('?'+data));
             },
         });
     }

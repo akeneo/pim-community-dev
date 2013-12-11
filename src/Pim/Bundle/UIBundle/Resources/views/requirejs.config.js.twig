@@ -1,18 +1,3 @@
-{#
-var paths = {
-    'pim/tree/mass-associate':                'pimcatalog/js/tree-mass-associate.jstree',
-    'oro/datagrid/column-form-listener':      'pimgrid/js/datagrid/listener/column-form-listener',
-    'oro/datagrid/column-form-listener-orig': 'orogrid/js/datagrid/listener/column-form-listener',
-    'oro/datagrid/router-orig':               'orogrid/js/datagrid/router',
-    'oro/datagrid/router':                    'pimgrid/js/datagrid/router',
-    'oro/navigation-orig':                    'oronavigation/js/navigation',
-    'oro/navigation':                         'pimnavigation/js/navigation',
-    'oro/navigation/dotmenu/view-orig':       'oronavigation/js/navigation/dotmenu/view',
-    'oro/navigation/dotmenu/view':            'pimnavigation/js/navigation/dotmenu/view',
-    'oro/datagrid/reset-collection-action':   'pimgrid/js/datagrid/action/reset-collection-action'
-};
-#}
-
 require({
     baseUrl: {{ asset('bundles')|json_encode|raw }},
     paths: {
@@ -20,10 +5,27 @@ require({
     },
     map: {
         '*': {
-            'oro/pageable-collection': 'pimgrid/js/pageable-collection'
+            'oro/pageable-collection':              'pimgrid/js/pageable-collection',
+            'oro/grid/router':                      'pimgrid/js/datagrid/router',
+            'oronavigation/js/navigation':          'pimnavigation/js/navigation',
+            'oro/grid/column-form-listener':        'pimgrid/js/datagrid/listener/column-form-listener',
+            'oro/navigation/dotmenu/view':          'pimnavigation/js/navigation/dotmenu/view',
+            'oro/datagrid/reset-collection-action': 'pimgrid/js/datagrid/action/reset-collection-action'
         },
         'pimgrid/js/pageable-collection': {
             'oro/pageable-collection': 'oro/pageable-collection'
+        },
+        'pimgrid/js/datagrid/router': {
+            'oro/grid/router': 'oro/grid/router'
+        },
+        'pimnavigation/js/navigation': {
+            'oronavigation/js/navigation': 'oronavigation/js/navigation'
+        },
+        'pimgrid/js/datagrid/listener/column-form-listener': {
+            'oro/grid/column-form-listener': 'oro/grid/column-form-listener'
+        },
+        'pimnavigation/js/navigation/dotmenu/view': {
+            'oro/navigation/dotmenu/view': 'oro/navigation/dotmenu/view'
         }
     }
 });
