@@ -37,7 +37,13 @@
             {% if resource_granted("pim_catalog_product_remove") %}
                 {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
             {% endif %}
-            {{ elements.submitBtn }}
+            {{ elements.submitDropdownBtn(
+                'btn.save',
+                {
+                    'SaveAndCreate': { 'text': 'btn.save and create a new one' },
+                    'SaveAndBackToTheGrid': { 'text': 'btn.save and back to the grid' }
+                }
+            ) }}
         {% endset %}
 
         {% set subtitle %}
