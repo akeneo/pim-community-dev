@@ -104,8 +104,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             column: allowed_extensions
         minimumInputLength:
             type: smallint
-            nullable: false
-            default: 0
+            nullable: true
         required:
             type: boolean
             column: is_required
