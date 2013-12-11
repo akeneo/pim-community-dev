@@ -79,4 +79,6 @@ for (var alias in paths) {
     config.paths[alias] = paths[alias];
 }
 
-// require(config);
+require({
+    baseUrl: {{ asset('bundles')|json_encode|raw }}
+});
