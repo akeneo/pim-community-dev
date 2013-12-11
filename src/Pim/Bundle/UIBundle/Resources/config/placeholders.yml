@@ -3,6 +3,7 @@ placeholders:
         items:
             require_js_config:
                 order: 100
-#items:
-#    require_js_config:
-#        template: PimUIBundle::require.js.config.html.twig
+
+items:
+   require_js_config:
+       template: PimUIBundle::requirejs.config.js.twig
