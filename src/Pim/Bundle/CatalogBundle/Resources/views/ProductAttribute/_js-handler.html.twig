@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, _) {
+    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    function ($, _, initSelect2) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
