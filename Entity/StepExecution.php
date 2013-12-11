@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -67,6 +66,20 @@ class StepExecution
      * @orm\column(name="write_count", type="integer")
      */
     private $writeCount = 0;
+
+    /**
+     * @var integer
+     *
+     * @orm\column(name="creation_count", type="integer")
+     */
+    private $creationCount = 0;
+
+    /**
+     * @var integer
+     *
+     * @orm\column(name="update_count", type="integer")
+     */
+    private $updateCount = 0;
 
     /**
      * @var integer
@@ -292,6 +305,44 @@ class StepExecution
     }
 
     /**
+     * Increment the creation count by 1
+     */
+    public function incrementCreationCount()
+    {
+        $this->creationCount++;
+        $this->incrementWriteCount();
+    }
+
+    /**
+     * Increment the update count by 1
+     */
+    public function incrementUpdateCount()
+    {
+        $this->updateCount++;
+        $this->incrementWriteCount();
+    }
+
+    /**
+     * Get the creation count
+     *
+     * @return int
+     */
+    public function getCreationCount()
+    {
+        return $this->creationCount;
+    }
+
+    /**
+     * Get the update count
+     *
+     * @return int
+     */
+    public function getUpdateCount()
+    {
+        return $this->updateCount;
+    }
+
+    /**
      * Returns the current number of items filtered out of this execution
      *
      * @return the current number of items filtered out of this execution
@@ -299,6 +350,22 @@ class StepExecution
     public function getFilterCount()
     {
         return $this->readCount - $this->writeCount;
+    }
+
+    /**
+     * Add a filter warning
+     *
+     * @param string $filter
+     * @param string $message
+     * @param mixed  $data
+     */
+    public function addFilterWarning($filter, $message, $data)
+    {
+        $this->filterWarnings[] = array(
+            'filter' => $filter,
+            'reason' => $message,
+            'data'   => $data,
+        );
     }
 
     /**
@@ -427,17 +494,6 @@ class StepExecution
     public function getJobExecution()
     {
         return $this->jobExecution;
-    }
-
-    /**
-     * @param JobExecution $jobExecution
-     * @return StepExecution
-     */
-    public function setJobExecution(JobExecution $jobExecution)
-    {
-        $this->jobExecution = $jobExecution;
-
-        return $this;
     }
 
     /**
