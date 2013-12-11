@@ -51,6 +51,9 @@ define(
                 // Initialize tooltip
                 $target.find('[data-toggle="tooltip"]').tooltip();
 
+                // Initialize popover
+                $target.find('[data-toggle="popover"]').popover();
+
                 // Activate a form tab
                 $target.find('li.tab.active a').each(function () {
                     var paneId = $(this).attr('href');
