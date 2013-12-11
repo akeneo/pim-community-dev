@@ -25,7 +25,6 @@ class ProductRepository extends DocumentRepository
      */
     protected $locale;
 
-
     /**
      * Scope code
      * @var string

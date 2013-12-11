@@ -75,19 +75,6 @@ doctrine:
         auto_mapping:                true
         class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
-# Doctrine MongoDB support
-doctrine_mongodb:
-    connections:
-        default:
-            server: "%mongodb_server%"
-            server: ~
-    default_database: "%mongodb_database%"
-    default_database: ~
-    document_managers:
-        default:
-            auto_mapping: true
-
-
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
@@ -142,10 +129,6 @@ lexik_maintenance:
         class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
         options:
             file_path:        %kernel.root_dir%/cache/lock
-
-pim_catalog:
-#    storage_driver: 'doctrine/mongodb-odm'
-    storage_driver: 'doctrine/orm'
 
 oro_batch:
     enable_mail_notification: true

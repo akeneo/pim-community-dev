@@ -142,6 +142,11 @@ class ProductAttribute extends AbstractEntityAttribute implements
     protected $allowedExtensions;
 
     /**
+     * @var int
+     */
+    protected $minimumInputLength = 0;
+
+    /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
@@ -792,6 +797,30 @@ class ProductAttribute extends AbstractEntityAttribute implements
     }
 
     /**
+     * Returns the minimum input length for singlechoice and multichoice types
+     *
+     * @return int
+     */
+    public function getMinimumInputLength()
+    {
+        return $this->minimumInputLength;
+    }
+
+    /**
+     * Sets the minimum input length for singlechoice and multichoice types
+     *
+     * @param int $minimumInputLength
+     *
+     * @return ProductAttribute
+     */
+    public function setMinimumInputLength($minimumInputLength)
+    {
+        $this->minimumInputLength = $minimumInputLength;
+
+        return $this;
+    }
+
+        /**
      * Get sortOrder
      *
      * @return number

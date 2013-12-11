@@ -50,8 +50,12 @@ class ProductAssociationsController
      * @param DatagridHelperInterface $datagridHelper
      * @param ProductManager          $productManager
      */
-    public function __construct(RegistryInterface $doctrine, EngineInterface $templating, DatagridHelperInterface $datagridHelper, ProductManager $productManager)
-    {
+    public function __construct(
+        RegistryInterface $doctrine,
+        EngineInterface $templating,
+        DatagridHelperInterface $datagridHelper,
+        ProductManager $productManager
+    ) {
         $this->doctrine = $doctrine;
         $this->templating = $templating;
         $this->datagridHelper = $datagridHelper;

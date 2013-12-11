@@ -19,7 +19,7 @@ Feature: Edit an import
   @javascript
   Scenario: Successfully update import job configuration
     Given I am on the "footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product?, Categories column, Family column, Groups column and Real time versioning? fields
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column and Real time history update fields
     When I fill in the following information:
       | File              | file.csv |
       | Delimiter         | \|       |
@@ -29,16 +29,16 @@ Feature: Edit an import
       | Family column     | fam      |
       | Groups column     | grp      |
     And I uncheck the "Allow file upload" switch
-    And I uncheck the "Enable the product?" switch
-    And I uncheck the "Real time versioning?" switch
+    And I uncheck the "Enable the product" switch
+    And I uncheck the "Real time history update" switch
     And I press the "Save" button
     Then I should see "File file.csv"
     And I should see "Allow file upload No"
     And I should see "Delimiter |"
     And I should see "Enclosure '"
     And I should see "Escape \\"
-    And I should see "Real time versioning? No"
-    And I should see "Enable the product? No"
+    And I should see "Real time history update No"
+    And I should see "Enable the product No"
     And I should see "Categories column cat"
     And I should see "Family column fam"
     And I should see "Groups column grp"

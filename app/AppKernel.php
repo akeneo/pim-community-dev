@@ -21,8 +21,7 @@ class AppKernel extends OroKernel
      */
     public function registerBundles()
     {
-        $bundles = array(
-        );
+        $bundles = array();
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -33,7 +32,8 @@ class AppKernel extends OroKernel
         $bundles = array_merge(parent::registerBundles(), $bundles);
 
         $pimDepBundles = array(
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            // Uncomment the following line to use MongoDB implementation
+            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
         );
@@ -73,6 +73,11 @@ class AppKernel extends OroKernel
 
         if (is_file($file = __DIR__.'/config/config_'.$this->getEnvironment().'_local.yml')) {
             $loader->load($file);
+        }
+
+        if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
+            $loader->load(__DIR__.'/config/mongodb/parameters_'.$this->getEnvironment().'.yml');
+            $loader->load(__DIR__ .'/config/mongodb/config.yml');
         }
     }
 }
