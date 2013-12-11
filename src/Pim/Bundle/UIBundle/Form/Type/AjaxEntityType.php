@@ -14,8 +14,12 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
  * Ajax entity type
+ * 
+ * An entity type with asynchronously loaded options. The repository entity's doctrine repository
+ * class must implement OptionRepositoryInterface
  *
  * Defined options are :
+ *   - class:                   The class of the entity
  *   - multiple:                True for multiple fields
  *   - transformer_options:     Extra options which should be passed to the transformer
  *   - collection_id:           The collection id which should be passed to the AjaxOptionController

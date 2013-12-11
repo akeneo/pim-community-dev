@@ -303,6 +303,7 @@ class ProductController extends AbstractDoctrineController
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
+
             if ($form->isValid()) {
                 try {
                     $this->productManager->handleMedia($product);

@@ -15,6 +15,15 @@ interface OptionRepositoryInterface
 {
     /**
      * Returns an array of option ids and values
+     * 
+     * The returned format must be the one expected by select2 :
+     * 
+     *  return array(
+     *      'results => array(
+     *          array('id' => 1, 'text' => 'Choice 1'),
+     *          array('id' => 2, 'text' => 'Choice 2'),
+     *      )
+     *  );
      *
      * @param string $dataLocale
      * @param mixed  $collectionId
