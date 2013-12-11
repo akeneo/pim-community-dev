@@ -131,8 +131,8 @@ a2lix_translation_form:
     locales:                  [en, fr]
     templating:               "OroUIBundle:Form:translateable.html.twig"
 
-#apy_js_form_validation:
-#    check_modes: [submit, change]
+apy_js_form_validation:
+    check_modes: [submit, change]
 
 lexik_maintenance:
     authorized:
@@ -149,7 +149,6 @@ pim_catalog:
 
 oro_batch:
     enable_mail_notification: true
-
 
 oro_require_js:
     config:
