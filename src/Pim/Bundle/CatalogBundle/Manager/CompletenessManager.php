@@ -99,9 +99,9 @@ class CompletenessManager
     {
         if ($product->getId()) {
             $query = $this->doctrine->getManager()->createQuery(
-                "DELETE FROM $this->class c WHERE c.product = :product"
+                "DELETE FROM $this->class c WHERE c.productId = :productId"
             );
-            $query->setParameter('product', $product);
+            $query->setParameter('productId', $product->getId());
             $query->execute();
         }
     }
@@ -209,8 +209,8 @@ class CompletenessManager
             ->select('co, lo, ch')
             ->innerJoin('co.locale', 'lo')
             ->innerJoin('co.channel', 'ch')
-            ->where('co.product = :product')
-            ->setParameter('product', $product);
+            ->where('co.productId = :productId')
+            ->setParameter('productId', $product->getId());
     }
 
     /**
