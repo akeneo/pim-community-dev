@@ -32,7 +32,7 @@ interface OptionRepositoryInterface
      *
      * @return array
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options=array());
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array());
 
     /**
      * Returns the entity corresponding to a given id
