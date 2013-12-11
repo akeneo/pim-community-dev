@@ -29,30 +29,24 @@
 {% endspaceless %}
 {% endblock form_end %}
 
+{% block form_row_field %}
+    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+        <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(form) }}
+            {% if form.children|length == 0 %}
+                {{ block('form_info') }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
 {% block form_row %}
     {% spaceless %}
         {% if form|is_flexible %}
             {{ block('form_row_flex') }}
         {% else %}
-            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-                <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-                    {{ form_widget(form) }}
-                    {% if form.children|length == 0 %}
-                        {{ block('form_info') }}
-                    {% endif %}
-                    {% if select2 is defined and select2 == true %}
-                        <script type="text/javascript">
-                            require(
-                                ['pim/initselect2'],
-                                function (initSelect2) {
-                                    initSelect2('{{ form.vars.id }}');
-                                }
-                            );
-                        </script>
-                    {% endif %}
-                </div>
-            </div>
+            {{ block('form_row_field') }}
         {% endif %}
     {% endspaceless %}
 {% endblock form_row %}
@@ -328,3 +322,7 @@
         {% endif %}
     </div>
 {% endblock pim_attribute_requirement_widget %}
+
+{% block pim_ajax_entity_row %}
+    {{ block('form_row_field') }}
+{% endblock %}

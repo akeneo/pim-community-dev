@@ -3,6 +3,9 @@
 pim_catalog:
     resource: "@PimCatalogBundle/Resources/config/routing.yml"
 
+pim_ui:
+    resource: "@PimUIBundle/Resources/config/routing.yml"
+    
 pim_customentity:
     prefix: /enrich
     resource: "@PimCustomEntityBundle/Resources/config/routing.yml"
@@ -17,10 +20,6 @@ oro_default:
     defaults:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
-
-oro_ui:
-    resource: "@OroUIBundle/Resources/config/routing.yml"
-    prefix:   /ui
 
 oro_form:
     resource: "@OroFormBundle/Resources/config/routing.yml"

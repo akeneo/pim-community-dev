@@ -7,7 +7,7 @@
             require(
                 ['pim/initselect2'],
                 function (initSelect2) {
-                    initSelect2('{{ form.operation.locale.vars.id }}');
+                    initSelect2($('{{ form.operation.vars.id }}'));
                     {% if form.operation.vars.groups is empty %}
                         $('a.next').hide();
                     {% endif %}
