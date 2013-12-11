@@ -127,6 +127,7 @@ if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console assetic:dump
     php app/console oro:assetic:dump
     php app/console oro:translation:dump
+    php app/console oro:localization:dump
     php app/console cache:clear
 fi
 
