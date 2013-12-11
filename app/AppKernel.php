@@ -16,7 +16,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            // Uncomment the following line to use MongoDB implementation
+            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             // BAP deps
@@ -85,6 +86,11 @@ class AppKernel extends Kernel
 
         if (is_file($file = __DIR__.'/config/config_'.$this->getEnvironment().'_local.yml')) {
             $loader->load($file);
+        }
+
+        if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
+            $loader->load(__DIR__.'/config/mongodb/parameters_'.$this->getEnvironment().'.yml');
+            $loader->load(__DIR__ .'/config/mongodb/config.yml');
         }
     }
 }
