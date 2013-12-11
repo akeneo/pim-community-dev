@@ -78,9 +78,7 @@ doctrine_mongodb:
     connections:
         default:
             server: "%mongodb_server%"
-            server: ~
     default_database: "%mongodb_database%"
-    default_database: ~
     document_managers:
         default:
             auto_mapping: true
