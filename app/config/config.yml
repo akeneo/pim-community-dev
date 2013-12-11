@@ -147,8 +147,8 @@ oro_require_js:
         preserveLicenseComments: true
 #        generateSourceMaps: true
 #        useSourceUrl: true
-    # it's better to set "node" as js_engine, if nodejs is installed
-    js_engine: "java -Xss10m -Xms512m -Xmx1024m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main"
+    # Change to "java -Xss10m -Xms512m -Xmx1024m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main" if nodejs is not installed
+    js_engine: node
 
 oro_help:
     defaults:
