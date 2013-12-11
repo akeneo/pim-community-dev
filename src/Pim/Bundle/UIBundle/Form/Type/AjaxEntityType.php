@@ -14,7 +14,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
  * Ajax entity type
- * 
+ *
  * An entity type with asynchronously loaded options. The repository entity's doctrine repository
  * class must implement OptionRepositoryInterface
  *
@@ -167,7 +167,7 @@ class AjaxEntityType extends AbstractType
 
         return $transformerOptions;
     }
-    
+
     /**
      * Returns the list route parameters
      *
@@ -187,9 +187,9 @@ class AjaxEntityType extends AbstractType
 
     /**
      * Returns the form type's transformer
-     * 
+     *
      * @param array $options
-     * 
+     *
      * @return \Symfony\Component\Form\DataTransformerInterface
      */
     protected function getTransformer(array $options)

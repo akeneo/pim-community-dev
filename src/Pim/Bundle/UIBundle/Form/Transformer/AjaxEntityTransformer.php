@@ -27,8 +27,8 @@ class AjaxEntityTransformer implements DataTransformerInterface
     /**
      * Constructor
      *
-     * @param \Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface $repository
-     * @param array                                                            $options
+     * @param OptionRepositoryInterface $repository
+     * @param array                     $options
      */
     public function __construct(OptionRepositoryInterface $repository, array $options)
     {

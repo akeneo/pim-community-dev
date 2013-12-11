@@ -144,7 +144,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
     /**
      * @var int
      */
-    protected $minimumInputLength=0;
+    protected $minimumInputLength = 0;
 
     /**
      * Used locale to override Translation listener's locale
