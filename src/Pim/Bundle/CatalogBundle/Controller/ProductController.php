@@ -80,6 +80,18 @@ class ProductController extends AbstractDoctrineController
     const BATCH_SIZE = 250;
 
     /**
+     * Constant used to redirect to the datagrid when save edit form
+     * @staticvar string
+     */
+    const BACK_TO_GRID = 'BackGrid';
+
+    /**
+     * Constant used to redirect to create popin when save edit form
+     * @staticvar string
+     */
+    const CREATE       = 'Create';
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -320,7 +332,7 @@ class ProductController extends AbstractDoctrineController
                     $params['compareWith'] = $comparisonLocale;
                 }
 
-                return $this->redirectToRoute('pim_catalog_product_edit', $params);
+                return $this->redirectAfterEdit($params);
             } else {
                 $this->addFlash('error', 'flash.product.invalid');
             }
@@ -340,8 +352,27 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'locales'                => $this->localeManager->getUserLocales(),
+            'locales'                => $this->localeManager->getUserLocales()
         );
+    }
+
+    /**
+     * Switch case to redirect after saving a product from the edit form
+     *
+     * @param array $params
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function redirectAfterEdit($params)
+    {
+        switch ($this->getRequest()->get('action')) {
+            case self::BACK_TO_GRID:
+                return $this->redirectToRoute('pim_catalog_product_index');
+            case self::CREATE:
+                return $this->createAction($this->getRequest(), $this->getDataLocale());
+            default:
+                return $this->redirectToRoute('pim_catalog_product_edit', $params);
+        }
     }
 
     /**
