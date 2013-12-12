@@ -56,7 +56,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($criteria as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
         }
-        $stmt->execute();  
+        $stmt->execute();
     }
 
     /**
