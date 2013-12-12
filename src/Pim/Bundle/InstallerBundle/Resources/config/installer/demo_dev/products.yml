@@ -32,13 +32,15 @@ products:
         categories: 'shoes_male,shoes_male_eu'
         color-en_US: 'Red,Purple'
         manufacturer-en_US: MugStore
-        name-en_US: ''
-        name-fr_FR: ''
+        name-en_US: 'My name'
+        name-fr_FR: 'Mon nom'
         price-en_US: '20.40 EUR,25.02 USD'
         release_date: 10/30/2013
         enabled: '1'
-        short_description-en_US-mobile: ''
-        short_description-fr_FR-mobile: ''
+        short_description-en_US-mobile: 'My short mobile desc'
+        short_description-fr_FR-mobile: 'Ma description courte mobile'
+        short_description-en_US-ecommerce: 'My short ecom desc'
+        short_description-fr_FR-ecommerce: 'Ma description courte ecommerce'
         size: ''
         unique_color: ''
         weight-en_US: 0.485 KILOGRAM

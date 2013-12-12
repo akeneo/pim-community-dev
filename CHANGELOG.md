@@ -27,6 +27,7 @@
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
+- AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
