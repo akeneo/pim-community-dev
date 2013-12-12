@@ -547,4 +547,30 @@ class Edit extends Form
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
     }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
+     */
+    public function getDropdownButtonItem($item, $button)
+    {
+        $dropdown = $this
+            ->find('css', sprintf('div.btn-group:contains("%s")', $button));
+
+        if (!$dropdown || !$dropdown->find('css', 'button.dropdown-toggle')) {
+            throw new \InvalidArgumentException(sprintf('Dropdown button "%s" not found', $button));
+        }
+        $dropdown->find('css', 'button.dropdown-toggle')->click();
+
+        $listItem = $dropdown->find('css', sprintf('li:contains("%s") a', $item));
+        if (!$listItem) {
+            throw new \InvalidArgumentException(sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
+        }
+
+        return $listItem;
+    }
 }

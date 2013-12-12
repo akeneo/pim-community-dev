@@ -423,7 +423,7 @@ class WebUser extends RawMinkContext
             } else {
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
-            
+
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
@@ -798,6 +798,21 @@ class WebUser extends RawMinkContext
             ->getCurrentPage()
             ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
             ->press();
+        $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iPressOnTheDropdownButton($item, $button)
+    {
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem($item, $button)
+            ->click();
         $this->wait();
     }
 
