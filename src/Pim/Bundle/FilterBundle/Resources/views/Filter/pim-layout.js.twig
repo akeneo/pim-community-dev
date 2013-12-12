@@ -45,7 +45,7 @@
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+        'choices': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
     }))
 {% endblock %}
 
