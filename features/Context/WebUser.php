@@ -803,6 +803,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iPressOnTheDropdownButton($item, $button)
+    {
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem($item, $button)
+            ->click();
+        $this->wait();
+    }
+
+    /**
      * @param string $action
      *
      * @Given /^I (enable|disable) the product$/
