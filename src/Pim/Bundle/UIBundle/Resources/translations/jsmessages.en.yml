@@ -6,6 +6,10 @@ Selected Rows: Selected Rows
 # PIM messages
 Localized value: Localized value
 
+# Filters
+Action: Action
+Unit:   Unit
+
 jstree:
     all:          All products
     unclassified: Unclassified products
