@@ -49,14 +49,14 @@ define(
                     currency: this._getInputValue(this.criteriaValueSelectors.currency)
                 };
             },
- 
+
             /**
              * @inheritDoc
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
                 if (!value.value) {
-                    return this.defaultCriteriaHint;
+                    return this.placeholder;
                 } else {
                     var option = this._getChoiceOption(value.type);
                     return option.label + ' ' + value.value + ' ' + value.currency;
