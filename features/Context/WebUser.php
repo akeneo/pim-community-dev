@@ -423,7 +423,7 @@ class WebUser extends RawMinkContext
             } else {
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
-            
+
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
@@ -740,6 +740,7 @@ class WebUser extends RawMinkContext
             $this->getSession()->executeScript(
                 "$('[target]').removeAttr('target');"
             );
+            $this->wait();
 
             return new Step\Given(sprintf('I follow "%s"', $link));
         } catch (UnsupportedDriverActionException $e) {
