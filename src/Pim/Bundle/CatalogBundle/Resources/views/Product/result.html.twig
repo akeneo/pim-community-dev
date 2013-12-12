@@ -1,5 +1,4 @@
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set showImage = true %}
 {% set imagePath = asset('/bundles/pimui/images/icon_product.png') %}
@@ -23,6 +22,6 @@
 
 {% set entityInfo = [
     {'title': 'Family', 'value': entity.family ? entity.family : 'N/A'},
-    {'title': 'Created', 'value': entity.created ? Locale.time(entity.created) : 'N/A'},
-    {'title': 'Updated', 'value': entity.updated ? Locale.time(entity.updated) : 'N/A'}
+    {'title': 'Created', 'value': entity.created ? entity.created|oro_format_datetime : 'N/A'},
+    {'title': 'Updated', 'value': entity.updated ? entity.updated|oro_format_datetime : 'N/A'}
 ] %}
