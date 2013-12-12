@@ -7,8 +7,9 @@ Selected Rows: Selected Rows
 Localized value: Localized value
 
 # Filters
-Action: Action
-Unit:   Unit
+Action:   Action
+Unit:     Unit
+Currency: Currency
 
 jstree:
     all:          All products
