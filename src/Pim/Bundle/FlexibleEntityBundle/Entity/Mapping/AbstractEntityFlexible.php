@@ -168,7 +168,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
 
         $values = $this->filterValues($attributeCode, $locale, $scope);
-        $value = (count($values) == 1) ? $values->first() : false;
+        $value = (count($values) == 1) ? $values->first() : null;
 
         return $value;
     }
@@ -289,7 +289,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
             $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
             $value  = $this->getValue($attributeCode, $locale, $scope);
-            if ($value === false) {
+            if ($value === null) {
                 $value = $this->createValue($attributeCode, $locale, $scope);
                 $this->addValue($value);
             }
