@@ -397,7 +397,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'               => FieldDescriptionInterface::TYPE_HTML,
                 'label'              => $this->translate('Complete'),
-                'field_name'         => 'completenesses',
+                'field_name'         => 'completenessRatio',
                 'expression'         => 'pCompleteness',
                 'filter_type'        => FilterInterface::TYPE_COMPLETENESS,
                 'sortable'           => true,
@@ -691,12 +691,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
         $proxyQuery
-            ->addSelect('pCompleteness')
+            ->addSelect('pCompleteness.ratio AS completenessRatio')
             ->leftJoin(
-                $rootAlias .'.completenesses',
+                'PimCatalogBundle:Completeness',
                 'pCompleteness',
                 'WITH',
-                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel '.
+                'AND pCompleteness.productId = '.$rootAlias.'.id'
             );
     }
 
