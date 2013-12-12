@@ -380,7 +380,7 @@ class ProductController extends AbstractDoctrineController
                 break;
         }
 
-        return $this->redirectToRoute('pim_catalog_product_edit', $params);
+        return $this->redirectToRoute($route, $params);
     }
 
     /**
