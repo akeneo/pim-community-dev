@@ -23,7 +23,6 @@ Feature: Product edition clicking on another action
       | sku    | sandal    |
       | name   | My Sandal |
 
-  @skip
   Scenario: Successfully edit a product and create a new one
     Given I am on the "sandal" product page
     And I fill in the following information:
@@ -33,5 +32,5 @@ Feature: Product edition clicking on another action
     And I fill in the following information in the popin:
       | SKU    | sandal_2 |
       | Family | Sandals  |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I should be on the product "sandal_2" edit page
