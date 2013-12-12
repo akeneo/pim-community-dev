@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Entity\Association;
-use Pim\Bundle\CatalogBundle\Entity\Completeness;
 
 /**
  * Flexible product
@@ -394,16 +393,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function __toString()
     {
         return (string) $this->getLabel();
-    }
-
-    /**
-     * Getter for product completenesses
-     *
-     * @return ArrayCollection
-     */
-    public function getCompletenesses()
-    {
-        return $this->completenesses;
     }
 
     /**

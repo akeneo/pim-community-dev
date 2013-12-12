@@ -228,51 +228,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test completenesses property and method linked
-     */
-    public function testCompletenesses()
-    {
-        // create 2 completeness entities
-        $completeness = $this->createCompleteness('channel1', 'en_US');
-        $localeUS = $completeness->getLocale();
-        $channel1 = $completeness->getChannel();
-
-        $completeness2 = $this->createCompleteness('channel2', 'fr_FR');
-        $completeness2->getLocale();
-        $completeness2->getChannel();
-
-        // assert no return if nothing found
-        $this->assertNull($this->product->getCompleteness($localeUS, $channel1));
-
-        // assert add new completeness
-        $this->assertEntity($this->product->addCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-        $this->assertEquals($completeness, $this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
-
-        // assert no duplicate adding
-        $this->assertEntity($this->product->addCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-
-        // assert remove adding a second completeness
-        $this->product->addCompleteness($completeness2);
-        $this->assertCount(2, $this->product->getCompletenesses());
-        $this->assertEntity($this->product->removeCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-        $this->assertNull($this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
-
-        // assert remove an already remove completeness
-        $this->assertEntity($this->product->removeCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-
-        // assert setter completenesses
-        $this->assertEntity($this->product->setCompletenesses());
-        $this->assertCount(0, $this->product->getCompletenesses());
-
-        $this->product->setCompletenesses(array($completeness, $completeness2));
-        $this->assertCount(2, $this->product->getCompletenesses());
-    }
-
-    /**
      * Test getter/setter for group
      */
     public function testGetSetGroup()
