@@ -15,6 +15,6 @@ Feature: Edit a product
     Given I am on the "sandal" product page
     And I fill in the following information:
       | Name | My Sandal |
-    And I press the "Save" button
-    Then I should be on the products page
+    When I press the "Save" button
+    Then I should be on the product "sandal" edit page
     And I should see "My Sandal"
