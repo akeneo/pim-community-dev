@@ -8,11 +8,7 @@ function Date(field, params)
 
     var date = new window.Date(String(value))
 
-    if (/^\d+$/.test(value) || isNaN(date.getTime())) {
-        return getComputeMessage(params.message);
-    }
-
-    if (date.getHours() || date.getMinutes() || date.getSeconds() || date.getMilliseconds()) {
+    if (!date instanceof window.Date || isNaN(date.getTime()) || date.getSeconds() || date.getMilliseconds()) {
         return getComputeMessage(params.message);
     }
 

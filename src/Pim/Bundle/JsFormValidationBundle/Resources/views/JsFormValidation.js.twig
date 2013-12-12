@@ -178,7 +178,11 @@ var jsfv = new function () {
 {% block removeErrors_method %}
         removeErrors: function (field) {
             $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
-            $(field).siblings('.icons-container').find('.validation-tooltip').remove();
+            if ($(field).siblings('.icons-container').length) {
+                $(field).siblings('.icons-container').find('.validation-tooltip').remove();
+            } else {
+                $field.closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
+            }
         },
 {% endblock %}
 {% block addError_method %}
@@ -186,6 +190,9 @@ var jsfv = new function () {
             // Add errors block
             var $field = $(field);
             var $iconContainer = $field.siblings('.icons-container').first();
+            if (!$iconContainer.length) {
+                $iconContainer = $field.closest('.controls').find('.icons-container').first();
+            }
             if ($iconContainer.find('.validation-tooltip').length === 0)  {
                 $('<i class="validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
             }
