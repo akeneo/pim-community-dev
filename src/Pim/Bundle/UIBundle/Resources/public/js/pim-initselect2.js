@@ -44,7 +44,7 @@ define(
                 if ("0" === $select.attr('data-min-input-length')) {
                     
                     options.query = function(query) {
-                        if (!self.hasCachableResults() || null === values) {
+                        if (!self.hasCachableResults($select) || null === values) {
                             $.get(
                                 $select.attr('data-url'), 
                                 self.getAjaxParameters($select),
