@@ -353,8 +353,7 @@ class ProductController extends AbstractDoctrineController
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
             'locales'                => $this->localeManager->getUserLocales(),
-            'createPopin'            => ($this->getRequest()->get('create_popin'))
-                ? $this->createAction($this->getRequest(), $this->getDataLocale()) : null
+            'createPopin'            => $this->getRequest()->get('create_popin')
         );
     }
 
