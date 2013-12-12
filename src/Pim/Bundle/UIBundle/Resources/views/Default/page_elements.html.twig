@@ -17,6 +17,21 @@
 {% endspaceless %}
 {% endmacro %}
 
+{% macro submitDropdownBtn(text, actions) %}
+{% spaceless %}
+    {% set text = text|default('btn.save')|trans|capitalize %}
+    <div class="btn-group submit-form">
+        <button type="submit" class="btn btn-primary" title="{{ text }}">{{ text }}</button>
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            {% for actionKey, action in actions %}
+                <li><a value="{{ actionKey }}">{{ action.text|default('')|trans|capitalize }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro backLink(url, title) %}
 {% spaceless %}
     {% set title = title|default('btn.to grid') %}

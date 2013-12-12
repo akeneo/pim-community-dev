@@ -80,6 +80,18 @@ class ProductController extends AbstractDoctrineController
     const BATCH_SIZE = 250;
 
     /**
+     * Constant used to redirect to the datagrid when save edit form
+     * @staticvar string
+     */
+    const BACK_TO_GRID = 'BackGrid';
+
+    /**
+     * Constant used to redirect to create popin when save edit form
+     * @staticvar string
+     */
+    const CREATE       = 'Create';
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -320,7 +332,7 @@ class ProductController extends AbstractDoctrineController
                     $params['compareWith'] = $comparisonLocale;
                 }
 
-                return $this->redirectToRoute('pim_catalog_product_edit', $params);
+                return $this->redirectAfterEdit($params);
             } else {
                 $this->addFlash('error', 'flash.product.invalid');
             }
@@ -330,18 +342,45 @@ class ProductController extends AbstractDoctrineController
         $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
 
         return array(
-            'form'                   => $form->createView(),
-            'dataLocale'             => $this->getDataLocale(),
-            'comparisonLocale'       => $this->getComparisonLocale(),
-            'channels'               => $channels,
-            'attributesForm'         =>
+            'form'             => $form->createView(),
+            'dataLocale'       => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
+            'channels'         => $channels,
+            'attributesForm'   =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
-            'product'                => $product,
-            'trees'                  => $trees,
-            'created'                => $this->auditManager->getOldestLogEntry($product),
-            'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'locales'                => $this->localeManager->getUserLocales(),
+            'product'          => $product,
+            'trees'            => $trees,
+            'created'          => $this->auditManager->getOldestLogEntry($product),
+            'updated'          => $this->auditManager->getNewestLogEntry($product),
+            'locales'          => $this->localeManager->getUserLocales(),
+            'createPopin'      => $this->getRequest()->get('create_popin')
         );
+    }
+
+    /**
+     * Switch case to redirect after saving a product from the edit form
+     *
+     * @param array $params
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function redirectAfterEdit($params)
+    {
+        switch ($this->getRequest()->get('action')) {
+            case self::BACK_TO_GRID:
+                $route = 'pim_catalog_product_index';
+                $params = array();
+                break;
+            case self::CREATE:
+                $route = 'pim_catalog_product_edit';
+                $params['create_popin'] = true;
+                break;
+            default:
+                $route = 'pim_catalog_product_edit';
+                break;
+        }
+
+        return $this->redirectToRoute($route, $params);
     }
 
     /**
