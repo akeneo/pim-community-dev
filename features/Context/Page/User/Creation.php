@@ -40,19 +40,15 @@ class Creation extends Form
     public function selectRole($role)
     {
         $roleLabels = $this->getElement('Roles')->findAll('css', 'label');
-        $roleId = null;
+
         foreach ($roleLabels as $roleLabel) {
             if ($roleLabel->getText() == $role) {
-                $roleId = $roleLabel->getAttribute('for');
-                break;
+                $roleLabel->click();
+
+                return;
             }
         }
 
-        if (!$roleId) {
-            throw new \Exception(sprintf('Could not find the role %s', $role));
-        }
-
-        $role = $this->getElement('Roles')->find('css', '#'.$roleId);
-        $role->check();
+        throw new \Exception(sprintf('Could not find the role %s', $role));
     }
 }

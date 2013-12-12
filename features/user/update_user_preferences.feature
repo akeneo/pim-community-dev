@@ -12,7 +12,7 @@ Feature: Update user preferences
     Given I edit the "Julia" user
     And I visit the "Additional" tab
     Then I should see "Default tree"
-    And I should see "2013_collection"
+    And I should see "2013 collection"
     When I edit the "tablet" channel
     And I change the "Category tree" to "2014 collection"
     And I save the channel
@@ -22,23 +22,23 @@ Feature: Update user preferences
     And I edit the "Julia" user
     And I visit the "Additional" tab
     Then I should see "Default tree"
-    And I should see "2014_collection"
-    And I should not see "2013_collection"
+    And I should see "2014 collection"
+    And I should not see "2013 collection"
 
   @javascript
   Scenario: Successfully delete a channel used by a user
     Given I edit the "Peter" user
     And I visit the "Additional" tab
     Then I should see "Catalog scope"
-    And I should see "print"
-    When I edit the "print" channel
+    And I should see "Print"
+    When I edit the "Print" channel
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Peter" user
     And I visit the "Additional" tab
     Then I should see "Catalog scope"
-    And I should see "ecommerce"
-    And I should not see "print"
+    And I should see "Ecommerce"
+    And I should not see "Print"
 
   @javascript
   Scenario: Successfully disable a locale used by a user
@@ -54,5 +54,5 @@ Feature: Update user preferences
     And I edit the "Julia" user
     And I visit the "Additional" tab
     Then I should see "Catalog locale"
-    And I should see "en_US"
+    And I should see "de_DE"
     And I should not see "fr_FR"

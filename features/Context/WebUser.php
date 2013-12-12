@@ -677,8 +677,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectRole($role)
     {
-        $this->scrollContainerTo(600);
-        $this->getPage('User creation')->selectRole($role);
+        $this->getCurrentPage()->selectRole($role);
     }
 
     /**
@@ -1455,8 +1454,10 @@ class WebUser extends RawMinkContext
 
     /**
      * @param integer $y
+     *
+     * @Given /^I scroll down$/
      */
-    private function scrollContainerTo($y)
+    public function scrollContainerTo($y = 400)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
     }
