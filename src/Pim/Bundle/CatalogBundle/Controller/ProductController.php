@@ -342,18 +342,18 @@ class ProductController extends AbstractDoctrineController
         $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
 
         return array(
-            'form'                   => $form->createView(),
-            'dataLocale'             => $this->getDataLocale(),
-            'comparisonLocale'       => $this->getComparisonLocale(),
-            'channels'               => $channels,
-            'attributesForm'         =>
+            'form'             => $form->createView(),
+            'dataLocale'       => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
+            'channels'         => $channels,
+            'attributesForm'   =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
-            'product'                => $product,
-            'trees'                  => $trees,
-            'created'                => $this->auditManager->getOldestLogEntry($product),
-            'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'locales'                => $this->localeManager->getUserLocales(),
-            'createPopin'            => $this->getRequest()->get('create_popin')
+            'product'          => $product,
+            'trees'            => $trees,
+            'created'          => $this->auditManager->getOldestLogEntry($product),
+            'updated'          => $this->auditManager->getNewestLogEntry($product),
+            'locales'          => $this->localeManager->getUserLocales(),
+            'createPopin'      => $this->getRequest()->get('create_popin')
         );
     }
 
