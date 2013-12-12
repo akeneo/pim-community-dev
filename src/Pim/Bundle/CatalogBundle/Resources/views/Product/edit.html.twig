@@ -40,8 +40,8 @@
             {{ elements.submitDropdownBtn(
                 'btn.save',
                 {
-                    'Create': { 'text': 'btn.save and create a new one' },
-                    'BackGrid': { 'text': 'btn.save and back to the grid' }
+                    'Create': { 'text': 'btn.save and create' },
+                    'BackGrid': { 'text': 'btn.save and back to grid' }
                 }
             ) }}
         {% endset %}
@@ -127,8 +127,7 @@
         </div>
     {{ form_end(form) }}
 
-    <a
-        href="javascript:void(0);"
+    <a href="javascript:void(0);"
         id="create-product"
         data-form="dialog"
         data-form-url="/app_dev.php/enrich/product/create"></a>
