@@ -15,14 +15,14 @@ use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
- * JobInstance datagrid manager
+ * JobProfile datagrid manager
  * A "job type" property is passed to the service to define if the grid must show import or export jobs
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceDatagridManager extends DatagridManager
+class JobProfileDatagridManager extends DatagridManager
 {
     /**
      * Define the job type

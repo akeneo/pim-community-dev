@@ -1,13 +1,13 @@
 parameters:
-    pim_import_export.entity.job_instance.class:           Oro\Bundle\BatchBundle\Entity\JobInstance
-    pim_import_export.entity.job_execution.class:          Oro\Bundle\BatchBundle\Entity\JobExecution
+    pim_import_export.entity.job_instance.class:            Oro\Bundle\BatchBundle\Entity\JobInstance
+    pim_import_export.entity.job_execution.class:           Oro\Bundle\BatchBundle\Entity\JobExecution
 
-    pim_import_export.datagrid.manager.job_instance.class: Pim\Bundle\ImportExportBundle\Datagrid\JobInstanceDatagridManager
-    pim_import_export.datagrid.manager.report.class:       Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+    pim_import_export.datagrid.manager.job_profile.class:   Pim\Bundle\ImportExportBundle\Datagrid\JobProfileDatagridManager
+    pim_import_export.datagrid.manager.job_execution.class: Pim\Bundle\ImportExportBundle\Datagrid\JobExecutionDatagridManager
 
 services:
-    pim_import_export.datagrid.manager.export:
-        class: %pim_import_export.datagrid.manager.job_instance.class%
+    pim_import_export.datagrid.manager.export_profile:
+        class: %pim_import_export.datagrid.manager.job_profile.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: exports
@@ -19,8 +19,8 @@ services:
             - [ setJobType, [export] ]
             - [ setConnectorRegistry, [@oro_batch.connectors] ]
 
-    pim_import_export.datagrid.manager.import:
-        class: %pim_import_export.datagrid.manager.job_instance.class%
+    pim_import_export.datagrid.manager.import_profile:
+        class: %pim_import_export.datagrid.manager.job_profile.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: imports
@@ -32,8 +32,8 @@ services:
             - [ setJobType, [import] ]
             - [ setConnectorRegistry, [@oro_batch.connectors] ]
 
-    pim_import_export.datagrid.manager.export_report:
-        class: %pim_import_export.datagrid.manager.report.class%
+    pim_import_export.datagrid.manager.export_execution:
+        class: %pim_import_export.datagrid.manager.job_execution.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: export_reports
@@ -44,8 +44,8 @@ services:
         calls:
             - [ setJobType, [export] ]
 
-    pim_import_export.datagrid.manager.import_report:
-        class: %pim_import_export.datagrid.manager.report.class%
+    pim_import_export.datagrid.manager.import_execution:
+        class: %pim_import_export.datagrid.manager.job_execution.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: import_reports

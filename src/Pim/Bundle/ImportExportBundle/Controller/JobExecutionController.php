@@ -100,7 +100,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $gridManager = $this->datagridHelper->getDatagridManager($this->getJobType().'_report', 'pim_import_export');
+        $gridManager = $this->datagridHelper->getDatagridManager($this->getJobType().'_execution', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }
