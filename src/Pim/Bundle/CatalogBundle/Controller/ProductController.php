@@ -352,7 +352,9 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'locales'                => $this->localeManager->getUserLocales()
+            'locales'                => $this->localeManager->getUserLocales(),
+            'createPopin'            => ($this->getRequest()->get('create_popin'))
+                ? $this->createAction($this->getRequest(), $this->getDataLocale()) : null
         );
     }
 
@@ -369,7 +371,7 @@ class ProductController extends AbstractDoctrineController
             case self::BACK_TO_GRID:
                 return $this->redirectToRoute('pim_catalog_product_index');
             case self::CREATE:
-                return $this->createAction($this->getRequest(), $this->getDataLocale());
+                $params['create_popin'] = true;
             default:
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
         }
