@@ -211,6 +211,12 @@
                     $('#pim_product_edit').attr('action', $('#pim_product_edit').attr('action') +"&action="+ action);
                     $('#pim_product_edit').submit();
                 });
+
+                // create popin if needed
+                {% if createPopin is not null %}
+                    new DialogForm('#create-product');
+                    $('#create-product').click();
+                {% endif %}
             });
         }
     );
