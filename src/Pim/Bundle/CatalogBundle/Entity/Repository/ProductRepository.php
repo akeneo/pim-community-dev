@@ -50,14 +50,18 @@ class ProductRepository extends FlexibleEntityRepository
         $scope = $channel->getCode();
         $qb = $this->buildByScope($scope);
         $rootAlias = $qb->getRootAlias();
-        $expression = $qb->expr()->eq('pCompleteness.ratio', '100').' AND '
-            .$qb->expr()->eq('pCompleteness.channel', $channel->getId());
+        $expression = 
+            'pCompleteness.productId = '.$rootAlias.'.id AND '.
+            $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
+            $qb->expr()->eq('pCompleteness.channel', $channel->getId());
+
         $qb->innerJoin(
-            $rootAlias .'.completenesses',
+            'PimCatalogBundle:Completeness',
             'pCompleteness',
             'WITH',
             $expression
         );
+            
         $treeId = $channel->getCategory()->getId();
         $expression = $qb->expr()->eq('pCategory.root', $treeId);
         $qb->innerJoin(
