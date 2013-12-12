@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
@@ -42,9 +41,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCategories());
         $this->assertCount(0, $this->product->getCategories());
-
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCompletenesses());
-        $this->assertCount(0, $this->product->getCompletenesses());
     }
 
     /**
@@ -275,53 +271,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             array($view, $manual),
             $this->product->getMedia()
         );
-    }
-
-    /**
-     * Create completeness entity
-     *
-     * @param string $channelCode
-     * @param string $localeCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
-     */
-    protected function createCompleteness($channelCode, $localeCode)
-    {
-        $completeness = new Completeness();
-        $completeness->setChannel($this->createChannel($channelCode));
-        $completeness->setLocale($this->createLocale($localeCode));
-
-        return $completeness;
-    }
-
-    /**
-     * Create channel entity
-     *
-     * @param string $channelCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Tests\Unit\Entity\Channel
-     */
-    protected function createChannel($channelCode)
-    {
-        $channel = new Channel();
-        $channel->setCode($channelCode);
-
-        return $channel;
-    }
-
-    /**
-     * Create locale entity
-     *
-     * @param string $localeCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     */
-    protected function createLocale($localeCode)
-    {
-        $locale = new Locale();
-        $locale->setCode($localeCode);
-
-        return $locale;
     }
 
     /**
