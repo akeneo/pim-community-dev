@@ -212,8 +212,8 @@
                     $('#pim_product_edit').submit();
                 });
 
-                // create popin if needed
                 {% if createPopin is not null %}
+                    // create popin if needed
                     new DialogForm('#create-product');
                     $('#create-product').click();
                 {% endif %}
