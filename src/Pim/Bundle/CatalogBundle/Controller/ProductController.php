@@ -368,12 +368,19 @@ class ProductController extends AbstractDoctrineController
     {
         switch ($this->getRequest()->get('action')) {
             case self::BACK_TO_GRID:
-                return $this->redirectToRoute('pim_catalog_product_index');
+                $route = 'pim_catalog_product_index';
+                $params = array();
+                break;
             case self::CREATE:
+                $route = 'pim_catalog_product_edit';
                 $params['create_popin'] = true;
+                break;
             default:
-                return $this->redirectToRoute('pim_catalog_product_edit', $params);
+                $route = 'pim_catalog_product_edit';
+                break;
         }
+
+        return $this->redirectToRoute('pim_catalog_product_edit', $params);
     }
 
     /**
