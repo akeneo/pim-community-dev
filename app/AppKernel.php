@@ -64,7 +64,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
             new Pim\Bundle\CustomEntityBundle\PimCustomEntityBundle(),
         );
