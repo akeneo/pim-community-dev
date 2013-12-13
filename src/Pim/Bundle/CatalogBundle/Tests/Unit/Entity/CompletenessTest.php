@@ -38,9 +38,6 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $this->assertEntity($this->completeness);
-
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(0, $this->completeness->getMissingAttributes());
     }
 
     /**
@@ -159,85 +156,5 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
         $expectedProduct = new Product();
         $this->assertEntity($this->completeness->setProduct($expectedProduct));
         $this->assertEquals($expectedProduct, $this->completeness->getProduct());
-    }
-
-    /**
-     * Test getter/setter for missing attributes
-     */
-    public function testGetSetMissingAttributes()
-    {
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(0, $this->completeness->getMissingAttributes());
-
-        // assert with 1 attribute
-        $expectedAttribute = $this->createAttribute('test');
-        $expectedList = array($expectedAttribute);
-
-        $this->assertEntity($this->completeness->setMissingAttributes($expectedList));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(1, $this->completeness->getMissingAttributes());
-
-        // assert setter can reinitialize array
-        $this->completeness->setMissingAttributes();
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(0, $this->completeness->getMissingAttributes());
-
-        // assert with 2 attributes
-        $expectedAttribute2 = $this->createAttribute('test2');
-        $expectedList = array($expectedAttribute, $expectedAttribute2);
-
-        $this->completeness->setMissingAttributes($expectedList);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(2, $this->completeness->getMissingAttributes());
-    }
-
-    /**
-     * Test add/remove methods for missing attributes
-     */
-    public function testAddRemoveMissingAttributes()
-    {
-        // assert adding an attribute
-        $expectedAttribute = $this->createAttribute('test');
-        $this->assertEntity($this->completeness->addMissingAttribute($expectedAttribute));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(1, $this->completeness->getMissingAttributes());
-
-        // assert adding the same attribute
-        $this->assertEntity($this->completeness->addMissingAttribute($expectedAttribute));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(1, $this->completeness->getMissingAttributes());
-
-        // assert adding a second attribute
-        $expectedAttribute2 = $this->createAttribute('test2');
-        $this->completeness->addMissingAttribute($expectedAttribute2);
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(2, $this->completeness->getMissingAttributes());
-
-        // assert removing the first attribute
-        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(1, $this->completeness->getMissingAttributes());
-        $remainingAttribute = $this->completeness->getMissingAttributes()->first();
-        $this->assertEquals($expectedAttribute2, $remainingAttribute);
-
-        // assert removing the same attribute
-        $this->assertEntity($this->completeness->removeMissingAttribute($expectedAttribute));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->completeness->getMissingAttributes());
-        $this->assertCount(1, $this->completeness->getMissingAttributes());
-    }
-
-    /**
-     * Create product attribute
-     *
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-     */
-    protected function createAttribute($code)
-    {
-        $attribute = new ProductAttribute();
-        $attribute->setCode($code);
-
-        return $attribute;
     }
 }

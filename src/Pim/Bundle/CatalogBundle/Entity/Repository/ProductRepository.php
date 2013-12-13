@@ -61,7 +61,7 @@ class ProductRepository extends FlexibleEntityRepository
             'WITH',
             $expression
         );
-            
+ 
         $treeId = $channel->getCategory()->getId();
         $expression = $qb->expr()->eq('pCategory.root', $treeId);
         $qb->innerJoin(
