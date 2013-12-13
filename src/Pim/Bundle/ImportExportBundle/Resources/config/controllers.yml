@@ -16,6 +16,7 @@ services:
             - export
             - %kernel.root_dir%
             - %kernel.environment%
+            - '@pim_import_export.form.type.job_instance'
 
     pim_import_export.controller.import_profile:
         parent: pim_catalog.controller.abstract_doctrine
@@ -27,6 +28,7 @@ services:
             - import
             - %kernel.root_dir%
             - %kernel.environment%
+            - '@pim_import_export.form.type.job_instance'
 
     pim_import_export.controller.export_execution:
         parent: pim_catalog.controller.abstract_doctrine

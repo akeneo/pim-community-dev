@@ -75,6 +75,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                   $jobType
      * @param string                   $rootDir
      * @param string                   $environment
+     * @param JobInstanceType          $jobInstanceType
      */
     public function __construct(
         Request $request,
@@ -89,7 +90,8 @@ class JobProfileController extends AbstractDoctrineController
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir,
-        $environment
+        $environment,
+        JobInstanceType $jobInstanceType
     ) {
         parent::__construct(
             $request,
@@ -107,7 +109,11 @@ class JobProfileController extends AbstractDoctrineController
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
         $this->environment       = $environment;
+
+        $this->jobInstanceType   = $jobInstanceType;
+        $this->jobInstanceType->setJobType($this->jobType);
     }
+
     /**
      * List the jobs instances
      *
@@ -144,21 +150,8 @@ class JobProfileController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $connector = $request->query->get('connector');
-        $alias     = $request->query->get('alias');
-
-        $jobInstance = new JobInstance($connector, $this->getJobType(), $alias);
-        if (!$job = $this->connectorRegistry->getJob($jobInstance)) {
-            $this->addFlash(
-                'error',
-                sprintf('Failed to create an %s with an unknown job definition.', $this->getJobType())
-            );
-
-            return $this->redirectToIndexView();
-        }
-        $jobInstance->setJob($job);
-
-        $form = $this->createForm(new JobInstanceType(), $jobInstance);
+        $jobInstance = new JobInstance(null, $this->getJobType(), null);
+        $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -173,11 +166,9 @@ class JobProfileController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType())),
+            sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
             array(
-                'jobInstance' => $jobInstance,
-                'form'      => $form->createView(),
-                'alias'     => $alias,
+                'form' => $form->createView(),
             )
         );
     }
