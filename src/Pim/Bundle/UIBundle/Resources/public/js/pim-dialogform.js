@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'oro/navigation', 'oro/loading-mask', 'jquery-ui-full', 'jquery.select2', 'bootstrap-tooltip'],
-    function ($, Navigation, LoadingMask) {
+    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap-tooltip'],
+    function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
         return function (elementId, callback) {
@@ -81,6 +81,7 @@ define(
                     }
                 });
 
+                initSelect2.init($(formId));
                 $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 

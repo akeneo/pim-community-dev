@@ -181,7 +181,7 @@ var jsfv = new function () {
             if ($(field).siblings('.icons-container').length) {
                 $(field).siblings('.icons-container').find('.validation-tooltip').remove();
             } else {
-                $field.closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
+                $(field).closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
             }
         },
 {% endblock %}

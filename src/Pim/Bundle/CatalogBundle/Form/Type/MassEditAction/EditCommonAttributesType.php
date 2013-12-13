@@ -60,6 +60,7 @@ class EditCommonAttributesType extends AbstractType
                 array(
                     'choices' => $options['locales'],
                     'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+                    'select2' => true,
                     'attr'    => array(
                         'class' => 'operation-param',
                     )
