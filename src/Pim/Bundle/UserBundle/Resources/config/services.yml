@@ -1,0 +1,12 @@
+parameters:
+    oro_user.form.type.user.class:           Pim\Bundle\UserBundle\Form\Type\UserType
+    oro_user.form.handler.acl_role.class:    Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
+    pim_user.form.type.acl_collection.class: Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
+
+services:
+    pim_user.form.type.acl_collection:
+        class: %pim_user.form.type.acl_collection.class%
+        arguments:
+            - '@pim_catalog.manager.locale'
+        tags:
+            - { name: form.type, alias: oro_acl_collection }

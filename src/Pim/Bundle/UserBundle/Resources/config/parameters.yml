@@ -1,2 +1,0 @@
-parameters:
-    oro_user.form.type.user.class: Pim\Bundle\UserBundle\Form\Type\UserType
