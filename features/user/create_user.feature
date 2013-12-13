@@ -10,15 +10,18 @@ Feature: Create a user
   @javascript
   Scenario: Successfully create a user
     Given I am on the user creation page
-    Then I fill in the following information:
-      | Username          | jack             |
-      | First name        | Jack             |
-      | Last name         | Doe              |
-      | Password          | DoeDoe           |
-      | Re-enter password | DoeDoe           |
-      | E-mail            | jack@example.com |
-      | Status            | Inactive         |
-      | Owner             | Main             |
+    And I fill in the following information:
+      | Username          | jack     |
+      | First name        | Jack     |
+      | Last name         | Doe      |
+      | Password          | DoeDoe   |
+      | Re-enter password | DoeDoe   |
+      | Status            | Inactive |
+      | Owner             | Main     |
+    And I scroll down
+    And I fill in the following information:
+      | E-mail | jack@example.com |
+    And I visit the "Groups and Roles" tab
     And I select the role "User"
     When I save the user
     Then there should be a "jack" user

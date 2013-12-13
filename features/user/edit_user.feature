@@ -12,7 +12,7 @@ Feature: Edit a user
     When I fill in the following information:
       | First name | John  |
       | Last name  | Smith |
-    And I select "Main" from "Owner"
+      | Owner      | Main  |
     And I save the user
     Then I should see "John Smith"
 
@@ -25,10 +25,11 @@ Feature: Edit a user
       | kettle      | Kettle      | kitchenware |
     And an enabled "teapot" product
     When I edit the "admin" user
-    And I select "fr_FR" from "Catalog locale"
-    And I select "mobile" from "Catalog scope"
-    And I select "kitchenware" from "Default tree"
-    And I select "Main" from "Owner"
+    And I visit the "Additional" tab
+    And I fill in the following information:
+      | Catalog locale | fr_FR       |
+      | Catalog scope  | Mobile      |
+      | Default tree   | Kitchenware |
     And I save the user
     When I am on the products page
     Then I should see "Products / FR"

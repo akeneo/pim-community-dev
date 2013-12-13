@@ -1,5 +1,5 @@
 /* global define */
-define(['oro/datagrid/delete-action', 'oro/navigation', 'jquery', 'underscore', 'oro/translator'],
+define(['oro/grid/delete-action', 'oro/navigation', 'jquery', 'underscore', 'oro/translator'],
 function(DeleteAction, Navigation, $, _, __) {
     'use strict';
 
