@@ -145,7 +145,7 @@ class LocaleManager
     /**
      * Get active codes
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getActiveCodes()
     {
@@ -160,7 +160,7 @@ class LocaleManager
     /**
      * Get active locales for which the user has ACLs
      *
-     * @return array
+     * @return Locale[]
      */
     public function getUserLocales()
     {
@@ -194,7 +194,7 @@ class LocaleManager
     /**
      * Get the list of available fallback locales
      *
-     * @return array
+     * @return string[]
      */
     public function getFallbackCodes()
     {
@@ -211,7 +211,7 @@ class LocaleManager
     /**
      * Get active codes with user locale code in first
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getActiveCodesWithUserLocale()
     {
@@ -227,7 +227,7 @@ class LocaleManager
     /**
      * Get user locale code
      *
-     * @return string
+     * @return Locale
      */
     public function getUserLocale()
     {
