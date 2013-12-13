@@ -231,15 +231,12 @@ class LocaleManager
      */
     public function getUserLocale()
     {
-        if ($this->securityContext->getToken() === null) {
+        $token = $this->securityContext->getToken();
+        if ($token === null || $token->getUser === null) {
             return null;
         }
 
-        if ($this->securityContext->getToken()->getUser() === null) {
-            return null;
-        }
-
-        $catalogLocale = $this->securityContext->getToken()->getUser()->getCatalogLocale();
+        $catalogLocale = $token->getUser()->getCatalogLocale();
         $localeCode    = $catalogLocale ? $catalogLocale->getCode() : null;
 
         $userLocales = $this->getUserLocales();
@@ -250,11 +247,8 @@ class LocaleManager
                 break;
             }
         }
-        if (!isset($userLocale)) {
-            $userLocale = array_shift($userLocales);
-        }
 
-        return $userLocale;
+        return isset($userLocale) ? $userLocale : array_shift($userLocales);
     }
 
     /**
