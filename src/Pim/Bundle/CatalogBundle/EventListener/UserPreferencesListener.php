@@ -127,7 +127,10 @@ class UserPreferencesListener implements EventSubscriber
     protected function preUpdate($entity)
     {
         if ($entity instanceof Locale && !$entity->isActivated()) {
-            $this->deactivatedLocales[] = $entity->getCode();
+            $changeset = $this->uow->getEntityChangeSet($entity);
+            if (isset($changeset['activated'])) {
+                $this->deactivatedLocales[] = $entity->getCode();
+            }
         }
     }
 
