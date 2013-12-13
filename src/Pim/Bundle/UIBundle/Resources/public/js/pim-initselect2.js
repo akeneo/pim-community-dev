@@ -2,7 +2,7 @@ define(
     ['jquery', 'underscore', 'jquery.select2'],
     function ($, _) {
         'use strict';
-        return _.extend({
+        return {
             init: function ($target) {
                 var $form = $target.find('form'), self = this;
                 $form.find('input.multiselect').each(function () {
@@ -42,11 +42,11 @@ define(
                     options.placeholder = " ";
                 }
                 if ("0" === $select.attr('data-min-input-length')) {
-                    
+
                     options.query = function(query) {
                         if (!self.hasCachableResults($select) || null === values) {
                             $.get(
-                                $select.attr('data-url'), 
+                                $select.attr('data-url'),
                                 self.getAjaxParameters($select),
                                 function(data) {
                                     values = self.getSelectOptions(data, options);
@@ -54,7 +54,7 @@ define(
                                 }
                             );
                         } else {
-                            query.callback(values)
+                            query.callback(values);
                         }
                     };
                 } else {
@@ -90,6 +90,6 @@ define(
             hasCachableResults: function($select) {
                 return true;
             }
-        });
+        };
     }
 );

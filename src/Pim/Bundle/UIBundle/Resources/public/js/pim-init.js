@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask', 
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
      'pim/initselect2', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2) {
         'use strict';
@@ -21,7 +21,7 @@ define(
                         $target.attr('data-loaded', 1);
                         loadingMask.hide();
                         loadingMask.$el.remove();
-                        pageInit($target)
+                        pageInit($target);
                     });
                 }
             }
@@ -181,7 +181,7 @@ define(
                     loadTab(this);
                 });
             }
-            
+
             $(function(){
                 if ($.isPlainObject($.uniform)) {
                     $.uniform.restore();
@@ -224,9 +224,9 @@ define(
                                 error: function(xhr) {
                                     messenger.notificationFlashMessage(
                                         'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message)
-                                            ? xhr.responseJSON.message
-                                            : $el.attr('data-error-message'));
+                                        (xhr.responseJSON && xhr.responseJSON.message) ?
+                                            xhr.responseJSON.message :
+                                            $el.attr('data-error-message'));
                                 }
                             });
                         };
@@ -241,10 +241,10 @@ define(
                 });
 
                 pageInit();
-            })
+            });
             mediator.bind('hash_navigation_request:complete', function () {
                 pageInit();
             });
-        }
+        };
     }
 );
