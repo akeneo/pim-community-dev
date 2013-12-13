@@ -19,6 +19,7 @@ framework:
         name:                 BAPID
         handler_id:           %session_handler%
         save_path:            %kernel.root_dir%/cache/sessions
+        gc_maxlifetime:       3600
     fragments:
         enabled:              true
         path:                 /_fragment # used for controller action in template
@@ -67,6 +68,7 @@ doctrine:
                 password:     "%database_password%"
                 charset:      UTF8
         types:
+            date:     Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateType
             datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -130,3 +132,35 @@ lexik_maintenance:
 
 oro_batch:
     enable_mail_notification: true
+
+oro_require_js:
+    config:
+        # @see http://requirejs.org/docs/api.html#config
+        waitSeconds: 0
+#        enforceDefine: true
+#        scriptType: 'text/javascript'
+    build_path: "js/oro.min.js"
+    building_timeout: 3600
+    build:
+        # @see https://github.com/jrburke/r.js/blob/master/build/example.build.js
+        optimize: "uglify2"
+        preserveLicenseComments: true
+#        generateSourceMaps: true
+#        useSourceUrl: true
+    # Change to "java -Xss10m -Xms512m -Xmx1024m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main" if nodejs is not installed
+    js_engine: node
+
+oro_help:
+    defaults:
+        server: http://help.orocrm.com/
+        prefix: Third_Party
+    vendors:
+        Oro:
+            prefix: ~
+            alias: Platform
+        OroCRM:
+            prefix: ~
+            alias: CRM
+    routes:
+        oro_default:
+            uri: CRM/OroCRMDashboardBundle

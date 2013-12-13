@@ -1,22 +1,10 @@
-pim_catalog:
-    type: action
-    label: General catalog management operations
-
 # Locales
-pim_catalog_locale:
-    type: action
-    label: Locale manipulation
-
 pim_catalog_locale_index:
     type: entity
     class: PimCatalogBundle:Locale
     permission: VIEW
 
 # Currency
-pim_catalog_currency:
-    type: action
-    label: Currency manipulation
-
 pim_catalog_currency_index:
     type: entity
     class: PimCatalogBundle:Currency
@@ -27,10 +15,6 @@ pim_catalog_currency_toggle:
     permission: EDIT
 
 # Product
-pim_catalog_product:
-    type: action
-    label: Product manipulation
-
 pim_catalog_product_index:
     type: entity
     class: Pim\Bundle\CatalogBundle\Model\Product
@@ -68,10 +52,6 @@ pim_catalog_product_change_state:
     type: action
 
 # Category
-pim_catalog_category:
-    type: action
-    label: Category manipulation
-
 pim_catalog_category_list:
     type: entity
     class: PimCatalogBundle:Category
@@ -100,10 +80,6 @@ pim_catalog_category_products:
     label: See category's products
 
 # Channel
-pim_catalog_channel:
-    type: action
-    label: Channel manipulation
-
 pim_catalog_channel_index:
     type: entity
     class: PimCatalogBundle:Channel
@@ -122,10 +98,6 @@ pim_catalog_channel_remove:
     permission: DELETE
 
 #Family
-pim_catalog_family:
-    type: action
-    label: Family manipulation
-
 pim_catalog_family_create:
     type: entity
     class: PimCatalogBundle:Family
@@ -147,10 +119,6 @@ pim_catalog_family_remove_atribute:
     label: Remove attribute from a family
 
 # Attribute group
-pim_catalog_attribute_group:
-    type: action
-    label: Attribute group manipulation
-
 pim_catalog_attribute_group_create:
     type: entity
     class: PimCatalogBundle:AttributeGroup
@@ -166,7 +134,7 @@ pim_catalog_attribute_group_remove:
 
 pim_catalog_attribute_group_sort:
     type: action
-    label: Sort groups
+    label: Sort attribute groups
 pim_catalog_attribute_group_add_attribute:
     type: action
     label: Add attribute to a group
@@ -175,10 +143,6 @@ pim_catalog_attribute_group_remove_attribute:
     label: Remove attribute from a group
 
 # ProductAttribute
-pim_catalog_attribute:
-    type: action
-    label: Attribute manipulation
-
 pim_catalog_attribute_index:
     type: entity
     class: PimCatalogBundle:ProductAttribute
@@ -204,21 +168,8 @@ pim_catalog_attribute_sort:
 pim_catalog_mass_edit:
     type: action
     label: Product mass edit actions
-pim_catalog_mass_edit_choose:
-    type: action
-    label: Choose action
-pim_catalog_mass_edit_configure:
-    type: action
-    label: Configure action
-pim_catalog_mass_edit_perform:
-    type: action
-    label: Perform action
 
 # Groups
-pim_catalog_group:
-    type: action
-    label: Group manipulation
-
 pim_catalog_group_index:
     type: entity
     class: Pim\Bundle\CatalogBundle\Entity\Group
@@ -237,10 +188,6 @@ pim_catalog_group_remove:
     permission: DELETE
 
 # Group types
-pim_catalog_group_type:
-    type: action
-    label: Group type manipulation
-
 pim_catalog_group_type_index:
     type: entity
     class: PimCatalogBundle:GroupType
@@ -259,10 +206,6 @@ pim_catalog_group_type_remove:
     permission: DELETE
 
 # Association
-pim_catalog_association:
-    type: action
-    label: Association manipulation
-
 pim_catalog_association_index:
     type: entity
     class: PimCatalogBundle:Association

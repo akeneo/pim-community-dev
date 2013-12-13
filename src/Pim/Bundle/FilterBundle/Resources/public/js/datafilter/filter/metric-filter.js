@@ -20,9 +20,9 @@ define(
              */
             _renderCriteria: function (el) {
                 $(el).append(this.popupCriteriaTemplate({
-                    name: this.name,
+                    name:    this.name,
                     choices: this.choices,
-                    units: this.units
+                    units:   this.units
                 }));
 
                 return this;
@@ -54,15 +54,17 @@ define(
              * @inheritDoc
              */
             _getCriteriaHint: function () {
-                var value = this._getDisplayValue();
+                var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+
                 if (!value.value) {
-                    return this.defaultCriteriaHint;
-                } else if (_.has(this.choices, value.type) && _.has(this.units, value.unit)) {
-                    return this.choices[value.type] + ' ' + value.value + ' ' + value.unit;
-                } else if (_.has(this.choices, value.type)) {
-                    return this.choices[value.type] + ' ' + value.value;
+                    return this.placeholder;
                 } else {
-                    return value.value;
+                    var operator = _.find(this.choices, function(choice) {
+                        return choice.value == value.type;
+                    });
+                    operator = operator ? operator.label : '';
+
+                    return operator + ' "' + value.value + ' ' + _.__(value.unit) + '"';
                 }
             },
 
@@ -74,33 +76,33 @@ define(
                     '<div class="input-prepend input-append">' +
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                'Action' +
+                                '<%= _.__("Action") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(choices, function (hint, value) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
+                                '<% _.each(choices, function (choice) { %>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= choice.value %>"><%= choice.label %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="metric_type" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="metric_type" value=""/>' +
                         '</div>' +
 
                         '<input type="text" name="value" value="">' +
 
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                'Unit' +
+                                '<%= _.__("Unit") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(units, function (hint, value) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= _.__(hint) %></a></li>' +
+                                '<% _.each(units, function (code, label) { %>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= code %>"><%= _.__(label) %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="metric_unit" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="metric_unit" value=""/>' +
                         '</div>' +
                     '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button">Update</button>' +
+                    '<button class="btn btn-primary filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 
@@ -110,9 +112,9 @@ define(
              * @property {Object}
              */
             criteriaValueSelectors: {
-                unit: 'input[name="metric_unit"]',
-                type:     'input[name="metric_type"]',
-                value:    'input[name="value"]'
+                unit:  'input[name="metric_unit"]',
+                type:  'input[name="metric_type"]',
+                value: 'input[name="value"]'
             },
 
             /**
@@ -121,9 +123,9 @@ define(
              * @property {0bject}
              */
             emptyValue: {
-                unit: '',
-                type:     '',
-                value:    ''
+                unit:  '',
+                type:  '',
+                value: ''
             },
 
             /**
@@ -135,6 +137,40 @@ define(
             _isValueValid: function(value) {
                 return (value.unit && value.type && value.value) ||
                        (!value.unit && !value.type && !value.value);
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _triggerUpdate: function(newValue, oldValue) {
+                if (!app.isEqualsLoosely(newValue, oldValue)) {
+                    this.trigger('update');
+                }
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _onValueUpdated: function(newValue, oldValue) {
+                var menu = this.$('.choicefilter .dropdown-menu');
+
+                menu.find('li a').each(function() {
+                    var item = $(this),
+                        value = item.data('value');
+
+                    if (item.parent().hasClass('active')) {
+                        if (value == newValue.type || value == newValue.unit) {
+                            item.parent().removeClass('active');
+                        } else {
+                        }
+                    } else if (value == newValue.type || value == newValue.unit) {
+                        item.parent().addClass('active');
+                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
+                    }
+                });
+
+                this._triggerUpdate(newValue, oldValue);
+                this._updateCriteriaHint();
             },
 
             /**

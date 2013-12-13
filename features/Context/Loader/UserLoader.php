@@ -3,6 +3,7 @@
 namespace Context\Loader;
 
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -77,21 +78,42 @@ class UserLoader extends LoadUserData
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
+        $unit = $this
+            ->userManager
+            ->getStorageManager()
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
         $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)
-            ->setApi($api);
+            ->setApi($api)
+            ->setOwner($unit)
+            ->setBusinessUnits(
+                new ArrayCollection(array($unit))
+            );
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));
         }
 
-        $user->addValue($this->getAttributeValue('cataloglocale', $data['cataloglocale']));
-        $user->addValue($this->getAttributeValue('catalogscope', $data['catalogscope']));
-        $user->addValue($this->getAttributeValue('defaulttree', $data['defaulttree']));
+        $catalogLocale = $this->getLocaleManager()->getLocaleByCode($data['catalogLocale']);
+        $user->setCatalogLocale($catalogLocale);
+
+        $catalogScope = $this->getChannelManager()->getChannelByCode($data['catalogScope']);
+        $user->setCatalogScope($catalogScope);
+
+        $trees = $this->getCategoryManager()->getTrees();
+        foreach ($trees as $tree) {
+            if ($tree->getCode() === $data['defaultTree']) {
+                $defaultTree = $tree;
+                break;
+            }
+        }
+        $user->setDefaultTree($defaultTree);
 
         $this->userManager->updateUser($user);
     }
@@ -115,23 +137,5 @@ class UserLoader extends LoadUserData
         }
 
         return $role;
-    }
-
-    /**
-     * @param string $attributeCode
-     * @param string $value
-     *
-     * @return FlexibleValueInterface
-     */
-    protected function getAttributeValue($attributeCode, $value)
-    {
-        $attribute       = $this->findAttribute($attributeCode);
-        $attributeOption = $this->findAttributeOptionWithValue($attribute, $value);
-        $attributeValue  = $this->userManager->createFlexibleValue();
-
-        $attributeValue->setAttribute($attribute);
-        $attributeValue->setOption($attributeOption);
-
-        return $attributeValue;
     }
 }

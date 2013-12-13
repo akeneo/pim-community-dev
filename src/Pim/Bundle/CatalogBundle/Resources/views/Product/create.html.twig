@@ -19,7 +19,9 @@
 
     <div class="row-fluid">
         {{ form_row(form.id) }}
-        {{ form_row(form.values) }}
+        {% for value in form.values %}
+            {{ form_widget(value) }}
+        {% endfor %}
         {{ form_row(form.family) }}
     </div>
 {{ form_end(form) }}

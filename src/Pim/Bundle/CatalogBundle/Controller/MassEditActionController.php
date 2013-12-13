@@ -105,7 +105,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_mass_edit_choose")
+     * @AclAncestor("pim_catalog_mass_edit")
      * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
@@ -140,7 +140,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @AclAncestor("pim_catalog_mass_edit_configure")
+     * @AclAncestor("pim_catalog_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
@@ -180,7 +180,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @AclAncestor("pim_catalog_mass_edit_perform")
+     * @AclAncestor("pim_catalog_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */

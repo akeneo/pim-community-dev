@@ -98,8 +98,6 @@ class MetricFilter extends NumberFilter
      */
     public function getRenderSettings()
     {
-        $dataType = $this->getOption('data_type');
-
         list($formType, $formOptions) = parent::getRenderSettings();
         $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
 
