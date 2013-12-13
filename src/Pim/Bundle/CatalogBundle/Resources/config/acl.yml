@@ -1,7 +1,3 @@
-pim_catalog:
-    type: action
-    label: General catalog management operations
-
 # Locales
 pim_catalog_locale_index:
     type: entity
@@ -172,15 +168,6 @@ pim_catalog_attribute_sort:
 pim_catalog_mass_edit:
     type: action
     label: Product mass edit actions
-pim_catalog_mass_edit_choose:
-    type: action
-    label: Choose action
-pim_catalog_mass_edit_configure:
-    type: action
-    label: Configure action
-pim_catalog_mass_edit_perform:
-    type: action
-    label: Perform action
 
 # Groups
 pim_catalog_group_index:

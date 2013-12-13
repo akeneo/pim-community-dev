@@ -1,7 +1,3 @@
-pim_importexport:
-    type: action
-    label: General import and export operations
-
 # Export
 pim_importexport_export_index:
     type: action

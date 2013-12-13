@@ -1,7 +1,3 @@
-pim_navigation:
-    type: action
-    label: Access to main menu entries
-
 pim_navigation_collect:
     type: action
     label: Collect menu entry
