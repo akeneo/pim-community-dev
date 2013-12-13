@@ -232,23 +232,20 @@ class LocaleManager
     public function getUserLocale()
     {
         $token = $this->securityContext->getToken();
-        if ($token === null || $token->getUser === null) {
+        if ($token === null || $token->getUser() === null) {
             return null;
         }
 
         $catalogLocale = $token->getUser()->getCatalogLocale();
         $localeCode    = $catalogLocale ? $catalogLocale->getCode() : null;
 
-        $userLocales = $this->getUserLocales();
-
-        foreach ($userLocales as $locale) {
-            if ($localeCode == $locale->getCode()) {
-                $userLocale = $locale;
-                break;
-            }
+        if ($localeCode && $this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $localeCode))) {
+            return $catalogLocale;
         }
 
-        return isset($userLocale) ? $userLocale : array_shift($userLocales);
+        $locales = $this->getUserLocales();
+
+        return array_shift($locales);
     }
 
     /**
