@@ -1,0 +1,8 @@
+services:
+    pim_import_export.form.jobInstance:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_import_export_jobInstance_type_form
+            - pim_import_export_jobInstance_type
