@@ -3,9 +3,6 @@ pim_importexport:
     label: General import and export operations
 
 # Export
-pim_importexport_export:
-    type: action
-    label: Export profile manipulation
 pim_importexport_export_index:
     type: action
     label: View export profile list
@@ -26,9 +23,6 @@ pim_importexport_export_launch:
     label: Launch an export profile
 
 # Import
-pim_importexport_import:
-    type: action
-    label: Import profile manipulation
 pim_importexport_import_index:
     type: action
     label: View import profile list
@@ -49,9 +43,6 @@ pim_importexport_import_launch:
     label: Launch an import profile
 
 # Export reports
-pim_importexport_export_report:
-    type: action
-    label: Export report manipulation
 pim_importexport_export_report_index:
     type: action
     label: View export report list
@@ -66,9 +57,6 @@ pim_importexport_export_report_download_files:
     label: Download exported files
 
 # Import reports
-pim_importexport_import_report:
-    type: action
-    label: Import report manipulation
 pim_importexport_import_report_index:
     type: action
     label: View import report list
