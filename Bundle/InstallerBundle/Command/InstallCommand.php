@@ -23,6 +23,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
             ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name')
             ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password')
+            ->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Force installation')
             ->addOption(
                 'sample-data',
                 null,
@@ -33,7 +34,11 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')) {
+        $options = $input->getOptions();
+        $forceInstall = array_key_exists('force', $options) ? true : false;
+        if (!$forceInstall
+            && $this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
+        ) {
             throw new \RuntimeException('Oro Application already installed.');
         }
 
