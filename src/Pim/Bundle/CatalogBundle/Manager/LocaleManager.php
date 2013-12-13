@@ -227,7 +227,7 @@ class LocaleManager
     /**
      * Get user locale code
      *
-     * @return Locale
+     * @return Locale|null
      */
     public function getUserLocale()
     {
@@ -236,11 +236,9 @@ class LocaleManager
             return null;
         }
 
-        $catalogLocale = $token->getUser()->getCatalogLocale();
-        $localeCode    = $catalogLocale ? $catalogLocale->getCode() : null;
-
-        if ($localeCode && $this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $localeCode))) {
-            return $catalogLocale;
+        $locale = $token->getUser()->getCatalogLocale();
+        if ($locale && $this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+            return $locale;
         }
 
         $locales = $this->getUserLocales();
