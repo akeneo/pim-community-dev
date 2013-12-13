@@ -9,20 +9,24 @@
 
 {% block content %}
 
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dialogform'],
+            function ($, dialogForm) {
+                'use strict';
+                $(function() {
+                    new dialogForm('#create-job');
+                });
+            }
+        );
+    </script>
+
     {% set buttons %}
-    <div class="btn-group">
-        {{ elements.createBtn(entityName, null, { 'data-toggle': 'dropdown', 'class': 'dropdown-toggle' }) }}
-        <ul class="dropdown-menu pull-right">
-            {% for connector, jobs in connectors %}
-                {% if connector != 'oro_importexport' %}
-                <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>
-                    {% for alias, job in jobs %}
-                    <li><a href="{{ path(createRoute, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
+        {{ elements.createBtn(
+            'export',
+            null,
+            { 'id': 'create-job', 'data-form': 'dialog', 'data-form-url': path('pim_importexport_export_profile_create') }
+        ) }}
     {% endset %}
 
     {{ elements.page_header((entityName ~ '.overview')|trans, buttons) }}
