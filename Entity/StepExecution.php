@@ -301,22 +301,6 @@ class StepExecution
     }
 
     /**
-     * Add a filter warning
-     *
-     * @param string $filter
-     * @param string $message
-     * @param mixed  $data
-     */
-    public function addFilterWarning($filter, $message, $data)
-    {
-        $this->filterWarnings[] = array(
-            'filter' => $filter,
-            'reason' => $message,
-            'data'   => $data,
-        );
-    }
-
-    /**
      * @return flag to indicate that an execution should halt
      */
     public function isTerminateOnly()
