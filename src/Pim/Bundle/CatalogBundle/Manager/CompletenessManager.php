@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
@@ -176,13 +177,7 @@ class CompletenessManager
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
             $constraint = new ProductValueNotBlank(array('channel' => $channel));
-            $valueCode = $attribute->getCode();
-            if ($attribute->isTranslatable()) {
-                $valueCode .= '_' .$localeCode;
-            }
-            if ($attribute->isScopable()) {
-                $valueCode .= '_' . $channel->getCode();
-            }
+            $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {
                 $missing = true;
@@ -193,6 +188,26 @@ class CompletenessManager
                 $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
             }
         }
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return string
+     */
+    protected function getValueCode(ProductAttribute $attribute, $locale, $scope)
+    {
+        $valueCode = $attribute->getCode();
+        if ($attribute->isTranslatable()) {
+            $valueCode .= '_' .$locale;
+        }
+        if ($attribute->isScopable()) {
+            $valueCode .= '_' . $scope;
+        }
+
+        return $valueCode;
     }
 
     /**
