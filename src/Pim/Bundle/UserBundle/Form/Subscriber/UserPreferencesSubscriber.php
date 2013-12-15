@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,7 +47,19 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         }
 
         $subForm = $form->get('additional');
+        $this->updateCatalogLocale($subForm);
+        $this->updateCatalogScope($subForm);
+        $this->updateDefaultTree($subForm);
 
+    }
+
+    /**
+     * @param Form $subForm
+     *
+     * @return null
+     */
+    protected function updateCatalogLocale(Form $subForm)
+    {
         if ($subForm->has('catalogLocale')) {
             $subForm->add(
                 'catalogLocale',
@@ -60,7 +73,15 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 )
             );
         };
+    }
 
+    /**
+     * @param Form $subForm
+     *
+     * @return null
+     */
+    protected function updateCatalogScope(Form $subForm)
+    {
         if ($subForm->has('catalogScope')) {
             $subForm->add(
                 'catalogScope',
@@ -71,7 +92,15 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 )
             );
         };
+    }
 
+    /**
+     * @param Form $subForm
+     *
+     * @return null
+     */
+    protected function updateDefaultTree(Form $subForm)
+    {
         if ($subForm->has('defaultTree')) {
             $subForm->add(
                 'defaultTree',
