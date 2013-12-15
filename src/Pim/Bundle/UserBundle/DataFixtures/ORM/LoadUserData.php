@@ -7,9 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
 /**
@@ -32,18 +29,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected $userManager;
 
     /**
-     * @var FlexibleEntityRepository
-     */
-    protected $userRepository;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->container      = $container;
-        $this->userManager    = $container->get('oro_user.manager');
-        $this->userRepository = $this->userManager->getFlexibleRepository();
+        $this->container   = $container;
+        $this->userManager = $container->get('oro_user.manager');
     }
 
     /**
@@ -51,26 +42,18 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
-        $users = $this->userRepository->findAll();
+        $users = $this->userManager->getRepository()->findAll();
 
-        $localeCodes   = $this->getLocaleManager()->getActiveCodes();
-        $localeCode = in_array('en_US', $localeCodes) ? 'en_US' : current($localeCodes);
-        $locale       = current($this->getLocaleManager()->getLocales(array('code' => $localeCode)));
-        $localeAttr   = $this->findAttribute('cataloglocale');
-        $localeOption = $this->findAttributeOptionWithValue($localeAttr, $locale->getCode());
-
+        $localeCodes = $this->getLocaleManager()->getActiveCodes();
+        $localeCode  = in_array('en_US', $localeCodes) ? 'en_US' : current($localeCodes);
+        $locale      = current($this->getLocaleManager()->getLocales(array('code' => $localeCode)));
         $scope       = current($this->getChannelManager()->getChannels());
-        $scopeAttr   = $this->findAttribute('catalogscope');
-        $scopeOption = $this->findAttributeOptionWithValue($scopeAttr, $scope->getCode());
-
-        $tree       = current($this->getCategoryManager()->getTrees());
-        $treeAttr   = $this->findAttribute('defaulttree');
-        $treeOption = $this->findAttributeOptionWithValue($treeAttr, $tree->getCode());
+        $tree        = current($this->getCategoryManager()->getTrees());
 
         foreach ($users as $user) {
-            $user->setCataloglocale($localeOption);
-            $user->setCatalogscope($scopeOption);
-            $user->setDefaulttree($treeOption);
+            $user->setCatalogLocale($locale);
+            $user->setCatalogScope($scope);
+            $user->setDefaultTree($tree);
             $this->persist($user);
         }
 
@@ -105,43 +88,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected function getCategoryManager()
     {
         return $this->container->get('pim_catalog.manager.category');
-    }
-
-    /**
-     * Finds an attribute
-     *
-     * @param string $attributeCode
-     *
-     * @return AbstractAttribute
-     */
-    protected function findAttribute($attributeCode)
-    {
-        return $this->userRepository->findAttributeByCode($attributeCode);
-    }
-
-    /**
-     * Finds an attribute option with value
-     *
-     * @param AbstractAttribute $attribute
-     * @param string            $value
-     *
-     * @return AbstractAttributeOption
-     * @throws \LogicException
-     */
-    protected function findAttributeOptionWithValue(AbstractAttribute $attribute, $value)
-    {
-        /** @var $options \Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption[] */
-        $options = $this->userManager->getAttributeOptionRepository()->findBy(
-            array('attribute' => $attribute)
-        );
-
-        foreach ($options as $option) {
-            if ($value == $option->getOptionValue()->getValue()) {
-                return $option;
-            }
-        }
-
-        throw new \LogicException(sprintf('Cannot find attribute option with value "%s"', $value));
     }
 
     /**

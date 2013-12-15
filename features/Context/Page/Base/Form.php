@@ -3,7 +3,6 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Element\Element;
 
 /**
@@ -25,6 +24,7 @@ class Form extends Base
         $this->elements = array_merge(
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
+                'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Validation errors'               => array('css' => '.validation-tooltip'),
@@ -53,7 +53,11 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $this->getElement('Tabs')->clickLink($tab);
+        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+        $tabs->clickLink($tab);
     }
 
     /**
@@ -248,10 +252,6 @@ class Form extends Base
                     $field->selectOption($value);
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
-                    try {
-                        $field->focus();
-                    } catch (UnsupportedDriverActionException $e) {
-                    }
                     if ($field->getTagName() === 'select') {
                         $field->selectOption($value);
                     } else {
@@ -296,6 +296,34 @@ class Form extends Base
     {
         if ($icon = $label->getParent()->find('css', '.icon-caret-right')) {
             $icon->click();
+        }
+    }
+
+    /**
+     * @param string $groupField
+     * @param string $field
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function findFieldInAccordion($groupField, $field)
+    {
+        $accordion = $this->find(
+            'css',
+            sprintf('.accordion-heading a:contains("%s")', $groupField)
+        );
+
+        if (!$accordion) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find accordion %s', $groupField)
+            );
+        }
+
+        $accordionContent = $this->find('css', $accordion->getAttribute('href'));
+
+        if (!$accordionContent->findField($field)) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
+            );
         }
     }
 }

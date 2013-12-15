@@ -23,13 +23,24 @@ Feature: Execute a job
       | code  | label     | attributes | type   |
       | CROSS | Bag Cross |            | X_SELL |
     And the following attributes:
-      | code        | label       | type     |
-      | name        | Name        | text     |
-      | description | Description | textarea |
-      | prices      | Prices      | prices   |
+      | code        | label       | type     | metric family | default metric unit |
+      | name        | Name        | text     |               |                     |
+      | description | Description | textarea |               |                     |
+      | prices      | Prices      | prices   |               |                     |
+      | weight      | Weight      | metric   | Weight        | KILOGRAM            |
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+    And the following job "acme_product_import" configuration:
+      | filePath          |            |
+      | uploadAllowed     | no         |
+      | delimiter         | ;          |
+      | enclosure         | "          |
+      | escape            | \          |
+      | enabled           | yes        |
+      | categories column | categories |
+      | family column     | families   |
+      | groups column     | groups     |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
@@ -48,22 +59,7 @@ Feature: Execute a job
       SKU-010;Bag;CROSS;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
-
+      | filePath | {{ file to import }} |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -83,22 +79,7 @@ Feature: Execute a job
       SKU-001;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
-
+      | filePath | {{ file to import }} |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -119,22 +100,7 @@ Feature: Execute a job
       SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
-
+      | filePath | {{ file to import }} |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -159,22 +125,7 @@ Feature: Execute a job
       SKU-010;Bag;;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value      |
-      | import              | reader    | filePath          |            |
-      | import              | reader    | uploadAllowed     | yes        |
-      | import              | reader    | delimiter         | ;          |
-      | import              | reader    | enclosure         | "          |
-      | import              | reader    | escape            | \          |
-      | import              | processor | enabled           | yes        |
-      | import              | processor | categories column | categories |
-      | import              | processor | family column     | families   |
-      | import              | processor | groups column     | groups     |
-      | import_associations | reader    | filePath          |            |
-      | import_associations | reader    | uploadAllowed     | yes        |
-      | import_associations | reader    | delimiter         | ;          |
-      | import_associations | reader    | enclosure         | "          |
-      | import_associations | reader    | escape            | \          |
-
+      | uploadAllowed | yes |
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
     Then there should be 10 products
@@ -187,21 +138,7 @@ Feature: Execute a job
       SKU-002;50 EUR
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
+      | filePath | {{ file to import }} |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -222,24 +159,40 @@ Feature: Execute a job
       SKU-001;"100 EUR, 90 USD"
       """
     And the following job "acme_product_import" configuration:
-      | step                | element   | property          | value                |
-      | import              | reader    | filePath          | {{ file to import }} |
-      | import              | reader    | uploadAllowed     | no                   |
-      | import              | reader    | delimiter         | ;                    |
-      | import              | reader    | enclosure         | "                    |
-      | import              | reader    | escape            | \                    |
-      | import              | processor | enabled           | yes                  |
-      | import              | processor | categories column | categories           |
-      | import              | processor | family column     | families             |
-      | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
+      | filePath | {{ file to import }} |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | prices | 100.00 EUR, 90.00 USD |
+
+  Scenario: Successfully import products metrics
+    Given the following file to import:
+      """
+      sku;weight
+      SKU-001;4000 GRAM
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | {{ file to import }} |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the job to finish
+    Then there should be 1 products
+    And the product "SKU-001" should have the following value:
+      | weight | 4000.0000 GRAM |
+
+  Scenario: Successfully import products metrics splitting the data and unit
+    Given the following file to import:
+      """
+      sku;weight;weight-unit
+      SKU-001;4000;GRAM
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | {{ file to import }} |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the job to finish
+    Then there should be 1 products
+    And the product "SKU-001" should have the following value:
+      | weight | 4000.0000 GRAM |

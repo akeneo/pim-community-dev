@@ -263,11 +263,12 @@ class CsvReader extends AbstractConfigurableStepElement implements
         }
 
         $data = $this->csv->fgetcsv();
+
         if (false !== $data) {
             if ($data === array(null) || $data === null) {
                 return null;
             }
-            $this->stepExecution->incrementReadCount();
+            $this->stepExecution->incrementSummaryInfo('read');
 
             if (count($this->fieldNames) !== count($data)) {
                 throw new InvalidItemException(
@@ -296,13 +297,37 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array(
-            'filePath'      => array(),
-            'uploadAllowed' => array(
-                'type' => 'switch',
+            'filePath' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.filePath.label',
+                    'help'  => 'pim_import_export.import.filePath.help'
+                )
             ),
-            'delimiter'     => array(),
-            'enclosure'     => array(),
-            'escape'        => array(),
+            'uploadAllowed' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.uploadAllowed.label',
+                    'help'  => 'pim_import_export.import.uploadAllowed.help'
+                )
+            ),
+            'delimiter' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.delimiter.label',
+                    'help'  => 'pim_import_export.import.delimiter.help'
+                )
+            ),
+            'enclosure' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.enclosure.label',
+                    'help'  => 'pim_import_export.import.enclosure.help'
+                )
+            ),
+            'escape' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.escape.label',
+                    'help'  => 'pim_import_export.import.escape.help'
+                )
+            ),
         );
     }
 

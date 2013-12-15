@@ -182,6 +182,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $this->getCurrentPage()->visitTab($tab);
+        $this->wait();
     }
 
     /**
@@ -399,11 +400,30 @@ class WebUser extends RawMinkContext
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
-            $field  = $field->getParent()->getParent()->find('css', 'select');
-            $actual = $field->find('css', 'option[selected]')->getHtml();
+            for ($i = 0; $i < 2; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $actual = $select->find('css', 'option[selected]')->getHtml();
+            } else {
+                $actual = $field->find('css', '.select2-chosen')->getHtml();
+            }
         } elseif (strpos($class, 'select2-input') !== false) {
-            $field   = $field->getParent()->getParent()->getParent()->getParent()->find('css', 'select');
-            $options = $field->findAll('css', 'option[selected]');
+            for ($i = 0; $i < 4; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $options = $field->findAll('css', 'option[selected]');
+            } else {
+                $options = $field->findAll('css', 'li.select2-search-choice div');
+            }
+
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
@@ -657,8 +677,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectRole($role)
     {
-        $this->scrollContainerTo(600);
-        $this->getPage('User creation')->selectRole($role);
+        $this->getCurrentPage()->selectRole($role);
     }
 
     /**
@@ -720,6 +739,7 @@ class WebUser extends RawMinkContext
             $this->getSession()->executeScript(
                 "$('[target]').removeAttr('target');"
             );
+            $this->wait();
 
             return new Step\Given(sprintf('I follow "%s"', $link));
         } catch (UnsupportedDriverActionException $e) {
@@ -778,6 +798,21 @@ class WebUser extends RawMinkContext
             ->getCurrentPage()
             ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
             ->press();
+        $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iPressOnTheDropdownButton($item, $button)
+    {
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem($item, $button)
+            ->click();
         $this->wait();
     }
 
@@ -924,7 +959,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeNextToThe($message, $property)
     {
-        if ($message !== $error = $this->getPage('Export show')->getPropertyErrorMessage($property)) {
+        if ($message !== $error = $this->getCurrentPage()->getPropertyErrorMessage($property)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see "%s" next to the %s property, but saw "%s"',
@@ -1269,9 +1304,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = $config['writer']['filePath'];
+        $path = $config['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1279,9 +1313,9 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $delimiter = isset($config['processor']['delimiter']) ? $config['processor']['delimiter'] : ';';
-        $enclosure = isset($config['processor']['enclosure']) ? $config['processor']['enclosure'] : '"';
-        $escape    = isset($config['processor']['escape'])    ? $config['processor']['escape']    : '\\';
+        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
 
         $csvFile = new \SplFileObject($path);
         $csvFile->setFlags(
@@ -1347,9 +1381,8 @@ class WebUser extends RawMinkContext
         $config = $this
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
-        $config = reset($config);
 
-        $path = dirname($config['writer']['filePath']);
+        $path = dirname($config['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(
@@ -1369,9 +1402,62 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $y
+     * @When /^I compare values with the "([^"]*)" translation$/
      */
-    private function scrollContainerTo($y)
+    public function iCompareValuesWithTheTranslation($language)
+    {
+        $this->getCurrentPage()->compareWith($language);
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see comparison languages "([^"]*)"$/
+     */
+    public function iShouldSeeComparisonLanguages($languages)
+    {
+        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+    }
+
+    /**
+     * @Given /^I select translations for "([^"]*)"$/
+     */
+    public function iSelectTranslationsFor($field)
+    {
+        $this->getCurrentPage()->manualSelectTranslation($field);
+    }
+
+    /**
+     * @Given /^I select (.*) translations$/
+     */
+    public function iSelectTranslations($mode)
+    {
+        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+    }
+
+    /**
+     * @Given /^I copy selected translations$/
+     */
+    public function iCopySelectedTranslations()
+    {
+        $this->getCurrentPage()->copySelectedTranslations();
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" fields:$/
+     */
+    public function iShouldSeeFields($groupField, TableNode $fields)
+    {
+        foreach ($fields->getRows() as $data) {
+            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+        }
+    }
+
+    /**
+     * @param integer $y
+     *
+     * @Given /^I scroll down$/
+     */
+    public function scrollContainerTo($y = 400)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
     }

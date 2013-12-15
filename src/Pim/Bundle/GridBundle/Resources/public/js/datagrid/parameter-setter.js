@@ -1,5 +1,5 @@
 define(
-    ['oro/registry', 'oro/mediator'],
+    ['oro/grid/registry', 'oro/mediator'],
     function (registry, mediator) {
         'use strict';
 

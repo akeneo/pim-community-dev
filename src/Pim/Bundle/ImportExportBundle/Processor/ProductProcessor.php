@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
@@ -18,7 +18,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
-     * @var OrmProductTransformer
+     * @var ORMProductTransformer
      */
     protected $transformer;
 
@@ -43,6 +43,11 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected $groupsColumn  = 'groups';
 
     /**
+     * @var boolean
+     */
+    protected $heterogeneous = false;
+
+    /**
      * @var StepExecution
      */
     protected $stepExecution;
@@ -52,16 +57,17 @@ class ProductProcessor extends AbstractTransformerProcessor
      *
      * @param ImportValidatorInterface $validator
      * @param TranslatorInterface      $translator
-     * @param OrmProductTransformer    $transformer
+     * @param ORMProductTransformer    $transformer
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
-        OrmProductTransformer $transformer
+        ORMProductTransformer $transformer
     ) {
         parent::__construct($validator, $translator);
         $this->transformer = $transformer;
     }
+
     /**
      * Set wether or not the created product should be activated or not
      *
@@ -143,17 +149,57 @@ class ProductProcessor extends AbstractTransformerProcessor
     }
 
     /**
+     * Set wether or not the product data are heterogeneous, means different attributes for each product row
+     *
+     * @param boolean $heterogeneous
+     */
+    public function setHeterogeneous($heterogeneous)
+    {
+        $this->heterogeneous = $heterogeneous;
+        $this->transformer->setHeterogeneous($heterogeneous);
+    }
+
+    /**
+     * Wether or not the products are heterogeneous
+     *
+     * @return bool
+     */
+    public function isHeterogeneous()
+    {
+        return $this->heterogeneous;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
     {
         return array(
-            'enabled'             => array(
-                'type' => 'switch',
+            'enabled' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.enabled.label',
+                    'help'  => 'pim_import_export.import.enabled.help'
+                )
             ),
-            'categoriesColumn'    => array(),
-            'familyColumn'        => array(),
-            'groupsColumn'        => array(),
+            'categoriesColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.categoriesColumn.label',
+                    'help'  => 'pim_import_export.import.categoriesColumn.help'
+                )
+            ),
+            'familyColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.familyColumn.label',
+                    'help'  => 'pim_import_export.import.familyColumn.help'
+                )
+            ),
+            'groupsColumn' => array(
+                'options' => array(
+                    'label' => 'pim_import_export.import.groupsColumn.label',
+                    'help'  => 'pim_import_export.import.groupsColumn.help'
+                )
+            ),
         );
     }
 
@@ -191,5 +237,25 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected function getTransformerErrors()
     {
         return $this->transformer->getErrors();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function mapValues(array &$values)
+    {
+        parent::mapValues($values);
+
+        foreach ($values as $key => $value) {
+            if (1 === preg_match('/-unit$/', $key)) {
+                $metricValueKey = substr($key, 0, -5);
+                if (!isset($values[$metricValueKey])) {
+                    throw new \Exception(sprintf('Could not find matching metric value key for unit key "%s"', $value));
+                }
+
+                $values[$metricValueKey] .= sprintf(' %s', $value);
+                unset($values[$key]);
+            }
+        }
     }
 }

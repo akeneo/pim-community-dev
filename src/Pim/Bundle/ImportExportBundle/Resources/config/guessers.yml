@@ -1,21 +1,99 @@
 parameters:
-    pim_import_export.transformer.guesser.chained.class:       Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
-    pim_import_export.transformer.guesser.type.class:          Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
-    pim_import_export.transformer.guesser.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser
-    pim_import_export.transformer.guesser.translation.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
-    pim_import_export.transformer.guesser.default.class:       Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
-    pim_import_export.transformer.guesser.regexp.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
-    pim_import_export.transformer.guesser.attribute.class:     Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
+    pim_import_export.transformer.guesser.chained.class:     Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
+    pim_import_export.transformer.guesser.type.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
+    pim_import_export.transformer.guesser.entity.class:      Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser
+    pim_import_export.transformer.guesser.translation.class: Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
+    pim_import_export.transformer.guesser.default.class:     Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
+    pim_import_export.transformer.guesser.regexp.class:      Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
+    pim_import_export.transformer.guesser.attribute.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
+    pim_import_export.transformer.guesser.metric.class:      Pim\Bundle\ImportExportBundle\Transformer\Guesser\MetricAttributeGuesser
 
 services:
     pim_import_export.transformer.guesser:
         class: %pim_import_export.transformer.guesser.chained.class%
+
+    pim_import_export.transformer.guesser.default:
+        class: %pim_import_export.transformer.guesser.default.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.default'
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 0 }
 
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
         public: false
         arguments:
             - '@pim_import_export.transformer.property.translation'
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.media:
+        class: %pim_import_export.transformer.guesser.attribute.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.media'
+            - %pim_catalog.entity.product_value.class%
+            - media
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.prices:
+        class: %pim_import_export.transformer.guesser.attribute.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.prices'
+            - %pim_catalog.entity.product_value.class%
+            - prices
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.metric:
+        class: %pim_import_export.transformer.guesser.metric.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.metric'
+            - %pim_catalog.entity.product_value.class%
+            - metric
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.date:
+        class: %pim_import_export.transformer.guesser.type.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.date'
+            - date
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 50 }
+
+
+    pim_import_export.transformer.guesser.datetime:
+        class: %pim_import_export.transformer.guesser.type.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.date'
+            - datetime
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 50 }
+
+
+    pim_import_export.transformer.guesser.boolean:
+        class: %pim_import_export.transformer.guesser.type.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.boolean'
+            - boolean
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 50 }
+
+
+    pim_import_export.transformer.guesser.entity:
+        class: %pim_import_export.transformer.guesser.entity.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.entity'
+            - '@doctrine'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 
@@ -28,80 +106,3 @@ services:
             - ['/(_products|_groups)$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
-
-    pim_import_export.transformer.guesser.media:
-        class: %pim_import_export.transformer.guesser.attribute.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.media'
-            - %pim_catalog.entity.product_value.class%
-            - media
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 50 }
-
-    pim_import_export.transformer.guesser.prices:
-        class: %pim_import_export.transformer.guesser.attribute.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.prices'
-            - %pim_catalog.entity.product_value.class%
-            - prices
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 50 }
-
-    pim_import_export.transformer.guesser.metric:
-        class: %pim_import_export.transformer.guesser.attribute.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.metric'
-            - %pim_catalog.entity.product_value.class%
-            - metric
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 50 }
-
-    pim_import_export.transformer.guesser.date:
-        class: %pim_import_export.transformer.guesser.type.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.date'
-            - date
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 40 }
-
-
-    pim_import_export.transformer.guesser.datetime:
-        class: %pim_import_export.transformer.guesser.type.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.date'
-            - datetime
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 40 }
-
-
-    pim_import_export.transformer.guesser.boolean:
-        class: %pim_import_export.transformer.guesser.type.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.boolean'
-            - boolean
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 40 }
-
-
-    pim_import_export.transformer.guesser.entity:
-        class: %pim_import_export.transformer.guesser.entity.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.entity'
-            - '@doctrine'
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 40 }
-
-    pim_import_export.transformer.guesser.default:
-        class: %pim_import_export.transformer.guesser.default.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.default'
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 0 }

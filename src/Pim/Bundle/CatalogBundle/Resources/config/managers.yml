@@ -32,6 +32,8 @@ services:
         arguments:
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
 
     pim_catalog.manager.category:
@@ -77,13 +79,16 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
         arguments:
             - '@doctrine'
             - '@pim_catalog.doctrine.completeness_query_builder'
+            - '@validator'
+            - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%

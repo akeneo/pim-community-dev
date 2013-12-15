@@ -168,7 +168,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
 
         $values = $this->filterValues($attributeCode, $locale, $scope);
-        $value = (count($values) == 1) ? $values->first() : false;
+        $value = (count($values) == 1) ? $values->first() : null;
 
         return $value;
     }
@@ -179,6 +179,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $attribute
      * @param string $locale
      * @param string $scope
+     *
+     * @return array|boolean
      */
     protected function filterValues($attribute, $locale, $scope)
     {
@@ -217,10 +219,10 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $attribute = $this->allAttributes[$attributeCode];
         $value = new $this->valueClass();
         $value->setAttribute($attribute);
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $value->setScope($scope);
         }
 
@@ -287,7 +289,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
             $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
             $value  = $this->getValue($attributeCode, $locale, $scope);
-            if ($value === false) {
+            if ($value === null) {
                 $value = $this->createValue($attributeCode, $locale, $scope);
                 $this->addValue($value);
             }

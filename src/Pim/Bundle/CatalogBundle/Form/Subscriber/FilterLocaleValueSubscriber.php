@@ -15,18 +15,25 @@ use Symfony\Component\Form\FormEvent;
  */
 class FilterLocaleValueSubscriber implements EventSubscriberInterface
 {
+    /** @var string $currentLocale */
     protected $currentLocale;
+
+    /** @var string $comparisonLocale */
+    protected $comparisonLocale;
 
     /**
      * @param string $currentLocale
+     * @param string $comparisonLocale
      */
-    public function __construct($currentLocale)
+    public function __construct($currentLocale, $comparisonLocale)
     {
-        $this->currentLocale = $currentLocale;
+        $this->currentLocale    = $currentLocale;
+        $this->comparisonLocale = $comparisonLocale;
     }
 
     /**
-     * @return multitype:string
+     * @return array
+     * @static
      */
     public static function getSubscribedEvents()
     {
@@ -37,6 +44,8 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
+     *
+     * @return null
      */
     public function preSetData(FormEvent $event)
     {
@@ -48,10 +57,25 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
         }
 
         foreach ($data as $name => $value) {
-            if ($this->currentLocale &&
-                $this->isTranslatable($value->getAttribute()) &&
-                !$this->isInCurrentLocale($value)) {
+            if ($this->currentLocale
+                && $this->isTranslatable($value->getAttribute())
+                && !$this->isInCurrentLocale($value)
+                && !$this->isInComparisonLocale($value)
+            ) {
                 $form->remove($name);
+            }
+
+            if ($this->isInComparisonLocale($value)) {
+                $form->add(
+                    $name,
+                    'pim_product_value',
+                    array(
+                        'disabled'     => true,
+                        'block_config' => array(
+                            'mode' => 'comparison'
+                        )
+                    )
+                );
             }
         }
     }
@@ -63,7 +87,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     private function isTranslatable($attribute)
     {
-        return $attribute && $attribute->getTranslatable();
+        return $attribute && $attribute->isTranslatable();
     }
 
     /**
@@ -74,5 +98,15 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     private function isInCurrentLocale($value)
     {
         return $value->getLocale() && $value->getLocale() === $this->currentLocale;
+    }
+
+    /**
+     * @param Value $value
+     *
+     * @return boolean
+     */
+    private function isInComparisonLocale($value)
+    {
+        return $value->getLocale() && $value->getLocale() === $this->comparisonLocale;
     }
 }

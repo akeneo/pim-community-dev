@@ -13,15 +13,16 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\FilterLocaleValueSubscriber;
  */
 class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    const CURRENT_LOCALE = 'fr_FR';
-    const OTHER_LOCALE   = 'en_US';
+    const CURRENT_LOCALE    = 'fr_FR';
+    const COMPARISON_LOCALE = 'fr_BE';
+    const OTHER_LOCALE      = 'en_US';
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->target = new FilterLocaleValueSubscriber(self::CURRENT_LOCALE);
+        $this->target = new FilterLocaleValueSubscriber(self::CURRENT_LOCALE, self::COMPARISON_LOCALE);
     }
 
     /**
@@ -60,8 +61,14 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreSetData()
     {
         $data = array(
-            'name_current' => $this->getProductValueMock($this->getProductAttributeMock(), self::CURRENT_LOCALE),
-            'name_other' => $this->getProductValueMock($this->getProductAttributeMock(), self::OTHER_LOCALE),
+            'name_current'               => $this->getProductValueMock(
+                $this->getProductAttributeMock(),
+                self::CURRENT_LOCALE
+            ),
+            'name_other'                 => $this->getProductValueMock(
+                $this->getProductAttributeMock(),
+                self::OTHER_LOCALE
+            ),
             'not_translatable_attribute' => $this->getProductValueMock($this->getProductAttributeMock(false), null),
         );
 
@@ -71,6 +78,32 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->exactly(1))
             ->method('remove')
             ->with('name_other');
+
+        $this->target->preSetData($event);
+    }
+
+    public function testSetComparisonAttributesDisabled()
+    {
+        $data = array(
+            'name_current'    => $this->getProductValueMock($this->getProductAttributeMock(), self::CURRENT_LOCALE),
+            'name_comparison' => $this->getProductValueMock($this->getProductAttributeMock(), self::COMPARISON_LOCALE),
+        );
+
+        $form  = $this->getFormMock();
+        $event = $this->getEventMock($data, $form);
+
+        $form->expects($this->exactly(1))
+            ->method('add')
+            ->with(
+                'name_comparison',
+                'pim_product_value',
+                array(
+                    'disabled'     => true,
+                    'block_config' => array(
+                        'mode' => 'comparison'
+                    )
+                )
+            );
 
         $this->target->preSetData($event);
     }
@@ -141,7 +174,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         return $attribute;

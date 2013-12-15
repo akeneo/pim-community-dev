@@ -6,6 +6,11 @@ Selected Rows: Selected Rows
 # PIM messages
 Localized value: Localized value
 
+# Filters
+Action:   Action
+Unit:     Unit
+Currency: Currency
+
 jstree:
     all:          All products
     unclassified: Unclassified products
@@ -82,7 +87,7 @@ MILE_PER_HOUR:      Mile per hour
 YARD_PER_HOUR:      Yard per hour
 
 Temperature: Temperature
-CELCIUS:     Celcius
+CELSIUS:     Celsius
 FAHRENHEIT:  Fahrenheit
 KELVIN:      Kelvin
 RANKINE:     Rankine

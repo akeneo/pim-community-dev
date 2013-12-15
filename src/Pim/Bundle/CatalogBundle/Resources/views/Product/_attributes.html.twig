@@ -11,62 +11,84 @@
     </ul>
 </div>
 <div class="tab-content">
-    <div id="attribute-buttons">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
-                <i class="icon-eye-open"></i>
-                <i class="icon-caret-down"></i>
-            </a>
-            <div class="dropdown-menu channel pull-right">
-                <h5>{{ 'Scope'|trans }}</h5>
-                <div>
-                    <span id="channel-controls">
-                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                        <select id="default_channel">
-                            {% for channel in channels %}
-                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                </div>
+    <div {{ comparisonLocale is not null ? 'class="compare" ' }}id="comparison-buttons">
+        {% if comparisonLocale is not null %}
+            <div id="copy-selection-switcher" class="btn-group pull-left">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    {{ 'Select'|trans }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="left-aligned"><a class="copy-selection" data-target="all" href="#">{{ 'All'|trans }}</a></li>
+                    <li class="left-aligned"><a class="copy-selection" data-target="current-tab" href="#">{{ 'Current Tab'|trans }}</a></li>
+                    <li class="left-aligned"><a class="copy-selection" data-target="none" href="#">{{ 'None'|trans }}</a></li>
+                </ul>
             </div>
+
+            <a href="#" id="copy-selection" class="btn pull-left">{{ 'Copy'|trans }}</a>
+        {% endif %}
+
+        <div id="comparison-switcher" class="btn-group">
+
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                {{ 'Translate from'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu pull-right">
+                {% for locale in locales if locale != dataLocale %}
+                    <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
+                        <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
+                                {% if locale == comparisonLocale %}
+                                    <i class="icon-circle"></i>
+                                {% endif %}
+                            </span>
+                            {{ locale.code|flag }}
+                            <span class="title">{{ locale_label(locale.code) }}</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="javascript:void(0);">
+                            <span class="title">{{ 'pim_catalog.product.no_comparison_locale_available'|trans }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if comparisonLocale is not null %}
+            <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}) }}" class="btn">
+                &times;
+            </a>
+        {% endif %}
+    </div>
+    <div id="attribute-buttons">
+        <div class="btn-group channel-switcher">
+            <a class="btn dropdown-toggle" href="javascript:void(0);" title="{{ 'Scope'|trans }}" data-toggle="dropdown">
+                <i class="icon-eye-open"></i>
+                <span>{{ 'Scope'|trans }}</span>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                {% for channel in channels %}
+                    <li><a href="javascript:void(0);" data-scope="{{ channel.code }}">{{ channel.label }}</a></li>
+                {% endfor %}
+            </ul>
+            <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand" data-collapse-title="{{ 'Collapse all channels'|trans }}" data-expand-title="{{ 'Expand all channels'|trans }}">
+                <i class="icon-caret-right"></i>
+            </a>
         </div>
     </div>
 
     {% for groupId, groupView in form.vars.groups %}
-    <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
-        <h3>{{ groupView.label }}</h3>
-        {% for attributeId, attributeView in groupView.attributes %}
-            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-            {% if attributeView.values is defined %}
-                {% for scope, subvalue in attributeView.values %}
-                    <div class="control-group" data-field="{{ attributeView.code }}">
-                        {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
-                    </div>
-                {% endfor %}
+        <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
+            <h3>{{ groupView.label }}</h3>
+            {% if comparisonLocale %}
+                {% include 'PimCatalogBundle:Product:_edit_with_comparison.html.twig' %}
             {% else %}
-                    <div class="control-group" data-field="{{ attributeView.code }}">
-                        {{ form_widget(attributeView.value) }}
-                    </div>
+                {% include 'PimCatalogBundle:Product:_edit_without_comparison.html.twig' %}
             {% endif %}
-            {% if attributeView.isRemovable %}
-                <i {{ elements.deleteLinkAttributes(
-                    path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }),
-                    path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
-                    'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
-                    '',
-                    'flash.product.attribute removed'|trans
-                )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
-            {% endif %}
-            {% if attributeView.allowValueCreation and resource_granted('pim_catalog_attribute_edit') %}
-                <a id="add-option-link-{{ attributeId }}" data-form="dialog" data-form-url="{{ path('pim_catalog_productattribute_create_option', { id: attributeId, dataLocale: dataLocale }) }}" class="btn btn-small icons-holder add-attribute-option" href="javascript:void(0);" data-toggle="tooltip" data-original-title="{{ 'Add an option'|trans }}">
-                    <i class="icon-plus"></i>
-                </a>
-            {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+        </div>
     {% endfor %}
+    {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
 </div>

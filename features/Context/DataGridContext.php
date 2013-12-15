@@ -77,6 +77,20 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $action
+     * @param string $value
+     * @param string $unit
+     *
+     * @Then /^I filter by "(Length|Temperature|Weight)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([a-zA-Z_]+)"$/
+     */
+    public function iFilterByMetric($filterName, $action, $value, $unit)
+    {
+        $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
+        $this->wait();
+    }
+
+    /**
      * @param string $code
      *
      * @Given /^I filter by "category" with value "([^"]*)"$/
@@ -443,7 +457,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
@@ -466,7 +480,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));

@@ -18,6 +18,6 @@ class PimJsFormValidationBundle extends Bundle
      */
     public function getParent()
     {
-        return 'OroJsFormValidationBundle';
+        return 'APYJsFormValidationBundle';
     }
 }

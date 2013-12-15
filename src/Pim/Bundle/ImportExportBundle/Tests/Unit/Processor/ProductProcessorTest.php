@@ -16,7 +16,7 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
     public function testProcess()
     {
         $productTransformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer')
+            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
         $productTransformer
@@ -33,6 +33,13 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
             $this->translator,
             $productTransformer
         );
+
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $processor->setStepExecution($stepExecution);
 
         $processor->setEnabled('enabled');
         $processor->setFamilyColumn('fml');

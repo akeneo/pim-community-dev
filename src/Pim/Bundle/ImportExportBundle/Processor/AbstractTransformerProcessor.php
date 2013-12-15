@@ -6,6 +6,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
@@ -17,7 +19,9 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @var ImportValidatorInterface
@@ -53,6 +57,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+            }
             throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
         }
 
@@ -93,7 +100,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      * Remaps values according to $mapping
      *
      * @param array &$values
-     * @param array $mapping
      */
     protected function mapValues(array &$values)
     {
@@ -124,9 +130,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Transforms the array in an object
      *
-     * @abstract
      * @param array $item
      *
+     * @abstract
      * @return object
      */
     abstract protected function transform($item);
@@ -146,4 +152,12 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      * @return array
      */
     abstract protected function getTransformerErrors();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
 }

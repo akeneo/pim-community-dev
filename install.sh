@@ -96,25 +96,26 @@ cd $APP_ROOT
 # Execute tasks
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
-    php app/console oro:entity-extend:clear
-    php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
+    php app/console doctrine:schema:drop --force --full-database > /dev/null 2>&1 || true
+    php app/console doctrine:database:drop --force > /dev/null 2>&1 || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console cache:clear
     echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
+    php app/console oro:entity-config:init
+    php app/console oro:entity-extend:init
+    php app/console oro:entity-extend:update-config
+    php app/console doctrine:schema:update --force
     if [ $ENV != 'behat' ]; then
         echo "Loading PIM fixtures"
         php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
     fi
-    php app/console oro:entity-config:init
-    php app/console oro:entity-extend:init
-    php app/console oro:entity-extend:update-config
-    php app/console cache:clear
-    php app/console doctrine:schema:update --force
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value" > /dev/null 2>&1 || true
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" > /dev/null 2>&1 || true
     php app/console pim:completeness:calculate
 fi
 
@@ -125,6 +126,7 @@ if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console assetic:dump
     php app/console oro:assetic:dump
     php app/console oro:translation:dump
+    php app/console oro:localization:dump
     php app/console cache:clear
 fi
 

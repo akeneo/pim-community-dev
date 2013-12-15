@@ -46,9 +46,7 @@
             <thead>
                 <th>{{ 'Step' | trans | upper }}</th>
                 <th>{{ 'Status' | trans | upper }}</th>
-                <th>{{ 'Read count' | trans | upper }}</th>
-                <th>{{ 'Filter' | trans | upper }}</th>
-                <th>{{ 'Write' | trans |upper }}</th>
+                <th>{{ 'Summary' | trans | upper }}</th>
                 <th>{{ 'Start' | trans | upper }}</th>
                 <th>{{ 'End' | trans | upper }}</th>
             </thead>
@@ -57,13 +55,15 @@
                     <tr>
                         <td>{{ step.stepName | trans }}</td>
                         <td>{{ step.status }}</td>
-                        <td>{{ step.readCount }}</td>
-                        <td>{{ step.filterCount }}</td>
                         <td>
-                            {{ step.writeCount }}
-                            {% if step.creationCount + step.updateCount == step.writeCount%}
-                                ({{ '%count% created'|trans({'%count%': step.creationCount}) }}, {{ '%count% updated'|trans({'%count%': step.updateCount}) }})
-                            {% endif %}
+                            <table class="table-striped table-bordered table-hover">
+                                {% for key, value in step.summary %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
                         </td>
                         <td>{{ step.startTime is empty ? "-" : step.startTime|date("Y-m-d H:i:s") }}</td>
                         <td>{{ step.endTime is empty ? "-" : step.endTime|date("Y-m-d H:i:s") }}</td>

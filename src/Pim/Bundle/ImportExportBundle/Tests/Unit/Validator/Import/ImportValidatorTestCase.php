@@ -15,11 +15,19 @@ class ImportValidatorTestCase extends \PHPUnit_Framework_TestCase
 
     protected $data = array('field' => 'val');
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
     }
 
+    /**
+     * @param string $label
+     *
+     * @return ColumnInfoInterface
+     */
     protected function getColumnInfoMock($label)
     {
         $info = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');

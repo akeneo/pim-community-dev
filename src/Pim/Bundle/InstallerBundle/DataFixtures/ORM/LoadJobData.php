@@ -45,31 +45,9 @@ class LoadJobData extends AbstractInstallerFixture
         $job->setCode($code);
         $job->setLabel($data['label']);
         $job->setType($data['type']);
-        $job->setRawConfiguration($this->prepareConfiguration($data['alias'], $data['steps']));
+        $job->setRawConfiguration($data['configuration']);
 
         return $job;
-    }
-
-    /**
-     * @param string $alias
-     * @param array  $steps
-     *
-     * @return array
-     */
-    protected function prepareConfiguration($alias, array $steps)
-    {
-        $configuration = array();
-        foreach ($steps as $step => $data) {
-            $title = sprintf('pim_import_export.jobs.%s.%s.title', $alias, $step);
-            $config = array(
-                'reader'    => isset($data['reader']) ? $data['reader'] : array(),
-                'processor' => isset($data['processor']) ? $data['processor'] : array(),
-                'writer'    => isset($data['writer']) ? $data['writer'] : array(),
-            );
-            $configuration[$title]= $config;
-        }
-
-        return $configuration;
     }
 
     /**

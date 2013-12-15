@@ -29,8 +29,7 @@ require(
                 $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
-                initSelect2();
-
+                initSelect2.init($(formName));
                 initializeOptions();
                 $(formName+'_attributeType').on('change', function() {
                     updateForm();
@@ -59,6 +58,8 @@ require(
                 if ($(formName+'_availableLocales').val()) {
                     $(formName+'_availableLocales').parent().parent().show();
                     $('#limitLocales-switch').bootstrapSwitch('setState', true);
+                } else {
+                    $(formName+'_availableLocales').parent().parent().hide();
                 }
 
                 $('#limitLocales-switch').on('switch-change', function (e, data) {
@@ -81,7 +82,7 @@ require(
                 }).trigger('change');
 
                 if (preventUpdate) {
-                    $('#updated').addClass('hide');
+                    $(formName).trigger('refresh');
                 }
             }
 

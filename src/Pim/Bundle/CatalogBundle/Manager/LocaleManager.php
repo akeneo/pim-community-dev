@@ -145,7 +145,7 @@ class LocaleManager
     /**
      * Get active codes
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getActiveCodes()
     {
@@ -160,7 +160,7 @@ class LocaleManager
     /**
      * Get active locales for which the user has ACLs
      *
-     * @return array
+     * @return Locale[]
      */
     public function getUserLocales()
     {
@@ -194,7 +194,7 @@ class LocaleManager
     /**
      * Get the list of available fallback locales
      *
-     * @return array
+     * @return string[]
      */
     public function getFallbackCodes()
     {
@@ -211,7 +211,7 @@ class LocaleManager
     /**
      * Get active codes with user locale code in first
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getActiveCodesWithUserLocale()
     {
@@ -227,33 +227,23 @@ class LocaleManager
     /**
      * Get user locale code
      *
-     * @return string
+     * @return Locale|null
      */
     public function getUserLocale()
     {
-        if ($this->securityContext->getToken() === null) {
+        $token = $this->securityContext->getToken();
+        if ($token === null || $token->getUser() === null) {
             return null;
         }
 
-        if ($this->securityContext->getToken()->getUser() === null) {
-            return null;
+        $locale = $token->getUser()->getCatalogLocale();
+        if ($locale && $this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+            return $locale;
         }
 
-        $user = $this->securityContext->getToken()->getUser();
-        $localeCode = (string) $user->getValue('cataloglocale');
-        $userLocales = $this->getUserLocales();
+        $locales = $this->getUserLocales();
 
-        foreach ($userLocales as $locale) {
-            if ($localeCode == $locale->getCode()) {
-                $userLocale = $locale;
-                break;
-            }
-        }
-        if (!isset($userLocale)) {
-            $userLocale = array_shift($userLocales);
-        }
-
-        return $userLocale;
+        return array_shift($locales);
     }
 
     /**

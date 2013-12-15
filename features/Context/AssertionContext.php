@@ -181,7 +181,7 @@ class AssertionContext extends RawMinkContext
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $action  = $row->find('css', 'td.string-cell')->getHtml();
-            $version = $row->find('css', 'td.integer-cell')->getHtml();
+            $version = $row->find('css', 'td.number-cell')->getHtml();
 
             $items = $row->find('css', 'td.string-cell ul')->findAll('css', 'li');
 

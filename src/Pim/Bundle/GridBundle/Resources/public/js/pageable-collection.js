@@ -6,7 +6,7 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/pageable-collection-orig', 'oro/app', 'underscore'],
+    ['oro/pageable-collection', 'oro/app', 'underscore'],
     function(OroPageableCollection, app, _){
         var parent = OroPageableCollection.prototype,
             TREE_REGEX = /(&?treeId=(\d+))/,

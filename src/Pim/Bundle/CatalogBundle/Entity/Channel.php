@@ -30,35 +30,26 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class Channel
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
-    /**
-     * @var string $label
-     */
+    /** @var string $label */
     protected $label;
 
-    /**
-     * @var Category $category
-     */
+    /** @var Category $category */
     protected $category;
 
-    /**
-     * @var ArrayCollection $currencies
-     */
+    /** @var ArrayCollection $currencies */
     protected $currencies;
 
-    /**
-     * @var ArrayCollection $locales
-     */
+    /** @var ArrayCollection $locales */
     protected $locales;
+
+    /** @var array $conversionUnits */
+    protected $conversionUnits = array();
 
     /**
      * Constructor
@@ -269,5 +260,39 @@ class Channel
     public function hasLocale(Locale $locale)
     {
         return $this->locales->contains($locale);
+    }
+
+    /**
+     * Set conversion units
+     *
+     * @param array $conversionUnits
+     *
+     * @return Channel
+     */
+    public function setConversionUnits(array $conversionUnits)
+    {
+        $this->conversionUnits = $conversionUnits;
+
+        return $this;
+    }
+
+    /**
+     * Get conversion units
+     *
+     * @return array
+     */
+    public function getConversionUnits()
+    {
+        return $this->conversionUnits;
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->label;
     }
 }

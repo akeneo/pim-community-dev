@@ -4,10 +4,11 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -118,13 +119,13 @@ class FlatProductNormalizer implements NormalizerInterface
                     ($value !== $identifier) &&
                     (
                         ($scopeCode == null) ||
-                        (!$value->getAttribute()->getScopable()) ||
-                        ($value->getAttribute()->getScopable() && $value->getScope() == $scopeCode)
+                        (!$value->getAttribute()->isScopable()) ||
+                        ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
                     ) &&
                     (
                         (count($localeCodes) == 0) ||
-                        (!$value->getAttribute()->getTranslatable()) ||
-                        ($value->getAttribute()->getTranslatable() && in_array($value->getLocale(), $localeCodes))
+                        (!$value->getAttribute()->isTranslatable()) ||
+                        ($value->getAttribute()->isTranslatable() && in_array($value->getLocale(), $localeCodes))
 
                     )
                 );
@@ -163,6 +164,13 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $this->normalizeCollectionData($data);
         } elseif ($data instanceof Media) {
             $data = $this->mediaManager->getExportPath($data);
+        } elseif ($data instanceof Metric) {
+            $fieldName = $this->getFieldValue($value);
+
+            return array(
+                $fieldName                     => $data->getData(),
+                sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
+            );
         }
 
         return array($this->getFieldValue($value) => (string) $data);
@@ -179,10 +187,10 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $suffix = '';
 
-        if ($value->getAttribute()->getTranslatable()) {
+        if ($value->getAttribute()->isTranslatable()) {
             $suffix = sprintf('-%s', $value->getLocale());
         }
-        if ($value->getAttribute()->getScopable()) {
+        if ($value->getAttribute()->isScopable()) {
             $suffix .= sprintf('-%s', $value->getScope());
         }
 

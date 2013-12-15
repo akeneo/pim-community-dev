@@ -59,7 +59,8 @@ class GroupType extends AbstractType
                             ->setParameter('variant', 'VARIANT');
                     },
                     'multiple' => false,
-                    'expanded' => false
+                    'expanded' => false,
+                    'select2'  => true
                 )
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
@@ -77,8 +78,8 @@ class GroupType extends AbstractType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Model\\GroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Model\\Group',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
             )
         );
@@ -105,7 +106,8 @@ class GroupType extends AbstractType
                     'query_builder' => function (ProductAttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },
-                    'help'     => 'pim_catalog.group.axis.help'
+                    'help'     => 'pim_catalog.group.axis.help',
+                    'select2'  => true
                 )
             )
             ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
@@ -149,7 +151,7 @@ class GroupType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Group'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
             )
         );
     }

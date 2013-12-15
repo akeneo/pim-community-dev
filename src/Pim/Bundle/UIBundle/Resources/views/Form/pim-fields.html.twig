@@ -29,21 +29,21 @@
 {% endspaceless %}
 {% endblock form_end %}
 
+{% block form_row_field %}
+    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+        <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(form) }}
+            {% if form.children|length == 0 %}
+                {{ block('form_info') }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
 {% block form_row %}
     {% spaceless %}
-        {% if form|is_flexible %}
-            {{ block('form_row_flex') }}
-        {% else %}
-            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-                <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-                    {{ form_widget(form) }}
-                    {% if form.children|length == 0 %}
-                        {{ block('form_info') }}
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
+        {{ block('form_row_field') }}
     {% endspaceless %}
 {% endblock form_row %}
 
@@ -60,7 +60,13 @@
             {% set label = name|humanize %}
         {% endif %}
         {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}</label>
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
+                <input type="checkbox" class="comparisonSelection" />
+            {% else %}
+                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}
+            {% endif %}
+        </label>
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}
@@ -136,35 +142,47 @@
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
-    <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
-        <div class="controls">
-            <label class="upload-zone file{% if empty %} empty{% endif %}">
-                <div class="upload-info">
-                    {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
-                            <i class="icon-file upload-preview"></i>
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone file{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if not empty %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                                <i class="icon-file upload-preview"></i>
+                            </a>
+                        {% else %}
+                            <i class="icon-file upload-preview empty"></i>
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
                         </a>
-                    {% else %}
-                        <i class="icon-file upload-preview empty"></i>
                     {% endif %}
-                    <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                <div class="icons-container">
+                    {{ form_errors(form) }}
                 </div>
-                <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="icon-trash"></i>
-                </a>
-                {% if empty %}
-                    {{ form_widget(form.file) }}
-                {% else %}
-                    {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
-                {% endif %}
-            </label>
-            <div class="icons-container">
-                {{ form_errors(form) }}
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                {{ 'pim_catalog.product.no_compared_media'|trans }}
+            </div>
+        </div>
+    {% endif %}
 
     {% endspaceless %}
 {% endblock %}
@@ -173,35 +191,47 @@
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
-    <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
-        <div class="controls">
-            <label class="upload-zone image{% if empty %} empty{% endif %}">
-                <div class="upload-info">
-                    {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                            <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone image{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if not empty %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+                            </a>
+                        {% else %}
+                            <i class="icon-camera-retro upload-preview empty"></i>
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
                         </a>
-                    {% else %}
-                        <i class="icon-camera-retro upload-preview empty"></i>
                     {% endif %}
-                    <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                <div class="icons-container">
+                    {{ form_errors(form) }}
                 </div>
-                <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="icon-trash"></i>
-                </a>
-                {% if empty %}
-                    {{ form_widget(form.file) }}
-                {% else %}
-                    {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
-                {% endif %}
-            </label>
-            <div class="icons-container">
-                {{ form_errors(form) }}
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                {{ 'pim_catalog.product.no_compared_media'|trans }}
+            </div>
+        </div>
+    {% endif %}
 
     {% endspaceless %}
 {% endblock %}
@@ -239,7 +269,7 @@
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
         <div class="controls metric input-append">
-            {{ form_widget(form.data, { 'attr': { 'class': 'pull-left' }}) }}
+            {{ form_widget(form.data, { 'attr': { 'class': 'input-small pull-left' }}) }}
             {{ form_widget(form.unit, { 'attr': { 'class': 'input-small append pull-left' }}) }}
             {{ form_widget(form.family) }}
             <div class="icons-container">
@@ -249,9 +279,9 @@
     </div>
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.select2', 'selectize'],
+            ['jquery', 'selectize'],
             function ($) {
-                $('#{{ form.unit.vars.id }}').select2('destroy').selectize();
+                $('#{{ form.unit.vars.id }}').selectize();
             }
         );
     </script>
@@ -278,14 +308,6 @@
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 
-{% block oro_batch_step_element_configuration_widget %}
-    {% for child in form %}
-        {{ form_row(child) }}
-    {% else %}
-        {{ 'No configuration'|trans }}
-    {% endfor %}
-{% endblock oro_batch_step_element_configuration_widget %}
-
 {% block pim_attribute_requirement_widget %}
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
@@ -296,3 +318,7 @@
         {% endif %}
     </div>
 {% endblock pim_attribute_requirement_widget %}
+
+{% block pim_ajax_entity_row %}
+    {{ block('form_row_field') }}
+{% endblock %}

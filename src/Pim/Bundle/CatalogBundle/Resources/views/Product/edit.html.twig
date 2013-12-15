@@ -4,7 +4,6 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
     {% include 'PimCatalogBundle:Product:_js-handler.html.twig' %}
 {% endblock %}
 
@@ -17,7 +16,7 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
+        'action': path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
@@ -38,28 +37,34 @@
             {% if resource_granted("pim_catalog_product_remove") %}
                 {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
             {% endif %}
-            {{ elements.submitBtn }}
+            {{ elements.submitDropdownBtn(
+                'btn.save',
+                {
+                    'Create': { 'text': 'btn.save and create' },
+                    'BackGrid': { 'text': 'btn.save and back' }
+                }
+            ) }}
         {% endset %}
 
         {% set subtitle %}
             <div id="locale-switcher" class="btn-group sub-title">
                 <span class="product-name dropdown-toggle" data-toggle="dropdown">
                     {{ dataLocale|flag }}
-                    {{ product.label }}
+                    <span class="title">
+                        {{ product.label }}
+                    </span>
                     <i class="icon-caret-down"></i>
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
                         <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
                             <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
-                                <span class="icon pull-left">
-                                    {% if locale == dataLocale %}
-                                        <i class="icon-bullet"></i>
+                                <span class="indicator">
+                                    {% if locale.code == dataLocale %}
+                                        <i class="icon-circle"></i>
                                     {% endif %}
                                 </span>
-                                <span class="code">
-                                    {{ locale.code|flag }}
-                                </span>
+                                {{ locale.code|flag }}
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
@@ -67,10 +72,12 @@
                 </ul>
             </div>
             <div class="status-enabled pull-left">
-                {% if form.enabled.vars.value %}
-                    <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
-                {% else %}
-                    <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                {% if form.enabled is defined %}
+                    {% if form.enabled.vars.value %}
+                        <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                    {% else %}
+                        <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                    {% endif %}
                 {% endif %}
             </div>
         {% endset %}
@@ -119,4 +126,9 @@
             </div>
         </div>
     {{ form_end(form) }}
+
+    <a href="javascript:void(0);"
+        id="create-product"
+        data-form="dialog"
+        data-form-url="{{ path('pim_catalog_product_create', { 'dataLocale': dataLocale }) }}"></a>
 {% endblock %}

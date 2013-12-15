@@ -28,4 +28,4 @@ Feature: Add attributes to a product
     Given I am on the "boots" product page
     And I add available attribute Length
     Then I should see "Length"
-    And I should see "CM"
+    And I should see "Centimeter"

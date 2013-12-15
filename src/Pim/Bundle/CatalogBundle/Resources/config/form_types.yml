@@ -136,6 +136,14 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_product_association }
 
+    pim_catalog.form.type.conversion_units:
+        class: %pim_catalog.form.type.conversion_units.class%
+        arguments:
+            - '@oro_measure.manager'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: form.type, alias: pim_catalog_conversion_units }
+
     # Form extensions
     pim_catalog.extension.type.image:
         class: %pim_catalog.extension.type.image.class%

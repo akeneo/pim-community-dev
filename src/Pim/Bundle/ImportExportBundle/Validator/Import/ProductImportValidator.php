@@ -4,13 +4,13 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
+use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
 
 /**
  * Validates an imported product
@@ -71,7 +71,7 @@ class ProductImportValidator extends ImportValidator
      * Validates a ProductValue
      *
      * @param ProductInterface    $product
-     * @param ColumnInfoInterface $attribute
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ConstraintViolationListInterface
      */
@@ -124,7 +124,7 @@ class ProductImportValidator extends ImportValidator
     {
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
                 return $columnInfo->getLabel();
             }
         }

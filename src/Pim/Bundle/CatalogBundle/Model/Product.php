@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
@@ -160,10 +160,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         foreach ($this->values as $value) {
             $attribute = $value->getAttribute();
             $key = $attribute->getCode();
-            if ($attribute->getTranslatable()) {
+            if ($attribute->isTranslatable()) {
                 $key .= '_'.$value->getLocale();
             }
-            if ($attribute->getScopable()) {
+            if ($attribute->isScopable()) {
                 $key .= '_'.$value->getScope();
             }
             $_values[$key] = $value;

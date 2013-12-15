@@ -22,8 +22,7 @@ Feature: Import options
     manufacturer;Caterpillar;1;Caterpillar
     """
     And the following job "acme_option_import" configuration:
-      | step   | element | property | value                |
-      | import | reader  | filePath | {{ file to import }} |
+      | filePath | {{ file to import }} |
     When I am on the "acme_option_import" import job page
     And I launch the import job
     And I wait for the job to finish

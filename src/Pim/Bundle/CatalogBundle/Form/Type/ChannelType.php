@@ -58,6 +58,7 @@ class ChannelType extends AbstractType
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
+            ->addConversionUnitFields($builder)
             ->addEventSubscribers($builder);
     }
 
@@ -101,12 +102,27 @@ class ChannelType extends AbstractType
             array(
                 'required'      => true,
                 'multiple'      => true,
+                'select2'       => true,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Currency',
                 'query_builder' => function (CurrencyRepository $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
             )
         );
+
+        return $this;
+    }
+
+    /**
+     * Create conversion units field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return ChannelType
+     */
+    protected function addConversionUnitFields(FormBuilderInterface $builder)
+    {
+        $builder->add('conversionUnits', 'pim_catalog_conversion_units');
 
         return $this;
     }
@@ -125,6 +141,7 @@ class ChannelType extends AbstractType
             array(
                 'required'      => true,
                 'multiple'      => true,
+                'select2'       => true,
                 'by_reference'  => false,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
                 'query_builder' => function (LocaleRepository $repository) {
@@ -151,6 +168,7 @@ class ChannelType extends AbstractType
             array(
                 'label'         => 'Category tree',
                 'required'      => true,
+                'select2'       => true,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
                 'query_builder' => function (CategoryRepository $repository) {
                     return $repository->getTreesQB();
@@ -212,7 +230,7 @@ class ChannelType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel',
             )
         );
     }

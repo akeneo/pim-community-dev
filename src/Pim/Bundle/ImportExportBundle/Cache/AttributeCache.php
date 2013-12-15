@@ -3,12 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
-use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
@@ -20,29 +18,9 @@ use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 class AttributeCache
 {
     /**
-     * @staticvar the identifier attribute type
-     */
-    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-
-    /**
      * @var RegistryInterface
      */
     protected $doctrine;
-
-    /**
-     * @var array
-     */
-    protected $attributes;
-
-    /**
-     * @var ProductAttribute
-     */
-    protected $identifierAttribute;
-
-    /**
-     * @var boolean
-     */
-    protected $initialized=false;
 
     /**
      * @var array
@@ -64,69 +42,36 @@ class AttributeCache
     }
 
     /**
-     * Clears the cache
-     */
-    public function clear()
-    {
-        $this->attributes = null;
-        $this->identifierAttribute = null;
-        $this->initialized = false;
-    }
-
-    /**
-     * Initializes the cache with a set of column labels
+     * Sets the attributes and identifierAttributes properties
      *
      * @param array $columnsInfo
      *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
+     * @return array|null
      */
-    public function initialize(array $columnsInfo)
+    public function getAttributes($columnsInfo)
     {
-        $this->setAttributes($columnsInfo);
-        $this->initialized = true;
-    }
+        $this->attributes = array();
+        $this->identifierAttribute = null;
+        if (!count($columnsInfo)) {
+            return;
+        }
+        $codes = array_unique(
+            array_map(
+                function ($columnInfo) {
+                    return $columnInfo->getName();
+                },
+                $columnsInfo
+            )
+        );
 
-    /**
-     * Returns true if the cache has been initialized
-     *
-     * @return boolean
-     */
-    public function isInitialized()
-    {
-        return $this->initialized;
-    }
+        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
+                ->findBy(array('code' => $codes));
+        $attributeMap = array();
+        foreach ($attributes as $attribute) {
+            $attributeMap[$attribute->getCode()] = $attribute;
+        }
 
-    /**
-     * Returns the attribute corresponding to the specified code
-     *
-     * @param string $code
-     *
-     * @return ProductAttribute
-     */
-    public function getAttribute($code)
-    {
-        return $this->attributes[$code];
-    }
-
-    /**
-     * Returns an array of cached attributes
-     *
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Returns the product attribute
-     *
-     * @return ProductAttribute
-     */
-    public function getIdentifierAttribute()
-    {
-        return $this->identifierAttribute;
+        return $attributeMap;
     }
 
     /**
@@ -206,54 +151,5 @@ class AttributeCache
             },
             $object->getAttributes()->toArray()
         );
-    }
-
-    /**
-     * Sets the attributes and identifierAttributes properties
-     *
-     * @param array $columnsInfo
-     *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
-     */
-    protected function setAttributes($columnsInfo)
-    {
-        $codes = array_unique(
-            array_map(
-                function ($columnInfo) {
-                    return $columnInfo->getName();
-                },
-                $columnsInfo
-            )
-        );
-
-        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
-                ->findBy(array('code' => $codes));
-
-        $this->attributes = array();
-        foreach ($attributes as $attribute) {
-            if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
-                $this->identifierAttribute = $attribute;
-            }
-            $this->attributes[$attribute->getCode()] = $attribute;
-        }
-
-        if (count($attributes) !== count($codes)) {
-            throw new UnknownColumnException(
-                array_diff(
-                    $codes,
-                    array_map(
-                        function ($attribute) {
-                            return $attribute->getCode();
-                        },
-                        $this->attributes
-                    )
-                )
-            );
-        }
-
-        foreach ($columnsInfo as $columnInfo) {
-            $columnInfo->setAttribute($this->attributes[$columnInfo->getName()]);
-        }
     }
 }

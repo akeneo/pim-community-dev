@@ -46,7 +46,7 @@ class Index extends Grid
         }
         $elt->click();
 
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title=%s]', $locale));
+        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
         if (!$elt) {
             throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
         }

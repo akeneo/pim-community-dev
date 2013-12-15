@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Subscriber that updates products inside the variant group
@@ -52,11 +52,11 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
     private function bindProducts(Group $group, array $appendProducts, array $removeProducts)
     {
         foreach ($appendProducts as $product) {
-            $product->addGroup($group);
+            $group->addProduct($product);
         }
 
         foreach ($removeProducts as $product) {
-            $product->removeGroup($group);
+            $group->removeProduct($product);
         }
     }
 }

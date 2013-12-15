@@ -1,19 +1,41 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2',
-     'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
+     'pim/initselect2', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2) {
         'use strict';
         var initialized = false;
         return function() {
             if (initialized) {
-                return
+                return;
             }
             initialized = true;
+            function loadTab(tab) {
+                var $target = $(tab.getAttribute('href'));
+                if (!$target.attr('data-loaded') && $target.attr('data-url')) {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container'));
+                    loadingMask.show();
 
-            function pageInit() {
+                    $.get($target.attr('data-url'), function(data) {
+                        $target.html(data);
+                        $target.attr('data-loaded', 1);
+                        loadingMask.hide();
+                        loadingMask.$el.remove();
+                        pageInit($target);
+                    });
+                }
+            }
+            function pageInit($target) {
+                var partialInit;
+                if ($target) {
+                    partialInit = true;
+                } else {
+                    $target = $("body");
+                    partialInit = false;
+                }
                 // Place code that we need to run on every page load here
 
-                $('.remove-attribute').each(function () {
+                $target.find('.remove-attribute').each(function () {
                     var target = $(this).parent().find('.icons-container').first();
                     if (target.length) {
                         $(this).appendTo(target).attr('tabIndex', -1);
@@ -21,22 +43,25 @@ define(
                 });
 
                 // Apply Select2
-                initSelect2();
+                initSelect2.init($target);
 
                 // Apply bootstrapSwitch
-                $('.switch:not(.has-switch)').bootstrapSwitch();
+                $target.find('.switch:not(.has-switch)').bootstrapSwitch();
 
                 // Initialize tooltip
-                $('[data-toggle="tooltip"]').tooltip();
+                $target.find('[data-toggle="tooltip"]').tooltip();
+
+                // Initialize popover
+                $target.find('[data-toggle="popover"]').popover();
 
                 // Activate a form tab
-                $('li.tab.active a').each(function () {
+                $target.find('li.tab.active a').each(function () {
                     var paneId = $(this).attr('href');
                     $(paneId).addClass('active');
                 });
 
                 // Toogle accordion icon
-                $('.accordion').on('show hide', function (e) {
+                $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
                 });
 
@@ -45,7 +70,6 @@ define(
                     var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
                         $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
                         activeGroup;
-
                     if ($activeGroup.length) {
                         activeGroup = $activeGroup.attr('href');
                         if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
@@ -65,10 +89,11 @@ define(
                 }
 
                 function restoreFormState() {
-                    if (sessionStorage.activeTab) {
+                    if (!partialInit && sessionStorage.activeTab) {
                         var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                         if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                             $activeTab.tab('show');
+                            loadTab($activeTab[0]);
                             sessionStorage.removeItem('activeTab');
                         }
                     }
@@ -79,7 +104,7 @@ define(
                             $activeGroup.tab('show');
                             sessionStorage.removeItem('activeGroup');
                         } else {
-                            var $tree = $('[data-selected-tree]');
+                            var $tree = $('div[data-selected-tree]');
                             if ($tree.length && !$('.loading-mask').is(':visible')) {
                                 $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
                                 sessionStorage.removeItem('activeGroup');
@@ -90,13 +115,12 @@ define(
 
                 if (typeof Storage !== 'undefined') {
                     restoreFormState();
-
-                    $('a[data-toggle="tab"]').on('shown', saveFormState);
+                    $target.find('a[data-toggle="tab"]').on('shown', saveFormState);
                 }
 
                 // Initialize slimbox
                 if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-                    $('a[rel^="slimbox"]').slimbox({
+                    $target.find('a[rel^="slimbox"]').slimbox({
                         overlayOpacity: 0.3
                     }, null, function (el) {
                         return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
@@ -111,11 +135,11 @@ define(
                         'data-placement': 'right'
                     }
                 });
-                $('.attribute-field.translatable').each(function () {
+                $target.find('.attribute-field.translatable').each(function () {
                     $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
                 });
 
-                $('form').on('change', 'input[type="file"]', function () {
+                $target.find('form').on('change', 'input[type="file"]', function () {
                     var $input          = $(this),
                         filename        = $input.val().split('\\').pop(),
                         $zone           = $input.parent(),
@@ -148,9 +172,13 @@ define(
                     }
                 });
 
-                $('[data-form-toggle]').on('click', function () {
+                $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
+                });
+
+                $target.find("a[data-toggle='tab']").on('show.bs.tab', function() {
+                    loadTab(this);
                 });
             }
 
@@ -196,9 +224,9 @@ define(
                                 error: function(xhr) {
                                     messenger.notificationFlashMessage(
                                         'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message)
-                                            ? xhr.responseJSON.message
-                                            : $el.attr('data-error-message'));
+                                        (xhr.responseJSON && xhr.responseJSON.message) ?
+                                            xhr.responseJSON.message :
+                                            $el.attr('data-error-message'));
                                 }
                             });
                         };
@@ -213,10 +241,10 @@ define(
                 });
 
                 pageInit();
-            })
+            });
             mediator.bind('hash_navigation_request:complete', function () {
                 pageInit();
             });
-        }
+        };
     }
 );

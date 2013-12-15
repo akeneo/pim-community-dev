@@ -56,7 +56,7 @@ class CursorReader extends AbstractConfigurableStepElement implements
         }
 
         if ($data = $this->cursor->next()) {
-            $this->stepExecution->incrementReadCount();
+            $this->stepExecution->incrementSummaryInfo('read');
 
             return $data;
         }

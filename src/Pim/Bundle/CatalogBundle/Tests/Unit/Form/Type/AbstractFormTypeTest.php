@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
+use Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension;
 
 /**
  * Abstract form type test
@@ -84,6 +85,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $this->builder->add('switch');
 
         $this->factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtension(new FormTypeSelect2Extension())
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface')

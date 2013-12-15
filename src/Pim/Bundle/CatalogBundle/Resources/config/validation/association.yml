@@ -1,6 +1,9 @@
 Pim\Bundle\CatalogBundle\Entity\Association:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
     properties:
         code:
             - NotBlank: ~
@@ -16,4 +19,4 @@ Pim\Bundle\CatalogBundle\Entity\AssociationTranslation:
     properties:
         label:
             - Length:
-                max: 64
+                max: 100

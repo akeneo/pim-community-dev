@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
