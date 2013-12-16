@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
-use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
-
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+
+use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
+
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
 
 /**
