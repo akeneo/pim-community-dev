@@ -47,6 +47,12 @@ class JobAliasSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Post bind method
+     * Assigns alias and connector form values to the job instance
+     *
+     * @param FormEvent $event
+     */
     public function postBind(FormEvent $event)
     {
         /** @var JobInstance $jobInstance */
@@ -60,7 +66,8 @@ class JobAliasSubscriber implements EventSubscriberInterface
         $connector = $form->get('connector')->getData();
         $alias = $form->get('alias')->getData();
 
-        $jobInstance->setAlias($alias);
-        $jobInstance->setConnector($connector);
+        $jobInstance
+            ->setAlias($alias)
+            ->setConnector($connector);
     }
 }
