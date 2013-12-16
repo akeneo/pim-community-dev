@@ -1,0 +1,23 @@
+pim_importexport_import_execution_index:
+    path: collect/import_execution/.{_format}
+    defaults: { _controller: pim_import_export.controller.import_execution:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_import_execution_download_log:
+    path: collect/import_execution/{id}/download
+    defaults: { _controller: pim_import_export.controller.import_execution:downloadLogFileAction }
+    requirements:
+        id: \d+
+
+pim_importexport_import_execution_show:
+    path: collect/import_execution/{id}/show
+    defaults: { _controller: pim_import_export.controller.import_execution:showAction }
+    requirements:
+        id: \d+
+
+pim_importexport_import_execution_download_file:
+    path: collect/import_execution/{id}/downloadFiles
+    defaults: { _controller: pim_import_export.controller.import_execution:downloadFilesAction }
+    requirements:
+        id: \d+

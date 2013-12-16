@@ -13,12 +13,12 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImportController extends JobInstanceController
+class ImportProfileController extends JobProfileController
 {
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_index")
+     * @AclAncestor("pim_importexport_import_profile_index")
      */
     public function indexAction(Request $request)
     {
@@ -28,7 +28,7 @@ class ImportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_create")
+     * @AclAncestor("pim_importexport_import_profile_create")
      */
     public function createAction(Request $request)
     {
@@ -38,7 +38,7 @@ class ImportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_show")
+     * @AclAncestor("pim_importexport_import_profile_show")
      */
     public function showAction($id)
     {
@@ -48,7 +48,7 @@ class ImportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_edit")
+     * @AclAncestor("pim_importexport_import_profile_edit")
      */
     public function editAction(Request $request, $id)
     {
@@ -58,7 +58,7 @@ class ImportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_remove")
+     * @AclAncestor("pim_importexport_import_profile_remove")
      */
     public function removeAction(Request $request, $id)
     {
@@ -68,7 +68,7 @@ class ImportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_launch")
+     * @AclAncestor("pim_importexport_import_profile_launch")
      */
     public function launchAction(Request $request, $id)
     {

@@ -15,13 +15,13 @@ use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 /**
- * Report datagrid manager
+ * Job execution datagrid manager
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReportDatagridManager extends DatagridManager
+class JobExecutionDatagridManager extends DatagridManager
 {
     /**
      * Job type
@@ -52,7 +52,7 @@ class ReportDatagridManager extends DatagridManager
      *
      * @param string $jobType
      *
-     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\JobExecutionDatagridManager
      */
     public function setJobType($jobType)
     {
@@ -128,7 +128,7 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $showLink = sprintf('pim_importexport_%s_report_show', $this->jobType);
+        $showLink = sprintf('pim_importexport_%s_execution_show', $this->jobType);
 
         return array(new UrlProperty('show_link', $this->router, $showLink, array('id')));
     }
@@ -141,7 +141,7 @@ class ReportDatagridManager extends DatagridManager
         $showAction = array(
             'name'         => 'show',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => sprintf('pim_importexport_%s_report_show', $this->jobType),
+            'acl_resource' => sprintf('pim_importexport_%s_execution_show', $this->jobType),
             'options'      => array(
                 'label'   => $this->translate('Show'),
                 'icon'    => 'list-alt',
