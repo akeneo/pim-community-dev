@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -59,13 +60,22 @@ class InjectProductReferenceSubscriber implements EventSubscriber
     protected function setProductGroupReference(Group $group, EntityManager $entityManager)
     {
         // FIXME_MONGODB : get the final name of the Product class
+        $targetEntity = 'Pim\Bundle\CatalogBundle\Model\Product';
+
         $productsCollection = new PersistentCollection(
             $entityManager,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            $targetEntity,
             new ArrayCollection()
         );
 
+        $assoc = array();
         $assoc['inversedBy'] = 'groups';
+        $assoc['fetch'] = ClassMetadata::FETCH_LAZY;
+        $assoc['targetEntity'] = $targetEntity;
+        $assoc['sourceEntity'] = get_class($group);
+        $assoc['isOwningSide'] = false;
+        $assoc['mappedBy'] = 'products';
+        $assoc['type'] = ClassMetadata::MANY_TO_MANY;
 
         $productsCollection->setOwner($group, $assoc);
         $productsCollection->setInitialized(false);
