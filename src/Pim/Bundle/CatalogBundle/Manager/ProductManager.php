@@ -240,7 +240,7 @@ class ProductManager extends FlexibleManager
         $this->completenessManager->schedule($product);
 
         if ($recalculate) {
-            $this->completenessManager->createProductCompletenesses($product);
+            $this->completenessManager->generateProductCompletenesses($product);
         }
     }
 

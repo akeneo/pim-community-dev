@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * Product completeness entity
@@ -53,16 +51,11 @@ class Completeness
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected $product;
-
-    protected $missingAttributes;
-
+    
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->missingAttributes = new ArrayCollection();
-    }
+     * @var string ORM or ODM productId
+     */ 
+    protected $productId;
 
     /**
      * Getter locale
@@ -204,60 +197,6 @@ class Completeness
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Getter for the missing attributes
-     *
-     * @return ArrayCollection
-     */
-    public function getMissingAttributes()
-    {
-        return $this->missingAttributes;
-    }
-
-    /**
-     * Setter for the missing attributes
-     *
-     * @param array $missingAttributes
-     *
-     * @return Completeness
-     */
-    public function setMissingAttributes(array $missingAttributes = array())
-    {
-        $this->missingAttributes = new ArrayCollection($missingAttributes);
-
-        return $this;
-    }
-
-    /**
-     * Add attribute to the missing attributes collection
-     *
-     * @param ProductAttributeInterface $attribute
-     *
-     * @return Completeness
-     */
-    public function addMissingAttribute(ProductAttributeInterface $attribute)
-    {
-        if (!$this->missingAttributes->contains($attribute)) {
-            $this->missingAttributes->add($attribute);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove attribute from the missing attributes collection
-     *
-     * @param ProductAttributeInterface $attribute
-     *
-     * @return Completeness
-     */
-    public function removeMissingAttribute(ProductAttributeInterface $attribute)
-    {
-        $this->missingAttributes->removeElement($attribute);
 
         return $this;
     }
