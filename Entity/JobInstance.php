@@ -348,6 +348,16 @@ class JobInstance
         return $this;
     }
 
+    /**
+     * Set alias
+     * Throws logic exception if alias property is already set.
+     *
+     * @param string $alias
+     *
+     * @throws \LogicException
+     *
+     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     */
     public function setAlias($alias)
     {
         if ($this->alias !== null) {
@@ -359,6 +369,16 @@ class JobInstance
         return $this;
     }
 
+    /**
+     * Set connector
+     * Throws exception if connector property is already set.
+     *
+     * @param string $connector
+     *
+     * @throws \LogicException
+     *
+     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     */
     public function setConnector($connector)
     {
         if ($this->connector !== null) {
