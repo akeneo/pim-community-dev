@@ -46,20 +46,82 @@ class JobInstanceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this
+            ->addCodeField($builder)
+            ->addLabelField($builder)
+            ->addConnectorField($builder)
+            ->addAliasField($builder)
+            ->addJobConfigurationField($builder);
+
+        $builder->addEventSubscriber(new JobAliasSubscriber($this->connectorRegistry));
+    }
+
+    /**
+     * Add code field and subscriber
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     */
+    protected function addCodeField(FormBuilderInterface $builder)
+    {
         $builder
             ->add('code', 'text')
-            ->addEventSubscriber(new DisableFieldSubscriber('code'))
-            ->add('label')
+            ->addEventSubscriber(new DisableFieldSubscriber('code'));
+
+        return $this;
+    }
+
+    /**
+     * Add label field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     */
+    protected function addLabelField(FormBuilderInterface $builder)
+    {
+        $builder->add('label');
+
+        return $this;
+    }
+
+    /**
+     * Add connector field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     */
+    protected function addConnectorField(FormBuilderInterface $builder)
+    {
+        $choices = $this->connectorRegistry->getConnectors($this->jobType);
+
+        $builder
             ->add(
                 'connector',
                 'choice',
                 array(
-                    'choices'      => $this->connectorRegistry->getConnectors($this->jobType),
+                    'choices'      => array_combine($choices, $choices),
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false
                 )
-            )
+            );
+
+        return $this;
+    }
+
+    /**
+     * Add alias field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     */
+    protected function addAliasField(FormBuilderInterface $builder)
+    {
+        $builder
             ->add(
                 'alias',
                 'choice',
@@ -69,8 +131,21 @@ class JobInstanceType extends AbstractType
                     'by_reference' => false,
                     'mapped'       => false
                 )
-            )
-            ->addEventSubscriber(new JobAliasSubscriber($this->connectorRegistry))
+            );
+
+        return $this;
+    }
+
+    /**
+     * Add job configuration form type
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     */
+    protected function addJobConfigurationField(FormBuilderInterface $builder)
+    {
+        $builder
             ->add(
                 'job',
                 new JobConfigurationType(),
@@ -81,6 +156,8 @@ class JobInstanceType extends AbstractType
             )
             ->get('job')
             ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());
+
+        return $this;
     }
 
     /**
