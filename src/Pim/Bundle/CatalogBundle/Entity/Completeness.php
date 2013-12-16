@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -52,10 +51,10 @@ class Completeness
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected $product;
-    
+
     /**
      * @var string ORM or ODM productId
-     */ 
+     */
     protected $productId;
 
     /**
