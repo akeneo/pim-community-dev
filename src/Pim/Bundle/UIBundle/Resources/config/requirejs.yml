@@ -39,6 +39,8 @@ config:
         pim/initselect2:                    pimui/js/pim-initselect2
         pim/dialog:                         pimui/js/pim-dialog
         pim/formupdatelistener:             pimui/js/pim-formupdatelistener
+        pim/saveformstate:                  pimui/js/pim-saveformstate
+        pim/fileinput:                      pimui/js/pim-fileinput
         pim/popinform:                      pimui/js/pim-popinform
         pim/dialogform:                     pimui/js/pim-dialogform
         pim/scopable:                       pimui/js/pim-scopable

@@ -20,6 +20,21 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 class GroupType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param string $attributeClass
+     */
+    public function __construct($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -102,7 +117,7 @@ class GroupType extends AbstractType
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class'    => $this->attributeClass,
                     'query_builder' => function (ProductAttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },

@@ -58,6 +58,7 @@ services:
         class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
@@ -201,10 +202,3 @@ services:
             - %kernel.cache_dir%/media
         tags:
             - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }
-
-    pim_catalog.doctrine.completeness_query_builder:
-        class: %pim_catalog.doctrine.completeness_query_builder.class%
-        arguments:
-            - '@doctrine'
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%

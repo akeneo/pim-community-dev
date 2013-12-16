@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Form type related to scopable property of ProductAttribute
+ * Form type related to scopable property of ProductAttributeInterface
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

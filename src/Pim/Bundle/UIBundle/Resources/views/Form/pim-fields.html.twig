@@ -176,6 +176,14 @@
                 {{ form_widget(form.copyFrom) }}
             </div>
         </div>
+        <script type="text/javascript">
+            require(
+                ['pim/fileinput'],
+                function(fileinput) {
+                    fileinput('{{ form.file.vars.id }}');
+                }
+            );
+        </script>
     {% else %}
         <div class="control-group">
             <div class="controls">
@@ -225,6 +233,14 @@
                 {{ form_widget(form.copyFrom) }}
             </div>
         </div>
+        <script type="text/javascript">
+            require(
+                ['pim/fileinput'],
+                function(fileinput) {
+                    fileinput('{{ form.file.vars.id }}');
+                }
+            );
+        </script>
     {% else %}
         <div class="control-group">
             <div class="controls">

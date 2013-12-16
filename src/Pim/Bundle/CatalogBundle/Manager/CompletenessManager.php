@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
@@ -27,9 +27,9 @@ class CompletenessManager
     protected $doctrine;
 
     /**
-     * @var CompletenessQueryBuilder
+     * @var CompletenessGeneratorInterface
      */
-    protected $completenessQB;
+    protected $generator;
 
     /**
      * @var ValidatorInterface
@@ -44,21 +44,21 @@ class CompletenessManager
     /**
      * Constructor
      *
-     * @param RegistryInterface        $doctrine
-     * @param CompletenessQueryBuilder $completenessQB
-     * @param ValidatorInterface       $validator
-     * @param string                   $class
+     * @param RegistryInterface              $doctrine
+     * @param CompletenessGeneratorInterface $generator
+     * @param ValidatorInterface             $validator
+     * @param string                         $class
      */
     public function __construct(
         RegistryInterface $doctrine,
-        CompletenessQueryBuilder $completenessQB,
+        CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class
     ) {
-        $this->doctrine       = $doctrine;
-        $this->completenessQB = $completenessQB;
+        $this->doctrine  = $doctrine;
+        $this->generator = $generator;
         $this->validator = $validator;
-        $this->class = $class;
+        $this->class     = $class;
     }
 
     /**
@@ -66,9 +66,9 @@ class CompletenessManager
      *
      * @param Channel $channel
      */
-    public function createChannelCompletenesses(Channel $channel)
+    public function generateChannelCompletenesses(Channel $channel)
     {
-        $this->createCompletenesses(array('channel' => $channel->getId()));
+        $this->generator->generate(array('channel' => $channel->getId()));
     }
 
     /**
@@ -76,9 +76,9 @@ class CompletenessManager
      *
      * @param ProductInterface $product
      */
-    public function createProductCompletenesses(ProductInterface $product)
+    public function generateProductCompletenesses(ProductInterface $product)
     {
-        $this->createCompletenesses(array('product' => $product->getId()));
+        $this->generator->generate(array('product' => $product->getId()));
     }
 
     /**
@@ -86,9 +86,9 @@ class CompletenessManager
      *
      * @param int $limit
      */
-    public function createAllCompletenesses($limit = 100)
+    public function generateAllCompletenesses($limit = 100)
     {
-        $this->createCompletenesses(array(), $limit);
+        $this->generator->generate(array(), $limit);
     }
 
     /**
@@ -100,9 +100,9 @@ class CompletenessManager
     {
         if ($product->getId()) {
             $query = $this->doctrine->getManager()->createQuery(
-                "DELETE FROM $this->class c WHERE c.product = :product"
+                "DELETE FROM $this->class c WHERE c.productId = :productId"
             );
-            $query->setParameter('product', $product);
+            $query->setParameter('productId', $product->getId());
             $query->execute();
         }
     }
@@ -191,13 +191,13 @@ class CompletenessManager
     }
 
     /**
-     * @param ProductAttribute $attribute
-     * @param string           $locale
-     * @param string           $scope
+     * @param ProductAttributeInterface $attribute
+     * @param string                    $locale
+     * @param string                    $scope
      *
      * @return string
      */
-    protected function getValueCode(ProductAttribute $attribute, $locale, $scope)
+    protected function getValueCode(ProductAttributeInterface $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isTranslatable()) {
@@ -224,24 +224,7 @@ class CompletenessManager
             ->select('co, lo, ch')
             ->innerJoin('co.locale', 'lo')
             ->innerJoin('co.channel', 'ch')
-            ->where('co.product = :product')
-            ->setParameter('product', $product);
-    }
-
-    /**
-     * Insert missing completeness according to the criteria
-     *
-     * @param array   $criteria
-     * @param integer $limit
-     */
-    protected function createCompletenesses(array $criteria, $limit = null)
-    {
-        $sql = $this->completenessQB->getInsertCompletenessSQL($criteria, $limit);
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
-
-        foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
-        }
-        $stmt->execute();
+            ->where('co.productId = :productId')
+            ->setParameter('productId', $product->getId());
     }
 }

@@ -25,13 +25,20 @@ class InjectORMReferencesSubscriber implements EventSubscriber
     protected $entityManager;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
      * @param EntityManager $entityManager
+     * @param string        $attributeClass
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $attributeClass)
     {
         $this->entityManager = $entityManager;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -80,7 +87,7 @@ class InjectORMReferencesSubscriber implements EventSubscriber
 
         $attributeReflProp->setValue(
             $value,
-            $this->entityManager->getReference('PimCatalogBundle:ProductAttribute', $value->getAttributeId())
+            $this->entityManager->getReference($this->attributeClass, $value->getAttributeId())
         );
     }
 
