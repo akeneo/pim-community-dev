@@ -40,6 +40,7 @@ config:
         pim/dialog:                         pimui/js/pim-dialog
         pim/formupdatelistener:             pimui/js/pim-formupdatelistener
         pim/saveformstate:                  pimui/js/pim-saveformstate
+        pim/asynctab:                       pimui/js/pim-async-tab
         pim/fileinput:                      pimui/js/pim-fileinput
         pim/popinform:                      pimui/js/pim-popinform
         pim/dialogform:                     pimui/js/pim-dialogform
