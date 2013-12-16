@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**

@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Validator;
 
 use Symfony\Component\Validator\ExecutionContext;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
- * Validator for options and default value of ProductAttribute entity
+ * Validator for options and default value of ProductAttributeInterface entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -29,12 +29,12 @@ class ProductAttributeValidator
     /**
      * Validation rule for attribute option values
      *
-     * @param ProductAttribute $attribute
-     * @param ExecutionContext $context
+     * @param ProductAttributeInterface $attribute
+     * @param ExecutionContext          $context
      *
      * @static
      */
-    public static function areOptionsValid(ProductAttribute $attribute, ExecutionContext $context)
+    public static function areOptionsValid(ProductAttributeInterface $attribute, ExecutionContext $context)
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {

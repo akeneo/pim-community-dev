@@ -15,14 +15,14 @@ use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
- * JobInstance datagrid manager
+ * JobProfile datagrid manager
  * A "job type" property is passed to the service to define if the grid must show import or export jobs
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceDatagridManager extends DatagridManager
+class JobProfileDatagridManager extends DatagridManager
 {
     /**
      * Define the job type
@@ -44,9 +44,9 @@ class JobInstanceDatagridManager extends DatagridManager
     protected function getProperties()
     {
         // prepare route names
-        $editLink   = sprintf('pim_importexport_%s_edit', $this->jobType);
-        $showLink   = sprintf('pim_importexport_%s_show', $this->jobType);
-        $deleteLink = sprintf('pim_importexport_%s_remove', $this->jobType);
+        $editLink   = sprintf('pim_importexport_%s_profile_edit', $this->jobType);
+        $showLink   = sprintf('pim_importexport_%s_profile_show', $this->jobType);
+        $deleteLink = sprintf('pim_importexport_%s_profile_remove', $this->jobType);
 
         return array(
             new UrlProperty('edit_link', $this->router, $editLink, array('id')),
@@ -63,7 +63,7 @@ class JobInstanceDatagridManager extends DatagridManager
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => sprintf('pim_importexport_%s_show', $this->jobType),
+            'acl_resource' => sprintf('pim_importexport_%s_profile_show', $this->jobType),
             'options'      => array(
                 'label'         => $this->translate('Show'),
                 'link'          => 'show_link',
@@ -75,7 +75,7 @@ class JobInstanceDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => sprintf('pim_importexport_%s_edit', $this->jobType),
+            'acl_resource' => sprintf('pim_importexport_%s_profile_edit', $this->jobType),
             'options'      => array(
                 'label' => $this->translate('Edit'),
                 'icon'  => 'edit',
@@ -86,7 +86,7 @@ class JobInstanceDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => sprintf('pim_importexport_%s_remove', $this->jobType),
+            'acl_resource' => sprintf('pim_importexport_%s_profile_remove', $this->jobType),
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',
@@ -97,7 +97,7 @@ class JobInstanceDatagridManager extends DatagridManager
         $launchAction = array(
             'name'         => 'launch',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => sprintf('pim_importexport_%s_launch', $this->jobType),
+            'acl_resource' => sprintf('pim_importexport_%s_profile_launch', $this->jobType),
             'options'      => array(
                 'label' => $this->translate('Launch'),
                 'icon'  => 'play',
@@ -276,7 +276,7 @@ class JobInstanceDatagridManager extends DatagridManager
         // add specific rendering
         $templateProperty = new TwigTemplateProperty(
             $field,
-            'PimImportExportBundle:JobInstance:_field-status.html.twig'
+            'PimImportExportBundle:JobProfile:_field-status.html.twig'
         );
         $field->setProperty($templateProperty);
 

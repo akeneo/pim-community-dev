@@ -397,7 +397,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'               => FieldDescriptionInterface::TYPE_HTML,
                 'label'              => $this->translate('Complete'),
-                'field_name'         => 'completenesses',
+                'field_name'         => 'completenessRatio',
                 'expression'         => 'pCompleteness',
                 'filter_type'        => FilterInterface::TYPE_COMPLETENESS,
                 'sortable'           => true,
@@ -470,10 +470,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
             $editAction = array(
                 'name'         => 'edit',
-                'type'         => ActionInterface::TYPE_REDIRECT,
+                'type'         => ActionInterface::TYPE_TAB_REDIRECT,
                 'acl_resource' => 'pim_catalog_product_edit',
                 'options'      => array(
                     'label' => $this->translate('Edit attributes of the product'),
+                    'tab'   => '#attributes',
                     'icon'  => 'edit',
                     'link'  => 'edit_link'
                 )
@@ -691,12 +692,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
         $proxyQuery
-            ->addSelect('pCompleteness')
+            ->addSelect('pCompleteness.ratio AS completenessRatio')
             ->leftJoin(
-                $rootAlias .'.completenesses',
+                'PimCatalogBundle:Completeness',
                 'pCompleteness',
                 'WITH',
-                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel '.
+                'AND pCompleteness.productId = '.$rootAlias.'.id'
             );
     }
 

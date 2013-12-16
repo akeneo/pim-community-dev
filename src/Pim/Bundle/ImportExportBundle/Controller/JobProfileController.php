@@ -26,13 +26,13 @@ use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
 /**
- * Job Instance controller
+ * Job Profile controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceController extends AbstractDoctrineController
+class JobProfileController extends AbstractDoctrineController
 {
     /**
      * @var DatagridHelperInterface
@@ -123,7 +123,7 @@ class JobInstanceController extends AbstractDoctrineController
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()));
+            $view = sprintf('PimImportExportBundle:%sProfile:index.html.twig', ucfirst($this->getJobType()));
         }
 
         return $this->render(
@@ -173,7 +173,7 @@ class JobInstanceController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
+            sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType())),
             array(
                 'jobInstance' => $jobInstance,
                 'form'      => $form->createView(),
@@ -213,7 +213,7 @@ class JobInstanceController extends AbstractDoctrineController
         $validator = $this->getValidator();
 
         return $this->render(
-            sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType())),
+            sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType())),
             array(
                 'jobInstance'      => $jobInstance,
                 'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
@@ -245,7 +245,7 @@ class JobInstanceController extends AbstractDoctrineController
 
         $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
             $jobInstance,
-            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            sprintf('pim_importexport_%s_profile_history', $this->getJobType()),
             array('id' => $jobInstance->getId())
         );
 
@@ -265,7 +265,7 @@ class JobInstanceController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
+            sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType())),
             array(
                 'jobInstance'     => $jobInstance,
                 'form'            => $form->createView(),
@@ -287,7 +287,7 @@ class JobInstanceController extends AbstractDoctrineController
         $jobInstance = $this->getJobInstance($id);
         $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
             $jobInstance,
-            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            sprintf('pim_importexport_%s_profile_history', $this->getJobType()),
             array('id' => $id)
         );
         $historyGridView = $historyGrid->createView();
@@ -497,7 +497,7 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function redirectToIndexView()
     {
-        return $this->redirectToRoute(sprintf('pim_importexport_%s_index', $this->getJobType()));
+        return $this->redirectToRoute(sprintf('pim_importexport_%s_profile_index', $this->getJobType()));
     }
 
     /**
@@ -509,7 +509,10 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function redirectToShowView($jobId)
     {
-        return $this->redirectToRoute(sprintf('pim_importexport_%s_show', $this->getJobType()), array('id' => $jobId));
+        return $this->redirectToRoute(
+            sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
+            array('id' => $jobId)
+        );
     }
 
     /**
@@ -522,7 +525,7 @@ class JobInstanceController extends AbstractDoctrineController
     protected function redirectToReportView($jobId)
     {
         return $this->redirectToRoute(
-            sprintf('pim_importexport_%s_report_show', $this->getJobType()),
+            sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
             array('id' => $jobId)
         );
     }
@@ -534,7 +537,7 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function getDatagridManager()
     {
-        return $this->datagridHelper->getDatagridManager($this->getJobType(), 'pim_import_export');
+        return $this->datagridHelper->getDatagridManager($this->getJobType().'_profile', 'pim_import_export');
     }
 
     /**
