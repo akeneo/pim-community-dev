@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
@@ -42,9 +41,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCategories());
         $this->assertCount(0, $this->product->getCategories());
-
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCompletenesses());
-        $this->assertCount(0, $this->product->getCompletenesses());
     }
 
     /**
@@ -228,51 +224,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test completenesses property and method linked
-     */
-    public function testCompletenesses()
-    {
-        // create 2 completeness entities
-        $completeness = $this->createCompleteness('channel1', 'en_US');
-        $localeUS = $completeness->getLocale();
-        $channel1 = $completeness->getChannel();
-
-        $completeness2 = $this->createCompleteness('channel2', 'fr_FR');
-        $completeness2->getLocale();
-        $completeness2->getChannel();
-
-        // assert no return if nothing found
-        $this->assertNull($this->product->getCompleteness($localeUS, $channel1));
-
-        // assert add new completeness
-        $this->assertEntity($this->product->addCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-        $this->assertEquals($completeness, $this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
-
-        // assert no duplicate adding
-        $this->assertEntity($this->product->addCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-
-        // assert remove adding a second completeness
-        $this->product->addCompleteness($completeness2);
-        $this->assertCount(2, $this->product->getCompletenesses());
-        $this->assertEntity($this->product->removeCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-        $this->assertNull($this->product->getCompleteness($localeUS->getCode(), $channel1->getCode()));
-
-        // assert remove an already remove completeness
-        $this->assertEntity($this->product->removeCompleteness($completeness));
-        $this->assertCount(1, $this->product->getCompletenesses());
-
-        // assert setter completenesses
-        $this->assertEntity($this->product->setCompletenesses());
-        $this->assertCount(0, $this->product->getCompletenesses());
-
-        $this->product->setCompletenesses(array($completeness, $completeness2));
-        $this->assertCount(2, $this->product->getCompletenesses());
-    }
-
-    /**
      * Test getter/setter for group
      */
     public function testGetSetGroup()
@@ -320,53 +271,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             array($view, $manual),
             $this->product->getMedia()
         );
-    }
-
-    /**
-     * Create completeness entity
-     *
-     * @param string $channelCode
-     * @param string $localeCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
-     */
-    protected function createCompleteness($channelCode, $localeCode)
-    {
-        $completeness = new Completeness();
-        $completeness->setChannel($this->createChannel($channelCode));
-        $completeness->setLocale($this->createLocale($localeCode));
-
-        return $completeness;
-    }
-
-    /**
-     * Create channel entity
-     *
-     * @param string $channelCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Tests\Unit\Entity\Channel
-     */
-    protected function createChannel($channelCode)
-    {
-        $channel = new Channel();
-        $channel->setCode($channelCode);
-
-        return $channel;
-    }
-
-    /**
-     * Create locale entity
-     *
-     * @param string $localeCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     */
-    protected function createLocale($localeCode)
-    {
-        $locale = new Locale();
-        $locale->setCode($localeCode);
-
-        return $locale;
     }
 
     /**

@@ -1,18 +1,20 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
- * Builds an SQL query to create completeness
+ * Generate the completeness when Product are in ORM
+ * storage
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessQueryBuilder
+class CompletenessGenerator implements CompletenessGeneratorInterface
 {
     /**
      * @var RegistryInterface
@@ -43,6 +45,21 @@ class CompletenessQueryBuilder
     }
 
     /**
+     * @{inheritDoc}
+     */
+    public function generate(array $criteria, $limit = null)
+    {
+        $sql = $this->getInsertCompletenessSQL($criteria, $limit);
+
+        $stmt = $this->doctrine->getConnection()->prepare($sql);
+
+        foreach ($criteria as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        $stmt->execute();
+    }
+
+    /**
      * Get the sql query to insert completeness
      *
      * @param array   $criteria
@@ -50,7 +67,7 @@ class CompletenessQueryBuilder
      *
      * @return string
      */
-    public function getInsertCompletenessSQL(array $criteria, $limit)
+    protected function getInsertCompletenessSQL(array $criteria, $limit)
     {
         $sql = $this->getInsertCompletenessSQLCondition($criteria) . ' GROUP BY p.id, c.id, l.id';
 
