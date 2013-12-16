@@ -3,7 +3,7 @@ define(
     function ($) {
         var formId = null;
         function saveFormState() {
-            var $form        = $(formId),
+            var $form        = $('#' + formId),
                 activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href'),
                 $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
                 activeGroup;
@@ -56,14 +56,14 @@ define(
             if (typeof Storage === 'undefined') {
                 return;
             }
-            formId = '#' + id;
 
-            if (!formId || !$(formId).length) {
+            if (!id || !$('#' + id).length) {
                 return;
             }
 
+            formId = id;
             restoreFormState();
-            $(formId).find('a[data-toggle="tab"]').on('shown', saveFormState);
+            $('#' + formId).on('shown', 'a[data-toggle="tab"]', saveFormState);
         };
     }
 );

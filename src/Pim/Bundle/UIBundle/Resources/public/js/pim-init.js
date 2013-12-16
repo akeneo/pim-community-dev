@@ -26,12 +26,11 @@ define(
                 }
             }
             function pageInit($target) {
-                var partialInit;
-                if ($target) {
-                    partialInit = true;
-                } else {
-                    $target = $("body");
-                    partialInit = false;
+                if (!$target) {
+                    $target = $('body');
+                    $target.find('form.form-horizontal').each(function() {
+                        saveformstate($(this).attr('id'));
+                    });
                 }
                 // Place code that we need to run on every page load here
 
@@ -124,12 +123,8 @@ define(
                     $(this).hide();
                 });
 
-                $target.find("a[data-toggle='tab']").on('show.bs.tab', function() {
+                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function() {
                     loadTab(this);
-                });
-
-                $target.find('form.form-horizontal').each(function() {
-                    saveformstate($(this).attr('id'));
                 });
             }
 
