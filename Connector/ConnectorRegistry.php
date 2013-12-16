@@ -108,7 +108,7 @@ class ConnectorRegistry
      * @return mixed
      * TODO : Return mixed.. string or null ?
      */
-    private function getConnector($connector, $type)
+    public function getConnector($connector, $type)
     {
         return isset($this->jobs[$type][$connector]) ? $this->jobs[$type][$connector] : null;
     }
@@ -130,8 +130,16 @@ class ConnectorRegistry
      *
      * @return array
      */
-    public function getConnectors()
+    public function getConnectors($jobType = null)
     {
+        if ($jobType !== null) {
+            if (isset($this->jobs[$jobType])) {
+                return array_keys($this->jobs[$jobType]);
+            }
+
+            return array();
+        }
+
         return array_unique(array_keys($this->jobs));
     }
 }
