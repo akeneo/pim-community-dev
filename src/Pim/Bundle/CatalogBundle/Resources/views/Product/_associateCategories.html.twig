@@ -22,7 +22,7 @@
                 {% set iClass = "green" %}
             {% endif %}
             <li>
-                <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}">
+                <a class="{{ aClass }}" href="javascript:void(0);" data-toggle="tab" id="tree-link-{{ tree['tree'].id }}">
                     <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].label }} ({{ tree['productsCount'] }})
                 </a>
             </li>
