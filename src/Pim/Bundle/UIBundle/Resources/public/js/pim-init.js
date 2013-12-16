@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
-     'pim/initselect2', 'pim/saveformstate', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2, saveformstate) {
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui'],
+    function ($, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
         'use strict';
         var initialized = false;
         return function() {
@@ -9,29 +9,6 @@ define(
                 return;
             }
             initialized = true;
-            function loadTab(tab) {
-                var $tab = $(tab);
-                var target = $tab.attr('href');
-                if (!target || target === '#' || target.indexOf('javascript') === 0) {
-                    return;
-                }
-                var $target = $(target);
-
-                if (!$target.attr('data-loaded') && $target.attr('data-url')) {
-                    var loadingMask = new LoadingMask();
-                    loadingMask.render().$el.appendTo($('#container'));
-                    loadingMask.show();
-
-                    $.get($target.attr('data-url'), function(data) {
-                        $target.html(data);
-                        $target.attr('data-loaded', 1);
-                        loadingMask.hide();
-                        loadingMask.$el.remove();
-                        $target.closest('form').trigger('tab.loaded');
-                        pageInit($target);
-                    });
-                }
-            }
             function pageInit($target) {
                 if (!$target) {
                     $target = $('body');
@@ -48,24 +25,6 @@ define(
                     }
                 });
 
-                // Apply Select2
-                initSelect2.init($target);
-
-                // Apply bootstrapSwitch
-                $target.find('.switch:not(.has-switch)').bootstrapSwitch();
-
-                // Initialize tooltip
-                $target.find('[data-toggle="tooltip"]').tooltip();
-
-                // Initialize popover
-                $target.find('[data-toggle="popover"]').popover();
-
-                // Activate a form tab
-                $target.find('li.tab.active a').each(function () {
-                    var paneId = $(this).attr('href');
-                    $(paneId).addClass('active');
-                });
-
                 // Toogle accordion icon
                 $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
@@ -80,8 +39,10 @@ define(
                     }
                 });
                 $target.find('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
+                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone());
                 });
+
+                UI($target);
 
                 $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
@@ -102,6 +63,10 @@ define(
                     $.uniform.restore();
                 });
 
+                $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
+                    pageInit($(tab));
+                });
+
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
                     var $el      = $(this),
@@ -111,7 +76,7 @@ define(
                             $.ajax({
                                 url: $el.attr('data-url'),
                                 type: 'POST',
-                                headers: {accept:'application/json'},
+                                headers: { accept:'application/json' },
                                 data: { _method: $el.data('method') },
                                 success: function() {
                                     var navigation = Navigation.getInstance();
@@ -128,7 +93,7 @@ define(
                             });
                         };
                     $el.off('click');
-                    if ($el.data('dialog') ===  'confirm') {
+                    if ($el.data('dialog') === 'confirm') {
                         Dialog.confirm(message, title, doAction);
                     } else {
                         Dialog.alert(message, title);
