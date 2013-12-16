@@ -36,7 +36,7 @@ class PimInstallerExtension extends Extension
         preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $dataParam, $matches);
         $bundles    = $container->getParameter('kernel.bundles');
         $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
-        $dataPath   = dirname($reflection->getFilename()).'/Resources/fixtures/'.$matches['directory'].'/';
+        $dataPath   = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'].'/';
 
         $entities = array(
             'channels',
