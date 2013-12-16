@@ -57,18 +57,10 @@ class JobAliasSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm();
-        $connector = $form->get('connector');
-        var_dump($connector->getData()); die;
-        $alias = $form->get('alias');
-//         $jobInstance = new JobInstance($connector, 'export', $alias); // FIXME: Hardcoded constant
+        $connector = $form->get('connector')->getData();
+        $alias = $form->get('alias')->getData();
 
-        $event->setData($jobInstance);
-//         var_dump(get_class($jobInstance));
-//         $jobAlias = $event->getForm()->get('alias')->getData();
-//         var_dump($jobAlias);
-
-
-//         $jobs = $this->connectorRegistry->getJobs('export'); // FIXME: Hardcoded constant to remove
-
+        $jobInstance->setAlias($alias);
+        $jobInstance->setConnector($connector);
     }
 }
