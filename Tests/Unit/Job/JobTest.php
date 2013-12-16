@@ -187,95 +187,49 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfiguration()
     {
-        $reader    = $this->getReaderMock(array('reader_foo' => 'bar'), array('reader_foo'));
-        $processor = $this->getProcessorMock(array('processor_foo' => 'bar'), array('processor_foo'));
-        $writer    = $this->getWriterMock(array('writer_foo' => 'bar'), array('writer_foo'));
+        $expectedConfiguration = array(
+            'reader_foo' => 'bar',
+            'processor_foo' => 'bar',
+            'writer_foo' => 'bar',
+        );
+        $reader    = $this->getReaderMock($expectedConfiguration, array('reader_foo'));
+        $processor = $this->getProcessorMock($expectedConfiguration, array('processor_foo'));
+        $writer    = $this->getWriterMock($expectedConfiguration, array('writer_foo'));
 
         $step = $this->getItemStep('export', $reader, $processor, $writer);
 
         $this->job->addStep('name', $step);
-        $expectedConfiguration = array(
-            'export' => array(
-                'reader' => array(
-                    'reader_foo' => 'bar'
-                ),
-                'processor' => array(
-                    'processor_foo' => 'bar'
-                ),
-                'writer' => array(
-                    'writer_foo' => 'bar'
-                )
-            )
-        );
 
         $this->assertEquals($expectedConfiguration, $this->job->getConfiguration());
     }
 
     public function testSetConfiguration()
     {
+        $config =array(
+            'reader_foo' => 'reader_bar',
+            'processor_foo' => 'processor_bar',
+            'writer_foo' => 'writer_bar',
+        );
+
         $reader    = $this->getReaderMock(array(), array('reader_foo'));
         $processor = $this->getProcessorMock(array(), array('processor_foo'));
         $writer    = $this->getWriterMock(array(), array('writer_foo'));
 
         $reader->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('reader_foo' => 'reader_bar'));
+            ->with($config);
 
         $processor->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('processor_foo' => 'processor_bar'));
+            ->with($config);
 
         $writer->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('writer_foo' => 'writer_bar'));
+            ->with($config);
 
         $itemStep = $this->getItemStep('export', $reader, $processor, $writer);
         $this->job->addStep('name', $itemStep);
-        $this->job->setConfiguration(
-            array(
-                'export' => array(
-                    'reader' => array(
-                        'reader_foo' => 'reader_bar',
-                    ),
-                    'processor' => array(
-                        'processor_foo' => 'processor_bar',
-                    ),
-                    'writer' => array(
-                        'writer_foo' => 'writer_bar',
-                    )
-                )
-            )
-        );
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testSetConfigurationWithDifferentSteps()
-    {
-        $reader    = $this->getReaderMock(array(), array('reader_foo'));
-        $processor = $this->getProcessorMock(array(), array('processor_foo'));
-        $writer    = $this->getWriterMock(array(), array('writer_foo'));
-
-        $step = $this->getItemStep('export', $reader, $processor, $writer);
-
-        $this->job->addStep('name', $step);
-        $this->job->setConfiguration(
-            array(
-                'unknown' => array(),
-                'export' => array(
-                    'reader' => array(
-                        'reader_foo' => 'reader_bar',
-                    ),
-                    'processor' => array(
-                        'processor_foo' => 'processor_bar',
-                    ),
-                    'writer' => array(
-                        'writer_foo' => 'writer_bar',
-                    )
-                )
-            )
-        );
+        $this->job->setConfiguration($config);
     }
 
     public function testAddStep()
