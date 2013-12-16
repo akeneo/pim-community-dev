@@ -1,7 +1,7 @@
 define(
     ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-     'pim/initselect2', 'pim/saveformstate', 'pim/asynctab', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, __, mediator, Navigation, messenger, Dialog, initSelect2, saveformstate, loadTab) {
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui'],
+    function ($, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
         'use strict';
         var initialized = false;
         return function() {
@@ -25,24 +25,6 @@ define(
                     }
                 });
 
-                // Apply Select2
-                initSelect2.init($target);
-
-                // Apply bootstrapSwitch
-                $target.find('.switch:not(.has-switch)').bootstrapSwitch();
-
-                // Initialize tooltip
-                $target.find('[data-toggle="tooltip"]').tooltip();
-
-                // Initialize popover
-                $target.find('[data-toggle="popover"]').popover();
-
-                // Activate a form tab
-                $target.find('li.tab.active a').each(function () {
-                    var paneId = $(this).attr('href');
-                    $(paneId).addClass('active');
-                });
-
                 // Toogle accordion icon
                 $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
@@ -57,8 +39,10 @@ define(
                     }
                 });
                 $target.find('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
+                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone());
                 });
+
+                UI($target);
 
                 $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
