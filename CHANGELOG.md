@@ -56,6 +56,7 @@
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
+- Move product metric in catalog bundle
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
