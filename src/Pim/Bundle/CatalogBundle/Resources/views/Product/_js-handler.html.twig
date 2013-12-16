@@ -1,13 +1,9 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, TreeAssociate, Scopable, Dialog, DialogForm, messenger) {
+        ['jquery', 'underscore', 'oro/mediator', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, mediator, Scopable, Dialog, DialogForm, messenger) {
             'use strict';
             $(function () {
-                {% if resource_granted('pim_catalog_product_categories_view') %}
-                    new TreeAssociate('#trees', '#pim_product_edit_categories');
-                {% endif %}
-
                 _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
@@ -108,7 +104,6 @@
                             {{ path('pim_catalog_group_productlist', { id: group.id })|json_encode|raw }},
                             function (content) {
                                 var groupDoAction = function () {
-                                    console.debug("here")
                                     var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
                                     $groupLink.appendTo($('#{{ form.vars.id }}')).click();
                                 };
@@ -204,6 +199,19 @@
                         $(this).parent().parent().find('.controls').each(copyValue);
                     });
                 });
+
+                // submit form
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+                    $('#pim_product_edit').attr('action', $('#pim_product_edit').attr('action') +"&action="+ action);
+                    $('#pim_product_edit').submit();
+                });
+
+                {% if createPopin is not null %}
+                    // create popin if needed
+                    new DialogForm('#create-product');
+                    $('#create-product').click();
+                {% endif %}
             });
         }
     );

@@ -2,10 +2,10 @@ define(
     ['jquery', 'underscore', 'jquery.select2'],
     function ($, _) {
         'use strict';
-        return _.extend({
+        return {
             init: function ($target) {
-                var $form = $target.find('form'), self = this;
-                $form.find('input.multiselect').each(function () {
+                var self = this;
+                $target.find('input.select2:not(.select2-offscreen)').each(function () {
                     var $el   = $(this),
                         value = _.map(_.compact($el.val().split(',')), $.trim),
                         tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
@@ -13,16 +13,16 @@ define(
                     $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
                 });
 
-                $target.find('select').each(function () {
+                $target.find('select.select2:not(.select2-offscreen)').each(function () {
                     var $el    = $(this),
                         $empty = $el.children('[value=""]');
                     if ($empty.length && $empty.html()) {
                         $el.attr('data-placeholder', $empty.html());
                         $empty.html('');
                     }
+                    $el.select2({ allowClear: true });
                 });
 
-                $form.find('select[data-placeholder]').select2({ allowClear: true });
                 $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
                     self.initSelect.call(self, $(this));
                 });
@@ -42,11 +42,11 @@ define(
                     options.placeholder = " ";
                 }
                 if ("0" === $select.attr('data-min-input-length')) {
-                    
+
                     options.query = function(query) {
-                        if (null === values) {
+                        if (!self.hasCachableResults($select) || null === values) {
                             $.get(
-                                $select.attr('data-url'), 
+                                $select.attr('data-url'),
                                 self.getAjaxParameters($select),
                                 function(data) {
                                     values = self.getSelectOptions(data, options);
@@ -54,7 +54,7 @@ define(
                                 }
                             );
                         } else {
-                            query.callback(values)
+                            query.callback(values);
                         }
                     };
                 } else {
@@ -86,7 +86,10 @@ define(
             },
             getAjaxParameters: function($select) {
                 return {};
+            },
+            hasCachableResults: function($select) {
+                return true;
             }
-        });
+        };
     }
 );

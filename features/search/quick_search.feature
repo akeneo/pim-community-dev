@@ -12,5 +12,5 @@ Feature: Search in Akeneo PIM
     And I fill in the following information:
       | search | p |
     And I press the "Search" button
-    Then I should see the column Item
+    Then I should see "Peter Doe"
     And I should see "product_test"

@@ -43,11 +43,7 @@
 
 {% block form_row %}
     {% spaceless %}
-        {% if form|is_flexible %}
-            {{ block('form_row_flex') }}
-        {% else %}
-            {{ block('form_row_field') }}
-        {% endif %}
+        {{ block('form_row_field') }}
     {% endspaceless %}
 {% endblock form_row %}
 
@@ -283,7 +279,7 @@
     </div>
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.select2', 'selectize'],
+            ['jquery', 'selectize'],
             function ($) {
                 $('#{{ form.unit.vars.id }}').selectize();
             }

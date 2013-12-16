@@ -5,7 +5,7 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation-orig', 'oro/app', 'oro/messenger', 'underscore'],
+    ['oronavigation/js/navigation', 'oro/app', 'oro/messenger', 'underscore'],
     function(OroNavigation, app, messenger, _) {
 
         var QUERY_STRING_REGEX = /^[^\?]+\??/,
@@ -34,8 +34,8 @@ define(
                     var gridName = (function(url, gridRegexps) {
                         return _.reduce(gridRegexps, function(memo, regexp, gridName) {
                             return regexp.test(url) ? gridName : memo;
-                        }, null)
-                    })(this.url.replace(URL_PATH_REGEX, ''), this.gridRegexps)
+                        }, null);
+                    })(this.url.replace(URL_PATH_REGEX, ''), this.gridRegexps);
                     if (gridName) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
                             args = qs ? app.unpackFromQueryString(qs) : {},

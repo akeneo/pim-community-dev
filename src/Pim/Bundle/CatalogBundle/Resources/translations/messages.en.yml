@@ -101,16 +101,18 @@ btn:
         variant group:   create variant group
         association:     create association
         group type:      create group type
-    edit:      edit
-    save:      save
-    remove:    remove
-    delete:    delete
-    cancel:    cancel
-    next:      next
-    back:      back
-    confirm:   confirm
-    to grid:   back to grid
-    to parent: back to parent
+    edit:            edit
+    save:            save
+    save and back:   save and back to grid
+    save and create: save and create
+    remove:          remove
+    delete:          delete
+    cancel:          cancel
+    next:            next
+    back:            back
+    confirm:         confirm
+    to grid:         back to grid
+    to parent:       back to parent
 
 # Confirmation messages
 confirmation:

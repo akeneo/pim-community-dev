@@ -32,11 +32,10 @@ class ImageType extends FlexImageType
                 'data'    => implode(',', $attribute->getAllowedExtensions()),
                 'options' => array(
                     'by_reference' => false,
+                    'select2'      => true,
                     'attr'         => array(
-                        'class'     => 'multiselect',
                         'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
-                    ),
-                    'select2' => true
+                    )
                 )
             ),
             array(
