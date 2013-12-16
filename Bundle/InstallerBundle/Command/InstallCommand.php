@@ -23,7 +23,7 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
             ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name')
             ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password')
-            ->addOption('force', null, InputOption::VALUE_OPTIONAL, 'Force installation')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption(
                 'sample-data',
                 null,
@@ -34,12 +34,16 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $options = $input->getOptions();
-        $forceInstall = array_key_exists('force', $options) ? true : false;
-        if (!$forceInstall
-            && $this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
+        $forceInstall = $input->getOption('force');
+
+        // if there is application is not installed or no --force option
+        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
+            && !$forceInstall
         ) {
             throw new \RuntimeException('Oro Application already installed.');
+        } elseif ($forceInstall) {
+            // if --force option we have to clear cache
+            $this->runCommand('cache:clear', $input, $output);
         }
 
         $output->writeln('<info>Installing Oro Application.</info>');
