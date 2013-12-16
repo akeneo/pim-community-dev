@@ -60,6 +60,11 @@ class JobProfileController extends AbstractDoctrineController
     private $environment;
 
     /**
+     * @var JobInstanceType
+     */
+    protected $jobInstanceType;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -238,7 +243,7 @@ class JobProfileController extends AbstractDoctrineController
 
             return $this->redirectToIndexView();
         }
-        $form = $this->createForm(new JobInstanceType(), $jobInstance);
+        $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
             $jobInstance,
