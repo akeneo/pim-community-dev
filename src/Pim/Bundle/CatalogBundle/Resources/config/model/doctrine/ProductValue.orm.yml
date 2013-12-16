@@ -62,7 +62,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id

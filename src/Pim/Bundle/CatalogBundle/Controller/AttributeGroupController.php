@@ -49,6 +49,11 @@ class AttributeGroupController extends AbstractDoctrineController
     private $form;
 
     /**
+     * @var string
+     */
+    private $attributeClass;
+
+    /**
      * constructor
      *
      * @param Request                  $request
@@ -62,6 +67,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param DatagridHelperInterface  $datagridHelper
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
+     * @param string                   $attributeClass
      */
     public function __construct(
         Request $request,
@@ -74,7 +80,8 @@ class AttributeGroupController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         AttributeGroupHandler $formHandler,
-        Form $form
+        Form $form,
+        $attributeClass
     ) {
         parent::__construct(
             $request,
@@ -90,6 +97,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->datagridHelper = $datagridHelper;
         $this->formHandler    = $formHandler;
         $this->form           = $form;
+        $this->attributeClass = $attributeClass;
     }
     /**
      * Create attribute group
@@ -288,7 +296,7 @@ class AttributeGroupController extends AbstractDoctrineController
     public function removeProductAttributeAction($groupId, $attributeId)
     {
         $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
-        $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
+        $attribute = $this->findOr404($this->attributeClass, $attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
             throw $this->createNotFoundException(
@@ -313,7 +321,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository('PimCatalogBundle:ProductAttribute')->findAllGrouped();
+        return $this->getRepository($this->attributeClass)->findAllGrouped();
     }
 
     /**

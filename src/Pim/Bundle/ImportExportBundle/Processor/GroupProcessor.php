@@ -16,6 +16,24 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class GroupProcessor extends AbstractEntityProcessor
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param \Doctrine\ORM\EntityManager                     $entityManager
+     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     * @param string                                          $attributeClass
+     */
+    public function __construct(\Doctrine\ORM\EntityManager $entityManager, \Symfony\Component\Validator\ValidatorInterface $validator, $attributeClass)
+    {
+        parent::__construct($entityManager, $validator);
+        $this->attributeClass = $attributeClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function process($item)
@@ -99,7 +117,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface
      */
     private function getAxis(array $item)
     {
@@ -124,13 +142,13 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return ProductAttribute
+     * @return ProductAttributeInterface
      */
     private function findAttribute($code)
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:ProductAttribute')
+            ->getRepository($this->attributeClass)
             ->findOneBy(array('code' => $code));
     }
 }

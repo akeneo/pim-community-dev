@@ -70,7 +70,7 @@ class EditCommonAttributesType extends AbstractType
                 'attributesToDisplay',
                 'entity',
                 array(
-                    'class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class' => 'Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface',
                     'choices'  => $options['commonAttributes'],
                     'required' => false,
                     'multiple' => true,

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * Product completeness entity
@@ -234,11 +235,11 @@ class Completeness
     /**
      * Add attribute to the missing attributes collection
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Completeness
      */
-    public function addMissingAttribute(ProductAttribute $attribute)
+    public function addMissingAttribute(ProductAttributeInterface $attribute)
     {
         if (!$this->missingAttributes->contains($attribute)) {
             $this->missingAttributes->add($attribute);
@@ -250,11 +251,11 @@ class Completeness
     /**
      * Remove attribute from the missing attributes collection
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Completeness
      */
-    public function removeMissingAttribute(ProductAttribute $attribute)
+    public function removeMissingAttribute(ProductAttributeInterface $attribute)
     {
         $this->missingAttributes->removeElement($attribute);
 

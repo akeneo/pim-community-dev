@@ -40,6 +40,7 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_attribute }
         arguments:
+            - %pim_catalog.entity.product_attribute.class%
             - '@pim_catalog.manager.attribute_type'
             - '@pim_catalog.form.subscriber.attribute'
 
@@ -128,6 +129,8 @@ services:
 
     pim_catalog.form.type.available_product_attributes:
         class: %pim_catalog.form.type.available_product_attributes.class%
+        arguments:
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_available_product_attributes }
 

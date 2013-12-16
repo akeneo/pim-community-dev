@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             orphanRemoval: false
     manyToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
             joinTable:
                 name: pim_catalog_group_attribute
                 schema: null

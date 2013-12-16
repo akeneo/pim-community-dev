@@ -37,7 +37,7 @@ class ConversionUnitsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $metricAttributes = $this->entityManager
-            ->getRepository('Pim\Bundle\CatalogBundle\Entity\ProductAttribute')
+            ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface')
             ->findBy(array('attributeType' => 'pim_catalog_metric'));
 
         foreach ($metricAttributes as $attribute) {

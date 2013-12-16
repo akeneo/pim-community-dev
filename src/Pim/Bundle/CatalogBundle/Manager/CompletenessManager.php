@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
@@ -191,13 +191,13 @@ class CompletenessManager
     }
 
     /**
-     * @param ProductAttribute $attribute
-     * @param string           $locale
-     * @param string           $scope
+     * @param ProductAttributeInterface $attribute
+     * @param string                    $locale
+     * @param string                    $scope
      *
      * @return string
      */
-    protected function getValueCode(ProductAttribute $attribute, $locale, $scope)
+    protected function getValueCode(ProductAttributeInterface $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isTranslatable()) {

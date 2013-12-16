@@ -58,7 +58,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'required'        => false,
                         'empty_value'     => 'Id',
                         'label'           => 'Attribute used as label',
-                        'class'           => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                        'class'           => 'Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface',
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
                         'select2'         => true

@@ -44,7 +44,7 @@ class ORMProductTransformer extends AbstractORMTransformer
     protected $attributes;
 
     /**
-     * @var ProductAttribute
+     * @var ProductAttributeInterface
      */
     protected $identifierAttribute;
 

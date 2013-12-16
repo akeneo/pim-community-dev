@@ -102,7 +102,7 @@ class GroupType extends AbstractType
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface',
                     'query_builder' => function (ProductAttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },

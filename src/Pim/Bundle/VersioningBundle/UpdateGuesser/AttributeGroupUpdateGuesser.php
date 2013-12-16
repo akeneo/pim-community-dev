@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * Change attribute group update guesser
@@ -28,7 +28,7 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(Entitymanager $em, $entity, $action)
     {
         $pendings = array();
-        if ($entity instanceof ProductAttribute) {
+        if ($entity instanceof ProductAttributeInterface) {
             $pendings[] = $entity;
             $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
             if ($changeset and in_array('group', array_keys($changeset))) {

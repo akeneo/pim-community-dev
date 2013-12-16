@@ -68,6 +68,11 @@ class FamilyController extends AbstractDoctrineController
     protected $familyForm;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -84,6 +89,7 @@ class FamilyController extends AbstractDoctrineController
      * @param CompletenessManager      $completenessManager
      * @param FamilyHandler            $familyHandler
      * @param Form                     $familyForm
+     * @param string                   $attributeClass
      */
     public function __construct(
         Request $request,
@@ -99,7 +105,8 @@ class FamilyController extends AbstractDoctrineController
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
         FamilyHandler $familyHandler,
-        Form $familyForm
+        Form $familyForm,
+        $attributeClass
     ) {
         parent::__construct(
             $request,
@@ -118,6 +125,7 @@ class FamilyController extends AbstractDoctrineController
         $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
         $this->familyForm          = $familyForm;
+        $this->attributeClass      = $attributeClass;
     }
 
     /**
@@ -284,7 +292,7 @@ class FamilyController extends AbstractDoctrineController
     public function removeProductAttributeAction($familyId, $attributeId)
     {
         $family    = $this->findOr404('PimCatalogBundle:Family', $familyId);
-        $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
+        $attribute = $this->findOr404($this->attributeClass, $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -122,12 +122,12 @@ class ProductBuilder
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function addAttributeToProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $requiredValues = $this->getExpectedValues($attribute);
 
@@ -139,12 +139,12 @@ class ProductBuilder
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $values = $this->objectManager
             ->getRepository($this->getProductValueClass())
@@ -162,7 +162,7 @@ class ProductBuilder
      *
      * @param ProductInterface $product
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface[]
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
@@ -229,12 +229,12 @@ class ProductBuilder
     /**
      * Returns an array of product values for the passed attribute
      *
-     * @param ProductInterfac  $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterfac           $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExistingValues(ProductInterface $product, ProductAttribute $attribute)
+    protected function getExistingValues(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $existingValues = array();
         foreach ($product->getValues() as $value) {
@@ -250,11 +250,11 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExpectedValues(ProductAttribute $attribute)
+    protected function getExpectedValues(ProductAttributeInterface $attribute)
     {
         $requiredValues = array();
         if ($attribute->isScopable() and $attribute->isTranslatable()) {
@@ -276,12 +276,12 @@ class ProductBuilder
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param ProductAttribute $attribute
-     * @param array            $values
+     * @param ProductAttributeInterface $attribute
+     * @param array                     $values
      *
      * @return array
      */
-    protected function filterExpectedValues(ProductAttribute $attribute, array $values)
+    protected function filterExpectedValues(ProductAttributeInterface $attribute, array $values)
     {
         if ($attribute->getAvailableLocales()) {
             $availableLocales = $attribute->getAvailableLocales()->map(
