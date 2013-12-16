@@ -1,0 +1,4 @@
+Oro\Bundle\BatchBundle\Entity\JobInstance:
+    constraints:
+        - Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance:
+            message: 'Failed to create an "job_type" with an unknown job definition'
