@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface:
+Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute: ~
