@@ -184,15 +184,16 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Edit attribute form
      *
-     * @param Request                   $request
-     * @param ProductAttributeInterface $attribute
+     * @param Request $request
+     * @param int     $id
      *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return array
      */
-    public function editAction(Request $request, ProductAttributeInterface $attribute)
+    public function editAction(Request $request, $id)
     {
+        $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
@@ -213,13 +214,14 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * History of a attribute
      *
-     * @param Request                   $request
-     * @param ProductAttributeInterface $attribute
+     * @param Request $request
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    public function historyAction(Request $request, ProductAttributeInterface $attribute)
+    public function historyAction(Request $request, $id)
     {
+        $attribute = $this->findAttributeOr404($id);
         $historyGridView = $this->getHistoryGrid($attribute)->createView();
 
         if ('json' === $request->getRequestFormat()) {
@@ -307,16 +309,17 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Create a new option for a simple/multi-select attribute
      *
-     * @param Request                   $request
-     * @param ProductAttributeInterface $attribute
-     * @param string                    $dataLocale
+     * @param Request $request
+     * @param int     $id
+     * @param string  $dataLocale
      *
      * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return Response
      */
-    public function createOptionAction(Request $request, ProductAttributeInterface $attribute, $dataLocale)
+    public function createOptionAction(Request $request, $id, $dataLocale)
     {
+        $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
         }
@@ -359,15 +362,16 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Remove attribute
      *
-     * @param Request                   $request
-     * @param ProductAttributeInterface $entity
+     * @param Request $request
+     * @param int     $id
      *
      * @AclAncestor("pim_catalog_attribute_remove")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function removeAction(Request $request, ProductAttributeInterface $entity)
+    public function removeAction(Request $request, int $id)
     {
+        $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($entity);
 
         $this->getManager()->remove($entity);
@@ -378,6 +382,19 @@ class ProductAttributeController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
+    }
+
+    /**
+     * Finds a product attribute
+     *
+     * @param int $id
+     *
+     * @return ProductAttributeInterface
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function findAttributeOr404($id)
+    {
+        return $this->findOr404($this->productManager->getAttributeName(), $id);
     }
 
     /**
