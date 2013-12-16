@@ -162,3 +162,8 @@ services:
         class: %pim_catalog.extension.type.media.class%
         tags:
             - { name: form.type_extension, alias: oro_media }
+
+    pim_catalog.extension.type.metric:
+        class: %pim_catalog.extension.type.metric.class%
+        tags:
+            - { name: form.type_extension, alias: pim_flexibleentity_metric }
