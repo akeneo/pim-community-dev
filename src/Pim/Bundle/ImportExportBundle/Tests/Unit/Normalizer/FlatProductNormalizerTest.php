@@ -431,7 +431,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMetricMock($data, $unit)
     {
-        $metric = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
+        $metric = $this->getMock('Pim\Bundle\CatalogBundle\Model\Metric');
 
         $metric->expects($this->any())->method('getData')->will($this->returnValue($data));
         $metric->expects($this->any())->method('getUnit')->will($this->returnValue($unit));

@@ -1,14 +1,14 @@
 # Export
-pim_importexport_export_index:
+pim_importexport_export_profile_index:
     type: action
     label: View export profile list
-pim_importexport_export_create:
+pim_importexport_export_profile_create:
     type: action
     label: Create an export profile
-pim_importexport_export_show:
+pim_importexport_export_profile_show:
     type: action
     label: View the configuration of an export profile
-pim_importexport_export_edit:
+pim_importexport_export_profile_edit:
     type: action
     label: Edit the configuration of an export profile
 pim_importexport_export_profile_remove:

@@ -9,8 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -298,11 +297,11 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * Add attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Group
      */
-    public function addAttribute(ProductAttribute $attribute)
+    public function addAttribute(ProductAttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes[] = $attribute;
@@ -314,13 +313,13 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * Remove attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Group
      *
      * @throws \InvalidArgumentException
      */
-    public function removeAttribute(ProductAttribute $attribute)
+    public function removeAttribute(ProductAttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
 
@@ -355,7 +354,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * Setter for attributes property
      *
-     * @param ProductAttribute[] $attributes
+     * @param ProductAttributeInterface[] $attributes
      *
      * @return Group
      */

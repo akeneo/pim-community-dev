@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit;
 
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
-use Pim\Bundle\FlexibleEntityBundle\EventListener\MetricBaseValuesSubscriber;
+use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber;
 
 /**
  * Test related class
@@ -157,7 +157,7 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param array   $properties
      * @param boolean $withBaseValues
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Metric
+     * @return \Pim\Bundle\Catalog\Model\Metric
      */
     protected function createMetric(array $properties, $withBaseValues = false)
     {

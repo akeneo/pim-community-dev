@@ -14,7 +14,6 @@ parameters:
     pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
 
     pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
-    pim_catalog.doctrine.completeness_query_builder.class:  Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder
 
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType

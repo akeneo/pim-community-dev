@@ -25,10 +25,11 @@ class CsvProductReader extends CsvReader
      * Constructor
      *
      * @param EntityManager $entityManager
+     * @param string        $attributeClass
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $attributeClass)
     {
-        $repository = $entityManager->getRepository('PimCatalogBundle:ProductAttribute');
+        $repository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }
 

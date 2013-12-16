@@ -61,7 +61,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $nonClearableEntities = array(
         'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
         'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttributeInterface',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',

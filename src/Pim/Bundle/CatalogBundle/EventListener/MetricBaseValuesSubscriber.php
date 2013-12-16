@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * Metric base value listener

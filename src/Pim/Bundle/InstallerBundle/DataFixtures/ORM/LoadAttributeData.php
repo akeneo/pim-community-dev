@@ -4,7 +4,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
 
 /**
@@ -50,7 +50,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      * @param string $code
      * @param array  $data
      *
-     * @return ProductAttribute
+     * @return ProductAttributeInterface
      */
     public function createAttribute($code, $data)
     {
@@ -81,9 +81,9 @@ class LoadAttributeData extends AbstractInstallerFixture
     /**
      * Create a translation entity
      *
-     * @param ProductAttribute $attribute ProductAttribute entity
-     * @param string           $locale    Locale used
-     * @param string           $content   Translated content
+     * @param ProductAttributeInterface $attribute ProductAttributeInterface entity
+     * @param string                    $locale    Locale used
+     * @param string                    $content   Translated content
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
      */
