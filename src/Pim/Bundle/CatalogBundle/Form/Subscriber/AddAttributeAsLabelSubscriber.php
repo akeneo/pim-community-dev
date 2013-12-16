@@ -23,12 +23,19 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
+     * @param string               $attributeClass
      * @param FormFactoryInterface $factory
      */
-    public function __construct(FormFactoryInterface $factory = null)
+    public function __construct($attributeClass, FormFactoryInterface $factory = null)
     {
+        $this->attributeClass = $attributeClass;
         $this->factory = $factory;
     }
 
@@ -58,7 +65,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'required'        => false,
                         'empty_value'     => 'Id',
                         'label'           => 'Attribute used as label',
-                        'class'           => 'Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface',
+                        'class'           => $this->attributeClass,
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
                         'select2'         => true
