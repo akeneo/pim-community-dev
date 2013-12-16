@@ -229,7 +229,7 @@ class ProductBuilder
     /**
      * Returns an array of product values for the passed attribute
      *
-     * @param ProductInterfac           $product
+     * @param ProductInterface          $product
      * @param ProductAttributeInterface $attribute
      *
      * @return array:array

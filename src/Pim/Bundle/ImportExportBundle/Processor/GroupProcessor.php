@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Valid group creation (or update) processor
@@ -23,11 +25,11 @@ class GroupProcessor extends AbstractEntityProcessor
     /**
      * Constructor
      *
-     * @param \Doctrine\ORM\EntityManager                     $entityManager
-     * @param \Symfony\Component\Validator\ValidatorInterface $validator
-     * @param string                                          $attributeClass
+     * @param EntityManager      $entityManager
+     * @param ValidatorInterface $validator
+     * @param string             $attributeClass
      */
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager, \Symfony\Component\Validator\ValidatorInterface $validator, $attributeClass)
+    public function __construct(EntityManager $entityManager, ValidatorInterface $validator, $attributeClass)
     {
         parent::__construct($entityManager, $validator);
         $this->attributeClass = $attributeClass;
@@ -59,7 +61,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return Group
+     * @return \Oro\Bundle\UserBundle\Entity\Group
      */
     private function getGroup(array $item)
     {
@@ -102,7 +104,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return GroupType null
+     * @return \Pim\Bundle\CatalogBundle\Form\Type\GroupType null
      */
     private function findGroupType(array $item)
     {
@@ -117,7 +119,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return ProductAttributeInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
      */
     private function getAxis(array $item)
     {
@@ -142,7 +144,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return ProductAttributeInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
      */
     private function findAttribute($code)
     {

@@ -35,7 +35,7 @@ class GroupManager
      *
      * @param RegistryInterface $doctrine
      * @param string            $productClass
-     * @param string            $productClass
+     * @param string            $attributeClass
      */
     public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
     {
