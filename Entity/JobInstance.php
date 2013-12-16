@@ -350,11 +350,23 @@ class JobInstance
 
     public function setAlias($alias)
     {
+        if ($this->alias !== null) {
+            throw new \LogicException('Alias already set in JobInstance');
+        }
+
         $this->alias = $alias;
+
+        return $this;
     }
 
     public function setConnector($connector)
     {
+        if ($this->connector !== null) {
+            throw new \LogicException('Connector already set in JobInstance');
+        }
+
         $this->connector = $connector;
+
+        return $this;
     }
 }
