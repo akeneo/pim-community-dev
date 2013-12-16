@@ -29,4 +29,19 @@ class ChannelRepository extends EntityRepository
     {
         return parent::findOneBy($criteria, $orderBy);
     }
+
+    /**
+     * Return the number of existing channels
+     *
+     * @return interger
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->select('count(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

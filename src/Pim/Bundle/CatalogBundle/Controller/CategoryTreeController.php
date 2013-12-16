@@ -353,18 +353,13 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function getDefaultTree()
     {
-        $defaultTree = (string) $this->getUser()->getValue('defaulttree');
+        $defaultTree = $this->getUser()->getDefaultTree();
+
         if (!$defaultTree) {
             throw new \Exception('User must have a default tree defined');
         }
 
-        $tree = $this->categoryManager->getEntityRepository()->findOneBy(array('code' => $defaultTree));
-
-        if (!$tree) {
-            throw $this->createNotFoundException(sprintf('%s tree not found', $defaultTree));
-        }
-
-        return $tree;
+        return $defaultTree;
     }
 
     /**

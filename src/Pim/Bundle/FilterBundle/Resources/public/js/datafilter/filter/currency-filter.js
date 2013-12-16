@@ -56,13 +56,10 @@ define(
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
                 if (!value.value) {
-                    return this.defaultCriteriaHint;
-                } else if (_.has(this.choices, value.type) && _.has(this.currencies, value.currency)) {
-                    return this.choices[value.type] + ' ' + value.value + ' ' + value.currency;
-                } else if (_.has(this.choices, value.type)) {
-                    return this.choices[value.type] + ' ' + value.value;
+                    return this.placeholder;
                 } else {
-                    return value.value;
+                    var option = this._getChoiceOption(value.type);
+                    return option.label + ' ' + value.value + ' ' + value.currency;
                 }
             },
 
@@ -74,33 +71,31 @@ define(
                     '<div class="input-prepend input-append">' +
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                'Action' +
+                                '<%= _.__("Action") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(choices, function (hint, value) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
+                                '<% _.each(choices, function (option) { %>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_type" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
                         '</div>' +
-
                         '<input type="text" name="value" value="">' +
-
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                'Currency' +
+                                '<%= _.__("Currency") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(currencies, function (hint, value) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
+                                '<% _.each(currencies, function (currency) { %>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= currency.value %>"><%= currency.label %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_currency" id="<%= name %>" value=""/>' +
+                            '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
                         '</div>' +
                     '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button">Update</button>' +
+                    '<button class="btn btn-primary filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 
@@ -135,6 +130,40 @@ define(
             _isValueValid: function(value) {
                 return (value.currency && value.type && value.value) ||
                        (!value.currency && !value.type && !value.value);
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _triggerUpdate: function(newValue, oldValue) {
+                if (!app.isEqualsLoosely(newValue, oldValue)) {
+                    this.trigger('update');
+                }
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _onValueUpdated: function(newValue, oldValue) {
+                var menu = this.$('.choicefilter .dropdown-menu');
+
+                menu.find('li a').each(function() {
+                    var item = $(this),
+                        value = item.data('value');
+
+                    if (item.parent().hasClass('active')) {
+                        if (value == newValue.type || value == newValue.currency) {
+                            item.parent().removeClass('active');
+                        } else {
+                        }
+                    } else if (value == newValue.type || value == newValue.currency) {
+                        item.parent().addClass('active');
+                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
+                    }
+                });
+
+                this._triggerUpdate(newValue, oldValue);
+                this._updateCriteriaHint();
             },
 
             /**

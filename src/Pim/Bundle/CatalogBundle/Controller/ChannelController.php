@@ -22,7 +22,6 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 
 /**
  * Channel controller
@@ -202,17 +201,17 @@ class ChannelController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, Channel $channel)
     {
-        try {
-            foreach ($channel->getLocales() as $locale) {
-                $channel->removeLocale($locale);
-                $this->getManager()->persist($locale);
-            }
-            $this->getManager()->remove($channel);
-
-            $this->getManager()->flush();
-        } catch (LastAttributeOptionDeletedException $ex) {
+        $channelCount = $this->getRepository('PimCatalogBundle:Channel')->countAll();
+        if ($channelCount <= 1) {
             throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));
         }
+
+        foreach ($channel->getLocales() as $locale) {
+            $channel->removeLocale($locale);
+            $this->getManager()->persist($locale);
+        }
+        $this->getManager()->remove($channel);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

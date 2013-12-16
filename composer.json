@@ -18,7 +18,8 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta4",
+        "oro/platform": "dev-maintenance/pim_beta5",
+        "apy/jsfv-bundle": "dev-master#d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev"
@@ -30,7 +31,7 @@
         "behat/mink-browserkit-driver":  "*",
         "behat/mink-selenium2-driver":   "*",
         "behat/common-contexts": "*",
-        "sensiolabs/behat-page-object-extension": "*",
+        "sensiolabs/behat-page-object-extension": "dev-master#6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
         "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [

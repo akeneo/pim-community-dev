@@ -1,2 +1,0 @@
-parameters:
-    oro_dataaudit.loggable.loggable_manager.class:  Pim\Bundle\DataAuditBundle\Loggable\LoggableManager
