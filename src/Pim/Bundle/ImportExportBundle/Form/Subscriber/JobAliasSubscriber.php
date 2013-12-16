@@ -2,23 +2,19 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-
 use Symfony\Component\Form\FormEvent;
-
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
+
 /**
- *
- * Enter description here ...
+ * Job alias and connector subscriber.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class JobAliasSubscriber implements EventSubscriberInterface
 {
@@ -52,6 +48,8 @@ class JobAliasSubscriber implements EventSubscriberInterface
      * Assigns alias and connector form values to the job instance
      *
      * @param FormEvent $event
+     *
+     * @return null
      */
     public function postBind(FormEvent $event)
     {
