@@ -1,13 +1,13 @@
 users:
     admin:
-        cataloglocale: en_US
-        catalogscope:  mobile
-        defaulttree:   2014_collection
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
     Julia:
-        cataloglocale: en_US
-        catalogscope:  tablet
-        defaulttree:   2014_collection
+        catalogLocale: en_US
+        catalogScope:  tablet
+        defaultTree:   2014_collection
     Peter:
-        cataloglocale: en_US
-        catalogscope:  mobile
-        defaulttree:   2014_collection
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection

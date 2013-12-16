@@ -17,8 +17,12 @@ use Symfony\Component\Finder\Finder;
  */
 class PimCatalogExtension extends Extension implements PrependExtensionInterface
 {
+    /** @staticvar string */
     const DOCTRINE_ORM = 'doctrine/orm';
+
+    /** @staticvar string */
     const DOCTRINE_MONGODB_ODM = 'doctrine/mongodb-odm';
+
     /**
      * {@inheritdoc}
      */

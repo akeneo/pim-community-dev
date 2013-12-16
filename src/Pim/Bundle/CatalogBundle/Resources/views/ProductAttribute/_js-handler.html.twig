@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, _) {
+    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    function ($, _, initSelect2) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
@@ -29,6 +29,7 @@ require(
                 $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
+                initSelect2.init($(formName));
                 initializeOptions();
                 $(formName+'_attributeType').on('change', function() {
                     updateForm();

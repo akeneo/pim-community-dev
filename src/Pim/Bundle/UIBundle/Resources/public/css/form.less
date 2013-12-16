@@ -267,11 +267,13 @@ div.btn-group > .has-switch {
 .select2-container-multi .select2-search-choice-close {
   font-family: FontAwesome;
   font-size: 12px;
-  line-height: 12px;
   color: @textColor + #333;
   &:before {
     content: "\f00d";
   }
+}
+.select2-allowclear abbr.select2-search-choice-close {
+  margin-top: 2px;
 }
 
 #attribute-buttons {
@@ -792,6 +794,10 @@ table i {
       border-radius: 0;
     }
   }
+}
+
+#copy-selection-switcher, #copy-selection {
+  margin-left: 10px;
 }
 
 // ORO page titles

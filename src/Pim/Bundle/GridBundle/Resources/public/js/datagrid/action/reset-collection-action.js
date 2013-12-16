@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/abstract-action'],
+define(['oro/grid/abstract-action'],
 function(AbstractAction) {
     'use strict';
 
     /**
      * Resets collection to initial state (corrects buggy ORO implementation)
      *
-     * @export  oro/datagrid/reset-collection-action
-     * @class   oro.datagrid.ResetCollectionAction
-     * @extends oro.datagrid.AbstractAction
+     * @export  oro/grid/reset-collection-action
+     * @class   oro.grid.ResetCollectionAction
+     * @extends oro.grid.AbstractAction
      */
     return AbstractAction.extend({
 
@@ -37,7 +37,7 @@ function(AbstractAction) {
          * Execute reset collection
          */
         execute: function() {
-            this.collection.initialState.filters = {}
+            this.collection.initialState.filters = {};
             this.collection.initialState.treeId = this.collection.state.treeId;
             this.collection.initialState.categoryId = this.collection.state.categoryId;
             this.collection.updateState(this.collection.initialState);

@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask', 'pim/saveformstate',
-     'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, saveformstate) {
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
+     'pim/initselect2', 'pim/saveformstate', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
+    function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2, saveformstate) {
         'use strict';
         var initialized = false;
         return function() {
@@ -10,50 +10,64 @@ define(
             }
             initialized = true;
             function loadTab(tab) {
-                var target = $(tab.getAttribute('href'));
-                if (!target.attr('data-loaded') && target.attr('data-url')) {
+                var $target = $(tab.getAttribute('href'));
+                if (!$target.attr('data-loaded') && $target.attr('data-url')) {
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo($('#container'));
                     loadingMask.show();
 
-                    $.get(target.attr('data-url'), function(data) {
-                        target.html(data);
-                        target.attr('data-loaded', 1);
+                    $.get($target.attr('data-url'), function(data) {
+                        $target.html(data);
+                        $target.attr('data-loaded', 1);
                         loadingMask.hide();
                         loadingMask.$el.remove();
+                        pageInit($target);
                     });
                 }
             }
-            function pageInit() {
+            function pageInit($target) {
+                var partialInit;
+                if ($target) {
+                    partialInit = true;
+                } else {
+                    $target = $("body");
+                    partialInit = false;
+                }
                 // Place code that we need to run on every page load here
 
-                $('.remove-attribute').each(function () {
+                $target.find('.remove-attribute').each(function () {
                     var target = $(this).parent().find('.icons-container').first();
                     if (target.length) {
                         $(this).appendTo(target).attr('tabIndex', -1);
                     }
                 });
 
+                // Apply Select2
+                initSelect2.init($target);
+
                 // Apply bootstrapSwitch
-                $('.switch:not(.has-switch)').bootstrapSwitch();
+                $target.find('.switch:not(.has-switch)').bootstrapSwitch();
 
                 // Initialize tooltip
-                $('[data-toggle="tooltip"]').tooltip();
+                $target.find('[data-toggle="tooltip"]').tooltip();
+
+                // Initialize popover
+                $target.find('[data-toggle="popover"]').popover();
 
                 // Activate a form tab
-                $('li.tab.active a').each(function () {
+                $target.find('li.tab.active a').each(function () {
                     var paneId = $(this).attr('href');
                     $(paneId).addClass('active');
                 });
 
                 // Toogle accordion icon
-                $('.accordion').on('show hide', function (e) {
+                $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
                 });
 
                 // Initialize slimbox
                 if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-                    $('a[rel^="slimbox"]').slimbox({
+                    $target.find('a[rel^="slimbox"]').slimbox({
                         overlayOpacity: 0.3
                     }, null, function (el) {
                         return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
@@ -68,11 +82,11 @@ define(
                         'data-placement': 'right'
                     }
                 });
-                $('.attribute-field.translatable').each(function () {
+                $target.find('.attribute-field.translatable').each(function () {
                     $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
                 });
 
-                $('form').on('change', 'input[type="file"]', function () {
+                $target.find('form').on('change', 'input[type="file"]', function () {
                     var $input          = $(this),
                         filename        = $input.val().split('\\').pop(),
                         $zone           = $input.parent(),
@@ -105,16 +119,16 @@ define(
                     }
                 });
 
-                $('a[data-form-toggle]').on('click', function () {
+                $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });
 
-                $("a[data-toggle='tab']").on('show.bs.tab', function() {
+                $target.find("a[data-toggle='tab']").on('show.bs.tab', function() {
                     loadTab(this);
                 });
 
-                $('form.form-horizontal').each(function() {
+                $target.find('form.form-horizontal').each(function() {
                     saveformstate($(this).attr('id'));
                 });
             }
@@ -161,9 +175,9 @@ define(
                                 error: function(xhr) {
                                     messenger.notificationFlashMessage(
                                         'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message)
-                                            ? xhr.responseJSON.message
-                                            : $el.attr('data-error-message'));
+                                        (xhr.responseJSON && xhr.responseJSON.message) ?
+                                            xhr.responseJSON.message :
+                                            $el.attr('data-error-message'));
                                 }
                             });
                         };
@@ -178,10 +192,10 @@ define(
                 });
 
                 pageInit();
-            })
+            });
             mediator.bind('hash_navigation_request:complete', function () {
                 pageInit();
             });
-        }
+        };
     }
 );

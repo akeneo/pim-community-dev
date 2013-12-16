@@ -27,7 +27,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     protected $channels;
 
     /**
-     * @param array|ArrayCollection $channels
+     * @param ChannelManager $channelManager
      */
     public function __construct(ChannelManager $channelManager)
     {

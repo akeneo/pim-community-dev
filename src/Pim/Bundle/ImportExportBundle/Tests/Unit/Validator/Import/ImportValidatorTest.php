@@ -25,6 +25,9 @@ class ImportValidatorTest extends ImportValidatorTestCase
             ),
         );
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -37,6 +40,9 @@ class ImportValidatorTest extends ImportValidatorTestCase
             ->will($this->returnValue('id'));
     }
 
+    /**
+     * Test related method
+     */
     public function testWithFullValidate()
     {
         $this->validator->expects($this->any())
@@ -47,6 +53,11 @@ class ImportValidatorTest extends ImportValidatorTestCase
         $this->assertEquals($this->errors, $errors);
     }
 
+    /**
+     * Test related method
+     *
+     * @return null
+     */
     public function testWithPropertyValidate()
     {
         $otherErrors = array(

@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'oro/navigation', 'jquery-ui', 'jquery.select2', 'bootstrap-tooltip'],
-    function ($, Navigation) {
+    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap-tooltip'],
+    function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
         return function (elementId, callback) {
@@ -11,6 +11,16 @@ define(
                 throw new Error('Please specify the url');
             }
             var width = $el.attr('data-form-width') || 400;
+
+            var loadingMask = null;
+
+            function showLoadingMask() {
+                if (!loadingMask) {
+                    loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container'));
+                }
+                loadingMask.show();
+            }
 
             function destroyDialog() {
                 if ($dialog && $dialog.length) {
@@ -71,6 +81,7 @@ define(
                     }
                 });
 
+                initSelect2.init($(formId));
                 $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 
@@ -99,10 +110,12 @@ define(
 
             $el.on('click', function (e) {
                 e.preventDefault();
+                showLoadingMask();
                 $.ajax({
                     url: url,
                     type: 'get',
                     success: function (data) {
+                        loadingMask.hide();
                         createDialog(data);
                     }
                 });

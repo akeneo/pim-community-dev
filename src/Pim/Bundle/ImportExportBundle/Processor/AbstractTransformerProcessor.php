@@ -100,7 +100,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      * Remaps values according to $mapping
      *
      * @param array &$values
-     * @param array $mapping
      */
     protected function mapValues(array &$values)
     {
@@ -131,9 +130,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Transforms the array in an object
      *
-     * @abstract
      * @param array $item
      *
+     * @abstract
      * @return object
      */
     abstract protected function transform($item);

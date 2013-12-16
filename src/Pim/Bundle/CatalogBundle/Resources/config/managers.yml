@@ -79,7 +79,8 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%

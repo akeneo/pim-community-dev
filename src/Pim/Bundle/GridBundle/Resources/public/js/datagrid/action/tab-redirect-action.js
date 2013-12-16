@@ -1,5 +1,5 @@
 /* global define */
-define(['oro/datagrid/navigate-action'],
+define(['oro/grid/navigate-action'],
 function(NavigateAction) {
     'use strict';
 

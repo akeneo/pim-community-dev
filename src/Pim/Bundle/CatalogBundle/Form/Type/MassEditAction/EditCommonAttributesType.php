@@ -20,12 +20,12 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 class EditCommonAttributesType extends AbstractType
 {
     /**
-     * @var ProductFormView
+     * @var ProductFormView $productFormView
      */
     protected $productFormView;
 
     /**
-     * @var LocaleHelper
+     * @var LocaleHelper $localeHelper
      */
     protected $localeHelper;
 
@@ -60,6 +60,7 @@ class EditCommonAttributesType extends AbstractType
                 array(
                     'choices' => $options['locales'],
                     'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+                    'select2' => true,
                     'attr'    => array(
                         'class' => 'operation-param',
                     )

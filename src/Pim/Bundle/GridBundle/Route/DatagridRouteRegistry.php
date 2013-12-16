@@ -16,6 +16,7 @@ class DatagridRouteRegistry
 {
     /**
      * The name of the cache file
+     * @staticvar string
      */
     const CACHE_FILE = 'pim_datagrid_js_routes';
 

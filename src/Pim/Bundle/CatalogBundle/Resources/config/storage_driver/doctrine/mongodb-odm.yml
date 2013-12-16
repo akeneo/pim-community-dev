@@ -1,14 +1,17 @@
-parameters:
-    pim_catalog.repository.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\MongoDbOdmProductRepository
-    pim_catalog.product.class: Pim\Bundle\CatalogBundle\Model\Product
-
+#parameters:
+#    pim_catalog.repository.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\MongoDbOdmProductRepository
+#    pim_catalog.product.class: Pim\Bundle\CatalogBundle\Model\Product
+#
 services:
     pim_catalog.object_manager.product:
-        alias: doctrine.odm.mondodb.document_manager
+        alias: "doctrine.odm.mongodb.document_manager"
 
-    pim_catalog.repository.product:
-        class: %pim_catalog.repository.product.class%
-        factory_service: doctrine.odm.document_manager
-        factory_method: getRepository
-        arguments:
-            - %pim_catalog.product.class%
+    pim_catalog.object_manager.group:
+        alias: "doctrine.odm.mongodb.document_manager"
+#
+#    pim_catalog.repository.product:
+#        class: %pim_catalog.repository.product.class%
+#        factory_service: doctrine.odm.document_manager
+#        factory_method: getRepository
+#        arguments:
+#            - %pim_catalog.product.class%

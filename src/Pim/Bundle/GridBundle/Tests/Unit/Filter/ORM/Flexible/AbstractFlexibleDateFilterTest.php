@@ -47,6 +47,8 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
 
     public function filterDataProvider()
     {
+        date_default_timezone_set('UTC');
+
         return array(
             'no_data' => array(
                 'data' => array(),

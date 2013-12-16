@@ -6,8 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
-use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 
 /**

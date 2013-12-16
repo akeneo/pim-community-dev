@@ -18,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 class ProductFormView
 {
     /**
-     * @var array A list of the attribute types for which creating a new option is allowed
+     * A list of the attribute types for which creating a new option is allowed
+     *
+     * @var array
      */
     private $choiceAttributeTypes = array(
         'pim_catalog_multiselect',
@@ -146,6 +148,7 @@ class ProductFormView
 
     /**
      * @param ProductAttribute $attribute
+     * @param string           $locale
      *
      * @return ArrayCollection
      */

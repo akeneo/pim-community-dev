@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Valid group creation (or update) processor
@@ -75,7 +75,7 @@ class GroupProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository('Pim\Bundle\CatalogBundle\Model\Group')
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
             ->findOneBy(array('code' => $code));
     }
 

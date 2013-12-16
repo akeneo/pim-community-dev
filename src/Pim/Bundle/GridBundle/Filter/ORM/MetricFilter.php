@@ -20,13 +20,12 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
  */
 class MetricFilter extends NumberFilter
 {
-    /**
-     * @var MeasureConverter
-     */
+    /** @var MeasureConverter $converter */
     protected $converter;
 
     /**
      * @param TranslatorInterface $translator
+     * @param MeasureConverter    $converter
      */
     public function __construct(TranslatorInterface $translator, MeasureConverter $converter)
     {
@@ -99,8 +98,6 @@ class MetricFilter extends NumberFilter
      */
     public function getRenderSettings()
     {
-        $dataType = $this->getOption('data_type');
-
         list($formType, $formOptions) = parent::getRenderSettings();
         $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
 

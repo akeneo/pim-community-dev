@@ -6,7 +6,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
 
 /**
  * Pim Catalog Bundle
@@ -17,6 +16,11 @@ use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMa
  */
 class PimCatalogBundle extends Bundle
 {
+    /**
+     * @staticvar string
+     */
+    const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
+
     /**
      * {@inheritdoc}
      */
@@ -41,12 +45,15 @@ class PimCatalogBundle extends Bundle
             )
         );
 
-        $container->addCompilerPass(
-            DoctrineMongoDBMappingsPass::createYamlMappingDriver(
-                $productMappings,
-                array('doctrine.odm.mongodb.document_manager'),
-                'pim_catalog.storage_driver.doctrine/mongodb-odm'
-            )
-        );
+        if (class_exists(self::DOCTRINE_MONGODB)) {
+            $mongoDBClass = self::DOCTRINE_MONGODB;
+            $container->addCompilerPass(
+                $mongoDBClass::createYamlMappingDriver(
+                    $productMappings,
+                    array('doctrine.odm.mongodb.document_manager'),
+                    'pim_catalog.storage_driver.doctrine/mongodb-odm'
+                )
+            );
+        }
     }
 }

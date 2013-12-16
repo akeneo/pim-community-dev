@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
@@ -45,6 +46,8 @@ class CompletenessManager
      *
      * @param RegistryInterface        $doctrine
      * @param CompletenessQueryBuilder $completenessQB
+     * @param ValidatorInterface       $validator
+     * @param string                   $class
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -107,9 +110,11 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param  ProductInterface $product
-     * @param  array            $channels
-     * @param  array            $locales
+     * @param ProductInterface $product
+     * @param array            $channels
+     * @param array            $locales
+     * @param string           $localeCode
+     *
      * @return array
      */
     public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
@@ -140,7 +145,7 @@ class CompletenessManager
         }
         $requirements = $this->doctrine
             ->getRepository(get_class($family))
-            ->getFullRequirementsQB($family, $locale)
+            ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
             ->getResult();
 
@@ -157,7 +162,7 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                $completenesses
+     * @param array                &$completenesses
      * @param AttributeRequirement $requirement
      * @param ArrayCollection      $productValues
      * @param array                $localeCodes
@@ -172,13 +177,7 @@ class CompletenessManager
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
             $constraint = new ProductValueNotBlank(array('channel' => $channel));
-            $valueCode = $attribute->getCode();
-            if ($attribute->isTranslatable()) {
-                $valueCode .= '_' .$localeCode;
-            }
-            if ($attribute->isScopable()) {
-                $valueCode .= '_' . $channel->getCode();
-            }
+            $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {
                 $missing = true;
@@ -189,6 +188,26 @@ class CompletenessManager
                 $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
             }
         }
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return string
+     */
+    protected function getValueCode(ProductAttribute $attribute, $locale, $scope)
+    {
+        $valueCode = $attribute->getCode();
+        if ($attribute->isTranslatable()) {
+            $valueCode .= '_' .$locale;
+        }
+        if ($attribute->isScopable()) {
+            $valueCode .= '_' . $scope;
+        }
+
+        return $valueCode;
     }
 
     /**

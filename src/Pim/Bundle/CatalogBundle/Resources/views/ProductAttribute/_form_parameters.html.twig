@@ -35,7 +35,7 @@
 
     {% set optionalFields = ['dateType', 'dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
     'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
-    'allowedExtensions', 'validationRule', 'validationRegexp', 'defaultValue', 'sortOrder'] %}
+    'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
 
     {% for field in optionalFields %}
         {% if form[field] is defined %}

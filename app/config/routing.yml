@@ -3,6 +3,9 @@
 pim_catalog:
     resource: "@PimCatalogBundle/Resources/config/routing.yml"
 
+pim_ui:
+    resource: "@PimUIBundle/Resources/config/routing.yml"
+
 pim_customentity:
     prefix: /enrich
     resource: "@PimCustomEntityBundle/Resources/config/routing.yml"
@@ -18,86 +21,9 @@ oro_default:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
 
-oro_ui:
-    resource: "@OroUIBundle/Resources/config/routing.yml"
-    prefix:   /ui
-
-oro_form:
-    resource: "@OroFormBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_notification:
-    resource: "@OroNotificationBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_grid:
-    resource: "@OroGridBundle/Resources/config/routing.yml"
-
-oro_user:
-    resource: "@OroUserBundle/Resources/config/routing.yml"
-
-oro_search:
-    resource: "@OroSearchBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_navigation:
-    resource: "@OroNavigationBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_windows:
-    resource: "@OroWindowsBundle/Resources/config/routing.yml"
-    prefix: /
-
-oro_soap:
-    resource: "@OroSoapBundle/Resources/config/routing.yml"
-    prefix:   /api
-
-oro_config:
-    resource: "@OroConfigBundle/Resources/config/routing.yml"
-
-oro_dataaudit:
-    resource: "@OroDataAuditBundle/Resources/config/routing.yml"
-
-oro_entity:
-    resource: "@OroEntityBundle/Resources/config/routing.yml"
-
-oro_entity_config:
-    resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
-
-oro_entity_extend:
-    resource: "@OroEntityExtendBundle/Resources/config/routing.yml"
-
-oro_workflow:
-    resource: "@OroWorkflowBundle/Resources/config/routing.yml"
-
-oro_address:
-    resource: "@OroAddressBundle/Resources/config/routing.yml"
-
-oro_translation_bundle:
-    resource: "@OroTranslationBundle/Resources/config/routing.yml"
-
-oro_assets:
+oro_auto_routing:
     resource: .
-    type:     oro_assetic
-
-oro_tag:
-    resource: "@OroTagBundle/Resources/config/routing.yml"
-
-oro_email:
-    resource: "@OroEmailBundle/Resources/config/routing.yml"
-
-oro_organization:
-    resource: "@OroOrganizationBundle/Resources/config/routing.yml"
-
-oro_cron:
-    resource: "@OroCronBundle/Resources/config/routing.yml"
-    prefix:   /cron
-
-oro_installer:
-    resource: "@OroInstallerBundle/Resources/config/routing.yml"
-
-oro_importexport:
-    resource: "@OroImportExportBundle/Resources/config/routing.yml"
+    type:     oro_auto
 
 # other third party
 

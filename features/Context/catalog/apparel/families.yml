@@ -11,6 +11,7 @@ families:
             - description
             - thumbnail
             - image
+            - legend
             - price
             - customer_rating
             - release_date

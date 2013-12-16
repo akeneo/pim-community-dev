@@ -400,11 +400,30 @@ class WebUser extends RawMinkContext
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
-            $field  = $field->getParent()->getParent()->find('css', 'select');
-            $actual = $field->find('css', 'option[selected]')->getHtml();
+            for ($i = 0; $i < 2; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $actual = $select->find('css', 'option[selected]')->getHtml();
+            } else {
+                $actual = $field->find('css', '.select2-chosen')->getHtml();
+            }
         } elseif (strpos($class, 'select2-input') !== false) {
-            $field   = $field->getParent()->getParent()->getParent()->getParent()->find('css', 'select');
-            $options = $field->findAll('css', 'option[selected]');
+            for ($i = 0; $i < 4; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $options = $field->findAll('css', 'option[selected]');
+            } else {
+                $options = $field->findAll('css', 'li.select2-search-choice div');
+            }
+
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
@@ -658,8 +677,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectRole($role)
     {
-        $this->scrollContainerTo(600);
-        $this->getPage('User creation')->selectRole($role);
+        $this->getCurrentPage()->selectRole($role);
     }
 
     /**
@@ -721,6 +739,7 @@ class WebUser extends RawMinkContext
             $this->getSession()->executeScript(
                 "$('[target]').removeAttr('target');"
             );
+            $this->wait();
 
             return new Step\Given(sprintf('I follow "%s"', $link));
         } catch (UnsupportedDriverActionException $e) {
@@ -779,6 +798,21 @@ class WebUser extends RawMinkContext
             ->getCurrentPage()
             ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
             ->press();
+        $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iPressOnTheDropdownButton($item, $button)
+    {
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem($item, $button)
+            ->click();
         $this->wait();
     }
 
@@ -1389,15 +1423,23 @@ class WebUser extends RawMinkContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()->selectTranslation($field);
+        $this->getCurrentPage()->manualSelectTranslation($field);
     }
 
     /**
-     * @Given /^I copy (\w+) translations$/
+     * @Given /^I select (.*) translations$/
      */
-    public function iCopyTranslations($mode)
+    public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
+        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+    }
+
+    /**
+     * @Given /^I copy selected translations$/
+     */
+    public function iCopySelectedTranslations()
+    {
+        $this->getCurrentPage()->copySelectedTranslations();
     }
 
     /**
@@ -1412,8 +1454,10 @@ class WebUser extends RawMinkContext
 
     /**
      * @param integer $y
+     *
+     * @Given /^I scroll down$/
      */
-    private function scrollContainerTo($y)
+    public function scrollContainerTo($y = 400)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
     }

@@ -37,6 +37,9 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
         return $file;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
         if (null === $data) {

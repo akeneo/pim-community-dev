@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Group:
+Pim\Bundle\CatalogBundle\Entity\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Model\Group:
                 min: 1
                 groups: [variant]
 
-Pim\Bundle\CatalogBundle\Model\GroupTranslation:
+Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
         label:
             - Length:
