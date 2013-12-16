@@ -58,7 +58,7 @@ class PimInstallerExtension extends Extension
             $file = $dataPath.$entity;
             foreach(array('.yml', '.csv') as $extension) {
                 if (is_file($file. $extension)) {
-                    $installerFiles[$entity]= $file . $extension;
+                    $installerFiles[$entity] = $file . $extension;
                     break;
                 }
             }
