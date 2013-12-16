@@ -36,7 +36,7 @@ class PimInstallerExtension extends Extension
         preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $dataParam, $matches);
         $bundles    = $container->getParameter('kernel.bundles');
         $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
-        $dataPath   = dirname($reflection->getFilename()).'/Resources/config/installer/'.$matches['directory'].'/';
+        $dataPath   = dirname($reflection->getFilename()).'/Resources/fixtures/'.$matches['directory'].'/';
 
         $entities = array(
             'channels',
@@ -55,9 +55,12 @@ class PimInstallerExtension extends Extension
         $installerFiles = array();
 
         foreach ($entities as $entity) {
-            $file = $dataPath.$entity.'.yml';
-            if (is_file($file)) {
-                $installerFiles[$entity]= $file;
+            $file = $dataPath.$entity;
+            foreach(array('.yml', '.csv') as $extension) {
+                if (is_file($file. $extension)) {
+                    $installerFiles[$entity]= $file . $extension;
+                    break;
+                }
             }
         }
         $container->setParameter('pim_installer.files', $installerFiles);
