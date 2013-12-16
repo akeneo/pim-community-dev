@@ -17,6 +17,21 @@ use Doctrine\ORM\EntityRepository;
 class AvailableProductAttributesType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param string $attributeClass
+     */
+    public function __construct($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -25,7 +40,7 @@ class AvailableProductAttributesType extends AbstractType
             'attributes',
             'entity',
             array(
-                'class' => 'PimCatalogBundle:ProductAttribute',
+                'class' => $this->attributeClass,
                 'query_builder' => function (EntityRepository $repository) use ($options) {
                     return $repository->getFindAllExceptQB($options['attributes']);
                 },

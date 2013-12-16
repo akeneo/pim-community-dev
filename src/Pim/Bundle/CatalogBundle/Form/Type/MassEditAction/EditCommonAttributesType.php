@@ -30,15 +30,22 @@ class EditCommonAttributesType extends AbstractType
     protected $localeHelper;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * @param ProductFormView $productFormView
      * @param LocaleHelper    $localeHelper
      */
     public function __construct(
         ProductFormView $productFormView,
-        LocaleHelper $localeHelper
+        LocaleHelper $localeHelper,
+        $attributeClass
     ) {
         $this->productFormView = $productFormView;
         $this->localeHelper    = $localeHelper;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -70,7 +77,7 @@ class EditCommonAttributesType extends AbstractType
                 'attributesToDisplay',
                 'entity',
                 array(
-                    'class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class'    => $this->attributeClass,
                     'choices'  => $options['commonAttributes'],
                     'required' => false,
                     'multiple' => true,

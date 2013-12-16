@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -26,21 +26,28 @@ class GroupManager
     protected $productClass;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
      * @param RegistryInterface $doctrine
      * @param string            $productClass
+     * @param string            $attributeClass
      */
-    public function __construct(RegistryInterface $doctrine, $productClass)
+    public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
     {
         $this->doctrine = $doctrine;
         $this->productClass  = $productClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
      * Get available axis
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface[]
      */
     public function getAvailableAxis()
     {
@@ -168,6 +175,6 @@ class GroupManager
      */
     protected function getAttributeRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute');
+        return $this->doctrine->getRepository($this->attributeClass);
     }
 }

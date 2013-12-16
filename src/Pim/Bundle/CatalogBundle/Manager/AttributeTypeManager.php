@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
@@ -49,15 +49,15 @@ class AttributeTypeManager
     }
 
     /**
-     * Create a ProductAttribute object from data in the form
+     * Create a ProductAttributeInterface object from data in the form
      *
      * @param array $data Form data
      *
-     * @return ProductAttribute $attribute | null
+     * @return ProductAttributeInterface $attribute | null
      */
     public function createAttributeFromFormData($data)
     {
-        if ($data instanceof ProductAttribute) {
+        if ($data instanceof ProductAttributeInterface) {
             return $data;
         }
 
@@ -121,13 +121,13 @@ class AttributeTypeManager
     }
 
     /**
-     * Make sure the ProductAttribute entity has the right backend properties
+     * Make sure the ProductAttributeInterface entity has the right backend properties
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
-     * @return ProductAttribute $attribute
+     * @return ProductAttributeInterface $attribute
      */
-    public function prepareBackendProperties(ProductAttribute $attribute)
+    public function prepareBackendProperties(ProductAttributeInterface $attribute)
     {
         $baseAttribute = $this->productManager->createAttribute($attribute->getAttributeType());
 

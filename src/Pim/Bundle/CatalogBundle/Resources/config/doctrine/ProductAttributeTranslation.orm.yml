@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:
