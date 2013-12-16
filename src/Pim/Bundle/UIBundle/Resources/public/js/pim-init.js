@@ -1,6 +1,6 @@
 define(
     ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'oro/loading-mask',
-     'pim/initselect2', 'pim/saveformstate', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
+     'pim/initselect2', 'pim/saveformstate', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
     function ($, __, mediator, Navigation, messenger, Dialog, LoadingMask, initSelect2, saveformstate) {
         'use strict';
         var initialized = false;
@@ -71,15 +71,6 @@ define(
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
                 });
 
-                // Initialize slimbox
-                if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-                    $target.find('a[rel^="slimbox"]').slimbox({
-                        overlayOpacity: 0.3
-                    }, null, function (el) {
-                        return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
-                    });
-                }
-
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
                     'attr': {
@@ -90,39 +81,6 @@ define(
                 });
                 $target.find('.attribute-field.translatable').each(function () {
                     $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
-                });
-
-                $target.find('form').on('change', 'input[type="file"]', function () {
-                    var $input          = $(this),
-                        filename        = $input.val().split('\\').pop(),
-                        $zone           = $input.parent(),
-                        $info           = $input.siblings('.upload-info').first(),
-                        $filename       = $info.find('.upload-filename'),
-                        $removeBtn      = $input.siblings('.remove-upload'),
-                        $removeCheckbox = $input.siblings('input[type="checkbox"]'),
-                        $preview        = $info.find('.upload-preview');
-
-                    if ($preview.prop('tagName').toLowerCase() !== 'i') {
-                        var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
-                        $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
-                        $preview = $info.find('.upload-preview');
-                    }
-
-                    if (filename) {
-                        $filename.html(filename);
-                        $zone.removeClass('empty');
-                        $preview.removeClass('empty');
-                        $removeBtn.removeClass('hide');
-                        $input.addClass('hide');
-                        $removeCheckbox.removeAttr('checked');
-                    } else {
-                        $filename.html($filename.attr('data-empty-title'));
-                        $zone.addClass('empty');
-                        $preview.addClass('empty');
-                        $removeBtn.addClass('hide');
-                        $input.removeAttr('disabled').removeClass('hide');
-                        $removeCheckbox.attr('checked', 'checked');
-                    }
                 });
 
                 $target.find('a[data-form-toggle]').on('click', function () {
@@ -142,20 +100,6 @@ define(
 
                 $(document).on('uniformInit', function () {
                     $.uniform.restore();
-                });
-
-                $(document).on('click', '.remove-upload', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var $input = $(this).siblings('input[type="file"]').first();
-                    $input.wrap('<form>').closest('form').get(0).reset();
-                    $input.unwrap().trigger('change');
-                });
-
-                $(document).on('mouseover', '.upload-zone:not(.empty)', function() {
-                    $('input[type="file"]', $(this)).attr('disabled', 'disabled');
-                }).on('mouseout', '.upload-zone:not(.empty)', function() {
-                    $('input[type="file"]', $(this)).removeAttr('disabled');
                 });
 
                 // DELETE request for delete buttons
