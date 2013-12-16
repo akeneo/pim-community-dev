@@ -347,4 +347,14 @@ class JobInstance
 
         return $this;
     }
+
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    public function setConnector($connector)
+    {
+        $this->connector = $connector;
+    }
 }
