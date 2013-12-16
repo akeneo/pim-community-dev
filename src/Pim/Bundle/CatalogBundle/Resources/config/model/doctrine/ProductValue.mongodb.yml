@@ -43,11 +43,10 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             embedded: true
             type: one
             targetDocument: Pim\Bundle\CatalogBundle\Model\Media
-# Needs to get the metric as a Document
-#        metric:
-#            embedded: true
-#            type: one
-#            targetDocument: Pim\Bundle\FlexibleEntityBundle\Entity\Metric
+        metric:
+            embedded: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Metric
         prices:
             embedded: true
             type: many

@@ -13,7 +13,6 @@ parameters:
     pim_flexibleentity.listener.default_value.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
     pim_flexibleentity.listener.initialize_flexible.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
     pim_flexibleentity.listener.attribute_cache.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
-    pim_flexibleentity.listener.metric_base_values.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\MetricBaseValuesSubscriber
 
 services:
     pim_flexibleentity.value_form.value_subscriber:
@@ -70,15 +69,6 @@ services:
     # Clear attribute list cache when inserting or delete an attribute
     pim_flexibleentity.listener.attribute_cache:
         class: %pim_flexibleentity.listener.attribute_cache.class%
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    #
-    pim_flexibleentity.listener.metric_base_values:
-        class: %pim_flexibleentity.listener.metric_base_values.class%
-        arguments:
-            - '@oro_measure.measure_converter'
-            - '@oro_measure.manager'
         tags:
             - { name: doctrine.event_subscriber }
 

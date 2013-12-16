@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * Tests related class

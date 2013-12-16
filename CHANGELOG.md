@@ -57,6 +57,7 @@
 - Completeness and Product are not linked any more via a Doctrine relationship. We are cutting the links between Product and other entities in order to pave the way to the ability to switch between MongoDB and ORM while using the same API (apart from Product repository).
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
+- Move product metric in catalog bundle
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
