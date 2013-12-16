@@ -9,6 +9,7 @@ parameters:
     pim_catalog.form.type.product_value.class:          Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
     pim_catalog.form.type.image.class:                  Pim\Bundle\CatalogBundle\Form\Type\ImageType
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_catalog.form.type.add_to_groups.class:          Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
     pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
     pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
@@ -75,6 +76,7 @@ parameters:
     pim_catalog.mass_edit_action.edit_common_attributes.class: Pim\Bundle\CatalogBundle\MassEditAction\EditCommonAttributes
     pim_catalog.mass_edit_action.classify.class:               Pim\Bundle\CatalogBundle\MassEditAction\Classify
     pim_catalog.mass_edit_action.change_family.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeFamily
+    pim_catalog.mass_edit_action.add_to_groups.class:          Pim\Bundle\CatalogBundle\MassEditAction\AddToGroups
 
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
 

@@ -426,6 +426,11 @@ pim_catalog.mass_edit_action:
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
 
+    add-to-groups:
+        label:         Add to groups
+        description:   ~
+        success_flash: ~
+
 # Product completeness
 pim_catalog.completeness:
     progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
