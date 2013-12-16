@@ -258,7 +258,7 @@ SQL;
      */
     protected function getClassContentFields($className, $prefix)
     {
-        if ('Pim\Bundle\FlexibleEntityBundle\Entity\Metric' == $className ||
+        if ('Pim\Bundle\CatalogBundle\Model\Metric' == $className ||
             'Pim\Bundle\CatalogBundle\Model\ProductPrice' == $className) {
             return array(sprintf('%s.%s', $prefix, 'data'));
         } elseif ('Pim\Bundle\CatalogBundle\Model\Media' == $className) {
