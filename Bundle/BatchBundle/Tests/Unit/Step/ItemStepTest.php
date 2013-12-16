@@ -55,15 +55,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setWriter($writer);
 
         $expectedConfiguration = array(
-            'reader' => array(
-                'reader_foo' => 'bar'
-            ),
-            'processor' => array(
-                'processor_foo' => 'bar'
-            ),
-            'writer' => array(
-                'writer_foo' => 'bar'
-            )
+            'reader_foo' => 'bar',
+            'processor_foo' => 'bar',
+            'writer_foo' => 'bar',
         );
 
         $this->assertEquals($expectedConfiguration, $this->itemStep->getConfiguration());
@@ -78,32 +72,25 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
+        $config = array(
+            'reader_foo' => 'reader_bar',
+            'processor_foo' => 'processor_bar',
+            'writer_foo' => 'writer_bar',
+        );
 
         $reader->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('reader_foo' => 'reader_bar'));
+            ->with($config);
 
         $processor->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('processor_foo' => 'processor_bar'));
+            ->with($config);
 
         $writer->expects($this->once())
             ->method('setConfiguration')
-            ->with(array('writer_foo' => 'writer_bar'));
+            ->with($config);
 
-        $this->itemStep->setConfiguration(
-            array(
-                'reader' => array(
-                    'reader_foo' => 'reader_bar',
-                ),
-                'processor' => array(
-                    'processor_foo' => 'processor_bar',
-                ),
-                'writer' => array(
-                    'writer_foo' => 'writer_bar',
-                )
-            )
-        );
+        $this->itemStep->setConfiguration($config);
     }
 
     public function testExecute()
