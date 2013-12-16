@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Writer\File;
 
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
  * Product file writer
@@ -50,13 +51,23 @@ class ProductWriter extends FileWriter implements ArchivableWriterInterface
         foreach ($items as $data) {
             foreach ($data['media'] as $media) {
                 if ($media) {
-                    $result = $this->mediaManager->copy($media, dirname($this->getPath()));
-                    if ($result === true) {
-                        $exportPath = $this->mediaManager->getExportPath($media);
-                        $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
-                    }
+                    $this->copyMedia($media);
                 }
             }
+        }
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return null
+     */
+    protected function copyMedia(Media $media)
+    {
+        $result = $this->mediaManager->copy($media, dirname($this->getPath()));
+        if ($result === true) {
+            $exportPath = $this->mediaManager->getExportPath($media);
+            $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
         }
     }
 

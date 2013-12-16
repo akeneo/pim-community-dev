@@ -24,12 +24,38 @@
 - Update OroPlatform from beta-1 to beta-5
 
 ## Bug fixes
-- Fix issue that miss some pending versionable entities
+- Missing pending versionable entities
+- Product edit form fails with memory limit for products contained in large groups
+- When I delete a filter price or metric and add it again, the filter is not applied
+- Translate metric units in select field
+- Values of attributes with the type Number are displayed with .0000 on product edit
+- Reduce metric field width
+- Sort by metric value in product datagrid
+- Constraint of unicity for products of a variant group
+- When reimporting a product, history for this product shows Create instead of Update
+- The completness calculation takes a lot of time after importing in IcecatDemo
+- Apply select2 only on needed fields
+- Inverse unit and data position for metric form field
+- Unwanted popin when try to leave attribute edit view
+- Display bug on channel selector with long labels
+- Versioning is not called after import
+- I can select a root of a tree in the mass-edit wizard
+- Products with no completeness do not show in the grid when selecting All products
+- Exporting products with an empty file attribute value fails
+- The count of Write when I export products is wrong
+- Attributes are created even with minimal install
+- Error on disallowed decimal on price are not displayed at the right place
+- Initial state of completeness filter is wrong
+- Search should take account of ACLs
+- Oro mapping issue with serch item on beta-1
+- Locale selector in the product header is sometimes too short
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
+- Remove PimDataAuditBundle
+- Remode PimDemoBundle
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

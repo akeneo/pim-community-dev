@@ -15,7 +15,6 @@ use APY\JsFormValidationBundle\JsfvEvents;
 use APY\JsFormValidationBundle\Generator\PreProcessEvent;
 use APY\JsFormValidationBundle\Generator\FieldsConstraints;
 use APY\JsFormValidationBundle\Generator\GettersLibraries;
-use Oro\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator as OroFormValidationScriptGenerator;
 use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
 
 /**
@@ -38,7 +37,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
     protected $classesMetadata;
 
     /**
-     * @param ContainerInterface $container
+     * @param ContainerInterface       $container
      * @param MetadataFactoryInterface $metadataFactory
      */
     public function __construct(ContainerInterface $container, MetadataFactoryInterface $metadataFactory)
@@ -51,6 +50,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * Gets ClassMetadata of desired class with annotations and others (xml, yml, php) using metadata factory
      *
      * @param string $className
+     *
      * @return ClassMetadata Returns ClassMetadata object of desired entity with annotations info
      */
     public function getClassMetadata($className)
@@ -308,6 +308,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * Collect recursively all form views with constraints and returns them
      *
      * @param FormView $target
+     *
      * @return FormView[]
      */
     protected function filterFormViewsWithConstraints(FormView $target)
@@ -319,13 +320,14 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
         foreach ($target->children as $child) {
             $result = array_merge($result, $this->filterFormViewsWithConstraints($child));
         }
+
         return $result;
     }
 
     /**
-     * @param FormView $formType
+     * @param FormView          $formType
      * @param FieldsConstraints $fieldsConstraints
-     * @param Constraint $constraint
+     * @param Constraint        $constraint
      */
     protected function addFieldConstraint(
         FormView $formType,
@@ -386,6 +388,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
     /**
      * @param FormView $formView
+     *
      * @return GettersLibraries
      */
     protected function createGettersLibraries(FormView $formView)
@@ -405,12 +408,14 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * Get constraint name by constraint.
      *
      * @param object $constraint
+     *
      * @return string
      */
     protected function getConstraintName($constraint)
     {
         $className = get_class($constraint);
         $classParts = explode(chr(92), $className);
+
         return end($classParts);
     }
 }
