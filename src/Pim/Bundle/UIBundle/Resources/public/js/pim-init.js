@@ -10,7 +10,13 @@ define(
             }
             initialized = true;
             function loadTab(tab) {
-                var $target = $(tab.getAttribute('href'));
+                var $tab = $(tab);
+                var target = $tab.attr('href');
+                if (!target || target === '#' || target.indexOf('javascript') === 0) {
+                    return;
+                }
+                var $target = $(target);
+
                 if (!$target.attr('data-loaded') && $target.attr('data-url')) {
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo($('#container'));
@@ -21,6 +27,7 @@ define(
                         $target.attr('data-loaded', 1);
                         loadingMask.hide();
                         loadingMask.$el.remove();
+                        $target.closest('form').trigger('tab.loaded');
                         pageInit($target);
                     });
                 }
@@ -29,7 +36,7 @@ define(
                 if (!$target) {
                     $target = $('body');
                     $target.find('form.form-horizontal').each(function() {
-                        saveformstate($(this).attr('id'));
+                        saveformstate($(this).attr('id'), loadTab);
                     });
                 }
                 // Place code that we need to run on every page load here

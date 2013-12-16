@@ -1,7 +1,7 @@
 define(
     ['jquery'],
     function ($) {
-        var formId = null;
+        var formId, cb;
         function saveFormState() {
             var $form        = $('#' + formId),
                 activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href'),
@@ -30,12 +30,18 @@ define(
                 var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
                 if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
                     $redirectTab.tab('show');
+                    if (cb) {
+                        cb($redirectTab);
+                    }
                     sessionStorage.removeItem('redirectTab');
                 }
             } else if (sessionStorage[formId + '_activeTab']) {
                 var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
                 if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                     $activeTab.tab('show');
+                    if (cb) {
+                        cb($activeTab);
+                    }
                 }
             }
 
@@ -43,6 +49,9 @@ define(
                 var $activeGroup = $('a[href=' + sessionStorage[formId + '_activeGroup'] + ']');
                 if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                     $activeGroup.tab('show');
+                    if (cb) {
+                        cb($activeGroup);
+                    }
                 } else {
                     var $tree = $('div[data-selected-tree]');
                     if ($tree.length && !$('.loading-mask').is(':visible')) {
@@ -52,18 +61,19 @@ define(
             }
         }
 
-        return function(id) {
+        return function(id, callback) {
             if (typeof Storage === 'undefined') {
                 return;
             }
-
             if (!id || !$('#' + id).length) {
                 return;
             }
-
             formId = id;
+            cb     = callback;
+
             restoreFormState();
             $('#' + formId).on('shown', 'a[data-toggle="tab"]', saveFormState);
+            $('#' + formId).on('tab.loaded', restoreFormState);
         };
     }
 );
