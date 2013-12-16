@@ -258,7 +258,7 @@ class InstallCommand extends ContainerAwareCommand
      * @param array           $params
      * @return InstallCommand
      */
-    private function runCommand($command, InputInterface $input, OutputInterface $output, $params = array())
+    protected function runCommand($command, InputInterface $input, OutputInterface $output, $params = array())
     {
         $params = array_merge(
             array(
