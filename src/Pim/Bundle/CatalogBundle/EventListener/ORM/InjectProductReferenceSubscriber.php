@@ -69,13 +69,14 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         );
 
         $assoc = array();
-        $assoc['inversedBy'] = 'groups';
-        $assoc['fetch'] = ClassMetadata::FETCH_LAZY;
+        $assoc['fieldName'] = 'products';
         $assoc['targetEntity'] = $targetEntity;
-        $assoc['sourceEntity'] = get_class($group);
-        $assoc['isOwningSide'] = false;
-        $assoc['mappedBy'] = 'products';
+        $assoc['mappedBy'] = 'groups';
         $assoc['type'] = ClassMetadata::MANY_TO_MANY;
+        $assoc['inversedBy'] = '';
+        $assoc['isOwningSide'] = false;
+        $assoc['sourceEntity'] = get_class($group);
+        $assoc['fetch'] = ClassMetadata::FETCH_LAZY;
 
         $productsCollection->setOwner($group, $assoc);
         $productsCollection->setInitialized(false);
