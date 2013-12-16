@@ -86,8 +86,11 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */
-    protected function createAttributeRequirement(Channel $channel, ProductAttributeInterface $attribute, Family $family)
-    {
+    protected function createAttributeRequirement(
+        Channel $channel,
+        ProductAttributeInterface $attribute,
+        Family $family
+    ) {
         $requirement = new AttributeRequirement();
         $requirement->setChannel($channel);
         $requirement->setAttribute($attribute);
