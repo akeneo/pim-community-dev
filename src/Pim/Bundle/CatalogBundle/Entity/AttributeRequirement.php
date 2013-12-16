@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * The attribute requirement for a channel and a family
@@ -27,7 +28,7 @@ class AttributeRequirement
     protected $family;
 
     /**
-     * @var ProductAttribute $attribute
+     * @var ProductAttributeInterface $attribute
      */
     protected $attribute;
 
@@ -68,11 +69,11 @@ class AttributeRequirement
     /**
      * Setter product attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return AttributeRequirement
      */
-    public function setAttribute(ProductAttribute $attribute)
+    public function setAttribute(ProductAttributeInterface $attribute)
     {
         $this->attribute = $attribute;
 
@@ -82,7 +83,7 @@ class AttributeRequirement
     /**
      * Getter product attribute
      *
-     * @return ProductAttribute
+     * @return ProductAttributeInterface
      */
     public function getAttribute()
     {

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -53,15 +52,10 @@ class Completeness
      */
     protected $product;
 
-    protected $missingAttributes;
-
     /**
-     * Constructor
+     * @var string ORM or ODM productId
      */
-    public function __construct()
-    {
-        $this->missingAttributes = new ArrayCollection();
-    }
+    protected $productId;
 
     /**
      * Getter locale
@@ -203,60 +197,6 @@ class Completeness
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Getter for the missing attributes
-     *
-     * @return ArrayCollection
-     */
-    public function getMissingAttributes()
-    {
-        return $this->missingAttributes;
-    }
-
-    /**
-     * Setter for the missing attributes
-     *
-     * @param array $missingAttributes
-     *
-     * @return Completeness
-     */
-    public function setMissingAttributes(array $missingAttributes = array())
-    {
-        $this->missingAttributes = new ArrayCollection($missingAttributes);
-
-        return $this;
-    }
-
-    /**
-     * Add attribute to the missing attributes collection
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return Completeness
-     */
-    public function addMissingAttribute(ProductAttribute $attribute)
-    {
-        if (!$this->missingAttributes->contains($attribute)) {
-            $this->missingAttributes->add($attribute);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove attribute from the missing attributes collection
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return Completeness
-     */
-    public function removeMissingAttribute(ProductAttribute $attribute)
-    {
-        $this->missingAttributes->removeElement($attribute);
 
         return $this;
     }

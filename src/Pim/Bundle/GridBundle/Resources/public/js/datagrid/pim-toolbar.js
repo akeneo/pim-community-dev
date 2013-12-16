@@ -1,5 +1,5 @@
 define(
-    ['oro/datagrid/toolbar', 'oro/datagrid/actions-panel'],
+    ['oro/grid/toolbar', 'oro/grid/actions-panel'],
     function(Toolbar, ActionsPanel) {
         'use strict';
 
@@ -10,9 +10,9 @@ define(
          * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
          *
          * @author  Romain Monceau <romain@akeneo.com>
-         * @export oro/datagrid/toolbar
-         * @class  pim.datagrid.Toolbar
-         * @extends oro.datagrid.Toolbar
+         * @export  oro/grid/toolbar
+         * @class   pim.datagrid.Toolbar
+         * @extends oro.grid.Toolbar
          */
         return Toolbar.extend({
             /**

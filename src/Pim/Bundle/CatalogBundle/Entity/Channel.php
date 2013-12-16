@@ -285,4 +285,14 @@ class Channel
     {
         return $this->conversionUnits;
     }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->label;
+    }
 }

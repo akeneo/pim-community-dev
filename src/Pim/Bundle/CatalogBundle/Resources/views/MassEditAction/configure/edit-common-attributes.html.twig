@@ -3,17 +3,6 @@
 {% block formTitle %}
     <div class="pull-left">
         {{ form_widget(form.operation.locale) }}
-        <script type="text/javascript">
-            require(
-                ['pim/initselect2'],
-                function (initSelect2) {
-                    initSelect2($('{{ form.operation.vars.id }}'));
-                    {% if form.operation.vars.groups is empty %}
-                        $('a.next').hide();
-                    {% endif %}
-                }
-            );
-        </script>
     </div>
     <div class="pull-left buffer-small-left">
         {{ form_widget(form.operation.attributesToDisplay) }}
@@ -58,10 +47,14 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter', 'jquery.select2'],
+            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
             function ($, _, Scopable) {
                 'use strict';
                 $(function () {
+                    {% if form.operation.vars.groups is empty %}
+                        $('a.next').hide();
+                    {% endif %}
+
                     _.each($('form div.scopable'), function (field) {
                         new Scopable({ el: $(field) });
                     });

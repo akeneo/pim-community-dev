@@ -54,8 +54,8 @@ define(
                 '<div class="btn filter-select filter-criteria-selector scope-filter">' +
                     '<i class="icon-eye-open" title="<%= label %>"></i>' +
                     '<select>' +
-                        '<% _.each(options, function (hint, value) { %>' +
-                            '<option value="<%= value %>"><%= hint %></option>' +
+                        '<% _.each(options, function (option) { %>' +
+                            '<option value="<%= option.value %>"><%= option.label %></option>' +
                         '<% }); %>' +
                     '</select>' +
                 '</div>'

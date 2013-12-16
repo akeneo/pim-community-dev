@@ -37,9 +37,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
         $this->doctrine->expects($this->any())
             ->method('getRepository')
-            ->with($this->equalTo('PimCatalogBundle:ProductAttribute'))
+            ->with($this->equalTo('attribute_class'))
             ->will($this->returnValue($this->repository));
-        $this->attributeCache = new AttributeCache($this->doctrine);
+        $this->attributeCache = new AttributeCache($this->doctrine, 'attribute_class');
     }
 
     /**

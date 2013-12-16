@@ -9,7 +9,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
@@ -159,9 +159,9 @@ class ProductManager extends FlexibleManager
     /**
      * Returns a product for the import process
      *
-     * @param array            $attributes
-     * @param ProductAttribute $identifierAttribute
-     * @param string           $code
+     * @param array                     $attributes
+     * @param ProductAttributeInterface $identifierAttribute
+     * @param string                    $code
      *
      * @return ProductInterface
      */
@@ -200,12 +200,12 @@ class ProductManager extends FlexibleManager
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function addAttributeToProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $this->builder->addAttributeToProduct($product, $attribute);
     }
@@ -213,12 +213,12 @@ class ProductManager extends FlexibleManager
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $this->builder->removeAttributeFromProduct($product, $attribute);
     }
@@ -240,7 +240,7 @@ class ProductManager extends FlexibleManager
         $this->completenessManager->schedule($product);
 
         if ($recalculate) {
-            $this->completenessManager->createProductCompletenesses($product);
+            $this->completenessManager->generateProductCompletenesses($product);
         }
     }
 
@@ -265,7 +265,7 @@ class ProductManager extends FlexibleManager
     /**
      * Return the identifier attribute
      *
-     * @return ProductAttribute|null
+     * @return ProductAttributeInterface|null
      */
     public function getIdentifierAttribute()
     {

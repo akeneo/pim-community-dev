@@ -21,7 +21,7 @@ class GroupProcessorTest extends AbstractProcessorTestCase
      */
     protected function createProcessor()
     {
-        $processor =  new GroupProcessor($this->em, $this->validator);
+        $processor =  new GroupProcessor($this->em, $this->validator, 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')

@@ -102,6 +102,7 @@ define(
 
                 $('.tree[data-tree-id=' + treeId + ']').show();
                 $tree.show();
+                $('#tree-link-' + treeId).trigger('shown');
 
                 // If empty, load the associated jstree
                 if ($tree.children('ul').size() === 0) {

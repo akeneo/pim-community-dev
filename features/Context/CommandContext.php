@@ -21,7 +21,7 @@ class CommandContext extends RawMinkContext
         $this
             ->getContainer()
             ->get('pim_catalog.manager.completeness')
-            ->createAllCompletenesses();
+            ->generateAllCompletenesses();
     }
 
     /**

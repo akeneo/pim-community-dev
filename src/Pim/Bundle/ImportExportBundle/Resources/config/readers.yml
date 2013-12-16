@@ -57,6 +57,7 @@ services:
         class: %pim_import_export.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.reader.file.csv_attribute_option:
         class: %pim_import_export.reader.file.csv.class%

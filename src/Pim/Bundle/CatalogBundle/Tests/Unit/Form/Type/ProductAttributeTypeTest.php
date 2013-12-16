@@ -33,7 +33,8 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         // Create a mock for the form and exclude the availableLocales and getAttributeTypeChoices methods
         $this->type = $this->getMock(
             'Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType',
-            array('addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber')
+            array('addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber'),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute')
         );
         $this->form = $this->factory->create($this->type);
     }

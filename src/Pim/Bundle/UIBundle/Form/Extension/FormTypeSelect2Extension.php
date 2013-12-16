@@ -22,7 +22,11 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         if (array_key_exists('select2', $options)) {
-            $view->vars['select2'] = $options['select2'];
+            if (isset($view->vars['attr']['class'])) {
+                $view->vars['attr']['class'] = sprintf('%s select2', $view->vars['attr']['class']);
+            } else {
+                $view->vars['attr']['class'] = 'select2';
+            }
         }
     }
 

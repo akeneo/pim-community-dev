@@ -21,6 +21,11 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 class FamilyType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * @var AddAttributeRequirementsSubscriber
      */
     protected $requirementsSubscriber;
@@ -29,10 +34,12 @@ class FamilyType extends AbstractType
      * Constructor
      *
      * @param AddAttributeRequirementsSubscriber $requirementsSubscriber
+     * @param string                             $attributeClass
      */
-    public function __construct(AddAttributeRequirementsSubscriber $requirementsSubscriber)
+    public function __construct(AddAttributeRequirementsSubscriber $requirementsSubscriber, $attributeClass)
     {
         $this->requirementsSubscriber = $requirementsSubscriber;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -110,7 +117,7 @@ class FamilyType extends AbstractType
         $factory = $builder->getFormFactory();
 
         $builder
-            ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
+            ->addEventSubscriber(new AddAttributeAsLabelSubscriber($this->attributeClass, $factory))
             ->addEventSubscriber($this->requirementsSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }

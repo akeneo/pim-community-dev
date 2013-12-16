@@ -31,15 +31,23 @@ class ProductAttributeType extends AttributeType
     protected $subscriber;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
+     * @param string                                  $attributeClass
      * @param AttributeTypeManager                    $attTypeManager Attribute type manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(
+        $attributeClass,
         AttributeTypeManager $attTypeManager = null,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
     ) {
+        $this->attributeClass = $attributeClass;
         $this->attTypeManager = $attTypeManager;
         $this->subscriber = $subscriber;
     }
@@ -99,7 +107,7 @@ class ProductAttributeType extends AttributeType
             array(
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttributeTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
+                'entity_class'      => $this->attributeClass,
                 'property_path'     => 'translations'
             )
         );
@@ -227,7 +235,7 @@ class ProductAttributeType extends AttributeType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
+                'data_class' => $this->attributeClass
             )
         );
     }

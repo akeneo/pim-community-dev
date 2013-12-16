@@ -8,11 +8,11 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
 
 /**
- * Form subscriber for ProductAttribute
+ * Form subscriber for ProductAttributeInterface
  * Allow to change field behavior like disable when editing
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -111,10 +111,10 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
     /**
      * Customize the attribute form
      *
-     * @param Form             $form      ProductAttribute form
-     * @param ProductAttribute $attribute ProductAttribute entity
+     * @param Form                      $form      ProductAttributeInterface form
+     * @param ProductAttributeInterface $attribute ProductAttributeInterface entity
      */
-    protected function customizeForm(Form $form, ProductAttribute $attribute)
+    protected function customizeForm(Form $form, ProductAttributeInterface $attribute)
     {
         $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);

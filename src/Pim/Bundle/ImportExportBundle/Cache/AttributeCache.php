@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Cache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -33,12 +32,18 @@ class AttributeCache
     protected $groupAttributeCodes = array();
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      * @param RegistryInterface $doctrine
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(RegistryInterface $doctrine, $attributeClass)
     {
         $this->doctrine = $doctrine;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -64,7 +69,7 @@ class AttributeCache
             )
         );
 
-        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
+        $attributes = $this->doctrine->getRepository($this->attributeClass)
                 ->findBy(array('code' => $codes));
         $attributeMap = array();
         foreach ($attributes as $attribute) {

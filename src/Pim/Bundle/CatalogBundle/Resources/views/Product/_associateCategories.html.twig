@@ -1,3 +1,15 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'pim/tree/associate'],
+        function ($, TreeAssociate) {
+            'use strict';
+            $(function () {
+                new TreeAssociate('#trees', '#{{ form.categories.vars.id }}');
+            });
+        }
+    );
+</script>
+
 {{ form_widget(form.categories, { attr: { 'class': 'hide' } }) }}
 
 <div id="trees-list" class="tab-groups">
@@ -10,7 +22,7 @@
                 {% set iClass = "green" %}
             {% endif %}
             <li>
-                <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}">
+                <a class="{{ aClass }}" href="javascript:void(0);" data-toggle="tab" id="tree-link-{{ tree['tree'].id }}">
                     <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].label }} ({{ tree['productsCount'] }})
                 </a>
             </li>
@@ -21,9 +33,9 @@
 <div class="tab-content fullheight">
     {% set selectedTree = 0 %}
     {% if trees %}
-        {% if app.user.defaulttree is defined %}
+        {% if app.user.defaultTree is defined and app.user.defaultTree.code is defined %}
             {% for tree in trees %}
-                {% if tree['tree'].code == app.user.defaulttree %}
+                {% if tree['tree'].code == app.user.defaultTree.code %}
                     {% set selectedTree = tree['tree'].id %}
                 {% endif %}
             {% endfor %}

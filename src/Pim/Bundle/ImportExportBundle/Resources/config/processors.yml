@@ -71,6 +71,7 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@validator'
+            - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.processor.attribute:
         class: %pim_import_export.processor.attribute.class%
@@ -84,3 +85,4 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@validator'
+            - '%pim_catalog.entity.product_attribute.class%'
