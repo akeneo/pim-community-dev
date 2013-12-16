@@ -104,6 +104,7 @@ services:
         arguments:
             - '@pim_catalog.form.type.product.view'
             - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
 
@@ -114,6 +115,8 @@ services:
 
     pim_catalog.form.type.group:
         class: %pim_catalog.form.type.group.class%
+        arguments:
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
@@ -144,6 +147,7 @@ services:
         arguments:
             - '@oro_measure.manager'
             - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_conversion_units }
 

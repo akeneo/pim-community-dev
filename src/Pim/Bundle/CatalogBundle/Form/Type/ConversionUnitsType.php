@@ -20,15 +20,21 @@ class ConversionUnitsType extends AbstractType
     protected $measureManager;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
      * @param MeasureManager $measureManager
      * @param EntityManager  $entityManager
      */
-    public function __construct(MeasureManager $measureManager, EntityManager $entityManager)
+    public function __construct(MeasureManager $measureManager, EntityManager $entityManager, $attributeClass)
     {
         $this->measureManager = $measureManager;
         $this->entityManager  = $entityManager;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -37,7 +43,7 @@ class ConversionUnitsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $metricAttributes = $this->entityManager
-            ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface')
+            ->getRepository($this->attributeClass)
             ->findBy(array('attributeType' => 'pim_catalog_metric'));
 
         foreach ($metricAttributes as $attribute) {
