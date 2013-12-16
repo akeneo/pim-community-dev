@@ -54,7 +54,7 @@ class JobInstanceType extends AbstractType
                 'connector',
                 'choice',
                 array(
-                    'choices'      => $this->connectorRegistry->getConnectorsList($this->jobType),
+                    'choices'      => $this->connectorRegistry->getConnectors($this->jobType),
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false
