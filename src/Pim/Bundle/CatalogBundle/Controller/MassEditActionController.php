@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Symfony\Component\Form\FormError;
 
 /**
  * Mass edit operation controller
@@ -34,25 +35,20 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class MassEditActionController extends AbstractDoctrineController
 {
-    /**
-     * @var MassEditActionOperator
-     */
+    /** @var MassEditActionOperator */
     protected $massEditActionOperator;
 
-    /**
-     * @var DatagridHelperInterface
-     */
+    /** @var DatagridHelperInterface */
     private $datagridHelper;
 
-    /**
-     * @var MassActionParametersParser
-     */
+    /** @var MassActionParametersParser */
     private $parametersParser;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     private $productManager;
+
+    /** @var ValidatorInterface */
+    private $validator;
 
     /**
      * Constructor
@@ -95,10 +91,11 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->massEditActionOperator    = $massEditActionOperator;
-        $this->datagridHelper   = $datagridHelper;
-        $this->parametersParser = $parametersParser;
-        $this->productManager   = $productManager;
+        $this->validator              = $validator;
+        $this->massEditActionOperator = $massEditActionOperator;
+        $this->datagridHelper         = $datagridHelper;
+        $this->parametersParser       = $parametersParser;
+        $this->productManager         = $productManager;
     }
 
     /**
@@ -208,8 +205,21 @@ class MassEditActionController extends AbstractDoctrineController
         $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
+        // Binding does not actually perform the operation, thus form errors can miss some constraints
+        $this->massEditActionOperator->performOperation($productIds);
+        foreach ($this->validator->validate($this->massEditActionOperator) as $violation) {
+            $form->addError(
+                new FormError(
+                    $violation->getMessage(),
+                    $violation->getMessageTemplate(),
+                    $violation->getMessageParameters(),
+                    $violation->getMessagePluralization()
+                )
+            );
+        }
+
         if ($form->isValid()) {
-            $this->massEditActionOperator->performOperation($productIds);
+            $this->getManager()->flush();
             $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
 
             return $this->redirectToRoute('pim_catalog_product_index');
@@ -218,9 +228,9 @@ class MassEditActionController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
-                'form'          => $form->createView(),
+                'form'                   => $form->createView(),
                 'massEditActionOperator' => $this->massEditActionOperator,
-                'productIds'    => $productIds,
+                'productIds'             => $productIds,
             )
         );
     }

@@ -80,8 +80,6 @@ class AddToGroups extends AbstractMassEditAction
         foreach ($this->groups as $group) {
             $this->addProductsToGroup($products, $group);
         }
-
-        $this->productManager->saveAll($products);
     }
 
     protected function addProductsToGroup(array $products, Group $group)

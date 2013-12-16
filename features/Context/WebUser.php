@@ -1453,6 +1453,13 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see:$/
+     */
+    public function assertPageContainsText(PyStringNode $text)
+    {
+        $this->assertSession()->pageTextContains((string) $text);
+    }
+    /**
      * @param integer $y
      *
      * @Given /^I scroll down$/
