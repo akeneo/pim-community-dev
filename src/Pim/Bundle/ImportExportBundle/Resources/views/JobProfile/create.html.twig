@@ -15,6 +15,25 @@
 }) }}
     {{ JSFV(form) }}
 
+<script type="text/javascript">
+    require(
+        ['jquery'],
+        function($) {
+            'use strict';
+            $(function() {
+                var formName = '#{{ form.vars.id }}';
+
+                $(formName+'_alias').change(function() {
+                    var alias = $(formName+'_alias').val();
+                    var option = $(formName+'_alias option[value="'+ alias +'"]');
+                    var connector = option.parent().attr('label');
+                    $(formName+'_connector').val(connector);
+                });
+            });
+        }
+    );
+</script>
+
     {{ elements.form_errors(form) }}
 
     <div class="row-fluid">

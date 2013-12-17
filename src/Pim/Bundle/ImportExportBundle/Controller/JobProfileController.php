@@ -180,7 +180,7 @@ class JobProfileController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
             array(
-                'form' => $form->createView(),
+                'form' => $form->createView()
             )
         );
     }

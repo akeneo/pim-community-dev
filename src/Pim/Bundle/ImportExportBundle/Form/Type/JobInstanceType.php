@@ -71,8 +71,10 @@ class JobInstanceType extends AbstractType
 
         /** @var array<ChoiceView> $aliases */
         $aliases = $view['alias'];
-        foreach ($aliases->vars['choices'] as $alias) {
-            $alias->label = $alias->label->getName();
+        foreach ($aliases->vars['choices'] as $connector) {
+            foreach ($connector as $alias) {
+                $alias->label = $alias->label->getName();
+            }
         }
     }
 
@@ -120,9 +122,8 @@ class JobInstanceType extends AbstractType
         $builder
             ->add(
                 'connector',
-                'choice',
+                'hidden',
                 array(
-                    'choices'      => array_combine($choices, $choices),
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false
@@ -141,15 +142,20 @@ class JobInstanceType extends AbstractType
      */
     protected function addAliasField(FormBuilderInterface $builder)
     {
+        $choices = $this->connectorRegistry->getJobs($this->jobType);
+        unset($choices['oro_importexport']);
+
         $builder
             ->add(
                 'alias',
                 'choice',
                 array(
-                    'choices'      => $this->connectorRegistry->getConnector('Akeneo CSV Connector', $this->jobType), //FIXME
+                    'choices'      => $choices,
                     'required'     => true,
                     'by_reference' => false,
-                    'mapped'       => false
+                    'mapped'       => false,
+                    'empty_value'  => 'Choose an alias',
+                    'empty_data'   => null
                 )
             );
 
