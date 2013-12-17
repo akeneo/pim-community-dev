@@ -1,17 +1,18 @@
 parameters:
-    pim_import_export.transformer.orm.class:                   Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer
-    pim_import_export.transformer.label.class:                 Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
-    pim_import_export.transformer.property.translation.class:  Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
-    pim_import_export.transformer.product.class:               Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
-    pim_import_export.transformer.property.default.class:      Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
-    pim_import_export.transformer.property.entity.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
-    pim_import_export.transformer.property.media.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
-    pim_import_export.transformer.property.date.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
-    pim_import_export.transformer.property.boolean.class:      Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
-    pim_import_export.transformer.property.metric.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
-    pim_import_export.transformer.property.prices.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
-    pim_import_export.transformer.property.skip.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer
-    pim_import_exoprt.transformer.column_info.class:           Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo
+    pim_import_export.transformer.orm.class:                         Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer
+    pim_import_export.transformer.label.class:                       Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
+    pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
+    pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
+    pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
+    pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
+    pim_import_export.transformer.property.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
+    pim_import_export.transformer.property.media.class:              Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
+    pim_import_export.transformer.property.date.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
+    pim_import_export.transformer.property.boolean.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
+    pim_import_export.transformer.property.metric.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
+    pim_import_export.transformer.property.prices.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
+    pim_import_export.transformer.property.skip.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer
+    pim_import_exoprt.transformer.column_info.class:                 Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo
 
 services:
     pim_import_export.transformer.orm:
@@ -29,6 +30,11 @@ services:
 
     pim_import_export.transformer.property.translation:
         class: %pim_import_export.transformer.property.translation.class%
+        arguments:
+            - '@property_accessor'
+
+    pim_import_export.transformer.property.nested_translation:
+        class: %pim_import_export.transformer.property.nested_translation.class%
         arguments:
             - '@property_accessor'
 
