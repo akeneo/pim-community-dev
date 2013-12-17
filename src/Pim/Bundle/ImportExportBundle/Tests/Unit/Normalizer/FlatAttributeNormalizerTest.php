@@ -175,9 +175,9 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             $translations = explode(',', $defaultOption);
             foreach ($translations as $translation) {
                 $translation = explode(':', $translation);
-                $locale       = reset($translation);
-                $value        = end($translation);
-                $options = $attribute->getOptions();
+                $locale      = reset($translation);
+                $value       = end($translation);
+                $options     = $attribute->getOptions();
                 foreach ($options as $option) {
                     $optionValues = $option->getOptionValues();
                     foreach ($optionValues as $optionValue) {
