@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\InstallerBundle\Tests\Ùnit\FixtureLoader;
+namespace Pim\Bundle\InstallerBundle\Tests\Unit\FixtureLoader;
 
 /**
  * Tests related class

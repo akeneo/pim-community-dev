@@ -69,6 +69,9 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
         return null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigurationFields()
     {
         return array();

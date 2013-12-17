@@ -33,7 +33,7 @@ class ORMTransformer extends AbstractORMTransformer
     protected function getEntity($class, array $data)
     {
         if (!isset($data['code'])) {
-            throw new MissingIdentifierException;
+            throw new MissingIdentifierException();
         }
         $object = $this->doctrine->getRepository($class)->findOneBy(array('code' => $data['code']));
         if (!$object) {

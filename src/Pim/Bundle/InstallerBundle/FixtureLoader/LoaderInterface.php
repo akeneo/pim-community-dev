@@ -11,5 +11,10 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
  */
 interface LoaderInterface
 {
+    /**
+     * Load a fixture file
+     *
+     * @var string $file
+     */
     public function load($file);
 }

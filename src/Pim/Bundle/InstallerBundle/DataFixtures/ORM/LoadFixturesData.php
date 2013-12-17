@@ -22,6 +22,9 @@ class LoadFixturesData extends AbstractFixture implements OrderedFixtureInterfac
      */
     protected $container;
 
+    /**
+     * {@inheritdoc}
+     */
     public function load(ObjectManager $manager)
     {
         $this->getLoader()->load($manager, $this->referenceRepository, $this->getFiles());
