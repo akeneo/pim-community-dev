@@ -63,15 +63,6 @@
                     });
                 {% endfor %}
 
-                function setFullHeight() {
-                    $('.fullheight').each(function () {
-                        $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
-                    });
-                }
-
-                $('a[data-toggle="tab"]').on('shown', setFullHeight);
-                setFullHeight();
-
                 function copyValue() {
                     $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').each(function() {
                         var $source = $(this);

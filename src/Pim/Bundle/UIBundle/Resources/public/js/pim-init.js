@@ -9,7 +9,15 @@ define(
                 return;
             }
             initialized = true;
-            function pageInit($target) {
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+                $target.find('.fullheight').filter(':visible').each(function () {
+                    $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                });
+            };
+            var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
                     $target.find('form.form-horizontal').each(function() {
@@ -52,7 +60,9 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function() {
                     loadTab(this);
                 });
-            }
+
+                setFullHeight($target);
+            };
 
             $(function(){
                 if ($.isPlainObject($.uniform)) {
@@ -65,6 +75,13 @@ define(
 
                 $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
                     pageInit($(tab));
+                });
+
+                $(document).on('shown', 'a[data-toggle="tab"]', function() {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 // DELETE request for delete buttons
