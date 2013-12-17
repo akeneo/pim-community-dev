@@ -165,9 +165,9 @@ class ItemStep extends AbstractStep
         $this->initializeStepComponents($stepExecution);
 
         while (!$stopExecution) {
-            // Reading
             try {
-                if (null === $item = $this->reader->read()) {
+                $item = $this->reader->read();
+                if (null === $item) {
                     $stopExecution = true;
 
                     continue;
@@ -178,16 +178,10 @@ class ItemStep extends AbstractStep
                 continue;
             }
 
-            // Processing
             try {
-                if (null === $processedItem = $this->processor->process($item)) {
-                    throw new \Exception(
-                        sprintf(
-                            'Processor %s returned unexpected value: NULL. ' .
-                            'Use Oro\Bundle\BatchBundle\Item\InvalidItemException to warn invalid value.',
-                            get_class($this->processor)
-                        )
-                    );
+                $processedItem = $this->processor->process($item);
+                if (null === $processedItem) {
+                    continue;
                 }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($stepExecution, $this->processor, $e);
@@ -195,7 +189,6 @@ class ItemStep extends AbstractStep
                 continue;
             }
 
-            // Writing
             $itemsToWrite[] = $processedItem;
             if (0 === ++$writeCount % $this->batchSize) {
                 try {
