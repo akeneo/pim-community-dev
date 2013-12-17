@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
-use ArrayIterator;
+use Symfony\Component\Yaml\Yaml;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Yaml reader
@@ -22,7 +21,7 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     protected $filePath;
 
     /**
-     * @var ArrayIterator
+     * @var \ArrayIterator
      */
     protected $yaml;
 
@@ -55,7 +54,7 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     {
         if (null === $this->yaml) {
             $fileData = Yaml::parse($this->filePath);
-            $this->yaml = new ArrayIterator(array_pop($fileData));
+            $this->yaml = new \ArrayIterator(array_pop($fileData));
         }
 
         if ($data = $this->yaml->current()) {
