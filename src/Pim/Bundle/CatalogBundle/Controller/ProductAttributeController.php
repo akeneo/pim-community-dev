@@ -369,12 +369,12 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function removeAction(Request $request, int $id)
+    public function removeAction(Request $request, $id)
     {
         $attribute = $this->findAttributeOr404($id);
-        $this->validateRemoval($entity);
+        $this->validateRemoval($attribute);
 
-        $this->getManager()->remove($entity);
+        $this->getManager()->remove($attribute);
         $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
