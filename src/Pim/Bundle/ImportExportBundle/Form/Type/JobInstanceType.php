@@ -154,8 +154,9 @@ class JobInstanceType extends AbstractType
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false,
-                    'empty_value'  => 'Choose an alias',
-                    'empty_data'   => null
+                    'empty_value'  => 'Choose a job',
+                    'empty_data'   => null,
+                    'label'        => 'Job'
                 )
             );
 

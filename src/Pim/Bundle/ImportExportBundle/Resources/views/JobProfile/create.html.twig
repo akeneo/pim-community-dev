@@ -21,13 +21,13 @@
         function($) {
             'use strict';
             $(function() {
-                var formName = '#{{ form.vars.id }}';
+                var formNameAlias = '#{{ form.alias.vars.id }}';
 
-                $(formName+'_alias').change(function() {
-                    var alias = $(formName+'_alias').val();
-                    var option = $(formName+'_alias option[value="'+ alias +'"]');
+                $(formNameAlias).change(function() {
+                    var alias = $(formNameAlias).val();
+                    var option = $(formNameAlias +' option[value="'+ alias +'"]');
                     var connector = option.parent().attr('label');
-                    $(formName+'_connector').val(connector);
+                    $('#{{ form.connector.vars.id }}').val(connector);
                 });
             });
         }
