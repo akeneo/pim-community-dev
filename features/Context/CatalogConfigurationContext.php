@@ -86,7 +86,11 @@ class CatalogConfigurationContext extends RawMinkContext
         if (count($files)) {
             $this->getContainer()
                 ->get('pim_installer.fixture_loader.multiple_loader')
-                ->load($files);
+                ->load(
+                    $this->getEntityManager(),
+                    $this->referenceRepository,
+                    $files
+                );
         }
     }
 
