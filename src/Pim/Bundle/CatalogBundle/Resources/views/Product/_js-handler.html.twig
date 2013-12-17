@@ -173,23 +173,34 @@
 
                 $('.copy-selection').click(function(event) {
                     event.preventDefault();
+                    var selectAll = function() {
+                        $('.comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var selectCurrentTab = function () {
+                        $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var clearSelection = function () {
+                        $('.comparison input.comparisonSelection:checked').each(function() {
+                            $(this).prop('checked', false);
+                        });
+                    };
+
                     switch($(this).data('target')) {
                         case 'all':
-                            $('.comparison input.comparisonSelection:not(:checked)').each(function() {
-                                $(this).prop('checked', true);
-                            });
+                            selectAll();
                             break;
 
                         case 'current-tab':
-                            $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
-                                $(this).prop('checked', true);
-                            });
-                            break;
+                            clearSelection();
+                            selectCurrentTab();
+                        break;
 
                         case 'none':
-                            $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).prop('checked', false);
-                            });
+                            clearSelection();
                     }
                 });
 
