@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Adds many products to many groups
@@ -15,12 +15,17 @@ use Doctrine\ORM\EntityManager;
  */
 class AddToGroups extends AbstractMassEditAction
 {
-    /** @var array */
+    /** @var ArrayCollection */
     protected $groups;
 
     /** @var EntityManager */
     protected $entityManager;
 
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->groups        = new ArrayCollection();
