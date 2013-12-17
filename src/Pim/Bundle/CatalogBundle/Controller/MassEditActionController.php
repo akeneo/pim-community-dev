@@ -207,16 +207,6 @@ class MassEditActionController extends AbstractDoctrineController
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
         $this->massEditActionOperator->performOperation($productIds);
-        foreach ($this->validator->validate($this->massEditActionOperator) as $violation) {
-            $form->addError(
-                new FormError(
-                    $violation->getMessage(),
-                    $violation->getMessageTemplate(),
-                    $violation->getMessageParameters(),
-                    $violation->getMessagePluralization()
-                )
-            );
-        }
 
         if ($form->isValid()) {
             $this->productManager->saveAll(
