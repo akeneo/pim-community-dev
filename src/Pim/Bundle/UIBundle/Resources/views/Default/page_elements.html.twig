@@ -165,38 +165,80 @@
         <i class="icon-plus"></i>
     </a>
     <script type="text/javascript">
-    require(
-        ['jquery', 'pim/dialogform', 'oro/messenger', 'jquery.select2'],
-        function ($, DialogForm, messenger) {
-            'use strict';
-            $(function () {
-                var $field = $('#{{ id }}'),
-                    $target = $field.parent().find('.icons-container').first();
-                if ($target.length) {
-                    $field.insertBefore($target).attr('tabIndex', -1);
-                }
-                var callback = function(data) {
-                    if (data.status) {
-                        var $select = $field.siblings('input.pim-ajax-entity'),
-                            selectData = { id: data.option.id, text: data.option.label };
-                        if ($select.attr('data-multiple')) {
-                            selectData = (function(newElement) {
-                                var selectData = $select.select2('data');
-                                selectData.push(newElement);
-
-                                return selectData;
-                            })(selectData);
-                        }
-                        $select.select2('data', selectData);
-                        messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
-                    } else {
-                        messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
+        require(
+            ['jquery', 'pim/dialogform', 'oro/messenger', 'jquery.select2'],
+            function ($, DialogForm, messenger) {
+                'use strict';
+                $(function () {
+                    var $field = $('#{{ id }}'),
+                        $target = $field.parent().find('.icons-container').first();
+                    if ($target.length) {
+                        $field.insertBefore($target).attr('tabIndex', -1);
                     }
-                }
-                new DialogForm('#{{ id }}', callback);
-            });
-        }
-    );
+                    var callback = function(data) {
+                        if (data.status) {
+                            var $select = $field.siblings('input.pim-ajax-entity'),
+                                selectData = { id: data.option.id, text: data.option.label };
+                            if ($select.attr('data-multiple')) {
+                                selectData = (function(newElement) {
+                                    var selectData = $select.select2('data');
+                                    selectData.push(newElement);
+
+                                    return selectData;
+                                })(selectData);
+                            }
+                            $select.select2('data', selectData);
+                            messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
+                        } else {
+                            messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
+                        }
+                    }
+                    new DialogForm('#{{ id }}', callback);
+                });
+            }
+        );
+    </script>
+{% endspaceless %}
+{% endmacro %}
+
+{% macro channelSwitcher(channels) %}
+{% spaceless %}
+    {% set id = 'channel-switcher' %}
+    <div id="{{ id }}" class="btn-group">
+        <a class="btn dropdown-toggle" href="javascript:void(0);" title="{{ 'Scope'|trans }}" data-toggle="dropdown">
+            <i class="icon-eye-open"></i>
+            <span>{{ 'Scope'|trans }}</span>
+        </a>
+        <ul class="dropdown-menu pull-right">
+            {% for channel in channels %}
+                <li><a href="javascript:void(0);" data-scope="{{ channel.code }}">{{ channel.label }}</a></li>
+            {% endfor %}
+        </ul>
+        <a class="btn icons-holder" href="javascript:void(0);" title="{{ 'Expand all channels'|trans }}" data-action="expand" data-collapse-title="{{ 'Collapse all channels'|trans }}" data-expand-title="{{ 'Expand all channels'|trans }}">
+            <i class="icon-caret-right"></i>
+        </a>
+    </div>
+    <script type="text/javascript">
+        require(
+            ['jquery', 'oro/mediator'],
+            function ($, mediator) {
+                'use strict';
+                $(function () {
+                    var $channelSwitcher = $('#{{ id }}');
+                    $channelSwitcher.find('.dropdown-menu').find('a[data-scope]').on('click', function() {
+                        mediator.trigger('scopablefield:changescope', $(this).attr('data-scope'));
+                    });
+                    $channelSwitcher.find('>a[data-action]').on('click', function() {
+                        var $el = $(this),
+                            action = $el.attr('data-action');
+                        mediator.trigger('scopablefield:' + action);
+                        var newAction = action == 'collapse' ? 'expand' : 'collapse';
+                        $el.attr('title', $el.attr('data-' + newAction + '-title')).attr('data-action', newAction);
+                        $el.find('i').toggleClass('icon-caret-right icon-caret-up');
+                    });
+                });
+            }
+        );
     </script>
 {% endspaceless %}
 {% endmacro %}

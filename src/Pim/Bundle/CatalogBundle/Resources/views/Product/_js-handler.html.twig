@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, Scopable, Dialog, DialogForm) {
+        ['jquery', 'underscore', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, Scopable, Dialog, DialogForm) {
             'use strict';
             $(function () {
                 _.each($('form div.scopable'), function (field) {
@@ -9,19 +9,6 @@
                 });
 
                 $('form div.currency').currencyField();
-
-                var $channelSwitcher = $('#attribute-buttons').find('.channel-switcher');
-                $channelSwitcher.find('.dropdown-menu').find('a[data-scope]').on('click', function() {
-                    mediator.trigger('scopablefield:changescope', $(this).attr('data-scope'));
-                });
-                $channelSwitcher.find('a[data-action]').on('click', function() {
-                    var $el = $(this),
-                        action = $el.attr('data-action');
-                    mediator.trigger('scopablefield:' + action);
-                    var newAction = action == 'collapse' ? 'expand' : 'collapse';
-                    $el.attr('title', $el.attr('data-' + newAction + '-title')).attr('data-action', newAction);
-                    $el.find('i').toggleClass('icon-caret-right icon-caret-up');
-                });
 
                 $('[data-toggle="popover"]').popover();
 
