@@ -14,7 +14,7 @@ define(
                 self  = this,
                 formUpdated = function (e) {
                     var $target = $(e.target);
-                    if ($target.parents('div.filter-box').length || $target.parents('ul.icons-holder').length) {
+                    if ($target.parents('div.filter-box').length || $target.parents('ul.icons-holder').length || $target.hasClass('exclude')) {
                         return;
                     }
                     self.updated = true;
