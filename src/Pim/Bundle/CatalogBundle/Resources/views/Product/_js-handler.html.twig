@@ -10,8 +10,6 @@
 
                 $('form div.currency').currencyField();
 
-                $('[data-toggle="popover"]').popover();
-
                 {% if form.enabled is defined %}
                     $('#switch_status').on('click', function () {
                         var $field = $('#{{ form.enabled.vars.id }}'),
