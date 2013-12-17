@@ -15,6 +15,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 class MultipleLoader
 {
     /**
+     * @var ConfigurationRegistryInterface
+     */
+    protected $configurationRegistry;
+
+    /**
      * @var LoaderFactory
      */
     protected $factory;
@@ -22,10 +27,12 @@ class MultipleLoader
     /**
      * Constructor
      *
-     * @param LoaderFactory $factory
+     * @param ConfigurationRegistryInterface $configurationRegistry
+     * @param LoaderFactory                  $factory
      */
-    public function __construct(LoaderFactory $factory)
+    public function __construct(ConfigurationRegistryInterface $configurationRegistry, LoaderFactory $factory)
     {
+        $this->configurationRegistry = $configurationRegistry;
         $this->factory = $factory;
     }
 
@@ -46,11 +53,13 @@ class MultipleLoader
                 'extension' => array_pop($parts),
                 'name'      => implode('.', $parts)
             );
-            $order = $this->factory->getOrder($file['name']);
-            if (!isset($fileIndex[$order])) {
-                $fileIndex[$order] = array();
+            if ($this->configurationRegistry->contains($file['name'])) {
+                $order = $this->configurationRegistry->getOrder($file['name']);
+                if (!isset($fileIndex[$order])) {
+                    $fileIndex[$order] = array();
+                }
+                $fileIndex[$order][] = $file;
             }
-            $fileIndex[$order][] = $file;
         }
 
         ksort($fileIndex);
@@ -70,9 +79,7 @@ class MultipleLoader
     {
         foreach ($files as $file) {
             $loader = $this->factory->create($objectManager, $referenceRepository, $file['name'], $file['extension']);
-            if ($loader) {
-                $loader->load($file['path']);
-            }
+            $loader->load($file['path']);
         }
     }
 }

@@ -22,7 +22,7 @@ class PimInstallerExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('guessers.yml');
         $loader->load('transformers.yml');
-        $loader->load('fixture_loaders.yml');
+        $loader->load('fixture_loader.yml');
         $this->addInstallerDataFiles($container);
     }
 

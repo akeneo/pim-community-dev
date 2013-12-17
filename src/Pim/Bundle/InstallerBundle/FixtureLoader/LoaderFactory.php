@@ -8,9 +8,6 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Fixture Loader  factory
@@ -22,16 +19,6 @@ use Symfony\Component\Yaml\Yaml;
 class LoaderFactory
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var PropertyAccessorInterface
-     */
-    protected $propertyAccessor;
-
-    /**
      * @var EntityCache
      */
     protected $entityCache;
@@ -42,50 +29,25 @@ class LoaderFactory
     protected $fixtureReferenceTransformer;
 
     /**
-     * @var array
+     * @var ConfigurationRegistryInterface
      */
-    protected $bundles;
-
-    /**
-     * @var array
-     */
-    private $config;
+    protected $configurationRegistry;
 
     /**
      * Constructor
      *
-     * @param ContainerInterface          $container
-     * @param EntityCache                 $entityCache
-     * @param FixtureReferenceTransformer $fixtureReferenceTransformer
-     * @param PropertyAccessorInterface   $propertyAccessor
-     * @param array                       $bundles
+     * @param EntityCache                    $entityCache
+     * @param FixtureReferenceTransformer    $fixtureReferenceTransformer
+     * @param ConfigurationRegistryInterface $configurationRegistry
      */
     public function __construct(
-        ContainerInterface $container,
         EntityCache $entityCache,
         FixtureReferenceTransformer $fixtureReferenceTransformer,
-        PropertyAccessorInterface $propertyAccessor,
-        array $bundles
+        ConfigurationRegistryInterface $configurationRegistry
     ) {
-        $this->container = $container;
         $this->entityCache = $entityCache;
         $this->fixtureReferenceTransformer = $fixtureReferenceTransformer;
-        $this->propertyAccessor = $propertyAccessor;
-        $this->bundles = $bundles;
-    }
-
-    /**
-     * Returns the fixture loading order for an entity
-     *
-     * @param string $name
-     *
-     * @return int
-     */
-    public function getOrder($name)
-    {
-        $config = $this->getConfig();
-
-        return isset($config[$name]['order']) ? $config[$name]['order'] : $config['default']['order'];
+        $this->configurationRegistry = $configurationRegistry;
     }
 
     /**
@@ -100,16 +62,10 @@ class LoaderFactory
      */
     public function create(ObjectManager $objectManager, ReferenceRepository $referenceRepository, $name, $extension)
     {
-        $config = $this->getConfig();
-        if (!isset($config[$name])) {
-            return;
-        }
         $this->fixtureReferenceTransformer->setReferenceRepository($referenceRepository);
-        $defaultConfig = $config['default'];
-        $entityConfig = $config[$name];
-        $reader = $this->getReader($extension, $entityConfig, $defaultConfig);
-        $processor = $this->getProcessor($extension,  $entityConfig, $defaultConfig);
-        $class = isset($entityConfig['class']) ? $entityConfig['class'] : $defaultConfig['class'];
+        $reader = $this->configurationRegistry->getReader($name, $extension);
+        $processor = $this->configurationRegistry->getProcessor($name, $extension);
+        $class = $this->configurationRegistry->getClass($name);
 
         return $this->createLoader($objectManager, $referenceRepository, $reader, $processor, $class);
     }
@@ -139,84 +95,5 @@ class LoaderFactory
             $reader,
             $processor
         );
-    }
-
-    /**
-     * Returns the processor service for a given extension and configuration
-     *
-     * @param string $extension
-     * @param array  $config
-     * @param array  $defaultConfig
-     *
-     * @return ItemProcessorInterface
-     */
-    protected function getProcessor($extension, array $config, array $defaultConfig)
-    {
-        return $this->getFixtureService('processor', $extension, $config, $defaultConfig);
-    }
-
-    /**
-     * Returns the reader service for a given extension and configuration
-     *
-     * @param string $extension
-     * @param array  $config
-     * @param array  $defaultConfig
-     *
-     * @return ItemReaderInterface
-     */
-    protected function getReader($extension, array $config, array $defaultConfig)
-    {
-        return $this->getFixtureService('reader', $extension, $config, $defaultConfig);
-    }
-
-    /**
-     * Return a fixture service
-     *
-     * @param  string $service
-     * @param  string $extension
-     * @param  array  $config
-     * @param  array  $defaultConfig
-     * @return object
-     */
-    protected function getFixtureService($service, $extension, array $config, array $defaultConfig)
-    {
-        $extensionConfig = $config[$extension];
-        $defaultExtensionConfig = $defaultConfig[$extension];
-        $serviceId = isset($extensionConfig[$service])
-            ? $extensionConfig[$service]
-            : $defaultExtensionConfig[$service];
-
-        $parametersKey = $service.'_options';
-        $parameters = isset($extensionConfig[$parametersKey])
-            ? $extensionConfig[$parametersKey]
-            : $defaultExtensionConfig[$parametersKey];
-
-        $service = $this->container->get($serviceId);
-        foreach ($parameters as $propertyPath => $value) {
-            $this->propertyAccessor->setValue($service, $propertyPath, $value);
-        }
-
-        return $service;
-    }
-
-    /**
-     * Returns the configuration
-     *
-     * @return array
-     */
-    protected function getConfig()
-    {
-        if (!isset($this->config)) {
-            $this->config = array();
-            foreach ($this->bundles as $class) {
-                $reflection = new \ReflectionClass($class);
-                $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
-                if (file_exists($path)) {
-                    $this->config = Yaml::parse($path) + $this->config;
-                }
-            }
-        }
-
-        return $this->config;
     }
 }
