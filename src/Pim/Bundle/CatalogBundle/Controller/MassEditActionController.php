@@ -219,7 +219,10 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->getManager()->flush();
+            $this->productManager->saveAll(
+                $this->productManager->findByIds($productIds),
+                false
+            );
             $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
 
             return $this->redirectToRoute('pim_catalog_product_index');

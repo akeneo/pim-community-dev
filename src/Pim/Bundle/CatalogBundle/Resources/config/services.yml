@@ -154,8 +154,6 @@ services:
     pim_catalog.mass_edit_action.change_status:
         public: false
         class: %pim_catalog.mass_edit_action.change_status.class%
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_catalog_product_change_state }
 
@@ -189,7 +187,7 @@ services:
     pim_catalog.mass_edit_action.add_to_groups:
         class: %pim_catalog.mass_edit_action.add_to_groups.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_change_state }
 

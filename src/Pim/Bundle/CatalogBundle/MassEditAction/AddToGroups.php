@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Adds many products to many groups
@@ -18,13 +18,13 @@ class AddToGroups extends AbstractMassEditAction
     /** @var array */
     protected $groups;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var EntityManager */
+    protected $entityManager;
 
-    public function __construct(ProductManager $productManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->groups = new ArrayCollection();
-        $this->productManager = $productManager;
+        $this->groups        = new ArrayCollection();
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -53,8 +53,7 @@ class AddToGroups extends AbstractMassEditAction
     public function getFormOptions()
     {
         $groups = $this
-            ->productManager
-            ->getStorageManager()
+            ->entityManager
             ->getRepository('PimCatalogBundle:Group')
             ->findAll();
 

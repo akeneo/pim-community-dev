@@ -22,8 +22,7 @@ class AddToGroupsTest extends \PHPUnit_Framework_TestCase
         $this->upsell         = $this->getGroupMock();
         $this->groups         = array($this->xsell, $this->upsell);
         $this->entityManager  = $this->getEntityManagerMock($this->groups);
-        $this->productManager = $this->getProductManagerMock($this->entityManager, null);
-        $this->action         = new AddToGroups($this->productManager);
+        $this->action         = new AddToGroups($this->entityManager);
     }
 
     public function testIsAMassEditAction()
@@ -50,8 +49,6 @@ class AddToGroupsTest extends \PHPUnit_Framework_TestCase
         $this->upsell->expects($this->at(0))->method('addProduct')->with($products[0]);
         $this->upsell->expects($this->at(1))->method('addProduct')->with($products[1]);
         $this->upsell->expects($this->at(2))->method('addProduct')->with($products[2]);
-
-        $this->productManager->expects($this->once())->method('saveAll')->with($products, false);
 
         $this->action->setGroups($this->groups);
         $this->action->perform($products);
@@ -115,29 +112,5 @@ class AddToGroupsTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($groups));
 
         return $repository;
-    }
-
-    /**
-     * @param mixed $objectManager
-     * @param mixed $attributeRepository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManagerMock($objectManager, $attributeRepository)
-    {
-        $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $manager->expects($this->any())
-            ->method('getStorageManager')
-            ->will($this->returnValue($objectManager));
-
-        $manager->expects($this->any())
-            ->method('getAttributeRepository')
-            ->will($this->returnValue($attributeRepository));
-
-        return $manager;
     }
 }
