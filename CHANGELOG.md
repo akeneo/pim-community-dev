@@ -6,6 +6,7 @@
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
+- Fixture CSV and YML files are now in the Resources/fixtures folder
 - Add products to many groups through mass edit wizard
 
 ## Improvements
@@ -55,8 +56,10 @@
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
+- Completeness and Product are not linked any more via a Doctrine relationship. We are cutting the links between Product and other entities in order to pave the way to the ability to switch between MongoDB and ORM while using the same API (apart from Product repository).
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
+- Move product metric in catalog bundle
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

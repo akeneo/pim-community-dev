@@ -1,15 +1,15 @@
 parameters:
-    pim_import_export.controller.import.class:        Pim\Bundle\ImportExportBundle\Controller\ImportController
-    pim_import_export.controller.export.class:        Pim\Bundle\ImportExportBundle\Controller\ExportController
-    pim_import_export.controller.import_report.class: Pim\Bundle\ImportExportBundle\Controller\ImportReportController
-    pim_import_export.controller.export_report.class: Pim\Bundle\ImportExportBundle\Controller\ExportReportController
+    pim_import_export.controller.import_profile.class:   Pim\Bundle\ImportExportBundle\Controller\ImportProfileController
+    pim_import_export.controller.export_profile.class:   Pim\Bundle\ImportExportBundle\Controller\ExportProfileController
+    pim_import_export.controller.import_execution.class: Pim\Bundle\ImportExportBundle\Controller\ImportExecutionController
+    pim_import_export.controller.export_execution.class: Pim\Bundle\ImportExportBundle\Controller\ExportExecutionController
 
 services:
 
-    pim_import_export.controller.export:
+    pim_import_export.controller.export_profile:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: %pim_import_export.controller.export.class%
+        class: %pim_import_export.controller.export_profile.class%
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.connectors'
@@ -17,10 +17,10 @@ services:
             - %kernel.root_dir%
             - %kernel.environment%
 
-    pim_import_export.controller.import:
+    pim_import_export.controller.import_profile:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: %pim_import_export.controller.import.class%
+        class: %pim_import_export.controller.import_profile.class%
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.connectors'
@@ -28,20 +28,20 @@ services:
             - %kernel.root_dir%
             - %kernel.environment%
 
-    pim_import_export.controller.export_report:
+    pim_import_export.controller.export_execution:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: %pim_import_export.controller.export_report.class%
+        class: %pim_import_export.controller.export_execution.class%
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.logger.batch_log_handler'
             - '@pim_import_export.archiver.job_execution_archiver'
             - export
 
-    pim_import_export.controller.import_report:
+    pim_import_export.controller.import_execution:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: %pim_import_export.controller.import_report.class%
+        class: %pim_import_export.controller.import_execution.class%
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.logger.batch_log_handler'

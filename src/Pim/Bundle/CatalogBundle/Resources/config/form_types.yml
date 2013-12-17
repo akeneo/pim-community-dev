@@ -40,6 +40,7 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_attribute }
         arguments:
+            - %pim_catalog.entity.product_attribute.class%
             - '@pim_catalog.manager.attribute_type'
             - '@pim_catalog.form.subscriber.attribute'
 
@@ -59,6 +60,7 @@ services:
             - { name: form.type, alias: pim_catalog_family }
         arguments:
             - '@pim_catalog.form.subscriber.attribute_requirements'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_catalog.form.type.wysiwyg:
         class: %pim_catalog.form.type.product_value_wysiwyg.class%
@@ -103,6 +105,7 @@ services:
         arguments:
             - '@pim_catalog.form.type.product.view'
             - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
 
@@ -118,6 +121,8 @@ services:
 
     pim_catalog.form.type.group:
         class: %pim_catalog.form.type.group.class%
+        arguments:
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
@@ -133,6 +138,8 @@ services:
 
     pim_catalog.form.type.available_product_attributes:
         class: %pim_catalog.form.type.available_product_attributes.class%
+        arguments:
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_available_product_attributes }
 
@@ -146,6 +153,7 @@ services:
         arguments:
             - '@oro_measure.manager'
             - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_conversion_units }
 
@@ -159,3 +167,8 @@ services:
         class: %pim_catalog.extension.type.media.class%
         tags:
             - { name: form.type_extension, alias: oro_media }
+
+    pim_catalog.extension.type.metric:
+        class: %pim_catalog.extension.type.metric.class%
+        tags:
+            - { name: form.type_extension, alias: pim_flexibleentity_metric }

@@ -1,0 +1,46 @@
+pim_importexport_export_profile_index:
+    path: /.{_format}
+    defaults: { _controller: pim_import_export.controller.export_profile:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_export_profile_create:
+    path: /create
+    defaults: { _controller: pim_import_export.controller.export_profile:createAction }
+
+pim_importexport_export_profile_show:
+    path: /{id}
+    defaults: { _controller: pim_import_export.controller.export_profile:showAction }
+    requirements:
+        id: \d+
+
+pim_importexport_export_profile_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_import_export.controller.export_profile:editAction }
+    requirements:
+        id: \d+
+
+pim_importexport_export_profile_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_import_export.controller.export_profile:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_importexport_export_profile_report:
+    path: /{id}/reports
+    defaults: { _controller: pim_import_export.controller.export_profile:reportAction }
+    requirements:
+        id: \d+
+
+pim_importexport_export_profile_launch:
+    path: /{id}/launch
+    defaults: { _controller: pim_import_export.controller.export_profile:launchAction }
+    requirements:
+        id: \d+
+
+pim_importexport_export_profile_history:
+    path: /{id}/history
+    defaults: { _controller: pim_import_export.controller.export_profile:historyAction }
+    requirements:
+        id: \d+

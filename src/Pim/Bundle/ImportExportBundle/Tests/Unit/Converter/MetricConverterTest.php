@@ -92,7 +92,7 @@ class MetricConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getMetricMock($family, $unit, $data)
     {
-        $metric = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
+        $metric = $this->getMock('Pim\Bundle\CatalogBundle\Model\Metric');
 
         $metric->expects($this->any())->method('getFamily')->will($this->returnValue($family));
         $metric->expects($this->any())->method('getUnit')->will($this->returnValue($unit));

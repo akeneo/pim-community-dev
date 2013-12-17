@@ -1,17 +1,13 @@
-{% set showableCompleteness = false %}
-{% for completeness in value %}
-    {% if completeness.locale.code == localeCode and completeness.channel.code == channelCode %}
-        {% set showableCompleteness = true %}
-        {% if completeness.ratio == 100 %}
-            {% set class = 'success' %}
-        {% elseif completeness.ratio == 0 %}
-            {% set class = 'important' %}
-        {% else %}
-            {% set class = 'warning' %}
-        {% endif %}
-        <span class="label label-{{ class }}">{{ completeness.ratio }}%</span>
-    {% endif %}
-{% endfor %}
-{% if not showableCompleteness %}
+{% if value == 100 %}
+    {% set class = 'success' %}
+{% elseif value == 0 %}
+    {% set class = 'important' %}
+{% else %}
+    {% set class = 'warning' %}
+{% endif %}
+
+{% if value is null %}
  -
-{% endif%}
+{% else %}
+    <span class="label label-{{ class }}">{{ value }}%</span>
+{% endif %}

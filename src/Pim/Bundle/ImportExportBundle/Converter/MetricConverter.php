@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**

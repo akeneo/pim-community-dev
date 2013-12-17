@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Valid attribute option creation (or update) processor
@@ -17,6 +19,24 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionProcessor extends AbstractEntityProcessor
 {
+    /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param EntityManager      $entityManager
+     * @param ValidatorInterface $validator
+     * @param string             $attributeClass
+     */
+    public function __construct(EntityManager $entityManager, ValidatorInterface $validator, $attributeClass)
+    {
+        parent::__construct($entityManager, $validator);
+        $this->attributeClass = $attributeClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -87,25 +107,25 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return ProductAttribute|null
+     * @return ProductAttributeInterface|null
      */
     protected function findAttribute($code)
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:ProductAttribute')
+            ->getRepository($this->attributeClass)
             ->findOneBy(array('code' => $code));
     }
 
     /**
      * Find option by code
      *
-     * @param ProductAttribute $attribute
-     * @param string           $code
+     * @param ProductAttributeInterface $attribute
+     * @param string                    $code
      *
      * @return AttributeOption|null
      */
-    protected function findOption(ProductAttribute $attribute, $code)
+    protected function findOption(ProductAttributeInterface $attribute, $code)
     {
         return $this
             ->entityManager

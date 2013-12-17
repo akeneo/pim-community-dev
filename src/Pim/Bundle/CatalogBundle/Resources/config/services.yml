@@ -3,7 +3,7 @@ parameters:
     pim_catalog.event_listener.progress.class:                           Pim\Bundle\CatalogBundle\EventListener\ProgressListener
     pim_catalog.event_listener.create_attribute_requirement.class:       Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
     pim_catalog.form.subscriber.add_attribute_requirements.class:        Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
-    pim_catalog.event_listener.mongodb.inject_orm_references.class:      Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
+    pim_catalog.event_listener.metric_base_values.class:                 Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
 services:
     # Attribute property types
@@ -53,13 +53,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_catalog.event_listener.mongodb.inject_orm_references:
-        class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
-
     pim_catalog.event_listener.progress:
         class: %pim_catalog.event_listener.progress.class%
         arguments:
@@ -69,6 +62,14 @@ services:
         class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_listener.metric_base_values:
+        class: %pim_catalog.event_listener.metric_base_values.class%
+        arguments:
+            - '@oro_measure.measure_converter'
+            - '@oro_measure.manager'
+        tags:
+            - { name: doctrine.event_subscriber }
 
     # Validators
     pim_catalog.form.validator.metric:
@@ -200,10 +201,3 @@ services:
             - %kernel.cache_dir%/media
         tags:
             - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }
-
-    pim_catalog.doctrine.completeness_query_builder:
-        class: %pim_catalog.doctrine.completeness_query_builder.class%
-        arguments:
-            - '@doctrine'
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%

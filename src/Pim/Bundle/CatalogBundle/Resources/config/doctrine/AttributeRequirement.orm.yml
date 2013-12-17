@@ -19,7 +19,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
                     onDelete: CASCADE
                     nullable: false
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id

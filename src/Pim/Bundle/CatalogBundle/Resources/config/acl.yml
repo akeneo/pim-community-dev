@@ -142,7 +142,7 @@ pim_catalog_attribute_group_remove_attribute:
     type: action
     label: Remove attribute from a group
 
-# ProductAttribute
+# ProductAttributeInterface
 pim_catalog_attribute_index:
     type: entity
     class: PimCatalogBundle:ProductAttribute
