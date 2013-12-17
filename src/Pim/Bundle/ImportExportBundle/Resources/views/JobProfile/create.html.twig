@@ -1,0 +1,27 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+
+{{ form_start(form, {
+    'action': actionRoute,
+    'class': 'form-inline',
+    'attr': {
+        'data-title': dataTitle|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
+    }
+}) }}
+    {{ JSFV(form) }}
+
+    {{ elements.form_errors(form) }}
+
+    <div class="row-fluid">
+        {{ form_row(form.code) }}
+        {{ form_row(form.label) }}
+        {{ form_row(form.connector) }}
+        {{ form_row(form.alias) }}
+        {{ form_row(form._token) }}
+    </div>
+{{ form_end(form) }}

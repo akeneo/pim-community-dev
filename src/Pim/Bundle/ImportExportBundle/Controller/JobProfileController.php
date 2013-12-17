@@ -160,6 +160,7 @@ class JobProfileController extends AbstractDoctrineController
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
+
             if ($form->isValid()) {
                 $this->getManager()->persist($jobInstance);
                 $this->getManager()->flush();

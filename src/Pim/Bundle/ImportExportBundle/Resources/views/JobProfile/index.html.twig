@@ -23,9 +23,9 @@
 
     {% set buttons %}
         {{ elements.createBtn(
-            'export',
+            createBtnTitle,
             null,
-            { 'id': 'create-job', 'data-form': 'dialog', 'data-form-url': path('pim_importexport_export_profile_create') }
+            { 'id': 'create-job', 'data-form': 'dialog', 'data-form-url': createRoute }
         ) }}
     {% endset %}
 
