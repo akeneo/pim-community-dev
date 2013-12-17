@@ -15,9 +15,9 @@ Feature: Add products to many groups at once
     And I am on the products page
     Given I mass-edit products kickers, hiking_shoes and moon_boots
     And I choose the "Add to groups" operation
-    And I check "Caterpillar boots"
+    And I check "Similar boots"
     When I move on to the next step
-    Then "caterpillar_boots" group should contain "kickers, hiking_shoes and moon_boots"
+    Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
 
   Scenario: Fail to add similar products to a variant group
     Given the "footwear" catalog configuration
