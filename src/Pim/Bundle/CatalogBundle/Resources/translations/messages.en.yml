@@ -428,8 +428,8 @@ pim_catalog.mass_edit_action:
 
     add-to-groups:
         label:         Add to groups
-        description:   ~
-        success_flash: ~
+        description:   Select the groups in which to add the selected products
+        success_flash: Products were successfully added to the selected groups
 
 # Product completeness
 pim_catalog.completeness:
