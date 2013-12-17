@@ -22,7 +22,9 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer')
             ->disableOriginalConstructor()
             ->getMock();
-        $configurationRegistry = $this->getMock('Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistryInterface');
+        $configurationRegistry = $this->getMock(
+            'Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistryInterface'
+        );
 
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $referenceRepository = $this
