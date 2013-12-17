@@ -286,12 +286,10 @@
 {% spaceless %}
     {% if form.enabled is defined %}
         <div class="status-enabled pull-left">
-            {% if form.enabled is defined %}
-                {% if form.enabled.vars.value %}
-                    <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
-                {% else %}
-                    <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
-                {% endif %}
+            {% if form.enabled.vars.value %}
+                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+            {% else %}
+                <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
             {% endif %}
         </div>
     {% endif %}
