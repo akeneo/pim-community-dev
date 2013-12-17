@@ -1,0 +1,14 @@
+connector:
+    name: Test Connector
+    jobs:
+        my_export:
+            title: "My job"
+            type:  export
+            steps:
+                export:
+                    title:      "My Step"
+                    class:      Pim\Bundle\TestConnectorBundle\Step\MyStep
+                    services:
+                        serializer: pim_import_export.processor.csv_serializer.heterogeneous
+                    parameters:
+                        my_param: true
