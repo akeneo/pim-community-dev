@@ -48,8 +48,11 @@ pim_catalog_product_change_family:
     type: action
     label: Change product family
 pim_catalog_product_change_state:
-    label: Change state of product
     type: action
+    label: Change state of product
+pim_catalog_product_add_to_groups:
+    type: action
+    label: Add to groups
 
 # Category
 pim_catalog_category_list:

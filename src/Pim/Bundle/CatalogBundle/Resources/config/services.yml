@@ -189,7 +189,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_change_state }
+            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_add_to_groups }
 
     # Media management
     pim_catalog.imagine.local_dir_resolver:
