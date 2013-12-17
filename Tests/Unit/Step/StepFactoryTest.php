@@ -15,7 +15,7 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $jobRepository   = $this->getMock('Oro\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
-        $jobFactory = new StepFactory($eventDispatcher, $jobRepository);
+        $stepFactory = new StepFactory($eventDispatcher, $jobRepository);
 
         $reader = $this
             ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface')
@@ -32,7 +32,9 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $step = $jobFactory->createStep('my_test_job', $reader, $processor, $writer);
+        $services = array ('reader' => $reader, 'processor' => $processor, 'writer' => $writer);
+        $class = 'Oro\Bundle\BatchBundle\Step\ItemStep';
+        $step = $stepFactory->createStep('my_test_job', $class, $services, array());
 
         $this->assertInstanceOf('Oro\\Bundle\\BatchBundle\\Step\\StepInterface', $step);
         $this->assertAttributeEquals($reader, 'reader', $step);
