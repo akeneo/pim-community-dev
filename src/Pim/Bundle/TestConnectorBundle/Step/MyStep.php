@@ -15,22 +15,32 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
+use Pim\Bundle\CatalogBundle\Entity\Association;
+
 // TODO : complete StepInterface, today the factory can't work with due to job repository and event dispatcher
 
 class MyStep extends AbstractStep
 {
+    protected $config;
+
     protected function doExecute(StepExecution $stepExecution)
     {
-        die ('hell yeah');
+        $assoc = new Association();
+        $assoc->setCode('My name');
+        $this->serializer->setStepExecution($stepExecution);
+        $output = $this->serializer->process($assoc);
+
+        echo $output;
     }
 
     public function getConfiguration()
     {
-        return array();
+        return $this->config;
     }
 
     public function setConfiguration(array $config)
     {
+        $this->config = $config;
     }
 
     public function setSerializer($serializer)

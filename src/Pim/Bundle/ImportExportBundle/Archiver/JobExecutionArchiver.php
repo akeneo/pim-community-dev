@@ -40,8 +40,8 @@ class JobExecutionArchiver
         $archivePath = $this->getJobExecutionPath($jobExecution);
 
         foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
-            $writer = $step->getWriter();
+            $reader = (method_exists($step, 'getReader')) ? $step->getReader() : null;
+            $writer = (method_exists($step, 'getWriter')) ? $step->getWriter() : null;
 
             if ($reader instanceof CsvReader) {
                 $this->copyFileIfExists($reader->getFilePath(), $archivePath);
