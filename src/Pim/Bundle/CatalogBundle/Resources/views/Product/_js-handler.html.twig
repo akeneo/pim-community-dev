@@ -1,41 +1,12 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, Scopable, Dialog, DialogForm, messenger) {
+        ['jquery', 'underscore', 'oro/mediator', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, mediator, Scopable, Dialog, DialogForm) {
             'use strict';
             $(function () {
                 _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
-
-                {% if resource_granted('pim_catalog_attribute_edit') %}
-                    _.each($('.add-attribute-option'), function (field) {
-                        var $field = $(field),
-                            $target = $field.parent().find('.icons-container').first();
-                        if ($target.length) {
-                            $field.insertBefore($target).attr('tabIndex', -1);
-                        }
-                        var callback = function(data) {
-                            if (data.status) {
-                                var $select = $field.siblings('input.pim-ajax-entity'),
-                                    selectData = { id: data.option.id, text: data.option.label };
-                                if ($select.attr("data-multiple")) {
-                                    selectData = (function(newElement) {
-                                        var selectData = $select.select2("data");
-                                        selectData.push(newElement);
-
-                                        return selectData;
-                                    })(selectData);
-                                }
-                                $select.select2("data", selectData);
-                                messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
-                            } else {
-                                messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
-                            }
-                        }
-                        new DialogForm('#' + $field.attr('id'), callback);
-                    });
-                {% endif %}
 
                 $('form div.currency').currencyField();
 
