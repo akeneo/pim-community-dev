@@ -29,10 +29,24 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->context           = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context           = $this->getExecutionContextMock();
         $this->connectorRegistry = $this->getConnectorRegistryMock();
         $this->validator         = new JobInstanceValidator($this->connectorRegistry);
         $this->validator->initialize($this->context);
+    }
+
+    /**
+     * @return \Symfony\Component\Validator\ExecutionContext
+     */
+    protected function getExecutionContextMock()
+    {
+        return $this->getMock(
+            'Symfony\Component\Validator\ExecutionContext',
+            array(),
+            array(),
+            '',
+            false
+        );
     }
 
     /**
