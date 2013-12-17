@@ -15,16 +15,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class NestedTranslationTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
-
-    public function transform($value, array $options = array())
-    {
-        if (!is_array($value)) {
-            throw new PropertyTransformerException('Data should be an array');
-        }
-
-        return $value;
-    }
-
     /**
      * @var PropertyAccessorInterface
      */
@@ -38,6 +28,18 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
         $this->propertyAccessor = $propertyAccessor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transform($value, array $options = array())
+    {
+        if (!is_array($value)) {
+            throw new PropertyTransformerException('Data should be an array');
+        }
+
+        return $value;
     }
 
     /**
