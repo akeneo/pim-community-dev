@@ -174,6 +174,25 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
+     * Get wether or not an attribute is part of a product
+     *
+     * @param AbstractEntityAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function hasAttribute(AbstractEntityAttribute $attribute)
+    {
+        return 0 !== $this
+            ->getValues()
+            ->filter(
+                function ($value) use ($attribute) {
+                    return $value->getAttribute() === $attribute;
+                }
+            )
+            ->count();
+    }
+
+    /**
      * Filter product value per attribute code
      *
      * @param string $attribute

@@ -521,7 +521,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
         $isLocalized   = (int) ($this->getLocale() == $locale);
         $isScoped      = (int) ($this->getScope() == $scope);
 
-        if ($this->getAttribute()->getCode() == $attribute) {
+        if ($this->getAttribute()->getCode() === $attribute) {
             $matchedMatrix = array('0000', '0100', '0001', '0101', '1111', '1100', '1101', '0011', '0111');
             $status = (string) $isLocalizable.$isLocalized.$isScopable.$isScoped;
             if (in_array($status, $matchedMatrix)) {

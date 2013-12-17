@@ -162,4 +162,14 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->flexible->setColor($data2);
         $this->assertEquals($this->flexible->getColor(), $value2);
     }
+
+    public function testHasAttribute()
+    {
+        $value = new FlexibleValue();
+        $value->setAttribute($this->attributeText);
+        $this->flexible->addValue($value);
+
+        $this->assertTrue($this->flexible->hasAttribute($this->attributeText));
+        $this->assertFalse($this->flexible->hasAttribute($this->attributeSelect));
+    }
 }
