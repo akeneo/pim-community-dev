@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
+use Symfony\Component\Form\FormView;
+
+use Symfony\Component\Form\FormInterface;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
@@ -54,6 +58,24 @@ class JobInstanceType extends AbstractType
             ->addJobConfigurationField($builder);
 
         $builder->addEventSubscriber(new JobAliasSubscriber($this->connectorRegistry));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Allows to print job name as alias instead of call __toString method
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        if (!isset($view['alias'])) {
+            return;
+        }
+
+        /** @var array<ChoiceView> $aliases */
+        $aliases = $view['alias'];
+        foreach ($aliases->vars['choices'] as $alias) {
+            $alias->label = $alias->label->getName();
+        }
     }
 
     /**
