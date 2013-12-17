@@ -18,3 +18,11 @@ Feature: Create an import
       | Job   | Product import in CSV |
     And I press the "Save" button
     Then I should see "Edit import profile - Products import"
+
+  Scenario: Fail to create a job import
+    Given I create a new import
+    When I fill in the following information in the popin:
+      | Code  | PRODUCT_IMPORT  |
+      | Label | Products import |
+    And I press the "Save" button
+    Then I should see "Failed to create an \"import\" with an unknown job definition"
