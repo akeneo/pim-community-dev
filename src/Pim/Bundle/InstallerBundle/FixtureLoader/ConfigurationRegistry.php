@@ -107,17 +107,17 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     {
         $config = $this->getConfiguration();
 
-        $defaultExtensionConfig = $config['default'][$extension];
-        $extensionConfig = isset($config[$name][$extension]) ? $config[$name][$extension] : $defaultExtensionConfig;
+        $defaultExtConfig = $config['default'][$extension];
+        $extConfig = isset($config[$name][$extension]) ? $config[$name][$extension] : $defaultExtConfig;
 
-        $serviceId = isset($extensionConfig[$service])
-            ? $extensionConfig[$service]
-            : $defaultExtensionConfig[$service];
+        $serviceId = isset($extConfig[$service])
+            ? $extConfig[$service]
+            : $defaultExtConfig[$service];
 
         $parametersKey = $service.'_options';
-        $parameters = isset($extensionConfig[$parametersKey])
-            ? $extensionConfig[$parametersKey]
-            : $defaultExtensionConfig[$parametersKey];
+        $parameters = isset($extConfig[$parametersKey])
+            ? $extConfig[$parametersKey]
+            : $defaultExtConfig[$parametersKey];
 
         $service = $this->container->get($serviceId);
         foreach ($parameters as $propertyPath => $value) {

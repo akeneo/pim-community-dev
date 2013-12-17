@@ -26,28 +26,28 @@ class LoaderFactory
     /**
      * @var FixtureReferenceTransformer
      */
-    protected $fixtureReferenceTransformer;
+    protected $referenceTransformer;
 
     /**
      * @var ConfigurationRegistryInterface
      */
-    protected $configurationRegistry;
+    protected $configRegistry;
 
     /**
      * Constructor
      *
      * @param EntityCache                    $entityCache
-     * @param FixtureReferenceTransformer    $fixtureReferenceTransformer
-     * @param ConfigurationRegistryInterface $configurationRegistry
+     * @param FixtureReferenceTransformer    $referenceTransformer
+     * @param ConfigurationRegistryInterface $configRegistry
      */
     public function __construct(
         EntityCache $entityCache,
-        FixtureReferenceTransformer $fixtureReferenceTransformer,
-        ConfigurationRegistryInterface $configurationRegistry
+        FixtureReferenceTransformer $referenceTransformer,
+        ConfigurationRegistryInterface $configRegistry
     ) {
         $this->entityCache = $entityCache;
-        $this->fixtureReferenceTransformer = $fixtureReferenceTransformer;
-        $this->configurationRegistry = $configurationRegistry;
+        $this->referenceTransformer = $referenceTransformer;
+        $this->configRegistry = $configRegistry;
     }
 
     /**
@@ -62,10 +62,10 @@ class LoaderFactory
      */
     public function create(ObjectManager $objectManager, ReferenceRepository $referenceRepository, $name, $extension)
     {
-        $this->fixtureReferenceTransformer->setReferenceRepository($referenceRepository);
-        $reader = $this->configurationRegistry->getReader($name, $extension);
-        $processor = $this->configurationRegistry->getProcessor($name, $extension);
-        $class = $this->configurationRegistry->getClass($name);
+        $this->referenceTransformer->setReferenceRepository($referenceRepository);
+        $reader = $this->configRegistry->getReader($name, $extension);
+        $processor = $this->configRegistry->getProcessor($name, $extension);
+        $class = $this->configRegistry->getClass($name);
 
         return $this->createLoader($objectManager, $referenceRepository, $reader, $processor, $class);
     }
