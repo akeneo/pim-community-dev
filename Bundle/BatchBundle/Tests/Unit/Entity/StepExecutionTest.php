@@ -144,19 +144,6 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(5, $this->stepExecution->getFilterCount());
     }
 
-    public function testIncrementCreationCount()
-    {
-        $this->stepExecution->incrementCreationCount();
-        $this->stepExecution->incrementCreationCount();
-        $this->stepExecution->incrementCreationCount();
-        $this->stepExecution->incrementUpdateCount();
-        $this->stepExecution->incrementUpdateCount();
-
-        $this->assertEquals(3, $this->stepExecution->getCreationCount());
-        $this->assertEquals(2, $this->stepExecution->getUpdateCount());
-        $this->assertEquals(5, $this->stepExecution->getWriteCount());
-    }
-
     public function testTerminateOnly()
     {
         $this->assertFalse($this->stepExecution->isTerminateOnly());
