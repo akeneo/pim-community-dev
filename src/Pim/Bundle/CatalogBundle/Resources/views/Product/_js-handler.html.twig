@@ -10,22 +10,6 @@
 
                 $('form div.currency').currencyField();
 
-                {% if form.enabled is defined %}
-                    $('#switch_status').on('click', function () {
-                        var $field = $('#{{ form.enabled.vars.id }}'),
-                            $status = $('.status-enabled').find('.badge');
-                        if (+$field.val()) {
-                            $field.val(0).trigger('change');
-                            $(this).html('{{ "info.product.enable"|trans }}');
-                            $status.html('<i class="icon-status-disabled icon-circle"></i>{{ "info.product.disabled"|trans }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
-                        } else {
-                            $field.val(1).trigger('change');
-                            $(this).html('{{ "info.product.disable"|trans }}');
-                            $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
-                        }
-                    });
-                {% endif %}
-
                 {% if resource_granted('pim_catalog_product_change_family') %}
                     {% set familyWidget %}
                         {{ 'info.product.change family to'|trans }}:

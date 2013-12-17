@@ -242,3 +242,58 @@
     </script>
 {% endspaceless %}
 {% endmacro %}
+
+{% macro enabledSwitch(form) %}
+{% spaceless %}
+    {% if form.enabled is defined %}
+        {% set switchId = 'switch_status' %}
+        {% set enableLabel = 'info.product.enable'|trans %}
+        {% set disableLabel = 'info.product.disable'|trans %}
+        {% set enabledLabel = 'info.product.enabled'|trans %}
+        {% set disabledLabel = 'info.product.disabled'|trans %}
+        <div class="btn-group">
+            {{ form_widget(form.enabled) }}
+            <button id="{{ switchId }}" type="button" class="btn">{{ form.enabled.vars.value ? disableLabel : enableLabel }}</button>
+        </div>
+        <script type="text/javascript">
+            require(
+                ['jquery'],
+                function ($) {
+                    'use strict';
+                    $(function () {
+                        $('#{{ switchId }}').on('click', function () {
+                            var $field = $('#{{ form.enabled.vars.id }}'),
+                                $status = $('.status-enabled').find('.badge');
+                            if (+$field.val()) {
+                                $field.val(0).trigger('change');
+                                $(this).html('{{ enableLabel }}');
+                                $status.html('<i class="icon-status-disabled icon-circle"></i>{{ disabledLabel }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
+                            } else {
+                                $field.val(1).trigger('change');
+                                $(this).html('{{ disableLabel }}');
+                                $status.html('<i class="icon-status-enabled icon-circle"></i>{{ enabledLabel }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
+                            }
+                        });
+                    });
+                }
+            );
+        </script>
+    {% endif %}
+{% endspaceless %}
+{% endmacro %}
+
+{% macro enabledLabel(form) %}
+{% spaceless %}
+    {% if form.enabled is defined %}
+        <div class="status-enabled pull-left">
+            {% if form.enabled is defined %}
+                {% if form.enabled.vars.value %}
+                    <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                {% else %}
+                    <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endmacro %}
