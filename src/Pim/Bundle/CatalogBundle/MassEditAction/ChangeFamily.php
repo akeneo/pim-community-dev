@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ChangeFamilyType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Batch operation to change the family of products
@@ -15,19 +14,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class ChangeFamily extends AbstractMassEditAction
 {
-    /** @var ProductManager $manager */
-    protected $manager;
-
     /** @var Family $family The family to change the product family to */
     protected $family;
-
-    /**
-     * @param ProductManager $manager
-     */
-    public function __construct(ProductManager $manager)
-    {
-        $this->manager = $manager;
-    }
 
     /**
      * @param Family $family
@@ -65,6 +53,5 @@ class ChangeFamily extends AbstractMassEditAction
         foreach ($products as $product) {
             $product->setFamily($this->family);
         }
-        $this->manager->saveAll($products, false);
     }
 }

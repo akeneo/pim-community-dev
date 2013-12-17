@@ -7,6 +7,7 @@
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
 - Fixture CSV and YML files are now in the Resources/fixtures folder
+- Add products to many groups through mass edit wizard
 
 ## Improvements
 - Improve the user experience for family management
