@@ -39,19 +39,19 @@ class JobAliasSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::BIND => 'bind'
+            FormEvents::SUBMIT => 'submit'
         );
     }
 
     /**
-     * Bind method
+     * Submit method
      * Assigns alias and connector form values to the job instance
      *
      * @param FormEvent $event
      *
      * @return null
      */
-    public function bind(FormEvent $event)
+    public function submit(FormEvent $event)
     {
         $jobInstance = $event->getData();
 
