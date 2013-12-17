@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
-use Symfony\Component\Form\FormView;
-
-use Symfony\Component\Form\FormInterface;
-
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
