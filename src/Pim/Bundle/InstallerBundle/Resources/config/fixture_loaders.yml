@@ -1,0 +1,18 @@
+parameters:
+    pim_installer.fixture_loader.loader_factory.class:  Pim\Bundle\InstallerBundle\FixtureLoader\LoaderFactory
+    pim_installer.fixture_loader.multiple_loader.class: Pim\Bundle\InstallerBundle\FixtureLoader\MultipleLoader
+
+services:
+    pim_installer.fixture_loader.loader_factory:
+        class: %pim_installer.fixture_loader.loader_factory.class%
+        arguments:
+            - '@service_container'
+            - '@pim_import_export.entity_cache'
+            - '@pim_installer.transformer.property.fixture_reference'
+            - '@property_accessor'
+            - '%kernel.bundles%'
+
+    pim_installer.fixture_loader.multiple_loader:
+        class: '%pim_installer.fixture_loader.multiple_loader.class%'
+        arguments:
+            - '@pim_installer.fixture_loader.loader_factory'

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
+
 /**
  * Transforms an array in an entity
  *
