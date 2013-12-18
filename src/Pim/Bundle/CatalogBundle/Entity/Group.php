@@ -392,5 +392,4 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Wi
     {
         return $this->code;
     }
-
 }
