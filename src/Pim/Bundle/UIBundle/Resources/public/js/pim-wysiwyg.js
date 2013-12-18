@@ -6,7 +6,12 @@ define(
             statusbar:   true,
             menubar:     false,
             toolbar:     'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
-            contextmenu: 'undo redo link'
+            contextmenu: 'undo redo link',
+            setup:       function(ed) {
+                ed.on('change', function() {
+                    $('#' + ed.id).trigger('change');
+                });
+            }
         };
         return {
             init: function(id) {
