@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcherInterface2;
 
 /**
  * Fixture Loader  factory
@@ -36,7 +35,7 @@ class LoaderFactory
     protected $configRegistry;
 
     /**
-     * @var EventDispatcherInterface2
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 

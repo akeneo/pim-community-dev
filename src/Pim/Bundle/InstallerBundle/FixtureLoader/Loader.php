@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Fixture Loader
@@ -56,19 +55,19 @@ class Loader implements LoaderInterface
     protected $entityCache;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
      * Constructor
      *
-     * @param ObjectManager          $objectManager
-     * @param ReferenceRepository    $referenceRepository
-     * @param EntityCache            $entityCache
-     * @param ItemReaderInterface    $reader
-     * @param ItemProcessorInterface $processor
-     * @param EventDispatcher        $eventDispatcher
+     * @param ObjectManager            $objectManager
+     * @param ReferenceRepository      $referenceRepository
+     * @param EntityCache              $entityCache
+     * @param ItemReaderInterface      $reader
+     * @param ItemProcessorInterface   $processor
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
