@@ -74,7 +74,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockObject($id)
     {
-        $object = $this->getMock('Pim\Bundle\CatalogBundle\Entity\WithUniqueCodeInterface');
+        $object = $this->getMock('Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface');
         $object->expects($this->any())
             ->method('getUniqueCode')
             ->will($this->returnValue($id));
