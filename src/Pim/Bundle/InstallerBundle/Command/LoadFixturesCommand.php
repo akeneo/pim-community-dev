@@ -4,13 +4,12 @@ namespace Pim\Bundle\InstallerBundle\Command;
 
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
-use Pim\Bundle\InstallerBundle\FixtureLoader\Loader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
+use Pim\Bundle\InstallerBundle\FixtureLoader\Loader;
 
 /**
  * Loads fixture files
@@ -73,7 +72,7 @@ class LoadFixturesCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     protected function getObjectManager()
     {
