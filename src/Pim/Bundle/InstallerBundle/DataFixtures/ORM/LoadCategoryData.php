@@ -42,7 +42,7 @@ class LoadCategoryData extends AbstractInstallerFixture
     {
         $category = new Category();
         $category->setCode($code);
-        $this->setReference('category.'. $code, $category);
+        $this->setReference(get_class($category).'.'. $code, $category);
 
         foreach ($data['labels'] as $locale => $label) {
             $this->createLabel($category, $locale, $label);
