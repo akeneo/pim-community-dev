@@ -6,6 +6,7 @@
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
+- Add quick create popin for jobs
 
 ## Improvements
 - Improve the user experience for family management
