@@ -32,7 +32,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface, WithUniqueCodeInterface
 {
     /**
      * @var integer $id
@@ -383,4 +383,13 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     {
         return $this->getLabel();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
+    }
+
 }

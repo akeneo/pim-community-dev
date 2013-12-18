@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @ExclusionPolicy("all")
  */
-class Locale
+class Locale implements WithUniqueCodeInterface
 {
     /**
      * @var integer $id
@@ -248,5 +248,13 @@ class Locale
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

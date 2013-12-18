@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-
 /**
  * Repository
  *
@@ -11,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupRepository extends EntityRepository
+class AttributeGroupRepository extends UniqueCodeEntityRepository
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder

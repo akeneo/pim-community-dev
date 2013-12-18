@@ -12,7 +12,8 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository 
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionRepository extends FlexAttributeOptionRepository implements OptionRepositoryInterface
+class AttributeOptionRepository extends FlexAttributeOptionRepository implements OptionRepositoryInterface,
+    WithUniqueCodeRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -83,5 +84,36 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     public function getOptionId($object)
     {
         return $object->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUniqueCode($code)
+    {
+        list($attributeCode, $optionCode) = explode('.', $code);
+        
+        return $this->findByDataUniqueCode(array('attribute' => $attributeCode, 'code' => $optionCode));
+    }
+
+    public function findByDataUniqueCode(array $data)
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.attribute', 'a')
+            ->select('o, a')
+            ->where('a.code=:attribute_code')
+            ->andWhere('o.code=:option_code')
+            ->setParameter('attribute_code', $data['attribute'])
+            ->setParameter('option_code', $data['code'])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCodeProperties()
+    {
+        return array('code', 'attribute');
     }
 }

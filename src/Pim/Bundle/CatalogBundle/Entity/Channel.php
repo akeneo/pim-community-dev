@@ -28,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  *
  * @ExclusionPolicy("all")
  */
-class Channel
+class Channel implements WithUniqueCodeInterface
 {
     /** @var integer $id */
     protected $id;
@@ -294,5 +294,13 @@ class Channel
     public function __toString()
     {
         return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

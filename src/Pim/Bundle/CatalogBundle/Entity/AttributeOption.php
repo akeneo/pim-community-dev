@@ -15,7 +15,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption extends AbstractEntityAttributeOption
+class AttributeOption extends AbstractEntityAttributeOption implements WithUniqueCodeInterface
 {
     /**
      * @var string $code
@@ -98,5 +98,13 @@ class AttributeOption extends AbstractEntityAttributeOption
         $value = $this->getOptionValue();
 
         return ($value and $value->getValue()) ? $value->getValue() : '['.$this->getCode().']';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->attribute->getCode() . '.' . $this->code;
     }
 }

@@ -28,7 +28,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface
+class Family implements TranslatableInterface, WithUniqueCodeInterface
 {
     /**
      * @var integer $id
@@ -481,5 +481,13 @@ class Family implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

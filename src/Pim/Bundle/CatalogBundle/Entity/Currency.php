@@ -27,7 +27,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *
  * @ExclusionPolicy("all")
  */
-class Currency
+class Currency implements WithUniqueCodeInterface
 {
     /**
      * @var integer $id
@@ -170,5 +170,13 @@ class Currency
         $this->locales = new ArrayCollection($locales);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

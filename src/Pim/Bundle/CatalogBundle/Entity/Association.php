@@ -27,7 +27,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Association implements TranslatableInterface
+class Association implements TranslatableInterface, WithUniqueCodeInterface
 {
     /**
      * @var integer
@@ -272,5 +272,13 @@ class Association implements TranslatableInterface
     public function __toString()
     {
         return $this->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

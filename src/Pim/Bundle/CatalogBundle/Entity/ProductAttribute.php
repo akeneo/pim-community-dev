@@ -35,7 +35,8 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class ProductAttribute extends AbstractEntityAttribute implements
     TranslatableInterface,
     GroupSequenceProviderInterface,
-    ProductAttributeInterface
+    ProductAttributeInterface,
+    WithUniqueCodeInterface
 {
     /**
      * Overrided to change target entity name
@@ -963,5 +964,14 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

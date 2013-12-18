@@ -28,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface
+class AttributeGroup implements TranslatableInterface, WithUniqueCodeInterface
 {
     /**
      * @staticvar string
@@ -383,5 +383,13 @@ class AttributeGroup implements TranslatableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }

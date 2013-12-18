@@ -30,7 +30,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, WithUniqueCodeInterface
 {
     /**
      * @var Category $parent
@@ -271,5 +271,13 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function __toString()
     {
         return $this->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->code;
     }
 }
