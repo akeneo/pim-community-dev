@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 
 /**
  * Base repository for entities with a code unique index
