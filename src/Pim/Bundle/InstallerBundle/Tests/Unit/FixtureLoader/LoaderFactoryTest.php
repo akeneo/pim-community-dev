@@ -53,7 +53,14 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('name'))
             ->will($this->returnValue('Pim\Bundle\InstallerBundle\FixtureLoader\Loader'));
 
-        $factory = new LoaderFactory($entityCache, $fixtureReferenceTransformer, $configurationRegistry);
+        $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+
+        $factory = new LoaderFactory(
+            $entityCache,
+            $fixtureReferenceTransformer,
+            $configurationRegistry,
+            $eventSubscriber
+        );
         $result = $factory->create($objectManager, $referenceRepository, 'name', 'extension');
         $this->assertInstanceOf('Pim\Bundle\InstallerBundle\FixtureLoader\Loader', $result);
     }

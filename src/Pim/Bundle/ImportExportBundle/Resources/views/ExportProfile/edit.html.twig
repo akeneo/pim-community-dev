@@ -1,11 +1,9 @@
 {% oro_title_set({ params: {"%job.label%": form.vars.value.label } }) %}
 
-{% set actionRoute = form.vars.value.id ?
-    path('pim_importexport_export_profile_edit', { 'id': form.vars.value.id }) :
-    path('pim_importexport_export_profile_create', { 'connector': jobInstance.connector, 'alias': alias }) %}
+{% set actionRoute = path('pim_importexport_export_profile_edit', { 'id': form.vars.value.id }) %}
 
 {% set entityName = 'export profile' %}
-{% set title = form.vars.value.id ? 'export profile.edit'|trans ~ ' - ' ~ form.vars.value.label : 'export profile.create'|trans %}
+{% set title = 'export profile.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
 {% set indexRoute = path('pim_importexport_export_profile_index') %}
 {% if form.vars.value.id %}
