@@ -22,8 +22,22 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
         parent::setUp();
 
         // create form type
-        $this->type = new JobInstanceType();
+        $connector = $this->getConnectorRegistryMock();
+        $this->type = new JobInstanceType($connector);
         $this->form = $this->factory->create($this->type);
+    }
+
+    /**
+     * Get connector registry mock
+     *
+     * @return \Oro\Bundle\BatchBundle\Connector\ConnectorRegistry
+     */
+    protected function getConnectorRegistryMock()
+    {
+        return $this
+            ->getMockBuilder('\Oro\Bundle\BatchBundle\Connector\ConnectorRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
