@@ -57,8 +57,8 @@
     {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         require(
-            ['jquery', 'oro/mediator', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
-            function ($, mediator) {
+            ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
+            function ($, mediator, wysiwyg) {
                 'use strict';
 
                 $(function () {
@@ -79,6 +79,11 @@
 
                         // Trigger jstree lock
                         mediator.trigger('jstree:lock');
+
+                        // Disable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this).attr('id'), true);
+                        });
                     }
 
                     var enableForm = function() {
@@ -98,6 +103,11 @@
 
                         // Trigger jstree unlock
                         mediator.trigger('jstree:unlock');
+
+                        // Enable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this).attr('id'), false);
+                        });
                     };
 
                     $('select.operation-param').change(function () {
