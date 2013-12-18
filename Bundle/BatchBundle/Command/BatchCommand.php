@@ -61,7 +61,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
-        $jobInstance = $this->getEntityManager()->getRepository('OroBatchBundle:JobInstance')->findOneByCode($code);
+        $jobInstance = $this->getJobManager()->getRepository('OroBatchBundle:JobInstance')->findOneByCode($code);
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
@@ -91,7 +91,11 @@ class BatchCommand extends ContainerAwareCommand
                 ->setRecipientEmail($email);
         }
 
-        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
+        // We merge the JobInstance from the JobManager EntitManager to the DefaultEntityManager
+        // in order to be able to have a working UniqueEntity validation
+        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
+
+        $errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
@@ -100,7 +104,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $executionId = $input->getArgument('execution');
         if ($executionId) {
-            $jobExecution = $this->getEntityManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
+            $jobExecution = $this->getJobManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
             }
@@ -116,11 +120,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $job->execute($jobExecution);
 
-        $this->getEntityManager()->persist($jobExecution);
-        $this->getEntityManager()->flush($jobExecution);
-
-        $this->getEntityManager()->persist($jobInstance);
-        $this->getEntityManager()->flush($jobInstance);
+        $job->getJobRepository()->updateJobExecution($jobExecution);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
@@ -146,9 +146,17 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return EntityManager
      */
-    protected function getEntityManager()
+    protected function getJobManager()
     {
-        return $this->getContainer()->get('doctrine')->getManager();
+        return $this->getContainer()->get('oro_batch.job_repository')->getJobManager();
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getDefaultEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getEntityManager();
     }
 
     /**
@@ -219,7 +227,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     public function flushMailQueue()
     {
-       if (!$this->getContainer()->has('mailer')) {
+        if (!$this->getContainer()->has('mailer')) {
             return;
         }
 

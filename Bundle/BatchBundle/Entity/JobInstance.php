@@ -105,7 +105,7 @@ class JobInstance
      * @ORM\OneToMany(
      *      targetEntity="JobExecution",
      *      mappedBy="jobInstance",
-     *      cascade={"persist", "remove"},
+     *      cascade={"remove"},
      *      orphanRemoval=true
      * )
      * @Exclude
