@@ -33,4 +33,3 @@ products:
             code_field: false
             homogenize: true
         processor:         pim_import_export.processor.product
-

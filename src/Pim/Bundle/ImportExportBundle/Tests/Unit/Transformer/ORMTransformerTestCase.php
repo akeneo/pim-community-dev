@@ -65,7 +65,7 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->repository->expects($this->any())
             ->method('getUniqueCodeProperties')
             ->will($this->returnValue(array('code')));
-                
+
         $this->doctrine
             ->expects($this->any())
             ->method('getRepository')
