@@ -69,15 +69,15 @@ class ConnectorRegistry
     /**
      * Add a step to an existig job (or create it)
      *
-     * @param string                 $jobConnector
-     * @param string                 $jobType
-     * @param string                 $jobAlias
-     * @param string                 $jobTitle
-     * @param string                 $stepName
-     * @param string                 $stepTitle
-     * @param ItemReaderInterface    $stepReader
-     * @param ItemProcessorInterface $stepProcessor
-     * @param ItemWriterInterface    $stepWriter
+     * @param string $jobConnector
+     * @param string $jobType
+     * @param string $jobAlias
+     * @param string $jobTitle
+     * @param string $stepTitle
+     * @param string $stepClass
+     * @param array  $services
+     * @param array  $parameters
+     *
      * @return null
      */
     public function addStepToJob(
@@ -86,9 +86,9 @@ class ConnectorRegistry
         $jobAlias,
         $jobTitle,
         $stepTitle,
-        $stepReader,
-        $stepProcessor,
-        $stepWriter
+        $stepClass,
+        $services,
+        $parameters
     ) {
         if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
             $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
@@ -97,7 +97,7 @@ class ConnectorRegistry
         /** @var Job $job */
         $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
 
-        $step = $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter);
+        $step = $this->stepFactory->createStep($stepTitle, $stepClass, $services, $parameters);
         $job->addStep($stepTitle, $step);
     }
 

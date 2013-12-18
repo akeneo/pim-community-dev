@@ -12,8 +12,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
 
 /**
- * Read the jobs.yml file of the connectors to register the jobs
- *
+ * Read the batch_jobs.yml file of the connectors to register the jobs
  */
 class RegisterJobsPass implements CompilerPassInterface
 {
@@ -27,11 +26,17 @@ class RegisterJobsPass implements CompilerPassInterface
      */
     protected $jobsConfig;
 
+    /**
+     * @param YamlParser $yamlParser
+     */
     public function __construct($yamlParser = null)
     {
         $this->yamlParser = $yamlParser ?: new YamlParser();
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         $registry = $container->getDefinition('oro_batch.connectors');
@@ -41,17 +46,17 @@ class RegisterJobsPass implements CompilerPassInterface
             if (false === $bundleDir = dirname($reflClass->getFileName())) {
                 continue;
             }
-            // TODO: discuss using of only one file format
-            if (is_file($configFile = $bundleDir.'/Resources/config/jobs.yml')) {
-                $this->registerJobs($registry, $configFile);
-            }
             if (is_file($configFile = $bundleDir.'/Resources/config/batch_jobs.yml')) {
                 $this->registerJobs($registry, $configFile);
             }
         }
     }
 
-    private function registerJobs(Definition $definition, $configFile)
+    /**
+     * @param Definition $definition
+     * @param string     $configFile
+     */
+    protected function registerJobs(Definition $definition, $configFile)
     {
         $config = $this->processConfig(
             $this->yamlParser->parse(
@@ -61,6 +66,17 @@ class RegisterJobsPass implements CompilerPassInterface
 
         foreach ($config['jobs'] as $alias => $job) {
             foreach ($job['steps'] as $step) {
+
+                $services = array();
+                foreach ($step['services'] as $setter => $serviceId) {
+                    $services[$setter]= new Reference($serviceId);
+                }
+
+                $parameters = array();
+                foreach ($step['parameters'] as $setter => $value) {
+                    $services[$setter]= $value;
+                }
+
                 $definition->addMethodCall(
                     'addStepToJob',
                     array(
@@ -69,16 +85,19 @@ class RegisterJobsPass implements CompilerPassInterface
                         $alias,
                         $job['title'],
                         $step['title'],
-                        new Reference($step['reader']),
-                        new Reference($step['processor']),
-                        new Reference($step['writer']),
+                        $step['class'],
+                        $services,
+                        $parameters
                     )
                 );
             }
         }
     }
 
-    private function processConfig(array $config)
+    /**
+     * @param array $config
+     */
+    protected function processConfig(array $config)
     {
         $processor = new Processor();
         if (!$this->jobsConfig) {
@@ -88,7 +107,10 @@ class RegisterJobsPass implements CompilerPassInterface
         return $processor->process($this->jobsConfig, $config);
     }
 
-    private function getJobsConfigTree()
+    /**
+     * @return NodeInterface
+     */
+    protected function getJobsConfigTree()
     {
         $treeBuilder = new TreeBuilder();
         $root = $treeBuilder->root('connector');
@@ -105,9 +127,15 @@ class RegisterJobsPass implements CompilerPassInterface
                                 ->prototype('array')
                                     ->children()
                                         ->scalarNode('title')->end()
-                                        ->scalarNode('reader')->end()
-                                        ->scalarNode('processor')->end()
-                                        ->scalarNode('writer')->end()
+                                        ->scalarNode('class')
+                                            ->defaultValue('Oro\Bundle\BatchBundle\Step\ItemStep')
+                                        ->end()
+                                        ->arrayNode('services')
+                                            ->prototype('scalar')->end()
+                                        ->end()
+                                        ->arrayNode('parameters')
+                                            ->prototype('scalar')->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
