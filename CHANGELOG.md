@@ -7,8 +7,9 @@
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
-- Fixtures can be in CSV (product and associations)
-- Fixture files can be imported through a command (product and associations)
+- Attribute options fixture
+- Fixtures can be in CSV (products, associations and attribute options)
+- Fixture files can be imported through a command (products, associations and attribute options)
 - Add quick create popin for jobs
 
 ## Improvements
