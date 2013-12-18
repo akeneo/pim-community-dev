@@ -49,7 +49,7 @@ class LoadCategoryData extends AbstractInstallerFixture
         }
 
         if (isset($data['parent'])) {
-            $parent = $this->getReference('category.' . $data['parent']);
+            $parent = $this->getReference(get_class($category) . '.' . $data['parent']);
             $category->setParent($parent);
         }
 

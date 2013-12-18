@@ -58,7 +58,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         $attribute->setCode($code);
 
         if (isset($data['group'])) {
-            $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+            $attribute->setGroup($this->getReference('Pim\Bundle\CatalogBundle\Entity\AttributeGroup.'.$data['group']));
         }
 
         foreach ($data['labels'] as $locale => $label) {
