@@ -17,7 +17,9 @@ Feature: Create an import
       | Label | Products import       |
       | Job   | Product import in CSV |
     And I press the "Save" button
-    Then I should see "Edit import profile - Products import"
+    Then I click back to grid
+    And the grid should contain 1 element
+    And I should see import profile PRODUCT_IMPORT
 
   Scenario: Fail to create a job import
     Given I create a new import
