@@ -92,7 +92,7 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     public function findByUniqueCode($code)
     {
         list($attributeCode, $optionCode) = explode('.', $code);
-        
+
         return $this->findByDataUniqueCode(array('attribute' => $attributeCode, 'code' => $optionCode));
     }
 

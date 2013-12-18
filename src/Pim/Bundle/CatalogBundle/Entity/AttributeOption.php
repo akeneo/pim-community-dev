@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Attribute options
@@ -109,8 +108,21 @@ class AttributeOption extends AbstractEntityAttributeOption implements WithUniqu
         return $this->attribute->getCode() . '.' . $this->code;
     }
 
+    /**
+     * Returns the current translation
+     *
+     * @return AttributeOptionValue
+     */
     public function getTranslation()
     {
-        return $this->getOptionValue();
+        $value = $this->getOptionValue();
+
+        if (!$value) {
+            $value = new AttributeOptionValue;
+            $value->setLocale($this->locale);
+            $this->addOptionValue($value);
+        }
+
+        return $value;
     }
 }

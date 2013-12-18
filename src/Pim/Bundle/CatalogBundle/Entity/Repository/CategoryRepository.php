@@ -249,7 +249,7 @@ class CategoryRepository extends SegmentRepository implements WithUniqueCodeRepo
     {
         return $this->findByUniqueCode($data['code']);
     }
-    
+
     /**
      * {@inheritdoc}
      */

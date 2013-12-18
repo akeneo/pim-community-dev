@@ -966,7 +966,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
         return $this;
     }
 
-
     /**
      * {@inheritdoc}
      */
