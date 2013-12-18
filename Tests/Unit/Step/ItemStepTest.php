@@ -162,10 +162,12 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
-            ->will($this->onConsecutiveCalls(
-                $this->throwException(new InvalidItemException('The read item is invalid', array('foo' => 'bar'))),
-                $this->returnValue(null)
-            ));
+            ->will(
+                $this->onConsecutiveCalls(
+                    $this->throwException(new InvalidItemException('The read item is invalid', array('foo' => 'bar'))),
+                    $this->returnValue(null)
+                )
+            );
         $reader->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('stub_reader'));
@@ -218,10 +220,12 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
-            ->will($this->onConsecutiveCalls(
-                $this->returnValue(array('foo' => 'bar')),
-                $this->returnValue(null)
-            ));
+            ->will(
+                $this->onConsecutiveCalls(
+                    $this->returnValue(array('foo' => 'bar')),
+                    $this->returnValue(null)
+                )
+            );
 
         $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
@@ -279,10 +283,12 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
         $reader->expects($this->exactly(2))
             ->method('read')
-            ->will($this->onConsecutiveCalls(
-                $this->returnValue(array('foo' => 'bar')),
-                $this->returnValue(null)
-            ));
+            ->will(
+                $this->onConsecutiveCalls(
+                    $this->returnValue(array('foo' => 'bar')),
+                    $this->returnValue(null)
+                )
+            );
 
         $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
@@ -421,5 +427,4 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
         return $writer;
     }
-
 }

@@ -165,6 +165,18 @@ class Job implements JobInterface
     }
 
     /**
+     * Public getter for the {@link JobRepositoryInterface} that is needed to manage the
+     * state of the batch meta domain (jobs, steps, executions) during the life
+     * of a job.
+     *
+     * @return JobRepositoryInterface
+     */
+    public function getJobRepository()
+    {
+        return $this->jobRepository;
+    }
+
+    /**
      * Run the specified job, handling all listener and repository calls, and
      * delegating the actual processing to {@link #doExecute(JobExecution)}.
      * @param JobExecution $jobExecution
