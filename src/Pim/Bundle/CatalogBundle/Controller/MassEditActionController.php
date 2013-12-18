@@ -115,7 +115,7 @@ class MassEditActionController extends AbstractDoctrineController
         $form = $this->getMassEditActionOperatorForm();
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_catalog_mass_edit_action_configure',
@@ -158,7 +158,7 @@ class MassEditActionController extends AbstractDoctrineController
         $form = $this->getMassEditActionOperatorForm();
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
             $this->massEditActionOperator->initializeOperation($productIds);
             $form = $this->getMassEditActionOperatorForm();
         }
@@ -198,22 +198,39 @@ class MassEditActionController extends AbstractDoctrineController
         // first time is to set diplayed attributes and locale
         $this->massEditActionOperator->initializeOperation($productIds);
         $form = $this->getMassEditActionOperatorForm();
-        $form->bind($request);
+        $form->submit($request);
 
         //second time is to set values
         $this->massEditActionOperator->initializeOperation($productIds);
         $form = $this->getMassEditActionOperatorForm();
-        $form->bind($request);
+        $form->submit($request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
         $this->massEditActionOperator->performOperation($productIds);
+        foreach ($this->validator->validate($this->massEditActionOperator) as $violation) {
+            $child = $form->get('operation');
+            if (preg_match('/operation.(\w+)/', $violation->getPropertyPath(), $matches)) {
+                $child = $child->get($matches[1]);
+            }
+            $child->addError(
+                new FormError(
+                    $violation->getMessage(),
+                    $violation->getMessageTemplate(),
+                    $violation->getMessageParameters(),
+                    $violation->getMessagePluralization()
+                )
+            );
+        }
 
         if ($form->isValid()) {
             $this->productManager->saveAll(
                 $this->productManager->findByIds($productIds),
                 false
             );
-            $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
+            $this->addFlash(
+                'success',
+                sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias)
+            );
 
             return $this->redirectToRoute('pim_catalog_product_index');
         }
