@@ -4,9 +4,12 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Fixture Loader
@@ -17,6 +20,16 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
  */
 class Loader implements LoaderInterface
 {
+    /**
+     * @staticvar string Start event name
+     */
+    const EVENT_STARTED = 'pim_installer.installer.fixture_loader.start';
+
+    /**
+     * @staticvar string End event name
+     */
+    const EVENT_COMPLETED = 'pim_installer.installer.fixture_loader.end';
+
     /**
      * @var ObjectManager
      */
@@ -43,6 +56,11 @@ class Loader implements LoaderInterface
     protected $entityCache;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+    
+    /**
      * Constructor
      *
      * @param ObjectManager          $objectManager
@@ -50,19 +68,22 @@ class Loader implements LoaderInterface
      * @param EntityCache            $entityCache
      * @param ItemReaderInterface    $reader
      * @param ItemProcessorInterface $processor
+     * @param EventDispatcher        $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
         ReferenceRepository $referenceRepository,
         EntityCache $entityCache,
         ItemReaderInterface $reader,
-        ItemProcessorInterface $processor
+        ItemProcessorInterface $processor,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
         $this->referenceRepository = $referenceRepository;
         $this->entityCache = $entityCache;
         $this->reader = $reader;
         $this->processor = $processor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -70,6 +91,7 @@ class Loader implements LoaderInterface
      */
     public function load($file)
     {
+        $this->eventDispatcher->dispatch(static::EVENT_STARTED, new FixtureLoaderEvent($file));
         $this->reader->setFilePath($file);
         while ($data = $this->reader->read()) {
             $object = $this->processor->process($data);
@@ -80,6 +102,7 @@ class Loader implements LoaderInterface
         $this->objectManager->flush();
         $this->objectManager->clear();
         $this->entityCache->clear();
+        $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
     }
 
     /**
