@@ -17,6 +17,7 @@ services:
             - '@pim_import_export.entity_cache'
             - '@pim_installer.transformer.property.fixture_reference'
             - '@pim_installer.fixture_loader.configuration_registry'
+            - '@event_dispatcher'
 
 
     pim_installer.fixture_loader.multiple_loader:

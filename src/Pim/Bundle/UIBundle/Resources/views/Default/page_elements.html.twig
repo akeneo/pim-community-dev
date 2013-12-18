@@ -23,9 +23,9 @@
     <div class="btn-group submit-form">
         <button type="submit" class="btn btn-primary" title="{{ text }}">{{ text }}</button>
         <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu right-align">
             {% for actionKey, action in actions %}
-                <li><a value="{{ actionKey }}">{{ action.text|default('')|trans|capitalize }}</a></li>
+                <li><a href="javascript:void(0);" value="{{ actionKey }}">{{ action.text|default('')|trans|capitalize }}</a></li>
             {% endfor %}
         </ul>
     </div>

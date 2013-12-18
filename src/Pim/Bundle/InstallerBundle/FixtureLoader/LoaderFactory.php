@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer;
 
@@ -34,20 +35,28 @@ class LoaderFactory
     protected $configRegistry;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      *
      * @param EntityCache                    $entityCache
      * @param FixtureReferenceTransformer    $referenceTransformer
      * @param ConfigurationRegistryInterface $configRegistry
+     * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         EntityCache $entityCache,
         FixtureReferenceTransformer $referenceTransformer,
-        ConfigurationRegistryInterface $configRegistry
+        ConfigurationRegistryInterface $configRegistry,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityCache = $entityCache;
         $this->referenceTransformer = $referenceTransformer;
         $this->configRegistry = $configRegistry;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -93,7 +102,8 @@ class LoaderFactory
             $referenceRepository,
             $this->entityCache,
             $reader,
-            $processor
+            $processor,
+            $this->eventDispatcher
         );
     }
 }
