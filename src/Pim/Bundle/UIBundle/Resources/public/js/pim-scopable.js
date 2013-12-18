@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'bootstrap', 'jquery.select2'],
-    function ($, Backbone, _, mediator, pimInit) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'wysiwyg', 'bootstrap', 'jquery.select2'],
+    function ($, Backbone, _, mediator, pimInit, wysiwyg) {
         'use strict';
         pimInit();
         /**
@@ -87,6 +87,10 @@ define(
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
                     this.$el.find('.switch').bootstrapSwitch();
                     this.$el.find('select').select2();
+                    var $textarea = this.$el.find('textarea.wysiwyg');
+                    if ($textarea.length) {
+                        wysiwyg.init($textarea.attr('id'));
+                    }
                 }
 
                 return this;
@@ -246,6 +250,10 @@ define(
                     this._setFieldFirst(field);
                 }
                 $(field).show();
+                var $textarea = $(field).find('textarea.wysiwyg');
+                if ($textarea.length) {
+                    wysiwyg.reinit($textarea.attr('id'));
+                }
             },
 
             _hideField: function (field) {
