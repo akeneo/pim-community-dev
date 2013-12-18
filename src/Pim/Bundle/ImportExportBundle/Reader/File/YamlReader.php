@@ -21,6 +21,16 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     protected $filePath;
 
     /**
+     * @var string
+     */
+    protected $codeField = 'code';
+
+    /**
+     * @var boolean
+     */
+    protected $homogenize = false;
+
+    /**
      * @var \ArrayIterator
      */
     protected $yaml;
@@ -34,6 +44,7 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
+        $this->yaml = null;
 
         return $this;
     }
@@ -48,17 +59,64 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     }
 
     /**
+     * Get the code field
+     *
+     * @return string
+     */
+    public function getCodeField()
+    {
+        return $this->codeField;
+    }
+
+    /**
+     * Set the code field
+     *
+     * @param string $codeField
+     *
+     * @return YamlReader
+     */
+    public function setCodeField($codeField)
+    {
+        $this->codeField = $codeField;
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the data is homogenized
+     *
+     * @return boolean
+     */
+    public function getHomogenize()
+    {
+        return $this->homogenize;
+    }
+
+    /**
+     * Set to true if the data must be homogenized
+     *
+     * @param boolean $homogenize
+     *
+     * @return YamlReader
+     */
+    public function setHomogenize($homogenize)
+    {
+        $this->homogenize = $homogenize;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function read()
     {
         if (null === $this->yaml) {
-            $fileData = Yaml::parse($this->filePath);
-            $this->yaml = new \ArrayIterator(array_pop($fileData));
+            $this->yaml = new \ArrayIterator($this->getFileData());
         }
 
         if ($data = $this->yaml->current()) {
-            if (!isset($data['code'])) {
+            if ($this->codeField && !isset($data[$this->codeField])) {
                 $data['code'] = $this->yaml->key();
             }
             $this->yaml->next();
@@ -67,6 +125,31 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
         }
 
         return null;
+    }
+
+    /**
+     * Returns the file data
+     *
+     * @return array
+     */
+    protected function getFileData()
+    {
+        $fileData = current(Yaml::parse($this->filePath));
+
+        if ($this->homogenize) {
+            $labels = array();
+            foreach ($fileData as $row) {
+                $labels = array_unique(array_merge($labels, array_keys($row)));
+            }
+            foreach ($fileData as &$row) {
+                $missing = array_diff($labels, array_keys($row));
+                foreach ($missing as $label) {
+                    $row[$label] = null;
+                }
+            }
+        }
+
+        return $fileData;
     }
 
     /**
