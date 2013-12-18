@@ -50,7 +50,7 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
                 array(
                     'attribute'  => 'color',
                     'code'       => 'red',
-                    'is_default' => 0,
+                    'default' => 0,
                     'label' => array('en_US' => 'Red', 'fr_FR' => 'Rouge')
                 )
             ),
