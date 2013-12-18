@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepository;
 use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 
 /**
@@ -32,31 +33,40 @@ class ORMTransformer extends AbstractORMTransformer
      */
     protected function getEntity($class, array $data)
     {
-        $repository = $this->doctrine->getRepository($class);
-        if (count(array_diff($repository->getReferenceProperties(), array_keys($data)))) {
-            throw new MissingIdentifierException();
-        }
-        $refProperties = $repository->getReferenceProperties();
-        $reference = implode(
-            '.',
-            array_map(
-                function ($property) use($data) {
-                    if (!isset($data[$property])) {
-                        throw new MissingIdentifierException;
-                    }
-
-                    return $data[$property];
-                },
-                $refProperties
-            )
-        );
-
-        $object = $this->doctrine->getRepository($class)->findByReference($reference);
+        $object = $this->findEntity($class, $data);
         if (!$object) {
             $object = $this->create($class);
         }
 
         return $object;
+    }
+
+    protected function findEntity($class, array $data) {
+        $repository = $this->doctrine->getRepository($class);
+        
+        if ($repository instanceof ReferableEntityRepository) {
+            if (count(array_diff($repository->getReferenceProperties(), array_keys($data)))) {
+                throw new MissingIdentifierException();
+            }
+            $refProperties = $repository->getReferenceProperties();
+            $reference = implode(
+                '.',
+                array_map(
+                    function ($property) use($data) {
+                        if (!isset($data[$property])) {
+                            throw new MissingIdentifierException;
+                        }
+
+                        return $data[$property];
+                    },
+                    $refProperties
+                )
+            );
+
+            return $this->doctrine->getRepository($class)->findByReference($reference);
+        } else {
+            return null;
+        }
     }
 
     /**
