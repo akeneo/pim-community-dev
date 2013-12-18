@@ -37,10 +37,10 @@ class JobInstanceValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         if ($entity instanceof \Oro\Bundle\BatchBundle\Entity\JobInstance) {
-            if (!$job = $this->connectorRegistry->getJob($entity)) {
+            if (!$this->connectorRegistry->getJob($entity)) {
                 $this->context->addViolation(
                     $constraint->message,
-                    array('{{ job_type }}' =>$entity->getType())
+                    array('{{ job_type }}' => $entity->getType())
                 );
             }
         }

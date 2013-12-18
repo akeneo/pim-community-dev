@@ -32,7 +32,7 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
     public function testMessage()
     {
         $this->assertEquals(
-            'Failed to create an "job_type" with an unknown job definition',
+            'Failed to create an "{{ job_type }}" with an unknown job definition',
             $this->constraint->message
         );
     }
