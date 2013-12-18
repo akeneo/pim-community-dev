@@ -17,7 +17,15 @@ associations:
     yml:
         processor:         pim_import_export.processor.association
 
+attribute_options:
+    order: 50
+    csv:
+        processor:         pim_import_export.processor.attribute_option
+    yml:
+        processor:         pim_import_export.processor.attribute_option
+
 products:
+    order: 90
     csv:
         processor:         pim_import_export.processor.product
     yml:

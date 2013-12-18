@@ -65,7 +65,7 @@ class ImportValidator implements ImportValidatorInterface
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
         } elseif (in_array($identifier, $this->identifiers[$class])) {
-            throw new DuplicateIdentifierException($identifier, $this->getIdentifierColumn($columnsInfo), $data);
+            throw new DuplicateIdentifierException($identifier, $data);
         }
         $this->identifiers[$class][] = $identifier;
     }
@@ -80,19 +80,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
-        return $entity->getCode();
-    }
-
-    /**
-     * Returns the label of the identifier column
-     *
-     * @param array $columnsInfo
-     *
-     * @return string
-     */
-    protected function getIdentifierColumn(array $columnsInfo)
-    {
-        return 'code';
+        return $entity->getReference();
     }
 
     /**

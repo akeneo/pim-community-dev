@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Currency entity
@@ -27,7 +28,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *
  * @ExclusionPolicy("all")
  */
-class Currency
+class Currency implements ReferableInterface
 {
     /**
      * @var integer $id
@@ -170,5 +171,13 @@ class Currency
         $this->locales = new ArrayCollection($locales);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

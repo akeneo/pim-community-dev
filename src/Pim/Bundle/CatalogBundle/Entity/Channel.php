@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Channel entity
@@ -28,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  *
  * @ExclusionPolicy("all")
  */
-class Channel
+class Channel implements ReferableInterface
 {
     /** @var integer $id */
     protected $id;
@@ -294,5 +295,13 @@ class Channel
     public function __toString()
     {
         return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

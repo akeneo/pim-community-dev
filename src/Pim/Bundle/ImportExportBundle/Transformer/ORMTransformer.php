@@ -32,10 +32,26 @@ class ORMTransformer extends AbstractORMTransformer
      */
     protected function getEntity($class, array $data)
     {
-        if (!isset($data['code'])) {
+        $repository = $this->doctrine->getRepository($class);
+        if (count(array_diff($repository->getReferenceProperties(), array_keys($data)))) {
             throw new MissingIdentifierException();
         }
-        $object = $this->doctrine->getRepository($class)->findOneBy(array('code' => $data['code']));
+        $refProperties = $repository->getReferenceProperties();
+        $reference = implode(
+            '.',
+            array_map(
+                function ($property) use($data) {
+                    if (!isset($data[$property])) {
+                        throw new MissingIdentifierException;
+                    }
+
+                    return $data[$property];
+                },
+                $refProperties
+            )
+        );
+
+        $object = $this->doctrine->getRepository($class)->findByReference($reference);
         if (!$object) {
             $object = $this->create($class);
         }

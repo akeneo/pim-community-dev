@@ -618,7 +618,7 @@ class FixturesContext extends RawMinkContext
 
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
-            assertEquals(($data['is_default'] == 1), $option->isDefault());
+            assertEquals(($data['default'] == 1), $option->isDefault());
         }
     }
 

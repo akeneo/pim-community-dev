@@ -15,7 +15,7 @@ Feature: Import options
     And I am logged in as "Julia"
     And the following file to import:
     """
-    attribute;code;is_default;label-en_US
+    attribute;code;default;label-en_US
     manufacturer;Converse;0;Converse
     manufacturer;TimberLand;0;TimberLand
     manufacturer;Nike;0;Nike
@@ -27,7 +27,7 @@ Feature: Import options
     And I launch the import job
     And I wait for the job to finish
     Then there should be the following options:
-      | attribute    | code        | is_default | label-en_US |
+      | attribute    | code        | default    | label-en_US |
       | manufacturer | Converse    | 0          | Converse    |
       | manufacturer | TimberLand  | 0          | TimberLand  |
       | manufacturer | Nike        | 0          | Nike        |
