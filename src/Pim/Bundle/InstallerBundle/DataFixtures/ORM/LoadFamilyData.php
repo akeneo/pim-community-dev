@@ -120,6 +120,6 @@ class LoadFamilyData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 30;
+        return 110;
     }
 }

@@ -7,7 +7,7 @@ parameters:
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
     pim_import_export.processor.category.class:                     Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor
     pim_import_export.processor.group.class:                        Pim\Bundle\ImportExportBundle\Processor\GroupProcessor
-    pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
+    pim_import_export.processor.nested_attribute.class:             Pim\Bundle\ImportExportBundle\Processor\NestedAttributeProcessor
     pim_import_export.processor.product_association.class:          Pim\Bundle\ImportExportBundle\Processor\ProductAssociationProcessor
 
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
@@ -73,12 +73,18 @@ services:
             - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.processor.attribute:
-        class: %pim_import_export.processor.attribute.class%
+        parent: pim_import_export.processor.transformer
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@validator'
-            - '@pim_catalog.manager.product'
+            - '%pim_catalog.entity.product_attribute.class%'
+            - true
 
+    pim_import_export.processor.nested_attribute:
+        class: %pim_import_export.processor.nested_attribute.class%
+        parent: pim_import_export.processor.transformer
+        arguments:
+            - '%pim_catalog.entity.product_attribute.class%'
+            - '%pim_catalog.entity.product_attribute_option.class%'
+            
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer
         arguments:
