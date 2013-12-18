@@ -11,7 +11,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Group entity
@@ -33,7 +33,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableEntityInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface
 {
     /**
      * @var integer $id

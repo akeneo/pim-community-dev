@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Locale entity
@@ -32,7 +32,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Locale implements ReferableEntityInterface
+class Locale implements ReferableInterface
 {
     /**
      * @var integer $id

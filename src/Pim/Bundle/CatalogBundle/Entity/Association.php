@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Association entity
@@ -28,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Association implements TranslatableInterface, ReferableEntityInterface
+class Association implements TranslatableInterface, ReferableInterface
 {
     /**
      * @var integer

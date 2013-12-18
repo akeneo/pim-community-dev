@@ -8,7 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute Group entity
@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface, ReferableEntityInterface
+class AttributeGroup implements TranslatableInterface, ReferableInterface
 {
     /**
      * @staticvar string

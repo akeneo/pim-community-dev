@@ -35,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, ReferableEntityInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, ReferableInterface
 {
     /**
      * @var ArrayCollection $values
