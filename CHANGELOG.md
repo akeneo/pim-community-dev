@@ -10,6 +10,7 @@
 - Fixtures can be in CSV (product and associations)
 - Fixture files can be imported through a command (product and associations)
 - Add quick create popin for jobs
+- Add WYSIQYG editor
 
 ## Improvements
 - Improve the user experience for family management
