@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryRepository extends SegmentRepository implements WithUniqueCodeRepositoryInterface
+class CategoryRepository extends SegmentRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * Get query builder for all existitng category trees
@@ -237,7 +237,7 @@ class CategoryRepository extends SegmentRepository implements WithUniqueCodeRepo
     /**
      * {@inheritdoc}
      */
-    public function findByUniqueCode($code)
+    public function findByReference($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -245,15 +245,7 @@ class CategoryRepository extends SegmentRepository implements WithUniqueCodeRepo
     /**
      * {@inheritdoc}
      */
-    public function findByDataUniqueCode(array $data)
-    {
-        return $this->findByUniqueCode($data['code']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUniqueCodeProperties()
+    public function getReferenceProperties()
     {
         return array('code');
     }

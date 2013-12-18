@@ -8,7 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Attribute Group entity
@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface, WithUniqueCodeInterface
+class AttributeGroup implements TranslatableInterface, ReferableEntityInterface
 {
     /**
      * @staticvar string
@@ -389,7 +389,7 @@ class AttributeGroup implements TranslatableInterface, WithUniqueCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

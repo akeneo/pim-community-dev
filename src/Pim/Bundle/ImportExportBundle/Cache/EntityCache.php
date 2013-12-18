@@ -75,6 +75,6 @@ class EntityCache
     {
         return $this->doctrine
                 ->getRepository($class)
-                ->findByUniqueCode($code);
+                ->findByReference($code);
     }
 }

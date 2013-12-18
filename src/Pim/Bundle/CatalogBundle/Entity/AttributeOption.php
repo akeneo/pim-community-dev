@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Attribute options
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption extends AbstractEntityAttributeOption implements WithUniqueCodeInterface
+class AttributeOption extends AbstractEntityAttributeOption implements ReferableEntityInterface
 {
     /**
      * @var string $code
@@ -104,7 +104,7 @@ class AttributeOption extends AbstractEntityAttributeOption implements WithUniqu
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->attribute->getCode() . '.' . $this->code;
     }

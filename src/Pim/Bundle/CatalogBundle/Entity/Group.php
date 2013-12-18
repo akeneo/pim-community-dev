@@ -11,7 +11,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Group entity
@@ -33,7 +33,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface, WithUniqueCodeInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableEntityInterface
 {
     /**
      * @var integer $id
@@ -388,7 +388,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Wi
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

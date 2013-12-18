@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, WithUniqueCodeInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableEntityInterface
 {
     /**
      * @var Category $parent
@@ -277,7 +277,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

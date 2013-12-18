@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Currency entity
@@ -28,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Currency implements WithUniqueCodeInterface
+class Currency implements ReferableEntityInterface
 {
     /**
      * @var integer $id
@@ -176,7 +176,7 @@ class Currency implements WithUniqueCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

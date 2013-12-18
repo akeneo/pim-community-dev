@@ -11,7 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Custom properties for a product attribute
@@ -37,7 +37,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
     TranslatableInterface,
     GroupSequenceProviderInterface,
     ProductAttributeInterface,
-    WithUniqueCodeInterface
+    ReferableEntityInterface
 {
     /**
      * Overrided to change target entity name
@@ -970,7 +970,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

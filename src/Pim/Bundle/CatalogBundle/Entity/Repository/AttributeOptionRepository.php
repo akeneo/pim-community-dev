@@ -13,7 +13,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository 
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeOptionRepository extends FlexAttributeOptionRepository implements OptionRepositoryInterface,
-    WithUniqueCodeRepositoryInterface
+    ReferableEntityRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -89,25 +89,17 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByUniqueCode($code)
+    public function findByReference($code)
     {
         list($attributeCode, $optionCode) = explode('.', $code);
 
-        return $this->findByDataUniqueCode(array('attribute' => $attributeCode, 'code' => $optionCode));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByDataUniqueCode(array $data)
-    {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.attribute', 'a')
             ->select('o, a')
             ->where('a.code=:attribute_code')
             ->andWhere('o.code=:option_code')
-            ->setParameter('attribute_code', $data['attribute'])
-            ->setParameter('option_code', $data['code'])
+            ->setParameter('attribute_code', $attributeCode)
+            ->setParameter('option_code', $attributeCode)
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -115,8 +107,8 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCodeProperties()
+    public function getReferenceProperties()
     {
-        return array('code', 'attribute');
+        return array('attribute', 'code');
     }
 }

@@ -33,10 +33,10 @@ class ImportValidatorTest extends ImportValidatorTestCase
         parent::setUp();
         $this->importValidator = new ImportValidator($this->validator);
         $this->entity = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getUniqueCode'))
+            ->setMethods(array('getReference'))
             ->getMock();
         $this->entity->expects($this->any())
-            ->method('getUniqueCode')
+            ->method('getReference')
             ->will($this->returnValue('id'));
     }
 

@@ -9,14 +9,14 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface WithUniqueCodeRepositoryInterface
+interface ReferableEntityRepositoryInterface
 {
     /**
-     * Returns an array containing the name of the unique code properties
+     * Returns an array containing the name of the unique code propertieS
      *
      * @return array
      */
-    public function getUniqueCodeProperties();
+    public function getReferenceProperties();
 
     /**
      * Find an entity by unique code
@@ -25,14 +25,5 @@ interface WithUniqueCodeRepositoryInterface
      *
      * @return object
      */
-    public function findByUniqueCode($code);
-
-    /**
-     * Find an entity by unique code using a data array
-     *
-     * @var array $data
-     *
-     * @return object
-     */
-    public function findByDataUniqueCode(array $data);
+    public function findByReference($code);
 }

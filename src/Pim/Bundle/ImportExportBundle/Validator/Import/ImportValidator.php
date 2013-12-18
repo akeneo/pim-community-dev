@@ -80,7 +80,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
-        return $entity->getUniqueCode();
+        return $entity->getReference();
     }
 
     /**

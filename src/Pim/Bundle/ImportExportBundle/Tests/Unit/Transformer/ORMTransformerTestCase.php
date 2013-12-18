@@ -61,9 +61,9 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->transformers = array();
         $this->columnInfos = array();
         $this->repository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\WithUniqueCodeRepositoryInterface');
+            ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
         $this->repository->expects($this->any())
-            ->method('getUniqueCodeProperties')
+            ->method('getReferenceProperties')
             ->will($this->returnValue(array('code')));
 
         $this->doctrine

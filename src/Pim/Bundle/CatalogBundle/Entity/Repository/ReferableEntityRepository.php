@@ -11,12 +11,12 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UniqueCodeEntityRepository extends EntityRepository implements WithUniqueCodeRepositoryInterface
+class ReferableEntityRepository extends EntityRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function findByUniqueCode($code)
+    public function findByReference($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -24,15 +24,7 @@ class UniqueCodeEntityRepository extends EntityRepository implements WithUniqueC
     /**
      * {@inheritdoc}
      */
-    public function findByDataUniqueCode(array $data)
-    {
-        return $this->findByUniqueCode($data['code']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUniqueCodeProperties()
+    public function getReferenceProperties()
     {
         return array('code');
     }

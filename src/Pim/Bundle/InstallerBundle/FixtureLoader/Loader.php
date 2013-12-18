@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 
@@ -113,8 +113,8 @@ class Loader implements LoaderInterface
      */
     protected function setReference(array $data, $object)
     {
-        if ($object instanceof WithUniqueCodeInterface) {
-            $this->referenceRepository->addReference(get_class($object) . '.' . $object->getUniqueCode(), $object);
+        if ($object instanceof ReferableEntityInterface) {
+            $this->referenceRepository->addReference(get_class($object) . '.' . $object->getReference(), $object);
         }
     }
 }

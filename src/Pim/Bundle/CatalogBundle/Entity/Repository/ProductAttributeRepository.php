@@ -11,7 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeRepository extends AttributeRepository implements WithUniqueCodeRepositoryInterface
+class ProductAttributeRepository extends AttributeRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -187,7 +187,7 @@ class ProductAttributeRepository extends AttributeRepository implements WithUniq
     /**
      * {@inheritdoc}
      */
-    public function findByUniqueCode($code)
+    public function findByReference($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -195,15 +195,7 @@ class ProductAttributeRepository extends AttributeRepository implements WithUniq
     /**
      * {@inheritdoc}
      */
-    public function findByDataUniqueCode(array $data)
-    {
-        return $this->findByUniqueCode($data['unique_code']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUniqueCodeProperties()
+    public function getReferenceProperties()
     {
         return array('code');
     }

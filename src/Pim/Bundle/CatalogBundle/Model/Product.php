@@ -35,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, WithUniqueCodeInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, ReferableEntityInterface
 {
     /**
      * @var ArrayCollection $values
@@ -489,7 +489,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, WithUn
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->getIdentifier();
     }

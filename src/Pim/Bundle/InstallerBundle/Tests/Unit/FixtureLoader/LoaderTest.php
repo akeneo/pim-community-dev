@@ -65,18 +65,18 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
         $referenceRepository->expects($this->at(0))
             ->method('addReference')
-            ->with($this->matchesRegularExpression('/WithUniqueCodeInterface.+\.data1$/'));
+            ->with($this->matchesRegularExpression('/ReferableEntityInterface.+\.data1$/'));
         $referenceRepository->expects($this->at(1))
             ->method('addReference')
-            ->with($this->matchesRegularExpression('/WithUniqueCodeInterface.+\.data2$/'));
+            ->with($this->matchesRegularExpression('/ReferableEntityInterface.+\.data2$/'));
         $loader->load('file');
     }
 
     protected function getMockObject($id)
     {
-        $object = $this->getMock('Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface');
+        $object = $this->getMock('Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface');
         $object->expects($this->any())
-            ->method('getUniqueCode')
+            ->method('getReference')
             ->will($this->returnValue($id));
 
         return $object;

@@ -9,12 +9,12 @@ namespace Pim\Bundle\CatalogBundle\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface WithUniqueCodeInterface
+interface ReferableEntityInterface
 {
     /**
      * Returns the unique code for the entity
      *
      * @return string
      */
-    public function getUniqueCode();
+    public function getReference();
 }

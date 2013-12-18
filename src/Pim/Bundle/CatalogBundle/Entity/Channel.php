@@ -8,7 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Channel entity
@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Channel implements WithUniqueCodeInterface
+class Channel implements ReferableEntityInterface
 {
     /** @var integer $id */
     protected $id;
@@ -300,7 +300,7 @@ class Channel implements WithUniqueCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }

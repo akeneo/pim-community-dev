@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableEntityInterface;
 
 /**
  * Association entity
@@ -28,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Model\WithUniqueCodeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Association implements TranslatableInterface, WithUniqueCodeInterface
+class Association implements TranslatableInterface, ReferableEntityInterface
 {
     /**
      * @var integer
@@ -278,7 +278,7 @@ class Association implements TranslatableInterface, WithUniqueCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function getUniqueCode()
+    public function getReference()
     {
         return $this->code;
     }
