@@ -117,7 +117,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         if (isset($parameters['availableLocales'])) {
             $parameters['availableLocales'] = array_map(
                 function ($localeCode) {
-                    return $this->getReference('locale.' . $localeCode);
+                    return $this->getReference('Pim\Bundle\CatalogBundle\Entity\Locale.' . $localeCode);
                 },
                 $parameters['availableLocales']
             );
