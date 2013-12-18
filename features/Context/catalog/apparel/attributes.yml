@@ -453,7 +453,7 @@ attributes:
         type:  pim_catalog_simpleselect
         group: additional
         parameters:
-            useableAsGridColumn: true
+            useableAsGridColumn: false
             useableAsGridFilter: true
             sortOrder:           1
         options:
@@ -576,8 +576,8 @@ attributes:
         type:  pim_catalog_multiselect
         group: additional
         parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
+            useableAsGridColumn: false
+            useableAsGridFilter: false
             sortOrder:           4
         options:
             dry:
