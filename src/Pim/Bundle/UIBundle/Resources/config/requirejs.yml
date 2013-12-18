@@ -1,5 +1,8 @@
 config:
     shim:
+        jquery-ui-full:
+            deps:
+                - jquery
         jquery.slimbox:
             deps:
                 - jquery
@@ -31,6 +34,8 @@ config:
         selectize:                          pimui/lib/selectize
         sifter:                             pimui/lib/sifter
         microplugin:                        pimui/lib/microplugin
+        tinymce:                            pimui/lib/tinymce/tinymce.min
+        wysiwyg:                            pimui/js/pim-wysiwyg
         jquery.currencyfield:               pimui/js/jquery.currencyfield
         jquery.sidebarize:                  pimui/js/jquery.sidebarize
         jquery.wizard:                      pimcatalog/js/jquery.wizard
