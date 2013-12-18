@@ -40,14 +40,14 @@ class LoadFixturesCommand extends ContainerAwareCommand
         $this->getEventDispatcher()->addListener(
             Loader::EVENT_STARTED,
             function (FixtureLoaderEvent $event) use ($output) {
-                $output->write(sprintf('<info>Loading %sw/info>', $event->getFile()));
+                $output->write(sprintf('<info>Loading %s</info>', $event->getFile()));
             }
         );
 
         $this->getEventDispatcher()->addListener(
             Loader::EVENT_COMPLETED,
             function (FixtureLoaderEvent $event) use ($output) {
-                $output->write(sprintf('<info>./info>', $event->getFile()), true);
+                $output->write(sprintf('<info>.</info>', $event->getFile()), true);
             }
         );
         $this->getLoader()->load(
@@ -67,7 +67,7 @@ class LoadFixturesCommand extends ContainerAwareCommand
         $objectManager = $this->getObjectManager();
         $repository = new ReferenceRepository($this->getObjectManager());
         $listener = new ORMReferenceListener($repository);
-        $objectManager()->addEventSubscriber($listener);
+        $objectManager->getEventManager()->addEventSubscriber($listener);
 
         return $repository;
     }
@@ -90,7 +90,7 @@ class LoadFixturesCommand extends ContainerAwareCommand
 
     /**
      * Returns the fixture loader
-     * 
+     *
      * @return \Pim\Bundle\InstallerBundle\FixtureLoader\MultipleLoader
      */
     protected function getLoader()

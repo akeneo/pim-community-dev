@@ -20,8 +20,8 @@ class FixtureLoaderEvent extends Event
 
     /**
      * Constructor
-     * 
-     * @param string $file
+     *
+     * @param string  $file
      * @param boolean $completed
      */
     public function __construct($file)

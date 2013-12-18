@@ -59,7 +59,7 @@ class Loader implements LoaderInterface
      * @var EventDispatcher
      */
     protected $eventDispatcher;
-    
+
     /**
      * Constructor
      *
