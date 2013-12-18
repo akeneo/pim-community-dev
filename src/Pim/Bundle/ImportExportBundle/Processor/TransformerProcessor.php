@@ -32,16 +32,19 @@ class TransformerProcessor extends AbstractTransformerProcessor
      * @param TranslatorInterface      $translator
      * @param ORMTransformer           $transformer
      * @param string                   $class
+     * @param boolean                  $nested
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         ORMTransformer $transformer,
-        $class
+        $class,
+        $nested = false
     ) {
         parent::__construct($validator, $translator);
         $this->transformer = $transformer;
         $this->class = $class;
+        $this->nested = $nested;
     }
 
     /**

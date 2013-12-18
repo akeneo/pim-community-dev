@@ -1,3 +1,4 @@
+@javascript
 Feature: Compare and copy localized fields
   In order to reuse enrich values in other languages
   As Julia
@@ -21,7 +22,6 @@ Feature: Compare and copy localized fields
     Given I am on the "tshirt" product page
     Then I should see comparison languages "German (Germany), English (United Kingdom) and French (France)"
 
-  @javascript
   Scenario: Successfully copy all compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation
@@ -31,7 +31,6 @@ Feature: Compare and copy localized fields
     And the product ecommerce Description should be "Chaussures de ville"
     And the product Legend should be "Vue de face"
 
-  @javascript
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation
@@ -41,7 +40,6 @@ Feature: Compare and copy localized fields
     And the product ecommerce Description should be "Chaussures de ville"
     And the product Legend should be "Front view"
 
-  @javascript
   Scenario: Successfully copy manually selected compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation

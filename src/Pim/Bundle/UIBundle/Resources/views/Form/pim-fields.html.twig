@@ -37,6 +37,7 @@
             {% if form.children|length == 0 %}
                 {{ block('form_info') }}
             {% endif %}
+            {{ form_errors(form) }}
         </div>
     </div>
 {% endblock %}

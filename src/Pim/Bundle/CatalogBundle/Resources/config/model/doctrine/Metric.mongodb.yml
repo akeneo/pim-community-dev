@@ -13,4 +13,3 @@ Pim\Bundle\CatalogBundle\Model\Metric:
             type: string
         family:
             type: string
-

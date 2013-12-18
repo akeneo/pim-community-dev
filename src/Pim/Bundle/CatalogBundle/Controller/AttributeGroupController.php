@@ -20,7 +20,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 

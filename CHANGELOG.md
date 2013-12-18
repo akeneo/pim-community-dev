@@ -6,7 +6,10 @@
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
-- Fixture CSV and YML files are now in the Resources/fixtures folder
+- Add products to many groups through mass edit wizard
+- Fixtures can be in CSV (product and associations)
+- Fixture files can be imported through a command (product and associations)
+- Add quick create popin for jobs
 
 ## Improvements
 - Improve the user experience for family management

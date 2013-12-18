@@ -154,8 +154,6 @@ services:
     pim_catalog.mass_edit_action.change_status:
         public: false
         class: %pim_catalog.mass_edit_action.change_status.class%
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_catalog_product_change_state }
 
@@ -186,6 +184,14 @@ services:
         tags:
             - { name: pim_catalog.mass_edit_action, alias: change-family, acl: pim_catalog_product_change_family }
 
+    pim_catalog.mass_edit_action.add_to_groups:
+        class: %pim_catalog.mass_edit_action.add_to_groups.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_add_to_groups }
+
+    # Media management
     pim_catalog.imagine.local_dir_resolver:
         class: %pim_catalog.imagine.local_dir_resolver.class%
         parent: liip_imagine.cache.resolver.web_path

@@ -1415,7 +1415,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeComparisonLanguages($languages)
     {
-        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+        assertEquals($this->listToArray($languages), $this->getCurrentPage()->getComparisonLanguages());
     }
 
     /**

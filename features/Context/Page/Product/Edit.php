@@ -408,6 +408,7 @@ class Edit extends Form
      */
     public function getComparisonLanguages()
     {
+        $this->getElement('Comparison dropdown')->find('css', 'button[data-toggle="dropdown"]')->click();
         $languages = $this->getElement('Comparison dropdown')->findAll('css', 'ul.dropdown-menu li .title');
 
         return array_map(

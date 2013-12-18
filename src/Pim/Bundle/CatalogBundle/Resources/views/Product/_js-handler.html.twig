@@ -1,74 +1,14 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, Scopable, Dialog, DialogForm, messenger) {
+        ['jquery', 'underscore', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, Scopable, Dialog, DialogForm) {
             'use strict';
             $(function () {
                 _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
-                {% if resource_granted('pim_catalog_attribute_edit') %}
-                    _.each($('.add-attribute-option'), function (field) {
-                        var $field = $(field),
-                            $target = $field.parent().find('.icons-container').first();
-                        if ($target.length) {
-                            $field.insertBefore($target).attr('tabIndex', -1);
-                        }
-                        var callback = function(data) {
-                            if (data.status) {
-                                var $select = $field.siblings('input.pim-ajax-entity'),
-                                    selectData = { id: data.option.id, text: data.option.label };
-                                if ($select.attr("data-multiple")) {
-                                    selectData = (function(newElement) {
-                                        var selectData = $select.select2("data");
-                                        selectData.push(newElement);
-
-                                        return selectData;
-                                    })(selectData);
-                                }
-                                $select.select2("data", selectData);
-                                messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
-                            } else {
-                                messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
-                            }
-                        }
-                        new DialogForm('#' + $field.attr('id'), callback);
-                    });
-                {% endif %}
-
                 $('form div.currency').currencyField();
-
-                var $channelSwitcher = $('#attribute-buttons').find('.channel-switcher');
-                $channelSwitcher.find('.dropdown-menu').find('a[data-scope]').on('click', function() {
-                    mediator.trigger('scopablefield:changescope', $(this).attr('data-scope'));
-                });
-                $channelSwitcher.find('a[data-action]').on('click', function() {
-                    var $el = $(this),
-                        action = $el.attr('data-action');
-                    mediator.trigger('scopablefield:' + action);
-                    var newAction = action == 'collapse' ? 'expand' : 'collapse';
-                    $el.attr('title', $el.attr('data-' + newAction + '-title')).attr('data-action', newAction);
-                    $el.find('i').toggleClass('icon-caret-right icon-caret-up');
-                });
-
-                $('[data-toggle="popover"]').popover();
-
-                {% if form.enabled is defined %}
-                    $('#switch_status').on('click', function () {
-                        var $field = $('#{{ form.enabled.vars.id }}'),
-                            $status = $('.status-enabled').find('.badge');
-                        if (+$field.val()) {
-                            $field.val(0).trigger('change');
-                            $(this).html('{{ "info.product.enable"|trans }}');
-                            $status.html('<i class="icon-status-disabled icon-circle"></i>{{ "info.product.disabled"|trans }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
-                        } else {
-                            $field.val(1).trigger('change');
-                            $(this).html('{{ "info.product.disable"|trans }}');
-                            $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
-                        }
-                    });
-                {% endif %}
 
                 {% if resource_granted('pim_catalog_product_change_family') %}
                     {% set familyWidget %}
@@ -123,23 +63,11 @@
                     });
                 {% endfor %}
 
-                function setFullHeight() {
-                    $('.fullheight').each(function () {
-                        $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
-                    });
-                }
-
-                $('a[data-toggle="tab"]').on('shown', setFullHeight);
-                setFullHeight();
-
                 function copyValue() {
-                    $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').each(function() {
+                    $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').filter('[id]').each(function() {
                         var $source = $(this);
                         var sourceId = $(this).attr('id');
-                        if (!sourceId) {
-                            return;
-                        }
-                        var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
+                        var targetId = sourceId.replace('{{ comparisonLocale }}', '{{ dataLocale }}');
                         var $target = $('#' + targetId);
 
                         if ($source.is('select') && $source.parent().hasClass('metric')) {
@@ -166,30 +94,41 @@
                             $target.parent().removeClass('empty');
                             $target.parent().find('a[rel=slimbox]').slimbox();
                         } else {
-                            $target.val($('#' + sourceId).val()).trigger('change');
+                            $target.val($source.val()).trigger('change');
                         }
                     });
                 }
 
                 $('.copy-selection').click(function(event) {
                     event.preventDefault();
+                    var selectAll = function() {
+                        $('.comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var selectCurrentTab = function () {
+                        $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var clearSelection = function () {
+                        $('.comparison input.comparisonSelection:checked').each(function() {
+                            $(this).prop('checked', false);
+                        });
+                    };
+
                     switch($(this).data('target')) {
                         case 'all':
-                            $('.comparison input.comparisonSelection:not(:checked)').each(function() {
-                                $(this).prop('checked', true);
-                            });
+                            selectAll();
                             break;
 
                         case 'current-tab':
-                            $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
-                                $(this).prop('checked', true);
-                            });
-                            break;
+                            clearSelection();
+                            selectCurrentTab();
+                        break;
 
                         case 'none':
-                            $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).prop('checked', false);
-                            });
+                            clearSelection();
                     }
                 });
 

@@ -42,7 +42,6 @@ class CatalogConfigurationContext extends RawMinkContext
         'FamilyLoader'         => 'families',
         'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
-        'AssociationLoader'    => 'associations',
         'JobLoader'            => 'jobs',
         'UserLoader'           => 'users',
     );
@@ -73,10 +72,25 @@ class CatalogConfigurationContext extends RawMinkContext
     {
         $this->initializeReferenceRepository();
 
+        $treatedFiles = array();
         foreach ($this->entityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
             $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
+            if ($file) {
+                $treatedFiles[] = $file;
+            }
             $this->runLoader($loader, $file);
+        }
+
+        $files = array_diff(glob($directory.'/*'), $treatedFiles);
+        if (count($files)) {
+            $this->getContainer()
+                ->get('pim_installer.fixture_loader.multiple_loader')
+                ->load(
+                    $this->getEntityManager(),
+                    $this->referenceRepository,
+                    $files
+                );
         }
     }
 

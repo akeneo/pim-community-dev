@@ -18,8 +18,7 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->productManager = $this->getProductManagerMock();
-        $this->action = new ChangeFamily($this->productManager);
+        $this->action = new ChangeFamily();
     }
 
     /**
@@ -46,24 +45,8 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
             ->method('setFamily')
             ->with($family);
 
-        $this->productManager
-            ->expects($this->once())
-            ->method('saveAll')
-            ->with($products, false);
-
         $this->action->setFamily($family);
         $this->action->perform($products);
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManagerMock()
-    {
-        return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     /**

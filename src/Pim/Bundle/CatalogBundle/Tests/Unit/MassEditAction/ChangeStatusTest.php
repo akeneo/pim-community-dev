@@ -18,9 +18,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->objectManager = $this->getObjectManagerMock();
-        $manager             = $this->getFlexibleManagerMock($this->objectManager);
-        $this->action        = new ChangeStatus($manager);
+        $this->action = new ChangeStatus();
     }
 
     /**
@@ -28,7 +26,10 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
      */
     public function testInstanceOfMassEditAction()
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface', $this->action);
+        $this->assertInstanceOf(
+            'Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface',
+            $this->action
+        );
     }
 
     /**
@@ -45,10 +46,6 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $bar->expects($this->once())
             ->method('setEnabled')
             ->with(false);
-
-        $this->objectManager
-            ->expects($this->once())
-            ->method('flush');
 
         $this->action->setToEnable(false);
 
@@ -70,40 +67,9 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
             ->method('setEnabled')
             ->with(true);
 
-        $this->objectManager
-            ->expects($this->once())
-            ->method('flush');
-
         $this->action->setToEnable(true);
 
         $this->action->perform(array($foo, $bar));
-    }
-
-    /**
-     * @param mixed $objectManager
-     *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-     */
-    protected function getFlexibleManagerMock($objectManager)
-    {
-        $manager = $this
-            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $manager->expects($this->any())
-            ->method('getStorageManager')
-            ->will($this->returnValue($objectManager));
-
-        return $manager;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getObjectManagerMock()
-    {
-        return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
 
     /**

@@ -28,12 +28,7 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}
-            <div class="btn-group">
-                {% if form.enabled is defined %}
-                    {{ form_widget(form.enabled) }}
-                    <button id="switch_status" type="button" class="btn">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disable' : 'enable'))|trans }}</button>
-                {% endif %}
-            </div>
+            {{ elements.enabledSwitch(form) }}
             {% if resource_granted("pim_catalog_product_remove") %}
                 {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
             {% endif %}
@@ -71,15 +66,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="status-enabled pull-left">
-                {% if form.enabled is defined %}
-                    {% if form.enabled.vars.value %}
-                        <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
-                    {% else %}
-                        <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
-                    {% endif %}
-                {% endif %}
-            </div>
+            {{ elements.enabledLabel(form) }}
         {% endset %}
 
         {% set left %}
