@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Pim\Bundle\CatalogBundle\Entity\WithUniqueCodeInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 
@@ -112,8 +113,8 @@ class Loader implements LoaderInterface
      */
     protected function setReference(array $data, $object)
     {
-        if (isset($data['code'])) {
-            $this->referenceRepository->addReference(get_class($object) . '.' . $data['code'], $object);
+        if ($object instanceof WithUniqueCodeInterface) {
+            $this->referenceRepository->addReference(get_class($object) . '.' . $object->getUniqueCode(), $object);
         }
     }
 }

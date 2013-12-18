@@ -45,8 +45,8 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->method('read')
             ->will($this->returnValue(null));
 
-        $object1 = new \stdClass;
-        $object2 = new \stdClass;
+        $object1 = $this->getMockObject('data1');
+        $object2 = $this->getMockObject('data2');
         $processor->expects($this->at(0))
             ->method('process')
             ->with($this->equalTo($data1))
@@ -65,10 +65,20 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
         $referenceRepository->expects($this->at(0))
             ->method('addReference')
-            ->with($this->equalTo('stdClass.data1'));
+            ->with($this->matchesRegularExpression('/WithUniqueCodeInterface.+\.data1$/'));
         $referenceRepository->expects($this->at(1))
             ->method('addReference')
-            ->with($this->equalTo('stdClass.data2'));
+            ->with($this->matchesRegularExpression('/WithUniqueCodeInterface.+\.data2$/'));
         $loader->load('file');
+    }
+
+    protected function getMockObject($id)
+    {
+        $object = $this->getMock('Pim\Bundle\CatalogBundle\Entity\WithUniqueCodeInterface');
+        $object->expects($this->any())
+            ->method('getUniqueCode')
+            ->will($this->returnValue($id));
+
+        return $object;
     }
 }
