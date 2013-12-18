@@ -30,7 +30,7 @@ class LoadGroupTypeData extends AbstractInstallerFixture
                 $type = $this->createType($code, $data);
                 $this->validate($type, $data);
                 $manager->persist($type);
-                $this->addReference('group-type.'. $type->getCode(), $type);
+                $this->addReference(get_class($type).'.'. $type->getCode(), $type);
             }
         }
 

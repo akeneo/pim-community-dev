@@ -18,6 +18,21 @@ define(
             /**
              * @inheritDoc
              */
+            initialize: function() {
+                NumberFilter.prototype.initialize.apply(this, arguments);
+
+                this.on('disable', this._onDisable, this);
+
+            },
+
+            _onDisable: function() {
+                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Unit') + '<span class="caret"></span>');
+            },
+
+            /**
+             * @inheritDoc
+             */
             _renderCriteria: function (el) {
                 $(el).append(this.popupCriteriaTemplate({
                     name:    this.name,

@@ -23,7 +23,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @Assert\GroupSequenceProvider
  * @Config(
  *  defaultValues={
- *      "entity"={"label"="Group", "plural_label"="Groups"},
+ *      "entity"={"label"="Product group", "plural_label"="Product groups"},
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""

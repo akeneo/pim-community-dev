@@ -8,7 +8,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
-use Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer;
 
 /**
  * Fixture Loader  factory
@@ -25,11 +24,6 @@ class LoaderFactory
     protected $entityCache;
 
     /**
-     * @var FixtureReferenceTransformer
-     */
-    protected $referenceTransformer;
-
-    /**
      * @var ConfigurationRegistryInterface
      */
     protected $configRegistry;
@@ -43,18 +37,15 @@ class LoaderFactory
      * Constructor
      *
      * @param EntityCache                    $entityCache
-     * @param FixtureReferenceTransformer    $referenceTransformer
      * @param ConfigurationRegistryInterface $configRegistry
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         EntityCache $entityCache,
-        FixtureReferenceTransformer $referenceTransformer,
         ConfigurationRegistryInterface $configRegistry,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityCache = $entityCache;
-        $this->referenceTransformer = $referenceTransformer;
         $this->configRegistry = $configRegistry;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -62,16 +53,15 @@ class LoaderFactory
     /**
      * Creates a loader
      *
-     * @param ObjectManager       $objectManager
-     * @param ReferenceRepository $referenceRepository
-     * @param string              $name
-     * @param string              $extension
+     * @param ObjectManager $objectManager
+     * @param string        $name
+     * @param string        $extension
      *
      * @return LoaderInterface
      */
     public function create(ObjectManager $objectManager, ReferenceRepository $referenceRepository, $name, $extension)
     {
-        $this->referenceTransformer->setReferenceRepository($referenceRepository);
+        $this->entityCache->setReferenceRepository($referenceRepository);
         $reader = $this->configRegistry->getReader($name, $extension);
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);

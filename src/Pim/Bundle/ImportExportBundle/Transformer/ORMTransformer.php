@@ -45,10 +45,6 @@ class ORMTransformer extends AbstractORMTransformer
         $repository = $this->doctrine->getRepository($class);
         
         if ($repository instanceof ReferableEntityRepository) {
-            if (count(array_diff($repository->getReferenceProperties(), array_keys($data)))) {
-                throw new MissingIdentifierException();
-            }
-            $refProperties = $repository->getReferenceProperties();
             $reference = implode(
                 '.',
                 array_map(
@@ -59,7 +55,7 @@ class ORMTransformer extends AbstractORMTransformer
 
                         return $data[$property];
                     },
-                    $refProperties
+                    $repository->getReferenceProperties()
                 )
             );
 
