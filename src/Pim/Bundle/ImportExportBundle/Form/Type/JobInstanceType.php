@@ -117,8 +117,6 @@ class JobInstanceType extends AbstractType
      */
     protected function addConnectorField(FormBuilderInterface $builder)
     {
-        $choices = $this->connectorRegistry->getConnectors($this->jobType);
-
         $builder
             ->add(
                 'connector',
