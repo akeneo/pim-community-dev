@@ -61,7 +61,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $nonClearableEntities = array(
         'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
         'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttributeInterface',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
@@ -86,6 +85,16 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productManager     = $productManager;
         $this->entityCache        = $entityCache;
         $this->addVersionListener = $addVersionListener;
+    }
+
+    /**
+     * Adds a non clearable entity
+     *
+     * @param string $class
+     */
+    public function addNonClearableEntity($class)
+    {
+        $this->nonClearableEntities[] = $class;
     }
 
     /**

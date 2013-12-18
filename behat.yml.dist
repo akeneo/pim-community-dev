@@ -5,8 +5,8 @@ default:
         class:  Context\FeatureContext
         parameters:
             base_url: http://akeneo-pim-behat.local/
-            window_width: 1024
-            window_height: 768
+            window_width: 1280
+            window_height: 1024
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
