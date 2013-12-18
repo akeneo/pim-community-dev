@@ -96,6 +96,9 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
         return $this->findByDataUniqueCode(array('attribute' => $attributeCode, 'code' => $optionCode));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findByDataUniqueCode(array $data)
     {
         return $this->createQueryBuilder('o')

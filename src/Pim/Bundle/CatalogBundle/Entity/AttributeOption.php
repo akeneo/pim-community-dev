@@ -119,7 +119,7 @@ class AttributeOption extends AbstractEntityAttributeOption implements WithUniqu
         $value = $this->getOptionValue();
 
         if (!$value) {
-            $value = new AttributeOptionValue;
+            $value = new AttributeOptionValue();
             $value->setLocale($this->locale);
             $this->addOptionValue($value);
         }

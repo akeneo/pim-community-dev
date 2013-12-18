@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 /**
+ * Interface for repositories of unique code entities
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
