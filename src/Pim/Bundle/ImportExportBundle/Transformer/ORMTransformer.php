@@ -40,7 +40,7 @@ class ORMTransformer extends AbstractORMTransformer
         $reference = implode(
             '.',
             array_map(
-                function ($property) use($data) {
+                function ($property) use ($data) {
                     if (!isset($data[$property])) {
                         throw new MissingIdentifierException;
                     }

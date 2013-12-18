@@ -26,6 +26,9 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
             return $multiple ? array() : null;
         }
         $getEntity = function ($value) use ($options) {
+            if (isset($options['reference_prefix'])) {
+                $value = $options['reference_prefix'] . '.' . $value;
+            }
             $entity = $this->getEntity($options['class'], $value);
             if (!$entity) {
                 throw new PropertyTransformerException(

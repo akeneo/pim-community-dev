@@ -67,13 +67,13 @@ class LoadAttributeData extends AbstractInstallerFixture
         }
 
         if (isset($data['options'])) {
-            $options = $this->prepareOptions($data['options']);
+            $options = $this->prepareOptions($code, $data['options']);
             foreach ($options as $option) {
                 $attribute->addOption($option);
             }
         }
 
-        $attribute->setParameters($this->prepareParameters($data));
+        $attribute->setParameters($this->prepareParameters($code, $data));
 
         return $attribute;
     }
@@ -104,14 +104,14 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @return array
      */
-    public function prepareParameters($data)
+    public function prepareParameters($attributeCode, $data)
     {
         $parameters = $data['parameters'];
         $parameters['dateMin'] = (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
         $parameters['dateMax'] = (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
         if ($data['type'] === 'pim_catalog_simpleselect' and isset($parameters['defaultValue'])) {
-            $parameters['defaultValue'] = $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
+            $parameters['defaultValue'] = $this->getReference($this->getOptionReference($attributeCode, $parameters['defaultValue']));
         }
 
         if (isset($parameters['availableLocales'])) {
@@ -133,7 +133,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @return array
      */
-    public function prepareOptions($data)
+    public function prepareOptions($attributeCode, $data)
     {
         $options = array();
         foreach ($data as $code => $optionData) {
@@ -148,10 +148,15 @@ class LoadAttributeData extends AbstractInstallerFixture
                 $option->addOptionValue($optionValue);
             }
             $options[] = $option;
-            $this->addReference('product-attributeoption.'.$code, $option);
+            $this->addReference($this->getOptionReference($attributeCode, $code), $option);
         }
 
         return $options;
+    }
+
+    protected function getOptionReference($attributeCode, $code)
+    {
+        return 'Pim\Bundle\CatalogBundle\Entity\AttributeOption.' . $attributeCode . '.' . $code;
     }
 
     /**
