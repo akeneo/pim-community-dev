@@ -22,7 +22,7 @@ class ProductReader extends Reader
     /**
      * @var string
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Execution"})
      * @ChannelConstraint
      */
     protected $channel;

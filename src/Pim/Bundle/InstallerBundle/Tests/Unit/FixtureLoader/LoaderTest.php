@@ -26,8 +26,8 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('setFilePath', 'read'))
             ->getMock();
         $processor = $this->getMock('Oro\Bundle\BatchBundle\Item\ItemProcessorInterface');
-
-        $loader = new Loader($objectManager, $referenceRepository, $entityCache, $reader, $processor);
+        $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $loader = new Loader($objectManager, $referenceRepository, $entityCache, $reader, $processor, $eventSubscriber);
 
         $reader->expects($this->once())
             ->method('setFilePath')
