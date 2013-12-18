@@ -23,7 +23,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * A context for creating entities
@@ -1154,6 +1154,24 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^"([^"]*)" group should contain "([^"]*)"$/
+     */
+    public function groupShouldContain($group, $products)
+    {
+        $group = $this->getProductGroup($group);
+        $this->getEntityManager()->refresh($group);
+        $groupProducts = $group->getProducts();
+
+        foreach ($this->listToArray($products) as $sku) {
+            if (!$groupProducts->contains($this->getProduct($sku))) {
+                throw new \Exception(
+                    sprintf('Group "%s" doesn\'t contain product "%s"', $group->getCode(), $sku)
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $sku
      *
      * @return Product
@@ -1163,7 +1181,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProductManager()->findByIdentifier($sku);
 
         if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku %s', $sku));
+            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
         }
 
         return $product;

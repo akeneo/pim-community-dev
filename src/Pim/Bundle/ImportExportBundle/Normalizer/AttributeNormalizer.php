@@ -3,7 +3,9 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * A normalizer to transform a ProductAttributeInterface entity into array
@@ -108,7 +110,7 @@ class AttributeNormalizer implements NormalizerInterface
             'default_options'     => $this->normalizeDefaultOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
-            'default_value'       => (string) $attribute->getDefaultValue(),
+            'default_value'       => $this->normalizeDefaultValue($attribute),
             'max_characters'      => (string) $attribute->getMaxCharacters(),
             'validation_rule'     => (string) $attribute->getValidationRule(),
             'validation_regexp'   => (string) $attribute->getValidationRegexp(),
@@ -155,13 +157,33 @@ class AttributeNormalizer implements NormalizerInterface
         $data = array();
         $options = $attribute->getOptions();
         foreach ($options as $option) {
-            $data[$option->getCode()]= array();
+            $data[$option->getCode()] = array();
             foreach ($option->getOptionValues() as $value) {
-                $data[$option->getCode()][$value->getLocale()]= $value->getValue();
+                $data[$option->getCode()][$value->getLocale()] = $value->getValue();
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Normalize default value
+     *
+     * @param ProductAttributeInterface $attribute
+     *
+     * @return array
+     */
+    protected function normalizeDefaultValue(ProductAttributeInterface $attribute)
+    {
+        $defaultValue = $attribute->getDefaultValue();
+
+        if ($defaultValue instanceof \DateTime) {
+            return $defaultValue->format(\DateTime::ISO8601);
+        } elseif ($defaultValue instanceof ArrayCollection || $defaultValue instanceof AttributeOption) {
+            return $this->normalizeDefaultOptions($attribute);
+        } else {
+            return (string) $defaultValue;
+        }
     }
 
     /**
@@ -176,9 +198,9 @@ class AttributeNormalizer implements NormalizerInterface
         $data = array();
         $options = $attribute->getDefaultOptions();
         foreach ($options as $option) {
-            $data[$option->getCode()]= array();
+            $data[$option->getCode()] = array();
             foreach ($option->getOptionValues() as $value) {
-                $data[$option->getCode()][$value->getLocale()]= $value->getValue();
+                $data[$option->getCode()][$value->getLocale()] = $value->getValue();
             }
         }
 

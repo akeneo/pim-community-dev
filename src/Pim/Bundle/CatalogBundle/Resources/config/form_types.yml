@@ -109,6 +109,11 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
 
+    pim_catalog.form.type.add_to_groups:
+        class: %pim_catalog.form.type.add_to_groups.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_mass_add_to_groups }
+
     pim_catalog.form.type.localized_collection:
         class: '%pim_catalog.form.type.localized_collection.class%'
         tags:
@@ -162,3 +167,8 @@ services:
         class: %pim_catalog.extension.type.media.class%
         tags:
             - { name: form.type_extension, alias: oro_media }
+
+    pim_catalog.extension.type.metric:
+        class: %pim_catalog.extension.type.metric.class%
+        tags:
+            - { name: form.type_extension, alias: pim_flexibleentity_metric }

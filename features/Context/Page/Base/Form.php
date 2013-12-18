@@ -260,8 +260,15 @@ class Form extends Base
                 }
             } else {
                 foreach (explode(',', $value) as $value) {
-                    $field = $label->getParent()->find('css', 'select');
-                    $field->selectOption(trim($value), true);
+                    $label->getParent()->find('css', 'input[type="text"]')->click();
+                    $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
+                    $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
+                    if (!$option) {
+                        throw new \InvalidArgumentException(
+                            sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
+                        );
+                    }
+                    $option->click();
                 }
             }
         } else {

@@ -1415,7 +1415,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeComparisonLanguages($languages)
     {
-        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+        assertEquals($this->listToArray($languages), $this->getCurrentPage()->getComparisonLanguages());
     }
 
     /**
@@ -1452,6 +1452,13 @@ class WebUser extends RawMinkContext
         }
     }
 
+    /**
+     * @Then /^I should see:$/
+     */
+    public function assertPageContainsText(PyStringNode $text)
+    {
+        $this->assertSession()->pageTextContains((string) $text);
+    }
     /**
      * @param integer $y
      *
