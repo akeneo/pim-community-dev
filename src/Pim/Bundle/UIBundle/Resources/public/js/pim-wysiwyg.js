@@ -2,13 +2,12 @@ define(
     ['underscore', 'tinymce'],
     function(_) {
         var config = {
-            plugins:     'link contextmenu preview code paste',
-            statusbar:   true,
-            menubar:     false,
-            toolbar:     'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
-            readonly:    false,
-            contextmenu: 'undo redo link',
-            setup:       function(ed) {
+            plugins:   'link preview code paste',
+            statusbar: true,
+            menubar:   false,
+            toolbar:   'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
+            readonly:  false,
+            setup:     function(ed) {
                 ed.on('change', function() {
                     $('#' + ed.id).trigger('change');
                 });
