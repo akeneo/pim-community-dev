@@ -160,7 +160,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             );
 
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
-        $reader->expects($this->exactly(2))
+        $reader->expects($this->exactly(1))
             ->method('read')
             ->will(
                 $this->onConsecutiveCalls(
@@ -322,45 +322,6 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->itemStep->setBatchSize(5);
-        $this->itemStep->execute($stepExecution);
-    }
-
-    public function testProcessShouldNotReturnNull()
-    {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $stepExecution->expects($this->any())
-            ->method('getStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
-
-        $stepExecution->expects($this->once())
-            ->method('addFailureException');
-
-        $this->eventDispatcher
-            ->expects($this->at(1))
-            ->method('dispatch')
-            ->with(
-                EventInterface::STEP_EXECUTION_ERRORED,
-                $this->anything()
-            );
-
-        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
-        $reader->expects($this->any())
-            ->method('read')
-            ->will($this->returnValue(array('foo' => 'bar')));
-
-        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
-        $processor->expects($this->any())
-            ->method('process')
-            ->will($this->returnValue(null));
-
-        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
-
-        $this->itemStep->setReader($reader);
-        $this->itemStep->setProcessor($processor);
-        $this->itemStep->setWriter($writer);
-
         $this->itemStep->execute($stepExecution);
     }
 
