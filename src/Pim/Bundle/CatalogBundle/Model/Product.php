@@ -35,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, WithUniqueCodeInterface
 {
     /**
      * @var ArrayCollection $values
@@ -484,5 +484,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->productAssociations = new ArrayCollection($productAssociations);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueCode()
+    {
+        return $this->getIdentifier();
     }
 }
