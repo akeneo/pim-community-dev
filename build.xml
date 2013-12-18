@@ -160,16 +160,19 @@
         </exec>
     </target>
 
+    <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
+        <exec executable="phpunit" failonerror="false">
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.jenkins.xml" />
+            <arg value="--filter=LocaleManagerTest" />
+        </exec>
+    </target>
+
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--testsuite=PIM_Unit_Test" />
-        </exec>
-        <exec executable="phpunit">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--testsuite=PIM_Functional_Test" />
+            <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
 
