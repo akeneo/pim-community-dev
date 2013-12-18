@@ -1357,7 +1357,7 @@ class WebUser extends RawMinkContext
             $actualLine = $actualLines[$index];
             sort($expectedLine);
             sort($actualLine);
-            assertEquals(
+            assertSame(
                 $expectedLine,
                 $actualLine,
                 sprintf(
