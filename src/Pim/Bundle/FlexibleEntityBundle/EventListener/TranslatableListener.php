@@ -64,10 +64,6 @@ class TranslatableListener implements EventSubscriber
             // get flexible entity class
             $flexibleEntityClass = false;
             if ($entity instanceof AbstractAttributeOption) {
-                if (!$entity->getAttribute()) {
-                    \Doctrine\Common\Util\Debug::dump($entity);
-                    throw new \Exception;
-                }
                 $flexibleEntityClass = $entity->getAttribute()->getEntityType();
             } else {
                 $flexibleEntityClass = ClassUtils::getRealClass(get_class($entity));
