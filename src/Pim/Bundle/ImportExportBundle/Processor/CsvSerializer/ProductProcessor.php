@@ -20,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 class ProductProcessor extends HeterogeneousProcessor
 {
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Execution"})
      * @Channel
      */
     protected $channel;
