@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute Group entity
@@ -28,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface
+class AttributeGroup implements TranslatableInterface, ReferableInterface
 {
     /**
      * @staticvar string
@@ -383,5 +384,13 @@ class AttributeGroup implements TranslatableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

@@ -49,7 +49,7 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
                 array(
                     'attribute'   => 'color',
                     'code'        => 'red',
-                    'is_default'  => 0,
+                    'default'     => 0,
                     'label-en_US' => 'Red',
                     'label-fr_FR' => 'Rouge'
                 )

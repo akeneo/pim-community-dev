@@ -21,6 +21,16 @@ services:
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 0 }
 
+    pim_import_export.transformer.guesser.attribute_option_value:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.translation'
+            - %pim_catalog.entity.product_attribute_option.class%
+            - ['/^label-/']
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
         public: false

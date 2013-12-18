@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute options
@@ -15,7 +16,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption extends AbstractEntityAttributeOption
+class AttributeOption extends AbstractEntityAttributeOption implements ReferableInterface
 {
     /**
      * @var string $code
@@ -98,5 +99,31 @@ class AttributeOption extends AbstractEntityAttributeOption
         $value = $this->getOptionValue();
 
         return ($value and $value->getValue()) ? $value->getValue() : '['.$this->getCode().']';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->attribute->getCode() . '.' . $this->code;
+    }
+
+    /**
+     * Returns the current translation
+     *
+     * @return AttributeOptionValue
+     */
+    public function getTranslation()
+    {
+        $value = $this->getOptionValue();
+
+        if (!$value) {
+            $value = new AttributeOptionValue();
+            $value->setLocale($this->locale);
+            $this->addOptionValue($value);
+        }
+
+        return $value;
     }
 }

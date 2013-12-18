@@ -113,7 +113,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
-     * @expectedExceptionMessage The "id" attribute is unique, the value "id_name_data" was already read in this file
+     * @expectedExceptionMessage The unique code "id_name_data" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
     {

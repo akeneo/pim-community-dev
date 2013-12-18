@@ -74,9 +74,7 @@ class EntityCache
     protected function getEntity($class, $code)
     {
         return $this->doctrine
-                ->getManager()
-                ->createQuery("SELECT e FROM $class e WHERE e.code=:code")
-                ->setParameter('code', $code)
-                ->getOneOrNullResult();
+                ->getRepository($class)
+                ->findByReference($code);
     }
 }
