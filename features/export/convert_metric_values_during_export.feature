@@ -1,3 +1,4 @@
+@javascript
 Feature: Convert metric values during export
   In order to homogeneize exported metric values
   As Julia
@@ -13,7 +14,6 @@ Feature: Convert metric values during export
       | Washing temperature |
       | Weight              |
 
-  @javascript
   Scenario: Succesfully convert metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
@@ -44,5 +44,5 @@ Feature: Convert metric values during export
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;family;groups;categories;additional_colors;color;cost;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit;enabled;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR
-    tshirt-white;tshirts;;2014_collection;;white;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;60.0000;CELSIUS;5000;GRAM;1;;;;
+    tshirt-white;tshirts;;2014_collection;;white;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;60.0000;CELSIUS;5000.0000;GRAM;1;;;;
     """
