@@ -74,5 +74,5 @@ Feature: Import attributes
     When I am on the "attribute_import" import job page
     And I launch the import job
     And I wait for the job to finish
-    Then I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.dateType: This property may not be changed."
-    And I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.metricFamily: This property may not be changed."
+    Then I should see "dateType: This property may not be changed."
+    And I should see "metricFamily: This property may not be changed."
