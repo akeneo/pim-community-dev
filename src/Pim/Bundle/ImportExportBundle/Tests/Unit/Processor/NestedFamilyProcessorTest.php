@@ -67,17 +67,26 @@ class NestedFamilyProcessorTest extends AbstractTransformerProcessorTestCase
         $this->transformer
             ->expects($this->at(2))
             ->method('transform')
-            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel1', 'attribute1')))
+            ->with(
+                $this->equalTo('requirements_class'),
+                $this->equalTo($this->getRequirementData('channel1', 'attribute1'))
+            )
             ->will($this->returnValue('requirement1'));
         $this->transformer
             ->expects($this->at(4))
             ->method('transform')
-            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel1', 'attribute2')))
+            ->with(
+                $this->equalTo('requirements_class'),
+                $this->equalTo($this->getRequirementData('channel1', 'attribute2'))
+            )
             ->will($this->returnValue('requirement2'));
         $this->transformer
             ->expects($this->at(7))
             ->method('transform')
-            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel2', 'attribute3')))
+            ->with(
+                $this->equalTo('requirements_class'),
+                $this->equalTo($this->getRequirementData('channel2', 'attribute3'))
+            )
             ->will($this->returnValue('requirement3'));
         $this->transformer
             ->expects($this->never())
