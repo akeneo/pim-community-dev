@@ -12,6 +12,8 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 
 /**
  * Transforms an array in an entity
@@ -242,11 +244,11 @@ abstract class AbstractORMTransformer
     protected function findEntity($class, array $data) {
         $repository = $this->doctrine->getRepository($class);
 
-        if ($repository instanceof ReferableEntityRepository) {
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
             $reference = implode(
                 '.',
                 array_map(
-                    function ($property) use($data) {
+                    function ($property) use ($class, $data) {
                         if (!isset($data[$property])) {
                             throw new MissingIdentifierException();
                         }

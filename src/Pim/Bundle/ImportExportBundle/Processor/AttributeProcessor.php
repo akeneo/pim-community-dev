@@ -92,7 +92,9 @@ class AttributeProcessor extends AbstractTransformerProcessor
      */
     protected function setOptions(ProductAttributeInterface $attribute, array $optionsData)
     {
+        $this->entityCache->setReference($attribute);
         foreach ($optionsData as $code => $optionData) {
+            $optionData['attribute'] = $attribute->getCode();
             if (!isset($optionData['code'])) {
                 $optionData['code'] = $code;
             }
