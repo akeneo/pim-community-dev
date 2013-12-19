@@ -168,7 +168,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $fieldName = $this->getFieldValue($value);
 
             return array(
-                $fieldName                     => $data->getData(),
+                $fieldName                     => sprintf('%.4f', $data->getData()),
                 sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
             );
         }

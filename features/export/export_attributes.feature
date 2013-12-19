@@ -15,8 +15,8 @@ Feature: Export attributes
     type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;date_type;metric_family;default_metric_unit;is_translatable;is_scopable
     pim_catalog_identifier;sku;SKU;info;1;1;1;;;;;0;0
     pim_catalog_text;name;Name;info;0;1;1;;;;;1;0
-    pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;1;;;;;0;0
-    pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;1;1;;;;;0;0
+    pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;0;1;;;;;0;0
+    pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;0;1;;;;;0;0
     pim_catalog_textarea;description;Description;info;0;0;1;;;;;1;1
     pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;;0;0
     pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;;0;0

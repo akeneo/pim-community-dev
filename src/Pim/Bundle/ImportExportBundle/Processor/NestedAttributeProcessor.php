@@ -14,7 +14,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NestedAttributeProcessor extends TransformerProcessor
+class NestedAttributeProcessor extends AbstractTransformerProcessor
 {
     /**
      * @var string
@@ -22,24 +22,14 @@ class NestedAttributeProcessor extends TransformerProcessor
     protected $optionClass;
 
     /**
-     * Constructor
-     *
-     * @param ImportValidatorInterface $validator
-     * @param TranslatorInterface      $translator
-     * @param ORMTransformer           $transformer
-     * @param string                   $class
-     * @param string                   $optionClass
+     * @var \Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer
      */
-    public function __construct(
-        ImportValidatorInterface $validator,
-        TranslatorInterface $translator,
-        ORMTransformer $transformer,
-        $class,
-        $optionClass
-    ) {
-        parent::__construct($validator, $translator, $transformer, $class, true);
-        $this->optionClass = $optionClass;
-    }
+    protected $attributeTransformer;
+
+    /**
+     * @var ORMTransformer
+     */
+    protected $optionTransformer;
 
     /**
      * {@inheritdoc}
@@ -52,8 +42,10 @@ class NestedAttributeProcessor extends TransformerProcessor
             unset($item['options']);
         }
 
-        $attribute = parent::transform($item);
+        $attribute = $this->attributeTransformer->transform($item);
         $this->setOptions($attribute, $optionsData);
+        
+        return $attribute;
     }
 
     /**
@@ -64,10 +56,31 @@ class NestedAttributeProcessor extends TransformerProcessor
      */
     protected function setOptions(ProductAttributeInterface $attribute, array $optionsData)
     {
-        foreach ($optionsData as $optionData) {
-            $optionData['attribute'] = $attribute->getCode();
-            $option = $this->transformer->transform($this->optionClass, $optionData);
+        foreach ($optionsData as $code => $optionData) {
+            if (!isset($optionData['code'])) {
+                $optionData['code'] = $code;
+            }
+            $option = $this->optionTransformer->transform($this->optionClass, $optionData);
             $attribute->addOption($option);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTransformedColumnsInfo()
+    {
+        return array_merge(
+            $this->optionTransformer->getTransformedColumnsInfo(),
+            $this->attributeTransformer->getTransformedColumnsInfo()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTransformerErrors()
+    {
+        return $this->optionTransformer->getErrors() + $this->attributeTransformer->getErrors();
     }
 }

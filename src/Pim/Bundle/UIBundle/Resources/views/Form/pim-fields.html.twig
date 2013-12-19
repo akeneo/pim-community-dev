@@ -37,7 +37,6 @@
             {% if form.children|length == 0 %}
                 {{ block('form_info') }}
             {% endif %}
-            {{ form_errors(form) }}
         </div>
     </div>
 {% endblock %}
@@ -113,6 +112,7 @@
 {% endspaceless %}{% endblock form_errors %}
 
 {% block pim_wysiwyg_widget %}
+    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'wysiwyg' }) %}
     {{ block('textarea_widget') }}
 {% endblock pim_wysiwyg_widget %}
 

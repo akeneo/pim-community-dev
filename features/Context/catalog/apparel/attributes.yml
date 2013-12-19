@@ -438,7 +438,7 @@ attributes:
             de_DE: Hersteller
         type:  pim_catalog_simpleselect
         group: additional
-        useableAsGridColumn: true
+        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -558,8 +558,8 @@ attributes:
             de_DE: Wetterverhältnisse
         type:  pim_catalog_multiselect
         group: additional
-        useableAsGridColumn: true
-        useableAsGridFilter: true
+        useableAsGridColumn: false
+        useableAsGridFilter: false
         sortOrder:           4
         options:
             dry:

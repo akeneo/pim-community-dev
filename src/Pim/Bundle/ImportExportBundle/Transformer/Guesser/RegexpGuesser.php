@@ -32,17 +32,27 @@ class RegexpGuesser implements GuesserInterface
     protected $regexps;
 
     /**
+     * @var array
+     */
+    protected $options = array();
+
+    /**
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
      * @param string                       $class
      * @param array                        $regexps
      */
-    public function __construct(PropertyTransformerInterface $transformer, $class, array $regexps)
-    {
+    public function __construct(
+        PropertyTransformerInterface $transformer,
+        $class,
+        array $regexps,
+        array $options = array()
+    ) {
         $this->transformer = $transformer;
         $this->class = $class;
         $this->regexps = $regexps;
+        $this->options = $options;
     }
 
     /**
@@ -56,7 +66,7 @@ class RegexpGuesser implements GuesserInterface
 
         foreach ($this->regexps as $regexp) {
             if (preg_match($regexp, $columnInfo->getLabel())) {
-                return array($this->transformer, array());
+                return array($this->transformer, $this->options);
             }
         }
 

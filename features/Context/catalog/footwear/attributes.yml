@@ -23,7 +23,7 @@ attributes:
             en_US: Manufacturer
         type:  pim_catalog_simpleselect
         group: info
-        useableAsGridColumn: true
+        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           3
         options:
@@ -44,7 +44,8 @@ attributes:
             en_US: Weather conditions
         type:  pim_catalog_multiselect
         group: info
-        useableAsGridColumn: true
+        parameters:
+        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           4
         options:
