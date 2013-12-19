@@ -101,6 +101,9 @@ class NestedFamilyProcessor extends TransformerProcessor
         return $requirements;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getTransformedColumnsInfo()
     {
         return array();
