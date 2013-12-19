@@ -216,7 +216,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->findEntity($entityName, $criteria);
 
         if (!$entity) {
-            if (gettype($criteria) === 'string') {
+            if (is_string($criteria)) {
                 $criteria = array('code' => $criteria);
             }
 
@@ -224,7 +224,7 @@ class FixturesContext extends RawMinkContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->entities[$entityName],
-                    print_r($criteria, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
         }
