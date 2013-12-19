@@ -45,6 +45,7 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
         if ($multiple && !is_array($value)) {
             $value = preg_split('/\s*,\s*/', $value);
         }
+
         return $multiple
             ? array_map($getEntity, $value)
             : $getEntity($value);

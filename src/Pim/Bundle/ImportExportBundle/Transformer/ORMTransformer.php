@@ -43,20 +43,21 @@ class ORMTransformer extends AbstractORMTransformer
 
     /**
      * Finds an entity
-     * 
+     *
      * @param string $class
      * @param array  $data
-     * 
+     *
      * @return object|null
      */
-    protected function findEntity($class, array $data) {
+    protected function findEntity($class, array $data)
+    {
         $repository = $this->doctrine->getRepository($class);
 
         if ($repository instanceof ReferableEntityRepository) {
             $reference = implode(
                 '.',
                 array_map(
-                    function ($property) use($data) {
+                    function ($property) use ($data) {
                         if (!isset($data[$property])) {
                             throw new MissingIdentifierException;
                         }

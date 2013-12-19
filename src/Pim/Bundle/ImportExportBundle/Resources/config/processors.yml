@@ -10,7 +10,7 @@ parameters:
     pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
     pim_import_export.processor.product_association.class:          Pim\Bundle\ImportExportBundle\Processor\ProductAssociationProcessor
     pim_import_export.processor.nested_family.class:                Pim\Bundle\ImportExportBundle\Processor\NestedFamilyProcessor
-    
+
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
 
 services:
