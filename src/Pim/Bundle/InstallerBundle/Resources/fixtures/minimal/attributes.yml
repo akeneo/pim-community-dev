@@ -3,7 +3,7 @@ attributes:
         labels:
             en_US: SKU
             fr_FR: SKU
-        attributeType:       pim_catalog_identifier
+        type:       pim_catalog_identifier
         group:               general
         required:            true
         unique:              true

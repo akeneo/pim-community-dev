@@ -66,14 +66,13 @@ class LoaderFactory
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
 
-        return $this->createLoader($objectManager, $referenceRepository, $reader, $processor, $class);
+        return $this->createLoader($objectManager, $reader, $processor, $class);
     }
 
     /**
      * Creates a loader
      *
      * @param ObjectManager          $objectManager
-     * @param ReferenceRepository    $referenceRepository
      * @param ItemReaderInterface    $reader
      * @param ItemProcessorInterface $processor
      * @param string                 $class
@@ -82,14 +81,12 @@ class LoaderFactory
      */
     protected function createLoader(
         ObjectManager $objectManager,
-        ReferenceRepository $referenceRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         $class
     ) {
         return new $class(
             $objectManager,
-            $referenceRepository,
             $this->entityCache,
             $reader,
             $processor,

@@ -52,12 +52,12 @@ abstract class AbstractORMTransformer
     /**
      * @var array
      */
-    protected $transformedColumnsInfo;
+    protected $transformedColumnsInfo = array();
 
     /**
      * @var array
      */
-    protected $errors;
+    protected $errors = array();
 
     /**
      * Constructor
@@ -225,7 +225,7 @@ abstract class AbstractORMTransformer
     {
         $object = $this->findEntity($class, $data);
         if (!$object) {
-            $object = $this->createEntity($class);
+            $object = $this->createEntity($class, $data);
         }
 
         return $object;

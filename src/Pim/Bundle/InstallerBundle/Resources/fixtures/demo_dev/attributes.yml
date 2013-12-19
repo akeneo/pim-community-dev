@@ -3,7 +3,7 @@ attributes:
         labels:
             en_US: SKU
             fr_FR: SKU
-        attributeType:  pim_catalog_identifier
+        type:  pim_catalog_identifier
         group: general
         required:            true
         unique:              true
@@ -14,7 +14,7 @@ attributes:
         labels:
             en_US: Name
             fr_FR: Nom
-        attributeType:  pim_catalog_text
+        type:  pim_catalog_text
         group: general
         translatable:        true
         useableAsGridColumn: true
@@ -24,7 +24,7 @@ attributes:
         labels:
             en_US: Price
             fr_FR: Prix
-        attributeType:  pim_catalog_price_collection
+        type:  pim_catalog_price_collection
         group: marketing
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -37,7 +37,7 @@ attributes:
         labels:
             en_US: Short Description
             fr_FR: Description courte
-        attributeType:  pim_catalog_textarea
+        type:  pim_catalog_textarea
         group: general
         translatable:        true
         scopable:            true
@@ -49,7 +49,7 @@ attributes:
         labels:
             en_US: Long Description
             fr_FR: Description longue
-        attributeType:  pim_catalog_textarea
+        type:  pim_catalog_textarea
         group: general
         translatable:        true
         scopable:            true
@@ -61,7 +61,7 @@ attributes:
         labels:
             en_US: Release date
             fr_FR: Date de sortie
-        attributeType:  pim_catalog_date
+        type:  pim_catalog_date
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -73,7 +73,7 @@ attributes:
         labels:
             en_US: File upload
             fr_FR: Fichier téléchargé
-        attributeType:  pim_catalog_file
+        type:  pim_catalog_file
         group: seo
         maxFileSize: 2
         sortOrder:   1
@@ -82,7 +82,7 @@ attributes:
         labels:
             en_US: Image upload
             fr_FR: Image téléchargée
-        attributeType:  pim_catalog_image
+        type:  pim_catalog_image
         group: seo
         translatable:      true
         maxFileSize:       2000
@@ -92,7 +92,7 @@ attributes:
         labels:
             en_US: Size
             fr_FR: Taille
-        attributeType:  pim_catalog_simpleselect
+        type:  pim_catalog_simpleselect
         group: sizes
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -123,7 +123,7 @@ attributes:
         labels:
             en_US: Color
             fr_FR: Couleur
-        attributeType:  pim_catalog_multiselect
+        type:  pim_catalog_multiselect
         group: colors
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -154,7 +154,7 @@ attributes:
         labels:
             en_US: Manufacturer
             fr_FR: Fabriquant
-        attributeType:  pim_catalog_simpleselect
+        type:  pim_catalog_simpleselect
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -173,7 +173,7 @@ attributes:
         labels:
             en_US: Unique color
             fr_FR: Couleur unique
-        attributeType:  pim_catalog_simpleselect
+        type:  pim_catalog_simpleselect
         group: colors
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -215,7 +215,7 @@ attributes:
         labels:
             en_US: Weight
             fr_FR: Poids
-        attributeType:  pim_catalog_metric
+        type:  pim_catalog_metric
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -228,7 +228,7 @@ attributes:
         labels:
             en_US: Washing Temperature
             fr_FR: Température de lavage
-        attributeType:  pim_catalog_metric
+        type:  pim_catalog_metric
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -240,7 +240,7 @@ attributes:
         labels:
             en_US: Processor brand
             fr_FR: Marque processeur
-        attributeType:  pim_catalog_text
+        type:  pim_catalog_text
         group: general
         useableAsGridColumn: false
         useableAsGridFilter: true
@@ -249,7 +249,7 @@ attributes:
         labels:
             en_US: Core number
             fr_FR: Nombre de coeurs
-        attributeType:  pim_catalog_number
+        type:  pim_catalog_number
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -259,7 +259,7 @@ attributes:
         labels:
             en_US: Height
             fr_FR: Hauteur
-        attributeType:  pim_catalog_number
+        type:  pim_catalog_number
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true

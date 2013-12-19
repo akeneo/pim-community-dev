@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 
@@ -36,11 +34,6 @@ class Loader implements LoaderInterface
     protected $objectManager;
 
     /**
-     * @var ReferenceRepository
-     */
-    protected $referenceRepository;
-
-    /**
      * @var ReaderInterface
      */
     protected $reader;
@@ -64,7 +57,6 @@ class Loader implements LoaderInterface
      * Constructor
      *
      * @param ObjectManager            $objectManager
-     * @param ReferenceRepository      $referenceRepository
      * @param EntityCache              $entityCache
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
@@ -72,14 +64,12 @@ class Loader implements LoaderInterface
      */
     public function __construct(
         ObjectManager $objectManager,
-        ReferenceRepository $referenceRepository,
         EntityCache $entityCache,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
-        $this->referenceRepository = $referenceRepository;
         $this->entityCache = $entityCache;
         $this->reader = $reader;
         $this->processor = $processor;
@@ -96,25 +86,13 @@ class Loader implements LoaderInterface
         while ($data = $this->reader->read()) {
             $object = $this->processor->process($data);
             $this->objectManager->persist($object);
-            $this->setReference($data, $object);
+            $this->entityCache->setReference($object);
         }
 
         $this->objectManager->flush();
         $this->objectManager->clear();
         $this->entityCache->clear();
+        
         $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
-    }
-
-    /**
-     * Sets a reference to the object
-     *
-     * @param array  $data
-     * @param object $object
-     */
-    protected function setReference(array $data, $object)
-    {
-        if ($object instanceof ReferableInterface) {
-            $this->referenceRepository->addReference(get_class($object) . '.' . $object->getReference(), $object);
-        }
     }
 }

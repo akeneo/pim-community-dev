@@ -82,10 +82,11 @@ services:
     pim_import_export.processor.nested_attribute:
         class: %pim_import_export.processor.nested_attribute.class%
         arguments:
-            - '@pim_import_export.validator.product_import'
+            - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.attribute'
-            - '@pim_import_export.transformer'
+            - '@pim_import_export.transformer.orm'
+            - '@pim_import_export.entity_cache'
             - '%pim_catalog.entity.product_attribute_option.class%'            
             
     pim_import_export.processor.attribute_option:

@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 
 /**
  * Processor for nested attribute imports
@@ -16,13 +18,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class NestedAttributeProcessor extends AbstractTransformerProcessor
 {
+    
     /**
-     * @var string
-     */
-    protected $optionClass;
-
-    /**
-     * @var \Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer
+     * @var ORMAttributeTransformer
      */
     protected $attributeTransformer;
 
@@ -30,6 +28,41 @@ class NestedAttributeProcessor extends AbstractTransformerProcessor
      * @var ORMTransformer
      */
     protected $optionTransformer;
+
+    /**
+     * @var \Pim\Bundle\ImportExportBundle\Cache\EntityCache
+     */
+    protected $entityCache;
+
+    /**
+     * @var string
+     */
+    protected $optionClass;
+
+    /**
+     * Constructor
+     * 
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface $translator
+     * @param ORMAttributeTransformer $attributeTransformer
+     * @param ORMTransformer $optionTransformer
+     * @param string $optionClass
+     */
+    public function __construct(
+        ImportValidatorInterface $validator, 
+        TranslatorInterface $translator,
+        ORMAttributeTransformer $attributeTransformer,
+        ORMTransformer $optionTransformer,
+        EntityCache $entityCache,
+        $optionClass
+    ) {
+        parent::__construct($validator, $translator);
+        
+        $this->attributeTransformer = $attributeTransformer;
+        $this->optionTransformer = $optionTransformer;
+        $this->optionClass = $optionClass;
+        $this->entityCache = $entityCache;
+    }
 
     /**
      * {@inheritdoc}
@@ -62,6 +95,7 @@ class NestedAttributeProcessor extends AbstractTransformerProcessor
             }
             $option = $this->optionTransformer->transform($this->optionClass, $optionData);
             $attribute->addOption($option);
+            $this->entityCache->setReference($option);
         }
     }
 
