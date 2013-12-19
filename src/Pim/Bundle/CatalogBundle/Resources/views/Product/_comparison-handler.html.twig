@@ -95,6 +95,22 @@
                 };
 
                 mediator.on('scopablefield:rendered', syncFieldState);
+
+                // Add checkboxes to copy scopable comparisons
+                var addCheckboxes = function(field) {
+                    var $field = $(field);
+                    var $checkbox = $field.find('>label>.comparisonSelection');
+
+                    if ($checkbox.length) {
+                        $field.find('.control-group').each(function () {
+                            $(this).prepend($checkbox.parent().clone()).find('>.controls').css('margin-left', 10);
+                        });
+
+                        $checkbox.parent().remove();
+                    }
+                };
+
+                mediator.on('scopablefield:rendered', addCheckboxes);
             });
         }
     );
