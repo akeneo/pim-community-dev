@@ -94,6 +94,8 @@ oro_menu_config:
             display: false
         system_configuraion:
             display: false
+        oro_calendar_view_default:
+            display: false
 
     tree:
         application_menu:
