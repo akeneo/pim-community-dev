@@ -61,7 +61,9 @@ class LoadGroupData extends AbstractInstallerFixture
 
         if (isset($data['attributes'])) {
             foreach ($data['attributes'] as $attribute) {
-                $group->addAttribute($this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'. $attribute));
+                $group->addAttribute(
+                    $this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'. $attribute)
+                );
             }
         }
 

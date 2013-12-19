@@ -55,7 +55,7 @@ class JobInstanceType extends AbstractType
             ->addAliasField($builder)
             ->addJobConfigurationField($builder);
 
-        $builder->addEventSubscriber(new JobAliasSubscriber($this->connectorRegistry));
+        $builder->addEventSubscriber(new JobAliasSubscriber());
     }
 
     /**

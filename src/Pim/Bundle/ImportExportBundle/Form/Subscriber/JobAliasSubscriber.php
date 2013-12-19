@@ -6,7 +6,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
@@ -18,21 +17,6 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
  */
 class JobAliasSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ConnectorRegistry $connectorRegistry
-     */
-    protected $connectorRegistry;
-
-    /**
-     * Constructor
-     *
-     * @param ConnectorRegistry $connectorRegistry
-     */
-    public function __construct(ConnectorRegistry $connectorRegistry)
-    {
-        $this->connectorRegistry = $connectorRegistry;
-    }
-
     /**
      * {@inheritdoc}
      */
