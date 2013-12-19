@@ -10,6 +10,27 @@ default:
         reader_options:    {}
         processor_options: {}
 
+attribute_groups:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.attribute_group
+    yml:
+        processor:         pim_import_export.processor.attribute_group
+
+channels:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.channel
+    yml:
+        processor:         pim_import_export.processor.channel
+
+group_types:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.group_type
+    yml:
+        processor:         pim_import_export.processor.group_type
+
 associations:
     order: 50
     csv:
@@ -38,3 +59,10 @@ products:
             code_field: false
             homogenize: true
         processor:         pim_import_export.processor.product
+
+jobs:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.job_instance
+    yml:
+        processor:         pim_import_export.processor.job_instance

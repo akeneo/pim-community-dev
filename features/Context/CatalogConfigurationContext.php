@@ -36,12 +36,8 @@ class CatalogConfigurationContext extends RawMinkContext
         'CurrencyLoader'       => 'currencies',
         'LocaleLoader'         => null,
         'CategoryLoader'       => 'categories',
-        'ChannelLoader'        => 'channels',
-        'AttributeGroupLoader' => 'attribute_groups',
         'AttributeLoader'      => 'attributes',
-        'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
-        'JobLoader'            => 'jobs',
         'UserLoader'           => 'users',
     );
 

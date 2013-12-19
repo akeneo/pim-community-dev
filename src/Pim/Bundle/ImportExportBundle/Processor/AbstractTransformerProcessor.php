@@ -34,6 +34,11 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     protected $translator;
 
     /**
+     * @var array
+     */
+    protected $mapping = array();
+
+    /**
      * Constructor
      *
      * @param ImportValidatorInterface $validator
@@ -64,6 +69,26 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         }
 
         return $entity;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array();
+    }
+
+    /**
+     * Adds a field mapping
+     * 
+     * @param string $original The name of the field as supplied by the reader
+     * @param string $target   The name of the field which will be sent to the transformer
+     */
+    public function addMapping($original, $target)
+    {
+        $this->mapping[$original] = $target;
     }
 
     /**
@@ -119,15 +144,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      */
     protected function getMapping()
     {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array();
+        return $this->mapping;
     }
 
     /**
