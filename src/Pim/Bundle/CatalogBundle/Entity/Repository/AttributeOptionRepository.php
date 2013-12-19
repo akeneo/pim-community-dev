@@ -96,7 +96,6 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
 
         return $this->createQueryBuilder('o')
             ->innerJoin('o.attribute', 'a')
-            ->select('o, a')
             ->where('a.code=:attribute_code')
             ->andWhere('o.code=:option_code')
             ->setParameter('attribute_code', $attributeCode)

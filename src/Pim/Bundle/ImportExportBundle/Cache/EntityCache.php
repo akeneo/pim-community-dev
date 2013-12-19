@@ -91,7 +91,7 @@ class EntityCache
     {
         $reference = $class . '.' . $code;
         if ($this->referenceRepository && $this->referenceRepository->hasIdentity($reference)) {
-            return $this->referenceRepository->getReference($class . '.' .$code);
+            return $this->referenceRepository->getReference($reference);
         } else {
             return $this->doctrine
                     ->getRepository($class)
