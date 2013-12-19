@@ -130,12 +130,16 @@ define(
                     this._changeDefault(scope);
                 }, this);
 
-                mediator.on('scopablefield:collapse', function () {
-                    this._collapse();
+                mediator.on('scopablefield:collapse', function (id) {
+                    if (!id || this.$el.find('#' + id).length) {
+                        this._collapse();
+                    }
                 }, this);
 
-                mediator.on('scopablefield:expand', function () {
-                    this._expand();
+                mediator.on('scopablefield:expand', function (id) {
+                    if (!id || this.$el.find('#' + id).length) {
+                        this._expand();
+                    }
                 }, this);
 
                 var self = this;
@@ -161,6 +165,8 @@ define(
                     }, this);
 
                     this._collapse();
+
+                    mediator.trigger('scopablefield:rendered', this.$el);
                 }
 
                 return this;
@@ -184,7 +190,7 @@ define(
                         first = false;
                     }, this);
 
-                    this.$el.removeClass('collapsed').addClass('expanded');
+                    this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
                 return this;
@@ -206,7 +212,7 @@ define(
                         }
                     }, this);
 
-                    this.$el.removeClass('expanded').addClass('collapsed');
+                    this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
                 return this;

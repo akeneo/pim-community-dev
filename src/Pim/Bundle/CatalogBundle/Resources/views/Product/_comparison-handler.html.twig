@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery'],
-        function ($) {
+        ['jquery', 'oro/mediator'],
+        function ($, mediator) {
             'use strict';
             $(function () {
                 function copyValue() {
@@ -79,6 +79,22 @@
                         $(this).parent().parent().find('.controls').each(copyValue);
                     });
                 });
+
+                // Listen to each scopable field collapse and expand events and trigger the collapse/expand events
+                // on the corresponding comparison fields
+                var syncFieldState = function(field) {
+                    $(field).on('collapse expand', function(e) {
+                        var id = $(this).find('>div[id]').attr('id');
+                        if (id.indexOf('_{{ comparisonLocale }}_') > 0) {
+                            id = id.replace('_{{ comparisonLocale }}_', '_{{ dataLocale }}_');
+                        } else {
+                            id = id.replace('_{{ dataLocale }}_', '_{{ comparisonLocale }}_');
+                        };
+                        mediator.trigger('scopablefield:' + e.type, id);
+                    });
+                };
+
+                mediator.on('scopablefield:rendered', syncFieldState);
             });
         }
     );
