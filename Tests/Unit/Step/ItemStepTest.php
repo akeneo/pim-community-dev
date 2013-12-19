@@ -160,7 +160,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             );
 
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
-        $reader->expects($this->exactly(1))
+        $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
                 $this->onConsecutiveCalls(
