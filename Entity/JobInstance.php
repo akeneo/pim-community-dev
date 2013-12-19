@@ -298,7 +298,18 @@ class JobInstance
         $this->job = $job;
 
         if ($job) {
-            $this->rawConfiguration = $job->getConfiguration();
+            //TODO: FIXME to get only the jobConfiguration instead of merging it
+            //with the jobConfiguration:
+            //$this->rawConfiguration = $job->getConfiguration();
+            // Waiting for the ImportExport fixes on the right uses of the configuration
+            // See https://magecore.atlassian.net/browse/BAP-2601
+            $jobConfiguration = $job->getConfiguration();
+
+            if (is_array($this->rawConfiguration) && count($this->rawConfiguration) > 0) {
+                $this->rawConfiguration = array_merge($this->rawConfiguration, $jobConfiguration);
+            } else {
+                $this->rawConfiguration = $jobConfiguration;
+            }
         }
 
         return $this;

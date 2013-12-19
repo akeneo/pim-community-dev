@@ -94,6 +94,7 @@ class BatchCommand extends ContainerAwareCommand
         // We merge the JobInstance from the JobManager EntitManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
+        $defaultJobInstance->setJob($job);
 
         $errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
