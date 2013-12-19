@@ -28,7 +28,7 @@ define(
                 return this;
             },
             reinit: function(id) {
-                var settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
+                var settings = tinymce.editors[id] ? tinymce.editors[id].settings : { readonly: $('#' + id).is('[disabled]') };
 
                 return this.destroy(id).init(id, settings);
             },
