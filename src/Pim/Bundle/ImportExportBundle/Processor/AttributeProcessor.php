@@ -16,7 +16,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NestedAttributeProcessor extends AbstractTransformerProcessor
+class AttributeProcessor extends AbstractTransformerProcessor
 {
     
     /**
@@ -76,7 +76,10 @@ class NestedAttributeProcessor extends AbstractTransformerProcessor
         }
 
         $attribute = $this->attributeTransformer->transform($item);
-        $this->setOptions($attribute, $optionsData);
+        
+        if (!count($this->attributeTransformer->getErrors())) {
+            $this->setOptions($attribute, $optionsData);
+        }
         
         return $attribute;
     }
@@ -94,6 +97,9 @@ class NestedAttributeProcessor extends AbstractTransformerProcessor
                 $optionData['code'] = $code;
             }
             $option = $this->optionTransformer->transform($this->optionClass, $optionData);
+            if ($this->optionTransformer->getErrors()) {
+                break;
+            }
             $attribute->addOption($option);
             $this->entityCache->setReference($option);
         }
@@ -104,10 +110,9 @@ class NestedAttributeProcessor extends AbstractTransformerProcessor
      */
     protected function getTransformedColumnsInfo()
     {
-        return array_merge(
-            $this->optionTransformer->getTransformedColumnsInfo(),
-            $this->attributeTransformer->getTransformedColumnsInfo()
-        );
+        return count($this->optionTransformer->getErrors())
+            ? array()
+            : $this->attributeTransformer->getTransformedColumnsInfo();
     }
 
     /**

@@ -7,7 +7,7 @@ parameters:
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
     pim_import_export.processor.category.class:                     Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor
     pim_import_export.processor.group.class:                        Pim\Bundle\ImportExportBundle\Processor\GroupProcessor
-    pim_import_export.processor.nested_attribute.class:             Pim\Bundle\ImportExportBundle\Processor\NestedAttributeProcessor
+    pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
     pim_import_export.processor.product_association.class:          Pim\Bundle\ImportExportBundle\Processor\ProductAssociationProcessor
     pim_import_export.processor.nested_family.class:                Pim\Bundle\ImportExportBundle\Processor\NestedFamilyProcessor
 
@@ -74,13 +74,7 @@ services:
             - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.processor.attribute:
-        parent: pim_import_export.processor.transformer
-        arguments:
-            - '%pim_catalog.entity.product_attribute.class%'
-            - true
-
-    pim_import_export.processor.nested_attribute:
-        class: %pim_import_export.processor.nested_attribute.class%
+        class: %pim_import_export.processor.attribute.class%
         arguments:
             - '@pim_import_export.validator.import'
             - '@translator'
