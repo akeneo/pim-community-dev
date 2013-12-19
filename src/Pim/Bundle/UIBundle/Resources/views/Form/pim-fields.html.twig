@@ -174,9 +174,7 @@
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
-                <div class="icons-container">
-                    {{ form_errors(form) }}
-                </div>
+                {{ block('form_info') }}
                 {{ form_widget(form.id) }}
                 {{ form_widget(form.copyFrom) }}
             </div>
@@ -235,9 +233,7 @@
                         {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
-                <div class="icons-container">
-                    {{ form_errors(form) }}
-                </div>
+                {{ block('form_info') }}
                 {{ form_widget(form.id) }}
                 {{ form_widget(form.copyFrom) }}
             </div>
@@ -297,9 +293,7 @@
             {{ form_widget(form.data, { 'attr': { 'class': 'input-small pull-left' }}) }}
             {{ form_widget(form.unit, { 'attr': { 'class': 'input-small append pull-left' }}) }}
             {{ form_widget(form.family) }}
-            <div class="icons-container">
-                {{ form_errors(form) }}
-            </div>
+            {{ block('form_info') }}
         </div>
     </div>
     <script type="text/javascript">
