@@ -64,6 +64,7 @@
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
+- Change batch_jobs.yml format
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

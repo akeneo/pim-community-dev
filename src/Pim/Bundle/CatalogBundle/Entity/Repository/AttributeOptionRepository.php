@@ -12,7 +12,8 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository 
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionRepository extends FlexAttributeOptionRepository implements OptionRepositoryInterface,
+class AttributeOptionRepository extends FlexAttributeOptionRepository implements
+    OptionRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
     /**
@@ -95,7 +96,6 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
 
         return $this->createQueryBuilder('o')
             ->innerJoin('o.attribute', 'a')
-            ->select('o, a')
             ->where('a.code=:attribute_code')
             ->andWhere('o.code=:option_code')
             ->setParameter('attribute_code', $attributeCode)
