@@ -58,7 +58,9 @@ class LoadAttributeData extends AbstractInstallerFixture
         $attribute->setCode($code);
 
         if (isset($data['group'])) {
-            $attribute->setGroup($this->getReference('Pim\Bundle\CatalogBundle\Entity\AttributeGroup.'.$data['group']));
+            $attribute->setGroup(
+                $this->getReference('Pim\Bundle\CatalogBundle\Entity\AttributeGroup.'.$data['group'])
+            );
         }
 
         foreach ($data['labels'] as $locale => $label) {
@@ -111,7 +113,8 @@ class LoadAttributeData extends AbstractInstallerFixture
         $parameters['dateMax'] = (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
         if ($data['type'] === 'pim_catalog_simpleselect' and isset($parameters['defaultValue'])) {
-            $parameters['defaultValue'] = $this->getReference($this->getOptionReference($attributeCode, $parameters['defaultValue']));
+            $parameters['defaultValue'] =
+                $this->getReference($this->getOptionReference($attributeCode, $parameters['defaultValue']));
         }
 
         if (isset($parameters['availableLocales'])) {

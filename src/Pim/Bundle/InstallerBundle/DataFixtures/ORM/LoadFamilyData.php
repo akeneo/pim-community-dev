@@ -54,7 +54,9 @@ class LoadFamilyData extends AbstractInstallerFixture
         }
 
         foreach ($data['attributes'] as $attribute) {
-            $family->addAttribute($this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'.$attribute));
+            $family->addAttribute(
+                $this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'.$attribute)
+            );
         }
 
         if (array_key_exists('requirements', $data)) {
@@ -62,7 +64,9 @@ class LoadFamilyData extends AbstractInstallerFixture
         }
 
         if (isset($data['attributeAsLabel'])) {
-            $family->setAttributeAsLabel($this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'.$data['attributeAsLabel']));
+            $family->setAttributeAsLabel(
+                $this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'.$data['attributeAsLabel'])
+            );
         }
 
         return $family;
@@ -98,9 +102,10 @@ class LoadFamilyData extends AbstractInstallerFixture
                 $attribute = $this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'.$attributeCode);
                 if ($attribute->getAttributeType() !== 'pim_catalog_identifier') {
                     $requirement =  new AttributeRequirement();
-                    $requirement->setAttribute($attribute);
-                    $requirement->setChannel($this->getReference('Pim\Bundle\CatalogBundle\Entity\Channel.'.$channel));
-                    $requirement->setRequired(true);
+                    $requirement
+                        ->setAttribute($attribute)
+                        ->setChannel($this->getReference('Pim\Bundle\CatalogBundle\Entity\Channel.'.$channel))
+                        ->setRequired(true);
                     $family->addAttributeRequirement($requirement);
                 }
             }
