@@ -89,7 +89,7 @@ define(
                     this.$el.find('select').select2();
                     var $textarea = this.$el.find('textarea.wysiwyg');
                     if ($textarea.length) {
-                        wysiwyg.init($textarea.attr('id'));
+                        wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
                     }
                 }
 

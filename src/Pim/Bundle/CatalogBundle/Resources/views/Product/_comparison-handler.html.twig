@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'oro/mediator'],
-        function ($, mediator) {
+        ['jquery', 'oro/mediator', 'wysiwyg'],
+        function ($, mediator, wysiwyg) {
             'use strict';
             $(function () {
                 function copyValue() {
@@ -34,6 +34,10 @@
                             $target.addClass('hide');
                             $target.parent().removeClass('empty');
                             $target.parent().find('a[rel=slimbox]').slimbox();
+                        } else if ($source.is('textarea.wysiwyg')) {
+                            wysiwyg.destroy($target.attr('id'));
+                            $target.val($source.val()).trigger('change');
+                            wysiwyg.init($target.attr('id'));
                         } else {
                             $target.val($source.val()).trigger('change');
                         }
