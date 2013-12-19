@@ -422,6 +422,9 @@ class Family implements TranslatableInterface, ReferableInterface
      */
     public function setAttributeRequirements(array $requirements)
     {
+        foreach ($requirements as $requirement) {
+            $requirement->setFamily($this);
+        }
         $this->requirements = new ArrayCollection($requirements);
 
         return $this;

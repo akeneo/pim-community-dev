@@ -39,7 +39,6 @@ class CatalogConfigurationContext extends RawMinkContext
         'ChannelLoader'        => 'channels',
         'AttributeGroupLoader' => 'attribute_groups',
         'AttributeLoader'      => 'attributes',
-        'FamilyLoader'         => 'families',
         'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
         'JobLoader'            => 'jobs',
