@@ -70,7 +70,8 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
         negativeAllowed:
             - Type: bool
         maxCharacters:
-            - Type: int
+            - Type: numeric
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal: {} 
             - GreaterThanOrEqual:
                 value: 0
             - Range:
@@ -80,7 +81,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 max: 65535
                 groups: [pim_catalog_textarea]
         sortOrder:
-            - Type: int
+            - Type: numeric
             - GreaterThanOrEqual:
                 value: 0
         unique:

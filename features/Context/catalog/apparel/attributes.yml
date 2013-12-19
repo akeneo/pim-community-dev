@@ -7,12 +7,11 @@ attributes:
             de_DE: SKU
         type:  pim_catalog_identifier
         group: general
-        parameters:
-            required:            true
-            unique:              true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        required:            true
+        unique:              true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
     name:
         labels:
             en_US: Name
@@ -21,11 +20,10 @@ attributes:
             de_DE: Name
         type:  pim_catalog_text
         group: general
-        parameters:
-            translatable:        true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
     description:
         labels:
             en_US: Description
@@ -34,13 +32,12 @@ attributes:
             de_DE: Beschreibung
         type:  pim_catalog_textarea
         group: general
-        parameters:
-            translatable:        true
-            scopable:            true
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            maxCharacters:       1000
-            sortOrder:           3
+        translatable:        true
+        scopable:            true
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        maxCharacters:       1000
+        sortOrder:           3
     thumbnail:
         labels:
             en_US: Thumbnail
@@ -49,10 +46,9 @@ attributes:
             de_DE: Miniaturansicht
         type:  pim_catalog_image
         group: media
-        parameters:
-            maxFileSize:       1
-            sortOrder:         1
-            allowedExtensions: gif,png,jpeg,jpg
+        maxFileSize:       1
+        sortOrder:         1
+        allowedExtensions: gif,png,jpeg,jpg
     image:
         labels:
             en_US: Image
@@ -61,10 +57,9 @@ attributes:
             de_DE: Bild
         type:  pim_catalog_image
         group: media
-        parameters:
-            maxFileSize: 2
-            sortOrder:   2
-            allowedExtensions: gif,png,jpeg,jpg
+        maxFileSize: 2
+        sortOrder:   2
+        allowedExtensions: gif,png,jpeg,jpg
     legend:
         labels:
             en_US: Legend
@@ -73,11 +68,10 @@ attributes:
             de_DE: Legende
         type:  pim_catalog_text
         group: media
-        parameters:
-            translatable:        true
-            useableAsGridColumn: false
-            useableAsGridFilter: false
-            sortOrder:           3
+        translatable:        true
+        useableAsGridColumn: false
+        useableAsGridFilter: false
+        sortOrder:           3
     price:
         labels:
             en_US: Price
@@ -86,13 +80,12 @@ attributes:
             de_DE: Preis
         type:  pim_catalog_price_collection
         group: sales
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           1000
-            sortOrder:           1
-            decimalsAllowed:     true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           1000
+        sortOrder:           1
+        decimalsAllowed:     true
     customer_rating:
         labels:
             en_US: Customer rating
@@ -101,11 +94,10 @@ attributes:
             de_DE: Kundenbewertung
         type:  pim_catalog_simpleselect
         group: sales
-        parameters:
-            scopable:            true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        scopable:            true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             1:
                 labels:
@@ -145,12 +137,11 @@ attributes:
             de_DE: Erscheinungsdatum
         type:  pim_catalog_date
         group: sales
-        parameters:
-            dateType:            date
-            scopable:            true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           3
+        dateType:            date
+        scopable:            true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           3
     size:
         labels:
             en_US: Size
@@ -159,10 +150,9 @@ attributes:
             de_DE: Größe
         type:  pim_catalog_simpleselect
         group: sizes
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
         options:
             size_XXS:
                 labels:
@@ -220,10 +210,9 @@ attributes:
             de_DE: Brustumfang
         type:  pim_catalog_simpleselect
         group: sizes
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             chest_size_XXS:
                 labels:
@@ -281,10 +270,9 @@ attributes:
             de_DE: Taillengröße
         type:  pim_catalog_simpleselect
         group: sizes
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           3
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           3
         options:
             waist_size_XXS:
                 labels:
@@ -342,10 +330,9 @@ attributes:
             de_DE: Farbe
         type:  pim_catalog_simpleselect
         group: colors
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
         options:
             black:
                 labels:
@@ -397,10 +384,9 @@ attributes:
             de_DE: Zusätzliche Farben
         type:  pim_catalog_multiselect
         group: colors
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            sortOrder:           2
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             additional_black:
                 labels:
@@ -452,10 +438,9 @@ attributes:
             de_DE: Hersteller
         type:  pim_catalog_simpleselect
         group: additional
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            sortOrder:           1
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           1
         options:
             american_apparel:
                 labels:
@@ -507,10 +492,9 @@ attributes:
             de_DE: Herstellungsland
         type:  pim_catalog_simpleselect
         group: additional
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             usa:
                 labels:
@@ -562,11 +546,10 @@ attributes:
             de_DE: Handgefertigt
         type:  pim_catalog_boolean
         group: additional
-        parameters:
-            defaultValue:        false
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           3
+        defaultValue:        false
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           3
     weather_conditions:
         labels:
             en_US: Weather conditions
@@ -575,10 +558,9 @@ attributes:
             de_DE: Wetterverhältnisse
         type:  pim_catalog_multiselect
         group: additional
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: false
-            sortOrder:           4
+        useableAsGridColumn: false
+        useableAsGridFilter: false
+        sortOrder:           4
         options:
             dry:
                 labels:
@@ -618,13 +600,12 @@ attributes:
             de_DE: Pflegehinweise
         type:  pim_catalog_textarea
         group: additional
-        parameters:
-            translatable:        true
-            scopable:            true
-            useableAsGridColumn: false
-            useableAsGridFilter: false
-            maxCharacters:       1000
-            sortOrder:           5
+        translatable:        true
+        scopable:            true
+        useableAsGridColumn: false
+        useableAsGridFilter: false
+        maxCharacters:       1000
+        sortOrder:           5
     washing_temperature:
         labels:
             en_US: Washing temperature
@@ -633,12 +614,11 @@ attributes:
             de_DE: Waschtemperatur
         type:  pim_catalog_metric
         group: additional
-        parameters:
-            metricFamily:      Temperature
-            sortOrder:         6
-            defaultMetricUnit: CELSIUS
-            negativeAllowed:   false
-            numberMax:         100
+        metricFamily:      Temperature
+        sortOrder:         6
+        defaultMetricUnit: CELSIUS
+        negativeAllowed:   false
+        numberMax:         100
     weight:
         labels:
             en_US: Weight
@@ -647,12 +627,11 @@ attributes:
             de_DE: Gewicht
         type:  pim_catalog_metric
         group: additional
-        parameters:
-            metricFamily:      Weight
-            sortOrder:         7
-            defaultMetricUnit: KILOGRAM
-            negativeAllowed:   false
-            numberMax:         10
+        metricFamily:      Weight
+        sortOrder:         7
+        defaultMetricUnit: KILOGRAM
+        negativeAllowed:   false
+        numberMax:         10
     material:
         labels:
             en_US: Material
@@ -661,10 +640,9 @@ attributes:
             de_DE: Material
         type:  pim_catalog_simpleselect
         group: additional
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           8
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           8
         options:
             cotton:
                 labels:
@@ -716,10 +694,9 @@ attributes:
             de_DE: Zusätzliche Materialien
         type:  pim_catalog_multiselect
         group: additional
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            sortOrder:           9
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           9
         options:
             additional_cotton:
                 labels:
@@ -771,14 +748,13 @@ attributes:
             de_DE: Kosten
         type:  pim_catalog_price_collection
         group: internal
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           1000
-            sortOrder:           1
-            decimalsAllowed:     true
-            negativeAllowed:     false
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           1000
+        sortOrder:           1
+        decimalsAllowed:     true
+        negativeAllowed:     false
     number_in_stock:
         labels:
             en_US: Number in stock
@@ -787,15 +763,14 @@ attributes:
             de_DE: Anzahl auf Lager
         type:  pim_catalog_number
         group: internal
-        parameters:
-            scopable:            true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           10000
-            sortOrder:           2
-            decimalsAllowed:     false
-            negativeAllowed:     false
+        scopable:            true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           10000
+        sortOrder:           2
+        decimalsAllowed:     false
+        negativeAllowed:     false
     customs_tax:
         labels:
             en_US: Customs tax
@@ -804,17 +779,16 @@ attributes:
             de_DE: Zollsteuer
         type:  pim_catalog_price_collection
         group: internal
-        parameters:
-            translatable:        true
-            availableLocales:
-                - de_DE
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           1000
-            sortOrder:           3
-            decimalsAllowed:     true
-            negativeAllowed:     false
+        translatable:        true
+        availableLocales:
+            - de_DE
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           1000
+        sortOrder:           3
+        decimalsAllowed:     true
+        negativeAllowed:     false
     datasheet:
         labels:
             en_US: Datasheet
@@ -823,10 +797,9 @@ attributes:
             de_DE: Datenblatt
         type:  pim_catalog_file
         group: internal
-        parameters:
-            maxFileSize:       10
-            sortOrder:         4
-            allowedExtensions: txt,pdf,doc,docx,csv,rtf
+        maxFileSize:       10
+        sortOrder:         4
+        allowedExtensions: txt,pdf,doc,docx,csv,rtf
     attachment:
         labels:
             en_US: Attachment
@@ -835,7 +808,6 @@ attributes:
             de_DE: Befestigung
         type:  pim_catalog_file
         group: internal
-        parameters:
-            maxFileSize:       10
-            sortOrder:         5
-            allowedExtensions: zip,rar,7z,txt,pdf,doc,docx,csv,rtf
+        maxFileSize:       10
+        sortOrder:         5
+        allowedExtensions: zip,rar,7z,txt,pdf,doc,docx,csv,rtf

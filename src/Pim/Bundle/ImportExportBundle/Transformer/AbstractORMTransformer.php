@@ -221,5 +221,58 @@ abstract class AbstractORMTransformer
      * @abstract
      * @return object
      */
-    abstract protected function getEntity($class, array $data);
+    protected function getEntity($class, array $data)
+    {
+        $object = $this->findEntity($class, $data);
+        if (!$object) {
+            $object = $this->createEntity($class);
+        }
+
+        return $object;
+    }
+
+    /**
+     * Finds an entity
+     * 
+     * @param string $class
+     * @param array  $data
+     * 
+     * @return object|null
+     */
+    protected function findEntity($class, array $data) {
+        $repository = $this->doctrine->getRepository($class);
+
+        if ($repository instanceof ReferableEntityRepository) {
+            $reference = implode(
+                '.',
+                array_map(
+                    function ($property) use($data) {
+                        if (!isset($data[$property])) {
+                            throw new MissingIdentifierException;
+                        }
+
+                        return $data[$property];
+                    },
+                    $repository->getReferenceProperties()
+                )
+            );
+
+            return $this->doctrine->getRepository($class)->findByReference($reference);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates an entity of the given class
+     *
+     * @param string $class
+     * @param array  $data
+     *
+     * @return object
+     */
+    protected function createEntity($class, array $data)
+    {
+        return new $class;
+    }
 }
