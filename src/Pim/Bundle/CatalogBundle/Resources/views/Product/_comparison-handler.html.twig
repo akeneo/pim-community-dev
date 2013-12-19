@@ -1,0 +1,101 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'oro/mediator'],
+        function ($, mediator) {
+            'use strict';
+            $(function () {
+                function copyValue() {
+                    $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').filter('[id]').each(function() {
+                        var $source = $(this);
+                        var sourceId = $(this).attr('id');
+                        var targetId = sourceId.replace('{{ comparisonLocale }}', '{{ dataLocale }}');
+                        var $target = $('#' + targetId);
+
+                        if ($source.is('select') && $source.parent().hasClass('metric')) {
+                            $target.get(0).selectize.setValue($source.get(0).selectize.getValue());
+                        } else if ($source.is('input[type=checkbox]')) {
+                            $target.parent().parent().bootstrapSwitch('setState', $source.is(':checked'));
+                        } else if ($source.is('input[type=file]')) {
+                            $('#' + targetId.replace(/file$/, 'copyFrom'))
+                                .val($('#' + sourceId.replace(/file$/, 'id')).val())
+                                .trigger('change');
+
+                            $target.siblings('.upload-info').html(
+                                $source.siblings('.upload-info').html()
+                            );
+                            $target.parent()
+                                .find('.remove-upload')
+                                .removeClass('hide')
+                                .click(function() {
+                                    $('#' + targetId.replace(/file$/, 'copyFrom')).removeAttr('value');
+                                    $(this).off('click');
+                                });
+                            ;
+                            $target.addClass('hide');
+                            $target.parent().removeClass('empty');
+                            $target.parent().find('a[rel=slimbox]').slimbox();
+                        } else {
+                            $target.val($source.val()).trigger('change');
+                        }
+                    });
+                }
+
+                $('.copy-selection').click(function(event) {
+                    event.preventDefault();
+                    var selectAll = function() {
+                        $('.comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var selectCurrentTab = function () {
+                        $('#attributes .tab-pane.active .comparison input.comparisonSelection:not(:checked)').each(function() {
+                            $(this).prop('checked', true);
+                        });
+                    };
+                    var clearSelection = function () {
+                        $('.comparison input.comparisonSelection:checked').each(function() {
+                            $(this).prop('checked', false);
+                        });
+                    };
+
+                    switch($(this).data('target')) {
+                        case 'all':
+                            selectAll();
+                            break;
+
+                        case 'current-tab':
+                            clearSelection();
+                            selectCurrentTab();
+                        break;
+
+                        case 'none':
+                            clearSelection();
+                    }
+                });
+
+                $('a#copy-selection').click(function(event) {
+                    event.preventDefault();
+                    $('.comparison input.comparisonSelection:checked').each(function() {
+                        $(this).parent().parent().find('.controls').each(copyValue);
+                    });
+                });
+
+                // Listen to each scopable field collapse and expand events and trigger the collapse/expand events
+                // on the corresponding comparison fields
+                var syncFieldState = function(field) {
+                    $(field).on('collapse expand', function(e) {
+                        var id = $(this).find('>div[id]').attr('id');
+                        if (id.indexOf('_{{ comparisonLocale }}_') > 0) {
+                            id = id.replace('_{{ comparisonLocale }}_', '_{{ dataLocale }}_');
+                        } else {
+                            id = id.replace('_{{ dataLocale }}_', '_{{ comparisonLocale }}_');
+                        };
+                        mediator.trigger('scopablefield:' + e.type, id);
+                    });
+                };
+
+                mediator.on('scopablefield:rendered', syncFieldState);
+            });
+        }
+    );
+</script>

@@ -15,7 +15,6 @@ services:
         class: %pim_installer.fixture_loader.loader_factory.class%
         arguments:
             - '@pim_import_export.entity_cache'
-            - '@pim_installer.transformer.property.fixture_reference'
             - '@pim_installer.fixture_loader.configuration_registry'
             - '@event_dispatcher'
 

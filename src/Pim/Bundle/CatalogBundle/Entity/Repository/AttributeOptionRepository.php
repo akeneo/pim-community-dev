@@ -99,7 +99,7 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
             ->where('a.code=:attribute_code')
             ->andWhere('o.code=:option_code')
             ->setParameter('attribute_code', $attributeCode)
-            ->setParameter('option_code', $attributeCode)
+            ->setParameter('option_code', $optionCode)
             ->getQuery()
             ->getOneOrNullResult();
     }
