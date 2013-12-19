@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 
 /**
@@ -53,7 +53,7 @@ class ORMTransformer extends AbstractORMTransformer
     {
         $repository = $this->doctrine->getRepository($class);
 
-        if ($repository instanceof ReferableEntityRepository) {
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
             $reference = implode(
                 '.',
                 array_map(
