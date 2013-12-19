@@ -172,11 +172,11 @@ class ItemStep extends AbstractStep
         while (!$stopExecution) {
 
             try {
-                 $readItem = $this->reader->read();
-                 if (null === $readItem) {
+                $readItem = $this->reader->read();
+                if (null === $readItem) {
                     $stopExecution = true;
                     continue;
-                 }
+                }
 
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);

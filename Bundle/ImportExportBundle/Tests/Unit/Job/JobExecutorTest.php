@@ -17,12 +17,27 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $jobRegistry;
+    protected $managerRegistry;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $batchJobRegistry;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $contextRegistry;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $batchJobRepository;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $batchJobManager;
 
     /**
      * @var JobExecutor
@@ -34,14 +49,33 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->jobRegistry = $this->getMockBuilder('Oro\Bundle\BatchBundle\Connector\ConnectorRegistry')
+        $this->managerRegistry = $this->getMockBuilder('Symfony\Bridge\Doctrine\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->batchJobRegistry = $this->getMockBuilder('Oro\Bundle\BatchBundle\Connector\ConnectorRegistry')
             ->disableOriginalConstructor()
             ->getMock();
         $this->contextRegistry = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->managerRegistry->expects($this->any())->method('getManager')
+            ->will($this->returnValue($this->entityManager));
+        $this->batchJobManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->batchJobRepository = $this->getMockBuilder('Oro\Bundle\BatchBundle\Job\DoctrineJobRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->batchJobRepository->expects($this->any())
+            ->method('getJobManager')
+            ->will($this->returnValue($this->batchJobManager));
 
-        $this->executor = new JobExecutor($this->entityManager, $this->jobRegistry, $this->contextRegistry);
+        $this->executor = new JobExecutor(
+            $this->batchJobRegistry,
+            $this->batchJobRepository,
+            $this->contextRegistry,
+            $this->managerRegistry
+        );
     }
 
     public function testExecuteJobUnknownJob()
@@ -52,7 +86,7 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('rollback');
         $this->entityManager->expects($this->never())
             ->method('commit');
-        $this->jobRegistry->expects($this->once())
+        $this->batchJobRegistry->expects($this->once())
             ->method('getJob')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
         $result = $this->executor->executeJob('import', 'test');
@@ -72,12 +106,19 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('rollback');
         $this->entityManager->expects($this->once())
             ->method('commit');
-        $this->entityManager->expects($this->once())
+
+        $this->batchJobManager->expects($this->at(0))
             ->method('persist')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
-        $this->entityManager->expects($this->once())
+        $this->batchJobManager->expects($this->at(1))
+            ->method('persist')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
+        $this->batchJobManager->expects($this->at(2))
             ->method('flush')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
+        $this->batchJobManager->expects($this->at(3))
+            ->method('flush')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
 
         $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')
             ->getMockForAbstractClass();
@@ -114,7 +155,7 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->jobRegistry->expects($this->once())
+        $this->batchJobRegistry->expects($this->once())
             ->method('getJob')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'))
             ->will($this->returnValue($job));
@@ -134,12 +175,19 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('rollback');
         $this->entityManager->expects($this->never())
             ->method('commit');
-        $this->entityManager->expects($this->once())
+
+        $this->batchJobManager->expects($this->at(0))
             ->method('persist')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
-        $this->entityManager->expects($this->once())
+        $this->batchJobManager->expects($this->at(1))
+            ->method('persist')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
+        $this->batchJobManager->expects($this->at(2))
             ->method('flush')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
+        $this->batchJobManager->expects($this->at(3))
+            ->method('flush')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
 
         $job = $this->getMockBuilder('Oro\Bundle\BatchBundle\Job\JobInterface')
             ->getMock();
@@ -154,7 +202,7 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->jobRegistry->expects($this->once())
+        $this->batchJobRegistry->expects($this->once())
             ->method('getJob')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'))
             ->will($this->returnValue($job));
@@ -173,12 +221,19 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('rollback');
         $this->entityManager->expects($this->never())
             ->method('commit');
-        $this->entityManager->expects($this->once())
+
+        $this->batchJobManager->expects($this->at(0))
             ->method('persist')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
-        $this->entityManager->expects($this->once())
+        $this->batchJobManager->expects($this->at(1))
+            ->method('persist')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
+        $this->batchJobManager->expects($this->at(2))
             ->method('flush')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'));
+        $this->batchJobManager->expects($this->at(3))
+            ->method('flush')
+            ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution'));
 
         $job = $this->getMockBuilder('Oro\Bundle\BatchBundle\Job\JobInterface')
             ->getMock();
@@ -194,7 +249,7 @@ class JobExecutorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->jobRegistry->expects($this->once())
+        $this->batchJobRegistry->expects($this->once())
             ->method('getJob')
             ->with($this->isInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance'))
             ->will($this->returnValue($job));

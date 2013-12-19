@@ -30,8 +30,13 @@ class DoctrineJobRepository implements JobRepositoryInterface
     {
         $currentConn = $entityManager->getConnection();
 
+        $currentConnParams = $currentConn->getParams();
+        if (isset($currentConnParams['pdo'])) {
+            unset($currentConnParams['pdo']);
+        }
+
         $jobConn = new Connection(
-            $currentConn->getParams(),
+            $currentConnParams,
             $currentConn->getDriver(),
             $currentConn->getConfiguration()
         );
