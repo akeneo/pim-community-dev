@@ -248,7 +248,7 @@ abstract class AbstractORMTransformer
                 array_map(
                     function ($property) use($data) {
                         if (!isset($data[$property])) {
-                            throw new MissingIdentifierException;
+                            throw new MissingIdentifierException();
                         }
 
                         return $data[$property];

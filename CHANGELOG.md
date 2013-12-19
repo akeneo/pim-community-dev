@@ -9,7 +9,7 @@
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
 - Fixtures can be in CSV (products, associations and attribute options)
-- Fixture files can be imported through a command (products, associations and attribute options)
+- Fixture files can be imported through a command (families, products, associations and attribute options)
 - Add quick create popin for jobs
 - Add WYSIWYG editor
 
