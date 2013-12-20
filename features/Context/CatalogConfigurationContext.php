@@ -4,6 +4,7 @@ namespace Context;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 
 /**
  * A context for initializing catalog configuration
