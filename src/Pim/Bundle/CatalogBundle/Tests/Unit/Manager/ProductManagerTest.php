@@ -118,6 +118,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
+            $objectManager ?: $this->getEntityManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
@@ -135,6 +136,25 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     protected function getObjectManagerMock($repository)
     {
         $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+
+        $manager->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($repository));
+
+        return $manager;
+    }
+
+    /**
+     * Get a mock of EntityManager
+     * @param mixed $repository
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManagerMock($repository)
+    {
+        $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $manager->expects($this->any())
             ->method('getRepository')
