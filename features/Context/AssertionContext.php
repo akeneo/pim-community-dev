@@ -8,7 +8,6 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * Context for assertions
@@ -54,16 +53,6 @@ class AssertionContext extends RawMinkContext
             $errors = $this->getCurrentPage()->getValidationErrors();
             assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
         }
-    }
-
-    /**
-     * @param PyStringNode $error
-     *
-     * @Then /^I should see(?: a)? validation (?:error|tooltip):$/
-     */
-    public function iShouldSeeValidationErrorAsString(PyStringNode $error)
-    {
-        $this->iShouldSeeValidationError((string) $error);
     }
 
     /**

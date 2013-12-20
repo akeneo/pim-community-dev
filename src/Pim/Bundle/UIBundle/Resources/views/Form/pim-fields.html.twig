@@ -153,10 +153,14 @@
                             <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
                                 <i class="icon-file upload-preview"></i>
                             </a>
+                            {% set filename = form.vars.value.originalFilename %}
+                            {% if filename|length > 20 %}
+                                {% set filename = filename|slice(0, 17) ~ '...' %}
+                            {% endif %}
                         {% else %}
                             <i class="icon-file upload-preview empty"></i>
                         {% endif %}
-                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
                     </div>
                     {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
                         <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
@@ -170,9 +174,7 @@
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
-                <div class="icons-container">
-                    {{ form_errors(form) }}
-                </div>
+                {{ block('form_info') }}
                 {{ form_widget(form.id) }}
                 {{ form_widget(form.copyFrom) }}
             </div>
@@ -210,10 +212,14 @@
                             <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
                                 <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
                             </a>
+                            {% set filename = form.vars.value.originalFilename %}
+                            {% if filename|length > 20 %}
+                                {% set filename = filename|slice(0, 17) ~ '...' %}
+                            {% endif %}
                         {% else %}
                             <i class="icon-camera-retro upload-preview empty"></i>
                         {% endif %}
-                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
                     </div>
                     {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
                         <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
@@ -227,9 +233,7 @@
                         {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
-                <div class="icons-container">
-                    {{ form_errors(form) }}
-                </div>
+                {{ block('form_info') }}
                 {{ form_widget(form.id) }}
                 {{ form_widget(form.copyFrom) }}
             </div>
@@ -289,9 +293,7 @@
             {{ form_widget(form.data, { 'attr': { 'class': 'input-small pull-left' }}) }}
             {{ form_widget(form.unit, { 'attr': { 'class': 'input-small append pull-left' }}) }}
             {{ form_widget(form.family) }}
-            <div class="icons-container">
-                {{ form_errors(form) }}
-            </div>
+            {{ block('form_info') }}
         </div>
     </div>
     <script type="text/javascript">

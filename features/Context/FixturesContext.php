@@ -216,7 +216,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->findEntity($entityName, $criteria);
 
         if (!$entity) {
-            if (gettype($criteria) === 'string') {
+            if (is_string($criteria)) {
                 $criteria = array('code' => $criteria);
             }
 
@@ -224,7 +224,7 @@ class FixturesContext extends RawMinkContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->entities[$entityName],
-                    print_r($criteria, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
         }
@@ -306,8 +306,7 @@ class FixturesContext extends RawMinkContext
                 $data
             );
 
-            $family = new Family();
-            $family->setCode($data['code']);
+            $family = $this->createFamily($data['code']);
             if (isset($data['label'])) {
                 $family
                     ->setLocale($this->getLocaleCode($data['locale']))
@@ -1678,6 +1677,24 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Create a family
+     *
+     * @param string $code
+     *
+     * @return Family
+     */
+    private function createFamily($code)
+    {
+        $family = $this->getFamilyFactory()->createFamily();
+        $family->setCode($code);
+
+        $this->persist($family);
+
+        return $family;
+    }
+
+
+    /**
      * @param string $string
      *
      * @return string
@@ -1765,6 +1782,14 @@ class FixturesContext extends RawMinkContext
     private function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Factory\FamilyFactory
+     */
+    private function getFamilyFactory()
+    {
+        return $this->getContainer()->get('pim_catalog.factory.family');
     }
 
     /**

@@ -128,6 +128,7 @@ Feature: Execute a job
       | uploadAllowed | yes |
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
+    And I wait for the job to finish
     Then there should be 10 products
 
   Scenario: Successfully import products prices

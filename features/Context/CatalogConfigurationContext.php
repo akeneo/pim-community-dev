@@ -4,6 +4,7 @@ namespace Context;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 
 /**
  * A context for initializing catalog configuration
@@ -39,7 +40,6 @@ class CatalogConfigurationContext extends RawMinkContext
         'ChannelLoader'        => 'channels',
         'AttributeGroupLoader' => 'attribute_groups',
         'AttributeLoader'      => 'attributes',
-        'FamilyLoader'         => 'families',
         'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
         'JobLoader'            => 'jobs',
@@ -100,6 +100,8 @@ class CatalogConfigurationContext extends RawMinkContext
     private function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
+        $listener = new ORMReferenceListener($this->referenceRepository);
+        $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
     }
 
     /**

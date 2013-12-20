@@ -9,6 +9,7 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * Main feature context
@@ -162,6 +163,16 @@ JS;
         if ($condition !== false && microtime(true) > $end) {
             throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
         }
+    }
+
+    /**
+     * @param PyStringNode $error
+     *
+     * @Then /^I should see:$/
+     */
+    public function iShouldSeeText(PyStringNode $error)
+    {
+        $this->assertSession()->pageTextContains((string) $error);
     }
 
     /**

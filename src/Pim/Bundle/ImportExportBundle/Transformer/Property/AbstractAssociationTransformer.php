@@ -18,30 +18,56 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
      */
     public function transform($value, array $options = array())
     {
-        $value = trim($value);
+        if (is_scalar($value)) {
+            $value = trim($value);
+        }
 
         $multiple = isset($options['multiple']) && $options['multiple'];
 
-        if (!$value) {
+        if ($value) {
+            return $this->doTransform(
+                $value,
+                $options['class'],
+                $multiple,
+                isset($options['reference_prefix']) ? $options['reference_prefix'] . '.' : ''
+            );
+        } else {
             return $multiple ? array() : null;
         }
-        $getEntity = function ($value) use ($options) {
-            if (isset($options['reference_prefix'])) {
-                $value = $options['reference_prefix'] . '.' . $value;
-            }
-            $entity = $this->getEntity($options['class'], $value);
+    }
+
+    /**
+     * Transform non empty value
+     *
+     * @param string|array $value
+     * @param string       $class
+     * @param boolean      $multiple
+     * @param string       $referencePrefix
+     *
+     * @return object|array
+     *
+     * @throws PropertyTransformerException
+     */
+    protected function doTransform($value, $class, $multiple, $referencePrefix)
+    {
+        $getEntity = function ($value) use ($class, $referencePrefix) {
+            $entity = $this->getEntity($class, $referencePrefix . $value);
             if (!$entity) {
                 throw new PropertyTransformerException(
                     'No entity of class "%class%" with code "%code%"',
-                    array('%class%' => $options['class'], '%code%' => $value)
+                    array('%class%' => $class, '%code%' => $referencePrefix . $value)
                 );
             }
 
             return $entity;
         };
 
+        if ($multiple && !is_array($value)) {
+            $value = preg_split('/\s*,\s*/', $value);
+        }
+
         return $multiple
-            ? array_map($getEntity, preg_split('/\s*,\s*/', $value))
+            ? array_map($getEntity, $value)
             : $getEntity($value);
     }
 }
