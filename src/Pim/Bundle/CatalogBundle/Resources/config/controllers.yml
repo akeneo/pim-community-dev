@@ -148,7 +148,6 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.locale'
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.association'
             - '@pim_catalog.form.association'
 
