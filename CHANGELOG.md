@@ -53,7 +53,7 @@
 - Error on disallowed decimal on price are not displayed at the right place
 - Initial state of completeness filter is wrong
 - Search should take account of ACLs
-- Oro mapping issue with serch item on beta-1
+- Oro mapping issue with search item on beta-1
 - Locale selector in the product header is sometimes too short
 
 ## BC breaks
