@@ -11,10 +11,10 @@ use Pim\Bundle\ImportExportBundle\Processor\NestedFamilyProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NestedFamilyProcessorTest extends AbstractTransformerProcessorTestCase
+class NestedAttributeProcessorTest extends AbstractTransformerProcessorTestCase
 {
     protected $processor;
-    protected $transformer;
+    protected $attributeTransformer;
     protected $data = array(
         'key' => 'val',
         'requirements' => array(
@@ -32,7 +32,7 @@ class NestedFamilyProcessorTest extends AbstractTransformerProcessorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
+        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\AttributeTransformer')
             ->disableOriginalConstructor()
             ->getMock();
         $this->processor = new NestedFamilyProcessor(
@@ -67,26 +67,17 @@ class NestedFamilyProcessorTest extends AbstractTransformerProcessorTestCase
         $this->transformer
             ->expects($this->at(2))
             ->method('transform')
-            ->with(
-                $this->equalTo('requirements_class'),
-                $this->equalTo($this->getRequirementData('channel1', 'attribute1'))
-            )
+            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel1', 'attribute1')))
             ->will($this->returnValue('requirement1'));
         $this->transformer
             ->expects($this->at(4))
             ->method('transform')
-            ->with(
-                $this->equalTo('requirements_class'),
-                $this->equalTo($this->getRequirementData('channel1', 'attribute2'))
-            )
+            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel1', 'attribute2')))
             ->will($this->returnValue('requirement2'));
         $this->transformer
             ->expects($this->at(7))
             ->method('transform')
-            ->with(
-                $this->equalTo('requirements_class'),
-                $this->equalTo($this->getRequirementData('channel2', 'attribute3'))
-            )
+            ->with($this->equalTo('requirements_class'), $this->equalTo($this->getRequirementData('channel2', 'attribute3')))
             ->will($this->returnValue('requirement3'));
         $this->transformer
             ->expects($this->never())

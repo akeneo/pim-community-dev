@@ -12,6 +12,8 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 
 /**
  * Transforms an array in an entity
@@ -52,12 +54,12 @@ abstract class AbstractORMTransformer
     /**
      * @var array
      */
-    protected $transformedColumnsInfo;
+    protected $transformedColumnsInfo = array();
 
     /**
      * @var array
      */
-    protected $errors;
+    protected $errors = array();
 
     /**
      * Constructor
@@ -221,5 +223,58 @@ abstract class AbstractORMTransformer
      * @abstract
      * @return object
      */
-    abstract protected function getEntity($class, array $data);
+    protected function getEntity($class, array $data)
+    {
+        $object = $this->findEntity($class, $data);
+        if (!$object) {
+            $object = $this->createEntity($class, $data);
+        }
+
+        return $object;
+    }
+
+    /**
+     * Finds an entity
+     * 
+     * @param string $class
+     * @param array  $data
+     * 
+     * @return object|null
+     */
+    protected function findEntity($class, array $data) {
+        $repository = $this->doctrine->getRepository($class);
+
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            $reference = implode(
+                '.',
+                array_map(
+                    function ($property) use ($class, $data) {
+                        if (!isset($data[$property])) {
+                            throw new MissingIdentifierException();
+                        }
+
+                        return $data[$property];
+                    },
+                    $repository->getReferenceProperties()
+                )
+            );
+
+            return $this->doctrine->getRepository($class)->findByReference($reference);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates an entity of the given class
+     *
+     * @param string $class
+     * @param array  $data
+     *
+     * @return object
+     */
+    protected function createEntity($class, array $data)
+    {
+        return new $class;
+    }
 }

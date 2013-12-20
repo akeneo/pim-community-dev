@@ -1,3 +1,4 @@
+@javascript
 Feature: Import attributes
   In order to reuse the attributes of my products
   As Julia
@@ -18,7 +19,7 @@ Feature: Import attributes
     And I am logged in as "Julia"
     And the following file to import:
     """
-    type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;is_translatable;is_scopable;allowed_extensions;date_type;metric_family;default_metric_unit
+    type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;translatable;scopable;allowed_extensions;date_type;metric_family;default_metric_unit
     pim_catalog_text;name;Name;info;0;1;1;1;0;;;;
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;1;0;0;;;;
     pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;1;1;0;0;;;;
@@ -39,7 +40,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the job to finish
     Then there should be the following attributes:
-      | type         | code               | label-en_US        | group     | unique | useable_as_grid_column | useable_as_grid_filter | is_translatable | is_scopable | allowed_extensions | date_type | metric_family | default_metric_unit |
+      | type         | code               | label-en_US        | group     | unique | useable_as_grid_column | useable_as_grid_filter | translatable    | scopable    | allowed_extensions | date_type | metric_family | default_metric_unit |
       | text         | name               | Name               | info      | 0      | 1                      | 1                      | 1               | 0           |                    |           |               |                     |
       | simpleselect | manufacturer       | Manufacturer       | info      | 0      | 1                      | 1                      | 0               | 0           |                    |           |               |                     |
       | multiselect  | weather_conditions | Weather conditions | info      | 0      | 1                      | 1                      | 0               | 0           |                    |           |               |                     |
@@ -62,8 +63,8 @@ Feature: Import attributes
       | unique                 | no               | no                 |
       | useable_as_grid_column | yes              | yes                |
       | useable_as_grid_filter | yes              | yes                |
-      | is_translatable        | yes              | no                 |
-      | is_scopable            | no               | no                 |
+      | translatable           | yes              | no                 |
+      | scopable               | no               | no                 |
       | date_type              | time             |                    |
       | metric_family          |                  | Length             |
       | default_metric_unit    |                  | METER              |
@@ -73,5 +74,5 @@ Feature: Import attributes
     When I am on the "attribute_import" import job page
     And I launch the import job
     And I wait for the job to finish
-    Then I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.dateType: This property may not be changed."
-    And I should see "Pim\Bundle\CatalogBundle\Entity\ProductAttribute.metricFamily: This property may not be changed."
+    Then I should see "dateType: This property may not be changed."
+    And I should see "metricFamily: This property may not be changed."

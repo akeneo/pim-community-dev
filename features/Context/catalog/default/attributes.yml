@@ -4,9 +4,8 @@ attributes:
             en_US: SKU
             fr_FR: SKU
         type:  pim_catalog_identifier
-        parameters:
-            required:            true
-            unique:              true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        required:            true
+        unique:              true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1

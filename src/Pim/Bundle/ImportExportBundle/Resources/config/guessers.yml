@@ -22,6 +22,16 @@ services:
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 0 }
 
+    pim_import_export.transformer.guesser.attribute_option_value:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.translation'
+            - %pim_catalog.entity.product_attribute_option.class%
+            - ['/^label-/']
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
         public: false
@@ -35,6 +45,17 @@ services:
         public: false
         arguments:
             - '@pim_import_export.transformer.property.nested_translation'
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.nested_attribute_option_value:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.nested_translation'
+            - %pim_catalog.entity.product_attribute_option.class%
+            - ['/^labels$/']
+            - { propertyPath: label }
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
 
@@ -77,7 +98,6 @@ services:
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 
-
     pim_import_export.transformer.guesser.datetime:
         class: %pim_import_export.transformer.guesser.type.class%
         public: false
@@ -114,6 +134,16 @@ services:
             - '@pim_import_export.transformer.property.skip'
             - %pim_catalog.entity.product.class%
             - ['/(_products|_groups)$/']
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 50 }
+
+    pim_import_export.transformer.guesser.skip_attribute_type:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.skip'
+            - %pim_catalog.entity.product_attribute.class%
+            - ['/^type$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 

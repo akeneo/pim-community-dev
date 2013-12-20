@@ -216,7 +216,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->findEntity($entityName, $criteria);
 
         if (!$entity) {
-            if (gettype($criteria) === 'string') {
+            if (is_string($criteria)) {
                 $criteria = array('code' => $criteria);
             }
 
@@ -224,7 +224,7 @@ class FixturesContext extends RawMinkContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->entities[$entityName],
-                    print_r($criteria, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
         }
@@ -585,8 +585,8 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
+            assertEquals(($data['translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());

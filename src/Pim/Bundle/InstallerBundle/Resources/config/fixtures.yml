@@ -32,11 +32,18 @@ group_types:
         processor:         pim_import_export.processor.group_type
 
 associations:
-    order: 50
+    order: 40
     csv:
         processor:         pim_import_export.processor.association
     yml:
         processor:         pim_import_export.processor.association
+
+attributes:
+    order: 40
+    csv:
+        processor:         pim_import_export.processor.attribute
+    yml:
+        processor:         pim_import_export.processor.attribute
 
 attribute_options:
     order: 50
@@ -47,8 +54,10 @@ attribute_options:
 
 families:
     order: 60
+    csv:
+        processor:         pim_import_export.processor.family
     yml:
-        processor:         pim_import_export.processor.nested_family
+        processor:         pim_import_export.processor.family
 
 products:
     order: 90

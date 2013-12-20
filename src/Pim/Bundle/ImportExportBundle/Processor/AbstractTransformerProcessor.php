@@ -39,6 +39,16 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     protected $mapping = array();
 
     /**
+    * @var boolean
+    */
+    protected $skipEmpty = false;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * Constructor
      *
      * @param ImportValidatorInterface $validator
@@ -132,6 +142,13 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
             if ($oldName != $newName && isset($values[$oldName])) {
                 $values[$newName] = $values[$oldName];
                 unset($values[$oldName]);
+            }
+        }
+        if ($this->skipEmpty) {
+            foreach(array_keys($values) as $key) {
+                if (!is_array($values[$key]) && (null === $values[$key] || '' === trim($values[$key]))) {
+                    unset($values[$key]);
+                }
             }
         }
     }

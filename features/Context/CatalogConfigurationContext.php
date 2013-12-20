@@ -4,6 +4,7 @@ namespace Context;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 
 /**
  * A context for initializing catalog configuration
@@ -32,15 +33,19 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * @var array Entity loaders and corresponding files
      */
-    protected $entityLoaders = array(
+    protected $preEntityLoaders = array(
         'CurrencyLoader'       => 'currencies',
         'LocaleLoader'         => null,
         'CategoryLoader'       => 'categories',
-        'AttributeLoader'      => 'attributes',
+    );
+
+    /**
+     * @var array Entity loaders and corresponding files
+     */
+    protected $postEntityLoaders = array(
         'GroupLoader'          => 'groups',
         'UserLoader'           => 'users',
     );
-
     /**
      * @param string $catalog
      *
@@ -68,7 +73,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $this->initializeReferenceRepository();
 
         $treatedFiles = array();
-        foreach ($this->entityLoaders as $loaderName => $fileName) {
+        foreach ($this->preEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
             $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
             if ($file) {
@@ -87,6 +92,15 @@ class CatalogConfigurationContext extends RawMinkContext
                     $files
                 );
         }
+        
+        foreach ($this->postEntityLoaders as $loaderName => $fileName) {
+            $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
+            $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
+            if ($file) {
+                $treatedFiles[] = $file;
+            }
+            $this->runLoader($loader, $file);
+        }
     }
 
     /**
@@ -95,6 +109,8 @@ class CatalogConfigurationContext extends RawMinkContext
     private function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
+        $listener = new ORMReferenceListener($this->referenceRepository);
+        $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
     }
 
     /**

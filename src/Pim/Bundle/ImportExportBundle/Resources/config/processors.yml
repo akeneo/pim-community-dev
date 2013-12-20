@@ -92,23 +92,25 @@ services:
             - '%pim_catalog.entity.attribute_group.class%'
 
     pim_import_export.processor.attribute:
-        class: %pim_import_export.processor.attribute.class%
+        class: %pim_import_export.processor.transformer.class%
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@validator'
-            - '@pim_catalog.manager.product'
-
+            - '@pim_import_export.validator.import'
+            - '@translator'
+            - '@pim_import_export.transformer.attribute'
+            - '%pim_catalog.entity.product_attribute.class%' 
+            
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer
         arguments:
             - '%pim_catalog.entity.product_attribute_option.class%'
 
-    pim_import_export.processor.nested_family:
-        class: '%pim_import_export.processor.nested_family.class%'
-        parent: pim_import_export.processor.transformer
+    pim_import_export.processor.family:
+        class: %pim_import_export.processor.transformer.class%
         arguments:
+            - '@pim_import_export.validator.import'
+            - '@translator'
+            - '@pim_import_export.transformer.family'
             - '%pim_catalog.entity.family.class%'
-            - '%pim_catalog.entity.attribute_requirement.class%'
 
     pim_import_export.processor.job_instance:
         parent: pim_import_export.processor.transformer
