@@ -54,6 +54,11 @@ class Loader implements LoaderInterface
     protected $eventDispatcher;
 
     /**
+     * @var boolean
+     */
+    protected $multiple;
+
+    /**
      * Constructor
      *
      * @param ObjectManager            $objectManager
@@ -61,19 +66,22 @@ class Loader implements LoaderInterface
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
+     * @param boolean                  $multiple
      */
     public function __construct(
         ObjectManager $objectManager,
         EntityCache $entityCache,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        $multiple
     ) {
         $this->objectManager = $objectManager;
         $this->entityCache = $entityCache;
         $this->reader = $reader;
         $this->processor = $processor;
         $this->eventDispatcher = $eventDispatcher;
+        $this->multiple = $multiple;
     }
 
     /**
@@ -83,16 +91,33 @@ class Loader implements LoaderInterface
     {
         $this->eventDispatcher->dispatch(static::EVENT_STARTED, new FixtureLoaderEvent($file));
         $this->reader->setFilePath($file);
-        while ($data = $this->reader->read()) {
-            $object = $this->processor->process($data);
-            $this->objectManager->persist($object);
-            $this->entityCache->setReference($object);
+
+        if ($this->multiple) {
+            $items = $this->reader->read();
+            foreach ($this->processor->process($items) as $object) {
+                $this->persistObject($object);
+            }
+        } else {
+            while ($item = $this->reader->read()) {
+                $this->persistObject($this->processor->process($item));
+            }
         }
 
         $this->objectManager->flush();
         $this->objectManager->clear();
         $this->entityCache->clear();
-        
+
         $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
+    }
+
+    /**
+     * Persists an object
+     *
+     * @param object $object
+     */
+    protected function persistObject($object)
+    {
+        $this->objectManager->persist($object);
+        $this->entityCache->setReference($object);
     }
 }

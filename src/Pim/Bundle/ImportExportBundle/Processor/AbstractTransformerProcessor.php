@@ -67,20 +67,16 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     {
         $this->mapValues($item);
         $entity = $this->transform($item);
-        $errors = $this->getTransformerErrors();
 
+        $errors = $this->getTransformerErrors();
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
-            if ($this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-            }
-            throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
+            $this->setItemErrors($item, $errors);
         }
 
         return $entity;
     }
-
 
     /**
      * {@inheritdoc}
@@ -92,7 +88,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
 
     /**
      * Adds a field mapping
-     * 
+     *
      * @param string $original The name of the field as supplied by the reader
      * @param string $target   The name of the field which will be sent to the transformer
      */
@@ -145,7 +141,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
             }
         }
         if ($this->skipEmpty) {
-            foreach(array_keys($values) as $key) {
+            foreach (array_keys($values) as $key) {
                 if (!is_array($values[$key]) && (null === $values[$key] || '' === trim($values[$key]))) {
                     unset($values[$key]);
                 }
@@ -158,10 +154,28 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      *
      * The keys correspond to the originally read columns labels.
      * The values correspond to the column labels needed by the transformer
+     *
+     * @return array
      */
     protected function getMapping()
     {
         return $this->mapping;
+    }
+
+    /**
+     * Sets errors on items
+     *
+     * @param array $item
+     * @param array $errors
+     *
+     * @throws InvalidItemException
+     */
+    protected function setItemErrors(array $item, array $errors)
+    {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+        throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
     }
 
     /**

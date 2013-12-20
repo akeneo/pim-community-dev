@@ -70,8 +70,11 @@ services:
     pim_import_export.processor.category:
         class: %pim_import_export.processor.category.class%
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@validator'
+            - '@pim_import_export.validator.import'
+            - '@translator'
+            - '@pim_import_export.transformer.orm'
+            - '@pim_import_export.entity_cache'
+            - '%pim_catalog.entity.category.class%'
 
     pim_import_export.processor.association:
         parent: pim_import_export.processor.transformer
@@ -96,8 +99,8 @@ services:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.attribute'
-            - '%pim_catalog.entity.product_attribute.class%' 
-            
+            - '%pim_catalog.entity.product_attribute.class%'
+
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer
         arguments:

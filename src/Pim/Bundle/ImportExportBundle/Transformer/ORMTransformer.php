@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
-
 /**
  * Transforms an array in an entity
  *

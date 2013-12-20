@@ -51,7 +51,7 @@ services:
     pim_import_export.transformer.job_instance:
         class: '%pim_import_export.transformer.job_instance.class%'
         parent: pim_import_export.transformer.orm
-            
+
     pim_import_export.transformer.column_info_transformer:
         class: %pim_import_export.transformer.column_info_transformer.class%
         arguments:

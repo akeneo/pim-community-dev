@@ -1,6 +1,7 @@
 default:
     class: Pim\Bundle\InstallerBundle\FixtureLoader\Loader
     order: 100
+    multiple: false
     csv:
         reader:            pim_import_export.reader.file.csv
         reader_options:    {}
@@ -9,6 +10,16 @@ default:
         reader:            pim_import_export.reader.file.yaml
         reader_options:    {}
         processor_options: {}
+
+categories:
+    order: 30
+    multiple: true
+    csv:
+        reader:            pim_import_export.reader.file.csv_category
+        processor:         pim_import_export.processor.category
+    yml:
+        reader:            pim_import_export.reader.file.yaml_multiple
+        processor:         pim_import_export.processor.category
 
 attribute_groups:
     order: 30
@@ -64,9 +75,7 @@ products:
     csv:
         processor:         pim_import_export.processor.product
     yml:
-        reader_options:
-            code_field: false
-            homogenize: true
+        reader:            pim_import_export.reader.file.yaml_product
         processor:         pim_import_export.processor.product
 
 jobs:

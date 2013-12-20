@@ -235,13 +235,14 @@ abstract class AbstractORMTransformer
 
     /**
      * Finds an entity
-     * 
+     *
      * @param string $class
      * @param array  $data
-     * 
+     *
      * @return object|null
      */
-    protected function findEntity($class, array $data) {
+    protected function findEntity($class, array $data)
+    {
         $repository = $this->doctrine->getRepository($class);
 
         if ($repository instanceof ReferableEntityRepositoryInterface) {

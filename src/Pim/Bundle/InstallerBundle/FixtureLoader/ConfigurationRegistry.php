@@ -64,9 +64,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getOrder($name)
     {
-        $config = $this->getConfiguration();
-
-        return isset($config[$name]['order']) ? $config[$name]['order'] : $config['default']['order'];
+        return $this->getConfigProperty($name, 'order');
     }
 
     /**
@@ -74,9 +72,15 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getClass($name)
     {
-        $config = $this->getConfiguration();
+        return $this->getConfigProperty($name, 'class');
+    }
 
-        return isset($config[$name]['class']) ? $config[$name]['class'] : $config['default']['class'];
+    /**
+     * {@inheritdoc}
+     */
+    public function isMultiple($name)
+    {
+        return $this->getConfigProperty($name, 'multiple');
     }
 
     /**
@@ -93,6 +97,13 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     public function getReader($name, $extension)
     {
         return $this->getFixtureService('reader', $name, $extension);
+    }
+
+    protected function getConfigProperty($name, $property)
+    {
+        $config = $this->getConfiguration();
+
+        return isset($config[$name][$property]) ? $config[$name][$property] : $config['default'][$property];
     }
 
     /**

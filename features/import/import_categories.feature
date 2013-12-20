@@ -12,12 +12,12 @@ Feature: Import categories
     And I am logged in as "Julia"
     And the following file to import:
     """
-    code;parent;dynamic;label-en_US
-    default;;;
-    computers;;;Computers
-    laptops;computers;;Laptops
-    hard_drives;laptops;;Hard drives
-    pc;computers;;PC
+    code;parent;label-en_US
+    default;;
+    computers;;Computers
+    laptops;computers;Laptops
+    hard_drives;laptops;Hard drives
+    pc;computers;PC
     """
     And the following job "acme_category_import" configuration:
       | filePath | {{ file to import }} |
