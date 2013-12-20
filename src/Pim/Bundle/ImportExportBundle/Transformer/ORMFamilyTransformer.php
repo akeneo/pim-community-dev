@@ -10,15 +10,14 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerIn
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
-
 /**
  * Family transformer
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyTransformer extends ORMTransformer
+class ORMFamilyTransformer extends ORMTransformer
 {
     /**
      * @var FamilyFactory
@@ -37,7 +36,7 @@ class FamilyTransformer extends ORMTransformer
 
     /**
      * Constructor
-     * 
+     *
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
@@ -49,7 +48,7 @@ class FamilyTransformer extends ORMTransformer
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
-        GuesserInterface $guesser, 
+        GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         FamilyFactory $factory,
         $familyClass,
@@ -87,7 +86,7 @@ class FamilyTransformer extends ORMTransformer
 
     /**
      * Sets the requirements
-     * 
+     *
      * @param Family $family
      * @param array  $requirementsData
      */
@@ -95,23 +94,21 @@ class FamilyTransformer extends ORMTransformer
     {
         $requirements = array();
         foreach ($requirementsData as $channelCode => $attributeCodes) {
-            $requirements = array_merge(
-                $requirements,
-                $this->getRequirements($channelCode, $attributeCodes)
-            );
+            foreach ($this->getRequirements($channelCode, $attributeCodes) as $requirement) {
+                $family->addAttributeRequirement($requirement);
+            }
             if (count($this->errors)) {
                 break;
             }
         }
-        $family->setAttributeRequirements($requirements);
     }
 
     /**
      * Returns the requirements for a channel
      *
-     * @param  string $channelCode
-     * @param  array  $attributeCodes
-     * 
+     * @param string $channelCode
+     * @param array  $attributeCodes
+     *
      * @return AttributeRequirement[]
      */
     protected function getRequirements($channelCode, $attributeCodes)

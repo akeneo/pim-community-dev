@@ -4,7 +4,7 @@ parameters:
     pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
     pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
     pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
-    pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\FamilyTransformer
+    pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\ORMFamilyTransformer
     pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
     pim_import_export.transformer.property.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:              Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
@@ -53,7 +53,7 @@ services:
             - '@pim_catalog.factory.family'
             - '%pim_catalog.entity.family.class%'
             - '%pim_catalog.entity.attribute_requirement.class%'
-            
+
     pim_import_export.transformer.property.default:
         class: '%pim_import_export.transformer.property.default.class%'
         public: false
