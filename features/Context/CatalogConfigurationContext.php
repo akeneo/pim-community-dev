@@ -99,6 +99,8 @@ class CatalogConfigurationContext extends RawMinkContext
     private function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
+        $listener = new ORMReferenceListener($this->referenceRepository);
+        $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
     }
 
     /**
