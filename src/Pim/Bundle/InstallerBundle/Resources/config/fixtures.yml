@@ -26,8 +26,10 @@ attribute_options:
 
 families:
     order: 60
+    csv:
+        processor:         pim_import_export.processor.family
     yml:
-        processor:         pim_import_export.processor.nested_family
+        processor:         pim_import_export.processor.family
 
 products:
     order: 90
