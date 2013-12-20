@@ -74,14 +74,12 @@ services:
             - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.processor.attribute:
-        class: %pim_import_export.processor.attribute.class%
+        class: %pim_import_export.processor.transformer.class%
         arguments:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.attribute'
-            - '@pim_import_export.transformer.orm'
-            - '@pim_import_export.entity_cache'
-            - '%pim_catalog.entity.product_attribute_option.class%'            
+            - '%pim_catalog.entity.product_attribute.class%' 
             
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer
