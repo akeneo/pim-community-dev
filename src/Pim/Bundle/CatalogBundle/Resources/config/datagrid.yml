@@ -1,0 +1,74 @@
+datagrid:
+    association-grid:
+        options:
+            entityHint: association
+        source:
+            acl_resource: pim_catalog_association_index
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - a.code
+                    - >
+                        (CASE WHEN translation.label IS NULL THEN
+                            a.code
+                        ELSE
+                            translation.label
+                        END) AS label
+                from:
+                    - { table: PimCatalogBundle:Association, alias: a }
+                join:
+                    left:
+                        translation:
+                            join:          a.translations
+                            alias:         translation
+                            conditionType: WITH
+                            condition:     translation.locale = :localeCode
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_association_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_association_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: a.code
+                label:
+                    data_name: label
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: a.code
+                label:
+                    type:             string
+                    label:            Label
+                    data_name:        label
+                    filter_by_having: true

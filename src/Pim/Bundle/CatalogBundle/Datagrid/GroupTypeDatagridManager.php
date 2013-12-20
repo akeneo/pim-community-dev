@@ -151,7 +151,7 @@ class GroupTypeDatagridManager extends DatagridManager
      *
      * @param LocaleManager $localeManager
      *
-     * @return AssociationDatagridManager
+     * @return GroupTypeDatagridManager
      */
     public function setLocaleManager(LocaleManager $localeManager)
     {

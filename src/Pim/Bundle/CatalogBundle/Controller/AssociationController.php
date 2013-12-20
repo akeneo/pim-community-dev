@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler;
@@ -31,6 +32,11 @@ use Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler;
  */
 class AssociationController extends AbstractDoctrineController
 {
+    /**
+     * @var LocaleManager
+     */
+    private $localeManager;
+
     /**
      * @var DatagridHelperInterface
      */
@@ -57,6 +63,7 @@ class AssociationController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
+     * @param LocaleManager            $localeManager
      * @param DatagridHelperInterface  $dataGridHelper
      * @param AssociationHandler       $associationHandler
      * @param Form                     $associationForm
@@ -70,6 +77,7 @@ class AssociationController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
+        LocaleManager $localeManager,
         DatagridHelperInterface $dataGridHelper,
         AssociationHandler $associationHandler,
         Form $associationForm
@@ -85,6 +93,7 @@ class AssociationController extends AbstractDoctrineController
             $doctrine
         );
 
+        $this->localeManager      = $localeManager;
         $this->datagridHelper     = $dataGridHelper;
         $this->associationHandler = $associationHandler;
         $this->associationForm    = $associationForm;
@@ -101,14 +110,8 @@ class AssociationController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagridView = $this->datagridHelper->getDatagrid('association')->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'datagrid' => $datagridView
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
         );
     }
 
