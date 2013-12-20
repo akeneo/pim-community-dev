@@ -119,7 +119,7 @@ class JobInstance
      * @param string $type
      * @param string $alias
      */
-    public function __construct($connector, $type, $alias)
+    public function __construct($connector = null, $type = null, $alias = null)
     {
         $this->connector     = $connector;
         $this->type          = $type;
