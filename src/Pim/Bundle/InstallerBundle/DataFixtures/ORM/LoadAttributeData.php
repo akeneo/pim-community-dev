@@ -159,6 +159,14 @@ class LoadAttributeData extends AbstractInstallerFixture
         return $options;
     }
 
+    /**
+     * Get attribute option reference
+     *
+     * @param string $attributeCode
+     * @param string $code
+     *
+     * @return string
+     */
     protected function getOptionReference($attributeCode, $code)
     {
         return 'Pim\Bundle\CatalogBundle\Entity\AttributeOption.' . $attributeCode . '.' . $code;

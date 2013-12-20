@@ -53,9 +53,10 @@ class LoaderFactory
     /**
      * Creates a loader
      *
-     * @param ObjectManager $objectManager
-     * @param string        $name
-     * @param string        $extension
+     * @param ObjectManager       $objectManager
+     * @param ReferenceRepository $referenceRepository
+     * @param string              $name
+     * @param string              $extension
      *
      * @return LoaderInterface
      */

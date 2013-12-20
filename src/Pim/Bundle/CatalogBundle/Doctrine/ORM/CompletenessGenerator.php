@@ -45,7 +45,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritdoc}
      */
     public function generate(array $criteria, $limit = null)
     {
