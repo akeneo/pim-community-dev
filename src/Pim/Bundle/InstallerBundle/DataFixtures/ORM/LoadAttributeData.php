@@ -102,7 +102,8 @@ class LoadAttributeData extends AbstractInstallerFixture
     /**
      * Prepare parameters
      *
-     * @param array $data
+     * @param string $attributeCode
+     * @param array  $data
      *
      * @return array
      */
@@ -132,7 +133,8 @@ class LoadAttributeData extends AbstractInstallerFixture
     /**
      * Prepare attribute options
      *
-     * @param array $data the options data
+     * @param string $attributeCode the code of the attribute
+     * @param array  $data          the options data
      *
      * @return array
      */
