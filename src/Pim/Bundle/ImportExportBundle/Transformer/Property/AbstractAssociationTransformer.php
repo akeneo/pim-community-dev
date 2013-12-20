@@ -38,14 +38,14 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
 
     /**
      * Transform non empty value
-     * 
+     *
      * @param string|array $value
      * @param string       $class
      * @param boolean      $multiple
      * @param string       $referencePrefix
-     * 
+     *
      * @return object|array
-     * 
+     *
      * @throws PropertyTransformerException
      */
     protected function doTransform($value, $class, $multiple, $referencePrefix)
@@ -68,6 +68,6 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
 
         return $multiple
             ? array_map($getEntity, $value)
-            : $getEntity($value);        
+            : $getEntity($value);
     }
 }

@@ -1,3 +1,4 @@
+@javascript
 Feature: Set the attribute used as label
   In order to let the user which attribute is the most accurate as the product title
   As a user
@@ -18,9 +19,8 @@ Feature: Set the attribute used as label
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page
-    Then eligible attributes as label should be Id, Brand and Model
+    Then eligible attributes as label should be Id, SKU, Brand and Model
 
-  @javascript
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page
     And I fill in the following information:
@@ -47,7 +47,6 @@ Feature: Set the attribute used as label
     When I am on the "bag-jean" product page
     Then the title of the product should be "Product/en bag-jean"
 
-  @javascript
   Scenario: Fail to remove an attribute that is used as the family label
     Given the attribute "Brand" has been chosen as the family "Bags" label
     When I am on the "Bags" family page

@@ -1,3 +1,4 @@
+@skip
 Feature: Drag and drop a category
   In order to be able to modify the category tree
   As a user
