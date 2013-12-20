@@ -21,7 +21,7 @@ interface ReferableEntityRepositoryInterface
     /**
      * Find an entity by unique code
      *
-     * @var string $code
+     * @param string $code
      *
      * @return object
      */

@@ -18,7 +18,7 @@ define(
                         return;
                     }
                     self.updated = true;
-                    $('#updated').removeClass('hide');
+                    $('#entity-updated').css('opacity', 1);
 
                     $form.off('change', formUpdated);
                     $(document).off('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
@@ -52,7 +52,7 @@ define(
             $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
             $form.on('refresh', function() {
                 self.updated = false;
-                $('#updated').addClass('hide');
+                $('#entity-updated').css('opacity', 0);
             });
 
             $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);

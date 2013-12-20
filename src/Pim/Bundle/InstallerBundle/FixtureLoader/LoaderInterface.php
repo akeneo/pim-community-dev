@@ -14,7 +14,7 @@ interface LoaderInterface
     /**
      * Load a fixture file
      *
-     * @var string $file
+     * @param string $file
      */
     public function load($file);
 }

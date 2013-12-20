@@ -33,7 +33,8 @@ class AjaxOptionController
     /**
      * Returns a JSON response containing options
      *
-     * @param  Request      $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function listAction(Request $request)

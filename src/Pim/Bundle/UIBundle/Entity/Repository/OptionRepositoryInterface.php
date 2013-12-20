@@ -59,7 +59,6 @@ interface OptionRepositoryInterface
      * Returns the id for a given option object
      *
      * @param object $object
-     * @param string $dataLocale
      *
      * @return string
      */

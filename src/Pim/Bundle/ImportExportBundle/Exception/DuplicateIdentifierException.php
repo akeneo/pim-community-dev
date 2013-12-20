@@ -27,8 +27,7 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
     /**
      * Constructor
      *
-     * @param mixed  $identifier
-     * @param string $identifierColumn
+     * @param string $identifier
      * @param array  $item
      */
     public function __construct($identifier, array $item)

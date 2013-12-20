@@ -85,6 +85,12 @@ class AddToGroups extends AbstractMassEditAction
         }
     }
 
+    /**
+     * Add products to a group
+     *
+     * @param ProductInterface[] $products
+     * @param Group              $group
+     */
     protected function addProductsToGroup(array $products, Group $group)
     {
         foreach ($products as $product) {
