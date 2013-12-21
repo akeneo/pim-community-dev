@@ -7,7 +7,6 @@ services:
         class: %pim_catalog.form.type.product.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - pim_product_value
         tags:
             - { name: form.type, alias: pim_product }
 
@@ -22,7 +21,6 @@ services:
         class: %pim_catalog.form.type.product_create.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - pim_product_value
         tags:
             - { name: form.type, alias: pim_product_create }
 
