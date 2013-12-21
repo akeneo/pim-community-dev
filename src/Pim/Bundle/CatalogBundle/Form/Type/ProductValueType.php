@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -17,24 +19,45 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueType extends FlexibleValueType
+class ProductValueType extends AbstractType
 {
+    /**
+     * @var EventSubscriberInterface
+     */
+    protected $subscriber;
+
+    /**
+     * @var string
+     */
+    protected $valueClass;
+
     /**
      * @var ProductFormView $productFormView
      */
     protected $productFormView;
 
     /**
-     * {@inheritdoc}
+     * @param ProductManager           $manager         the product manager
+     * @param EventSubscriberInterface $subscriber      the subscriber
+     * @param ProductFormView          $productFormView the form view
      */
     public function __construct(
-        FlexibleManager $flexibleManager,
+        ProductManager $manager,
         EventSubscriberInterface $subscriber,
         ProductFormView $productFormView
     ) {
-        parent::__construct($flexibleManager, $subscriber);
-
+        $this->subscriber      = $subscriber;
+        $this->valueClass      = $manager->getFlexibleValueName();
         $this->productFormView = $productFormView;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('id', 'hidden');
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -47,6 +70,19 @@ class ProductValueType extends FlexibleValueType
         }
 
         $view->vars['mode'] = isset($options['block_config']['mode']) ? $options['block_config']['mode'] : 'normal';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => $this->valueClass,
+                'cascade_validation' => true
+            )
+        );
     }
 
     /**

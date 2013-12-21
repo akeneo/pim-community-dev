@@ -25,7 +25,7 @@ services:
     pim_catalog.form.type.image:
         class: %pim_catalog.form.type.image.class%
         tags:
-            - { name: form.type, alias: pim_image }
+            - { name: form.type, alias: pim_catalog_image }
 
     # Subscribers
     pim_catalog.form.subscriber.attribute:

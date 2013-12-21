@@ -94,7 +94,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\ImageType
         arguments:
             - media
-            - pim_image
+            - pim_catalog_image
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_catalog_image }
