@@ -44,9 +44,9 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     protected $flexibleConfig;
 
     /**
-     * @var ObjectManager $storageManager
+     * @var ObjectManager $objectManager
      */
-    protected $storageManager;
+    protected $objectManager;
 
     /**
      * @var FlexibleEntityRepository
@@ -85,25 +85,25 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @param string                   $flexibleName         Entity name
      * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $storageManager       Storage manager
+     * @param ObjectManager            $manager              Object manager
      * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
      */
     public function __construct(
         $flexibleName,
         $flexibleConfig,
-        ObjectManager $storageManager,
+        ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory
     ) {
         $this->flexibleName         = $flexibleName;
         $this->flexibleConfig       = $flexibleConfig['entities_config'][$flexibleName];
-        $this->storageManager       = $storageManager;
+        $this->objectManager        = $manager;
         $this->eventDispatcher      = $eventDispatcher;
         $this->attributeTypeFactory = $attributeTypeFactory;
         $this->attributeTypes       = array();
 
-        $this->flexibleRepository   = $storageManager->getRepository($this->flexibleName);
+        $this->flexibleRepository   = $manager->getRepository($this->flexibleName);
         $this->flexibleRepository->setFlexibleConfig($this->flexibleConfig);
     }
 
@@ -192,9 +192,9 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @return ObjectManager
      */
-    public function getStorageManager()
+    public function getObjectManager()
     {
-        return $this->storageManager;
+        return $this->objectManager;
     }
 
     /**
@@ -264,7 +264,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getAttributeRepository()
     {
-        return $this->storageManager->getRepository($this->getAttributeName());
+        return $this->objectManager->getRepository($this->getAttributeName());
     }
 
     /**
@@ -274,7 +274,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getAttributeOptionRepository()
     {
-        return $this->storageManager->getRepository($this->getAttributeOptionName());
+        return $this->objectManager->getRepository($this->getAttributeOptionName());
     }
 
     /**
@@ -284,7 +284,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getAttributeOptionValueRepository()
     {
-        return $this->storageManager->getRepository($this->getAttributeOptionValueName());
+        return $this->objectManager->getRepository($this->getAttributeOptionValueName());
     }
 
     /**
@@ -294,7 +294,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getFlexibleValueRepository()
     {
-        return $this->storageManager->getRepository($this->getFlexibleValueName());
+        return $this->objectManager->getRepository($this->getFlexibleValueName());
     }
 
     /**
@@ -377,7 +377,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $codeToAttributeData = $this->getStorageManager()->getRepository($attributeClass)->getCodeToAttributes($class);
+        $codeToAttributeData = $this->getObjectManager()->getRepository($attributeClass)->getCodeToAttributes($class);
         $flexible->setAllAttributes($codeToAttributeData);
         $flexible->setValueClass($valueClass);
 
