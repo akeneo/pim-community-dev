@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Product form type
@@ -16,27 +15,6 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
  */
 class ProductType extends AbstractType
 {
-    /**
-     * @var FlexibleManager
-     */
-    protected $flexibleManager;
-
-    /**
-     * @var string
-     */
-    protected $flexibleClass;
-
-    /**
-     * Constructor
-     *
-     * @param FlexibleManager $flexibleManager the manager
-     */
-    public function __construct(FlexibleManager $flexibleManager)
-    {
-        $this->flexibleManager = $flexibleManager;
-        $this->flexibleClass   = $flexibleManager->getFlexibleName();
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -37,15 +37,17 @@ class ProductValueType extends AbstractType
     protected $productFormView;
 
     /**
-     * {@inheritdoc}
+     * @param ProductManager           $manager         the product manager
+     * @param EventSubscriberInterface $subscriber      the subscriber
+     * @param ProductFormView          $productFormView the form view
      */
     public function __construct(
-        FlexibleManager $flexibleManager,
+        ProductManager $manager,
         EventSubscriberInterface $subscriber,
         ProductFormView $productFormView
     ) {
         $this->subscriber      = $subscriber;
-        $this->valueClass      = $flexibleManager->getFlexibleValueName();
+        $this->valueClass      = $manager->getFlexibleValueName();
         $this->productFormView = $productFormView;
     }
 
