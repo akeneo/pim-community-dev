@@ -38,7 +38,7 @@ class ProductAttributeType extends AbstractType
     /**
      * Constructor
      *
-     * @param string                                  $attributeClass
+     * @param string                                  $attributeClass Attribute class
      * @param AttributeTypeManager                    $attTypeManager Attribute type manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
