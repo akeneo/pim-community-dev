@@ -11,7 +11,6 @@ parameters:
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pim_catalog.form.type.add_to_groups.class:          Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
-    pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
     pim_catalog.extension.type.metric.class:            Pim\Bundle\CatalogBundle\Form\Type\MetricTypeExtension
     pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
 

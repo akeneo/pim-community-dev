@@ -157,11 +157,12 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_conversion_units }
 
-    # Form extensions
-    pim_catalog.extension.type.image:
-        class: %pim_catalog.extension.type.image.class%
+    pim_catalog.form.type.image:
+        class: %pim_catalog.form.type.image.class%
         tags:
-            - { name: form.type_extension, alias: pim_image }
+            - { name: form.type, alias: pim_catalog_image }
+
+    # Form extensions
 
     pim_catalog.extension.type.media:
         class: %pim_catalog.extension.type.media.class%
