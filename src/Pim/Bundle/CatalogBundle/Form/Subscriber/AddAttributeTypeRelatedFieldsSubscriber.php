@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

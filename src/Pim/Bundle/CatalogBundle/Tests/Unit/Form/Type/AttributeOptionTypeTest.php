@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\CatalogBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 
 /**
  * Test related class
@@ -36,11 +36,11 @@ class AttributeOptionTypeTest extends TypeTestCase
         $this->assertField('translatable', 'text');
 
         $this->assertEquals(
-            'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption',
+            'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('pim_flexibleentity_attribute_option', $this->form->getName());
+        $this->assertEquals('pim_catalog_attribute_option', $this->form->getName());
     }
 
     /**
