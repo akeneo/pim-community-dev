@@ -38,7 +38,7 @@ class ProductManager extends FlexibleManager
     /**
      * @var ObjectManager
      */
-    protected $storageManager;
+    protected $objectManager;
 
     /**
      * @var ProductBuilder
@@ -55,8 +55,8 @@ class ProductManager extends FlexibleManager
      *
      * @param string                   $flexibleName         Entity name
      * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $storageManager       Storage manager
-     * @param EntityManager            $entityManager        Entity manager
+     * @param ObjectManager            $objectManager        Storage manager for product
+     * @param EntityManager            $entityManager        Entity manager for other entitites
      * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
      * @param MediaManager             $mediaManager         Media manager
@@ -66,7 +66,7 @@ class ProductManager extends FlexibleManager
     public function __construct(
         $flexibleName,
         $flexibleConfig,
-        ObjectManager $storageManager,
+        ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
@@ -77,7 +77,7 @@ class ProductManager extends FlexibleManager
         parent::__construct(
             $flexibleName,
             $flexibleConfig,
-            $storageManager,
+            $objectManager,
             $eventDispatcher,
             $attributeTypeFactory
         );
@@ -184,7 +184,7 @@ class ProductManager extends FlexibleManager
     public function getImportProduct($attributes, $identifierAttribute, $code)
     {
         $class = $this->getFlexibleRepository()->getClassName();
-        $em = $this->getStorageManager();
+        $em = $this->getObjectManager();
         try {
             $id = $em->createQuery(
                 'SELECT p.id FROM ' . $class . ' p '.
@@ -248,10 +248,10 @@ class ProductManager extends FlexibleManager
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
-        $this->storageManager->persist($product);
+        $this->objectManager->persist($product);
 
         if ($flush) {
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
         $this->completenessManager->schedule($product);
 
@@ -274,7 +274,7 @@ class ProductManager extends FlexibleManager
         }
 
         if ($flush) {
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
     }
 
@@ -319,7 +319,7 @@ class ProductManager extends FlexibleManager
             if ($media = $value->getMedia()) {
                 if ($id = $media->getCopyFrom()) {
                     $source = $this
-                        ->storageManager
+                        ->objectManager
                         ->getRepository('Pim\Bundle\CatalogBundle\Model\Media')
                         ->find($id);
 
@@ -361,7 +361,7 @@ class ProductManager extends FlexibleManager
      */
     public function ensureAllAssociations(ProductInterface $product)
     {
-        $missingAssociations = $this->storageManager
+        $missingAssociations = $this->objectManager
             ->getRepository('PimCatalogBundle:Association')
             ->findMissingAssociations($product);
 
@@ -371,7 +371,7 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
     }
 
@@ -384,9 +384,9 @@ class ProductManager extends FlexibleManager
     {
         $products = $this->getFlexibleRepository()->findByIds($ids);
         foreach ($products as $product) {
-            $this->storageManager->remove($product);
+            $this->objectManager->remove($product);
         }
-        $this->storageManager->flush();
+        $this->objectManager->flush();
     }
 
     /**

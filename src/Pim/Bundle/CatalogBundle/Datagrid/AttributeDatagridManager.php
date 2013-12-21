@@ -164,7 +164,7 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->productManager->getStorageManager();
+        $em = $this->productManager->getObjectManager();
         $groups = $em->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {

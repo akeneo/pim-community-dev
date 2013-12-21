@@ -246,7 +246,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $manager->expects($this->any())
-            ->method('getStorageManager')
+            ->method('getObjectManager')
             ->will($this->returnValue($objectManager));
 
         $manager->expects($this->any())
