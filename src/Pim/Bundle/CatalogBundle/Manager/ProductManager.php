@@ -430,26 +430,6 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Return related repository
-     *
-     * @return ObjectRepository
-     */
-    public function getAttributeOptionValueRepository()
-    {
-        return $this->entityManager->getRepository($this->getAttributeOptionValueName());
-    }
-
-    /**
-     * Return related repository
-     *
-     * @return ObjectRepository
-     */
-    public function getFlexibleValueRepository()
-    {
-        return $this->entityManager->getRepository($this->getFlexibleValueName());
-    }
-
-    /**
      * Get the entity manager
      *
      * @return EntityManager
