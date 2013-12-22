@@ -155,14 +155,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     /**
      * Test related method
      */
-    public function testGetFlexibleValueRepository()
-    {
-        $this->assertInstanceOf('Doctrine\ORM\EntityRepository', $this->manager->getFlexibleValueRepository());
-    }
-
-    /**
-     * Test related method
-     */
     public function testCreateAttribute()
     {
         $attribute = new Attribute();

@@ -257,16 +257,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     }
 
     /**
-     * Return related repository
-     *
-     * @return ObjectRepository
-     */
-    public function getFlexibleValueRepository()
-    {
-        return $this->objectManager->getRepository($this->getFlexibleValueName());
-    }
-
-    /**
      * Return a new instance
      *
      * @return FlexibleInterface
