@@ -22,6 +22,11 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     protected $attributeClass;
 
     /**
+     * @var string
+     */
+    protected $productClass;
+
+    /**
      * @var ProductManager
      */
     protected $productManager;
@@ -40,17 +45,20 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      * Constructor
      *
      * @param string               $attributeClass Attribute class
+     * @param string               $productClass   Product class
      * @param ProductManager       $productManager Product manager
      * @param LocaleManager        $localeManager  Locale manager
      * @param AttributeTypeFactory $factory        Attribute type factory
      */
     public function __construct(
         $attributeClass,
+        $productClass,
         ProductManager $productManager,
         LocaleManager $localeManager,
         AttributeTypeFactory $factory
     ) {
         $this->attributeClass = $attributeClass;
+        $this->productClass   = $productClass;
         $this->productManager = $productManager;
         $this->localeManager  = $localeManager;
         $this->factory        = $factory;
@@ -140,7 +148,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function getAttributeTypes()
     {
-        $types = $this->productManager->getAttributeTypes();
+        $types = $this->factory->getAttributeTypes($this->productClass);
         $choices = array();
         foreach ($types as $type) {
             $choices[$type] = $type;

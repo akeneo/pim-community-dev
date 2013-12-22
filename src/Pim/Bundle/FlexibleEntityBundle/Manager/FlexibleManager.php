@@ -314,16 +314,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
 
         $attribute->setBackendStorage(AbstractAttributeType::BACKEND_STORAGE_ATTRIBUTE_VALUE);
         if ($type) {
-            if (!in_array($type, $this->getAttributeTypes())) {
-                throw new FlexibleConfigurationException(
-                    sprintf(
-                        'Attribute "%s" type is not useable for the flexible entity "%s"',
-                        $type,
-                        $this->flexibleName
-                    )
-                );
-            }
-            $attributeType = $this->getAttributeTypeFactory()->get($type);
+            $attributeType = $this->getAttributeTypeFactory()->get($type, $this->getFlexibleName());
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
         }

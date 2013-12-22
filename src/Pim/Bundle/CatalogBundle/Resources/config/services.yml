@@ -33,6 +33,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product_attribute'
             - '@pim_flexibleentity.attributetype.factory'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.form.subscriber.attribute_requirements:
         class: %pim_catalog.form.subscriber.add_attribute_requirements.class%

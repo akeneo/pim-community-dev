@@ -24,6 +24,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
     /**
+     * @var string
+     */
+    protected $productClass;
+
+    /**
      * Attribute manager
      * @var ProductAttributeManagerInterface
      */
@@ -46,13 +51,16 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      *
      * @param ProductAttributeManagerInterface $attributeManager Attribute manager
      * @param AttributeTypeFactory             $attTypeFactory Attribute type factory
+     * @param string                           $productClass
      */
     public function __construct(
         ProductAttributeManagerInterface $attributeManager = null,
-        AttributeTypeFactory $attTypeFactory = null
+        AttributeTypeFactory $attTypeFactory = null,
+        $productClass
     ) {
         $this->attributeManager = $attributeManager;
         $this->attTypeFactory   = $attTypeFactory;
+        $this->productClass     = $productClass;
     }
 
     /**
@@ -129,7 +137,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      */
     protected function customizeForm(Form $form, ProductAttributeInterface $attribute)
     {
-        $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
+        $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType(), $this->productClass);
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
