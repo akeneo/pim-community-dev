@@ -163,7 +163,7 @@ class AttributeProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository($this->attributeManager->getAttributeName())
+            ->getRepository($this->attributeManager->getAttributeClass())
             ->findOneBy(array('code' => $code));
     }
 
