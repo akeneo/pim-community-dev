@@ -105,7 +105,9 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttributeOption()
     {
-        return new $this->optionClass();
+        $class = $this->optionClass;
+
+        return new $class();
     }
 
     /**
@@ -113,7 +115,9 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttributeOptionValue()
     {
-        return $this->optionValueClass();
+        $class = $this->optionValueClass;
+
+        return new $class();
     }
 
     /**
