@@ -1345,7 +1345,7 @@ class FixturesContext extends RawMinkContext
 
         $data['code'] = $data['code'] ?: $this->camelize($data['label']);
 
-        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($data['type']));
+        $attribute = $this->getProductAttributeManager()->createAttribute($this->getAttributeType($data['type']));
 
         $attribute->setCode($data['code']);
         $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
@@ -1766,6 +1766,14 @@ class FixturesContext extends RawMinkContext
     private function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
+     */
+    private function getProductAttributeManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.product_attribute');
     }
 
     /**
