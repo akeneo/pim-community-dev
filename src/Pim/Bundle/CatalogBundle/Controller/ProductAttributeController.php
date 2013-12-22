@@ -41,42 +41,42 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var ProductAttributeHandler
      */
-    private $attributeHandler;
+    protected $attributeHandler;
 
     /**
      * @var Form
      */
-    private $attributeForm;
+    protected $attributeForm;
 
     /**
      * @var ProductManager
      */
-    private $productManager;
+    protected $attributeManager;
 
     /**
      * @var LocaleManager
      */
-    private $localeManager;
+    protected $localeManager;
 
     /**
      * @var AuditManager
      */
-    private $auditManager;
+    protected $auditManager;
 
     /**
      * @var array
      */
-    private $measuresConfig;
+    protected $measuresConfig;
 
     /**
      * @var array
      */
-    private $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = array(
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect'
     );
@@ -84,21 +84,21 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
-     * @param ProductAttributeHandler  $attributeHandler
-     * @param Form                     $attributeForm
-     * @param ProductManager           $productManager
-     * @param LocaleManager            $localeManager
-     * @param AuditManager             $auditManager
-     * @param array                    $measuresConfig
+     * @param Request                          $request
+     * @param EngineInterface                  $templating
+     * @param RouterInterface                  $router
+     * @param SecurityContextInterface         $securityContext
+     * @param FormFactoryInterface             $formFactory
+     * @param ValidatorInterface               $validator
+     * @param TranslatorInterface              $translator
+     * @param RegistryInterface                $doctrine
+     * @param DatagridHelperInterface          $datagridHelper
+     * @param ProductAttributeHandler          $attributeHandler
+     * @param Form                             $attributeForm
+     * @param ProductAttributeManagerInterface $attributeManager
+     * @param LocaleManager                    $localeManager
+     * @param AuditManager                     $auditManager
+     * @param array                            $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -112,7 +112,7 @@ class ProductAttributeController extends AbstractDoctrineController
         DatagridHelperInterface $datagridHelper,
         ProductAttributeHandler $attributeHandler,
         Form $attributeForm,
-        ProductManager $productManager,
+        ProductAttributeManagerInterface $attributeManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
         $measuresConfig
@@ -131,7 +131,7 @@ class ProductAttributeController extends AbstractDoctrineController
         $this->datagridHelper   = $datagridHelper;
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
-        $this->productManager   = $productManager;
+        $this->attributeManager = $attributeManager;
         $this->localeManager    = $localeManager;
         $this->auditManager     = $auditManager;
         $this->measuresConfig   = $measuresConfig;
@@ -165,7 +165,7 @@ class ProductAttributeController extends AbstractDoctrineController
      */
     public function createAction()
     {
-        $attribute = $this->productManager->createAttribute('pim_catalog_text');
+        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
 
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
@@ -292,7 +292,7 @@ class ProductAttributeController extends AbstractDoctrineController
 
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
-                $attribute = $this->getRepository($this->productManager->getAttributeName())->find((int) $id);
+                $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
                     $this->getManager()->persist($attribute);
@@ -394,7 +394,7 @@ class ProductAttributeController extends AbstractDoctrineController
      */
     protected function findAttributeOr404($id)
     {
-        return $this->findOr404($this->productManager->getAttributeName(), $id);
+        return $this->findOr404($this->attributeManager->getAttributeClass(), $id);
     }
 
     /**
