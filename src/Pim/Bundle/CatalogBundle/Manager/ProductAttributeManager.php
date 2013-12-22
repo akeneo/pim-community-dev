@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
@@ -25,12 +25,22 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * @var string
      */
+    protected $optionClass;
+
+    /**
+     * @var string
+     */
+    protected $optionValueClass;
+
+    /**
+     * @var string
+     */
     protected $productClass;
 
     /**
-     * @var ProductManager
+     * @var ObjectManager
      */
-    protected $productManager;
+    protected $objectManager;
 
     /**
      * @var LocaleManager
@@ -45,24 +55,30 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * Constructor
      *
-     * @param string               $attributeClass Attribute class
-     * @param string               $productClass   Product class
-     * @param ProductManager       $productManager Product manager
-     * @param LocaleManager        $localeManager  Locale manager
-     * @param AttributeTypeFactory $factory        Attribute type factory
+     * @param string               $attributeClass   Attribute class
+     * @param string               $optionClass      Option class
+     * @param string               $optionValueClass Option value class
+     * @param string               $productClass     Product class
+     * @param ObjectManager        $objectManager    Object manager
+     * @param LocaleManager        $localeManager    Locale manager
+     * @param AttributeTypeFactory $factory          Attribute type factory
      */
     public function __construct(
         $attributeClass,
+        $optionClass,
+        $optionValueClass,
         $productClass,
-        ProductManager $productManager,
+        ObjectManager $objectManager,
         LocaleManager $localeManager,
         AttributeTypeFactory $factory
     ) {
-        $this->attributeClass = $attributeClass;
-        $this->productClass   = $productClass;
-        $this->productManager = $productManager;
-        $this->localeManager  = $localeManager;
-        $this->factory        = $factory;
+        $this->attributeClass   = $attributeClass;
+        $this->optionClass      = $optionClass;
+        $this->optionValueClass = $optionValueClass;
+        $this->productClass     = $productClass;
+        $this->objectManager    = $objectManager;
+        $this->localeManager    = $localeManager;
+        $this->factory          = $factory;
     }
 
     /**
@@ -89,7 +105,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttributeOption()
     {
-        return $this->productManager->createAttributeOption();
+        return new $this->optionClass();
     }
 
     /**
@@ -97,7 +113,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttributeOptionValue()
     {
-        return $this->productManager->createAttributeOptionValue();
+        return $this->optionValueClass();
     }
 
     /**
@@ -120,7 +136,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
             return $this->createAttribute($data['attributeType']);
         } elseif (gettype($data) === 'array' && isset($data['id'])) {
-            return $this->productManager->getAttributeRepository()->find($data['id']);
+            return $this->objectManager->getRepository($this->attributeClass)->find($data['id']);
         } else {
             return null;
         }

@@ -39,8 +39,10 @@ services:
         class: %pim_catalog.manager.product_attribute.class%
         arguments:
             - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.product_attribute_option.class%
+            - %pim_catalog.entity.product_attribute_option_value.class%
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.manager.product'
+            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.locale'
             - '@pim_flexibleentity.attributetype.factory'
 

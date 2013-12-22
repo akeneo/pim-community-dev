@@ -189,22 +189,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     /**
      * Test related method
      */
-    public function testCreateAttributeOption()
-    {
-        $this->assertInstanceOf($this->attributeOptionClassName, $this->manager->createAttributeOption());
-    }
-
-    /**
-     * Test related method
-     */
-    public function testCreateAttributeOptionValue()
-    {
-        $this->assertInstanceOf($this->attributeOptionValueClassName, $this->manager->createAttributeOptionValue());
-    }
-
-    /**
-     * Test related method
-     */
     public function testCreateFlexible()
     {
         $this->markTestSkipped('Issue with post load event mock');

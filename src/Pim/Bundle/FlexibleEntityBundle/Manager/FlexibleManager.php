@@ -285,34 +285,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     /**
      * Return a new instance
      *
-     * @return AbstractAttributeOption
-     */
-    public function createAttributeOption()
-    {
-        $class = $this->getAttributeOptionName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-
-        return $object;
-    }
-
-    /**
-     * Return a new instance
-     *
-     * @return AbstractAttributeOptionValue
-     */
-    public function createAttributeOptionValue()
-    {
-        $class = $this->getAttributeOptionValueName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-
-        return $object;
-    }
-
-    /**
-     * Return a new instance
-     *
      * @return FlexibleInterface
      */
     public function createFlexible()
