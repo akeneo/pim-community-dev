@@ -163,74 +163,6 @@ class FlexibleEntityRepository extends EntityRepository
     }
 
     /**
-     * @param QueryBuilder $qb
-     *
-     * @return FlexibleQueryBuilder
-     */
-    protected function getFlexibleQueryBuilder($qb)
-    {
-        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
-    }
-
-    /**
-     * Add join to values tables
-     *
-     * @param QueryBuilder $qb
-     */
-    protected function addJoinToValueTables(QueryBuilder $qb)
-    {
-        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
-            ->leftJoin('Value.attribute', 'Attribute')
-            ->leftJoin('Value.options', 'ValueOption')
-            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
-    }
-
-    /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
-     *
-     * @return array The objects.
-     */
-    protected function findByWithAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('Entity');
-        $this->addJoinToValueTables($qb);
-        $codeToAttribute = $this->getCodeToAttributes($attributes);
-        $attributes = array_keys($codeToAttribute);
-
-        if (!is_null($criteria)) {
-            foreach ($criteria as $attCode => $attValue) {
-                $this->applyFilterByAttribute($qb, $attCode, $attValue);
-            }
-        }
-        if (!is_null($orderBy)) {
-            foreach ($orderBy as $attCode => $direction) {
-                $this->applySorterByAttribute($qb, $attCode, $direction);
-            }
-        }
-
-        // use doctrine paginator to avoid count problem with left join of values
-        if (!is_null($offset) and !is_null($limit)) {
-            $qb->setFirstResult($offset)->setMaxResults($limit);
-            $paginator = new Paginator($qb->getQuery());
-
-            return $paginator;
-        }
-
-        return $qb;
-    }
-
-    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes
@@ -312,5 +244,73 @@ class FlexibleEntityRepository extends EntityRepository
             ->addOrderBy('Attribute.sortOrder')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return FlexibleQueryBuilder
+     */
+    protected function getFlexibleQueryBuilder($qb)
+    {
+        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+    }
+
+    /**
+     * Add join to values tables
+     *
+     * @param QueryBuilder $qb
+     */
+    protected function addJoinToValueTables(QueryBuilder $qb)
+    {
+        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
+            ->leftJoin('Value.attribute', 'Attribute')
+            ->leftJoin('Value.options', 'ValueOption')
+            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    protected function findByWithAttributesQB(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        $qb = $this->createQueryBuilder('Entity');
+        $this->addJoinToValueTables($qb);
+        $codeToAttribute = $this->getCodeToAttributes($attributes);
+        $attributes = array_keys($codeToAttribute);
+
+        if (!is_null($criteria)) {
+            foreach ($criteria as $attCode => $attValue) {
+                $this->applyFilterByAttribute($qb, $attCode, $attValue);
+            }
+        }
+        if (!is_null($orderBy)) {
+            foreach ($orderBy as $attCode => $direction) {
+                $this->applySorterByAttribute($qb, $attCode, $direction);
+            }
+        }
+
+        // use doctrine paginator to avoid count problem with left join of values
+        if (!is_null($offset) and !is_null($limit)) {
+            $qb->setFirstResult($offset)->setMaxResults($limit);
+            $paginator = new Paginator($qb->getQuery());
+
+            return $paginator;
+        }
+
+        return $qb;
     }
 }
