@@ -54,25 +54,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
      *
      * @return array The objects.
      */
-    public function findByWithAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    );
-
-    /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
-     *
-     * @return array The objects.
-     */
     public function findByWithAttributes(
         array $attributes = array(),
         array $criteria = null,

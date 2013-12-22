@@ -196,7 +196,7 @@ class FlexibleEntityRepository extends EntityRepository
      *
      * @return array The objects.
      */
-    public function findByWithAttributesQB(
+    protected function findByWithAttributesQB(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,
