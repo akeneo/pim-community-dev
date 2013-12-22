@@ -92,7 +92,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
 
         $attribute->setBackendStorage(AbstractAttributeType::BACKEND_STORAGE_ATTRIBUTE_VALUE);
         if ($type) {
-            $attributeType = $this->factory->get($type, $this->productClass);
+            $attributeType = $this->factory->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
         }

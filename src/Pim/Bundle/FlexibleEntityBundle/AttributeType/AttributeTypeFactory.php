@@ -75,15 +75,27 @@ class AttributeTypeFactory
     }
 
     /**
-     * Get the attribute type service
+     * Check if the attribute type is useable for the entity
      *
      * @param string $typeAlias alias
      * @param string $entity    entity FQCN
      *
+     * @return bool
+     */
+    public function isAllowed($typeAlias, $entity)
+    {
+        return ($entity === $this->types[$typeAlias]['entity']);
+    }
+
+    /**
+     * Get the attribute type service
+     *
+     * @param string $typeAlias alias
+     *
      * @return AttributeTypeInterface
      * @throws \RunTimeException
      */
-    public function get($typeAlias, $entity)
+    public function get($typeAlias)
     {
         if (!$typeAlias) {
             throw new \RunTimeException(sprintf('The type %s is not defined', $typeAlias));
@@ -94,12 +106,6 @@ class AttributeTypeFactory
 
         if (!$attributeType) {
             throw new \RunTimeException(sprintf('No attached service to type named "%s"', $typeAlias));
-        }
-
-        if ($entity !== $this->types[$typeAlias]['entity']) {
-            throw new \RunTimeException(
-                sprintf('Attribute "%s" type is not useable for the flexible entity "%s"', $typeAlias, $entity)
-            );
         }
 
         return $attributeType;
