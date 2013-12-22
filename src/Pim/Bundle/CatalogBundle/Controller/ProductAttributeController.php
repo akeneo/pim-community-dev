@@ -27,6 +27,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
