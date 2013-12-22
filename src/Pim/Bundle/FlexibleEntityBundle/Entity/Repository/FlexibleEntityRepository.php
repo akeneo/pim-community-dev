@@ -173,24 +173,6 @@ class FlexibleEntityRepository extends EntityRepository
     }
 
     /**
-     * Find flexible attribute by code
-     *
-     * @param string $code
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return AbstractEntityAttribute
-     */
-    public function findAttributeByCode($code)
-    {
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
-
-        return $attribute;
-    }
-
-    /**
      * Add join to values tables
      *
      * @param QueryBuilder $qb

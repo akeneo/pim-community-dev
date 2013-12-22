@@ -44,17 +44,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
     public function getCodeToAttributes(array $attributeCodes);
 
     /**
-     * Find flexible attribute by code
-     *
-     * @param string $code
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return AbstractEntityAttribute
-     */
-    public function findAttributeByCode($code);
-
-    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes
