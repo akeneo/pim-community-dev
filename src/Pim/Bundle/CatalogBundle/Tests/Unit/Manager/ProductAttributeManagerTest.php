@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager;
 use Symfony\Component\Validator\GlobalExecutionContext;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeTypeManagerTest extends WebTestCase
+class ProductAttributeManagerTest extends WebTestCase
 {
     /**
      * @var ExecutionContext
@@ -25,9 +25,9 @@ class AttributeTypeManagerTest extends WebTestCase
     protected $executionContext;
 
     /**
-     * @var AttributeTypeManager
+     * @var ProductAttributeManager
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * @var array Attributes config
@@ -67,7 +67,7 @@ class AttributeTypeManagerTest extends WebTestCase
         $this->factory = static::$kernel->getContainer()
             ->get('pim_flexibleentity.attributetype.factory');
 
-        $this->attTypeManager = new AttributeTypeManager($this->productManager, $this->localeManager, $this->factory);
+        $this->attributeManager = new ProductAttributeManager($this->productManager, $this->localeManager, $this->factory);
     }
 
     /**
@@ -100,16 +100,16 @@ class AttributeTypeManagerTest extends WebTestCase
     public function testCreateAttributeFromFormData()
     {
         $data = array('attributeType' => 'pim_catalog_metric');
-        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
+        $attribute = $this->attributeManager->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
 
         $attribute = $this->createProductAttribute('pim_catalog_price_collection');
-        $newAttribute = $this->attTypeManager->createAttributeFromFormData($attribute);
+        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
 
         $attribute = 'ImageType';
-        $newAttribute = $this->attTypeManager->createAttributeFromFormData($attribute);
+        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
         $this->assertNull($newAttribute);
     }
 
@@ -119,7 +119,7 @@ class AttributeTypeManagerTest extends WebTestCase
     public function testPrepareFormData()
     {
         $data = array('attributeType' => 'pim_catalog_multiselect');
-        $data = $this->attTypeManager->prepareFormData($data);
+        $data = $this->attributeManager->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);
     }
@@ -129,7 +129,7 @@ class AttributeTypeManagerTest extends WebTestCase
      */
     public function testGetAttributeTypes()
     {
-        $types = $this->attTypeManager->getAttributeTypes();
+        $types = $this->attributeManager->getAttributeTypes();
         $this->assertNotEmpty($types);
         foreach ($types as $type) {
             $this->assertNotEmpty($type);
@@ -145,6 +145,6 @@ class AttributeTypeManagerTest extends WebTestCase
      */
     protected function createProductAttribute($type = null)
     {
-        return $this->productManager->createAttribute($type);
+        return $this->attributeManager->createAttribute($type);
     }
 }

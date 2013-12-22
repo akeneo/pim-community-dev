@@ -24,6 +24,7 @@ services:
               route_name: pim_catalog_productattribute_index
         calls:
             - [ setProductManager, ['@pim_catalog.manager.product'] ]
+            - [ setAttributeManager, ['@pim_catalog.manager.product_attribute'] ]
             - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.manager.product:

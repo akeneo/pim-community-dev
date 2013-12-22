@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Type for attribute form
@@ -20,9 +20,9 @@ class ProductAttributeType extends AbstractType
 {
     /**
      * Attribute type manager
-     * @var AttributeTypeManager
+     * @var ProductAttributeManagerInterface
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * Attribute subscriber
@@ -39,17 +39,17 @@ class ProductAttributeType extends AbstractType
      * Constructor
      *
      * @param string                                  $attributeClass Attribute class
-     * @param AttributeTypeManager                    $attTypeManager Attribute type manager
+     * @param ProductAttributeManagerInterface        $manager        Attribute manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(
         $attributeClass,
-        AttributeTypeManager $attTypeManager = null,
+        ProductAttributeManagerInterface $manager = null,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
     ) {
-        $this->attributeClass = $attributeClass;
-        $this->attTypeManager = $attTypeManager;
-        $this->subscriber     = $subscriber;
+        $this->attributeClass   = $attributeClass;
+        $this->attributeManager = $manager;
+        $this->subscriber       = $subscriber;
     }
 
     /**
@@ -202,7 +202,7 @@ class ProductAttributeType extends AbstractType
      */
     public function getAttributeTypeChoices()
     {
-        return $this->attTypeManager->getAttributeTypes();
+        return $this->attributeManager->getAttributeTypes();
     }
 
     /**

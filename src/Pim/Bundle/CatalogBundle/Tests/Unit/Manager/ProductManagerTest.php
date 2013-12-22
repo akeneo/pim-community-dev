@@ -120,7 +120,6 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $objectManager ?: $this->getEntityManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
-            $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
             $this->getCompletenessManagerMock(),
             $this->getProductBuilderMock()

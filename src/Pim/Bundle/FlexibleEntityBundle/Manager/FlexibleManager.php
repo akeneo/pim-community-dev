@@ -7,20 +7,13 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterAttributeEvent;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
@@ -59,16 +52,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     protected $eventDispatcher;
 
     /**
-     * @var AttributeTypeFactory $attributeTypeFactory
-     */
-    protected $attributeTypeFactory;
-
-    /**
-     * @var array $attributeTypes
-     */
-    protected $attributeTypes;
-
-    /**
      * Locale code (from config or choose by user)
      * @var string
      */
@@ -83,25 +66,21 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     /**
      * Constructor
      *
-     * @param string                   $flexibleName         Entity name
-     * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $manager              Object manager
-     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
+     * @param string                   $flexibleName    Entity name
+     * @param array                    $flexibleConfig  Global flexible entities configuration array
+     * @param ObjectManager            $manager         Object manager
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $flexibleName,
         $flexibleConfig,
         ObjectManager $manager,
-        EventDispatcherInterface $eventDispatcher,
-        AttributeTypeFactory $attributeTypeFactory
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->flexibleName         = $flexibleName;
         $this->flexibleConfig       = $flexibleConfig['entities_config'][$flexibleName];
         $this->objectManager        = $manager;
         $this->eventDispatcher      = $eventDispatcher;
-        $this->attributeTypeFactory = $attributeTypeFactory;
-        $this->attributeTypes       = array();
 
         $this->flexibleRepository   = $manager->getRepository($this->flexibleName);
         $this->flexibleRepository->setFlexibleConfig($this->flexibleConfig);
@@ -298,71 +277,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     }
 
     /**
-     * Return a new attribute instance
-     *
-     * @param string $type attribute type
-     *
-     * @return AbstractAttribute
-     *
-     * @throws FlexibleConfigurationException If type is not useable for the flexible entity
-     */
-    public function createAttribute($type = null)
-    {
-        $class = $this->getAttributeName();
-        $attribute = new $class();
-        $attribute->setEntityType($this->getFlexibleName());
-
-        $attribute->setBackendStorage(AbstractAttributeType::BACKEND_STORAGE_ATTRIBUTE_VALUE);
-        if ($type) {
-            if (!in_array($type, $this->getAttributeTypes())) {
-                throw new FlexibleConfigurationException(
-                    sprintf(
-                        'Attribute "%s" type is not useable for the flexible entity "%s"',
-                        $type,
-                        $this->flexibleName
-                    )
-                );
-            }
-            $attributeType = $this->getAttributeTypeFactory()->get($type);
-            $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setAttributeType($attributeType->getName());
-        }
-
-        $event = new FilterAttributeEvent($this, $attribute);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_ATTRIBUTE, $event);
-
-        return $attribute;
-    }
-
-    /**
-     * Return a new instance
-     *
-     * @return AbstractAttributeOption
-     */
-    public function createAttributeOption()
-    {
-        $class = $this->getAttributeOptionName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-
-        return $object;
-    }
-
-    /**
-     * Return a new instance
-     *
-     * @return AbstractAttributeOptionValue
-     */
-    public function createAttributeOptionValue()
-    {
-        $class = $this->getAttributeOptionValueName();
-        $object = new $class();
-        $object->setLocale($this->getLocale());
-
-        return $object;
-    }
-
-    /**
      * Return a new instance
      *
      * @return FlexibleInterface
@@ -401,53 +315,5 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
 
         return $value;
-    }
-
-    /**
-     * Get attribute type factory
-     *
-     * @return AttributeTypeFactory
-     */
-    public function getAttributeTypeFactory()
-    {
-        return $this->attributeTypeFactory;
-    }
-
-    /**
-     * Add useable attribute type for this flexible entity
-     *
-     * @param string $type
-     *
-     * @return FlexibleManager
-     */
-    public function addAttributeType($type)
-    {
-        $this->attributeTypes[]= $type;
-
-        return $this;
-    }
-
-    /**
-     * Set the useable attribute types for this flexible entity
-     *
-     * @param array $types
-     *
-     * @return FlexibleManager
-     */
-    public function setAttributeTypes($types)
-    {
-        $this->attributeTypes = $types;
-
-        return $this;
-    }
-
-    /**
-     * Get attribute types aliases
-     *
-     * @return array
-     */
-    public function getAttributeTypes()
-    {
-        return $this->attributeTypes;
     }
 }

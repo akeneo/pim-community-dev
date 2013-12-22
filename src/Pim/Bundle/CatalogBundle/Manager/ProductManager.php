@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -53,15 +52,14 @@ class ProductManager extends FlexibleManager
     /**
      * Constructor
      *
-     * @param string                   $flexibleName         Entity name
-     * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $objectManager        Storage manager for product
-     * @param EntityManager            $entityManager        Entity manager for other entitites
-     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
-     * @param MediaManager             $mediaManager         Media manager
-     * @param CompletenessManager      $completenessManager  Completeness manager
-     * @param ProductBuilder           $builder              Product builder
+     * @param string                   $flexibleName        Entity name
+     * @param array                    $flexibleConfig      Global flexible entities configuration array
+     * @param ObjectManager            $objectManager       Storage manager for product
+     * @param EntityManager            $entityManager       Entity manager for other entitites
+     * @param EventDispatcherInterface $eventDispatcher     Event dispatcher
+     * @param MediaManager             $mediaManager        Media manager
+     * @param CompletenessManager      $completenessManager Completeness manager
+     * @param ProductBuilder           $builder             Product builder
      */
     public function __construct(
         $flexibleName,
@@ -69,7 +67,6 @@ class ProductManager extends FlexibleManager
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
         CompletenessManager $completenessManager,
         ProductBuilder $builder
@@ -78,8 +75,7 @@ class ProductManager extends FlexibleManager
             $flexibleName,
             $flexibleConfig,
             $objectManager,
-            $eventDispatcher,
-            $attributeTypeFactory
+            $eventDispatcher
         );
 
         $this->entityManager       = $entityManager;

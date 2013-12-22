@@ -33,7 +33,7 @@ parameters:
     pim_catalog.event_listener.user_context.class:                      Pim\Bundle\CatalogBundle\EventListener\UserContextListener
     pim_catalog.form.subscriber.add_attribute_type.class:               Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
-    pim_catalog.manager.attribute_type.class:          Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager
+    pim_catalog.manager.product_attribute.class:       Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
     pim_catalog.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager
 
     pim_catalog.form.type.product_value_wysiwyg.class:          Pim\Bundle\CatalogBundle\Form\Type\WysiwygType

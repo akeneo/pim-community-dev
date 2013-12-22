@@ -31,7 +31,7 @@ services:
     pim_catalog.form.subscriber.attribute:
         class:     %pim_catalog.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_catalog.manager.attribute_type'
+            - '@pim_catalog.manager.product_attribute'
             - '@pim_flexibleentity.attributetype.factory'
 
     pim_catalog.form.subscriber.attribute_requirements:
