@@ -7,7 +7,7 @@ services:
             - '@pim_catalog.form.attribute'
             - '@request'
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.attribute_type'
+            - '@pim_catalog.manager.product_attribute'
 
     pim_catalog.form.handler.attribute_group:
         class: %pim_catalog.form.handler.attribute_group.class%

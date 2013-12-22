@@ -49,8 +49,8 @@ services:
             - '@pim_filesystem'
             - %upload_dir%
 
-    pim_catalog.manager.attribute_type:
-        class: %pim_catalog.manager.attribute_type.class%
+    pim_catalog.manager.product_attribute:
+        class: %pim_catalog.manager.product_attribute.class%
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.locale'

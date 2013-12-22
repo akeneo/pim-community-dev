@@ -10,7 +10,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,10 +24,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
     /**
-     * Attribute type manager
-     * @var AttributeTypeManager
+     * Attribute manager
+     * @var ProductAttributeManagerInterface
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * Attribute type factory
@@ -44,15 +44,15 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Constructor
      *
-     * @param AttributeTypeManager $attTypeManager Attribute type manager
-     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
+     * @param ProductAttributeManagerInterface $attributeManager Attribute manager
+     * @param AttributeTypeFactory             $attTypeFactory Attribute type factory
      */
     public function __construct(
-        AttributeTypeManager $attTypeManager = null,
+        ProductAttributeManagerInterface $attributeManager = null,
         AttributeTypeFactory $attTypeFactory = null
     ) {
-        $this->attTypeManager = $attTypeManager;
-        $this->attTypeFactory = $attTypeFactory;
+        $this->attributeManager = $attributeManager;
+        $this->attTypeFactory   = $attTypeFactory;
     }
 
     /**
@@ -116,7 +116,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
+        $attribute = $this->attributeManager->createAttributeFromFormData($data);
 
         $this->customizeForm($event->getForm(), $attribute);
     }
