@@ -17,6 +17,11 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 class ProductAttributeManager implements ProductAttributeManagerInterface
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * @var ProductManager
      */
     protected $productManager;
@@ -34,18 +39,37 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * Constructor
      *
+     * @param string               $attributeClass Attribute class
      * @param ProductManager       $productManager Product manager
      * @param LocaleManager        $localeManager  Locale manager
      * @param AttributeTypeFactory $factory        Attribute type factory
      */
     public function __construct(
+        $attributeClass,
         ProductManager $productManager,
         LocaleManager $localeManager,
         AttributeTypeFactory $factory
     ) {
+        $this->attributeClass = $attributeClass;
         $this->productManager = $productManager;
-        $this->localeManager = $localeManager;
-        $this->factory = $factory;
+        $this->localeManager  = $localeManager;
+        $this->factory        = $factory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createAttribute($type = null)
+    {
+        return $this->productManager->createAttribute($type);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeClass()
+    {
+        return $this->attributeClass;
     }
 
     /**

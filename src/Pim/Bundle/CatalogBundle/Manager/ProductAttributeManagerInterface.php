@@ -14,6 +14,20 @@ use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 interface ProductAttributeManagerInterface
 {
     /**
+     * Return a new attribute instance
+     *
+     * @param string $type attribute type
+     *
+     * @return AbstractAttribute
+     */
+    public function createAttribute($type = null);
+
+    /**
+     * @return string the attribute class
+     */
+    public function getAttributeClass();
+
+    /**
      * Create a ProductAttributeInterface object from data in the form
      *
      * @param array $data Form data
