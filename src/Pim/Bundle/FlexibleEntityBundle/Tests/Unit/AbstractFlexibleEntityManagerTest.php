@@ -103,7 +103,6 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
             $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser')
         );
         $this->container->set('pim_flexibleentity.attributetype.text', $attType);
-        $attTypes = array('pim_flexibleentity_text' => 'pim_flexibleentity.attributetype.text');
 
         // prepare simple entity manager (use default entity manager)
         $this->manager = new FlexibleManager(
