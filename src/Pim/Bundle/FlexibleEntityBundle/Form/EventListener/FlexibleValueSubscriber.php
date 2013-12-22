@@ -81,7 +81,7 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
         }
 
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
-        $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
+        $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias, 'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface');
         /** @var FormInterface $valueForm */
         $valueForm = $attributeType->buildValueFormType($this->factory, $value);
 
