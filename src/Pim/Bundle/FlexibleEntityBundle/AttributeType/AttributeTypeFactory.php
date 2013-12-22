@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * The attribute type factory
  *
@@ -14,50 +12,94 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AttributeTypeFactory
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var array
+     * Types alias to reference
+     *
+     * @var \ArrayAccess
      */
     protected $types;
 
     /**
-     * @param ContainerInterface $container
-     * @param array              $types
+     * Entity to aliases
+     *
+     * @var \ArrayAccess
      */
-    public function __construct(ContainerInterface $container, array $types = array())
+    protected $entityToAliases;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types = array())
     {
-        $this->container = $container;
-        $this->types     = $types;
+        $this->types = $types;
+    }
+
+    /**
+     * Get type aliases
+     *
+     * @param string $entity
+     *
+     * @return array
+     */
+    public function getAttributeTypes($entity)
+    {
+        if (!$this->entityToAliases) {
+            foreach ($this->types as $alias => $properties) {
+                $entity = $properties['entity'];
+                if (!isset($this->entityToAliases[$entity])) {
+                    $this->entityToAliases[$entity]= array();
+                }
+                $this->entityToAliases[$entity][]= $alias;
+            }
+        }
+
+        return (isset($this->entityToAliases[$entity])) ? $this->entityToAliases[$entity] : array();
+    }
+
+    /**
+     * Add a type
+     *
+     * @param string                 $typeAlias     type alias
+     * @param AttributeTypeInterface $attributeType type
+     *
+     * @return AttributeTypeFactory
+     */
+    public function addType($typeAlias, AttributeTypeInterface $attributeType)
+    {
+        if (!$attributeType instanceof AttributeTypeInterface) {
+            throw new \RunTimeException(sprintf('The service "%s" must be a "AttributeTypeInterface"', $typeAlias));
+        }
+
+        $this->types[$typeAlias] = $attributeType;
+
+        return $this;
     }
 
     /**
      * Get the attribute type service
      *
-     * @param string $type
+     * @param string $typeAlias alias
+     * @param string $entity    entity FQCN
      *
      * @return AttributeTypeInterface
      * @throws \RunTimeException
      */
-    public function get($type)
+    public function get($typeAlias, $entity)
     {
-        if (!$type) {
-            throw new \RunTimeException('The type must be defined');
-        }
-
-        $id = isset($this->types[$type]) ? $this->types[$type] : false;
-
-        if (!$id) {
-            throw new \RunTimeException(sprintf('No attached service to type named "%s"', $type));
+        if (!$typeAlias) {
+            throw new \RunTimeException(sprintf('The type %s is not defined', $typeAlias));
         }
 
         /** @var $attributeType AttributeTypeInterface */
-        $attributeType = $this->container->get($id);
+        $attributeType = isset($this->types[$typeAlias]['type']) ? $this->types[$typeAlias]['type'] : false;
 
-        if (!$attributeType instanceof AttributeTypeInterface) {
-            throw new \RunTimeException(sprintf('The service "%s" must implement "AttributeTypeInterface"', $id));
+        if (!$attributeType) {
+            throw new \RunTimeException(sprintf('No attached service to type named "%s"', $typeAlias));
+        }
+
+        if ($entity !== $this->types[$typeAlias]['entity']) {
+            throw new \RunTimeException(
+                sprintf('Attribute "%s" type is not useable for the flexible entity "%s"', $typeAlias, $entity)
+            );
         }
 
         return $attributeType;
