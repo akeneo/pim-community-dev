@@ -67,6 +67,22 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function createAttributeOption()
+    {
+        return $this->productManager->createAttributeOption();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createAttributeOptionValue()
+    {
+        return $this->productManager->createAttributeOptionValue();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAttributeClass()
     {
         return $this->attributeClass;

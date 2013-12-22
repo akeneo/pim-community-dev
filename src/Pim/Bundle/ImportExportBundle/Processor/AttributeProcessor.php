@@ -8,7 +8,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Valid attribute creation (or update) processor
@@ -22,25 +22,25 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 class AttributeProcessor extends AbstractEntityProcessor
 {
     /**
-     * Product manager
+     * Product attribute manager
      *
-     * @var ProductManager
+     * @var ProductAttributeManagerInterface
      */
-    protected $productManager;
+    protected $attributeManager;
 
     /**
      * Constructor
-     * @param EntityManager      $manager
-     * @param ValidatorInterface $validator
-     * @param ProductManager     $productManager
+     * @param EntityManager                    $manager
+     * @param ValidatorInterface               $validator
+     * @param ProductAttributeManagerInterface $attributeManager
      */
     public function __construct(
         EntityManager $manager,
         ValidatorInterface $validator,
-        ProductManager $productManager
+        ProductAttributeManagerInterface $attributeManager
     ) {
         parent::__construct($manager, $validator);
-        $this->productManager = $productManager;
+        $this->attributeManager = $attributeManager;
     }
 
     /**
@@ -143,7 +143,7 @@ class AttributeProcessor extends AbstractEntityProcessor
     {
         $attribute = $this->findAttribute($item['code']);
         if (!$attribute) {
-            $attribute = $this->productManager->createAttribute($item['type']);
+            $attribute = $this->attributeManager->createAttribute($item['type']);
             $attribute->setCode($item['code']);
             $attribute->setTranslatable((bool) $item['is_translatable']);
             $attribute->setScopable((bool) $item['is_scopable']);
@@ -163,7 +163,7 @@ class AttributeProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository($this->productManager->getAttributeName())
+            ->getRepository($this->attributeManager->getAttributeName())
             ->findOneBy(array('code' => $code));
     }
 

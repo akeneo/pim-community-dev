@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 
 /**
  * Attribute manager interface
@@ -21,6 +23,20 @@ interface ProductAttributeManagerInterface
      * @return AbstractAttribute
      */
     public function createAttribute($type = null);
+
+    /**
+     * Return a new instance
+     *
+     * @return AbstractAttributeOption
+     */
+    public function createAttributeOption();
+
+    /**
+     * Return a new instance
+     *
+     * @return AbstractAttributeOptionValue
+     */
+    public function createAttributeOptionValue();
 
     /**
      * @return string the attribute class

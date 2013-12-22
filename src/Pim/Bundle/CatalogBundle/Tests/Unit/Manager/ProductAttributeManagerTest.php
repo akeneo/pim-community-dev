@@ -145,6 +145,6 @@ class ProductAttributeManagerTest extends WebTestCase
      */
     protected function createProductAttribute($type = null)
     {
-        return $this->productManager->createAttribute($type);
+        return $this->attributeManager->createAttribute($type);
     }
 }
