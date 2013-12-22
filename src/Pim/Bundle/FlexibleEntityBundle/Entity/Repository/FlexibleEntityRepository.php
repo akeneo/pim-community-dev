@@ -167,7 +167,7 @@ class FlexibleEntityRepository extends EntityRepository
      *
      * @return FlexibleQueryBuilder
      */
-    public function getFlexibleQueryBuilder($qb)
+    protected function getFlexibleQueryBuilder($qb)
     {
         return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
     }

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
@@ -43,13 +42,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
      * @return array The objects.
      */
     public function getCodeToAttributes(array $attributeCodes);
-
-    /**
-     * @param QueryBuilder $qb
-     *
-     * @return FlexibleQueryBuilder
-     */
-    public function getFlexibleQueryBuilder($qb);
 
     /**
      * Find flexible attribute by code
