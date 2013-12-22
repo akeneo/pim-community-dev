@@ -36,12 +36,12 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var CategoryManager
      */
-    private $categoryManager;
+    protected $categoryManager;
 
     /**
      * Constructor

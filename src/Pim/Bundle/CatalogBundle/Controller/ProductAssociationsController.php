@@ -25,22 +25,22 @@ class ProductAssociationsController
     /**
      * @var RegistryInterface
      */
-    private $doctrine;
+    protected $doctrine;
 
     /**
      * @var EngineInterface
      */
-    private $templating;
+    protected $templating;
 
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var ProductManager
      */
-    private $productManager;
+    protected $productManager;
 
     /**
      * Constructor
