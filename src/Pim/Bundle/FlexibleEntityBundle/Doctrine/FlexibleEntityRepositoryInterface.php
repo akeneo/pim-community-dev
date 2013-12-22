@@ -82,15 +82,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
     public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction);
 
     /**
-     * Find entity with attributes values
-     *
-     * @param int $id entity id
-     *
-     * @return Entity the entity
-     */
-    public function findWithAttributes($id);
-
-    /**
      * Load a flexible entity with its attributes sorted by sortOrder
      *
      * @param integer $id

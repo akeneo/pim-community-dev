@@ -298,20 +298,6 @@ class FlexibleEntityRepository extends EntityRepository
     }
 
     /**
-     * Find entity with attributes values
-     *
-     * @param int $id entity id
-     *
-     * @return Entity the entity
-     */
-    public function findWithAttributes($id)
-    {
-        $flexibles = $this->findByWithAttributes(array(), array('id' => $id));
-
-        return count($flexibles) ? current($flexibles) : null;
-    }
-
-    /**
      * Load a flexible entity with its attributes sorted by sortOrder
      *
      * @param integer $id
