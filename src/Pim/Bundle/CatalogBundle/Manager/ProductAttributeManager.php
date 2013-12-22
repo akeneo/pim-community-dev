@@ -8,13 +8,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
- * Attribute type manager
+ * Attribute manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeTypeManager
+class ProductAttributeManager implements ProductAttributeManagerInterface
 {
     /**
      * @var ProductManager
@@ -49,11 +49,7 @@ class AttributeTypeManager
     }
 
     /**
-     * Create a ProductAttributeInterface object from data in the form
-     *
-     * @param array $data Form data
-     *
-     * @return ProductAttributeInterface $attribute | null
+     * {@inheritdoc}
      */
     public function createAttributeFromFormData($data)
     {
@@ -71,11 +67,7 @@ class AttributeTypeManager
     }
 
     /**
-     * Prepare data for binding to the form
-     *
-     * @param array $data Form data
-     *
-     * @return array Prepared form data
+     * {@inheritdoc}
      */
     public function prepareFormData($data)
     {
@@ -104,9 +96,7 @@ class AttributeTypeManager
     }
 
     /**
-     * Return an array of available attribute types
-     *
-     * @return array $types
+     * {@inheritdoc}
      */
     public function getAttributeTypes()
     {
@@ -121,11 +111,7 @@ class AttributeTypeManager
     }
 
     /**
-     * Make sure the ProductAttributeInterface entity has the right backend properties
-     *
-     * @param ProductAttributeInterface $attribute
-     *
-     * @return ProductAttributeInterface $attribute
+     * {@inheritdoc}
      */
     public function prepareBackendProperties(ProductAttributeInterface $attribute)
     {
