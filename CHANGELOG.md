@@ -66,7 +66,9 @@
 - Move product metric in catalog bundle
 - Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
 - Rename getStorageManager in flexible manager and change related references
-- Rename AttributeTypeManager to ProductAttributeManager and change related references
+- Rename AttributeTypeManager to ProductAttributeManager and change related references, move createAttribute, createAttributeOption, createAttributeOptionValue from ProductManager to ProductAttributeManager
+- Introduce ProductAttributeManagerInterface andre move references to concret class
+- Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
