@@ -98,14 +98,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     /**
      * Test related method
      */
-    public function testGetAttributeOptionValueName()
-    {
-        $this->assertEquals($this->manager->getAttributeOptionValueName(), $this->attributeOptionValueClassName);
-    }
-
-    /**
-     * Test related method
-     */
     public function testGetFlexibleValueName()
     {
         $this->assertEquals($this->manager->getFlexibleValueName(), $this->flexibleValueClassName);
@@ -158,14 +150,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     public function testGetAttributeOptionRepository()
     {
         $this->assertInstanceOf('Doctrine\ORM\EntityRepository', $this->manager->getAttributeOptionRepository());
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetAttributeOptionValueRepository()
-    {
-        $this->assertInstanceOf('Doctrine\ORM\EntityRepository', $this->manager->getAttributeOptionValueRepository());
     }
 
     /**

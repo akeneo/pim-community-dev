@@ -69,6 +69,7 @@
 - Rename AttributeTypeManager to ProductAttributeManager and change related references, move createAttribute, createAttributeOption, createAttributeOptionValue from ProductManager to ProductAttributeManager
 - Introduce ProductAttributeManagerInterface andre move references to concret class
 - Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
+- Remove getAttributeOptionValueRepository from FlexibleManager
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
