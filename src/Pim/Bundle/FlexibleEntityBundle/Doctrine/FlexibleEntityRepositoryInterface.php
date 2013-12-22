@@ -33,17 +33,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
     public function setFlexibleConfig($config);
 
     /**
-     * Finds attributes
-     *
-     * @param array $attributeCodes attribute codes
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return array The objects.
-     */
-    public function getCodeToAttributes(array $attributeCodes);
-
-    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes

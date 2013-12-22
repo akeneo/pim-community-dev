@@ -122,47 +122,6 @@ class FlexibleEntityRepository extends EntityRepository
     }
 
     /**
-     * Finds attributes
-     *
-     * @param array $attributeCodes attribute codes
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return array The objects.
-     */
-    public function getCodeToAttributes(array $attributeCodes)
-    {
-        // prepare entity attributes query
-        $attributeAlias = 'Attribute';
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $qb = $attributeRepo->createQueryBuilder($attributeAlias);
-        $qb->andWhere('Attribute.entityType = :type')->setParameter('type', $this->_entityName);
-
-        // filter by code
-        if (!empty($attributeCodes)) {
-            $qb->andWhere($qb->expr()->in('Attribute.code', $attributeCodes));
-        }
-
-        // prepare associative array
-        $attributes = $qb->getQuery()->getResult();
-        $codeToAttribute = array();
-        foreach ($attributes as $attribute) {
-            $codeToAttribute[$attribute->getCode()]= $attribute;
-        }
-
-        // raise exception
-        if (!empty($attributeCodes) and count($attributeCodes) != count($codeToAttribute)) {
-            $missings = array_diff($attributeCodes, array_keys($codeToAttribute));
-            throw new UnknownAttributeException(
-                'Attribute(s) with code '.implode(', ', $missings).' not exists for entity '.$this->_entityName
-            );
-        }
-
-        return $codeToAttribute;
-    }
-
-    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes
@@ -244,6 +203,47 @@ class FlexibleEntityRepository extends EntityRepository
             ->addOrderBy('Attribute.sortOrder')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Finds attributes
+     *
+     * @param array $attributeCodes attribute codes
+     *
+     * @throws UnknownAttributeException
+     *
+     * @return array The objects.
+     */
+    protected function getCodeToAttributes(array $attributeCodes)
+    {
+        // prepare entity attributes query
+        $attributeAlias = 'Attribute';
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $qb = $attributeRepo->createQueryBuilder($attributeAlias);
+        $qb->andWhere('Attribute.entityType = :type')->setParameter('type', $this->_entityName);
+
+        // filter by code
+        if (!empty($attributeCodes)) {
+            $qb->andWhere($qb->expr()->in('Attribute.code', $attributeCodes));
+        }
+
+        // prepare associative array
+        $attributes = $qb->getQuery()->getResult();
+        $codeToAttribute = array();
+        foreach ($attributes as $attribute) {
+            $codeToAttribute[$attribute->getCode()]= $attribute;
+        }
+
+        // raise exception
+        if (!empty($attributeCodes) and count($attributeCodes) != count($codeToAttribute)) {
+            $missings = array_diff($attributeCodes, array_keys($codeToAttribute));
+            throw new UnknownAttributeException(
+                'Attribute(s) with code '.implode(', ', $missings).' not exists for entity '.$this->_entityName
+            );
+        }
+
+        return $codeToAttribute;
     }
 
     /**
