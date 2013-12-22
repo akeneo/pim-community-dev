@@ -45,7 +45,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      * Constructor
      *
      * @param ProductAttributeManagerInterface $attributeManager Attribute manager
-     * @param AttributeTypeFactory             $attTypeFactory Attribute type factory
+     * @param AttributeTypeFactory             $attTypeFactory   Attribute type factory
      */
     public function __construct(
         ProductAttributeManagerInterface $attributeManager = null,

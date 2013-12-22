@@ -7,7 +7,6 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType;
 use Symfony\Component\DependencyInjection\Container;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Test related class

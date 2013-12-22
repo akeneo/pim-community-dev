@@ -7,19 +7,13 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterAttributeEvent;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
@@ -72,10 +66,10 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
     /**
      * Constructor
      *
-     * @param string                   $flexibleName         Entity name
-     * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $manager              Object manager
-     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
+     * @param string                   $flexibleName    Entity name
+     * @param array                    $flexibleConfig  Global flexible entities configuration array
+     * @param ObjectManager            $manager         Object manager
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $flexibleName,

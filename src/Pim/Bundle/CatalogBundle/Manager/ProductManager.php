@@ -52,14 +52,14 @@ class ProductManager extends FlexibleManager
     /**
      * Constructor
      *
-     * @param string                   $flexibleName         Entity name
-     * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $objectManager        Storage manager for product
-     * @param EntityManager            $entityManager        Entity manager for other entitites
-     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
-     * @param MediaManager             $mediaManager         Media manager
-     * @param CompletenessManager      $completenessManager  Completeness manager
-     * @param ProductBuilder           $builder              Product builder
+     * @param string                   $flexibleName        Entity name
+     * @param array                    $flexibleConfig      Global flexible entities configuration array
+     * @param ObjectManager            $objectManager       Storage manager for product
+     * @param EntityManager            $entityManager       Entity manager for other entitites
+     * @param EventDispatcherInterface $eventDispatcher     Event dispatcher
+     * @param MediaManager             $mediaManager        Media manager
+     * @param CompletenessManager      $completenessManager Completeness manager
+     * @param ProductBuilder           $builder             Product builder
      */
     public function __construct(
         $flexibleName,

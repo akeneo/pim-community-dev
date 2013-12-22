@@ -63,10 +63,10 @@ class FlexibleOptionsFilter extends AbstractFlexibleFilter
 
     /**
      * @return array
+     *
      * @throws \LogicException
-     * @todo Make this method protected or private
      */
-    public function getValueOptions()
+    protected function getValueOptions()
     {
         if (null === $this->valueOptions) {
             $filedName = $this->getOption('field_name');
