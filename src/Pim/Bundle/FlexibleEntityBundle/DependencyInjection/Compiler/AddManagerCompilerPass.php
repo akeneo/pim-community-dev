@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddManagerCompilerPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritdoc}
      */
