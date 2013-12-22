@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
@@ -69,7 +70,18 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttribute($type = null)
     {
-        return $this->productManager->createAttribute($type);
+        $class = $this->getAttributeClass();
+        $attribute = new $class();
+        $attribute->setEntityType($this->productClass);
+
+        $attribute->setBackendStorage(AbstractAttributeType::BACKEND_STORAGE_ATTRIBUTE_VALUE);
+        if ($type) {
+            $attributeType = $this->factory->get($type, $this->productClass);
+            $attribute->setBackendType($attributeType->getBackendType());
+            $attribute->setAttributeType($attributeType->getName());
+        }
+
+        return $attribute;
     }
 
     /**
@@ -106,7 +118,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
         }
 
         if (gettype($data) === 'array' && isset($data['attributeType'])) {
-            return $this->productManager->createAttribute($data['attributeType']);
+            return $this->createAttribute($data['attributeType']);
         } elseif (gettype($data) === 'array' && isset($data['id'])) {
             return $this->productManager->getAttributeRepository()->find($data['id']);
         } else {
@@ -163,7 +175,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function prepareBackendProperties(ProductAttributeInterface $attribute)
     {
-        $baseAttribute = $this->productManager->createAttribute($attribute->getAttributeType());
+        $baseAttribute = $this->createAttribute($attribute->getAttributeType());
 
         $attribute->setBackendType($baseAttribute->getBackendType());
         $attribute->setBackendStorage($baseAttribute->getBackendStorage());

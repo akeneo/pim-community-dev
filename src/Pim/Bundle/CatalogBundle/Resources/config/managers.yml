@@ -8,7 +8,6 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_flexibleentity.attributetype.factory'
             - '@pim_catalog.manager.media'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.builder.product'
