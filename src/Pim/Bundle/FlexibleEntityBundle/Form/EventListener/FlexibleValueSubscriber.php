@@ -80,7 +80,6 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity = get_class($value->getEntity());
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
         $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
         /** @var FormInterface $valueForm */
