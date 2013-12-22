@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager;
-use Symfony\Component\Validator\GlobalExecutionContext;
-use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Pim\Bundle\CatalogBundle\AttributeType\TextType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
 
 /**
  * Test related class
@@ -17,27 +14,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeManagerTest extends WebTestCase
+class ProductAttributeManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ExecutionContext
-     */
-    protected $executionContext;
-
     /**
      * @var ProductAttributeManager
      */
     protected $attributeManager;
-
-    /**
-     * @var array Attributes config
-     */
-    protected $config;
-
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
@@ -54,46 +36,94 @@ class ProductAttributeManagerTest extends WebTestCase
      */
     protected function setUp()
     {
-        $this->markTestSkipped('Due to Symfony 2.3 Upgrade, GlobalExecutionContext issue');
-        parent::setUp();
-
-        $this->executionContext = $this->initExecutionContext();
-
-        static::$kernel = static::createKernel(array('environment' => 'dev'));
-        static::$kernel->boot();
-
-        $this->productManager = static::$kernel->getContainer()->get('pim_catalog.manager.product');
-        $this->localeManager = static::$kernel->getContainer()->get('pim_catalog.manager.locale');
-        $this->factory = static::$kernel->getContainer()
-            ->get('pim_flexibleentity.attributetype.factory');
+        $repository    = $this->getEntityRepositoryMock();
+        $objectManager = $this->getObjectManagerMock($repository);
+        $localeManager = $this->getLocaleManagerMock();
+        $factory       = $this->getAttributeTypeFactoryMock();
 
         $this->attributeManager = new ProductAttributeManager(
-            '', '', '', '', $this->localeManager, $this->factory
+            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+            'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
+            'Pim\Bundle\CatalogBundle\Model\Product',
+            $objectManager,
+            $localeManager,
+            $factory
         );
     }
 
     /**
-     * {@inheritdoc}
+     * Get a mock of ObjectManager
+     * @param mixed $repository
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function tearDown()
+    protected function getObjectManagerMock($repository)
     {
-        $this->executionContext = null;
+        $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
-        parent::tearDown();
+        $manager->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($repository));
+
+        return $manager;
     }
 
     /**
-     * Initialize execution context for validator with mock objects
-     *
-     * @return \Symfony\Component\Validator\ExecutionContext
+     * @return \Doctrine\ORM\EntityRepository
      */
-    protected function initExecutionContext()
+    protected function getEntityRepositoryMock()
     {
-        $graphWalker = $this->getMock('Symfony\Component\Validator\GraphWalker', array(), array(), '', false);
-        $metadataFactory = $this->getMock('Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface');
-        $globalContext = new GlobalExecutionContext('Root', $graphWalker, $metadataFactory);
+        return $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
 
-        return new ExecutionContext($globalContext, 'currentValue', 'foo.bar', 'Group', 'ClassName', 'propertyName');
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManagerMock()
+    {
+        $manager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale');
+        $locale->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue(('en_US')));
+        $manager->expects($this->any())
+            ->method('getLocaleByCode')
+            ->will($this->returnValue($locale));
+        $manager->expects($this->any())
+            ->method('getActiveLocales')
+            ->will($this->returnValue(array($locale)));
+
+        return $manager;
+    }
+
+    /**
+     * Get a mock of AttributeTypeFactory
+     *
+     * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     */
+    protected function getAttributeTypeFactoryMock()
+    {
+        $factory = $this
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $guesser = new AttributeConstraintGuesser();
+        $attributeType = new TextType('varchar', 'text', $guesser);
+        $factory->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($attributeType));
+        $factory->expects($this->any())
+            ->method('getAttributeTypes')
+            ->will($this->returnValue(array('mytype')));
+
+        return $factory;
     }
 
     /**
@@ -105,7 +135,7 @@ class ProductAttributeManagerTest extends WebTestCase
         $attribute = $this->attributeManager->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
 
-        $attribute = $this->createProductAttribute('pim_catalog_price_collection');
+        $attribute = $this->attributeManager->createAttribute('pim_catalog_price_collection');
         $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
@@ -127,6 +157,33 @@ class ProductAttributeManagerTest extends WebTestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testCreateAttribute()
+    {
+        $attribute = $this->attributeManager->createAttribute();
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
+    }
+
+    /**
+     * Test related method
+     */
+    public function testCreateAttributeOption()
+    {
+        $option = $this->attributeManager->createAttributeOption();
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeOption', $option);
+    }
+
+    /**
+     * Test related method
+     */
+    public function testCreateAttributeOptionValue()
+    {
+        $value = $this->attributeManager->createAttributeOptionValue();
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue', $value);
+    }
+
+    /**
      * Test getAttributeTypes method
      */
     public function testGetAttributeTypes()
@@ -136,17 +193,5 @@ class ProductAttributeManagerTest extends WebTestCase
         foreach ($types as $type) {
             $this->assertNotEmpty($type);
         }
-    }
-
-    /**
-     * Create a product attribute entity
-     *
-     * @param AttributeType|null $type Product attribute type
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-     */
-    protected function createProductAttribute($type = null)
-    {
-        return $this->attributeManager->createAttribute($type);
     }
 }
