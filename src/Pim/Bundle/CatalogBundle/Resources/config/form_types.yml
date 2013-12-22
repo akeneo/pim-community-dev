@@ -23,7 +23,7 @@ services:
     pim_catalog.form.type.product_value:
         class:     %pim_catalog.form.type.product_value.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - %pim_catalog.entity.product_value.class%
             - '@pim_flexibleentity.value_form.value_subscriber'
             - '@pim_catalog.form.type.product.view'
         tags:
