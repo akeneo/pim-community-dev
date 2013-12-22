@@ -27,17 +27,17 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
             $this->container->get('event_dispatcher'),
             $this->attributeTypeFactory
         );
-        $this->assertNotNull($myManager->getStorageManager());
-        $this->assertEquals($myManager->getStorageManager(), $this->entityManager);
+        $this->assertNotNull($myManager->getObjectManager());
+        $this->assertEquals($myManager->getObjectManager(), $this->entityManager);
     }
 
     /**
      * test related method
      */
-    public function testGetStorageManager()
+    public function testGetObjectManager()
     {
-        $this->assertNotNull($this->manager->getStorageManager());
-        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->manager->getStorageManager());
+        $this->assertNotNull($this->manager->getObjectManager());
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->manager->getObjectManager());
     }
 
     /**
