@@ -5,6 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
@@ -19,7 +20,8 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleEntityRepository extends EntityRepository implements TranslatableInterface, ScopableInterface
+class FlexibleEntityRepository extends EntityRepository
+    implements TranslatableInterface, ScopableInterface, FlexibleEntityRepositoryInterface
 {
     /**
      * Flexible entity config
