@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
-use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -24,8 +25,7 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
             $this->flexibleClassName,
             $this->container->getParameter('pim_flexibleentity.flexible_config'),
             $this->entityManager,
-            $this->container->get('event_dispatcher'),
-            $this->attributeTypeFactory
+            $this->container->get('event_dispatcher')
         );
         $this->assertNotNull($myManager->getObjectManager());
         $this->assertEquals($myManager->getObjectManager(), $this->entityManager);
@@ -181,7 +181,9 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
      */
     public function testCreateAttribute()
     {
-        $this->assertInstanceOf($this->attributeClassName, $this->manager->createAttribute('pim_flexibleentity_text'));
+        $attribute = new Attribute();
+        $attribute->setAttributeType('pim_flexibleentity_text');
+        $this->assertInstanceOf($this->attributeClassName, $attribute);
     }
 
     /**

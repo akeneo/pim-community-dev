@@ -24,11 +24,6 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
     protected $manager;
 
     /**
-     * @var AttributeTypeFactory
-     */
-    protected $attributeTypeFactory;
-
-    /**
      * @var string
      */
     protected $attributeClassName;
@@ -110,21 +105,14 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         );
         $this->container->set('pim_flexibleentity.attributetype.text', $attType);
         $attTypes = array('pim_flexibleentity_text' => 'pim_flexibleentity.attributetype.text');
-        $this->attributeTypeFactory = new AttributeTypeFactory($this->container, $attTypes);
 
         // prepare simple entity manager (use default entity manager)
         $this->manager = new FlexibleManager(
             $this->flexibleClassName,
             $this->flexibleConfig,
             $this->entityManager,
-            $dispatcher,
-            $this->attributeTypeFactory
+            $dispatcher
         );
-
-        // add attribute types
-        foreach (array_keys($attTypes) as $attTypeAlias) {
-            $this->manager->addAttributeType($attTypeAlias);
-        }
 
         $this->container->set('demo_manager', $this->manager);
         $this->container->set('event_dispatcher', $dispatcher);
