@@ -118,11 +118,10 @@ abstract class AbstractFlexibleFilter implements FilterInterface
             $this->flexibleManager->getLocale(),
             $this->flexibleManager->getScope()
         );
-        $attributeCode = $this->getField()->getFieldName();
         $attribute = $this->flexibleManager->getAttributeRepository()
-            ->findOneBy(array('code' => $attributeCode, 'entityType' => $this->flexibleManager->getFlexibleName()));
+            ->findOneBy(array('code' => $field, 'entityType' => $this->flexibleManager->getFlexibleName()));
 
-        $flexibleQB->addAttributeFilter($attribute, $operator, $attributeValue);
+        $flexibleQB->addAttributeFilter($attribute, $operator, $value);
 
         // filter is active since it's applied to the flexible repository
         $this->active = true;
