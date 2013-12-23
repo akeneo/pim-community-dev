@@ -29,8 +29,6 @@ class StepConfigurationType extends AbstractType
             function (FormEvent $event) use ($factory) {
                 $form      = $event->getForm();
                 $step      = $event->getData();
-
-                /* -> in progress, make it dynamic
                 foreach ($step->getConfigurableStepElements() as $property => $element) {
                     $form->add(
                         $factory->createNamed(
@@ -44,47 +42,6 @@ class StepConfigurationType extends AbstractType
                         )
                     );
                 }
-                 */
-
-                $reader    = $step->getReader();
-                $processor = $step->getProcessor();
-                $writer    = $step->getWriter();
-
-                $form->add(
-                    $factory->createNamed(
-                        'reader',
-                        'pim_import_export_step_element_configuration',
-                        $reader,
-                        array(
-                            'label' => sprintf('oro_batch.%s.title', $reader->getName()),
-                            'auto_initialize' => false,
-                        )
-                    )
-                );
-
-                $form->add(
-                    $factory->createNamed(
-                        'processor',
-                        'pim_import_export_step_element_configuration',
-                        $processor,
-                        array(
-                            'label' => sprintf('oro_batch.%s.title', $processor->getName()),
-                            'auto_initialize' => false,
-                        )
-                    )
-                );
-
-                $form->add(
-                    $factory->createNamed(
-                        'writer',
-                        'pim_import_export_step_element_configuration',
-                        $writer,
-                        array(
-                            'label' => sprintf('oro_batch.%s.title', $writer->getName()),
-                            'auto_initialize' => false,
-                        )
-                    )
-                );
             }
         );
     }
