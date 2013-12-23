@@ -191,6 +191,23 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     }
 
     /**
+     * Get the attribute group choices
+     *
+     * @return array
+     */
+    public function getAttributeGroupChoices()
+    {
+        $groups = $this->objectManager->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
+        $choices = array();
+        foreach ($groups as $group) {
+            $choices[$group->getId()] = $group->getLabel();
+        }
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function prepareBackendProperties(ProductAttributeInterface $attribute)

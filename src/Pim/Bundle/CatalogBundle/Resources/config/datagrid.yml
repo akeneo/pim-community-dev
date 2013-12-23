@@ -72,3 +72,129 @@ datagrid:
                     label:            Label
                     data_name:        label
                     filter_by_having: true
+
+    attribute-grid:
+        options:
+            entityHint: attribute
+        source:
+            acl_resource: pim_catalog_attribute_index
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - a.code
+                    - a.attributeType
+                    - a.translatable
+                    - a.scopable
+                    - >
+                        (CASE WHEN translation.label IS NULL THEN
+                            a.code
+                        ELSE
+                            translation.label
+                        END) AS label
+                    - >
+                        (CASE WHEN gt.label IS NULL THEN
+                            g.code
+                        ELSE
+                            gt.label
+                        END) AS groupLabel
+                from:
+                    - { table: PimCatalogBundle:ProductAttribute, alias: a }
+                join:
+                    left:
+                        translation:
+                            join:          a.translations
+                            alias:         translation
+                            conditionType: WITH
+                            condition:     translation.locale = :localeCode
+                        group:
+                            join:  a.group
+                            alias: g
+                        groupTranslation:
+                            join:          g.translations
+                            alias:         gt
+                            conditionType: WITH
+                            condition:     gt.locale = :localeCode
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            attributeType:
+                label: Type
+            scopable:
+                label:         Scopable
+                frontend_type: boolean
+            translatable:
+                label:         Localizable
+                frontend_type: boolean
+            group:
+                label:     Group
+                data_name: groupLabel
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_productattribute_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_productattribute_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: a.code
+                label:
+                    data_name: label
+                scopable:
+                    data_name: a.scopable
+                translatable:
+                    data_name: a.translatable
+                group:
+                    data_name: groupLabel
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: a.code
+                label:
+                    type:             string
+                    label:            Label
+                    data_name:        label
+                    filter_by_having: true
+                attributeType:
+                    type:      choice
+                    data_name: a.attributeType
+                    options:
+                        field_options:
+                            choices: @pim_catalog.manager.product_attribute->getAttributeTypes
+                scopable:
+                    type:      boolean
+                    data_name: a.scopable
+                translatable:
+                    type:      boolean
+                    data_name: a.translatable
+                group:
+                    type:      choice
+                    data_name: groupLabel
+                    options:
+                        field_options:
+                            choices: @pim_catalog.manager.product_attribute->getAttributeGroupChoices

@@ -7,3 +7,12 @@ services:
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-grid, method: onBuildAfter }
+
+    pim_catalog.event_listener.association_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - localeCode
+          - @oro_datagrid.datagrid.request_params
+          - false
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.attribute-grid, method: onBuildAfter }

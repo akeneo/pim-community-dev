@@ -141,20 +141,15 @@ class ProductAttributeController extends AbstractDoctrineController
      * List product attributes
      * @param Request $request
      *
+     * @Template
      * @AclAncestor("pim_catalog_attribute_index")
-     * @return template
+     * @return Response
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->datagridHelper->getDatagrid('productattribute');
-
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimCatalogBundle:ProductAttribute:index.html.twig';
-        }
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**

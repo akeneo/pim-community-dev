@@ -1,20 +1,12 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set title = 'attribute.overview'|trans %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#attribute-grid'} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
-{% endblock %}
-
 {% block content %}
-    <div>
-        {% set buttons = elements.createBtn('attribute', path('pim_catalog_productattribute_create')) %}
+    {% set buttons = elements.createBtn('attribute', path('pim_catalog_productattribute_create')) %}
 
-        {{ elements.page_header(title, buttons) }}
+    {{ elements.page_header(title, buttons) }}
 
-        <div id="attribute-grid"></div>
-    </div>
+    {{ dataGrid.renderGrid('attribute-grid', { localeCode: localeCode }) }}
 {% endblock %}
