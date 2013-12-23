@@ -29,6 +29,23 @@ class StepConfigurationType extends AbstractType
             function (FormEvent $event) use ($factory) {
                 $form      = $event->getForm();
                 $step      = $event->getData();
+
+                /* -> in progress, make it dynamic
+                foreach ($step->getConfigurableStepElements() as $property => $element) {
+                    $form->add(
+                        $factory->createNamed(
+                            $property,
+                            'pim_import_export_step_element_configuration',
+                            $element,
+                            array(
+                                'label' => sprintf('oro_batch.%s.title', $element->getName()),
+                                'auto_initialize' => false,
+                            )
+                        )
+                    );
+                }
+                 */
+
                 $reader    = $step->getReader();
                 $processor = $step->getProcessor();
                 $writer    = $step->getWriter();
