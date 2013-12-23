@@ -126,3 +126,31 @@ Import %job.name% | Show: Import %job.name% | Show
 Export management:        Export management
 Export %job.name% | Edit: Export %job.name% | Edit
 Export %job.name% | Show: Export %job.name% | Show
+
+# ACLs
+pim_importexport:
+    acl:
+        export_profile:
+            index: View export profiles list
+            create: Create an export profile
+            show: Show an export profile
+            edit: Edit an export profile
+            remove: Remove an export profile
+            launch: Launch an export profile
+        import_profile:
+            index: View import profiles list
+            create: Create an import profile
+            show: Show an import profile
+            edit: Edit an import profile
+            remove: Remove an import profile
+            launch: Launch an import profile
+        export_execution:
+            index: View export reports list
+            show: View export report details
+            dl_log: Download export report log
+            dl_files: Download exported files
+        import_execution:
+            index: View import reports list
+            show: View import report details
+            dl_log: Download import report log
+            dl_files: Download imported files
