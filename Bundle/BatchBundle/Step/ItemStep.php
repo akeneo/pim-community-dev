@@ -159,6 +159,20 @@ class ItemStep extends AbstractStep
     }
 
     /**
+     * Get the configurable step elements
+     *
+     * @return array
+     */
+    public function getConfigurableStepElements()
+    {
+        return array(
+            'reader'    => $this->getReader(),
+            'processor' => $this->getProcessor(),
+            'writer'    => $this->getWriter()
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function doExecute(StepExecution $stepExecution)
