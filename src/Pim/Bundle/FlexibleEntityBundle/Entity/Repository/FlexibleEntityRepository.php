@@ -153,7 +153,7 @@ class FlexibleEntityRepository extends EntityRepository
      * @param string|array $attributeValue value(s) used to filter
      * @param string       $operator       operator to use
      */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    protected function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
     {
         $codeToAttribute = $this->getCodeToAttributes(array());
         $attributeCodes = array_keys($codeToAttribute);

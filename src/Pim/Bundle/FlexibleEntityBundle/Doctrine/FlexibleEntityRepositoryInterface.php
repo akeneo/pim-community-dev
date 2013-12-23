@@ -52,16 +52,6 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
     );
 
     /**
-     * Apply a filter by attribute value
-     *
-     * @param QueryBuilder $qb             query builder to update
-     * @param string       $attributeCode  attribute code
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
-     */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=');
-
-    /**
      * Load a flexible entity with its attributes sorted by sortOrder
      *
      * @param integer $id
