@@ -39,7 +39,6 @@ services:
         class: %pim_catalog.controller.attribute_group.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
             - '%pim_catalog.entity.product_attribute.class%'
