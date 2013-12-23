@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -33,9 +33,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class ChannelController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridHelperInterface
+     * @var LocaleManager
      */
-    protected $datagridHelper;
+    private $localeManager;
 
     /**
      * @var Form
@@ -58,7 +58,7 @@ class ChannelController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
+     * @param LocaleManager            $localeManager
      * @param ChannelHandler           $channelHandler
      * @param Form                     $channelForm
      */
@@ -71,7 +71,7 @@ class ChannelController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
+        LocaleManager $localeManager,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
@@ -86,7 +86,7 @@ class ChannelController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper = $datagridHelper;
+        $this->localeManager  = $localeManager;
         $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
     }
@@ -102,18 +102,9 @@ class ChannelController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('c')
-            ->from('PimCatalogBundle:Channel', 'c');
-
-        $datagrid = $this->datagridHelper->getDatagrid('channel', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Channel:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**

@@ -198,3 +198,92 @@ datagrid:
                     options:
                         field_options:
                             choices: @pim_catalog.manager.product_attribute->getAttributeGroupChoices
+
+    channel-grid:
+        options:
+            entityHint: channel
+        source:
+            acl_resource: pim_catalog_channel_index
+            type: orm
+            query:
+                select:
+                    - c.id
+                    - c.code
+                    - c.label
+                    - >
+                        (CASE WHEN ct.label IS NULL THEN
+                            category.code
+                        ELSE
+                            ct.label
+                        END) AS categoryLabel
+                from:
+                    - { table: PimCatalogBundle:Channel, alias: c }
+                join:
+                    left:
+                        category:
+                            join:  c.category
+                            alias: category
+                        categoryTranslation:
+                            join:          category.translations
+                            alias:         ct
+                            conditionType: WITH
+                            condition:     ct.locale = :localeCode
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            category:
+                label:     Category tree
+                data_name: categoryLabel
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_channel_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_channel_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: c.code
+                label:
+                    data_name: c.label
+                category:
+                    data_name: categoryLabel
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: c.code
+                label:
+                    type:      string
+                    label:     Label
+                    data_name: c.label
+                category:
+                    type:      choice
+                    label:     Category tree
+                    data_name: categoryLabel
+                    options:
+                        field_options:
+                            choices: @pim_catalog.manager.category->getTrees

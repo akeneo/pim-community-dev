@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.datagrid.manager.product.class:                  Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
-    pim_catalog.datagrid.manager.channel_datagrid.class:         Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
     pim_catalog.datagrid.manager.currency_datagrid.class:        Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
     pim_catalog.datagrid.manager.locale_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
     pim_catalog.datagrid.manager.group_datagrid.class:           Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
@@ -34,17 +33,6 @@ services:
               datagrid_name: catalog_history
               entity_hint: audit
               route_name: current
-
-    pim_catalog.datagrid.manager.channel:
-        class: %pim_catalog.datagrid.manager.channel_datagrid.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: channels
-              entity_hint: channels
-              route_name: pim_catalog_channel_index
-        calls:
-            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
-            - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%
