@@ -179,27 +179,9 @@ class GroupController extends AbstractController
         }
 
         return array(
-            'form'            => $this->groupForm->createView(),
-            'datagrid'        => $datagridView,
-            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
+            'form'     => $this->groupForm->createView(),
+            'datagrid' => $datagridView
         );
-    }
-
-    /**
-     * History of a group
-     *
-     * @param Request $request
-     * @param Group   $group
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, Group $group)
-    {
-        $historyGridView = $this->getHistoryGrid($group)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -233,21 +215,5 @@ class GroupController extends AbstractController
     public function productListAction(Group $group)
     {
         return $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
-    }
-
-    /**
-     * @param Group $group
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(Group $group)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_group_history',
-            array('id' => $group->getId())
-        );
-
-        return $historyGrid;
     }
 }

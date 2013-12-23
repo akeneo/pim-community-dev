@@ -56,18 +56,11 @@
                 }) }}
             </div>
             {% if form.vars.value.id %}
+                {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
                 <div class="tab-pane" id="history">
-                    <div id="history-grid"></div>
+                    {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Channel', object_id: form.vars.value.id }) }}
                 </div>
             {% endif %}
         </div>
     {{ form_end(form) }}
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-
-{% if form.vars.value.id %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with { 'datagridView': historyDatagrid, 'selector': '#history-grid' } %}
-{% endif %}
 {% endblock %}

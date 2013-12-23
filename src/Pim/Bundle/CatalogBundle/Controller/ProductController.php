@@ -393,20 +393,12 @@ class ProductController extends AbstractDoctrineController
      */
     public function historyAction(Request $request, $id)
     {
-        $product  = $this->findProductOr404($id);
-        $historyGridView = $this->getHistoryGrid($product)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        } else {
-            return $this->render(
-                'PimCatalogBundle:Product:_history.html.twig',
-                array(
-                    'product'           => $product,
-                    'historyDatagrid'   => $historyGridView
-                )
-            );
-        }
+        return $this->render(
+            'PimCatalogBundle:Product:_history.html.twig',
+            array(
+                'id' => $id,
+            )
+        );
     }
 
     /**
@@ -675,21 +667,5 @@ class ProductController extends AbstractDoctrineController
     protected function getCreateFormOptions(ProductInterface $product)
     {
         return array();
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(ProductInterface $product)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $product,
-            'pim_catalog_product_history',
-            array('id' => $product->getId())
-        );
-
-        return $historyGrid;
     }
 }

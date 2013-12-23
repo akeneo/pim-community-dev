@@ -21,12 +21,6 @@ pim_catalog_group_remove:
         id: \d+
     methods: [DELETE]
 
-pim_catalog_group_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.group:historyAction }
-    requirements:
-        id: \d+
-
 pim_catalog_group_productlist:
     path: /{id}/productlist
     defaults: { _controller: pim_catalog.controller.group:productListAction }

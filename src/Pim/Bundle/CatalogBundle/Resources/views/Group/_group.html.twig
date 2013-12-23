@@ -1,4 +1,5 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({ params: { "%group.label%": form.vars.data.label } }) %}
 
@@ -14,8 +15,6 @@
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#group-products-grid', 'parameters': listenerParameters } %}
-
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endblock %}
 
 {% block content %}
@@ -106,7 +105,7 @@
             </div>
 
             <div class="tab-pane" id="history">
-                <div id="history-grid"></div>
+                {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Group', object_id: form.vars.value.id }) }}
             </div>
 
         </div>

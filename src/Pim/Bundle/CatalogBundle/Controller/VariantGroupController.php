@@ -98,9 +98,8 @@ class VariantGroupController extends GroupController
         }
 
         return array(
-            'form' => $this->groupForm->createView(),
+            'form'     => $this->groupForm->createView(),
             'datagrid' => $datagridView,
-            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
     }
 }

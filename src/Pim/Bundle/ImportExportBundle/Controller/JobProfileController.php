@@ -246,12 +246,6 @@ class JobProfileController extends AbstractDoctrineController
         }
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
-        $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
-            $jobInstance,
-            sprintf('pim_importexport_%s_profile_history', $this->getJobType()),
-            array('id' => $jobInstance->getId())
-        );
-
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -270,34 +264,10 @@ class JobProfileController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType())),
             array(
-                'jobInstance'     => $jobInstance,
-                'form'            => $form->createView(),
-                'historyDatagrid' => $historyDatagrid->createView()
+                'jobInstance' => $jobInstance,
+                'form'        => $form->createView(),
             )
         );
-    }
-
-    /**
-     * History of a job instance
-     *
-     * @param Request $request
-     * @param integer $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function historyAction(Request $request, $id)
-    {
-        $jobInstance = $this->getJobInstance($id);
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $jobInstance,
-            sprintf('pim_importexport_%s_profile_history', $this->getJobType()),
-            array('id' => $id)
-        );
-        $historyGridView = $historyGrid->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**

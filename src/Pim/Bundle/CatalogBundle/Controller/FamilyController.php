@@ -214,18 +214,12 @@ class FamilyController extends AbstractDoctrineController
      */
     public function historyAction(Family $family)
     {
-        $historyGridView = $this->getHistoryGrid($family)->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        } else {
-            return $this->render(
-                'PimCatalogBundle:Family:_history.html.twig',
-                array(
-                    'historyDatagrid'   => $historyGridView
-                )
-            );
-        }
+        return $this->render(
+            'PimCatalogBundle:Family:_history.html.twig',
+            array(
+                'id' => $family->getId()
+            )
+        );
     }
 
     /**
@@ -327,21 +321,5 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
-    }
-
-    /**
-     * @param Family $family
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(Family $family)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $family,
-            'pim_catalog_family_history',
-            array('id' => $family->getId())
-        );
-
-        return $historyGrid;
     }
 }
