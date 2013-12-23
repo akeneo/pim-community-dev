@@ -460,3 +460,77 @@ pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metri
 Group: Group
 View group: View group
 Products: Products
+
+# ACLs
+pim_catalog:
+    acl:
+        locale.index: 'List locales'
+        currency:
+            index: 'List currencies'
+            toggle: 'Toggle currencies'
+        product:
+            index: 'List products'
+            create: 'Create a product'
+            edit: 'Edit a product'
+            remove: 'Remove a product'
+            add_attribute: 'Add an attribute to a product'
+            remove_attribute: 'Remove an attribute from a product'
+            categories_view: 'Consult the categories of a product'
+            associations_view: 'View the associations of a product'
+            change_family: 'Change product family'
+            change_state: 'Change state of product'
+            add_to_groups: 'Add product to groups'
+            mass_edit: 'Product mass edit actions'
+        category:
+            list: 'List categories'
+            create: 'Create a category'
+            edit: 'Edit a category'
+            remove: 'Remove a category'
+            move: 'Move category'
+            children: 'See category children'
+            products: See category's product
+        channel:
+            index: 'List channels'
+            create: 'Create a channel'
+            edit: 'Edit a channel'
+            remove: 'Remove a channel'
+        family:
+            create: 'Create a family'
+            edit: 'Edit a family'
+            remove: 'Remove a family'
+            add_attribute: 'Add attribute to a family'
+            remove_attribute: 'Remove attribute to a family'
+        attribute_group:
+            create: 'Create an attribute group'
+            edit: 'Edit an attribute group'
+            remove: 'Remove an attribute group'
+            sort: 'Sort attribute groups'
+            add_attribute: 'Add attribute to a group'
+            remove_attribute: 'Remove attribute from a group'
+        product_attribute:
+            index: 'List product attributes'
+            create: 'Create product attribute'
+            edit: 'Edit product attribute'
+            remove: 'Remove product attribute'
+            sort: 'Sort product attributes inside attribute groups'
+        group:
+            index: 'List groups'
+            create: 'Create a group'
+            edit: 'Edit a group'
+            remove: 'Remove a group'
+        group_type:
+            index: 'List group types'
+            create: 'Create a group type'
+            edit: 'Edit a group type'
+            remove: 'Remove a group type'
+        association:
+            index: 'List associations'
+            create: 'Create an association'
+            edit: 'Edit an association'
+            remove: 'Remove an association'
+            
+            
+            
+            
+            
+            
