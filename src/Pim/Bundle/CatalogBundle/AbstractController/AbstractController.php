@@ -27,37 +27,37 @@ abstract class AbstractController
     /**
      * @var Request
      */
-    private $request;
+    protected $request;
 
     /**
      * @var EngineInterface
      */
-    private $templating;
+    protected $templating;
 
     /**
      * @var RouterInterface
      */
-    private $router;
+    protected $router;
 
     /**
      * @var SecurityContextInterface
      */
-    private $securityContext;
+    protected $securityContext;
 
     /**
      * @var FormFactoryInterface
      */
-    private $formFactory;
+    protected $formFactory;
 
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    protected $validator;
 
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    protected $translator;
 
     /**
      * Constructor

@@ -7,9 +7,11 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Form subscriber for ProductAttributeInterface
@@ -19,13 +21,13 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
+class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
     /**
-     * Attribute type manager
-     * @var AttributeTypeManager
+     * Attribute manager
+     * @var ProductAttributeManagerInterface
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * Attribute type factory
@@ -42,15 +44,15 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
     /**
      * Constructor
      *
-     * @param AttributeTypeManager $attTypeManager Attribute type manager
-     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
+     * @param ProductAttributeManagerInterface $attributeManager Attribute manager
+     * @param AttributeTypeFactory             $attTypeFactory   Attribute type factory
      */
     public function __construct(
-        AttributeTypeManager $attTypeManager = null,
+        ProductAttributeManagerInterface $attributeManager = null,
         AttributeTypeFactory $attTypeFactory = null
     ) {
-        $this->attTypeManager = $attTypeManager;
-        $this->attTypeFactory = $attTypeFactory;
+        $this->attributeManager = $attributeManager;
+        $this->attTypeFactory   = $attTypeFactory;
     }
 
     /**
@@ -81,11 +83,22 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
      */
     public function preSetData(FormEvent $event)
     {
-        parent::preSetData($event);
         $data = $event->getData();
-
         if (null === $data) {
             return;
+        }
+
+        if (is_null($data->getId()) === false) {
+
+            $form = $event->getForm();
+
+            // add related options
+            if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
+                $this->addOptionCollection($form);
+            }
+
+            $this->disableField($form, 'code');
+            $this->disableField($form, 'attributeType');
         }
 
         $this->customizeForm($event->getForm(), $data);
@@ -103,7 +116,7 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
             return;
         }
 
-        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
+        $attribute = $this->attributeManager->createAttributeFromFormData($data);
 
         $this->customizeForm($event->getForm(), $attribute);
     }
@@ -122,5 +135,47 @@ class AddAttributeTypeRelatedFieldsSubscriber extends AttributeTypeSubscriber
         foreach ($fields as $field) {
             $form->add($field);
         }
+    }
+
+    /**
+     * Add attribute option collection
+     * @param Form $form
+     */
+    protected function addOptionCollection($form)
+    {
+        $form->add(
+            $this->factory->createNamed(
+                'options',
+                'collection',
+                null,
+                array(
+                    'type'            => new AttributeOptionType(),
+                    'allow_add'       => true,
+                    'allow_delete'    => true,
+                    'by_reference'    => false,
+                    'auto_initialize' => false
+                )
+            )
+        );
+    }
+
+    /**
+     * Disable a field from its name
+     * @param Form   $form Form
+     * @param string $name Field name
+     */
+    protected function disableField(Form $form, $name)
+    {
+        // get form field and properties
+        $formField = $form->get($name);
+        $type      = $formField->getConfig()->getType();
+        $options   = $formField->getConfig()->getOptions();
+
+        // replace by disabled and read-only
+        $options['disabled']  = true;
+        $options['read_only'] = true;
+        $options['auto_initialize'] = false;
+        $formField = $this->factory->createNamed($name, $type, null, $options);
+        $form->add($formField);
     }
 }

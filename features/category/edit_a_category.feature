@@ -24,15 +24,6 @@ Feature: Edit a category
     And I click on the "Summer collection" category
     Then I should be on the category "summer_collection" edit page
 
-  @javascript @info This scenario does not accurately describe dragging because of limited behat/selenium dragging capabilities
-  Scenario: Move category to a different position in the tree
-    Given I am on the categories page
-    And I select the "2014 collection" tree
-    And I expand the "Summer collection" category
-    And I expand the "Winter collection" category
-    And I drag the "Summer collection" category to the "Winter boots" category
-    Then I should see the "Summer collection" category under the "Winter collection" category
-
   @javascript
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "winter_boots" category

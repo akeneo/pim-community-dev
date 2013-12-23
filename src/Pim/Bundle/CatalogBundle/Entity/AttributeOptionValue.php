@@ -22,4 +22,28 @@ class AttributeOptionValue extends AbstractEntityAttributeOptionValue
      * @var AttributeOption $option
      */
     protected $option;
+
+    /**
+     * Returns the label of the attribute
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Sets the label
+     *
+     * @param string $label
+     *
+     * @return AttributeOptionValue
+     */
+    public function setLabel($label)
+    {
+        $this->value = $label;
+
+        return $this;
+    }
 }

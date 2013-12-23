@@ -17,7 +17,9 @@ Feature: Create an export
       | Label | Products export       |
       | Job   | Product export in CSV |
     And I press the "Save" button
-    Then I should see "Edit export profile - Products export"
+    Then I click back to grid
+    And the grid should contain 1 element
+    And I should see export profile PRODUCT_EXPORT
 
   Scenario: Fail to create a job export
     Given I create a new export

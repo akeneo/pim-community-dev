@@ -55,7 +55,7 @@ class JobInstanceType extends AbstractType
             ->addAliasField($builder)
             ->addJobConfigurationField($builder);
 
-        $builder->addEventSubscriber(new JobAliasSubscriber($this->connectorRegistry));
+        $builder->addEventSubscriber(new JobAliasSubscriber());
     }
 
     /**
@@ -152,7 +152,7 @@ class JobInstanceType extends AbstractType
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false,
-                    'empty_value'  => 'Choose a job',
+                    'empty_value'  => 'Select a job',
                     'empty_data'   => null,
                     'label'        => 'Job'
                 )

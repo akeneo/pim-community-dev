@@ -216,7 +216,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->findEntity($entityName, $criteria);
 
         if (!$entity) {
-            if (gettype($criteria) === 'string') {
+            if (is_string($criteria)) {
                 $criteria = array('code' => $criteria);
             }
 
@@ -224,7 +224,7 @@ class FixturesContext extends RawMinkContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->entities[$entityName],
-                    print_r($criteria, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
         }
@@ -306,8 +306,7 @@ class FixturesContext extends RawMinkContext
                 $data
             );
 
-            $family = new Family();
-            $family->setCode($data['code']);
+            $family = $this->createFamily($data['code']);
             if (isset($data['label'])) {
                 $family
                     ->setLocale($this->getLocaleCode($data['locale']))
@@ -618,7 +617,7 @@ class FixturesContext extends RawMinkContext
 
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
-            assertEquals(($data['is_default'] == 1), $option->isDefault());
+            assertEquals(($data['default'] == 1), $option->isDefault());
         }
     }
 
@@ -1346,7 +1345,7 @@ class FixturesContext extends RawMinkContext
 
         $data['code'] = $data['code'] ?: $this->camelize($data['label']);
 
-        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($data['type']));
+        $attribute = $this->getProductAttributeManager()->createAttribute($this->getAttributeType($data['type']));
 
         $attribute->setCode($data['code']);
         $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
@@ -1678,6 +1677,24 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Create a family
+     *
+     * @param string $code
+     *
+     * @return Family
+     */
+    private function createFamily($code)
+    {
+        $family = $this->getFamilyFactory()->createFamily();
+        $family->setCode($code);
+
+        $this->persist($family);
+
+        return $family;
+    }
+
+
+    /**
      * @param string $string
      *
      * @return string
@@ -1752,6 +1769,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
+     */
+    private function getProductAttributeManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.product_attribute');
+    }
+
+    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
      */
     private function getMediaManager()
@@ -1765,6 +1790,14 @@ class FixturesContext extends RawMinkContext
     private function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Factory\FamilyFactory
+     */
+    private function getFamilyFactory()
+    {
+        return $this->getContainer()->get('pim_catalog.factory.family');
     }
 
     /**

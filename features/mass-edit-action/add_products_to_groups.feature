@@ -38,7 +38,7 @@ Feature: Add products to many groups at once
     And I choose the "Add to groups" operation
     And I check "Caterpillar boots"
     When I move on to the next step
-    Then I should see validation error:
+    Then I should see:
     """
     Product "hiking_shoes" cannot be added to the the variant group "Caterpillar boots" because it already contains another product with values "size: 42, color: Red".
     """

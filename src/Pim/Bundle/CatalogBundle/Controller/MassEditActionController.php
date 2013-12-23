@@ -39,16 +39,16 @@ class MassEditActionController extends AbstractDoctrineController
     protected $massEditActionOperator;
 
     /** @var DatagridHelperInterface */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /** @var MassActionParametersParser */
-    private $parametersParser;
+    protected $parametersParser;
 
     /** @var ProductManager */
-    private $productManager;
+    protected $productManager;
 
     /** @var ValidatorInterface */
-    private $validator;
+    protected $validator;
 
     /**
      * Constructor
@@ -208,11 +208,7 @@ class MassEditActionController extends AbstractDoctrineController
         // Binding does not actually perform the operation, thus form errors can miss some constraints
         $this->massEditActionOperator->performOperation($productIds);
         foreach ($this->validator->validate($this->massEditActionOperator) as $violation) {
-            $child = $form->get('operation');
-            if (preg_match('/operation.(\w+)/', $violation->getPropertyPath(), $matches)) {
-                $child = $child->get($matches[1]);
-            }
-            $child->addError(
+            $form->addError(
                 new FormError(
                     $violation->getMessage(),
                     $violation->getMessageTemplate(),
@@ -279,7 +275,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * @return Form
      */
-    private function getMassEditActionOperatorForm()
+    protected function getMassEditActionOperatorForm()
     {
         return $this->createForm(
             new MassEditActionOperatorType(),
@@ -295,7 +291,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return array
      */
-    private function getProductIds(Request $request)
+    protected function getProductIds(Request $request)
     {
         $inset = $request->query->get('inset');
         if ($inset === '0') {

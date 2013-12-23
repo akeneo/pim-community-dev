@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Family entity
@@ -28,7 +29,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface
+class Family implements TranslatableInterface, ReferableInterface
 {
     /**
      * @var integer $id
@@ -421,6 +422,9 @@ class Family implements TranslatableInterface
      */
     public function setAttributeRequirements(array $requirements)
     {
+        foreach ($requirements as $requirement) {
+            $requirement->setFamily($this);
+        }
         $this->requirements = new ArrayCollection($requirements);
 
         return $this;
@@ -481,5 +485,13 @@ class Family implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

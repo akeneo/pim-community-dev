@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 
 /**
@@ -32,15 +33,45 @@ class ORMTransformer extends AbstractORMTransformer
      */
     protected function getEntity($class, array $data)
     {
-        if (!isset($data['code'])) {
-            throw new MissingIdentifierException();
-        }
-        $object = $this->doctrine->getRepository($class)->findOneBy(array('code' => $data['code']));
+        $object = $this->findEntity($class, $data);
         if (!$object) {
             $object = $this->create($class);
         }
 
         return $object;
+    }
+
+    /**
+     * Finds an entity
+     *
+     * @param string $class
+     * @param array  $data
+     *
+     * @return object|null
+     */
+    protected function findEntity($class, array $data)
+    {
+        $repository = $this->doctrine->getRepository($class);
+
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            $reference = implode(
+                '.',
+                array_map(
+                    function ($property) use ($data) {
+                        if (!isset($data[$property])) {
+                            throw new MissingIdentifierException();
+                        }
+
+                        return $data[$property];
+                    },
+                    $repository->getReferenceProperties()
+                )
+            );
+
+            return $this->doctrine->getRepository($class)->findByReference($reference);
+        } else {
+            return null;
+        }
     }
 
     /**

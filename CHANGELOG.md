@@ -7,9 +7,11 @@
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
-- Fixtures can be in CSV (product and associations)
-- Fixture files can be imported through a command (product and associations)
+- Attribute options fixture
+- Fixtures can be in CSV (products, associations and attribute options)
+- Fixture files can be imported through a command (families, products, associations and attribute options)
 - Add quick create popin for jobs
+- Add WYSIWYG editor
 
 ## Improvements
 - Improve the user experience for family management
@@ -51,7 +53,7 @@
 - Error on disallowed decimal on price are not displayed at the right place
 - Initial state of completeness filter is wrong
 - Search should take account of ACLs
-- Oro mapping issue with serch item on beta-1
+- Oro mapping issue with search item on beta-1
 - Locale selector in the product header is sometimes too short
 
 ## BC breaks
@@ -62,6 +64,12 @@
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
+- Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
+- Rename getStorageManager in flexible manager and change related references
+- Rename AttributeTypeManager to ProductAttributeManager and change related references, move createAttribute, createAttributeOption, createAttributeOptionValue from ProductManager to ProductAttributeManager
+- Introduce ProductAttributeManagerInterface andre move references to concret class
+- Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
+- Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

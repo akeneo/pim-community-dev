@@ -12,7 +12,7 @@ Feature: Export options
     And I wait for the job to finish
     Then exported file of "footwear_option_export" should contain:
     """
-    attribute;code;is_default;label-en_US
+    attribute;code;default;label-en_US
     manufacturer;Converse;0;Converse
     manufacturer;TimberLand;0;TimberLand
     manufacturer;Nike;0;Nike

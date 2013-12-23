@@ -11,6 +11,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Group entity
@@ -22,7 +23,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @Assert\GroupSequenceProvider
  * @Config(
  *  defaultValues={
- *      "entity"={"label"="Group", "plural_label"="Groups"},
+ *      "entity"={"label"="Product group", "plural_label"="Product groups"},
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
@@ -32,7 +33,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface
 {
     /**
      * @var integer $id
@@ -382,5 +383,13 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     public function __toString()
     {
         return $this->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

@@ -52,14 +52,14 @@ class LoadChannelData extends AbstractInstallerFixture
         $channel = new Channel();
         $channel->setCode($code);
         $channel->setLabel($label);
-        $channel->setCategory($this->getReference('category.'.$tree));
+        $channel->setCategory($this->getReference('Pim\Bundle\CatalogBundle\Entity\Category.'.$tree));
         foreach ($locales as $locale) {
-            $channel->addLocale($this->getReference('locale.'.$locale));
+            $channel->addLocale($this->getReference('Pim\Bundle\CatalogBundle\Entity\Locale.'.$locale));
         }
         foreach ($currencies as $currency) {
-            $channel->addCurrency($this->getReference('currency.'.$currency));
+            $channel->addCurrency($this->getReference('Pim\Bundle\CatalogBundle\Entity\Currency.'.$currency));
         }
-        $this->setReference('channel.'. $code, $channel);
+        $this->setReference(get_class($channel).'.'.$code, $channel);
 
         return $channel;
     }

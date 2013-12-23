@@ -25,9 +25,9 @@
         "doctrine/mongodb-odm-bundle": "3.0.*@dev"
     },
     "require-dev": {
-        "behat/behat":  "2.4.*@stable",
-        "behat/symfony2-extension":      "*",
-        "behat/mink-extension":          "*",
+        "behat/behat":  "2.5.*@stable",
+        "behat/symfony2-extension":      "1.1.*",
+        "behat/mink-extension":          "1.3.*@dev",
         "behat/mink-browserkit-driver":  "*",
         "behat/mink-selenium2-driver":   "*",
         "behat/common-contexts": "*",

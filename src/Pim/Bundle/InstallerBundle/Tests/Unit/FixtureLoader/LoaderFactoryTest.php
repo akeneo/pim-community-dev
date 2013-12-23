@@ -18,10 +18,6 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
         $entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $fixtureReferenceTransformer = $this
-            ->getMockBuilder('Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer')
-            ->disableOriginalConstructor()
-            ->getMock();
         $configurationRegistry = $this->getMock(
             'Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistryInterface'
         );
@@ -32,7 +28,7 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $fixtureReferenceTransformer->expects($this->once())
+        $entityCache->expects($this->once())
             ->method('setReferenceRepository')
             ->with($this->identicalTo($referenceRepository));
 
@@ -57,7 +53,6 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory = new LoaderFactory(
             $entityCache,
-            $fixtureReferenceTransformer,
             $configurationRegistry,
             $eventSubscriber
         );

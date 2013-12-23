@@ -19,7 +19,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->operator = new MassEditActionOperator(
-            $this->getFlexibleManagerMock(),
+            $this->getProductManagerMock(),
             $this->getSecurityFacadeMock()
         );
     }
@@ -120,7 +120,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Pim\Bundle\CatalogBundle\Manager\ProductManager
      */
-    protected function getFlexibleManagerMock()
+    protected function getProductManagerMock()
     {
         $manager = $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')

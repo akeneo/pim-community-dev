@@ -1,8 +1,0 @@
-parameters:
-    pim_installer.transformer.property.fixture_reference.class:  Pim\Bundle\InstallerBundle\Transformer\Property\FixtureReferenceTransformer
-
-services:
-    pim_installer.transformer.property.fixture_reference:
-        class: %pim_installer.transformer.property.fixture_reference.class%
-        arguments:
-            - '@pim_import_export.transformer.property.entity'

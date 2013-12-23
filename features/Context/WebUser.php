@@ -538,8 +538,8 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see families %s, but saw %s',
-                    print_r($expectedFamilies, true),
-                    print_r($families, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($expectedFamilies, 2), true),
+                    print_r(\Doctrine\Common\Util\Debug::export($families, 2), true)
                 )
             );
         }
@@ -654,7 +654,7 @@ class WebUser extends RawMinkContext
                     'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
                     count($expectedAttributes),
                     $actual,
-                    print_r($options, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
                 )
             );
         }
@@ -663,8 +663,8 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see eligible attributes as label %s, actually saw %s',
-                    print_r($expectedAttributes, true),
-                    print_r($options, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($expectedAttributes, 2), true),
+                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
                 )
             );
         }
@@ -1357,7 +1357,7 @@ class WebUser extends RawMinkContext
             $actualLine = $actualLines[$index];
             sort($expectedLine);
             sort($actualLine);
-            assertEquals(
+            assertSame(
                 $expectedLine,
                 $actualLine,
                 sprintf(

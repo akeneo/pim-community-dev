@@ -5,10 +5,13 @@ define(
 
         return function (elementId, callback) {
             var $el = $(elementId);
+            if (!$el.length) {
+                return console.error('DialogForm: the element could not be found!');
+            }
             var $dialog;
             var url = $el.attr('data-form-url');
             if (!url) {
-                throw new Error('Please specify the url');
+                throw new Error('DialogForm: please specify the url');
             }
             var width = $el.attr('data-form-width') || 400;
 

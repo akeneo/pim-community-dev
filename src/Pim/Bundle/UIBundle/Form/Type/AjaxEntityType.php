@@ -154,7 +154,8 @@ class AjaxEntityType extends AbstractType
     /**
      * Returns the transformer options
      *
-     * @param  array $options
+     * @param array $options
+     *
      * @return array
      */
     protected function getTransformerOptions(array $options)

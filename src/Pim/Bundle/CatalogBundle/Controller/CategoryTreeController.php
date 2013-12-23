@@ -36,12 +36,12 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var CategoryManager
      */
-    private $categoryManager;
+    protected $categoryManager;
 
     /**
      * Constructor
@@ -128,7 +128,7 @@ class CategoryTreeController extends AbstractDoctrineController
         } else {
             $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
         }
-        $this->categoryManager->getStorageManager()->flush();
+        $this->categoryManager->getObjectManager()->flush();
 
         return new JsonResponse(array('status' => 1));
     }
@@ -231,7 +231,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->categoryManager->getStorageManager();
+                $manager = $this->categoryManager->getObjectManager();
                 $manager->persist($category);
                 $manager->flush();
 
@@ -266,7 +266,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->categoryManager->getStorageManager();
+                $manager = $this->categoryManager->getObjectManager();
                 $manager->persist($category);
                 $manager->flush();
 
@@ -317,7 +317,7 @@ class CategoryTreeController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.tree.not removable'));
         }
         $this->categoryManager->remove($category);
-        $this->categoryManager->getStorageManager()->flush();
+        $this->categoryManager->getObjectManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

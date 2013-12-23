@@ -1,6 +1,7 @@
 define(
     ['jquery', 'jquery.slimbox'],
     function($) {
+        var maxFilenameLength = 20;
         return function(id) {
             var $el = $('#' + id);
             if (!$el.length) {
@@ -24,16 +25,17 @@ define(
                 }
 
                 if (filename) {
-                    $filename.html(filename);
+                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength-3) + '...' : filename;
+                    $filename.html(title);
                     $zone.removeClass('empty');
-                    $preview.removeClass('empty');
+                    $preview.removeClass('empty').attr('title', filename);
                     $removeBtn.removeClass('hide');
                     $input.addClass('hide');
                     $removeCheckbox.removeAttr('checked');
                 } else {
                     $filename.html($filename.attr('data-empty-title'));
                     $zone.addClass('empty');
-                    $preview.addClass('empty');
+                    $preview.addClass('empty').removeAttr('title');
                     $removeBtn.addClass('hide');
                     $input.removeAttr('disabled').removeClass('hide');
                     $removeCheckbox.attr('checked', 'checked');

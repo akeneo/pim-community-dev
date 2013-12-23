@@ -37,6 +37,7 @@ class EditCommonAttributesType extends AbstractType
     /**
      * @param ProductFormView $productFormView
      * @param LocaleHelper    $localeHelper
+     * @param string          $attributeClass
      */
     public function __construct(
         ProductFormView $productFormView,
