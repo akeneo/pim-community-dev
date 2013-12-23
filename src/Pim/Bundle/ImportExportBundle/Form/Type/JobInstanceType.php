@@ -8,8 +8,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
 
+use Pim\Bundle\ImportExportBundle\Form\Type\JobConfigurationType;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
