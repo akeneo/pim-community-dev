@@ -16,12 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Config(
- *     defaultValues={
- *         "entity"={"label"="Association", "plural_label"="Associations"}
- *     }
- * )
- *
  * @ExclusionPolicy("all")
  */
 class Association implements TranslatableInterface, ReferableInterface
