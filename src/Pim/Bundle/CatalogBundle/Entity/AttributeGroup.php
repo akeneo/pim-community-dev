@@ -19,11 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @Config(
  *     defaultValues={
- *         "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          }
+ *         "entity"={"label"="Attribute group", "plural_label"="Attribute groups"}
  *     }
  * )
  *

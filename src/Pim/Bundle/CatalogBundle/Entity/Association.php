@@ -17,13 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Association", "plural_label"="Associations"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Association", "plural_label"="Associations"}
+ *     }
  * )
  *
  * @ExclusionPolicy("all")

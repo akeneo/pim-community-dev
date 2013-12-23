@@ -21,15 +21,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Assert\GroupSequenceProvider
- * @Config(
- *  defaultValues={
- *      "entity"={"label"="Product group", "plural_label"="Product groups"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
- * )
  *
  * @ExclusionPolicy("all")
  */
