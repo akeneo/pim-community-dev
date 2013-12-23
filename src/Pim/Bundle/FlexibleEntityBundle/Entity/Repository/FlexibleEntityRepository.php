@@ -176,7 +176,7 @@ class FlexibleEntityRepository extends EntityRepository
      * @param string       $attributeCode attribute code
      * @param string       $direction     direction to use
      */
-    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    protected function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
     {
         $codeToAttribute = $this->getCodeToAttributes(array());
         $attributeCodes = array_keys($codeToAttribute);

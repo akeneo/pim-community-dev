@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\GridBundle\Sorter\ORM\Flexible;
 
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-
 use Oro\Bundle\GridBundle\Sorter\ORM\Sorter;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 
 /**
  * Flexible sorter
@@ -64,8 +65,15 @@ class FlexibleSorter extends Sorter
         $this->setDirection($direction);
         $queryBuilder = $queryInterface->getQueryBuilder();
 
-        /** @var $entityRepository FlexibleEntityRepository */
-        $entityRepository = $this->flexibleManager->getFlexibleRepository();
-        $entityRepository->applySorterByAttribute($queryBuilder, $this->getField()->getFieldName(), $direction);
+        $flexibleQB = new FlexibleQueryBuilder(
+            $queryBuilder,
+            $this->flexibleManager->getLocale(),
+            $this->flexibleManager->getScope()
+        );
+        $attributeCode = $this->getField()->getFieldName();
+        $attribute = $this->flexibleManager->getAttributeRepository()
+            ->findOneBy(array('code' => $attributeCode, 'entityType' => $this->flexibleManager->getFlexibleName()));
+
+        $flexibleQB->addAttributeOrderBy($attribute, $direction);
     }
 }
