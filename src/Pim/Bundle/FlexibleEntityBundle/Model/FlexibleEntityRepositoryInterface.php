@@ -4,7 +4,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 
 /**
  * Repository interface for flexible entity
