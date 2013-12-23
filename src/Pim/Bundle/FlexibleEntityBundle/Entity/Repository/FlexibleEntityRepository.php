@@ -5,7 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleEntityRepositoryInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;

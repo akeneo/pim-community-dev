@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
+namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
