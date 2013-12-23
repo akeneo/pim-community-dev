@@ -36,9 +36,3 @@ pim_catalog_productattribute_create_option:
     defaults: { _controller: pim_catalog.controller.product_attribute:createOptionAction }
     requirements:
         id: \d+
-
-pim_catalog_productattribute_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.product_attribute:historyAction }
-    requirements:
-        id: \d+

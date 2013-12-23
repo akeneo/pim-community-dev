@@ -19,7 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -39,11 +38,6 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
  */
 class ProductAttributeController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var ProductAttributeHandler
      */
@@ -93,7 +87,6 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param ValidatorInterface               $validator
      * @param TranslatorInterface              $translator
      * @param RegistryInterface                $doctrine
-     * @param DatagridHelperInterface          $datagridHelper
      * @param ProductAttributeHandler          $attributeHandler
      * @param Form                             $attributeForm
      * @param ProductAttributeManagerInterface $attributeManager
@@ -110,7 +103,6 @@ class ProductAttributeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         ProductAttributeHandler $attributeHandler,
         Form $attributeForm,
         ProductAttributeManagerInterface $attributeManager,
@@ -129,7 +121,6 @@ class ProductAttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper   = $datagridHelper;
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
@@ -201,28 +192,9 @@ class ProductAttributeController extends AbstractDoctrineController
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
-            'historyDatagrid' => $this->getHistoryGrid($attribute)->createView(),
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
-    }
-
-    /**
-     * History of a attribute
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, $id)
-    {
-        $attribute = $this->findAttributeOr404($id);
-        $historyGridView = $this->getHistoryGrid($attribute)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -424,21 +396,5 @@ class ProductAttributeController extends AbstractDoctrineController
                 return $this->redirectToRoute('pim_catalog_productattribute_index');
             }
         }
-    }
-
-    /**
-     * @param ProductAttributeInterface $attribute
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(ProductAttributeInterface $attribute)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $attribute,
-            'pim_catalog_productattribute_history',
-            array('id' => $attribute->getId())
-        );
-
-        return $historyGrid;
     }
 }
