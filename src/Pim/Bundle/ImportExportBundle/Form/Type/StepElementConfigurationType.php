@@ -69,6 +69,6 @@ class StepElementConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_batch_step_element_configuration';
+        return 'pim_import_export_step_element_configuration';
     }
 }

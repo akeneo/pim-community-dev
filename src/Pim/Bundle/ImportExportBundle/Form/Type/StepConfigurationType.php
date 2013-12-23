@@ -36,7 +36,7 @@ class StepConfigurationType extends AbstractType
                 $form->add(
                     $factory->createNamed(
                         'reader',
-                        new StepElementConfigurationType(),
+                        'pim_import_export_step_element_configuration',
                         $reader,
                         array(
                             'label' => sprintf('oro_batch.%s.title', $reader->getName()),
@@ -48,7 +48,7 @@ class StepConfigurationType extends AbstractType
                 $form->add(
                     $factory->createNamed(
                         'processor',
-                        new StepElementConfigurationType(),
+                        'pim_import_export_step_element_configuration',
                         $processor,
                         array(
                             'label' => sprintf('oro_batch.%s.title', $processor->getName()),
@@ -60,7 +60,7 @@ class StepConfigurationType extends AbstractType
                 $form->add(
                     $factory->createNamed(
                         'writer',
-                        new StepElementConfigurationType(),
+                        'pim_import_export_step_element_configuration',
                         $writer,
                         array(
                             'label' => sprintf('oro_batch.%s.title', $writer->getName()),
@@ -89,6 +89,6 @@ class StepConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_batch_step_configuration';
+        return 'pim_import_export_step_configuration';
     }
 }

@@ -173,7 +173,7 @@ class JobInstanceType extends AbstractType
         $builder
             ->add(
                 'job',
-                new JobConfigurationType(),
+                'pim_import_export_job_configuration',
                 array(
                     'required'     => false,
                     'by_reference' => false,

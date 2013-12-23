@@ -25,7 +25,7 @@ class JobConfigurationType extends AbstractType
                 'steps',
                 'collection',
                 array(
-                    'type' => new StepConfigurationType()
+                    'type' => 'pim_import_export_step_configuration'
                 )
             );
     }
@@ -47,6 +47,6 @@ class JobConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_batch_job_configuration';
+        return 'pim_import_export_job_configuration';
     }
 }
