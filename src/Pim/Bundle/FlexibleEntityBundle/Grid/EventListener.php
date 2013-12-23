@@ -50,8 +50,6 @@ class EventListener
      * @param BuildBefore $event
      *
      * @throws \LogicException
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function buildBefore(BuildBefore $event)
     {
