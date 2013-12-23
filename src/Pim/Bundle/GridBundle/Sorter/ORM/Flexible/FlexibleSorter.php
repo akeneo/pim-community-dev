@@ -65,15 +65,8 @@ class FlexibleSorter extends Sorter
         $this->setDirection($direction);
         $queryBuilder = $queryInterface->getQueryBuilder();
 
-        $flexibleQB = new FlexibleQueryBuilder(
-            $queryBuilder,
-            $this->flexibleManager->getLocale(),
-            $this->flexibleManager->getScope()
-        );
-        $attributeCode = $this->getField()->getFieldName();
-        $attribute = $this->flexibleManager->getAttributeRepository()
-            ->findOneByEntityAndCode($this->flexibleManager->getFlexibleName(), $attributeCode);
-
-        $flexibleQB->addAttributeOrderBy($attribute, $direction);
+        /** @var $entityRepository FlexibleEntityRepository */
+        $entityRepository = $this->flexibleManager->getFlexibleRepository();
+        $entityRepository->applySorterByAttribute($queryBuilder, $this->getField()->getFieldName(), $direction);
     }
 }
