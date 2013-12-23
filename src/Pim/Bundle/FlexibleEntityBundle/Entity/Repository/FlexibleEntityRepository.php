@@ -152,8 +152,10 @@ class FlexibleEntityRepository extends EntityRepository
      * @param string       $attributeCode  attribute code
      * @param string|array $attributeValue value(s) used to filter
      * @param string       $operator       operator to use
+     *
+     * @deprecated Deprecated since version beta-4, to be removed in rc-1
      */
-    protected function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
     {
         $codeToAttribute = $this->getCodeToAttributes(array());
         $attributeCodes = array_keys($codeToAttribute);
@@ -175,8 +177,10 @@ class FlexibleEntityRepository extends EntityRepository
      * @param QueryBuilder $qb            query builder to update
      * @param string       $attributeCode attribute code
      * @param string       $direction     direction to use
+     *
+     * @deprecated Deprecated since version beta-4, to be removed in rc-1
      */
-    protected function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
     {
         $codeToAttribute = $this->getCodeToAttributes(array());
         $attributeCodes = array_keys($codeToAttribute);

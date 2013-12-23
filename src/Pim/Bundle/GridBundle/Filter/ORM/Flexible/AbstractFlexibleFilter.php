@@ -113,15 +113,10 @@ abstract class AbstractFlexibleFilter implements FilterInterface
     {
         /** @var $proxyQuery ProxyQuery */
         $queryBuilder = $proxyQuery->getQueryBuilder();
-        $flexibleQB = new FlexibleQueryBuilder(
-            $queryBuilder,
-            $this->flexibleManager->getLocale(),
-            $this->flexibleManager->getScope()
-        );
-        $attribute = $this->flexibleManager->getAttributeRepository()
-            ->findOneByEntityAndCode($this->flexibleManager->getFlexibleName(), $field);
 
-        $flexibleQB->addAttributeFilter($attribute, $operator, $value);
+        /** @var $entityRepository FlexibleEntityRepository */
+        $entityRepository = $this->getFlexibleManager()->getFlexibleRepository();
+        $entityRepository->applyFilterByAttribute($queryBuilder, $field, $value, $operator);
 
         // filter is active since it's applied to the flexible repository
         $this->active = true;
