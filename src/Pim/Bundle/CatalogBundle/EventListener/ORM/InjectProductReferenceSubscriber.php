@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
@@ -62,19 +63,42 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         $entityManager = $args->getEntityManager();
 
         if ($entity instanceof Group) {
-            $this->setProductGroupReference($entity, $entityManager);
+            $this->setProductPersistentCollection(
+                $entity,
+                array(
+                    'mappedBy' => 'groups',
+                    'fetch'    => ClassMetadata::FETCH_LAZY
+                ),
+                $entityManager
+            );
+        }
+
+        if ($entity instanceof CategoryInterface) {
+            $this->setProductPersistentCollection(
+                $entity,
+                array(
+                    'mappedBy' => 'categories',
+                    'fetch'    => ClassMetadata::FETCH_EXTRA_LAZY
+                ),
+                $entityManager
+            );
         }
     }
 
     /**
      * Prepare a lazy loadable PersistentCollection
-     * on the group to get Products
+     * on the entity to get Products.
+     * The entity must have a "products" property defined
      *
-     * @param Group         $group
+     * @param $entity 
+     * @param $assoc Association properties
      * @param EntityManager $entityManager
      */
-    protected function setProductGroupReference(Group $group, EntityManager $entityManager)
-    {
+    protected function setProductPersistentCollection(
+        $entity,
+        $assoc,
+        EntityManager $entityManager
+    ) {
         $targetEntity = $this->productClass;
 
         $productsCollection = new PersistentCollection(
@@ -83,26 +107,23 @@ class InjectProductReferenceSubscriber implements EventSubscriber
             new ArrayCollection()
         );
 
-        $assoc = array();
         $assoc['fieldName'] = 'products';
         $assoc['targetEntity'] = $targetEntity;
-        $assoc['mappedBy'] = 'groups';
         $assoc['type'] = ClassMetadata::MANY_TO_MANY;
         $assoc['inversedBy'] = '';
         $assoc['isOwningSide'] = false;
-        $assoc['sourceEntity'] = get_class($group);
-        $assoc['fetch'] = ClassMetadata::FETCH_LAZY;
+        $assoc['sourceEntity'] = get_class($entity);
 
-        $productsCollection->setOwner($group, $assoc);
+        $productsCollection->setOwner($entity, $assoc);
         $productsCollection->setInitialized(false);
 
-        $groupMetadata = $entityManager->getClassMetadata(get_class($group));
+        $entityMetadata = $entityManager->getClassMetadata(get_class($entity));
 
-        $productsReflProp = $groupMetadata->reflClass->getProperty('products');
+        $productsReflProp = $entityMetadata->reflClass->getProperty('products');
         $productsReflProp->setAccessible(true);
 
         $productsReflProp->setValue(
-            $group,
+            $entity,
             $productsCollection
         );
     }
