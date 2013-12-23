@@ -72,7 +72,7 @@ class FlexibleSorter extends Sorter
         );
         $attributeCode = $this->getField()->getFieldName();
         $attribute = $this->flexibleManager->getAttributeRepository()
-            ->findOneBy(array('code' => $attributeCode, 'entityType' => $this->flexibleManager->getFlexibleName()));
+            ->findOneByEntityAndCode($this->flexibleManager->getFlexibleName(), $attributeCode);
 
         $flexibleQB->addAttributeOrderBy($attribute, $direction);
     }

@@ -56,7 +56,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->markTestIncomplete('This test must be completed after flexible repository refactoring.');
+        $this->markTestIncomplete('This test must be completed after grid refactoring.');
 
         $this->flexibleEntityRepository = $this->createFlexibleEntityRepository();
         $this->flexibleManager = $this->createFlexibleManager($this->flexibleEntityRepository);
@@ -99,6 +99,11 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
             ->method('getFlexibleRepository')
             ->will($this->returnValue($entityRepository));
 
+        $entityRepository = $this->createAttributeRepository();
+        $flexibleManager->expects($this->any())
+            ->method('getAttributeRepository')
+            ->will($this->returnValue($entityRepository));
+
         $flexibleManager->expects($this->any())
             ->method('getFlexibleName')
             ->will($this->returnValue(self::TEST_FLEXIBLE_NAME));
@@ -124,6 +129,28 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($flexibleManager));
 
         return $flexibleRegistry;
+    }
+
+    /**
+     * @return FlexibleEntityRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createAttributeRepository()
+    {
+        $mock = $this->getMockBuilder(
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository'
+        )->disableOriginalConstructor()
+        ->setMethods(array('findOneByEntityAndCode'))
+        ->getMock();
+
+        $attribute = $this->getMock(
+            'Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute'
+        );
+
+        $mock->expects($this->any())
+            ->method('findOneByEntityAndCode')
+            ->will($this->returnValue($attribute));
+
+        return $mock;
     }
 
     /**

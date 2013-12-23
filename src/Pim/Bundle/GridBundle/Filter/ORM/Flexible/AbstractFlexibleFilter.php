@@ -119,7 +119,7 @@ abstract class AbstractFlexibleFilter implements FilterInterface
             $this->flexibleManager->getScope()
         );
         $attribute = $this->flexibleManager->getAttributeRepository()
-            ->findOneBy(array('code' => $field, 'entityType' => $this->flexibleManager->getFlexibleName()));
+            ->findOneByEntityAndCode($this->flexibleManager->getFlexibleName(), $field);
 
         $flexibleQB->addAttributeFilter($attribute, $operator, $value);
 

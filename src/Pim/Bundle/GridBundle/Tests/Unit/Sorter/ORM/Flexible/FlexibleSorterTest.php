@@ -34,8 +34,6 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->markTestIncomplete('This test must be completed after flexible repository refactoring.');
-
         $this->flexibleRegistry = $this->getMockBuilder(
             'Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry'
         )->setMethods(array('getManager'))->getMock();
@@ -91,6 +89,8 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
      */
     public function testApply()
     {
+        $this->markTestIncomplete('This test must be completed after grid refactoring.');
+
         $entityName = 'TestEntity';
         $fieldName = 'test_field';
         $direction = SorterInterface::DIRECTION_ASC;
@@ -122,6 +122,11 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
 
         $flexibleManager->expects($this->once())
             ->method('getFlexibleRepository')
+            ->will($this->returnValue($entityRepository));
+
+        $entityRepository = $this->createAttributeRepository();
+        $flexibleManager->expects($this->once())
+            ->method('getAttributeRepository')
             ->will($this->returnValue($entityRepository));
 
         $this->flexibleSorter->apply($proxyQuery, $direction);
@@ -157,7 +162,7 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
     {
         $flexibleManager = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('getFlexibleRepository'))
+            ->setMethods(array('getFlexibleRepository', 'getAttributeRepository'))
             ->getMock();
 
         return $flexibleManager;
@@ -168,10 +173,32 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
      */
     private function createFlexibleEntityRepository()
     {
-        $flexibleManager = $this->getMockBuilder(
+        $mock = $this->getMockBuilder(
             'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository'
         )->disableOriginalConstructor()->setMethods(array('applySorterByAttribute'))->getMock();
 
-        return $flexibleManager;
+        return $mock;
+    }
+
+    /**
+     * @return FlexibleEntityRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createAttributeRepository()
+    {
+        $mock = $this->getMockBuilder(
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository'
+        )->disableOriginalConstructor()
+        ->setMethods(array('findOneByEntityAndCode'))
+        ->getMock();
+
+        $attribute = $this->getMock(
+            'Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute'
+        );
+
+        $mock->expects($this->any())
+            ->method('findOneByEntityAndCode')
+            ->will($this->returnValue($attribute));
+
+        return $mock;
     }
 }
