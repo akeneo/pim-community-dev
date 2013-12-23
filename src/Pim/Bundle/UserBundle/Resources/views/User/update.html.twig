@@ -1,0 +1,201 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+
+{% set fullname = form.vars.value|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
+{% set title = form.vars.value.id ? fullname ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
+{% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
+{% if editRoute %}
+    {% set formAction = path(editRoute) %}
+{% else %}
+    {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
+{% endif %}
+
+{% block head_script %}
+    {# TODO: Find a better way to handle such dependencies in https://magecore.atlassian.net/browse/BAP-1971 #}
+    {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
+    <script type="text/javascript">
+        require(['jquery', 'pim/initselect2', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function($, initSelect2){
+            $(function() {
+                $('#business_units_tree').jstree({
+                    "checkbox": {
+                        real_checkboxes: true,
+                        real_checkboxes_names: function (n) {
+                            return ['businessUnits[' + n.data('id') + ']', 1]
+                        },
+                        two_state: true
+                    }
+                });
+
+                $('#{{ form.vars.id }}').find('select').addClass('select2');
+                initSelect2.init($('#{{ form.vars.id }}'));
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_user', {'id': form.vars.value.id}),
+            'dataRedirect': path('oro_user_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId':  form.vars.value.id,
+            'dataMessage': 'Are you sure you want to delete this user?'|trans,
+            'successMessage': 'User deleted'|trans,
+            'title': 'Delete user',
+            'label': 'Delete'
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.button({'path' : path('oro_user_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
+    {{ UI.saveAndStayButton('oro_user_user_update') }}
+    {{ UI.saveAndCloseButton() }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_index'),
+            'indexLabel': 'Users'|trans,
+            'entityTitle': fullname,
+            'hasAvatar':   true,
+            'imagePath':   form.vars.value.imagePath,
+        }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|oro_format_datetime : 'N/A' }}</li>
+    <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
+{% endblock stats %}
+
+{% block content_data %}
+<div class="user-profile-cols">
+    {% set id = 'user-profile' %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active'|trans,
+        'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    form_row(form.enabled),
+                    form_row(form.username),
+                    form.plainPassword is defined ? form_row(form.plainPassword) : '',
+                    form_row(form.namePrefix),
+                    form_row(form.firstName),
+                    form_row(form.middleName),
+                    form_row(form.lastName),
+                    form_row(form.nameSuffix),
+                    form_row(form.birthday),
+                    form_row(form.imageFile),
+                ]
+            },
+            {
+                'title': '',
+                'data': [
+                    form_row(form.email),
+                    UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans),
+                    form_row(form.tags)
+                ]
+            }
+        ]
+    }] %}
+
+
+    {% if form.additional is defined and form.additional.children|length > 0 %}
+        {% set additionalData = [] %}
+        {% for value in form.additional %}
+            {% set additionalData = additionalData|merge([form_row(value)]) %}
+        {% endfor %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% if form.groups is defined or form.rolesCollection is defined %}
+        {% macro userRoles(form) %}
+            {% if form.rolesCollection is defined %}
+                <div class="form-horizontal" id="roles-list">
+                    {{ form_row(form.rolesCollection, { attr: { class: 'horizontal' } }) }}
+                </div>
+            {% endif %}
+        {% endmacro %}
+        {% set dataBlocks = dataBlocks|merge( [{
+            'title': 'Groups and Roles'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form.groups is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
+                        _self.userRoles(form)
+                    ]
+                }
+            ]
+        }] ) %}
+    {% endif %}
+
+    {% if form.change_password is defined %}
+        {% set dataBlocks = dataBlocks|merge( [{
+            'title': 'Passwords'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_widget(form.change_password)
+                    ]
+                }
+            ]
+        }] ) %}
+    {% endif %}
+
+    {% macro businessUnitsTree(form, businessUnits) %}
+        <div id="business_units_tree">
+            {% include 'OroOrganizationBundle:BusinessUnit:businessUnitsTree.html.twig' with {'businessUnits': businessUnits, 'hasId': form.vars.value.id ? true : false} %}
+        </div>
+    {% endmacro %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title': 'Business Units'|trans,
+        'subblocks': [
+            {
+                'title': '',
+                'useSpan': false,
+                'data': [
+                    _self.businessUnitsTree(form, businessUnits)
+                ]
+            }
+        ]
+    }] ) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title': 'Email synchronization settings',
+        'subblocks': [{
+            'title': '',
+            'data': [form_widget(form.imapConfiguration)]
+        }]
+    }]) %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+    </div>
+{% endblock content_data %}

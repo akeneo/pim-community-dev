@@ -39,16 +39,16 @@ class MassEditActionController extends AbstractDoctrineController
     protected $massEditActionOperator;
 
     /** @var DatagridHelperInterface */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /** @var MassActionParametersParser */
-    private $parametersParser;
+    protected $parametersParser;
 
     /** @var ProductManager */
-    private $productManager;
+    protected $productManager;
 
     /** @var ValidatorInterface */
-    private $validator;
+    protected $validator;
 
     /**
      * Constructor
@@ -275,7 +275,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * @return Form
      */
-    private function getMassEditActionOperatorForm()
+    protected function getMassEditActionOperatorForm()
     {
         return $this->createForm(
             new MassEditActionOperatorType(),
@@ -291,7 +291,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return array
      */
-    private function getProductIds(Request $request)
+    protected function getProductIds(Request $request)
     {
         $inset = $request->query->get('inset');
         if ($inset === '0') {

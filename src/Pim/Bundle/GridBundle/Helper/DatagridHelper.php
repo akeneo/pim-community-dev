@@ -16,7 +16,7 @@ class DatagridHelper implements DatagridHelperInterface
     /**
      * @var ContainerInterface $container
      */
-    private $container;
+    protected $container;
 
     /**
      * Constructor
@@ -87,7 +87,7 @@ class DatagridHelper implements DatagridHelperInterface
      *
      * @return QueryFactoryInterface
      */
-    private function getQueryFactory($name, $namespace = 'pim_catalog')
+    protected function getQueryFactory($name, $namespace = 'pim_catalog')
     {
         return $this->container->get(sprintf('%s.datagrid.manager.%s.default_query_factory', $namespace, $name));
     }

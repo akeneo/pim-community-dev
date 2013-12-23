@@ -78,7 +78,7 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@validator'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.product_attribute'
 
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer

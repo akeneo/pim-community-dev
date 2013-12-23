@@ -102,6 +102,8 @@ class AjaxEntityTransformer implements DataTransformerInterface
      * Sets the choices representing an entity in an array
      *
      * @param object $entity
+     *
+     * @return array
      */
     protected function getOption($entity)
     {
@@ -114,7 +116,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
     /**
      * Returns an entity for a value
      *
-     * @param mixed $value
+     * @param mixed $id
      *
      * @return object
      */

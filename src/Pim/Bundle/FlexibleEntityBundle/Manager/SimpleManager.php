@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Manager;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\Entity;
-
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\FlexibleEntityBundle\Model\Entity;
 
 /**
  * Aims to manage simple entity
@@ -16,9 +15,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 class SimpleManager
 {
     /**
-     * @var ObjectManager $storageManager
+     * @var ObjectManager $objectManager
      */
-    protected $storageManager;
+    protected $objectManager;
 
     /**
      * @var string
@@ -28,22 +27,22 @@ class SimpleManager
     /**
      * Constructor
      *
-     * @param string        $entityName     entity name
-     * @param ObjectManager $storageManager optional storage manager, get default if not provided
+     * @param string        $entityName entity name
+     * @param ObjectManager $manager    optional object manager, get default if not provided
      */
-    public function __construct($entityName, ObjectManager $storageManager)
+    public function __construct($entityName, ObjectManager $manager)
     {
-        $this->entityName     = $entityName;
-        $this->storageManager = $storageManager;
+        $this->entityName    = $entityName;
+        $this->objectManager = $manager;
     }
 
     /**
      * Get object manager
      * @return ObjectManager
      */
-    public function getStorageManager()
+    public function getObjectManager()
     {
-        return $this->storageManager;
+        return $this->objectManager;
     }
 
     /**
@@ -61,7 +60,7 @@ class SimpleManager
      */
     public function getEntityRepository()
     {
-        $repo = $this->storageManager->getRepository($this->entityName);
+        $repo = $this->objectManager->getRepository($this->entityName);
 
         return $repo;
     }

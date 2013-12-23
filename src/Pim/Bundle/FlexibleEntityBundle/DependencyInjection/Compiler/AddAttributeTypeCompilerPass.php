@@ -14,7 +14,14 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddAttributeTypeCompilerPass implements CompilerPassInterface
 {
+    /**
+     * @var string
+     */
     const FLEXIBLE_TYPE_TAG         = 'pim_flexibleentity.attributetype';
+
+    /**
+     * @var string
+     */
     const FLEXIBLE_TYPE_FACTORY_KEY = 'pim_flexibleentity.attributetype.factory';
 
     /**
@@ -22,28 +29,17 @@ class AddAttributeTypeCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->injectEntityTypesByTag($container, self::FLEXIBLE_TYPE_FACTORY_KEY, self::FLEXIBLE_TYPE_TAG);
-    }
+        $factory = $container->getDefinition(self::FLEXIBLE_TYPE_FACTORY_KEY);
 
-    /**
-     * @param ContainerBuilder $container the container
-     * @param string           $serviceId the service
-     * @param string           $tagName   the tag
-     */
-    protected function injectEntityTypesByTag(ContainerBuilder $container, $serviceId, $tagName)
-    {
-        $definition = $container->getDefinition($serviceId);
-        $types      = array();
-
-        foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
-            $container->getDefinition($id);
-
-            foreach ($attributes as $eachTag) {
-                $index = !empty($eachTag['alias']) ? $eachTag['alias'] : $id;
-                $types[$index] = $id;
-            }
+        $types   = array();
+        foreach ($container->findTaggedServiceIds(self::FLEXIBLE_TYPE_TAG) as $id => $attributes) {
+            $attributes = current($attributes);
+            $alias = $attributes['alias'];
+            $entity = $attributes['entity'];
+            $attributeType = $container->getDefinition($id);
+            $types[$alias]= array('type' => $attributeType, 'entity' => $entity);
         }
 
-        $definition->replaceArgument(1, $types);
+        $factory->replaceArgument(0, $types);
     }
 }

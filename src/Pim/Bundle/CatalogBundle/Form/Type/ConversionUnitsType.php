@@ -29,6 +29,7 @@ class ConversionUnitsType extends AbstractType
      *
      * @param MeasureManager $measureManager
      * @param EntityManager  $entityManager
+     * @param string         $attributeClass
      */
     public function __construct(MeasureManager $measureManager, EntityManager $entityManager, $attributeClass)
     {

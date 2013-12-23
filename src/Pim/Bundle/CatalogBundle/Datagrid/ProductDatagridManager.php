@@ -431,7 +431,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->flexibleManager->getStorageManager();
+        $em = $this->flexibleManager->getObjectManager();
         $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->getChoices();
 
         $field = new FieldDescription();
@@ -640,12 +640,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $channelCode = $this->flexibleManager->getScope();
 
         $locale = $this->flexibleManager
-            ->getStorageManager()
+            ->getObjectManager()
             ->getRepository('PimCatalogBundle:Locale')
             ->findBy(array('code' => $localeCode));
 
         $channel = $this->flexibleManager
-            ->getStorageManager()
+            ->getObjectManager()
             ->getRepository('PimCatalogBundle:Channel')
             ->findBy(array('code' => $channelCode));
 

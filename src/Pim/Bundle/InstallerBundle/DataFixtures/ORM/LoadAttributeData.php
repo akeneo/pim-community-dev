@@ -17,12 +17,12 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
 class LoadAttributeData extends AbstractInstallerFixture
 {
     /**
-     * Get entity manager
-     * @return Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * Get attribute manager
+     * @return Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface
      */
-    protected function getProductManager()
+    protected function getAttributeManager()
     {
-        return $this->container->get('pim_catalog.manager.product');
+        return $this->container->get('pim_catalog.manager.product_attribute');
     }
 
     /**
@@ -54,7 +54,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      */
     public function createAttribute($code, $data)
     {
-        $attribute = $this->getProductManager()->createAttribute($data['type']);
+        $attribute = $this->getAttributeManager()->createAttribute($data['type']);
         $attribute->setCode($code);
 
         if (isset($data['group'])) {
@@ -102,7 +102,8 @@ class LoadAttributeData extends AbstractInstallerFixture
     /**
      * Prepare parameters
      *
-     * @param array $data
+     * @param string $attributeCode
+     * @param array  $data
      *
      * @return array
      */
@@ -132,7 +133,8 @@ class LoadAttributeData extends AbstractInstallerFixture
     /**
      * Prepare attribute options
      *
-     * @param array $data the options data
+     * @param string $attributeCode the code of the attribute
+     * @param array  $data          the options data
      *
      * @return array
      */
@@ -140,12 +142,12 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $options = array();
         foreach ($data as $code => $optionData) {
-            $option = $this->getProductManager()->createAttributeOption();
+            $option = $this->getAttributeManager()->createAttributeOption();
             $option->setCode($code);
             $option->setTranslatable(true);
             $labels = $optionData['labels'];
             foreach ($labels as $locale => $translated) {
-                $optionValue = $this->getProductManager()->createAttributeOptionValue();
+                $optionValue = $this->getAttributeManager()->createAttributeOptionValue();
                 $optionValue->setValue($translated);
                 $optionValue->setLocale($locale);
                 $option->addOptionValue($optionValue);
@@ -157,6 +159,14 @@ class LoadAttributeData extends AbstractInstallerFixture
         return $options;
     }
 
+    /**
+     * Get attribute option reference
+     *
+     * @param string $attributeCode
+     * @param string $code
+     *
+     * @return string
+     */
     protected function getOptionReference($attributeCode, $code)
     {
         return 'Pim\Bundle\CatalogBundle\Entity\AttributeOption.' . $attributeCode . '.' . $code;

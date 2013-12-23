@@ -13,6 +13,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Product attribute grid manager
@@ -29,11 +30,24 @@ class AttributeDatagridManager extends DatagridManager
     protected $productManager;
 
     /**
+     * @var ProductAttributeManagerInterface
+     */
+    protected $attributeManager;
+
+    /**
      * @param ProductManager $manager
      */
     public function setProductManager(ProductManager $manager)
     {
         $this->productManager = $manager;
+    }
+
+    /**
+     * @param ProductAttributeManagerInterface $manager
+     */
+    public function setAttributeManager(ProductAttributeManagerInterface $manager)
+    {
+        $this->attributeManager = $manager;
     }
 
     /**
@@ -164,7 +178,7 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->productManager->getStorageManager();
+        $em = $this->productManager->getObjectManager();
         $groups = $em->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {
@@ -238,7 +252,7 @@ class AttributeDatagridManager extends DatagridManager
     protected function getAttributeTypeFieldOptions()
     {
         $translator = $this->translator;
-        $attributeTypes = $this->productManager->getAttributeTypes();
+        $attributeTypes = $this->attributeManager->getAttributeTypes();
         $fieldOptions = empty($attributeTypes) ? array() : array_combine($attributeTypes, $attributeTypes);
         $fieldOptions = array_map(
             function ($type) use ($translator) {
