@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
