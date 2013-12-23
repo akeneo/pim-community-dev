@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 
 class FlexibleFieldProperty extends FieldProperty

@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 class FlexibleChoiceFilter extends ChoiceFilter
 {

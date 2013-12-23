@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;

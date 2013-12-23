@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\EntityFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 class FlexibleEntityFilter extends EntityFilter
 {
