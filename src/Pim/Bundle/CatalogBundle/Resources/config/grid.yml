@@ -26,14 +26,6 @@ services:
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
             - [ setSecurityFacade, ['@oro_security.security_facade'] ]
 
-    pim_catalog.datagrid.manager.history:
-        class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: catalog_history
-              entity_hint: audit
-              route_name: current
-
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%
         tags:
