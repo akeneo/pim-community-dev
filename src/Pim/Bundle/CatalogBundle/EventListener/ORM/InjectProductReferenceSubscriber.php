@@ -24,6 +24,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 class InjectProductReferenceSubscriber implements EventSubscriber
 {
     /**
+     * @var string
+     */
+    protected $productClass;
+
+    /**
+     * Constructor
+     *
+     * @param string $productClass
+     */
+    public function __construct($productClass)
+    {
+        $this->productClass = $productClass;
+    }
+
+
+    /**
      * Specifies the list of events to listen
      *
      * @return array
@@ -59,8 +75,7 @@ class InjectProductReferenceSubscriber implements EventSubscriber
      */
     protected function setProductGroupReference(Group $group, EntityManager $entityManager)
     {
-        // FIXME_MONGODB : get the final name of the Product class
-        $targetEntity = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $targetEntity = $this->productClass;
 
         $productsCollection = new PersistentCollection(
             $entityManager,

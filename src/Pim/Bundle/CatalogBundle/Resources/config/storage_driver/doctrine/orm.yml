@@ -15,5 +15,7 @@ services:
 
     pim_catalog.event_listener.orm.inject_product_reference:
         class: %pim_catalog.event_listener.orm.inject_product_reference.class%
+        arguments:
+            - %pim_catalog.entity.product.class%
         tags:
             - { name: doctrine.event_subscriber }
