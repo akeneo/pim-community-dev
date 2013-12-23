@@ -20,7 +20,7 @@ class AddUserListener implements EventSubscriberInterface
     /**
      * @var SecurityContextInterface
      */
-    private $securityContext;
+    protected $securityContext;
 
     /**
      * Version listener

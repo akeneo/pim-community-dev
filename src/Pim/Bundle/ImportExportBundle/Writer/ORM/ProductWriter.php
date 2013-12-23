@@ -145,11 +145,11 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productManager->handleAllMedia($items);
         $this->productManager->saveAll($items, false);
 
-        $storageManager = $this->productManager->getStorageManager();
+        $objectManager = $this->productManager->getObjectManager();
 
-        foreach ($storageManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
+        foreach ($objectManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
             if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
-                $storageManager->clear($className);
+                $objectManager->clear($className);
             }
         }
         $this->entityCache->clear();

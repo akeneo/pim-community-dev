@@ -12,8 +12,6 @@
     %}
 
     {% set buttons %}
-        {{ elements.backLink(indexRoute) }}
-
         {% if isRunning %}
             {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
         {% else %}

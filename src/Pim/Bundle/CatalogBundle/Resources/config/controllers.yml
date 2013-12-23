@@ -96,7 +96,7 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute'
             - '@pim_catalog.form.attribute'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.product_attribute'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - %oro_measure.measures_config%

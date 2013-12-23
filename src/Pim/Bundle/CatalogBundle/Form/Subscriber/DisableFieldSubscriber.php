@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormConfigInterface;
 
 /**
  * Subscriber to disable field modification after the entity has been created
@@ -60,9 +61,22 @@ class DisableFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $form   = $event->getForm();
-        $config = $form->get($this->fieldName)->getConfig();
+        $form    = $event->getForm();
+        $config  = $form->get($this->fieldName)->getConfig();
+        $options = $this->prepareOptions($config);
 
+        $form->add($this->fieldName, null, $options);
+    }
+
+    /**
+     * Prepare form options from config
+     *
+     * @param FormConfigInterface $config
+     *
+     * @return $config
+     */
+    protected function prepareOptions(FormConfigInterface $config)
+    {
         $options = array(
             'disabled'  => true,
             'read_only' => true,
@@ -78,6 +92,6 @@ class DisableFieldSubscriber implements EventSubscriberInterface
             $options['select2'] = $select2;
         }
 
-        $form->add($this->fieldName, null, $options);
+        return $options;
     }
 }

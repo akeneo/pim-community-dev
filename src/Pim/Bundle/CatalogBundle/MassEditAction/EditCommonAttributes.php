@@ -352,7 +352,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         $productValue->getOptions()->clear();
-        $this->productManager->getStorageManager()->flush();
+        $this->productManager->getObjectManager()->flush();
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
