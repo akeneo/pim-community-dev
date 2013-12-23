@@ -38,9 +38,3 @@ pim_catalog_attributegroup_removeproductattribute:
         groupId: \d+
         attributeId: \d+
     methods: [DELETE]
-
-pim_catalog_attributegroup_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.attribute_group:historyAction }
-    requirements:
-        id: \d+

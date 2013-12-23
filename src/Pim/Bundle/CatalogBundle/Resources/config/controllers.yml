@@ -48,7 +48,6 @@ services:
         class: %pim_catalog.controller.category_tree.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.category'
 
     pim_catalog.controller.channel:
