@@ -1,0 +1,55 @@
+Pim\Bundle\CatalogBundle\Model\ProductValue:
+    type: embeddedDocument
+    indexes:
+        value_idx:
+            options:
+                unique: false
+            keys:
+                attribute_id:
+                locale_code:
+                scope_code:
+    fields:
+        id:
+            id: true
+        varchar:
+            index: true
+            type: string
+        integer:
+            type: int
+        decimal:
+            type: float
+        boolean:
+            type: boolean
+        text:
+            type: string
+        date:
+            type: date
+        datetime:
+            type: date
+        locale:
+            type: string
+        scope:
+            type: string
+        # References ORM ProductAttributeInterface code
+        attributeId:
+            type: int
+        # References ORM AttributeOption code for single select
+        #optionId:
+        #    type: int
+        # References ORM AttributeOption code for multi selects
+        #options:
+        #    type: collection
+        media:
+            embedded: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Media
+        metric:
+            embedded: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Metric
+        prices:
+            embedded: true
+            type: many
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPrice
+#            orderBy:
+#                currency: ASC

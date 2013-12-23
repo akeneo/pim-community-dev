@@ -173,10 +173,6 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $proxyQuery
-            ->select('g')
-            ->from('Pim\Bundle\CatalogBundle\Model\Group', 'g');
-
         $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
         $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
 

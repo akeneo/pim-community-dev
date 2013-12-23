@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Type for attribute form
@@ -16,13 +16,13 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeType extends AttributeType
+class ProductAttributeType extends AbstractType
 {
     /**
      * Attribute type manager
-     * @var AttributeTypeManager
+     * @var ProductAttributeManagerInterface
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * Attribute subscriber
@@ -31,17 +31,25 @@ class ProductAttributeType extends AttributeType
     protected $subscriber;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
-     * @param AttributeTypeManager                    $attTypeManager Attribute type manager
+     * @param string                                  $attributeClass Attribute class
+     * @param ProductAttributeManagerInterface        $manager        Attribute manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(
-        AttributeTypeManager $attTypeManager = null,
+        $attributeClass,
+        ProductAttributeManagerInterface $manager = null,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
     ) {
-        $this->attTypeManager = $attTypeManager;
-        $this->subscriber = $subscriber;
+        $this->attributeClass   = $attributeClass;
+        $this->attributeManager = $manager;
+        $this->subscriber       = $subscriber;
     }
 
     /**
@@ -49,7 +57,15 @@ class ProductAttributeType extends AttributeType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $this->addFieldId($builder);
+
+        $this->addFieldCode($builder);
+
+        $this->addFieldAttributeType($builder);
+
+        $this->addFieldRequired($builder);
+
+        $this->addFieldUnique($builder);
 
         $this->addFieldLabel($builder);
 
@@ -58,6 +74,8 @@ class ProductAttributeType extends AttributeType
         $this->addFieldUseableAsGridFilter($builder);
 
         $this->addFieldAttributeGroup($builder);
+
+        $this->addSubscriber($builder);
     }
 
     /**
@@ -66,10 +84,36 @@ class ProductAttributeType extends AttributeType
      */
     protected function addSubscriber(FormBuilderInterface $builder)
     {
-        // add our own subscriber for custom features
         $factory = $builder->getFormFactory();
         $this->subscriber->setFactory($factory);
         $builder->addEventSubscriber($this->subscriber);
+    }
+
+    /**
+     * Add field id to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldId(FormBuilderInterface $builder)
+    {
+        $builder->add('id', 'hidden');
+    }
+
+    /**
+     * Add field code to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldCode(FormBuilderInterface $builder)
+    {
+        $builder->add('code', 'text', array('required' => true));
+    }
+
+    /**
+     * Add field unique to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldUnique(FormBuilderInterface $builder)
+    {
+        $builder->add('unique', 'choice', array('choices' => array('No', 'Yes')));
     }
 
     /**
@@ -99,7 +143,7 @@ class ProductAttributeType extends AttributeType
             array(
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttributeTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
+                'entity_class'      => $this->attributeClass,
                 'property_path'     => 'translations'
             )
         );
@@ -152,72 +196,13 @@ class ProductAttributeType extends AttributeType
     }
 
     /**
-     * Override the parent's addFieldSearchable method to prevent adding
-     * searchable field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldSearchable(FormBuilderInterface $builder)
-    {
-    }
-
-     /**
-     * Override the parent's addFieldDefaultValue method to prevent adding
-     * default value field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldDefaultValue(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
-     * Override the parent's addFieldTranslatable method to prevent adding
-     * translatable field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldTranslatable(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
-     * Override the parent's addFieldUnique method to prevent adding
-     * unique field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUnique(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
-     * Override the parent's addFieldScopable method to prevent adding
-     * scopable field regardless of attribute type
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldScopable(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
-     * @param FormBuilderInterface $builder
-     *
-     * @return null
-     */
-    protected function addPositionField(FormBuilderInterface $builder)
-    {
-    }
-
-    /**
      * Return available frontend type
      *
      * @return array
      */
     public function getAttributeTypeChoices()
     {
-        return $this->attTypeManager->getAttributeTypes();
+        return $this->attributeManager->getAttributeTypes();
     }
 
     /**
@@ -225,11 +210,7 @@ class ProductAttributeType extends AttributeType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
-            )
-        );
+        $resolver->setDefaults(array('data_class' => $this->attributeClass));
     }
 
     /**

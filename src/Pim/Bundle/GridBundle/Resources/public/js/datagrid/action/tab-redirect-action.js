@@ -1,11 +1,11 @@
 /* global define */
-define(['oro/datagrid/navigate-action'],
+define(['oro/grid/navigate-action'],
 function(NavigateAction) {
     'use strict';
 
     /**
      * Redirects to a specific tab
-     * 
+     *
      * @author  Antoine Guigan <antoine@akeneo.com>
      * @class   Pim.Datagrid.Action.ExportCollectionAction
      * @export  pim/datagrid/tab-redirect-action
@@ -14,7 +14,7 @@ function(NavigateAction) {
     var parent = NavigateAction.prototype,
         TabRedirectAction = NavigateAction.extend({
             run: function() {
-                sessionStorage.activeTab = this.tab;
+                sessionStorage.redirectTab = this.tab;
                 parent.run.call(this);
             }
         });

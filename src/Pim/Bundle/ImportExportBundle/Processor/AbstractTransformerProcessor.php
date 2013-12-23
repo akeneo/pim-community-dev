@@ -57,6 +57,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+            }
             throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
         }
 
@@ -97,7 +100,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      * Remaps values according to $mapping
      *
      * @param array &$values
-     * @param array $mapping
      */
     protected function mapValues(array &$values)
     {
@@ -110,7 +112,12 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     }
 
     /**
-     * {@inheritdoc}
+     * Returns an array of mapped fields
+     *
+     * The keys correspond to the originally read columns labels.
+     * The values correspond to the column labels needed by the transformer
+     *
+     * @return array
      */
     protected function getMapping()
     {
@@ -128,9 +135,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Transforms the array in an object
      *
-     * @abstract
      * @param array $item
      *
+     * @abstract
      * @return object
      */
     abstract protected function transform($item);

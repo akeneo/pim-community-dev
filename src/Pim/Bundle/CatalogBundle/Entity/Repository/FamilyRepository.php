@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Repository
@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyRepository extends EntityRepository
+class FamilyRepository extends ReferableEntityRepository
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder
@@ -57,5 +57,26 @@ class FamilyRepository extends EntityRepository
             ->leftJoin('attribute.group', 'group')
             ->addOrderBy('group.sortOrder', 'ASC')
             ->addOrderBy('attribute.sortOrder', 'ASC');
+    }
+
+    /**
+     * Returns a querybuilder to get full requirements
+     *
+     * @param Family $family
+     * @param type   $localeCode
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getFullRequirementsQB(Family $family, $localeCode)
+    {
+        return $this->getEntityManager()
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
+            ->createQueryBuilder('r')
+            ->select('r, a, t')
+            ->leftJoin('r.attribute', 'a')
+            ->leftJoin('a.translations', 't', 'WITH', 't.locale=:localeCode')
+            ->where('r.family=:family')
+            ->setParameter('family', $family)
+            ->setParameter('localeCode', $localeCode);
     }
 }

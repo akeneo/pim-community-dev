@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
@@ -23,9 +19,13 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+use Pim\Bundle\GridBundle\Property\FlexibleTwigTemplateProperty;
 
 /**
  * Grid manager
@@ -185,6 +185,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * {@inheritdoc}
      */
+    protected function createFlexibleField(AbstractAttribute $attribute, array $options = array())
+    {
+        $field = parent::createFlexibleField($attribute, $options);
+
+        if ($attribute->getBackendType() === 'metric') {
+            $field->setProperty(
+                new FlexibleTwigTemplateProperty($field, 'PimGridBundle:Rendering:_metricField.html.twig')
+            );
+        }
+
+        return $field;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = $this->createScopeField();
@@ -285,7 +301,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $result['sortable'] = false;
         } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
             $result['field_options']['family'] = $attribute->getMetricFamily();
-            $result['sortable'] = false;
         }
 
         if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
@@ -382,7 +397,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'type'               => FieldDescriptionInterface::TYPE_HTML,
                 'label'              => $this->translate('Complete'),
-                'field_name'         => 'completenesses',
+                'field_name'         => 'completenessRatio',
                 'expression'         => 'pCompleteness',
                 'filter_type'        => FilterInterface::TYPE_COMPLETENESS,
                 'sortable'           => true,
@@ -398,7 +413,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setProperty(
             new TwigTemplateProperty(
                 $fieldCompleteness,
-                'PimCatalogBundle:Completeness:_completeness.html.twig',
+                'PimCatalogBundle:Completeness:_datagridCompleteness.html.twig',
                 array(
                     'localeCode'  => $this->flexibleManager->getLocale(),
                     'channelCode' => $this->flexibleManager->getScope()
@@ -416,8 +431,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Model\Group')->getChoices();
+        $em = $this->flexibleManager->getObjectManager();
+        $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->getChoices();
 
         $field = new FieldDescription();
         $field->setName('pGroup');
@@ -455,10 +470,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
             $editAction = array(
                 'name'         => 'edit',
-                'type'         => ActionInterface::TYPE_REDIRECT,
+                'type'         => ActionInterface::TYPE_TAB_REDIRECT,
                 'acl_resource' => 'pim_catalog_product_edit',
                 'options'      => array(
                     'label' => $this->translate('Edit attributes of the product'),
+                    'tab'   => '#attributes',
                     'icon'  => 'edit',
                     'link'  => 'edit_link'
                 )
@@ -624,12 +640,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $channelCode = $this->flexibleManager->getScope();
 
         $locale = $this->flexibleManager
-            ->getStorageManager()
+            ->getObjectManager()
             ->getRepository('PimCatalogBundle:Locale')
             ->findBy(array('code' => $localeCode));
 
         $channel = $this->flexibleManager
-            ->getStorageManager()
+            ->getObjectManager()
             ->getRepository('PimCatalogBundle:Channel')
             ->findBy(array('code' => $channelCode));
 
@@ -676,12 +692,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
         $proxyQuery
-            ->addSelect('pCompleteness')
+            ->addSelect('pCompleteness.ratio AS completenessRatio')
             ->leftJoin(
-                $rootAlias .'.completenesses',
+                'PimCatalogBundle:Completeness',
                 'pCompleteness',
                 'WITH',
-                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel '.
+                'AND pCompleteness.productId = '.$rootAlias.'.id'
             );
     }
 

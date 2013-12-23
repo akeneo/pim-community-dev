@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddManagerCompilerPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -26,9 +25,9 @@ class AddManagerCompilerPass implements CompilerPassInterface
         }
 
         $registryDefinition = $container->getDefinition('pim_flexibleentity.registry');
-        $taggedManagerServices = $container->findTaggedServiceIds('pim_flexibleentity_manager');
+        $taggedServices = $container->findTaggedServiceIds('pim_flexibleentity_manager');
 
-        foreach ($taggedManagerServices as $managerId => $tagAttributes) {
+        foreach ($taggedServices as $managerId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $registryDefinition->addMethodCall(
                     'addManager',

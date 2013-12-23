@@ -1,6 +1,6 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch'],
     function ($, _) {
         'use strict';
         $(function() {
@@ -20,15 +20,13 @@ require(
                             $('#'+prop).html(data[prop]);
                         }
                         $(formName+' div.alert').remove();
+                        $(formName).trigger('tab.loaded', $(formName));
                         initializeForm();
                     }
                 );
             }
 
             function initializeForm(preventUpdate) {
-                $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
-                $('[data-toggle="tooltip"]').tooltip();
-
                 initializeOptions();
                 $(formName+'_attributeType').on('change', function() {
                     updateForm();

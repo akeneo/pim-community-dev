@@ -102,6 +102,7 @@ define(
 
                 $('.tree[data-tree-id=' + treeId + ']').show();
                 $tree.show();
+                $('#tree-link-' + treeId).trigger('shown');
 
                 // If empty, load the associated jstree
                 if ($tree.children('ul').size() === 0) {
@@ -123,7 +124,7 @@ define(
                             selected.push(id);
                             selected = $.unique(selected);
                             selected = selected.join(',');
-                            $(hiddenCategoryId).val(selected);
+                            $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
                             $('#'+treeLinkId+' i').removeClass('gray');
@@ -139,7 +140,7 @@ define(
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         selected.splice($.inArray(id, selected),1);
                         selected = selected.join(',');
-                        $(hiddenCategoryId).val(selected);
+                        $(hiddenCategoryId).val(selected).trigger('change');
                         var treeId = e.target.id;
                         if ($('#'+treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');

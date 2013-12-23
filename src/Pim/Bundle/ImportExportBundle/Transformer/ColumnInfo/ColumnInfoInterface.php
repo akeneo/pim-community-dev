@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * Interface for column info
@@ -16,11 +16,11 @@ interface ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @throws \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
      */
-    public function setAttribute(ProductAttribute $attribute);
+    public function setAttribute(ProductAttributeInterface $attribute);
 
     /**
      * Get the full label
@@ -67,7 +67,7 @@ interface ColumnInfoInterface
     /**
      * Returns the associated attribute
      *
-     * @return ProductAttribute
+     * @return ProductAttributeInterface
      */
     public function getAttribute();
 }

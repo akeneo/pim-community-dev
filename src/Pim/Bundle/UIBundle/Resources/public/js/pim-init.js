@@ -1,7 +1,7 @@
 define(
     ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-     'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog) {
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui'],
+    function ($, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
         'use strict';
         var initialized = false;
         return function() {
@@ -9,96 +9,34 @@ define(
                 return;
             }
             initialized = true;
-
-            function pageInit() {
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+                $target.find('.fullheight').filter(':visible').each(function () {
+                    $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                });
+            };
+            var pageInit = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                    $target.find('form.form-horizontal').each(function() {
+                        saveformstate($(this).attr('id'), loadTab);
+                    });
+                }
                 // Place code that we need to run on every page load here
 
-                $('.remove-attribute').each(function () {
+                $target.find('.remove-attribute').each(function () {
                     var target = $(this).parent().find('.icons-container').first();
                     if (target.length) {
                         $(this).appendTo(target).attr('tabIndex', -1);
                     }
                 });
 
-                // Apply bootstrapSwitch
-                $('.switch:not(.has-switch)').bootstrapSwitch();
-
-                // Initialize tooltip
-                $('[data-toggle="tooltip"]').tooltip();
-
-                // Activate a form tab
-                $('li.tab.active a').each(function () {
-                    var paneId = $(this).attr('href');
-                    $(paneId).addClass('active');
-                });
-
                 // Toogle accordion icon
-                $('.accordion').on('show hide', function (e) {
+                $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
                 });
-
-                // Save and restore activated form tabs and groups
-                function saveFormState() {
-                    var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
-                        $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
-                        activeGroup;
-
-                    if ($activeGroup.length) {
-                        activeGroup = $activeGroup.attr('href');
-                        if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
-                            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null;
-                        }
-                    } else {
-                        activeGroup = null;
-                    }
-
-                    if (activeTab) {
-                        sessionStorage.activeTab = activeTab;
-                    }
-
-                    if (activeGroup) {
-                        sessionStorage.activeGroup = activeGroup;
-                    }
-                }
-
-                function restoreFormState() {
-                    if (sessionStorage.activeTab) {
-                        var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
-                        if ($activeTab.length && !$('.loading-mask').is(':visible')) {
-                            $activeTab.tab('show');
-                            sessionStorage.removeItem('activeTab');
-                        }
-                    }
-
-                    if (sessionStorage.activeGroup) {
-                        var $activeGroup = $('a[href=' + sessionStorage.activeGroup + ']');
-                        if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
-                            $activeGroup.tab('show');
-                            sessionStorage.removeItem('activeGroup');
-                        } else {
-                            var $tree = $('[data-selected-tree]');
-                            if ($tree.length && !$('.loading-mask').is(':visible')) {
-                                $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
-                                sessionStorage.removeItem('activeGroup');
-                            }
-                        }
-                    }
-                }
-
-                if (typeof Storage !== 'undefined') {
-                    restoreFormState();
-
-                    $('a[data-toggle="tab"]').on('shown', saveFormState);
-                }
-
-                // Initialize slimbox
-                if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-                    $('a[rel^="slimbox"]').slimbox({
-                        overlayOpacity: 0.3
-                    }, null, function (el) {
-                        return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
-                    });
-                }
 
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
@@ -108,48 +46,23 @@ define(
                         'data-placement': 'right'
                     }
                 });
-                $('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
+                $target.find('.attribute-field.translatable').each(function () {
+                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone());
                 });
 
-                $('form').on('change', 'input[type="file"]', function () {
-                    var $input          = $(this),
-                        filename        = $input.val().split('\\').pop(),
-                        $zone           = $input.parent(),
-                        $info           = $input.siblings('.upload-info').first(),
-                        $filename       = $info.find('.upload-filename'),
-                        $removeBtn      = $input.siblings('.remove-upload'),
-                        $removeCheckbox = $input.siblings('input[type="checkbox"]'),
-                        $preview        = $info.find('.upload-preview');
+                UI($target);
 
-                    if ($preview.prop('tagName').toLowerCase() !== 'i') {
-                        var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
-                        $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
-                        $preview = $info.find('.upload-preview');
-                    }
-
-                    if (filename) {
-                        $filename.html(filename);
-                        $zone.removeClass('empty');
-                        $preview.removeClass('empty');
-                        $removeBtn.removeClass('hide');
-                        $input.addClass('hide');
-                        $removeCheckbox.removeAttr('checked');
-                    } else {
-                        $filename.html($filename.attr('data-empty-title'));
-                        $zone.addClass('empty');
-                        $preview.addClass('empty');
-                        $removeBtn.addClass('hide');
-                        $input.removeAttr('disabled').removeClass('hide');
-                        $removeCheckbox.attr('checked', 'checked');
-                    }
-                });
-
-                $('[data-form-toggle]').on('click', function () {
+                $target.find('a[data-form-toggle]').on('click', function () {
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });
-            }
+
+                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function() {
+                    loadTab(this);
+                });
+
+                setFullHeight($target);
+            };
 
             $(function(){
                 if ($.isPlainObject($.uniform)) {
@@ -160,18 +73,15 @@ define(
                     $.uniform.restore();
                 });
 
-                $(document).on('click', '.remove-upload', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var $input = $(this).siblings('input[type="file"]').first();
-                    $input.wrap('<form>').closest('form').get(0).reset();
-                    $input.unwrap().trigger('change');
+                $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
+                    pageInit($(tab));
                 });
 
-                $(document).on('mouseover', '.upload-zone:not(.empty)', function() {
-                    $('input[type="file"]', $(this)).attr('disabled', 'disabled');
-                }).on('mouseout', '.upload-zone:not(.empty)', function() {
-                    $('input[type="file"]', $(this)).removeAttr('disabled');
+                $(document).on('shown', 'a[data-toggle="tab"]', function() {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 // DELETE request for delete buttons
@@ -183,7 +93,7 @@ define(
                             $.ajax({
                                 url: $el.attr('data-url'),
                                 type: 'POST',
-                                headers: {accept:'application/json'},
+                                headers: { accept:'application/json' },
                                 data: { _method: $el.data('method') },
                                 success: function() {
                                     var navigation = Navigation.getInstance();
@@ -193,14 +103,14 @@ define(
                                 error: function(xhr) {
                                     messenger.notificationFlashMessage(
                                         'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message)
-                                            ? xhr.responseJSON.message
-                                            : $el.attr('data-error-message'));
+                                        (xhr.responseJSON && xhr.responseJSON.message) ?
+                                            xhr.responseJSON.message :
+                                            $el.attr('data-error-message'));
                                 }
                             });
                         };
                     $el.off('click');
-                    if ($el.data('dialog') ===  'confirm') {
+                    if ($el.data('dialog') === 'confirm') {
                         Dialog.confirm(message, title, doAction);
                     } else {
                         Dialog.alert(message, title);
@@ -210,10 +120,10 @@ define(
                 });
 
                 pageInit();
-            })
+            });
             mediator.bind('hash_navigation_request:complete', function () {
                 pageInit();
             });
-        }
+        };
     }
 );

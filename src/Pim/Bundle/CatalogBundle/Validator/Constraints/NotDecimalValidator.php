@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
@@ -22,13 +22,18 @@ class NotDecimalValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if ($value instanceof Metric || $value instanceof ProductPrice) {
+            $propertyPath = 'data';
             $value = $value->getData();
         }
         if (null === $value) {
             return;
         }
         if (is_numeric($value) && floor($value) != $value) {
-            $this->context->addViolation($constraint->message);
+            if (isset($propertyPath)) {
+                $this->context->addViolationAt($propertyPath, $constraint->message);
+            } else {
+                $this->context->addViolation($constraint->message);
+            }
         }
     }
 }

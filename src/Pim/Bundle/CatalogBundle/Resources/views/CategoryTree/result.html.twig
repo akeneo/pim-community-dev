@@ -1,5 +1,4 @@
-{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
+{% extends 'PimSearchBundle:Search:baseResultItem.html.twig' %}
 
 {% set showImage = true %}
 {% set imagePath = asset('/bundles/pimui/images/icon_category.png') %}
@@ -12,5 +11,5 @@
 {% set entityType = 'Category' |trans({}, 'config') %}
 
 {% set entityInfo = [
-    {'title': 'Created', 'value': entity.created ? Locale.time(entity.created) : 'N/A'}
+    {'title': 'Created', 'value': entity.created ? entity.created|oro_format_datetime : 'N/A'},
 ] %}

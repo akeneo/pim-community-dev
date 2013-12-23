@@ -1,8 +1,9 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
-    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
-    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
-    pim_catalog.form.subscriber.add_attribute_requirements.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_catalog.imagine.local_dir_resolver.class:                        Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.event_listener.progress.class:                           Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.event_listener.create_attribute_requirement.class:       Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
+    pim_catalog.form.subscriber.add_attribute_requirements.class:        Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_catalog.event_listener.metric_base_values.class:                 Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
 services:
     # Attribute property types
@@ -24,13 +25,13 @@ services:
     pim_catalog.form.type.image:
         class: %pim_catalog.form.type.image.class%
         tags:
-            - { name: form.type, alias: pim_image }
+            - { name: form.type, alias: pim_catalog_image }
 
     # Subscribers
     pim_catalog.form.subscriber.attribute:
         class:     %pim_catalog.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_catalog.manager.attribute_type'
+            - '@pim_catalog.manager.product_attribute'
             - '@pim_flexibleentity.attributetype.factory'
 
     pim_catalog.form.subscriber.attribute_requirements:
@@ -61,6 +62,14 @@ services:
         class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_listener.metric_base_values:
+        class: %pim_catalog.event_listener.metric_base_values.class%
+        arguments:
+            - '@oro_measure.measure_converter'
+            - '@oro_measure.manager'
+        tags:
+            - { name: doctrine.event_subscriber }
 
     # Validators
     pim_catalog.form.validator.metric:
@@ -145,8 +154,6 @@ services:
     pim_catalog.mass_edit_action.change_status:
         public: false
         class: %pim_catalog.mass_edit_action.change_status.class%
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_catalog_product_change_state }
 
@@ -177,6 +184,14 @@ services:
         tags:
             - { name: pim_catalog.mass_edit_action, alias: change-family, acl: pim_catalog_product_change_family }
 
+    pim_catalog.mass_edit_action.add_to_groups:
+        class: %pim_catalog.mass_edit_action.add_to_groups.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_add_to_groups }
+
+    # Media management
     pim_catalog.imagine.local_dir_resolver:
         class: %pim_catalog.imagine.local_dir_resolver.class%
         parent: liip_imagine.cache.resolver.web_path
@@ -184,15 +199,3 @@ services:
             - %kernel.cache_dir%/media
         tags:
             - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }
-
-    pim_catalog.helper.completeness:
-        class: %pim_catalog.helper.completeness.class%
-        arguments:
-            - '@validator'
-
-    pim_catalog.doctrine.completeness_query_builder:
-        class: %pim_catalog.doctrine.completeness_query_builder.class%
-        arguments:
-            - '@doctrine'
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%

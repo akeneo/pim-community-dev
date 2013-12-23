@@ -101,16 +101,18 @@ btn:
         variant group:   create variant group
         association:     create association
         group type:      create group type
-    edit:      edit
-    save:      save
-    remove:    remove
-    delete:    delete
-    cancel:    cancel
-    next:      next
-    back:      back
-    confirm:   confirm
-    to grid:   back to grid
-    to parent: back to parent
+    edit:            edit
+    save:            save
+    save and back:   save and back to grid
+    save and create: save and create
+    remove:          remove
+    delete:          delete
+    cancel:          cancel
+    next:            next
+    back:            back
+    confirm:         confirm
+    to grid:         back to grid
+    to parent:       back to parent
 
 # Confirmation messages
 confirmation:
@@ -424,6 +426,11 @@ pim_catalog.mass_edit_action:
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
 
+    add-to-groups:
+        label:         Add to groups
+        description:   Select the groups in which to add the selected products
+        success_flash: Products were successfully added to the selected groups
+
 # Product completeness
 pim_catalog.completeness:
     progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
@@ -445,6 +452,9 @@ pim_catalog.group:
 pim_catalog.product:
     no_comparison_locale_available: 'No other locale is available for comparison'
     no_compared_media: 'No media available for comparison'
+
+# Channel form
+pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attribute that will be used during product export'
 
 # Product view
 Group: Group

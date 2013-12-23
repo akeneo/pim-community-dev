@@ -1,0 +1,13 @@
+{% if value == 100 %}
+    {% set class = 'success' %}
+{% elseif value == 0 %}
+    {% set class = 'important' %}
+{% else %}
+    {% set class = 'warning' %}
+{% endif %}
+
+{% if value is null %}
+ -
+{% else %}
+    <span class="label label-{{ class }}">{{ value }}%</span>
+{% endif %}

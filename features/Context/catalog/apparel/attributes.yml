@@ -65,6 +65,19 @@ attributes:
             maxFileSize: 2
             sortOrder:   2
             allowedExtensions: gif,png,jpeg,jpg
+    legend:
+        labels:
+            en_US: Legend
+            en_GB: Legend
+            fr_FR: Légende
+            de_DE: Legende
+        type:  pim_catalog_text
+        group: media
+        parameters:
+            translatable:        true
+            useableAsGridColumn: false
+            useableAsGridFilter: false
+            sortOrder:           3
     price:
         labels:
             en_US: Price
@@ -440,7 +453,7 @@ attributes:
         type:  pim_catalog_simpleselect
         group: additional
         parameters:
-            useableAsGridColumn: true
+            useableAsGridColumn: false
             useableAsGridFilter: true
             sortOrder:           1
         options:
@@ -563,8 +576,8 @@ attributes:
         type:  pim_catalog_multiselect
         group: additional
         parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
+            useableAsGridColumn: false
+            useableAsGridFilter: false
             sortOrder:           4
         options:
             dry:
@@ -623,7 +636,7 @@ attributes:
         parameters:
             metricFamily:      Temperature
             sortOrder:         6
-            defaultMetricUnit: CELCIUS
+            defaultMetricUnit: CELSIUS
             negativeAllowed:   false
             numberMax:         100
     weight:

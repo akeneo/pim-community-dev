@@ -2,15 +2,20 @@
 
 namespace Pim\Bundle\JsFormValidationBundle\Generator;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
-use Assetic\Filter\Yui\JsCompressorFilter;
+use Symfony\Component\Validator\Constraint;
 use Assetic\Asset\AssetCollection;
+use Assetic\Filter\Yui\JsCompressorFilter;
+
+use APY\JsFormValidationBundle\Generator\PostProcessEvent;
 use APY\JsFormValidationBundle\JsfvEvents;
 use APY\JsFormValidationBundle\Generator\PreProcessEvent;
-use APY\JsFormValidationBundle\Generator\PostProcessEvent;
 use APY\JsFormValidationBundle\Generator\FieldsConstraints;
 use APY\JsFormValidationBundle\Generator\GettersLibraries;
-use Oro\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator as OroFormValidationScriptGenerator;
+use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
 
 /**
  * Override the form validation script generator to generate an inline script
@@ -19,8 +24,44 @@ use Oro\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator as
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FormValidationScriptGenerator extends OroFormValidationScriptGenerator
+class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 {
+    /**
+     * @var MetadataFactoryInterface
+     */
+    protected $metadataFactory;
+
+    /**
+     * @param ClassMetadata[] $classesMetadata
+     */
+    protected $classesMetadata;
+
+    /**
+     * @param ContainerInterface       $container
+     * @param MetadataFactoryInterface $metadataFactory
+     */
+    public function __construct(ContainerInterface $container, MetadataFactoryInterface $metadataFactory)
+    {
+        parent::__construct($container);
+        $this->metadataFactory = $metadataFactory;
+    }
+
+    /**
+     * Gets ClassMetadata of desired class with annotations and others (xml, yml, php) using metadata factory
+     *
+     * @param string $className
+     *
+     * @return ClassMetadata Returns ClassMetadata object of desired entity with annotations info
+     */
+    public function getClassMetadata($className)
+    {
+        if (!isset($this->classesMetadata[$className])) {
+            $this->classesMetadata[$className] = $this->metadataFactory->getMetadataFor($className);
+        }
+
+        return $this->classesMetadata[$className];
+    }
+
     /**
      * This method is used instead of APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator::generate
      * to return inline client-side form validation javascript
@@ -261,5 +302,120 @@ class FormValidationScriptGenerator extends OroFormValidationScriptGenerator
             'getterHandlers'     => $gettersLibraries->all(),
             'gettersConstraints' => $aGetters,
         );
+    }
+
+    /**
+     * Collect recursively all form views with constraints and returns them
+     *
+     * @param FormView $target
+     *
+     * @return FormView[]
+     */
+    protected function filterFormViewsWithConstraints(FormView $target)
+    {
+        $result = array();
+        if (!empty($target->vars['constraints'])) {
+            $result[] = $target;
+        }
+        foreach ($target->children as $child) {
+            $result = array_merge($result, $this->filterFormViewsWithConstraints($child));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param FormView          $formType
+     * @param FieldsConstraints $fieldsConstraints
+     * @param Constraint        $constraint
+     */
+    protected function addFieldConstraint(
+        FormView $formType,
+        FieldsConstraints $fieldsConstraints,
+        Constraint $constraint
+    ) {
+        $constraintName = $this->getConstraintName($constraint);
+        $constraintProperties = get_object_vars($constraint);
+
+        // Groups are no longer needed
+        unset($constraintProperties['groups']);
+
+        if (!$fieldsConstraints->hasLibrary($constraintName)) {
+            $templating = $this->container->get('templating');
+            $library = "APYJsFormValidationBundle:Constraints:{$constraintName}Validator.js.twig";
+            if ($templating->exists($library)) {
+                $fieldsConstraints->addLibrary($constraintName, $library);
+            } else {
+                return;
+            }
+        }
+
+        $constraintParameters = array();
+        $identifierField = $this->getParameter('identifier_field');
+        //We need to know entity class for the field which is applied by UniqueEntity constraint
+        if ($constraintName == 'UniqueEntity'
+            && !empty($formType->parent)
+            && !empty($formType->children[$identifierField])
+        ) {
+            $entity = isset($formType->parent->vars['value']) ?
+                $formType->parent->vars['value'] : null;
+            $constraintParameters += array(
+                'entity:' . json_encode(get_class($entity)),
+                'identifier_field_id:' . json_encode($formType->children[$identifierField]->vars['id']),
+            );
+        }
+        foreach ($constraintProperties as $variable => $value) {
+            if (is_array($value)) {
+                $value = json_encode($value);
+            } else {
+                // regex
+                if (stristr('pattern', $variable) === false) {
+                    $value = json_encode($value);
+                }
+            }
+
+            $constraintParameters[] = "$variable:$value";
+        }
+
+        $fieldsConstraints->addFieldConstraint(
+            $formType->vars['id'],
+            array(
+                'name'       => $constraintName,
+                'parameters' => '{' . join(', ', $constraintParameters) . '}'
+            )
+        );
+    }
+
+    /**
+     * @param FormView $formView
+     *
+     * @return GettersLibraries
+     */
+    protected function createGettersLibraries(FormView $formView)
+    {
+        return new GettersLibraries($this->container, $formView);
+    }
+
+    /**
+     * @return FieldsConstraints
+     */
+    protected function createFieldsConstraints()
+    {
+        return new FieldsConstraints();
+    }
+
+    /**
+     * Get constraint name by constraint.
+     *
+     * @param object $constraint
+     *
+     * @return string
+     */
+    protected function getConstraintName($constraint)
+    {
+        $className = get_class($constraint);
+        $classParts = explode(chr(92), $className);
+
+        return end($classParts);
     }
 }

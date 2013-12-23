@@ -4,9 +4,11 @@ namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
+use Pim\Bundle\ImportExportBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Product reader
@@ -20,39 +22,39 @@ class ProductReader extends Reader
     /**
      * @var string
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Execution"})
      * @ChannelConstraint
      */
     protected $channel;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
+
+    /* @var MetricConverter */
+    protected $metricConverter;
 
     /**
      * @param ProductManager      $productManager
      * @param ChannelManager      $channelManager
      * @param CompletenessManager $completenessManager
+     * @param MetricConverter     $metricConverter
      */
     public function __construct(
         ProductManager $productManager,
         ChannelManager $channelManager,
-        CompletenessManager $completenessManager
+        CompletenessManager $completenessManager,
+        MetricConverter $metricConverter
     ) {
-        $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
+        $this->productManager      = $productManager;
+        $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
+        $this->metricConverter     = $metricConverter;
     }
 
     /**
@@ -68,14 +70,20 @@ class ProductReader extends Reader
                 );
             }
 
-            $this->completenessManager->createChannelCompletenesses($channel);
+            $this->completenessManager->generateChannelCompletenesses($channel);
 
             $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
         }
 
-        return parent::read();
+        $products = parent::read();
+
+        if (is_array($products)) {
+            $this->metricConverter->convert($products, $channel);
+        }
+
+        return $products;
     }
 
     /**

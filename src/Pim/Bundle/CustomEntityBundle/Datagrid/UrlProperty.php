@@ -39,6 +39,7 @@ class UrlProperty extends OroUrlProperty
         $anchor = null
     ) {
         parent::__construct($name, $router, $routeName, $placeholders, $isAbsolute, $anchor);
+
         $this->customEntityName = $customEntityName;
     }
 

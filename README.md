@@ -157,11 +157,10 @@ Generating a clean database
 By default, when you install the PIM, demo data are added to the database.
 
 If you want to get only the bare minimum data to have a clean but functionnal pim,
-just switch the following config line to false in app/config/config.yml:
+just change the following config line in app/config/parameters.yml:
 
 ```
-pim_demo:
-    load_data: false
+    installer_data: PimInstallerBundle:minimal
 ```
 
 Then relaunch the install.sh script with the db option:

@@ -100,7 +100,8 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $gridManager = $this->datagridHelper->getDatagridManager($this->getJobType().'_report', 'pim_import_export');
+        $gridManager =
+            $this->datagridHelper->getDatagridManager($this->getJobType().'_execution', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }
@@ -115,7 +116,7 @@ class JobExecutionController extends AbstractDoctrineController
     public function showAction($id)
     {
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
-        $view = sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Report');
+        $view = sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Execution');
 
         return $this->render(
             $view,
@@ -175,7 +176,7 @@ class JobExecutionController extends AbstractDoctrineController
         if ('json' == $this->getRequest()->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()).'Report');
+            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()).'Execution');
         }
 
         return $this->render($view, array('datagrid' => $datagridView));

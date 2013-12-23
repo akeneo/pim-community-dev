@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 
 /**
  * Group repository
@@ -13,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends EntityRepository
+class GroupRepository extends ReferableEntityRepository
 {
     /**
      * Get ordered groups associative array id to label
@@ -56,11 +55,11 @@ class GroupRepository extends EntityRepository
 
     /**
      * Return the number of groups containing the provided attribute
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return interger
      */
-    public function countForAttribute(ProductAttribute $attribute)
+    public function countForAttribute(ProductAttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('g');
 

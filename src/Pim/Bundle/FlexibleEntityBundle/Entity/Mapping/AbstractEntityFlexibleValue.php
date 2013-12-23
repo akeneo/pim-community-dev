@@ -516,12 +516,12 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function isMatching($attribute, $locale, $scope)
     {
-        $isLocalizable = (int) $this->getAttribute()->getTranslatable();
-        $isScopable    = (int) $this->getAttribute()->getScopable();
+        $isLocalizable = (int) $this->getAttribute()->isTranslatable();
+        $isScopable    = (int) $this->getAttribute()->isScopable();
         $isLocalized   = (int) ($this->getLocale() == $locale);
         $isScoped      = (int) ($this->getScope() == $scope);
 
-        if ($this->getAttribute()->getCode() == $attribute) {
+        if ($this->getAttribute()->getCode() === $attribute) {
             $matchedMatrix = array('0000', '0100', '0001', '0101', '1111', '1100', '1101', '0011', '0111');
             $status = (string) $isLocalizable.$isLocalized.$isScopable.$isScoped;
             if (in_array($status, $matchedMatrix)) {

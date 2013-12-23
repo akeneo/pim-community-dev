@@ -4,6 +4,9 @@ namespace Context;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
+use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -17,12 +20,10 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
-use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Gherkin\Node\PyStringNode;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * A context for creating entities
@@ -68,7 +69,7 @@ class FixturesContext extends RawMinkContext
         'Locale'          => 'PimCatalogBundle:Locale',
         'GroupType'       => 'PimCatalogBundle:GroupType',
         'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Model\Group',
+        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
     );
 
     private $placeholderValues = array();
@@ -215,7 +216,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->findEntity($entityName, $criteria);
 
         if (!$entity) {
-            if (gettype($criteria) === 'string') {
+            if (is_string($criteria)) {
                 $criteria = array('code' => $criteria);
             }
 
@@ -223,7 +224,7 @@ class FixturesContext extends RawMinkContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->entities[$entityName],
-                    print_r($criteria, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
         }
@@ -305,8 +306,7 @@ class FixturesContext extends RawMinkContext
                 $data
             );
 
-            $family = new Family();
-            $family->setCode($data['code']);
+            $family = $this->createFamily($data['code']);
             if (isset($data['label'])) {
                 $family
                     ->setLocale($this->getLocaleCode($data['locale']))
@@ -469,6 +469,28 @@ class FixturesContext extends RawMinkContext
                         }
 
                         $value->setData($optionValue);
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['metric']) {
+                        $metric = $value->getData();
+
+                        if (false === strpos($data['value'], ' ')) {
+                            throw new \InvalidArgumentException(
+                                sprintf(
+                                    'Metric value does not match expected format "<data> <unit>": %s',
+                                    $data['value']
+                                )
+                            );
+                        }
+                        list($data, $unit) = explode(' ', $data['value']);
+
+                        if (!$metric) {
+                            $metric = new Metric();
+                            $metric->setFamily($value->getAttribute()->getMetricFamily());
+                        }
+
+                        $metric->setData($data);
+                        $metric->setUnit($unit);
+
+                        $value->setMetric($metric);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -563,12 +585,12 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
@@ -595,7 +617,7 @@ class FixturesContext extends RawMinkContext
 
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
-            assertEquals(($data['is_default'] == 1), $option->isDefault());
+            assertEquals(($data['default'] == 1), $option->isDefault());
         }
     }
 
@@ -1000,7 +1022,7 @@ class FixturesContext extends RawMinkContext
         $columns = join($delimiter, array_keys($data));
 
         $rows = array();
-        foreach ($data as $key => $values) {
+        foreach ($data as $values) {
             foreach ($values as $index => $value) {
                 $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
@@ -1118,6 +1140,37 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param Channel   $channel
+     * @param TableNode $conversionUnits
+     *
+     * @Given /^the following (channel "(?:[^"]*)") conversion options:$/
+     */
+    public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
+    {
+        $channel->setConversionUnits($conversionUnits->getRowsHash());
+
+        $this->flush();
+    }
+
+    /**
+     * @Then /^"([^"]*)" group should contain "([^"]*)"$/
+     */
+    public function groupShouldContain($group, $products)
+    {
+        $group = $this->getProductGroup($group);
+        $this->getEntityManager()->refresh($group);
+        $groupProducts = $group->getProducts();
+
+        foreach ($this->listToArray($products) as $sku) {
+            if (!$groupProducts->contains($this->getProduct($sku))) {
+                throw new \Exception(
+                    sprintf('Group "%s" doesn\'t contain product "%s"', $group->getCode(), $sku)
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $sku
      *
      * @return Product
@@ -1127,7 +1180,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProductManager()->findByIdentifier($sku);
 
         if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku %s', $sku));
+            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
         }
 
         return $product;
@@ -1292,7 +1345,7 @@ class FixturesContext extends RawMinkContext
 
         $data['code'] = $data['code'] ?: $this->camelize($data['label']);
 
-        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($data['type']));
+        $attribute = $this->getProductAttributeManager()->createAttribute($this->getAttributeType($data['type']));
 
         $attribute->setCode($data['code']);
         $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
@@ -1321,7 +1374,7 @@ class FixturesContext extends RawMinkContext
             } else {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
                         $data['label']
                     )
                 );
@@ -1408,7 +1461,15 @@ class FixturesContext extends RawMinkContext
                         $value->addOption($option);
                     }
                 }
+                break;
 
+            case $this->attributeTypes['metric']:
+                list($data, $unit) = explode(' ', $data);
+                $metric = new Metric();
+                $metric->setFamily($attribute->getMetricFamily());
+                $metric->setData($data);
+                $metric->setUnit($unit);
+                $value->setData($metric);
                 break;
 
             default:
@@ -1616,6 +1677,24 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Create a family
+     *
+     * @param string $code
+     *
+     * @return Family
+     */
+    private function createFamily($code)
+    {
+        $family = $this->getFamilyFactory()->createFamily();
+        $family->setCode($code);
+
+        $this->persist($family);
+
+        return $family;
+    }
+
+
+    /**
      * @param string $string
      *
      * @return string
@@ -1690,6 +1769,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
+     */
+    private function getProductAttributeManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.product_attribute');
+    }
+
+    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
      */
     private function getMediaManager()
@@ -1703,6 +1790,14 @@ class FixturesContext extends RawMinkContext
     private function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Factory\FamilyFactory
+     */
+    private function getFamilyFactory()
+    {
+        return $this->getContainer()->get('pim_catalog.factory.family');
     }
 
     /**

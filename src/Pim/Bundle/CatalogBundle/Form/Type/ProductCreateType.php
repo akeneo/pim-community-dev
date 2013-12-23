@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Symfony\Component\Form\AbstractType;
 
 /**
  * Product creation form type
@@ -12,17 +12,25 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCreateType extends FlexibleType
+class ProductCreateType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function addEntityFields(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::addEntityFields($builder);
-
         $builder
-            ->add('values', 'collection')
+            ->add(
+                'values',
+                'collection',
+                array(
+                    'type'               => 'pim_product_value',
+                    'allow_add'          => true,
+                    'allow_delete'       => true,
+                    'by_reference'       => false,
+                    'cascade_validation' => true,
+                )
+            )
             ->add(
                 'family',
                 null,
@@ -41,5 +49,13 @@ class ProductCreateType extends FlexibleType
     public function getName()
     {
         return 'pim_product_create';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'pim_product';
     }
 }

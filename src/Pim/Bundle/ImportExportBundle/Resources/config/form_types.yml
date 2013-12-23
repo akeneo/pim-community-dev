@@ -1,0 +1,10 @@
+parameters:
+    pim_import_export.form.type.job_instance.class: Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+
+services:
+    pim_import_export.form.type.job_instance:
+        class: %pim_import_export.form.type.job_instance.class%
+        arguments:
+            - '@oro_batch.connectors'
+        tags:
+            - { name: form.type, alias: pim_import_export_job_instance }

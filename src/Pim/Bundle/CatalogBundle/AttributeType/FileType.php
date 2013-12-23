@@ -32,11 +32,10 @@ class FileType extends FlexFileType
                 'data'    => implode(',', $attribute->getAllowedExtensions()),
                 'options' => array(
                     'by_reference' => false,
+                    'select2'      => true,
                     'attr'         => array(
-                        'class' => 'multiselect',
                         'data-tags' => 'doc,docx,rtf,txt,csv,ppt,pptx,mp3,wav,svg,pdf'
-                    ),
-                    'select2' => true
+                    )
                 )
             ),
             array(

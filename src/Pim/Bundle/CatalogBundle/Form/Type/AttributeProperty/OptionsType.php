@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 
 /**
- * Form type related to options property of ProductAttribute
+ * Form type related to options property of ProductAttributeInterface
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

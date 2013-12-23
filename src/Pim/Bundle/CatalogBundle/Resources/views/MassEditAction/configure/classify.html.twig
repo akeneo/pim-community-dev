@@ -9,7 +9,16 @@
             function($, _, TreeAssociate){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees', '#pim_catalog_mass_edit_action_operation_categories');
+                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}');
+                    var $nextBtn = $('a.next');
+                    $nextBtn.hide();
+                    $('#{{ form.operation.categories.vars.id }}').on('change', function() {
+                        if ($(this).val()) {
+                            $nextBtn.show();
+                        } else {
+                            $nextBtn.hide();
+                        }
+                    });
                 });
             }
         );

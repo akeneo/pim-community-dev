@@ -80,6 +80,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'required'               => '0',
                     'unique'                 => '0',
                     'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
+                    'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
@@ -236,6 +237,11 @@ class AttributeNormalizerTest extends NormalizerTestCase
      */
     protected function addOptions(ProductAttribute $attribute, $data)
     {
+        if (count($data['options']) === 1) {
+            $attribute->setBackendType('option');
+        } elseif (count($data['options']) > 1) {
+            $attribute->setBackendType('option');
+        }
         foreach ($data['options'] as $code => $values) {
             $attributeOption = new AttributeOption();
             $attributeOption->setCode($code);

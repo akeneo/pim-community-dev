@@ -118,8 +118,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
+            $objectManager ?: $this->getEntityManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
-            $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
             $this->getCompletenessManagerMock(),
             $this->getProductBuilderMock()
@@ -135,6 +135,25 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     protected function getObjectManagerMock($repository)
     {
         $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+
+        $manager->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($repository));
+
+        return $manager;
+    }
+
+    /**
+     * Get a mock of EntityManager
+     * @param mixed $repository
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManagerMock($repository)
+    {
+        $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $manager->expects($this->any())
             ->method('getRepository')
@@ -231,15 +250,15 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-            array('getTranslatable', 'getScopable', 'getCode')
+            array('isTranslatable', 'isScopable', 'getCode')
         );
 
         $attribute->expects($this->any())
-                  ->method('getTranslatable')
+                  ->method('isTranslatable')
                   ->will($this->returnValue($translatable));
 
         $attribute->expects($this->any())
-                  ->method('getScopable')
+                  ->method('isScopable')
                   ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())

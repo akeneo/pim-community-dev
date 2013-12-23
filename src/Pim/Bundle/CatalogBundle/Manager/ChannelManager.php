@@ -51,6 +51,24 @@ class ChannelManager
     }
 
     /**
+     * Get full channels with locales and currencies
+     *
+     * @return array
+     */
+    public function getFullChannels()
+    {
+        return $this
+            ->objectManager
+            ->getRepository('PimCatalogBundle:Channel')
+            ->createQueryBuilder('ch')
+            ->select('ch, lo, cu')
+            ->leftJoin('ch.locales', 'lo')
+            ->leftJoin('ch.currencies', 'cu')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Get channel by code
      *
      * @param string $code
@@ -111,11 +129,19 @@ class ChannelManager
      * Get user channel code
      *
      * @return string
+     *
+     * @throws \Exception
      */
     public function getUserChannelCode()
     {
         $user = $this->securityContext->getToken()->getUser();
 
-        return (string) $user->getValue('catalogscope');
+        $catalogScope = $user->getCatalogScope();
+
+        if (!$catalogScope) {
+            throw new \Exception('User must have a catalog scope defined');
+        }
+
+        return $catalogScope->getCode();
     }
 }

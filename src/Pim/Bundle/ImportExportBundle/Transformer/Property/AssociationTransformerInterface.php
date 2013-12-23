@@ -15,7 +15,7 @@ interface AssociationTransformerInterface extends PropertyTransformerInterface
      * Returns an object for a given class and code
      *
      * @param string $class
-     * @param string $code
+     * @param string $value
      *
      * @return object
      */

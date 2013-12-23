@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
 
 /**
@@ -37,7 +37,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             $this->validator,
             $this->constraintGuesser
         );
-        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getValue'))
             ->getMock();
         $this->product->expects($this->any())
@@ -47,9 +47,14 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->identifierColumn->getAttribute()
             ->expects($this->any())
             ->method('getAttributeType')
-            ->will($this->returnValue(OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
+            ->will($this->returnValue(ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
     }
 
+    /**
+     * Test related method
+     *
+     * @return null
+     */
     public function testValidate()
     {
         $columns = array(
@@ -108,7 +113,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
-     * @expectedExceptionMessage The "id" attribute is unique, the value "id_name_data" was already read in this file
+     * @expectedExceptionMessage The unique code "id_name_data" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
     {
@@ -119,6 +124,12 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
     }
 
+    /**
+     * @param string  $label
+     * @param boolean $withAttribute
+     *
+     * @return ColumnInfoInterface
+     */
     protected function getColumnInfoMock($label, $withAttribute = true)
     {
         $column = parent::getColumnInfoMock($label);
@@ -143,6 +154,14 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
         return $column;
     }
+
+    /**
+     * @param string $name
+     * @param string $locale
+     * @param string $scope
+     *
+     * @return ProductValueInterface
+     */
     public function getProductValue($name, $locale, $scope)
     {
         $this->assertEquals('locale', $locale);

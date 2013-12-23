@@ -6,8 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
-use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 
 /**
@@ -31,7 +31,7 @@ class LoadGroupData extends AbstractInstallerFixture
                 $group = $this->createGroup($code, $data);
                 $this->validate($group, $data);
                 $manager->persist($group);
-                $this->addReference('group.'. $group->getCode(), $group);
+                $this->addReference(get_class($group).'.'. $group->getCode(), $group);
             }
         }
 
@@ -48,7 +48,7 @@ class LoadGroupData extends AbstractInstallerFixture
      */
     protected function createGroup($code, $data)
     {
-        $type = $this->getReference('group-type.'. $data['type']);
+        $type = $this->getReference('Pim\Bundle\CatalogBundle\Entity\GroupType.'. $data['type']);
         $group = new Group();
         $group->setCode($code);
         $group->setType($type);
@@ -61,7 +61,9 @@ class LoadGroupData extends AbstractInstallerFixture
 
         if (isset($data['attributes'])) {
             foreach ($data['attributes'] as $attribute) {
-                $group->addAttribute($this->getReference('product-attribute.'. $attribute));
+                $group->addAttribute(
+                    $this->getReference('Pim\Bundle\CatalogBundle\Entity\ProductAttribute.'. $attribute)
+                );
             }
         }
 

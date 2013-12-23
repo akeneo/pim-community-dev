@@ -25,18 +25,24 @@ class ImportValidatorTest extends ImportValidatorTestCase
             ),
         );
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
         $this->importValidator = new ImportValidator($this->validator);
         $this->entity = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getCode'))
+            ->setMethods(array('getReference'))
             ->getMock();
         $this->entity->expects($this->any())
-            ->method('getCode')
+            ->method('getReference')
             ->will($this->returnValue('id'));
     }
 
+    /**
+     * Test related method
+     */
     public function testWithFullValidate()
     {
         $this->validator->expects($this->any())
@@ -47,6 +53,11 @@ class ImportValidatorTest extends ImportValidatorTestCase
         $this->assertEquals($this->errors, $errors);
     }
 
+    /**
+     * Test related method
+     *
+     * @return null
+     */
     public function testWithPropertyValidate()
     {
         $otherErrors = array(
@@ -75,7 +86,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
 
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
-     * @expectedExceptionMessage The "code" attribute is unique, the value "id" was already read in this file
+     * @expectedExceptionMessage The unique code "id" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
     {

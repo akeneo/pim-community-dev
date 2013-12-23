@@ -107,6 +107,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
                 'data'         => null,
                 'defaultValue' => null,
                 'backendType'  => null,
+                'attribute_options' => array()
             ),
             $options
         );
@@ -116,9 +117,15 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
             array('getAttribute', 'getData')
         );
 
+        $attributeMock = $this->getAttributeMock(
+            $options['backendType'],
+            $options['defaultValue'],
+            $options['attribute_options']
+        );
+
         $value->expects($this->any())
             ->method('getAttribute')
-            ->will($this->returnValue($this->getAttributeMock($options['backendType'], $options['defaultValue'])));
+            ->will($this->returnValue($attributeMock));
 
         $value->expects($this->any())
             ->method('getData')
@@ -130,12 +137,13 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param string $backendType
      * @param mixed  $defaultValue
+     * @param array  $attributeOptions
      *
      * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
-    protected function getAttributeMock($backendType, $defaultValue)
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
     {
-        $attribute = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

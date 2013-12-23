@@ -11,7 +11,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Category code may contain only letters, numbers and underscores
             - Length:
-                max: 64
+                max: 100
         translations:
             - Valid: ~
 
@@ -19,4 +19,4 @@ Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
     properties:
         label:
             - Length:
-                max: 64
+                max: 100

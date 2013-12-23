@@ -14,9 +14,9 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 interface EntityUpdaterInterface
 {
     /**
-     * Updates the ProductValue instance
+     * Updates the object instance
      *
-     * @param object              $productValue
+     * @param object              $object
      * @param ColumnInfoInterface $columnInfo
      * @param mixed               $data
      * @param array               $options

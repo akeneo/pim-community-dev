@@ -20,7 +20,7 @@ Feature: Variant group creation
     Then I am on the variant groups page
     And I should see group MUG
 
-  Scenario: Fail to create a variant group with an empty, invalid or already used code
+  Scenario: Fail to create a variant group with an empty or invalid code
     Given I fill in the following information in the popin:
       | Axis | Size |
     And I press the "Save" button
@@ -29,7 +29,9 @@ Feature: Variant group creation
       | Code | =( |
     And I press the "Save" button
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
-    When I fill in the following information in the popin:
+
+  Scenario: Fail to create a variant group with an already used code
+    Given I fill in the following information in the popin:
       | Code | caterpillar_boots |
     And I press the "Save" button
     Then I should see validation error "This value is already used."

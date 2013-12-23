@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Group:
+Pim\Bundle\CatalogBundle\Entity\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
@@ -15,7 +15,7 @@ Pim\Bundle\CatalogBundle\Model\Group:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Group code may contain only letters, numbers and underscores.
             - Length:
-                max: 50
+                max: 100
         translations:
             - Valid: ~
         attributes:
@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Model\Group:
                 min: 1
                 groups: [variant]
 
-Pim\Bundle\CatalogBundle\Model\GroupTranslation:
+Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
         label:
             - Length:

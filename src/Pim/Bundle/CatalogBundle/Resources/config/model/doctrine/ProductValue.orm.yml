@@ -62,7 +62,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
@@ -89,7 +89,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             cascade:
                 - refresh
             joinTable:
-                name: pim_catalog_value_option
+                name: pim_catalog_product_value_option
                 joinColumns:
                     value_id:
                         referencedColumnName: id
@@ -112,7 +112,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     referencedColumnName: id
                     onDelete: CASCADE
         metric:
-            targetEntity: Pim\Bundle\FlexibleEntityBundle\Entity\Metric
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
             cascade:
                 - persist
                 - refresh

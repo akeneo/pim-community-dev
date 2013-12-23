@@ -1,7 +1,6 @@
 Pim\Bundle\CatalogBundle\Entity\Completeness:
     type: entity
     table: pim_catalog_completeness
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CompletenessRepository
     uniqueConstraints:
         searchunique_idx:
             columns:
@@ -22,6 +21,10 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
         requiredCount:
             type: integer
             column: required_count
+        productId:
+            type: string
+            length: 24
+            column: product_id
     manyToOne:
         locale:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
@@ -34,14 +37,6 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
             joinColumns:
                 channel_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-                    nullable: false
-        product:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-            inversedBy: completenesses
-            joinColumns:
-                product_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false

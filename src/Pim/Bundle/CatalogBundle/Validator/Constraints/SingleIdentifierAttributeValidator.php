@@ -33,8 +33,8 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     /**
      * Don't allow creating an identifier attribute if one already exists
      *
-     * @param ProductAttribute $value
-     * @param Constraint       $constraint
+     * @param ProductAttributeInterface $value
+     * @param Constraint                $constraint
      */
     public function validate($value, Constraint $constraint)
     {

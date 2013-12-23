@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Model\Group;
-use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\ImportExportBundle\Processor\GroupProcessor;
 
 /**
@@ -21,7 +21,11 @@ class GroupProcessorTest extends AbstractProcessorTestCase
      */
     protected function createProcessor()
     {
-        $processor =  new GroupProcessor($this->em, $this->validator);
+        $processor = new GroupProcessor(
+            $this->em,
+            $this->validator,
+            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
+        );
 
         $stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')

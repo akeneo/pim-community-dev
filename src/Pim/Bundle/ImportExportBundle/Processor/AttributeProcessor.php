@@ -6,9 +6,9 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Valid attribute creation (or update) processor
@@ -22,25 +22,25 @@ use Pim\Bundle\CatalogBundle\manager\ProductManager;
 class AttributeProcessor extends AbstractEntityProcessor
 {
     /**
-     * Product manager
+     * Product attribute manager
      *
-     * @var ProductManager
+     * @var ProductAttributeManagerInterface
      */
-    protected $productManager;
+    protected $attributeManager;
 
     /**
      * Constructor
-     * @param EntityManager      $manager
-     * @param ValidatorInterface $validator
-     * @param ProductManager     $productManager
+     * @param EntityManager                    $manager
+     * @param ValidatorInterface               $validator
+     * @param ProductAttributeManagerInterface $attributeManager
      */
     public function __construct(
         EntityManager $manager,
         ValidatorInterface $validator,
-        ProductManager $productManager
+        ProductAttributeManagerInterface $attributeManager
     ) {
         parent::__construct($manager, $validator);
-        $this->productManager = $productManager;
+        $this->attributeManager = $attributeManager;
     }
 
     /**
@@ -61,10 +61,10 @@ class AttributeProcessor extends AbstractEntityProcessor
     /**
      * Set labels
      *
-     * @param ProductAttribute $attribute
-     * @param array            $item
+     * @param ProductAttributeInterface $attribute
+     * @param array                     $item
      */
-    protected function updateLabels(ProductAttribute $attribute, array $item)
+    protected function updateLabels(ProductAttributeInterface $attribute, array $item)
     {
         foreach ($item as $key => $value) {
             if (preg_match('/^label-(.+)/', $key, $matches)) {
@@ -78,23 +78,19 @@ class AttributeProcessor extends AbstractEntityProcessor
     /**
      * Set group
      *
-     * @param ProductAttribute $attribute
-     * @param array            $item
+     * @param ProductAttributeInterface $attribute
+     * @param array                     $item
      *
      * @throws InvalidItemException
      */
-    protected function updateGroup(ProductAttribute $attribute, array $item)
+    protected function updateGroup(ProductAttributeInterface $attribute, array $item)
     {
         if (empty($item['group']) || $item['group'] == AttributeGroup::DEFAULT_GROUP_CODE) {
             $attribute->setGroup(null);
         } else {
             $group = $this->findAttributeGroup($item['group']);
             if (!$group) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-                throw new InvalidItemException(
-                    sprintf('The "%s" group not exists.', $item['group']),
-                    $item
-                );
+                $this->skipItem($item, sprintf('The "%s" group not exists.', $item['group']));
             }
             $attribute->setGroup($group);
         }
@@ -103,10 +99,10 @@ class AttributeProcessor extends AbstractEntityProcessor
     /**
      * Set parameters
      *
-     * @param ProductAttribute $attribute
-     * @param array            $item
+     * @param ProductAttributeInterface $attribute
+     * @param array                     $item
      */
-    protected function updateParameters(ProductAttribute $attribute, array $item)
+    protected function updateParameters(ProductAttributeInterface $attribute, array $item)
     {
         $parameters = $this->prepareParameters($item);
         $attribute->setParameters($parameters);
@@ -147,7 +143,7 @@ class AttributeProcessor extends AbstractEntityProcessor
     {
         $attribute = $this->findAttribute($item['code']);
         if (!$attribute) {
-            $attribute = $this->productManager->createAttribute($item['type']);
+            $attribute = $this->attributeManager->createAttribute($item['type']);
             $attribute->setCode($item['code']);
             $attribute->setTranslatable((bool) $item['is_translatable']);
             $attribute->setScopable((bool) $item['is_scopable']);
@@ -161,13 +157,13 @@ class AttributeProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return ProductAttribute|null
+     * @return ProductAttributeInterface|null
      */
     private function findAttribute($code)
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:ProductAttribute')
+            ->getRepository($this->attributeManager->getAttributeClass())
             ->findOneBy(array('code' => $code));
     }
 

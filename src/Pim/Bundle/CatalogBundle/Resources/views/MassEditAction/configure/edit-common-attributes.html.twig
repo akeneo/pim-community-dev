@@ -3,14 +3,6 @@
 {% block formTitle %}
     <div class="pull-left">
         {{ form_widget(form.operation.locale) }}
-        <script type="text/javascript">
-            require(
-                ['pim/initselect2'],
-                function (initSelect2) {
-                    initSelect2('{{ form.operation.locale.vars.id }}');
-                }
-            );
-        </script>
     </div>
     <div class="pull-left buffer-small-left">
         {{ form_widget(form.operation.attributesToDisplay) }}
@@ -22,7 +14,7 @@
 
         <h4>{{ groupView.label }}</h4>
 
-        {% for attributeId, attributeView in groupView.attributes %}
+        {% for attributeView in groupView.attributes %}
             <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
                 {% if attributeView.values is defined %}
                     {% for scope, subvalue in attributeView.values %}
@@ -35,7 +27,7 @@
                         {{ form_widget(attributeView.value) }}
                     </div>
                 {% endif %}
-                <i class="icon-remove remove-attribute" data-id="{{ attributeId }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                <i class="icon-remove remove-attribute" data-id="{{ attributeView.id }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
             </div>
         {% endfor %}
 
@@ -55,10 +47,14 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter', 'jquery.select2'],
+            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
             function ($, _, Scopable) {
                 'use strict';
                 $(function () {
+                    {% if form.operation.vars.groups is empty %}
+                        $('a.next').hide();
+                    {% endif %}
+
                     _.each($('form div.scopable'), function (field) {
                         new Scopable({ el: $(field) });
                     });
@@ -83,7 +79,7 @@
                     };
                     opts.selectedText = opts.title;
                     opts.noneSelectedText = opts.title;
-                    var $el = $('#pim_catalog_mass_edit_action_operation_attributesToDisplay')
+                    var $el = $('#{{ form.operation.attributesToDisplay.vars.id }}')
                         .addClass('pimmultiselect')
                         .multiselect(opts)
                         .multiselectfilter({
@@ -97,7 +93,7 @@
                     var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
                     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                         $el.multiselect('close');
-                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
+                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) %}
                         $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                     }).appendTo(footerContainer);
 

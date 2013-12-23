@@ -5,33 +5,22 @@ services:
         arguments:
             - %pim_catalog.entity.product.class%
             - %pim_flexibleentity.flexible_config%
+            - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_flexibleentity.attributetype.factory'
             - '@pim_catalog.manager.media'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.builder.product'
         tags:
             - { name: pim_flexibleentity_manager, entity: %pim_catalog.entity.product.class%}
-        calls:
-            - [ addAttributeType, [pim_catalog_identifier] ]
-            - [ addAttributeType, [pim_catalog_text] ]
-            - [ addAttributeType, [pim_catalog_textarea] ]
-            - [ addAttributeType, [pim_catalog_number] ]
-            - [ addAttributeType, [pim_catalog_price_collection] ]
-            - [ addAttributeType, [pim_catalog_multiselect] ]
-            - [ addAttributeType, [pim_catalog_simpleselect] ]
-            - [ addAttributeType, [pim_catalog_file] ]
-            - [ addAttributeType, [pim_catalog_image] ]
-            - [ addAttributeType, [pim_catalog_boolean] ]
-            - [ addAttributeType, [pim_catalog_date] ]
-            - [ addAttributeType, [pim_catalog_metric] ]
 
     pim_catalog.builder.product:
         class: %pim_catalog.builder.product.class%
         arguments:
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
 
     pim_catalog.manager.category:
@@ -46,10 +35,14 @@ services:
             - '@pim_filesystem'
             - %upload_dir%
 
-    pim_catalog.manager.attribute_type:
-        class: %pim_catalog.manager.attribute_type.class%
+    pim_catalog.manager.product_attribute:
+        class: %pim_catalog.manager.product_attribute.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.product_attribute_option.class%
+            - %pim_catalog.entity.product_attribute_option_value.class%
+            - %pim_catalog.entity.product.class%
+            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.locale'
             - '@pim_flexibleentity.attributetype.factory'
 
@@ -77,13 +70,17 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
         arguments:
             - '@doctrine'
-            - '@pim_catalog.doctrine.completeness_query_builder'
+            - '@pim_catalog.doctrine.completeness_generator'
+            - '@validator'
+            - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%

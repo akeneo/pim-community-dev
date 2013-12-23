@@ -5,10 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Family entity
@@ -29,7 +29,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface
+class Family implements TranslatableInterface, ReferableInterface
 {
     /**
      * @var integer $id
@@ -60,7 +60,7 @@ class Family implements TranslatableInterface
     protected $translations;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attributeAsLabel
+     * @var \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface $attributeAsLabel
      */
     protected $attributeAsLabel;
 
@@ -190,11 +190,11 @@ class Family implements TranslatableInterface
     /**
      * Add attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Family
      */
-    public function addAttribute(ProductAttribute $attribute)
+    public function addAttribute(ProductAttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes->add($attribute);
@@ -206,13 +206,13 @@ class Family implements TranslatableInterface
     /**
      * Remove attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return Family
      *
      * @throws InvalidArgumentException
      */
-    public function removeAttribute(ProductAttribute $attribute)
+    public function removeAttribute(ProductAttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
@@ -236,7 +236,7 @@ class Family implements TranslatableInterface
     /**
      * Get grouped attributes
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface[]
      */
     public function getGroupedAttributes()
     {
@@ -251,17 +251,17 @@ class Family implements TranslatableInterface
     /**
      * Check if family has an attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(ProductAttribute $attribute)
+    public function hasAttribute(ProductAttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }
 
     /**
-     * @param ProductAttribute $attributeAsLabel
+     * @param ProductAttributeInterface $attributeAsLabel
      *
      * @return Family
      */
@@ -273,7 +273,7 @@ class Family implements TranslatableInterface
     }
 
     /**
-     * @return ProductAttribute
+     * @return ProductAttributeInterface
      */
     public function getAttributeAsLabel()
     {
@@ -422,6 +422,9 @@ class Family implements TranslatableInterface
      */
     public function setAttributeRequirements(array $requirements)
     {
+        foreach ($requirements as $requirement) {
+            $requirement->setFamily($this);
+        }
         $this->requirements = new ArrayCollection($requirements);
 
         return $this;
@@ -482,5 +485,13 @@ class Family implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

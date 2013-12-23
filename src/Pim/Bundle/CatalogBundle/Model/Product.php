@@ -6,16 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Entity\Association;
-use Pim\Bundle\CatalogBundle\Entity\Completeness;
 
 /**
  * Flexible product
@@ -36,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Entity\Completeness;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface
+class Product extends AbstractEntityFlexible implements ProductInterface, ReferableInterface
 {
     /**
      * @var ArrayCollection $values
@@ -160,10 +159,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         foreach ($this->values as $value) {
             $attribute = $value->getAttribute();
             $key = $attribute->getCode();
-            if ($attribute->getTranslatable()) {
+            if ($attribute->isTranslatable()) {
                 $key .= '_'.$value->getLocale();
             }
-            if ($attribute->getScopable()) {
+            if ($attribute->isScopable()) {
                 $key .= '_'.$value->getScope();
             }
             $_values[$key] = $value;
@@ -325,11 +324,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Check if an attribute can be removed from the product
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function isAttributeRemovable(ProductAttribute $attribute)
+    public function isAttributeRemovable(ProductAttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             return false;
@@ -394,85 +393,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     public function __toString()
     {
         return (string) $this->getLabel();
-    }
-
-    /**
-     * Getter for product completenesses
-     *
-     * @return ArrayCollection
-     */
-    public function getCompletenesses()
-    {
-        return $this->completenesses;
-    }
-
-    /**
-     * Add product completeness
-     *
-     * @param Completeness $completeness
-     *
-     * @return Product
-     */
-    public function addCompleteness(Completeness $completeness)
-    {
-        if (!$this->completenesses->contains($completeness)) {
-            $this->completenesses->add($completeness);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove product completeness
-     *
-     * @param Completeness $completeness
-     *
-     * @return Product
-     */
-    public function removeCompleteness(Completeness $completeness)
-    {
-        $this->completenesses->removeElement($completeness);
-
-        return $this;
-    }
-
-    /**
-     * Get the product completeness from a locale and a scope
-     *
-     * @param string $locale
-     * @param string $channel
-     *
-     * @return Completeness|null
-     */
-    public function getCompleteness($locale, $channel)
-    {
-        $completeness = array_filter(
-            $this->completenesses->toArray(),
-            function ($completeness) use ($locale, $channel) {
-                return $completeness->getLocale()->getCode() === $locale
-                    && $completeness->getChannel()->getCode() === $channel;
-            }
-        );
-
-        if (count($completeness) === 0) {
-            return null;
-        } else {
-            return array_shift($completeness);
-        }
-    }
-
-    /**
-     * Set product completenesses
-     *
-     * @param array $completenesses
-     *
-     * @return Product
-     */
-    public function setCompletenesses(array $completenesses = array())
-    {
-        $this->completenesses = new ArrayCollection($completenesses);
-
-        return $this;
     }
 
     /**
@@ -564,5 +484,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         $this->productAssociations = new ArrayCollection($productAssociations);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->getIdentifier();
     }
 }

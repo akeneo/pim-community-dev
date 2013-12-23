@@ -1,8 +1,8 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'bootstrap', 'jquery.select2'],
-    function ($, Backbone, _, mediator, pimInit) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'wysiwyg', 'bootstrap', 'jquery.select2'],
+    function ($, Backbone, _, mediator, pimInit, wysiwyg) {
         'use strict';
-        pimInit()
+        pimInit();
         /**
          * Allow expanding/collapsing scopable fields
          *
@@ -87,6 +87,10 @@ define(
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
                     this.$el.find('.switch').bootstrapSwitch();
                     this.$el.find('select').select2();
+                    var $textarea = this.$el.find('textarea.wysiwyg');
+                    if ($textarea.length) {
+                        wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
+                    }
                 }
 
                 return this;
@@ -126,12 +130,16 @@ define(
                     this._changeDefault(scope);
                 }, this);
 
-                mediator.on('scopablefield:collapse', function () {
-                    this._collapse();
+                mediator.on('scopablefield:collapse', function (id) {
+                    if (!id || this.$el.find('#' + id).length) {
+                        this._collapse();
+                    }
                 }, this);
 
-                mediator.on('scopablefield:expand', function () {
-                    this._expand();
+                mediator.on('scopablefield:expand', function (id) {
+                    if (!id || this.$el.find('#' + id).length) {
+                        this._expand();
+                    }
                 }, this);
 
                 var self = this;
@@ -157,6 +165,8 @@ define(
                     }, this);
 
                     this._collapse();
+
+                    mediator.trigger('scopablefield:rendered', this.$el);
                 }
 
                 return this;
@@ -180,7 +190,7 @@ define(
                         first = false;
                     }, this);
 
-                    this.$el.removeClass('collapsed').addClass('expanded');
+                    this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
                 return this;
@@ -202,7 +212,7 @@ define(
                         }
                     }, this);
 
-                    this.$el.removeClass('expanded').addClass('collapsed');
+                    this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
                 return this;
@@ -246,6 +256,10 @@ define(
                     this._setFieldFirst(field);
                 }
                 $(field).show();
+                var $textarea = $(field).find('textarea.wysiwyg');
+                if ($textarea.length) {
+                    wysiwyg.reinit($textarea.attr('id'));
+                }
             },
 
             _hideField: function (field) {

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Product repository
@@ -50,14 +50,18 @@ class ProductRepository extends FlexibleEntityRepository
         $scope = $channel->getCode();
         $qb = $this->buildByScope($scope);
         $rootAlias = $qb->getRootAlias();
-        $expression = $qb->expr()->eq('pCompleteness.ratio', '100').' AND '
-            .$qb->expr()->eq('pCompleteness.channel', $channel->getId());
+        $expression =
+            'pCompleteness.productId = '.$rootAlias.'.id AND '.
+            $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
+            $qb->expr()->eq('pCompleteness.channel', $channel->getId());
+
         $qb->innerJoin(
-            $rootAlias .'.completenesses',
+            'PimCatalogBundle:Completeness',
             'pCompleteness',
             'WITH',
             $expression
         );
+
         $treeId = $channel->getCategory()->getId();
         $expression = $qb->expr()->eq('pCategory.root', $treeId);
         $qb->innerJoin(
@@ -166,5 +170,29 @@ class ProductRepository extends FlexibleEntityRepository
             ->setParameter('channel', $channel->getId())
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * Returns a full product with all relations
+     *
+     * @param int $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
+    public function getFullProduct($id)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->select('p, f, v, pr, m, o, os')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.prices', 'pr')
+            ->leftJoin('v.media', 'm')
+            ->leftJoin('v.option', 'o')
+            ->leftJoin('v.options', 'os')
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

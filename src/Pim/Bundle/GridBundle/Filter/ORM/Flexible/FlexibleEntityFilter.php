@@ -101,7 +101,7 @@ class FlexibleEntityFilter extends AbstractFlexibleFilter
     protected function getClassName()
     {
         $valueName = $this->flexibleManager->getFlexibleValueName();
-        $valueMetadata = $this->flexibleManager->getStorageManager()
+        $valueMetadata = $this->flexibleManager->getObjectManager()
                                                ->getMetadataFactory()
                                                ->getMetadataFor($valueName);
 

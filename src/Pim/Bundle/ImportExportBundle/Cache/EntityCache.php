@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
  * Caches entities for import
@@ -19,6 +20,11 @@ class EntityCache
     protected $doctrine;
 
     /**
+     * @var ReferenceRepository
+     */
+    protected $referenceRepository;
+
+    /**
      * @var array
      */
     protected $cache = array();
@@ -31,6 +37,16 @@ class EntityCache
     public function __construct(RegistryInterface $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * Sets the reference repository
+     *
+     * @param ReferenceRepository $referenceRepository
+     */
+    public function setReferenceRepository(ReferenceRepository $referenceRepository = null)
+    {
+        $this->referenceRepository = $referenceRepository;
     }
 
     /**
@@ -73,10 +89,13 @@ class EntityCache
      */
     protected function getEntity($class, $code)
     {
-        return $this->doctrine
-                ->getManager()
-                ->createQuery("SELECT e FROM $class e WHERE e.code=:code")
-                ->setParameter('code', $code)
-                ->getOneOrNullResult();
+        $reference = $class . '.' . $code;
+        if ($this->referenceRepository && $this->referenceRepository->hasReference($reference)) {
+            return $this->referenceRepository->getReference($reference);
+        } else {
+            return $this->doctrine
+                    ->getRepository($class)
+                    ->findByReference($code);
+        }
     }
 }

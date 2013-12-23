@@ -304,12 +304,4 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
 
         return $this->entity->isAttributeRemovable($this->attribute);
     }
-
-    /**
-     * @return Product
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
 }

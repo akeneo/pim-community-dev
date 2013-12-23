@@ -7,7 +7,8 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute Group entity
@@ -28,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface
+class AttributeGroup implements TranslatableInterface, ReferableInterface
 {
     /**
      * @staticvar string
@@ -221,11 +222,11 @@ class AttributeGroup implements TranslatableInterface
     /**
      * Add attributes
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function addAttribute(ProductAttribute $attribute)
+    public function addAttribute(ProductAttributeInterface $attribute)
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -236,11 +237,11 @@ class AttributeGroup implements TranslatableInterface
     /**
      * Remove attributes
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function removeAttribute(ProductAttribute $attribute)
+    public function removeAttribute(ProductAttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -261,11 +262,11 @@ class AttributeGroup implements TranslatableInterface
     /**
      * Check if the group has an attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(ProductAttribute $attribute)
+    public function hasAttribute(ProductAttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }
@@ -383,5 +384,13 @@ class AttributeGroup implements TranslatableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

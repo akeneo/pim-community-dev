@@ -32,7 +32,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getCompletenessManager()->createAllCompletenesses(
+        $this->getCompletenessManager()->generateAllCompletenesses(
             $input->getArgument('size')
         );
     }

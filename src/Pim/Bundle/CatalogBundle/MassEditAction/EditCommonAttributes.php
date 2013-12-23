@@ -4,13 +4,13 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -212,10 +212,11 @@ class EditCommonAttributes extends AbstractMassEditAction
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
                 if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->getUnique() ||
-                    false === $product->getValue($attribute->getCode())) {
+                    $attribute->isUnique() ||
+                    !$product->hasAttribute($attribute)) {
                     /**
                      * Attribute is not available for mass editing if:
+                     *   - it is an identifier
                      *   - it is unique
                      *   - it isn't set on one of the selected products
                      */
@@ -323,8 +324,8 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         return $product->getValue(
             $value->getAttribute()->getCode(),
-            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->getScopable() ? $value->getScope() : null
+            $value->getAttribute()->isTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->isScopable() ? $value->getScope() : null
         );
     }
 
@@ -351,7 +352,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         $productValue->getOptions()->clear();
-        $this->productManager->getStorageManager()->flush();
+        $this->productManager->getObjectManager()->flush();
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
@@ -378,6 +379,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         if (null === $metric = $productValue->getMetric()) {
             $metric = new Metric();
+            $metric->setFamily($value->getAttribute()->getMetricFamily());
             $productValue->setMetric($metric);
         }
         $metric->setUnit($value->getMetric()->getUnit());
@@ -387,12 +389,12 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Add all the values required by the given attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      */
-    protected function addValues(ProductAttribute $attribute)
+    protected function addValues(ProductAttributeInterface $attribute)
     {
         $locale = $this->getLocale();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
                 $key = $attribute->getCode().'_'.$channel->getCode();
                 $this->values[$key] = $this->createValue($attribute, $locale, $channel);
@@ -405,22 +407,22 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Create a value
      *
-     * @param ProductAttribute $attribute
-     * @param Locale           $locale
-     * @param Channel          $channel
+     * @param ProductAttributeInterface $attribute
+     * @param Locale                    $locale
+     * @param Channel                   $channel
      *
      * @return ProductValueInterface
      */
-    protected function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
+    protected function createValue(ProductAttributeInterface $attribute, Locale $locale, Channel $channel = null)
     {
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
         }
 
-        if ($channel && $attribute->getScopable()) {
+        if ($channel && $attribute->isScopable()) {
             $value->setScope($channel->getCode());
         }
 

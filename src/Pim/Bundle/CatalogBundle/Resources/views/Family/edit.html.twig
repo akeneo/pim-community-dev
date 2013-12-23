@@ -52,9 +52,7 @@
                 {% include 'PimCatalogBundle:Family:_attributeRequirements.html.twig' %}
             </div>
 
-            <div class="tab-pane" id="history">
-                <div id="history-grid"></div>
-            </div>
+            <div class="tab-pane" id="history" data-url="{{ path('pim_catalog_family_history', {id: form.vars.value.id}) }}"></div>
 
         </div>
     {{ form_end(form) }}
@@ -99,5 +97,4 @@
             }
         );
     </script>
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endblock %}

@@ -43,6 +43,7 @@ class DatagridStrategy extends CrudStrategy
         DatagridHelperInterface $datagridHelper
     ) {
         parent::__construct($formFactory, $templating, $router, $translator);
+
         $this->datagridHelper = $datagridHelper;
     }
 

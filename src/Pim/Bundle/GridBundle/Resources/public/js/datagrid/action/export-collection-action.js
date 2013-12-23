@@ -1,5 +1,5 @@
 define(
-    ['underscore', 'oro/datagrid/abstract-action', 'oro/app'],
+    ['underscore', 'oro/grid/abstract-action', 'oro/app'],
     function (_, AbstractAction, app) {
         'use strict';
 

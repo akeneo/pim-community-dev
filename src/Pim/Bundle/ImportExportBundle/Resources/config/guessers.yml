@@ -1,11 +1,14 @@
 parameters:
-    pim_import_export.transformer.guesser.chained.class:       Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
-    pim_import_export.transformer.guesser.type.class:          Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
-    pim_import_export.transformer.guesser.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser
-    pim_import_export.transformer.guesser.translation.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
-    pim_import_export.transformer.guesser.default.class:       Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
-    pim_import_export.transformer.guesser.regexp.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
-    pim_import_export.transformer.guesser.attribute.class:     Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
+    pim_import_export.transformer.guesser.chained.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
+    pim_import_export.transformer.guesser.type.class:               Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
+    pim_import_export.transformer.guesser.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser
+    pim_import_export.transformer.guesser.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
+    pim_import_export.transformer.guesser.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Guesser\NestedTranslationGuesser
+    pim_import_export.transformer.guesser.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
+    pim_import_export.transformer.guesser.regexp.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
+    pim_import_export.transformer.guesser.attribute.class:          Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
+    pim_import_export.transformer.guesser.metric.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\MetricAttributeGuesser
+    pim_import_export.transformer.guesser.attribute_option.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeOptionGuesser
 
 services:
     pim_import_export.transformer.guesser:
@@ -19,11 +22,29 @@ services:
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 0 }
 
+    pim_import_export.transformer.guesser.attribute_option_value:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.translation'
+            - %pim_catalog.entity.product_attribute_option.class%
+            - ['/^label-/']
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
         public: false
         arguments:
             - '@pim_import_export.transformer.property.translation'
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }
+
+    pim_import_export.transformer.guesser.nested_translation:
+        class: %pim_import_export.transformer.guesser.nested_translation.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.nested_translation'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
 
@@ -48,7 +69,7 @@ services:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
 
     pim_import_export.transformer.guesser.metric:
-        class: %pim_import_export.transformer.guesser.attribute.class%
+        class: %pim_import_export.transformer.guesser.metric.class%
         public: false
         arguments:
             - '@pim_import_export.transformer.property.metric'
@@ -105,3 +126,12 @@ services:
             - ['/(_products|_groups)$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
+
+    pim_import_export.transformer.guesser.attribute_options:
+        class: %pim_import_export.transformer.guesser.attribute_option.class%
+        public: false
+        parent: pim_import_export.transformer.guesser.entity
+        arguments:
+            - %pim_catalog.entity.product_value.class%
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 200 }

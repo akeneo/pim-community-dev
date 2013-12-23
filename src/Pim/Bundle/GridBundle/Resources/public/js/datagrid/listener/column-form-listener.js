@@ -1,5 +1,5 @@
 /* global define */
-define(['oro/mediator', 'oro/datagrid/column-form-listener-orig'],
+define(['oro/mediator', 'oro/grid/column-form-listener'],
 function(mediator, ColumnFormListener) {
     'use strict';
 

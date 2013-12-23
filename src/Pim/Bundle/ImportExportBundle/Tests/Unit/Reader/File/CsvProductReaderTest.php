@@ -22,7 +22,8 @@ class CsvProductReaderTest extends CsvReaderTest
             $this->getEntityManagerMock(
                 array('sku', 'name'),
                 array('view', 'manual')
-            )
+            ),
+            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
         );
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);

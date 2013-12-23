@@ -7,6 +7,7 @@ parameters:
     pim_import_export.attribute_cache.class:                         Pim\Bundle\ImportExportBundle\Cache\AttributeCache
     pim_import_export.validator.import.class:                        Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
     pim_import_export.validator.product_import.class:                Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
+    pim_import_export.converter.metric.class:                        Pim\Bundle\ImportExportBundle\Converter\MetricConverter
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -54,3 +55,15 @@ services:
         parent: pim_import_export.validator.import
         arguments:
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+
+    pim_import_export.converter.metric:
+        class : '%pim_import_export.converter.metric.class%'
+        arguments:
+            - '@oro_measure.measure_converter'
+
+    pim_import_export.validator.job_instance:
+        class: Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstanceValidator
+        arguments:
+            - '@oro_batch.connectors'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_job_instance_validator }

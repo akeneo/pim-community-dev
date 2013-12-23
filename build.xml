@@ -5,9 +5,9 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,phpunit"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,phpunit-coverage"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -160,6 +160,14 @@
         </exec>
     </target>
 
+    <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
+        <exec executable="phpunit" failonerror="false">
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.jenkins.xml" />
+            <arg value="--filter=LocaleManagerTest" />
+        </exec>
+    </target>
+
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit">
             <arg value="-c" />
@@ -171,7 +179,7 @@
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <!-- Concurrency -->
-            <arg value="2" />
+            <arg value="4" />
             <arg value="noxdebug" />
             <!-- DB Prefix -->
             <arg value="akeneo_ci_pim_behat_" />

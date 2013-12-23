@@ -49,11 +49,12 @@ class ChannelNormalizerTest extends NormalizerTestCase
         return array(
             array(
                 array(
-                    'code'       => 'channel_code',
-                    'label'      => 'channel_label',
-                    'currencies' => array('EUR', 'USD'),
-                    'locales'    => array('fr_FR', 'en_US'),
-                    'category'   => 'My_Tree'
+                    'code'             => 'channel_code',
+                    'label'            => 'channel_label',
+                    'currencies'       => array('EUR', 'USD'),
+                    'locales'          => array('fr_FR', 'en_US'),
+                    'category'         => 'My_Tree',
+                    'conversion_units' => 'weight: KILOGRAM, washing_temperature: ',
                 )
             )
         );
@@ -82,6 +83,12 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
         $category = $this->createCategory($data['category']);
         $channel->setCategory($category);
+        $channel->setConversionUnits(
+            array(
+                'weight'              => 'KILOGRAM',
+                'washing_temperature' => null,
+            )
+        );
 
         return $channel;
     }

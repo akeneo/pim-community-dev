@@ -5,7 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
@@ -33,6 +35,16 @@ class ProductBuilder
     protected $objectManager;
 
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * @var CurrencyManager
      */
     protected $currencyManager;
@@ -57,12 +69,21 @@ class ProductBuilder
      *
      * @param string          $productClass    Entity name
      * @param ObjectManager   $objectManager   Storage manager
+     * @param ChannelManager  $channelManager  Channel Manager
+     * @param LocaleManager   $localeManager   Locale Manager
      * @param CurrencyManager $currencyManager Currency manager
      */
-    public function __construct($productClass, ObjectManager $objectManager, CurrencyManager $currencyManager)
-    {
+    public function __construct(
+        $productClass,
+        ObjectManager $objectManager,
+        ChannelManager $channelManager,
+        LocaleManager $localeManager,
+        CurrencyManager $currencyManager
+    ) {
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
+        $this->channelManager  = $channelManager;
+        $this->localeManager   = $localeManager;
         $this->currencyManager = $currencyManager;
     }
 
@@ -101,12 +122,12 @@ class ProductBuilder
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function addAttributeToProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $requiredValues = $this->getExpectedValues($attribute);
 
@@ -118,12 +139,12 @@ class ProductBuilder
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $values = $this->objectManager
             ->getRepository($this->getProductValueClass())
@@ -141,7 +162,7 @@ class ProductBuilder
      *
      * @param ProductInterface $product
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface[]
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
@@ -208,12 +229,12 @@ class ProductBuilder
     /**
      * Returns an array of product values for the passed attribute
      *
-     * @param ProductInterfac  $product
-     * @param ProductAttribute $attribute
+     * @param ProductInterface          $product
+     * @param ProductAttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExistingValues(ProductInterface $product, ProductAttribute $attribute)
+    protected function getExistingValues(ProductInterface $product, ProductAttributeInterface $attribute)
     {
         $existingValues = array();
         foreach ($product->getValues() as $value) {
@@ -229,20 +250,20 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExpectedValues(ProductAttribute $attribute)
+    protected function getExpectedValues(ProductAttributeInterface $attribute)
     {
         $requiredValues = array();
-        if ($attribute->getScopable() and $attribute->getTranslatable()) {
+        if ($attribute->isScopable() and $attribute->isTranslatable()) {
             $requiredValues = $this->getScopeToLocaleRows();
 
-        } elseif ($attribute->getScopable()) {
+        } elseif ($attribute->isScopable()) {
             $requiredValues = $this->getScopeRows();
 
-        } elseif ($attribute->getTranslatable()) {
+        } elseif ($attribute->isTranslatable()) {
             $requiredValues = $this->getLocaleRows();
 
         } else {
@@ -255,12 +276,12 @@ class ProductBuilder
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param ProductAttribute $attribute
-     * @param array            $values
+     * @param ProductAttributeInterface $attribute
+     * @param array                     $values
      *
      * @return array
      */
-    protected function filterExpectedValues(ProductAttribute $attribute, array $values)
+    protected function filterExpectedValues(ProductAttributeInterface $attribute, array $values)
     {
         if ($attribute->getAvailableLocales()) {
             $availableLocales = $attribute->getAvailableLocales()->map(
@@ -304,7 +325,7 @@ class ProductBuilder
     protected function getLocaleRows()
     {
         if (!$this->localeRows) {
-            $locales = $this->objectManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
+            $locales = $this->localeManager->getActiveLocales();
             $this->localeRows = array();
             foreach ($locales as $locale) {
                 $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
@@ -322,7 +343,7 @@ class ProductBuilder
     protected function getScopeRows()
     {
         if (!$this->scopeRows) {
-            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $channels = $this->channelManager->getChannels();
             $this->scopeRows = array();
             foreach ($channels as $channel) {
                 $this->scopeRows[] = array('locale' => null, 'scope' => $channel->getCode());
@@ -340,7 +361,7 @@ class ProductBuilder
     protected function getScopeToLocaleRows()
     {
         if (!$this->scopeToLocaleRows) {
-            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $channels = $this->channelManager->getChannels();
             $this->scopeToLocaleRows = array();
             foreach ($channels as $channel) {
                 foreach ($channel->getLocales() as $locale) {

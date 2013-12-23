@@ -16,7 +16,7 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
     public function testProcess()
     {
         $productTransformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer')
+            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
         $productTransformer

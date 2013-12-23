@@ -20,25 +20,33 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 class EditCommonAttributesType extends AbstractType
 {
     /**
-     * @var ProductFormView
+     * @var ProductFormView $productFormView
      */
     protected $productFormView;
 
     /**
-     * @var LocaleHelper
+     * @var LocaleHelper $localeHelper
      */
     protected $localeHelper;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * @param ProductFormView $productFormView
      * @param LocaleHelper    $localeHelper
+     * @param string          $attributeClass
      */
     public function __construct(
         ProductFormView $productFormView,
-        LocaleHelper $localeHelper
+        LocaleHelper $localeHelper,
+        $attributeClass
     ) {
         $this->productFormView = $productFormView;
         $this->localeHelper    = $localeHelper;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -60,6 +68,7 @@ class EditCommonAttributesType extends AbstractType
                 array(
                     'choices' => $options['locales'],
                     'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+                    'select2' => true,
                     'attr'    => array(
                         'class' => 'operation-param',
                     )
@@ -69,7 +78,7 @@ class EditCommonAttributesType extends AbstractType
                 'attributesToDisplay',
                 'entity',
                 array(
-                    'class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class'    => $this->attributeClass,
                     'choices'  => $options['commonAttributes'],
                     'required' => false,
                     'multiple' => true,

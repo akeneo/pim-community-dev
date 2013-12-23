@@ -11,7 +11,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Channel code may contain only letters, numbers and underscores
             - Length:
-                max: 64
+                max: 100
         label:
             - NotBlank: ~
             - Length:

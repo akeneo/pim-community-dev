@@ -182,6 +182,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $this->getCurrentPage()->visitTab($tab);
+        $this->wait();
     }
 
     /**
@@ -399,11 +400,30 @@ class WebUser extends RawMinkContext
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
-            $field  = $field->getParent()->getParent()->find('css', 'select');
-            $actual = $field->find('css', 'option[selected]')->getHtml();
+            for ($i = 0; $i < 2; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $actual = $select->find('css', 'option[selected]')->getHtml();
+            } else {
+                $actual = $field->find('css', '.select2-chosen')->getHtml();
+            }
         } elseif (strpos($class, 'select2-input') !== false) {
-            $field   = $field->getParent()->getParent()->getParent()->getParent()->find('css', 'select');
-            $options = $field->findAll('css', 'option[selected]');
+            for ($i = 0; $i < 4; $i++) {
+                if (!$field->getParent()) {
+                    break;
+                }
+                $field = $field->getParent();
+            }
+            if ($select = $field->find('css', 'select')) {
+                $options = $field->findAll('css', 'option[selected]');
+            } else {
+                $options = $field->findAll('css', 'li.select2-search-choice div');
+            }
+
             $actual  = array();
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
@@ -518,8 +538,8 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see families %s, but saw %s',
-                    print_r($expectedFamilies, true),
-                    print_r($families, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($expectedFamilies, 2), true),
+                    print_r(\Doctrine\Common\Util\Debug::export($families, 2), true)
                 )
             );
         }
@@ -634,7 +654,7 @@ class WebUser extends RawMinkContext
                     'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
                     count($expectedAttributes),
                     $actual,
-                    print_r($options, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
                 )
             );
         }
@@ -643,8 +663,8 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see eligible attributes as label %s, actually saw %s',
-                    print_r($expectedAttributes, true),
-                    print_r($options, true)
+                    print_r(\Doctrine\Common\Util\Debug::export($expectedAttributes, 2), true),
+                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
                 )
             );
         }
@@ -657,8 +677,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectRole($role)
     {
-        $this->scrollContainerTo(600);
-        $this->getPage('User creation')->selectRole($role);
+        $this->getCurrentPage()->selectRole($role);
     }
 
     /**
@@ -720,6 +739,7 @@ class WebUser extends RawMinkContext
             $this->getSession()->executeScript(
                 "$('[target]').removeAttr('target');"
             );
+            $this->wait();
 
             return new Step\Given(sprintf('I follow "%s"', $link));
         } catch (UnsupportedDriverActionException $e) {
@@ -778,6 +798,21 @@ class WebUser extends RawMinkContext
             ->getCurrentPage()
             ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
             ->press();
+        $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iPressOnTheDropdownButton($item, $button)
+    {
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem($item, $button)
+            ->click();
         $this->wait();
     }
 
@@ -1322,7 +1357,7 @@ class WebUser extends RawMinkContext
             $actualLine = $actualLines[$index];
             sort($expectedLine);
             sort($actualLine);
-            assertEquals(
+            assertSame(
                 $expectedLine,
                 $actualLine,
                 sprintf(
@@ -1380,7 +1415,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeComparisonLanguages($languages)
     {
-        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+        assertEquals($this->listToArray($languages), $this->getCurrentPage()->getComparisonLanguages());
     }
 
     /**
@@ -1388,21 +1423,41 @@ class WebUser extends RawMinkContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()->selectTranslation($field);
+        $this->getCurrentPage()->manualSelectTranslation($field);
     }
 
     /**
-     * @Given /^I copy (\w+) translations$/
+     * @Given /^I select (.*) translations$/
      */
-    public function iCopyTranslations($mode)
+    public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
+        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+    }
+
+    /**
+     * @Given /^I copy selected translations$/
+     */
+    public function iCopySelectedTranslations()
+    {
+        $this->getCurrentPage()->copySelectedTranslations();
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" fields:$/
+     */
+    public function iShouldSeeFields($groupField, TableNode $fields)
+    {
+        foreach ($fields->getRows() as $data) {
+            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+        }
     }
 
     /**
      * @param integer $y
+     *
+     * @Given /^I scroll down$/
      */
-    private function scrollContainerTo($y)
+    public function scrollContainerTo($y = 400)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
     }

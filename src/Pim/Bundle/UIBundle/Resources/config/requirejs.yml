@@ -1,0 +1,66 @@
+config:
+    shim:
+        jquery-ui-full:
+            deps:
+                - jquery
+        jquery.slimbox:
+            deps:
+                - jquery
+        bootstrap.bootstrapswitch:
+            deps:
+                - jquery
+        selectize:
+            deps:
+                - jquery
+                - sifter
+                - microplugin
+        jquery.sidebarize:
+            deps:
+                - jquery
+        jquery.currencyfield:
+            deps:
+                - jquery
+        jquery.wizard:
+            deps:
+                - jquery
+        jstree/jquery.jstree.nested_switch:
+            deps:
+                - jquery.jstree
+
+    paths:
+        jquery-ui-full:                     pimui/lib/jquery/jquery-ui-1.10.3.custom.min
+        jquery.slimbox:                     pimui/js/slimbox2
+        bootstrap.bootstrapswitch:          oroui/lib/bootstrap/js/bootstrap.switch
+        selectize:                          pimui/lib/selectize
+        sifter:                             pimui/lib/sifter
+        microplugin:                        pimui/lib/microplugin
+        tinymce:                            pimui/lib/tinymce/tinymce.min
+        wysiwyg:                            pimui/js/pim-wysiwyg
+        jquery.currencyfield:               pimui/js/jquery.currencyfield
+        jquery.sidebarize:                  pimui/js/jquery.sidebarize
+        jquery.wizard:                      pimcatalog/js/jquery.wizard
+        jstree/jquery.jstree.nested_switch: pimcatalog/js/lib/jstree/jquery.jstree.nested_switch
+        pim/init:                           pimui/js/pim-init
+        pim/ui:                             pimui/js/pim-ui
+        pim/initselect2:                    pimui/js/pim-initselect2
+        pim/dialog:                         pimui/js/pim-dialog
+        pim/formupdatelistener:             pimui/js/pim-formupdatelistener
+        pim/saveformstate:                  pimui/js/pim-saveformstate
+        pim/asynctab:                       pimui/js/pim-async-tab
+        pim/fileinput:                      pimui/js/pim-fileinput
+        pim/popinform:                      pimui/js/pim-popinform
+        pim/dialogform:                     pimui/js/pim-dialogform
+        pim/scopable:                       pimui/js/pim-scopable
+        pim/datafilter/currency-filter:     pimfilter/js/datafilter/filter/currency-filter
+        pim/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
+        pim/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
+        pim/tree/associate:                 pimcatalog/js/tree-associate.jstree
+        pim/tree/mass-associate:            pimcatalog/js/tree-mass-associate.jstree
+        pim/tree/manage:                    pimcatalog/js/tree-manage.jstree
+        pim/tree/view:                      pimcatalog/js/tree-view.jstree
+        pim/datagrid/grid:                  pimgrid/js/datagrid/pim-grid
+        pim/datagrid/export-action:         pimgrid/js/datagrid/action/export-collection-action
+        pim/datagrid/tab-redirect-action:   pimgrid/js/datagrid/action/tab-redirect-action
+        pim/datagrid/product-delete-action: pimgrid/js/datagrid/action/product-delete-action
+        pim/datagrid/parameter-setter:      pimgrid/js/datagrid/parameter-setter
+        pim/datagrid/toolbar:               pimgrid/js/datagrid/pim-toolbar

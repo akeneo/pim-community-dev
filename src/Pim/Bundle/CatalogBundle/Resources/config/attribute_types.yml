@@ -6,7 +6,7 @@ services:
             - text
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_identifier }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_identifier, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.text:
         class: Pim\Bundle\CatalogBundle\AttributeType\TextType
@@ -15,7 +15,7 @@ services:
             - text
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_text }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_text, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.textarea:
         class: Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
@@ -24,25 +24,25 @@ services:
             - textarea
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_textarea }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_textarea, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.multiselect:
         class: Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType
         arguments:
             - options
-            - entity
+            - pim_ajax_entity
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_multiselect }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_multiselect, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.simpleselect:
         class: Pim\Bundle\CatalogBundle\AttributeType\OptionSimpleSelectType
         arguments:
             - option
-            - entity
+            - pim_ajax_entity
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_simpleselect }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_simpleselect, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.pricecollection:
         class: Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType
@@ -52,7 +52,7 @@ services:
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@pim_catalog.manager.currency'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_price_collection }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_price_collection, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.number:
         class: Pim\Bundle\CatalogBundle\AttributeType\NumberType
@@ -61,7 +61,7 @@ services:
             - number
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_number }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_number, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.boolean:
         class: Pim\Bundle\CatalogBundle\AttributeType\BooleanType
@@ -70,7 +70,7 @@ services:
             - switch
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_boolean }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_boolean, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.date:
         class: Pim\Bundle\CatalogBundle\AttributeType\DateType
@@ -79,7 +79,7 @@ services:
             - oro_date
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_date }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_date, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.file:
         class: Pim\Bundle\CatalogBundle\AttributeType\FileType
@@ -88,16 +88,16 @@ services:
             - oro_media
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_file }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_file, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.image:
         class: Pim\Bundle\CatalogBundle\AttributeType\ImageType
         arguments:
             - media
-            - pim_image
+            - pim_catalog_image
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_image }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_image, entity: %pim_catalog.entity.product.class% }
 
     pim_catalog.attributetype.metric:
         class: Pim\Bundle\CatalogBundle\AttributeType\MetricType
@@ -107,4 +107,4 @@ services:
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@oro_measure.manager'
         tags:
-            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_metric }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }

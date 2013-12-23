@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
 
 /**
@@ -46,7 +46,7 @@ class ColumnInfo implements ColumnInfoInterface
     protected $suffixes;
 
     /**
-     * @var ProductAttribute
+     * @var ProductAttributeInterface
      */
     protected $attribute;
 
@@ -67,16 +67,16 @@ class ColumnInfo implements ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param ProductAttribute $attribute
+     * @param ProductAttributeInterface $attribute
      *
      * @throws ColumnLabelException
      */
-    public function setAttribute(ProductAttribute $attribute)
+    public function setAttribute(ProductAttributeInterface $attribute)
     {
         $this->attribute = $attribute;
         $this->propertyPath = $attribute->getBackendType();
         $suffixes = $this->suffixes;
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             if (count($suffixes)) {
                 $this->locale = array_shift($suffixes);
             } else {
@@ -86,7 +86,7 @@ class ColumnInfo implements ColumnInfoInterface
                 );
             }
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             if (count($suffixes)) {
                 $this->scope = array_shift($suffixes);
             } else {
