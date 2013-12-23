@@ -53,7 +53,7 @@ class StepConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\\Bundle\\BatchBundle\\Step\\ItemStep',
+                'data_class' => 'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
             )
         );
     }
