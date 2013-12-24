@@ -33,6 +33,7 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
     protected function getExtensions()
     {
         $jobType = new JobConfigurationType();
+
         return array(
             new PreloadedExtension(
                 array(
