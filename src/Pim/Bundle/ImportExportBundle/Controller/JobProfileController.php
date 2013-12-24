@@ -206,10 +206,12 @@ class JobProfileController extends AbstractDoctrineController
         $form = null;
         $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
-            if ($reader instanceof UploadedFileAwareInterface) {
-                $uploadAllowed = true;
-                $form = $this->createUploadForm()->createView();
+            if (method_exists($step, 'getReader')) {
+                $reader = $step->getReader();
+                if ($reader instanceof UploadedFileAwareInterface) {
+                    $uploadAllowed = true;
+                    $form = $this->createUploadForm()->createView();
+                }
             }
         }
 
