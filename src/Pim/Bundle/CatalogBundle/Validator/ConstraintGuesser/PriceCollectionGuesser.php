@@ -34,9 +34,9 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $notDecimalGuesser = new NotDecimalGuesser;
-        $rangeGuesser = new RangeGuesser;
-        $numericGuesser = new NumericGuesser;
+        $notDecimalGuesser = new NotDecimalGuesser();
+        $rangeGuesser = new RangeGuesser();
+        $numericGuesser = new NumericGuesser();
 
         return array(
             new All(
