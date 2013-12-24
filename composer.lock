@@ -3630,16 +3630,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_beta5",
+            "version": "dev-pim/upgrade-grid",
             "source": {
                 "type": "git",
-                "url": "https://github.com/akeneo/platform.git",
-                "reference": "e47253ec9a963d38ab8b937399f4856425183b12"
+                "url": "https://github.com/laboro/platform.git",
+                "reference": "80027e85a19e227b9c70fb096e908b3b14739fd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/e47253ec9a963d38ab8b937399f4856425183b12",
-                "reference": "e47253ec9a963d38ab8b937399f4856425183b12",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/80027e85a19e227b9c70fb096e908b3b14739fd4",
+                "reference": "80027e85a19e227b9c70fb096e908b3b14739fd4",
                 "shasum": ""
             },
             "require": {
