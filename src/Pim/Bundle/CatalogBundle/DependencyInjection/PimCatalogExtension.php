@@ -116,7 +116,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             'OroTranslationBundle'           => 'oro_translation',
             'JMSDiExtraBundle'               => 'jms_di_extra',
             'OroEntityExtendBundle'          => 'oro_entity_extend',
-            'OroFilterBundle'                => 'oro_filter',
+            // 'OroFilterBundle'                => 'oro_filter',
             'OroBatchBundle'                 => 'oro_batch',
             'KnpGaufretteBundle'             => 'knp_gaufrette',
         );

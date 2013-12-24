@@ -1,4 +1,6 @@
+{#
 {{ oro_filter_render_header_javascript() }}
+#}
 
 {% set datagrid = datagridView.datagrid %}
 {% set form     = datagridView.formView %}
@@ -115,7 +117,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
                 ],
                 filters: {
                     {% for filter in datagrid.filters %}
+                    {#
                     {{ filter.name|json_encode|raw }} : {{ oro_filter_render_filter_javascript(form.children[filter.name]) }}
+                    #}
                     {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
