@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -22,13 +23,22 @@ class CategoryExtension extends \Twig_Extension
     protected $categoryManager;
 
     /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
      * Constructor
      *
      * @param CategoryManager $categoryManager
+     * @param ProductManager  $productManager
      */
-    public function __construct(CategoryManager $categoryManager)
-    {
+    public function __construct(
+        CategoryManager $categoryManager,
+        ProductManager $productManager
+    ) {
         $this->categoryManager = $categoryManager;
+        $this->productManager  = $productManager;
     }
 
     /**
@@ -399,9 +409,8 @@ class CategoryExtension extends \Twig_Extension
     protected function countProducts(CategoryInterface $category, $includeSub)
     {
         return $this
-            ->categoryManager
-            ->getEntityRepository()
-            ->countProductsLinked($category, !$includeSub);
+            ->productManager
+            ->getProductsCountInCategory($category, $includeSub);
     }
 
     /**
