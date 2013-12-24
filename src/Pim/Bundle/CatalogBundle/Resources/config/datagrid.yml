@@ -298,14 +298,63 @@ datagrid:
             query:
                 select:
                     - p
+                    # - >
+                    #     (CASE WHEN ft.label IS NULL THEN
+                    #         productFamily.code
+                    #     ELSE
+                    #         ft.label
+                    #     END) AS familyLabel
+                    # - values
+                    # - valuePrices
+                    # - valueOptions
+                    # - valueMetrics
+                    # - category
+                    # - pGroup
+                    # - pCompleteness.ratio AS completenessRatio
                 from:
-                    - { table: Pim\Bundle\CatalogBundle\Model\Product, alias: p }
-        columns:
-            id:
-                label: Id
-            enabled:
-                label: Enabled
-                frontend_type: boolean
+                    - { table: %pim_catalog.entity.product.class%, alias: p }
+                # join:
+                #     left:
+                        # productFamily:
+                        #     join:  p.family
+                        #     alias: productFamily
+                        # familyTranslations:
+                        #     join:          productFamily.translations
+                        #     alias:         ft
+                        #     conditionType: WITH
+                        #     condition:     ft.locale = :localeCode
+                        # groups:
+                        #     join:  p.groups
+                        #     alias: pGroup
+                        # groupTranslations:
+                        #     join:          pGroup.translations
+                        #     alias:         gt
+                        #     conditionType: WITH
+                        #     condition:     gt.locale = :localeCode
+                        # values:
+                        #     join:  p.values
+                        #     alias: values
+                        # valueOptions:
+                        #     join:  values.options
+                        #     alias: valueOptions
+                        # valuePrices:
+                        #     join:  values.prices
+                        #     alias: valuePrices
+                        # valueMetrics:
+                        #     join:  values.metric
+                        #     alias: valueMetrics
+                        # category:
+                        #     join:  p.categories
+                        #     alias: category
+                        # completeness:
+                        #     join:          Pim\Bundle\CatalogBundle\Entity\Completeness
+                        #     alias:         pCompleteness
+                        #     conditionType: WITH
+                        #     condition:     pCompleteness.locale = :locale AND pCompleteness.channel = :channel AND pCompleteness.productId = p.id
+        columns: ~
+            # family:
+            #     label: Family
+            #     data_name: family.code
         properties:
             id: ~
             edit_link:
@@ -331,19 +380,13 @@ datagrid:
                 icon:  trash
                 link:  delete_link
         sorters:
-            columns:
-                id:
-                    data_name: p.id
-                enabled:
-                    data_name: p.enabled
+            columns: ~
+                # family:
+                #     data_name: family.code
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
-                id:
-                    type:      string
-                    label:     Id
-                    data_name: p.id
                 enabled:
                     type:      boolean
                     label:     Enabled

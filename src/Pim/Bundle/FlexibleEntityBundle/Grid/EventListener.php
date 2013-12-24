@@ -66,42 +66,38 @@ class EventListener
      */
     public function buildBefore(BuildBefore $event)
     {
-        $config   = $event->getConfig();
-        $flexible = $config->offsetGetOr(Configuration::FLEXIBLE_ATTRIBUTES_KEY);
+        $config = $event->getConfig();
+        $flexibleEntity = $config->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
 
-        if ($flexible) {
-            Object::create([Configuration::FLEXIBLE_ATTRIBUTES_KEY => $flexible])
-                ->validateConfiguration(new Configuration());
-
-            $flexibleEntity = $config->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
-            if (!$flexibleEntity) {
-                throw new \LogicException(
-                    'Could not retrieve "flexible_entity" attribute for datagrid: ' . $event->getDatagrid()->getName()
-                );
-            }
-
+        if ($flexibleEntity) {
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
-            foreach ($flexible as $attribute => $definition) {
-                $definition    = $definition ? : [];
-                $sortable      = $this->accessor->getValue($definition, '[sortable]') ? : false;
-                $filterable    = $this->accessor->getValue($definition, '[filterable]') ? : false;
-                $enabledFilter = $this->accessor->getValue($definition, '[filter_enabled]') ? : true;
 
-                if (!isset($attributes[$attribute])) {
-                    throw new \LogicException(sprintf('Flexible attribute "%s" does not exist', $attribute));
+            foreach ($attributes as $attributeCode => $attribute) {
+                $showFilter    = $attribute->isUseableAsGridFilter();
+                $showColumn    = $attribute->isUseableAsGridColumn();
+                if (!$showFilter && !$showColumn) {
+                    continue;
                 }
+                $sortable = true;
+
+                $attributeType = $attribute->getAttributeType();
+
+                if (in_array($attributeType, array('pim_catalog_price_collection', 'pim_catalog_multiselect', 'pim_catalog_simpleselect', 'pim_catalog_file', 'pim_catalog_image', 'pim_catalog_metric'))) {
+                    continue;
+                }
+
                 $config->offsetSetByPath(
-                    sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attribute),
+                    sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attributeCode),
                     [
                         FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
-                        FlexibleFieldProperty::BACKEND_TYPE_KEY => $attributes[$attribute]->getBackendType(),
-                        'label'                                 => $attributes[$attribute]->getLabel()
+                        FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
+                        'label'                                 => $attribute->getLabel()
                     ]
                 );
 
-                if ($filterable) {
+                if ($showFilter) {
                     $map         = FlexibleFieldProperty::$typeMatches;
-                    $backendType = $attributes[$attribute]->getBackendType();
+                    $backendType = $attribute->getBackendType();
 
                     $filterType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
                         ? $map[$backendType]['filter']
@@ -112,22 +108,21 @@ class EventListener
                         : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
 
                     $config->offsetSetByPath(
-                        sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attribute),
+                        sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
                         [
                             FilterUtility::TYPE_KEY        => $filterType,
                             FilterUtility::FEN_KEY         => $flexibleEntity,
-                            FilterUtility::DATA_NAME_KEY   => $attribute,
-                            FilterUtility::PARENT_TYPE_KEY => $parentType,
-                            FilterUtility::ENABLED_KEY     => $enabledFilter
+                            FilterUtility::DATA_NAME_KEY   => $attributeCode,
+                            FilterUtility::PARENT_TYPE_KEY => $parentType
                         ]
                     );
                 }
 
                 if ($sortable) {
                     $config->offsetSetByPath(
-                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attribute),
+                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
                         [
-                            PropertyInterface::DATA_NAME_KEY => $attribute,
+                            PropertyInterface::DATA_NAME_KEY => $attributeCode,
                             'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
                         ]
                     );
@@ -147,7 +142,7 @@ class EventListener
     {
         $datagrid = $event->getDatagrid();
         $config   = $datagrid->getAcceptor()->getConfig();
-        $fields   = $config->offsetGetOr(FormatterConfiguration::COLUMNS_KEY, []);
+        $fields   = $config->offsetGetOr(FormatterConfiguration::COLUMNS_KEY, array());
 
         $flexibleCount = count(
             array_filter(
@@ -178,13 +173,13 @@ class EventListener
      */
     protected function getFlexibleAttributes($entityFQCN)
     {
-        $fm = $this->getFlexibleManager($entityFQCN);
+        $flexManager = $this->getFlexibleManager($entityFQCN);
 
-        $attributeRepository = $fm->getAttributeRepository();
-        $attributesEntities  = $attributeRepository->findBy(['entityType' => $fm->getFlexibleName()]);
-        $attributes          = [];
-        /** @var $attribute AbstractAttribute */
-        foreach ($attributesEntities as $attribute) {
+        $attributeRepository = $flexManager->getAttributeRepository();
+        $attributeEntities   = $attributeRepository->findBy(['entityType' => $flexManager->getFlexibleName()]);
+        $attributes          = array();
+
+        foreach ($attributeEntities as $attribute) {
             $attributes[$attribute->getCode()] = $attribute;
         }
 
@@ -198,14 +193,14 @@ class EventListener
      */
     protected function getFlexibleManager($entityFQCN)
     {
-        $fm = $this->registry->getManager($entityFQCN);
+        $flexManager = $this->registry->getManager($entityFQCN);
 
         $rootValue = $this->requestParams->getRootParameterValue();
         $scope     = isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
 
-        $fm->setLocale($this->requestParams->getLocale())->setScope($scope);
+        $flexManager->setLocale($this->requestParams->getLocale())->setScope($scope);
 
-        return $fm;
+        return $flexManager;
     }
 
     /**
@@ -217,14 +212,14 @@ class EventListener
      */
     protected function getFlexibleSorterApplyCallback($entityFQCN)
     {
-        $fm = $this->getFlexibleManager($entityFQCN);
+        $flexManager = $this->getFlexibleManager($entityFQCN);
 
-        return function (OrmDatasource $datasource, $attribute, $direction) use ($fm) {
+        return function (OrmDatasource $datasource, $attributeCode, $direction) use ($flexManager) {
             $qb = $datasource->getQueryBuilder();
 
             /** @var $entityRepository FlexibleEntityRepository */
-            $entityRepository = $fm->getFlexibleRepository();
-            $entityRepository->applySorterByAttribute($qb, $attribute, $direction);
+            $entityRepository = $flexManager->getFlexibleRepository();
+            $entityRepository->applySorterByAttribute($qb, $attributeCode, $direction);
         };
     }
 }
