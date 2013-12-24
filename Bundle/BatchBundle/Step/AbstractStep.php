@@ -124,6 +124,16 @@ abstract class AbstractStep implements StepInterface
     abstract public function setConfiguration(array $config);
 
     /**
+     * Get the configurable step elements
+     *
+     * @return array
+     */
+    public function getConfigurableStepElements()
+    {
+        return array();
+    }
+
+    /**
      * Template method for step execution logic
      *
      * @param StepExecution $stepExecution
