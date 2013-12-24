@@ -30,6 +30,7 @@ class PimFlexibleEntityExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('grid_services.yml');
         $loader->load('attribute_types.yml');
 
         $container->setParameter('pim_flexibleentity.flexible_config', $config);

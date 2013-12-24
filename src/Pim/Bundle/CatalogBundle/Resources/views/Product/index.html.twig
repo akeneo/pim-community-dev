@@ -1,9 +1,11 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set title = 'products'|trans %}
 
 {% block head_script %}
     {{ parent() }}
+    {#
     {% embed 'PimGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
         {% block javascript_grid_type "pim/datagrid/grid" %}
         {% block javascript_grid_options %}
@@ -27,6 +29,7 @@
         {% endblock %}
     {% endembed %}
     {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+    #}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'pim/tree/view', 'jquery.sidebarize'],
@@ -109,7 +112,9 @@
 
     <div class="row-fluid has-sidebar">
         <div id="tree" data-datalocale="{{ dataLocale }}" data-node-id="{{ app.request.get("categoryId") }}" data-tree-id="{{ app.request.get("treeId") }}" data-include-sub="{{ app.request.get("includeSub") }}"></div>
-        <div id="product-grid"></div>
+        <div id="product-grid">
+            {{ dataGrid.renderGrid('product-grid') }}
+        </div>
     </div>
 
 {% endblock %}

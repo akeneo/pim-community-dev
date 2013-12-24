@@ -23,6 +23,13 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
+/**
+ * Grid listener for flexible attributes
+ *
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class EventListener
 {
     const SCOPE_PARAMETER      = '_scope';
@@ -37,6 +44,12 @@ class EventListener
     /** @var RequestParameters */
     protected $requestParams;
 
+    /**
+     * Constructor
+     *
+     * @param FlexibleManagerRegistry $registry
+     * @param RequestParameters       $requestParams
+     */
     public function __construct(FlexibleManagerRegistry $registry, RequestParameters $requestParams)
     {
         $this->registry      = $registry;
@@ -127,6 +140,8 @@ class EventListener
      * Adds entity object to datasource query builder
      *
      * @param BuildAfter $event
+     *
+     * @return null
      */
     public function buildAfter(BuildAfter $event)
     {
@@ -157,7 +172,7 @@ class EventListener
     /**
      * Prepares attributes array for given entity
      *
-     * @param $entityFQCN string
+     * @param string $entityFQCN
      *
      * @return AbstractAttribute[]
      */

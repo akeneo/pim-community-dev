@@ -287,3 +287,64 @@ datagrid:
                     options:
                         field_options:
                             choices: @pim_catalog.manager.category->getTrees
+
+    product-grid:
+        flexible_entity: %pim_catalog.entity.product.class%
+        options:
+            entityHint: product
+        source:
+            acl_resource: pim_catalog_product_index
+            type: orm
+            query:
+                select:
+                    - p
+                from:
+                    - { table: Pim\Bundle\CatalogBundle\Model\Product, alias: p }
+        columns:
+            id:
+                label: Id
+            enabled:
+                label: Enabled
+                frontend_type: boolean
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_product_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_product_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                id:
+                    data_name: p.id
+                enabled:
+                    data_name: p.enabled
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                id:
+                    type:      string
+                    label:     Id
+                    data_name: p.id
+                enabled:
+                    type:      boolean
+                    label:     Enabled
+                    data_name: p.enabled

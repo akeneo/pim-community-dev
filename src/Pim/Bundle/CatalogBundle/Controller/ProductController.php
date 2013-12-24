@@ -151,10 +151,17 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request the request
      *
      * @AclAncestor("pim_catalog_product_index")
+     * @Template
      * @return Response
      */
     public function indexAction(Request $request)
     {
+        return array(
+            'locales'    => $this->localeManager->getUserLocales(),
+            'dataLocale' => $this->getDataLocale(),
+            'dataScope'  => $this->getDataScope()
+        );
+
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->datagridHelper->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
