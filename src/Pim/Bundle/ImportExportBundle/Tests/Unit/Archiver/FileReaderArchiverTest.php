@@ -124,7 +124,7 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         return $reader;
     }
 
-    public function getReaderMock()
+    protected function getReaderMock()
     {
         return $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface');
     }
