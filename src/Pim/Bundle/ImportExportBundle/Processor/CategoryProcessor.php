@@ -126,7 +126,7 @@ class CategoryProcessor extends TransformerProcessor
             if (isset($categories[$parentCode])) {
                 $parent = $categories[$parentCode];
             } else {
-                $parent = $this->entityCache->find($this->classs, $parentCode);
+                $parent = $this->entityCache->find($this->class, $parentCode);
             }
 
             if ($parent) {
