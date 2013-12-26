@@ -47,8 +47,7 @@ class FileReaderArchiver implements ArchiverInterface
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
                     array(
-                        '%directory%' => 'input',
-                        '%filename%'  => pathinfo($reader->getFilePath(), PATHINFO_FILENAME),
+                        '%filename%' => basename($reader->getFilePath()),
                     )
                 );
                 $this->filesystem->write($key, file_get_contents($reader->getFilePath()), true);
@@ -66,7 +65,7 @@ class FileReaderArchiver implements ArchiverInterface
         $jobInstance = $jobExecution->getJobInstance();
 
         return sprintf(
-            '%s/%s/%s/input/%%filename%%.csv',
+            '%s/%s/%s/input/%%filename%%',
             $jobInstance->getType(),
             $jobInstance->getAlias(),
             $jobInstance->getId()
