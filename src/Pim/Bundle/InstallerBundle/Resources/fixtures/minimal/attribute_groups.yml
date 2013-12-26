@@ -1,5 +1,6 @@
 attribute_groups:
     general:
+        sort_order: 1
         labels:
             en_US: General
             fr_FR: Général
