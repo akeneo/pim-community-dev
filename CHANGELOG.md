@@ -72,7 +72,7 @@
 - Introduce ProductAttributeManagerInterface andre move references to concret class
 - Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
-- Attribute fixtures format as changed
+- Attribute fixtures format has changed
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
