@@ -89,6 +89,11 @@ class EntityTransformer implements PropertyTransformerInterface
 
     /**
      * Finds the entity in the database
+     * 
+     * @param string $class
+     * @param string $value
+     * 
+     * @return object
      */
     protected function getEntity($class, $value)
     {

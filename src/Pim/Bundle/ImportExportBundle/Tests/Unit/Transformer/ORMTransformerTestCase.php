@@ -25,8 +25,6 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
     protected $manager;
     protected $metadata;
 
-    protected $class = 'stdClass';
-
     protected function setUp()
     {
         $this->doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');

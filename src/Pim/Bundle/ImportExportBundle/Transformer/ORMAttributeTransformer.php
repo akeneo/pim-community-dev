@@ -37,6 +37,7 @@ class ORMAttributeTransformer extends ORMTransformer
      * @param GuesserInterface                 $guesser
      * @param ColumnInfoTransformerInterface   $columnInfoTransformer
      * @param ProductAttributeManagerInterface $attributeManager
+     * @param EntityCache                      $entityCache
      */
     public function __construct(
         RegistryInterface $doctrine,
