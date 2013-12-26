@@ -36,7 +36,7 @@ class StepConfigurationType extends AbstractType
                             'pim_import_export_step_element_configuration',
                             $element,
                             array(
-                                'label' => sprintf('oro_batch.%s.title', $element->getName()),
+                                'label' => sprintf('pim_import_export.steps.%s.title', $element->getName()),
                                 'auto_initialize' => false,
                             )
                         )

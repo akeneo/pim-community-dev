@@ -24,6 +24,7 @@ class LoadGroupData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
+        $this->container->get('pim_import_export.entity_cache')->clear();
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         if (isset($configuration['groups'])) {

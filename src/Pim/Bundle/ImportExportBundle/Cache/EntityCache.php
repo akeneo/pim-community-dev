@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Caches entities for import
@@ -67,6 +68,21 @@ class EntityCache
         }
 
         return $this->cache[$class][$code];
+    }
+
+    /**
+     * Sets a reference to the object
+     *
+     * @param object $object
+     */
+    public function setReference($object)
+    {
+        if ($this->referenceRepository && $object instanceof ReferableInterface) {
+            $this->referenceRepository->setReference(
+                get_class($object) . '.' . $object->getReference(),
+                $object
+            );
+        }
     }
 
     /**

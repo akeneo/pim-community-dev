@@ -34,6 +34,21 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     protected $translator;
 
     /**
+     * @var array
+     */
+    protected $mapping = array();
+
+    /**
+    * @var boolean
+    */
+    protected $skipEmpty = false;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * Constructor
      *
      * @param ImportValidatorInterface $validator
@@ -64,6 +79,25 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         }
 
         return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array();
+    }
+
+    /**
+     * Adds a field mapping
+     *
+     * @param string $original The name of the field as supplied by the reader
+     * @param string $target   The name of the field which will be sent to the transformer
+     */
+    public function addMapping($original, $target)
+    {
+        $this->mapping[$original] = $target;
     }
 
     /**
@@ -109,6 +143,13 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
                 unset($values[$oldName]);
             }
         }
+        if ($this->skipEmpty) {
+            foreach (array_keys($values) as $key) {
+                if (!is_array($values[$key]) && (null === $values[$key] || '' === trim($values[$key]))) {
+                    unset($values[$key]);
+                }
+            }
+        }
     }
 
     /**
@@ -121,15 +162,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      */
     protected function getMapping()
     {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array();
+        return $this->mapping;
     }
 
     /**

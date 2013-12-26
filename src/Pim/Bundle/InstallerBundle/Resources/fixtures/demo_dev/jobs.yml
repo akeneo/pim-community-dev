@@ -1,7 +1,7 @@
 jobs:
-    product_import:
+    csv_product_import:
         connector: Akeneo CSV Connector
-        alias:     product_import
+        alias:     csv_product_import
         label:     Demo product import
         type:      import
         configuration:
@@ -15,9 +15,9 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
-    product_export:
+    csv_product_export:
         connector: Akeneo CSV Connector
-        alias:     product_export
+        alias:     csv_product_export
         label:     Demo product export
         type:      export
         configuration:
@@ -26,9 +26,9 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/product.csv
-    category_import:
+    csv_category_import:
         connector: Akeneo CSV Connector
-        alias:     category_import
+        alias:     csv_category_import
         label:     Demo category import
         type:      import
         configuration:
@@ -38,9 +38,9 @@ jobs:
             enclosure:           '"'
             escape:              '\'
             circularRefsChecked: true
-    category_export:
+    csv_category_export:
         connector: Akeneo CSV Connector
-        alias:     category_export
+        alias:     csv_category_export
         label:     Demo category export
         type:      export
         configuration:
@@ -48,9 +48,9 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/category.csv
-    association_import:
+    csv_association_import:
         connector: Akeneo CSV Connector
-        alias:     association_import
+        alias:     csv_association_import
         label:     Demo association import
         type:      import
         configuration:
@@ -59,9 +59,9 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    association_export:
+    csv_association_export:
         connector: Akeneo CSV Connector
-        alias:     association_export
+        alias:     csv_association_export
         label:     Demo association export
         type:      export
         configuration:
@@ -69,9 +69,9 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/association.csv
-    group_import:
+    csv_group_import:
         connector: Akeneo CSV Connector
-        alias:     group_import
+        alias:     csv_group_import
         label:     Demo group import
         type:      import
         configuration:
@@ -80,9 +80,9 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    group_export:
+    csv_group_export:
         connector: Akeneo CSV Connector
-        alias:     group_export
+        alias:     csv_group_export
         label:     Demo group export
         type:      export
         configuration:
@@ -90,9 +90,9 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/group.csv
-    attribute_import:
+    csv_attribute_import:
         connector: Akeneo CSV Connector
-        alias:     attribute_import
+        alias:     csv_attribute_import
         label:     Demo attribute import
         type:      import
         configuration:
@@ -101,9 +101,9 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    attribute_export:
+    csv_attribute_export:
         connector: Akeneo CSV Connector
-        alias:     attribute_export
+        alias:     csv_attribute_export
         label:     Demo attribute export
         type:      export
         configuration:
@@ -111,9 +111,9 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/attribute.csv
-    option_import:
+    csv_option_import:
         connector: Akeneo CSV Connector
-        alias:     attribute_option_import
+        alias:     csv_attribute_option_import
         label:     Demo option import
         type:      import
         configuration:
@@ -122,9 +122,9 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    option_export:
+    csv_option_export:
         connector: Akeneo CSV Connector
-        alias:     attribute_option_export
+        alias:     csv_attribute_option_export
         label:     Demo option export
         type:      export
         configuration:

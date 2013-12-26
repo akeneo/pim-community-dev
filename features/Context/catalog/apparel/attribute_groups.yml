@@ -1,41 +1,48 @@
 attribute_groups:
     general:
+        sort_order: 1
         labels:
             en_US: General
             en_GB: General
             fr_FR: Général
             de_DE: Allgemein
     media:
+        sort_order: 2
         labels:
             en_US: Media
             en_GB: Media
             fr_FR: Médias
             de_DE: Medien
     sales:
+        sort_order: 3
         labels:
             en_US: Sales
             en_GB: Sales
             fr_FR: Ventes
             de_DE: Vertrieb
     sizes:
+        sort_order: 4
         labels:
             en_US: Sizes
             en_GB: Sizes
             fr_FR: Tailles
             de_DE: Größen
     colors:
+        sort_order: 5
         labels:
             en_US: Colors
             en_GB: Colours
             fr_FR: Couleurs
             de_DE: Farben
     additional:
+        sort_order: 6
         labels:
             en_US: Additional information
             en_GB: Additional information
             fr_FR: Informations complémentaires
             de_DE: Zusätzliche Informationen
     internal:
+        sort_order: 7
         labels:
             en_US: Internal
             en_GB: Internal
