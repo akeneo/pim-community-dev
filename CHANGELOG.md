@@ -28,6 +28,7 @@
 - Add a loading mask when loading quick creation form
 - Allow to switch configuration between ORM and ODM
 - Update OroPlatform from beta-1 to beta-5
+- Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
 - Remove ACL on entities from PIM part
 
 ## Bug fixes

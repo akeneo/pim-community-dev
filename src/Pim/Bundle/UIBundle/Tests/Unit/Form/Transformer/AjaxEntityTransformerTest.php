@@ -67,7 +67,7 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
                 return null;
             }
 
-            $object = new \stdClass;
+            $object = new \stdClass();
             $object->id = $id;
 
             return $object;

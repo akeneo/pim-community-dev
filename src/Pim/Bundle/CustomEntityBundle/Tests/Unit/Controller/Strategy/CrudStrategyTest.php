@@ -44,7 +44,7 @@ class CrudStrategyTest extends AbstractStrategyTest
      */
     public function testCreateAction($post, $valid)
     {
-        $entity = new \stdClass;
+        $entity = new \stdClass();
         $this->configuration->expects($this->any())
             ->method('getCreateDefaultProperties')
             ->will($this->returnValue(array('create_default_properties')));
@@ -125,7 +125,7 @@ class CrudStrategyTest extends AbstractStrategyTest
      */
     public function testEditAction($post, $valid)
     {
-        $entity = new \stdClass;
+        $entity = new \stdClass();
         $this->request->attributes->expects($this->once())
             ->method('get')
             ->with($this->equalTo(('id')))
@@ -214,7 +214,7 @@ class CrudStrategyTest extends AbstractStrategyTest
      */
     public function testRemove()
     {
-        $entity = new \stdClass;
+        $entity = new \stdClass();
         $this->request->attributes->expects($this->once())
             ->method('get')
             ->with($this->equalTo(('id')))

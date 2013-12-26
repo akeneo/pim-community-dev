@@ -53,7 +53,7 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
             'categories'    => 'val3',
             'groups'        => 'val4'
         );
-        $entity = new \stdClass;
+        $entity = new \stdClass();
         $productTransformer->expects($this->once())
             ->method('transform')
             ->with(
