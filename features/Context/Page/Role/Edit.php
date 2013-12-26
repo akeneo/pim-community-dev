@@ -19,35 +19,42 @@ class Edit extends Form
     protected $path = '/user/role/update/{id}';
 
     /**
-     * Get the resource right
+     * Get ACL resource
      *
      * @param string $resource
      *
      * @return NodeElement
      * @throws \InvalidArgumentException
      */
-    public function getResourceRight($resource)
+    public function getResource($resource)
     {
-        $element = $this->getElement('Container')->find('css', sprintf('div.security-row:contains("%s")', $resource));
+        $element = $this->getElement('Container')->find('css', sprintf('strong:contains("%s")', $resource));
 
         if (!$element) {
             throw new \InvalidArgumentException(sprintf('Resource "%s" not found', $resource));
         }
 
-        return $element;
+        return $element->getParent()->getParent();
     }
 
     /**
-     * Get resource right field
+     * Click a ACL resource link to load the list of choices
      *
      * @param string $resource
-     *
-     * @return NodeElement
      */
-    public function getResourceRightField($resource)
+    public function clickResourceField($resource)
     {
-        $element = $this->getResourceRight($resource);
+        $this->getResource($resource)->find('css', '.access_level_value_link a')->click();
+    }
 
-        return $element->find('css', 'div.access_level_value a');
+    /**
+     * Set ACL resource rights
+     *
+     * @param string $resource
+     * @param string $rights
+     */
+    public function setResourceRights($resource, $rights)
+    {
+        $this->getResource($resource)->find('css', 'select')->selectOption($rights);
     }
 }

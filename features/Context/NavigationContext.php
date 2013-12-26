@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
@@ -109,6 +110,27 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
         $this->openPage($page);
         $this->wait();
+    }
+
+    /**
+     * @param string $not
+     * @param string $page
+     *
+     * @return null
+     * @Given /^I should( not)? be able to access the ([^"]*) page$/
+     */
+    public function iShouldNotBeAbleToAccessThePage($not, $page)
+    {
+        if (!$not) {
+            return $this->iAmOnThePage($page);
+        }
+
+        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+
+        $this->currentPage = $page;
+        $this->getCurrentPage()->open();
+
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
