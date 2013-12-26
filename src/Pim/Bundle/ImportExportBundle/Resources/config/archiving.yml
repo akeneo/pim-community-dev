@@ -1,0 +1,8 @@
+parameters:
+    pim_import_export.event_listener.archivist.class:                 Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist
+
+services:
+    pim_import_export.event_listener.archivist:
+        class: %pim_import_export.event_listener.archivist.class%
+        tags:
+            - { name: kernel.event_subscriber }

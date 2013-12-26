@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber;
+use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
 
 /**
  * Test related class
@@ -12,60 +12,59 @@ use Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Test extends \PHPUnit_Framework_TestCase
+class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp()
     {
-        $this->archiver   = $this->getArchiverMock();
-        $this->subscriber = new ArchiveSubscriber($this->archiver);
+        $this->archivist = new JobExecutionArchivist();
     }
 
-    /**
-     * Test related method
-     */
     public function testSubscribedEvents()
     {
         $this->assertEquals(
             array(
                 EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution'
             ),
-            ArchiveSubscriber::getSubscribedEvents()
+            JobExecutionArchivist::getSubscribedEvents()
         );
     }
 
-    /**
-     * Test related method
-     */
+    public function testRegisterArchiver()
+    {
+        $foo = $this->getArchiverMock();
+        $bar = $this->getArchiverMock();
+
+        $this->archivist->registerArchiver($foo);
+        $this->archivist->registerArchiver($bar);
+
+        $this->assertAttributeEquals(array($foo, $bar), 'archivers', $this->archivist);
+    }
+
     public function testArchiveJobExecution()
     {
+        // Job execution event
         $jobExecution = $this->getJobExecutionMock();
         $event = $this->getJobExecutionEventMock($jobExecution);
 
-        $this->archiver
-            ->expects($this->once())
-            ->method('archive')
-            ->with($jobExecution);
+        // Initializing some archivers
+        $foo = $this->getArchiverMock();
+        $bar = $this->getArchiverMock();
+        $this->archivist->registerArchiver($foo);
+        $this->archivist->registerArchiver($bar);
 
-        $this->subscriber->afterJobExecution($event);
+        // Mocking calls
+        $foo->expects($this->once())->method('archive')->with($jobExecution);
+        $bar->expects($this->once())->method('archive')->with($jobExecution);
+
+        // Running the tested method
+        $this->archivist->afterJobExecution($event);
     }
 
-    /**
-     * @return \Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
-     */
     protected function getArchiverMock()
     {
-        return $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
     }
 
-    /**
-     * @return \Oro\Bundle\BatchBundle\Entity\JobExecution
-     */
     protected function getJobExecutionMock()
     {
         return $this
@@ -74,11 +73,6 @@ class Test extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    /**
-     * @param \Oro\Bundle\BatchBundle\Entity\JobExecution $jobExecution
-     *
-     * @return \Oro\Bundle\BatchBundle\Event\JobExecutionEvent
-     */
     protected function getJobExecutionEventMock($jobExecution)
     {
         $event = $this

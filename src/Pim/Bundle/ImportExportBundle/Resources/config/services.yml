@@ -1,13 +1,11 @@
 parameters:
-    pim_import_export.twig.normalize_configuration_extension.class:  Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
-    pim_import_export.validator.constraints.channel_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
-    pim_import_export.event_listener.archive_subscriber.class:       Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber
-    pim_import_export.archiver.job_execution_archiver.class:         Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
-    pim_import_export.entity_cache.class:                            Pim\Bundle\ImportExportBundle\Cache\EntityCache
-    pim_import_export.attribute_cache.class:                         Pim\Bundle\ImportExportBundle\Cache\AttributeCache
-    pim_import_export.validator.import.class:                        Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
-    pim_import_export.validator.product_import.class:                Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
-    pim_import_export.converter.metric.class:                        Pim\Bundle\ImportExportBundle\Converter\MetricConverter
+    pim_import_export.twig.normalize_configuration_extension.class:   Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
+    pim_import_export.validator.constraints.channel_validator.class:  Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
+    pim_import_export.entity_cache.class:                             Pim\Bundle\ImportExportBundle\Cache\EntityCache
+    pim_import_export.attribute_cache.class:                          Pim\Bundle\ImportExportBundle\Cache\AttributeCache
+    pim_import_export.validator.import.class:                         Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
+    pim_import_export.validator.product_import.class:                 Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
+    pim_import_export.converter.metric.class:                         Pim\Bundle\ImportExportBundle\Converter\MetricConverter
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -21,18 +19,6 @@ services:
             - '@pim_catalog.manager.channel'
         tags:
             - { name: validator.constraint_validator, alias: channel_validator }
-
-    pim_import_export.archiver.job_execution_archiver:
-        class: %pim_import_export.archiver.job_execution_archiver.class%
-        arguments:
-            - %kernel.root_dir%
-
-    pim_import_export.event_listener.archive_subscriber:
-        class: %pim_import_export.event_listener.archive_subscriber.class%
-        arguments:
-            - '@pim_import_export.archiver.job_execution_archiver'
-        tags:
-            - { name: kernel.event_subscriber }
 
     pim_import_export.entity_cache:
         class: '%pim_import_export.entity_cache.class%'

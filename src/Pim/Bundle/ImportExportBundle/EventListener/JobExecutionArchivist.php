@@ -6,28 +6,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
+use Gaufrette\Filesystem;
+use Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface;
 
 /**
- * Subscriber to archive job execution files used as input and output
+ * Job execution archivist
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ArchiveSubscriber implements EventSubscriberInterface
+class JobExecutionArchivist implements EventSubscriberInterface
 {
-    /**
-     * @var JobExecutionArchiver
-     */
-    protected $archiver;
-
-    /**
-     * @param JobExecutionArchiver $archiver
-     */
-    public function __construct(JobExecutionArchiver $archiver)
-    {
-        $this->archiver = $archiver;
-    }
+    /** @var array */
+    protected $archivers = array();
 
     /**
      * {@inheritdoc}
@@ -40,13 +32,26 @@ class ArchiveSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Archive input and ouput files after the job execution
+     * Register an archiver
+     *
+     * @param ArchiveInterface $archiver
+     */
+    public function registerArchiver(ArchiverInterface $archiver)
+    {
+        $this->archivers[] = $archiver;
+    }
+
+    /**
+     * Delegate archiving to the registered archivers
      *
      * @param JobExecutionEvent $event
      */
     public function afterJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
-        $this->archiver->archive($jobExecution);
+
+        foreach ($this->archivers as $archiver) {
+            $archiver->archive($jobExecution);
+        }
     }
 }
