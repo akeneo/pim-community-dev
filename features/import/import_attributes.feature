@@ -14,8 +14,8 @@ Feature: Import attributes
       | sizes     | Sizes     |
       | colors    | Colors    |
     And the following job:
-      | connector            | alias            | code                  | label                     | type   |
-      | Akeneo CSV Connector | attribute_import | acme_attribute_import | Attribute import for Acme | import |
+      | connector            | alias                | code                  | label                     | type   |
+      | Akeneo CSV Connector | csv_attribute_import | acme_attribute_import | Attribute import for Acme | import |
     And I am logged in as "Julia"
     And the following file to import:
     """
