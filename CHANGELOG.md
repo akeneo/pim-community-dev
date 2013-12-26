@@ -57,6 +57,7 @@
 - Search should take account of ACLs
 - Oro mapping issue with search item on beta-1
 - Locale selector in the product header is sometimes too short
+- Allow to remove a translation setting it to empty
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
