@@ -1171,6 +1171,26 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $roleLabel
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @throws \Exception
+     */
+    public function getRole($roleLabel)
+    {
+        $role = $this
+            ->getEntityManager()
+            ->getRepository('OroUserBundle:Role')
+            ->findOneBy(array('label' => $roleLabel));
+
+        if (!$role) {
+            throw new \Exception(sprintf('Role "%s" unknown', $roleLabel));
+        }
+
+        return $role;
+    }
+
+    /**
      * @param string $sku
      *
      * @return Product

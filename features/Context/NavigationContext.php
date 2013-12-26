@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Oro\Bundle\UserBundle\Entity\Role;
+
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -313,6 +315,18 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheGroupTypePage(GroupType $groupType)
     {
         $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Role $role
+     *
+     * @Given /^I should be on the ("([^"]*)" role) page$/
+     */
+    public function iShouldBeOnTheRolePage($uselessParam, $roleLabel)
+    {
+        $role = $this->getFixturesContext()->getRole($roleLabel);
+        $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
         $this->assertAddress($expectedAddress);
     }
 
