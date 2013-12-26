@@ -36,9 +36,9 @@ services:
         class: '%pim_import_export.transformer.attribute.class%'
         parent: pim_import_export.transformer.orm
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.product_attribute'
             - '@pim_import_export.entity_cache'
-            
+
     pim_import_export.transformer.family:
         class: '%pim_import_export.transformer.family.class%'
         parent: pim_import_export.transformer.orm

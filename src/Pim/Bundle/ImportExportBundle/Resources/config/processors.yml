@@ -79,7 +79,7 @@ services:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.attribute'
-            - '%pim_catalog.entity.product_attribute.class%' 
+            - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer

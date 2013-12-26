@@ -120,7 +120,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
             }
         }
         if ($this->skipEmpty) {
-            foreach(array_keys($values) as $key) {
+            foreach (array_keys($values) as $key) {
                 if (!is_array($values[$key]) && (null === $values[$key] || '' === trim($values[$key]))) {
                     unset($values[$key]);
                 }
