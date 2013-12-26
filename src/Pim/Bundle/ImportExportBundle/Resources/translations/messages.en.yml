@@ -101,23 +101,23 @@ oro_batch:
     dummy_processor.title:               Dummy processor
     dummy_writer.title:                  Dummy writer
     product_reader.title:                Product extraction
-#    entity_reader.title:                 Entity extraction
-#    csv_reader.title:                    CSV reader
-#    csv_product_reader.title:            CSV product reader
-#    csv_category_reader.title:           CSV category reader
-#    product_processor.title:             Product creation
-#    category_processor.title:            Category creation
-#    association_processor.title:         Association creation
-#    group_processor.title:               Group creation
-#    attribute_processor.title:           Attribute creation
-#    attribute_option_processor.title:    Attribute option creation
-#    product_association_processor.title: Product association creation
-#    heterogeneous_processor.title:       CSV product serializer
-#    homogeneous_processor.title:         CSV entity serializer
-#    file_writer.title:                   Output
-#    product_writer.title:                Product storage
-#    category_writer.title:               Category storage
-#    writer.title:                        Entity storage
+    entity_reader.title:                 Entity extraction
+    csv_reader.title:                    CSV reader
+    csv_product_reader.title:            CSV product reader
+    csv_category_reader.title:           CSV category reader
+    product_processor.title:             Product creation
+    category_processor.title:            Category creation
+    association_processor.title:         Association creation
+    group_processor.title:               Group creation
+    attribute_processor.title:           Attribute creation
+    attribute_option_processor.title:    Attribute option creation
+    product_association_processor.title: Product association creation
+    heterogeneous_processor.title:       CSV product serializer
+    homogeneous_processor.title:         CSV entity serializer
+    file_writer.title:                   Output
+    product_writer.title:                Product storage
+    category_writer.title:               Category storage
+    writer.title:                        Entity storage
 
 # Page titles:
 Import management:        Import management
