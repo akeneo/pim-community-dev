@@ -14,14 +14,30 @@ use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryProcessorTest extends AbstractProcessorTestCase
+class CategoryProcessorTest extends AbstractTransformerProcessorTestCase
 {
+    protected $processor;
+    protected $transformer;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->processor = new CategoryProcessor(
+            $this->validator,
+            $this->translator,
+            $this->transformer,
+            'class'
+        );
+    }
     /**
      * {@inheritdoc}
      */
     public function createProcessor()
     {
-        $processor = new CategoryProcessor($this->em, $this->validator);
+        $processor = new CategoryProcessor($this->validator, $this->translator);
         $stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
