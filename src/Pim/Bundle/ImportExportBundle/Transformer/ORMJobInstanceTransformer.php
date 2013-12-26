@@ -18,12 +18,4 @@ class ORMJobInstanceTransformer extends ORMTransformer
     {
         return $this->doctrine->getRepository($class)->findOneByCode($data['code']);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEntity($class, array $data)
-    {
-        return new $class(null, null, null);
-    }
 }
