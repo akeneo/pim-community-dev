@@ -37,17 +37,13 @@ class CatalogConfigurationContext extends RawMinkContext
         'CurrencyLoader'       => 'currencies',
         'LocaleLoader'         => null,
         'CategoryLoader'       => 'categories',
-        'ChannelLoader'        => 'channels',
-        'AttributeGroupLoader' => 'attribute_groups',
     );
 
     /**
      * @var array Entity loaders and corresponding files
      */
     protected $postEntityLoaders = array(
-        'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
-        'JobLoader'            => 'jobs',
         'UserLoader'           => 'users',
     );
     /**

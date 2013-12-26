@@ -220,7 +220,7 @@ class ProductProcessor extends AbstractTransformerProcessor
             $this->familyColumn     => 'family',
             $this->categoriesColumn => 'categories',
             $this->groupsColumn     => 'groups'
-        );
+        ) + $this->mapping;
     }
 
     /**

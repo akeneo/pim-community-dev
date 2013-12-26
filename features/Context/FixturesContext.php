@@ -864,7 +864,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
             $label = isset($data['label']) ? $data['label'] : null;
-            $isVariant = isset($data['is_variant']) ? $data['is_variant'] : 0;
+            $isVariant = isset($data['variant']) ? $data['variant'] : 0;
 
             $this->createGroupType($code, $label, $isVariant);
         }

@@ -3,7 +3,7 @@ parameters:
     pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
     pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\ORMFamilyTransformer
     pim_import_export.transformer.attribute.class:                   Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer
-    pim_import_export.transformer.label.class:                       Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
+    pim_import_export.transformer.job_instance.class:                Pim\Bundle\ImportExportBundle\Transformer\ORMJobInstanceTransformer
     pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
     pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
     pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
@@ -14,7 +14,8 @@ parameters:
     pim_import_export.transformer.property.metric.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
     pim_import_export.transformer.property.prices.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
     pim_import_export.transformer.property.skip.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer
-    pim_import_exoprt.transformer.column_info.class:                 Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo
+    pim_import_export.transformer.column_info_transformer.class:     Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
+    pim_import_export.transformer.column_info.class:                 Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo
 
 services:
     pim_import_export.transformer.orm:
@@ -23,7 +24,7 @@ services:
             - '@doctrine'
             - '@property_accessor'
             - '@pim_import_export.transformer.guesser'
-            - '@pim_import_export.transformer.label'
+            - '@pim_import_export.transformer.column_info_transformer'
 
     pim_import_export.transformer.product:
         class: '%pim_import_export.transformer.product.class%'
@@ -47,10 +48,14 @@ services:
             - '%pim_catalog.entity.family.class%'
             - '%pim_catalog.entity.attribute_requirement.class%'
 
-    pim_import_export.transformer.label:
-        class: %pim_import_export.transformer.label.class%
+    pim_import_export.transformer.job_instance:
+        class: '%pim_import_export.transformer.job_instance.class%'
+        parent: pim_import_export.transformer.orm
+
+    pim_import_export.transformer.column_info_transformer:
+        class: %pim_import_export.transformer.column_info_transformer.class%
         arguments:
-            - %pim_import_exoprt.transformer.column_info.class%
+            - %pim_import_export.transformer.column_info.class%
 
     pim_import_export.transformer.property.translation:
         class: %pim_import_export.transformer.property.translation.class%
