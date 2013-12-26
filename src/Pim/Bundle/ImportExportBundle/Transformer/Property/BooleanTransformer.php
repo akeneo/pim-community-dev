@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
-
 /**
  * Boolean attribute transformer
  *
@@ -18,14 +16,12 @@ class BooleanTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
-        if (is_bool($value)) {
-            return $value;
-        } elseif ($value == 0) {
+        if ('0' === $value) {
             return false;
-        } elseif ($value == 1) {
+        } elseif ('1' === $value) {
             return true;
         }
 
-        throw new PropertyTransformerException('Invalid boolean');
+        return $value;
     }
 }

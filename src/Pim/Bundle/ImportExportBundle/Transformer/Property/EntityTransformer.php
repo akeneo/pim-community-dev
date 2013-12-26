@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Transform entity codes in entity arrays
@@ -11,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityTransformer extends AbstractAssociationTransformer
+class EntityTransformer implements PropertyTransformerInterface
 {
     /**
      * @var EntityCache
@@ -31,7 +32,65 @@ class EntityTransformer extends AbstractAssociationTransformer
     /**
      * {@inheritdoc}
      */
-    public function getEntity($class, $value)
+    public function transform($value, array $options = array())
+    {
+        if (is_scalar($value)) {
+            $value = trim($value);
+        }
+
+        $multiple = isset($options['multiple']) && $options['multiple'];
+
+        if ($value) {
+            return $this->doTransform(
+                $value,
+                $options['class'],
+                $multiple,
+                isset($options['reference_prefix']) ? $options['reference_prefix'] . '.' : ''
+            );
+        } else {
+            return $multiple ? array() : null;
+        }
+    }
+
+    /**
+     * Transform non empty value
+     *
+     * @param string|array $value
+     * @param string       $class
+     * @param boolean      $multiple
+     * @param string       $referencePrefix
+     *
+     * @return object|array
+     *
+     * @throws PropertyTransformerException
+     */
+    protected function doTransform($value, $class, $multiple, $referencePrefix)
+    {
+        $getEntity = function ($value) use ($class, $referencePrefix) {
+            $entity = $this->getEntity($class, $referencePrefix . $value);
+            if (!$entity) {
+                throw new PropertyTransformerException(
+                    'No entity of class "%class%" with code "%code%"',
+                    array('%class%' => $class, '%code%' => $referencePrefix . $value)
+                );
+            }
+
+            return $entity;
+        };
+
+        if ($multiple && !is_array($value)) {
+            $value = preg_split('/\s*,\s*/', $value);
+        }
+
+        return $multiple
+            ? array_map($getEntity, $value)
+            : $getEntity($value);
+    }
+
+    /**
+     * Finds the entity in the database
+     */
+    protected function getEntity($class, $value)
     {
         return $this->entityCache->find($class, $value);
     }
