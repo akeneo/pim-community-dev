@@ -695,6 +695,27 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @When /^I remove rights to the following resources?:$/
+     */
+    public function iRemoveRightsToTheFollowingResources(TableNode $table)
+    {
+        foreach ($table->getHash() as $resource) {
+            $resource = $resource['resources'];
+            $field = $this
+                ->getCurrentPage()
+                ->getResourceRightField($resource)
+                ->click();
+
+            $this->wait();
+            $this->getFixturesContext()->getResource($resource);
+
+            $this->getCurrentPage()->fillField($resource, 'None', $field);
+        }
+    }
+
+    /**
      * @param string $file
      * @param string $field
      *
