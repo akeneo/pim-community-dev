@@ -12,6 +12,7 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
+use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
  * Csv reader
@@ -80,6 +81,14 @@ class CsvReader extends AbstractConfigurableStepElement implements
      * @var SplFileObject
      */
     protected $csv;
+
+    /** @var InvalidItemsCsvArchiver */
+    protected $archiver;
+
+    public function __construct(InvalidItemsCsvArchiver $archiver)
+    {
+        $this->archiver = $archiver;
+    }
 
     /**
      * Remove the extracted directory
@@ -260,6 +269,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
             );
             $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
             $this->fieldNames = $this->csv->fgetcsv();
+            $this->archiver->setHeader($this->fieldNames);
         }
 
         $data = $this->csv->fgetcsv();

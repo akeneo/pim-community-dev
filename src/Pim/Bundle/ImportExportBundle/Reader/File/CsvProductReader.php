@@ -3,11 +3,12 @@
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
  * Product csv reader
  *
- * This specialized csv reader exists because, as the product has bulk inserted,
+ * This specialized csv reader exists because, as the product are bulk inserted,
  * we cannot rely on the UniqueValueValidator which rely on data present inside the database.
  * Its second purpose is to replace relative media path to absolute path, in order for later
  * process to know where to find the files.
@@ -24,11 +25,14 @@ class CsvProductReader extends CsvReader
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
-     * @param string        $attributeClass
+     * @param InvalidItemsCsvArchiver $archiver
+     * @param EntityManager           $entityManager
+     * @param string                  $attributeClass
      */
-    public function __construct(EntityManager $entityManager, $attributeClass)
+    public function __construct(InvalidItemsCsvArchiver $archiver, EntityManager $entityManager, $attributeClass)
     {
+        parent::__construct($archiver);
+
         $repository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }

@@ -22,6 +22,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     upload_dir:        %kernel.root_dir%/uploads/product
+    archive_dir:       %kernel.root_dir%
 
     installed:         true
 

@@ -1,10 +1,17 @@
 knp_gaufrette:
     adapters:
-        pim_adapter:
+        pim_upload:
             local:
                 directory: %upload_dir%
                 create:    true
+        pim_archive:
+            local:
+                directory: %archive_dir%
+                create:    true
     filesystems:
         pim:
-            adapter: pim_adapter
+            adapter: pim_upload
             alias:   pim_filesystem
+        pim_archivist:
+            adapter: pim_archive
+            alias:   pim_archivist_filesystem
