@@ -1,66 +1,14 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, TreeAssociate, Scopable, Dialog, DialogForm, messenger) {
+        ['jquery', 'underscore', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, Scopable, Dialog, DialogForm) {
             'use strict';
             $(function () {
-                {% if resource_granted('pim_catalog_product_categories_view') %}
-                    new TreeAssociate('#trees', '#pim_product_edit_categories');
-                {% endif %}
-
                 _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
-                {% if resource_granted('pim_catalog_attribute_edit') %}
-                    _.each($('.add-attribute-option'), function (field) {
-                        var $field = $(field),
-                            $target = $field.parent().find('.icons-container').first();
-                        if ($target.length) {
-                            $field.insertBefore($target).attr('tabIndex', -1);
-                        }
-                        var callback = function(data) {
-                            if (data.status) {
-                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '" selected="selected">' + data.option.label + '</option').select2().trigger('change');
-                                messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
-                            } else {
-                                messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
-                            }
-                        }
-                        new DialogForm('#' + $field.attr('id'), callback);
-                    });
-                {% endif %}
-
                 $('form div.currency').currencyField();
-
-                var $channelSwitcher = $('#attribute-buttons').find('.channel-switcher');
-                $channelSwitcher.find('.dropdown-menu').find('a[data-scope]').on('click', function() {
-                    mediator.trigger('scopablefield:changescope', $(this).attr('data-scope'));
-                });
-                $channelSwitcher.find('a[data-action]').on('click', function() {
-                    var $el = $(this),
-                        action = $el.attr('data-action');
-                    mediator.trigger('scopablefield:' + action);
-                    var newAction = action == 'collapse' ? 'expand' : 'collapse';
-                    $el.attr('title', $el.attr('data-' + newAction + '-title')).attr('data-action', newAction);
-                    $el.find('i').toggleClass('icon-caret-right icon-caret-up');
-                });
-
-                $('[data-toggle="popover"]').popover();
-
-                $('#switch_status').on('click', function () {
-                    var $field = $('#{{ form.enabled.vars.id }}'),
-                        $status = $('.status-enabled').find('.badge');
-                    if (+$field.val()) {
-                        $field.val(0).trigger('change');
-                        $(this).html('{{ "info.product.enable"|trans }}');
-                        $status.html('<i class="icon-status-disabled icon-circle"></i>{{ "info.product.disabled"|trans }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
-                    } else {
-                        $field.val(1).trigger('change');
-                        $(this).html('{{ "info.product.disable"|trans }}');
-                        $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
-                    }
-                });
 
                 {% if resource_granted('pim_catalog_product_change_family') %}
                     {% set familyWidget %}
@@ -90,115 +38,43 @@
                 {% endif %}
 
                 {% for group in form.vars.value.groups %}
-                    {% set productList %}
-                    {% spaceless %}
-                    <div class="clearfix"><div class="container-fluid"><div class="grid-container">
-                        {% if group.products|length > 0 %}
-                        <table class="grid table table-hover table-bordered table-condensed groups">
-                            <thead>
-                                <tr>
-                                    <th>{{ group.products[0].identifier.attribute.label }}</th>
-                                    <th>{{ 'Label'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for product in group.products %}
-                                    <tr>
-                                        <td><a href="{{ path('pim_catalog_product_edit', {'id': product.id}) }}">{{ product.identifier }}</a></td>
-                                        <td>{{ product.label }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% endif %}
-                    </div></div></div>
-                    {% endspaceless %}
-                    {% endset %}
-
                     $('#group-products-{{ group.id }}').on('click', function (event) {
                         event.preventDefault();
+                        $.get(
+                            {{ path('pim_catalog_group_productlist', { id: group.id })|json_encode|raw }},
+                            function (content) {
+                                var groupDoAction = function () {
+                                    var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                                    $groupLink.appendTo($('#{{ form.vars.id }}')).click();
+                                };
 
-                        var groupDoAction = function () {
-                            var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
-                            $groupLink.appendTo($('#{{ form.vars.id }}')).click();
-                        };
+                                var groupModal = new Backbone.BootstrapModal({
+                                    allowCancel: true,
+                                    cancelText: '{{ "Close"|trans }}',
+                                    title: '{{ "Group"|trans }} {{ group.label }}',
+                                    content: content,
+                                    okText: '{{ "View group"|trans }}'
+                                });
 
-                        var groupModal = new Backbone.BootstrapModal({
-                            allowCancel: true,
-                            cancelText: '{{ "Close"|trans }}',
-                            title: '{{ "Group"|trans }} {{ group.label }}',
-                            content: '{{ productList|raw }}',
-                            okText: '{{ "View group"|trans }}'
-                        });
-
-                        groupModal.on('ok', groupDoAction);
-                        groupModal.open();
+                                groupModal.on('ok', groupDoAction);
+                                groupModal.open();
+                            }
+                        )
                     });
                 {% endfor %}
 
-                function setFullHeight() {
-                    $('.fullheight').each(function () {
-                        $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
-                    })
-                }
-
-                $('a[data-toggle="tab"]').on('shown', setFullHeight);
-                setFullHeight();
-
-                function copyValue() {
-                    $(this).find('textarea, input[type=text], input[type=checkbox], input[type=file], select').each(function() {
-                        var $source = $(this);
-                        var sourceId = $(this).attr('id');
-                        if (!sourceId) {
-                            return;
-                        }
-                        var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
-                        var $target = $('#' + targetId);
-
-                        if ($source.is('select') && $source.parent().hasClass('metric')) {
-                            $target.get(0).selectize.setValue($source.get(0).selectize.getValue());
-                        } else if ($source.is('input[type=checkbox]')) {
-                            $target.parent().parent().bootstrapSwitch('setState', $source.is(':checked'));
-                        } else if ($source.is('input[type=file]')) {
-                            $('#' + targetId.replace(/file$/, 'copyFrom'))
-                                .val($('#' + sourceId.replace(/file$/, 'id')).val())
-                                .trigger('change');
-
-                            $target.siblings('.upload-info').html(
-                                $source.siblings('.upload-info').html()
-                            );
-                            $target.parent()
-                                .find('.remove-upload')
-                                .removeClass('hide')
-                                .click(function() {
-                                    $('#' + targetId.replace(/file$/, 'copyFrom')).removeAttr('value');
-                                    $(this).off('click');
-                                });
-                            ;
-                            $target.addClass('hide');
-                            $target.parent().removeClass('empty');
-                            $target.parent().find('a[rel=slimbox]').slimbox();
-                        } else {
-                            $target.val($('#' + sourceId).val()).trigger('change');
-                        }
-                    });
-                }
-
-                $('.copy').click(function(event) {
-                    event.preventDefault();
-                    switch($(this).data('target')) {
-                        case 'all':
-                            $('.comparison tr').each(function() {
-                                $('td:nth-child(2)', this).each(copyValue);
-                            });
-                            break;
-
-                        case 'selected':
-                            $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).parent().parent().find('.controls').each(copyValue);
-                            });
-                    }
+                // submit form
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+                    $('#pim_product_edit').attr('action', $('#pim_product_edit').attr('action') +"&action="+ action);
+                    $('#pim_product_edit').submit();
                 });
+
+                {% if createPopin is not null %}
+                    // create popin if needed
+                    new DialogForm('#create-product');
+                    $('#create-product').click();
+                {% endif %}
             });
         }
     );

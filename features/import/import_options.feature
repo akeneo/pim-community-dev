@@ -10,12 +10,12 @@ Feature: Import options
       | code         | label | type         |
       | manufacturer | Man   | simpleselect |
     And the following jobs:
-      | connector            | alias                   | code               | label                  | type   |
-      | Akeneo CSV Connector | attribute_option_import | acme_option_import | Option import for Acme | import |
+      | connector            | alias                       | code               | label                  | type   |
+      | Akeneo CSV Connector | csv_attribute_option_import | acme_option_import | Option import for Acme | import |
     And I am logged in as "Julia"
     And the following file to import:
     """
-    attribute;code;is_default;label-en_US
+    attribute;code;default;label-en_US
     manufacturer;Converse;0;Converse
     manufacturer;TimberLand;0;TimberLand
     manufacturer;Nike;0;Nike
@@ -27,7 +27,7 @@ Feature: Import options
     And I launch the import job
     And I wait for the job to finish
     Then there should be the following options:
-      | attribute    | code        | is_default | label-en_US |
+      | attribute    | code        | default    | label-en_US |
       | manufacturer | Converse    | 0          | Converse    |
       | manufacturer | TimberLand  | 0          | TimberLand  |
       | manufacturer | Nike        | 0          | Nike        |

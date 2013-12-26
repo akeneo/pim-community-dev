@@ -1,23 +1,30 @@
+@javascript
 Feature: Create an import
   In order to use my PIM data into my front applications
   As a user
   I need to be able to create import jobs
 
-  @javascript
-  Scenario: Successfully create a product import into csv
+  Background:
     Given the "default" catalog configuration
     And I am logged in as "admin"
     And I am on the imports page
-    And I create a new "Product import in CSV" import
-    When I fill in the following information:
-      | Code  | mobile_product_import |
-      | Label | Mobile product import |
-    And I save the import
-    Then I should see "Import profile - Mobile product import"
+    
+  Scenario: Successfully create an import
+    Given I create a new import
+    And I should see the Code, Label and Job fields
+    When I fill in the following information in the popin:
+      | Code  | PRODUCT_IMPORT        |
+      | Label | Products import       |
+      | Job   | Product import in CSV |
+    And I press the "Save" button
+    Then I click back to grid
+    And the grid should contain 1 element
+    And I should see import profile PRODUCT_IMPORT
 
-  Scenario: Fail to create an unknown product import
-    Given the "default" catalog configuration
-    And I am logged in as "admin"
-    When I try to create an unknown import
-    Then I should be redirected on the import index page
-    And I should see "Failed to create an import with an unknown job definition."
+  Scenario: Fail to create a job import
+    Given I create a new import
+    When I fill in the following information in the popin:
+      | Code  | PRODUCT_IMPORT  |
+      | Label | Products import |
+    And I press the "Save" button
+    Then I should see "Failed to create an \"import\" with an unknown job definition"

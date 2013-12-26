@@ -1,14 +1,14 @@
 parameters:
-    pim_catalog.repository.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\MongoDbOdmProductRepository
-    pim_catalog.product.class: Pim\Bundle\CatalogBundle\Model\Product
+    pim_catalog.event_listener.mongodb.inject_orm_references.class:      Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
 
 services:
     pim_catalog.object_manager.product:
-        alias: doctrine.odm.mondodb.document_manager
+        alias: "doctrine.odm.mongodb.document_manager"
 
-    pim_catalog.repository.product:
-        class: %pim_catalog.repository.product.class%
-        factory_service: doctrine.odm.document_manager
-        factory_method: getRepository
+    pim_catalog.event_listener.mongodb.inject_orm_references:
+        class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%
         arguments:
-            - %pim_catalog.product.class%
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }

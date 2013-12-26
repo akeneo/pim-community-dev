@@ -8,7 +8,7 @@ Feature: Order product attributes
     And a "Car" product
     And I am logged in as "admin"
 
-  @javascript
+  @javascript @skip
   Scenario: Successfully update an attribute position
     Given the following attribute group:
       | code    | label   |

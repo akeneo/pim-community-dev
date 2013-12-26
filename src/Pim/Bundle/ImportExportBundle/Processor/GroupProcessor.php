@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\CatalogBundle\Model\Group;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Valid group creation (or update) processor
@@ -15,6 +17,24 @@ use Pim\Bundle\CatalogBundle\Model\Group;
  */
 class GroupProcessor extends AbstractEntityProcessor
 {
+    /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param EntityManager      $entityManager
+     * @param ValidatorInterface $validator
+     * @param string             $attributeClass
+     */
+    public function __construct(EntityManager $entityManager, ValidatorInterface $validator, $attributeClass)
+    {
+        parent::__construct($entityManager, $validator);
+        $this->attributeClass = $attributeClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +61,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return Group
+     * @return \Oro\Bundle\UserBundle\Entity\Group
      */
     private function getGroup(array $item)
     {
@@ -75,7 +95,7 @@ class GroupProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository('Pim\Bundle\CatalogBundle\Model\Group')
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
             ->findOneBy(array('code' => $code));
     }
 
@@ -84,7 +104,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return GroupType null
+     * @return \Pim\Bundle\CatalogBundle\Form\Type\GroupType null
      */
     private function findGroupType(array $item)
     {
@@ -99,7 +119,7 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      *
-     * @return ProductAttribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
      */
     private function getAxis(array $item)
     {
@@ -124,13 +144,13 @@ class GroupProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
      */
     private function findAttribute($code)
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:ProductAttribute')
+            ->getRepository($this->attributeClass)
             ->findOneBy(array('code' => $code));
     }
 }

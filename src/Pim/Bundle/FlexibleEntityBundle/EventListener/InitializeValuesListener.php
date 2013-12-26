@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
-
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Aims to add all values / required values when create or load a new flexible :
@@ -19,7 +19,6 @@ use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
  */
 class InitializeValuesListener implements EventSubscriberInterface
 {
-
     /**
      * Specifies the list of events to listen
      *
@@ -39,30 +38,33 @@ class InitializeValuesListener implements EventSubscriberInterface
     public function onCreateFlexibleEntity(FilterFlexibleEvent $event)
     {
         $flexible = $event->getEntity();
-        $manager = $event->getManager();
+        $manager  = $event->getManager();
 
-        if ($flexible instanceof FlexibleInterface) {
-
-            if ($manager->getFlexibleInitMode() !== 'empty') {
-
-                $findBy = array('entityType' => $manager->getFlexibleName());
-                // get initialization mode
-                if ($manager->getFlexibleInitMode() === 'required_attributes') {
-                    $findBy['required'] = true;
-                }
-
-                // initialize expected values with default value if exists
-                $attributes = $manager->getAttributeRepository()->findBy($findBy);
-
-                foreach ($attributes as $attribute) {
-                    $value = $manager->createFlexibleValue();
-                    $value->setAttribute($attribute);
-                    if ($attribute->getDefaultValue() !== null) {
-                        $value->setData($attribute->getDefaultValue());
-                    }
-                    $flexible->addValue($value);
-                }
+        if ($flexible instanceof FlexibleInterface and $manager->getFlexibleInitMode() !== 'empty') {
+            $findBy = array('entityType' => $manager->getFlexibleName());
+            if ($manager->getFlexibleInitMode() === 'required_attributes') {
+                $findBy['required'] = true;
             }
+
+            $attributes = $manager->getAttributeRepository()->findBy($findBy);
+            $this->addValues($manager, $flexible, $attributes);
+        }
+    }
+
+    /**
+     * @param FlexibleManager   $manager    the object manager
+     * @param FlexibleInterface $flexible   the entity
+     * @param array             $attributes the attributes
+     */
+    protected function addValues(FlexibleManager $manager, FlexibleInterface $flexible, $attributes)
+    {
+        foreach ($attributes as $attribute) {
+            $value = $manager->createFlexibleValue();
+            $value->setAttribute($attribute);
+            if ($attribute->getDefaultValue() !== null) {
+                $value->setData($attribute->getDefaultValue());
+            }
+            $flexible->addValue($value);
         }
     }
 }

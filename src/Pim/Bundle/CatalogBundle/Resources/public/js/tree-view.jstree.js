@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/registry', 'oro/translator', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
+    ['jquery', 'underscore', 'routing', 'oro/grid/registry', 'oro/translator', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
     function ($, _, Routing, Registry, __) {
         'use strict';
 
@@ -17,7 +17,7 @@ define(
 
             var getTreeUrl = function() {
                 return Routing.generate('pim_catalog_categorytree_listtree', { _format: 'json', dataLocale: dataLocale, select_node_id: selectedNodeOrTree, include_sub: +includeChildren });
-            }
+            };
 
             this.config = {
                 core: {

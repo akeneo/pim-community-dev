@@ -29,8 +29,8 @@ Feature: Execute a job
       | prices      | Prices      | prices   |               |                     |
       | weight      | Weight      | metric   | Weight        | KILOGRAM            |
     And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following job "acme_product_import" configuration:
       | filePath          |            |
       | uploadAllowed     | no         |
@@ -83,7 +83,7 @@ Feature: Execute a job
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
-    Then I should see "The \"sku\" attribute is unique, the value \"SKU-001\" was already read in this file"
+    Then I should see "The unique code \"SKU-001\" was already read in this file"
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
       | name        | Donec                                                             |
@@ -128,6 +128,7 @@ Feature: Execute a job
       | uploadAllowed | yes |
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
+    And I wait for the job to finish
     Then there should be 10 products
 
   Scenario: Successfully import products prices

@@ -93,12 +93,15 @@ class Edit extends Form
      */
     public function getAttributeAsLabelOptions()
     {
-        return array_map(
+        $options = array_map(
             function ($option) {
                 return $option->getText();
             },
             $this->getElement('Attribute as label choices')->findAll('css', 'option')
         );
+        $options[0] = $this->find('css', '#s2id_pim_catalog_family_form_attributeAsLabel .select2-chosen')->getText();
+
+        return $options;
     }
 
     /**

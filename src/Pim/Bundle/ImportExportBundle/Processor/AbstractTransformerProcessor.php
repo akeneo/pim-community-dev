@@ -34,6 +34,16 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     protected $translator;
 
     /**
+     * @var boolean
+     */
+    protected $skipEmpty = false;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * Constructor
      *
      * @param ImportValidatorInterface $validator
@@ -109,10 +119,22 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
                 unset($values[$oldName]);
             }
         }
+        if ($this->skipEmpty) {
+            foreach (array_keys($values) as $key) {
+                if (!is_array($values[$key]) && (null === $values[$key] || '' === trim($values[$key]))) {
+                    unset($values[$key]);
+                }
+            }
+        }
     }
 
     /**
-     * {@inheritdoc}
+     * Returns an array of mapped fields
+     *
+     * The keys correspond to the originally read columns labels.
+     * The values correspond to the column labels needed by the transformer
+     *
+     * @return array
      */
     protected function getMapping()
     {

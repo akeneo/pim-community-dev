@@ -1,284 +1,193 @@
-pim_catalog:
-    type: action
-    label: General catalog management operations
-
 # Locales
-pim_catalog_locale:
-    type: action
-    label: Locale manipulation
-
 pim_catalog_locale_index:
-    type: entity
-    class: PimCatalogBundle:Locale
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.locale.index
 
 # Currency
-pim_catalog_currency:
-    type: action
-    label: Currency manipulation
-
 pim_catalog_currency_index:
-    type: entity
-    class: PimCatalogBundle:Currency
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.currency.index
 pim_catalog_currency_toggle:
-    type: entity
-    class: PimCatalogBundle:Currency
-    permission: EDIT
+    type: action
+    label: pim_catalog.acl.currency.toggle
 
 # Product
-pim_catalog_product:
-    type: action
-    label: Product manipulation
-
 pim_catalog_product_index:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Product
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.product.index
 pim_catalog_product_create:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Product
-    permission: CREATE
+    type: action
+    label: pim_catalog.acl.product.create
 pim_catalog_product_edit:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Product
-    permission: EDIT
+    type: action
+    label: pim_catalog.acl.product.edit
 pim_catalog_product_remove:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Product
-    permission: DELETE
+    type: action
+    label: pim_catalog.acl.product.remove
 
 pim_catalog_product_add_attribute:
     type: action
-    label: Add an attribute to a product
+    label: pim_catalog.acl.product.add_attribute
 pim_catalog_product_remove_attribute:
     type: action
-    label: Remove an attribute from a product
+    label: pim_catalog.acl.product.remove_attribute
 pim_catalog_product_categories_view:
     type: action
-    label: Consult the categories of a product
+    label: pim_catalog.acl.product.categories_view
 pim_catalog_product_associations_view:
     type: action
-    label: View the associations of a product
+    label: pim_catalog.acl.product.associations_view
 pim_catalog_product_change_family:
     type: action
-    label: Change product family
+    label: pim_catalog.acl.product.change_family
 pim_catalog_product_change_state:
-    label: Change state of product
     type: action
-
-# Category
-pim_catalog_category:
+    label: pim_catalog.acl.product.change_state
+pim_catalog_product_add_to_groups:
     type: action
-    label: Category manipulation
-
-pim_catalog_category_list:
-    type: entity
-    class: PimCatalogBundle:Category
-    permission: VIEW
-pim_catalog_category_create:
-    type: entity
-    class: PimCatalogBundle:Category
-    permission: CREATE
-pim_catalog_category_edit:
-    type: entity
-    class: PimCatalogBundle:Category
-    permission: EDIT
-pim_catalog_category_remove:
-    type: entity
-    class: PimCatalogBundle:Category
-    permission: DELETE
-
-pim_catalog_category_move:
-    type: action
-    label: Move category
-pim_catalog_category_children:
-    type: action
-    label: See category children
-pim_catalog_category_products:
-    type: action
-    label: See category's products
-
-# Channel
-pim_catalog_channel:
-    type: action
-    label: Channel manipulation
-
-pim_catalog_channel_index:
-    type: entity
-    class: PimCatalogBundle:Channel
-    permission: VIEW
-pim_catalog_channel_create:
-    type: entity
-    class: PimCatalogBundle:Channel
-    permission: CREATE
-pim_catalog_channel_edit:
-    type: entity
-    class: PimCatalogBundle:Channel
-    permission: EDIT
-pim_catalog_channel_remove:
-    type: entity
-    class: PimCatalogBundle:Channel
-    permission: DELETE
-
-#Family
-pim_catalog_family:
-    type: action
-    label: Family manipulation
-
-pim_catalog_family_create:
-    type: entity
-    class: PimCatalogBundle:Family
-    permission: CREATE
-pim_catalog_family_edit:
-    type: entity
-    class: PimCatalogBundle:Family
-    permission: EDIT
-pim_catalog_family_remove:
-    type: entity
-    class: PimCatalogBundle:Family
-    permission: DELETE
-
-pim_catalog_family_add_attribute:
-    type: action
-    label: Add attribute to a family
-pim_catalog_family_remove_atribute:
-    type: action
-    label: Remove attribute from a family
-
-# Attribute group
-pim_catalog_attribute_group:
-    type: action
-    label: Attribute group manipulation
-
-pim_catalog_attribute_group_create:
-    type: entity
-    class: PimCatalogBundle:AttributeGroup
-    permission: CREATE
-pim_catalog_attribute_group_edit:
-    type: entity
-    class: PimCatalogBundle:AttributeGroup
-    permission: EDIT
-pim_catalog_attribute_group_remove:
-    type: entity
-    class: PimCatalogBundle:AttributeGroup
-    permission: DELETE
-
-pim_catalog_attribute_group_sort:
-    type: action
-    label: Sort groups
-pim_catalog_attribute_group_add_attribute:
-    type: action
-    label: Add attribute to a group
-pim_catalog_attribute_group_remove_attribute:
-    type: action
-    label: Remove attribute from a group
-
-# ProductAttribute
-pim_catalog_attribute:
-    type: action
-    label: Attribute manipulation
-
-pim_catalog_attribute_index:
-    type: entity
-    class: PimCatalogBundle:ProductAttribute
-    permission: VIEW
-pim_catalog_attribute_create:
-    type: entity
-    class: PimCatalogBundle:ProductAttribute
-    permission: CREATE
-pim_catalog_attribute_edit:
-    type: entity
-    class: PimCatalogBundle:ProductAttribute
-    permission: EDIT
-pim_catalog_attribute_remove:
-    type: entity
-    class: PimCatalogBundle:ProductAttribute
-    permission: DELETE
-
-pim_catalog_attribute_sort:
-    type: action
-    label: Sort attributes inside attribute groups
+    label: pim_catalog.acl.product.add_to_groups
 
 # Mass edit action
 pim_catalog_mass_edit:
     type: action
-    label: Product mass edit actions
-pim_catalog_mass_edit_choose:
+    label: pim_catalog.acl.product.mass_edit
+
+# Category
+pim_catalog_category_list:
     type: action
-    label: Choose action
-pim_catalog_mass_edit_configure:
+    label: pim_catalog.acl.category.list
+pim_catalog_category_create:
     type: action
-    label: Configure action
-pim_catalog_mass_edit_perform:
+    label: pim_catalog.acl.category.create
+pim_catalog_category_edit:
     type: action
-    label: Perform action
+    label: pim_catalog.acl.category.edit
+pim_catalog_category_remove:
+    type: action
+    label: pim_catalog.acl.category.remove
+
+pim_catalog_category_move:
+    type: action
+    label: pim_catalog.acl.category.move
+pim_catalog_category_children:
+    type: action
+    label: pim_catalog.acl.category.children
+pim_catalog_category_products:
+    type: action
+    label: pim_catalog.acl.category.products
+
+# Channel
+pim_catalog_channel_index:
+    type: action
+    label: pim_catalog.acl.channel.index
+pim_catalog_channel_create:
+    type: action
+    label: pim_catalog.acl.channel.create
+pim_catalog_channel_edit:
+    type: action
+    label: pim_catalog.acl.channel.edit
+pim_catalog_channel_remove:
+    type: action
+    label: pim_catalog.acl.channel.remove
+
+#Family
+pim_catalog_family_create:
+    type: action
+    label: pim_catalog.acl.family.create
+pim_catalog_family_edit:
+    type: action
+    label: pim_catalog.acl.family.edit
+pim_catalog_family_remove:
+    type: action
+    label: pim_catalog.acl.family.remove
+
+pim_catalog_family_add_attribute:
+    type: action
+    label: pim_catalog.acl.family.add_attribute
+pim_catalog_family_remove_atribute:
+    type: action
+    label: pim_catalog.acl.family.remove_attribute
+
+# Attribute group
+pim_catalog_attribute_group_create:
+    type: action
+    label: pim_catalog.acl.attribute_group.create
+pim_catalog_attribute_group_edit:
+    type: action
+    label: pim_catalog.acl.attribute_group.edit
+pim_catalog_attribute_group_remove:
+    type: action
+    label: pim_catalog.acl.attribute_group.remove
+
+pim_catalog_attribute_group_sort:
+    type: action
+    label: pim_catalog.acl.attribute_group.sort
+pim_catalog_attribute_group_add_attribute:
+    type: action
+    label: pim_catalog.acl.attribute_group.add_attribute
+pim_catalog_attribute_group_remove_attribute:
+    type: action
+    label: pim_catalog.acl.attribute_group.remove_attribute
+
+# ProductAttributeInterface
+pim_catalog_attribute_index:
+    type: action
+    label: pim_catalog.acl.product_attribute.index
+pim_catalog_attribute_create:
+    type: action
+    label: pim_catalog.acl.product_attribute.create
+pim_catalog_attribute_edit:
+    type: action
+    label: pim_catalog.acl.product_attribute.edit
+pim_catalog_attribute_remove:
+    type: action
+    label: pim_catalog.acl.product_attribute.remove
+
+pim_catalog_attribute_sort:
+    type: action
+    label: pim_catalog.acl.product_attribute.sort
 
 # Groups
-pim_catalog_group:
-    type: action
-    label: Group manipulation
-
 pim_catalog_group_index:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Group
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.group.index
 pim_catalog_group_create:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Group
-    permission: CREATE
+    type: action
+    label: pim_catalog.acl.group.create
 pim_catalog_group_edit:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Group
-    permission: EDIT
+    type: action
+    label: pim_catalog.acl.group.edit
 pim_catalog_group_remove:
-    type: entity
-    class: Pim\Bundle\CatalogBundle\Model\Group
-    permission: DELETE
+    type: action
+    label: pim_catalog.acl.group.remove
 
 # Group types
-pim_catalog_group_type:
-    type: action
-    label: Group type manipulation
-
 pim_catalog_group_type_index:
-    type: entity
-    class: PimCatalogBundle:GroupType
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.group_type.index
 pim_catalog_group_type_create:
-    type: entity
-    class: PimCatalogBundle:GroupType
-    permission: CREATE
+    type: action
+    label: pim_catalog.acl.group_type.create
 pim_catalog_group_type_edit:
-    type: entity
-    class: PimCatalogBundle:GroupType
-    permission: EDIT
+    type: action
+    label: pim_catalog.acl.group_type.edit
 pim_catalog_group_type_remove:
-    type: entity
-    class: PimCatalogBundle:GroupType
-    permission: DELETE
+    type: action
+    label: pim_catalog.acl.group_type.remove
 
 # Association
-pim_catalog_association:
-    type: action
-    label: Association manipulation
-
 pim_catalog_association_index:
-    type: entity
-    class: PimCatalogBundle:Association
-    permission: VIEW
+    type: action
+    label: pim_catalog.acl.association.index
 pim_catalog_association_create:
-    type: entity
-    class: PimCatalogBundle:Association
-    permission: CREATE
+    type: action
+    label: pim_catalog.acl.association.create
 pim_catalog_association_edit:
-    type: entity
-    class: PimCatalogBundle:Association
-    permission: EDIT
+    type: action
+    label: pim_catalog.acl.association.edit
 pim_catalog_association_remove:
-    type: entity
-    class: PimCatalogBundle:Association
-    permission: DELETE
+    type: action
+    label: pim_catalog.acl.association.remove
 
 # Locales
 pim_catalog_locale_af_ZA:

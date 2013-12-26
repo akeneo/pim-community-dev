@@ -1,49 +1,42 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Oro\Bundle\DistributionBundle\OroKernel;
 
-class AppKernel extends Kernel
+/**
+ * PIM AppKernel
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ */
+class AppKernel extends OroKernel
 {
+    /**
+     * Register bundles
+     *
+     * @return array
+     */
     public function registerBundles()
     {
-        $bundles = array(
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+        $bundles = array();
 
-            // BAP deps
-            new JMS\SerializerBundle\JMSSerializerBundle($this),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new BeSimple\SoapBundle\BeSimpleSoapBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
-            new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
-            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
-            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
-            new JDare\ClankBundle\JDareClankBundle(),
-            new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
-            new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
+        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
+            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+        }
 
-            // PIM deps
+        $bundles = array_merge(parent::registerBundles(), $bundles);
+
+        $pimDepBundles = array(
+            // Uncomment the following line to use MongoDB implementation
+            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
         );
-
-        // BAP bundles
-        $bundles = array_merge($bundles, Oro\Bundle\PlatformBundle\OroPlatformBundle::registeredBundles($this));
+        $bundles = array_merge($bundles, $pimDepBundles);
 
         $pimBundles = array(
             // BAP overriden bundles
@@ -53,7 +46,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-            new Pim\Bundle\DataAuditBundle\PimDataAuditBundle(),
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
@@ -63,28 +55,29 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
             new Pim\Bundle\CustomEntityBundle\PimCustomEntityBundle(),
         );
 
         $bundles = array_merge($bundles, $pimBundles);
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-        }
-
         return $bundles;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
 
         if (is_file($file = __DIR__.'/config/config_'.$this->getEnvironment().'_local.yml')) {
             $loader->load($file);
+        }
+
+        if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
+            $loader->load(__DIR__.'/config/mongodb/parameters_'.$this->getEnvironment().'.yml');
+            $loader->load(__DIR__ .'/config/mongodb/config.yml');
         }
     }
 }

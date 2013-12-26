@@ -4,31 +4,28 @@ attributes:
             en_US: SKU
         type:  pim_catalog_identifier
         group: info
-        parameters:
-            required:            true
-            unique:              true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        required:            true
+        unique:              true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
     name:
         labels:
             en_US: Name
         type:  pim_catalog_text
         group: info
-        parameters:
-            translatable:        true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
     manufacturer:
         labels:
             en_US: Manufacturer
         type:  pim_catalog_simpleselect
         group: info
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           3
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           3
         options:
             Converse:
                 labels:
@@ -47,10 +44,9 @@ attributes:
             en_US: Weather conditions
         type:  pim_catalog_multiselect
         group: info
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           4
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           4
         options:
             dry:
                 labels:
@@ -72,34 +68,31 @@ attributes:
             en_US: Description
         type:  pim_catalog_textarea
         group: info
-        parameters:
-            translatable:        true
-            scopable:            true
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            maxCharacters:       1000
-            sortOrder:           5
+        translatable:        true
+        scopable:            true
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        maxCharacters:       1000
+        sortOrder:           5
     price:
         labels:
             en_US: Price
         type:  pim_catalog_price_collection
         group: marketing
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           200
-            sortOrder:           1
-            decimalsAllowed:     true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           200
+        sortOrder:           1
+        decimalsAllowed:     true
     rating:
         labels:
             en_US: Rating
         type:  pim_catalog_simpleselect
         group: marketing
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             1:
                 labels:
@@ -121,28 +114,25 @@ attributes:
             en_US: Side view
         type:  pim_catalog_image
         group: media
-        parameters:
-            maxFileSize: 1
-            sortOrder:   1
-            allowedExtensions: gif,png,jpeg
+        maxFileSize: 1
+        sortOrder:   1
+        allowedExtensions: gif,png,jpeg
     top_view:
         labels:
             en_US: Top view
         type:  pim_catalog_image
         group: media
-        parameters:
-            maxFileSize: 1
-            sortOrder:   2
-            allowedExtensions: gif,png,jpeg
+        maxFileSize: 1
+        sortOrder:   2
+        allowedExtensions: gif,png,jpeg
     size:
         labels:
             en_US: Size
         type:  pim_catalog_simpleselect
         group: sizes
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
         options:
             35:
                 labels:
@@ -185,10 +175,9 @@ attributes:
             en_US: Color
         type:  pim_catalog_simpleselect
         group: colors
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
         options:
             white:
                 labels:
@@ -219,11 +208,10 @@ attributes:
             en_US: Lace color
         type:  pim_catalog_simpleselect
         group: colors
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            sortOrder:           2
-            defaultValue:        laces_black
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           2
+        defaultValue:        laces_black
         options:
             laces_black:
                 labels:
@@ -239,7 +227,6 @@ attributes:
             en_US: Length
         type:  pim_catalog_metric
         group: info
-        parameters:
-            sortOrder:   10
-            metricFamily: Length
-            defaultMetricUnit: CENTIMETER
+        sortOrder:   10
+        metricFamily: Length
+        defaultMetricUnit: CENTIMETER

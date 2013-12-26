@@ -105,7 +105,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name-es_ES'  => 'Carretilla',
             'name-fr_FR'  => 'Brouette',
             'visual'      => 'files/media.jpg',
-            'weight'      => '73',
+            'weight'      => '73.0000',
             'weight-unit' => 'KILOGRAM',
             'enabled'     => (int) true
         );
@@ -280,8 +280,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertArrayEquals(array $a, array $b)
     {
-        $this->assertEquals(array_keys($a), array_keys($b));
-        $this->assertEquals($a, $b);
+        $this->assertSame(array_keys($a), array_keys($b));
+        $this->assertSame($a, $b);
     }
 
     /**
@@ -431,7 +431,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMetricMock($data, $unit)
     {
-        $metric = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Metric');
+        $metric = $this->getMock('Pim\Bundle\CatalogBundle\Model\Metric');
 
         $metric->expects($this->any())->method('getData')->will($this->returnValue($data));
         $metric->expects($this->any())->method('getUnit')->will($this->returnValue($unit));

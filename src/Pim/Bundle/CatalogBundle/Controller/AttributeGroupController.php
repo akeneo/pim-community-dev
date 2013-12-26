@@ -20,7 +20,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
@@ -36,17 +35,22 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var AttributeGroupHandler
      */
-    private $formHandler;
+    protected $formHandler;
 
     /**
      * @var Form
      */
-    private $form;
+    protected $form;
+
+    /**
+     * @var string
+     */
+    protected $attributeClass;
 
     /**
      * constructor
@@ -62,6 +66,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param DatagridHelperInterface  $datagridHelper
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
+     * @param string                   $attributeClass
      */
     public function __construct(
         Request $request,
@@ -74,7 +79,8 @@ class AttributeGroupController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         AttributeGroupHandler $formHandler,
-        Form $form
+        Form $form,
+        $attributeClass
     ) {
         parent::__construct(
             $request,
@@ -90,6 +96,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->datagridHelper = $datagridHelper;
         $this->formHandler    = $formHandler;
         $this->form           = $form;
+        $this->attributeClass = $attributeClass;
     }
     /**
      * Create attribute group
@@ -236,7 +243,7 @@ class AttributeGroupController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType(),
+            'pim_available_product_attributes',
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
@@ -288,7 +295,7 @@ class AttributeGroupController extends AbstractDoctrineController
     public function removeProductAttributeAction($groupId, $attributeId)
     {
         $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
-        $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
+        $attribute = $this->findOr404($this->attributeClass, $attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
             throw $this->createNotFoundException(
@@ -313,7 +320,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository('PimCatalogBundle:ProductAttribute')->findAllGrouped();
+        return $this->getRepository($this->attributeClass)->findAllGrouped();
     }
 
     /**

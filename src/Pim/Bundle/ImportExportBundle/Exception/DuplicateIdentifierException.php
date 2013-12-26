@@ -17,7 +17,7 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
      * @var string
      */
     protected $messageTemplate =
-        'The "%identifierColumn%" attribute is unique, the value "%identifier%" was already read in this file';
+        'The unique code "%identifier%" was already read in this file';
 
     /**
      * @var array
@@ -27,14 +27,12 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
     /**
      * Constructor
      *
-     * @param mixed  $identifier
-     * @param string $identifierColumn
+     * @param string $identifier
      * @param array  $item
      */
-    public function __construct($identifier, $identifierColumn, array $item)
+    public function __construct($identifier, array $item)
     {
         $this->messageParameters = array(
-            '%identifierColumn%' => $identifierColumn,
             '%identifier%'       => $identifier
         );
         $parametrizedException = new ParametrizedException(

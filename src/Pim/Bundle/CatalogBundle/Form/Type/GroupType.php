@@ -20,6 +20,21 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 class GroupType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param string $attributeClass
+     */
+    public function __construct($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -78,8 +93,8 @@ class GroupType extends AbstractType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Model\\GroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Model\\Group',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
             )
         );
@@ -102,7 +117,7 @@ class GroupType extends AbstractType
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'class'    => $this->attributeClass,
                     'query_builder' => function (ProductAttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },
@@ -151,7 +166,7 @@ class GroupType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Group'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
             )
         );
     }

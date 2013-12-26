@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
@@ -40,22 +39,22 @@ class FamilyController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var ChannelManager
      */
-    private $channelManager;
+    protected $channelManager;
 
     /**
      * @var FamilyFactory
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var CompletenessManager
      */
-    private $completenessManager;
+    protected $completenessManager;
 
     /**
      * @var FamilyHandler
@@ -66,6 +65,11 @@ class FamilyController extends AbstractDoctrineController
      * @var Form
      */
     protected $familyForm;
+
+    /**
+     * @var string
+     */
+    protected $attributeClass;
 
     /**
      * Constructor
@@ -84,6 +88,7 @@ class FamilyController extends AbstractDoctrineController
      * @param CompletenessManager      $completenessManager
      * @param FamilyHandler            $familyHandler
      * @param Form                     $familyForm
+     * @param string                   $attributeClass
      */
     public function __construct(
         Request $request,
@@ -99,7 +104,8 @@ class FamilyController extends AbstractDoctrineController
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
         FamilyHandler $familyHandler,
-        Form $familyForm
+        Form $familyForm,
+        $attributeClass
     ) {
         parent::__construct(
             $request,
@@ -118,6 +124,7 @@ class FamilyController extends AbstractDoctrineController
         $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
         $this->familyForm          = $familyForm;
+        $this->attributeClass      = $attributeClass;
     }
 
     /**
@@ -284,7 +291,7 @@ class FamilyController extends AbstractDoctrineController
     public function removeProductAttributeAction($familyId, $attributeId)
     {
         $family    = $this->findOr404('PimCatalogBundle:Family', $familyId);
-        $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
+        $attribute = $this->findOr404($this->attributeClass, $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
@@ -316,7 +323,7 @@ class FamilyController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType(),
+            'pim_available_product_attributes',
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );

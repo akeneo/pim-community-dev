@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ChangeStatusType;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Batch operation to change products status
@@ -15,22 +14,9 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 class ChangeStatus extends AbstractMassEditAction
 {
     /**
-     * @var FlexibleManager $manager
-     */
-    protected $manager;
-
-    /**
      * @var boolean Wether or not to enable products
      */
     protected $toEnable = true;
-
-    /**
-     * @param FlexibleManager $manager
-     */
-    public function __construct(FlexibleManager $manager)
-    {
-        $this->manager = $manager;
-    }
 
     /**
      * @param boolean $toEnable
@@ -68,6 +54,5 @@ class ChangeStatus extends AbstractMassEditAction
         foreach ($products as $product) {
             $product->setEnabled($this->toEnable);
         }
-        $this->manager->getStorageManager()->flush();
     }
 }

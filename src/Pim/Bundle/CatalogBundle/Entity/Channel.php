@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Channel entity
@@ -16,19 +17,15 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @Config(
- *  defaultValues={
- *      "entity"={"label"="Channel", "plural_label"="Channels"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
- * )
- *
  * @ExclusionPolicy("all")
+ *
+ * @Config(
+ *     defaultValues={
+ *         "entity"={"label"="Channel", "plural_label"="Channels"}
+ *     }
+ * )
  */
-class Channel
+class Channel implements ReferableInterface
 {
     /** @var integer $id */
     protected $id;
@@ -284,5 +281,23 @@ class Channel
     public function getConversionUnits()
     {
         return $this->conversionUnits;
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

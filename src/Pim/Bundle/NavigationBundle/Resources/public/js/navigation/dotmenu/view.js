@@ -1,4 +1,4 @@
-define(['oro/navigation/dotmenu/view-orig', 'oro/mediator'],
+define(['oro/navigation/dotmenu/view', 'oro/mediator'],
     function(OroDotmenuView, mediator) {
         return OroDotmenuView.extend({
             initialize: function() {
@@ -21,6 +21,6 @@ define(['oro/navigation/dotmenu/view-orig', 'oro/mediator'],
                 );
                 this.chooseActiveTab();
             }
-        })
+        });
     }
 )

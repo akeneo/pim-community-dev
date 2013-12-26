@@ -37,7 +37,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             $this->validator,
             $this->constraintGuesser
         );
-        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getValue'))
             ->getMock();
         $this->product->expects($this->any())
@@ -113,7 +113,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
-     * @expectedExceptionMessage The "id" attribute is unique, the value "id_name_data" was already read in this file
+     * @expectedExceptionMessage The unique code "id_name_data" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
     {

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
-
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Extends SegmentManager for category tree
@@ -16,6 +16,16 @@ use Doctrine\Common\Collections\Collection;
  */
 class CategoryManager extends SegmentManager
 {
+    /**
+     * Return object manager
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->storageManager;
+    }
+
     /**
      * Get a new tree instance
      *

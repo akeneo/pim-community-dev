@@ -1,83 +1,67 @@
-pim_importexport:
-    type: action
-    label: General import and export operations
-
 # Export
-pim_importexport_export:
+pim_importexport_export_profile_index:
     type: action
-    label: Export profile manipulation
-pim_importexport_export_index:
+    label: pim_importexport.acl.export_profile.index
+pim_importexport_export_profile_create:
     type: action
-    label: View export profile list
-pim_importexport_export_create:
+    label: pim_importexport.acl.export_profile.create
+pim_importexport_export_profile_show:
     type: action
-    label: Create an export profile
-pim_importexport_export_show:
+    label: pim_importexport.acl.export_profile.show
+pim_importexport_export_profile_edit:
     type: action
-    label: View the configuration of an export profile
-pim_importexport_export_edit:
+    label: pim_importexport.acl.export_profile.edit
+pim_importexport_export_profile_remove:
     type: action
-    label: Edit the configuration of an export profile
-pim_importexport_export_remove:
+    label: pim_importexport.acl.export_profile.remove
+pim_importexport_export_profile_launch:
     type: action
-    label: Remove an export profile
-pim_importexport_export_launch:
-    type: action
-    label: Launch an export profile
+    label: pim_importexport.acl.export_profile.launch
 
 # Import
-pim_importexport_import:
+pim_importexport_import_profile_index:
     type: action
-    label: Import profile manipulation
-pim_importexport_import_index:
+    label: pim_importexport.acl.import_profile.index
+pim_importexport_import_profile_create:
     type: action
-    label: View import profile list
-pim_importexport_import_create:
+    label: pim_importexport.acl.import_profile.create
+pim_importexport_import_profile_show:
     type: action
-    label: Create an import profile
-pim_importexport_import_show:
+    label: pim_importexport.acl.import_profile.show
+pim_importexport_import_profile_edit:
     type: action
-    label: View the configuration of an import profile
-pim_importexport_import_edit:
+    label: pim_importexport.acl.import_profile.edit
+pim_importexport_import_profile_remove:
     type: action
-    label: Edit the configuration of an import profile
-pim_importexport_import_remove:
+    label: pim_importexport.acl.import_profile.remove
+pim_importexport_import_profile_launch:
     type: action
-    label: Remove an import profile
-pim_importexport_import_launch:
-    type: action
-    label: Launch an import profile
+    label: pim_importexport.acl.import_profile.launch
 
 # Export reports
-pim_importexport_export_report:
+pim_importexport_export_execution_index:
     type: action
-    label: Export report manipulation
-pim_importexport_export_report_index:
+    label: pim_importexport.acl.export_execution.index
+pim_importexport_export_execution_show:
     type: action
-    label: View export report list
-pim_importexport_export_report_show:
+    label: pim_importexport.acl.export_execution.show
+pim_importexport_export_execution_download_log:
     type: action
-    label: View export report details
-pim_importexport_export_report_download_log:
+    label: pim_importexport.acl.export_execution.dl_log
+pim_importexport_export_execution_download_files:
     type: action
-    label: Download export report log
-pim_importexport_export_report_download_files:
-    type: action
-    label: Download exported files
+    label: pim_importexport.acl.export_execution.dl_files
 
 # Import reports
-pim_importexport_import_report:
+pim_importexport_import_execution_index:
     type: action
-    label: Import report manipulation
-pim_importexport_import_report_index:
+    label: pim_importexport.acl.import_execution.index
+pim_importexport_import_execution_show:
     type: action
-    label: View import report list
-pim_importexport_import_report_show:
+    label: pim_importexport.acl.import_execution.show
+pim_importexport_import_execution_download_log:
     type: action
-    label: View import report details
-pim_importexport_import_report_download_log:
+    label: pim_importexport.acl.import_execution.dl_log
+pim_importexport_import_execution_download_files:
     type: action
-    label: Download import report log
-pim_importexport_import_report_download_files:
-    type: action
-    label: Download imported files
+    label: pim_importexport.acl.import_execution.dl_files

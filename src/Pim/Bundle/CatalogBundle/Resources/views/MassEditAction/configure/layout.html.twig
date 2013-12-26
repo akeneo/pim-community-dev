@@ -7,12 +7,12 @@
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }) }}
+    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) }) }}
 
         <div class="row">
             <div class="offset1 span12">
-                <h3>{{ ('pim_catalog.mass_edit_action.' ~ batchOperator.operationAlias ~ '.label')|trans }}</h3>
-                <h4>{{ ('pim_catalog.mass_edit_action.' ~ batchOperator.operationAlias ~ '.description')|trans }}</h4>
+                <h3>{{ ('pim_catalog.mass_edit_action.' ~ massEditActionOperator.operationAlias ~ '.label')|trans }}</h3>
+                <h4>{{ ('pim_catalog.mass_edit_action.' ~ massEditActionOperator.operationAlias ~ '.description')|trans }}</h4>
                 <div class="pull-right">
                     {% block formTitle %}{% endblock %}
                 </div>
@@ -28,7 +28,7 @@
         <div class="row buffer-top">
             <div class="offset1 span12 mass-edit-form">
                 <div class="errors">
-                    {{ form_errors(form) }}
+                    {{ elements.form_errors(form) }}
                 </div>
                 {{ JSFV(form) }}
                 {% block formContent %}
@@ -54,11 +54,11 @@
     {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
+    {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         require(
-            ['jquery', 'oro/mediator', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
-            function ($, mediator) {
+            ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
+            function ($, mediator, wysiwyg) {
                 'use strict';
 
                 $(function () {
@@ -79,6 +79,11 @@
 
                         // Trigger jstree lock
                         mediator.trigger('jstree:lock');
+
+                        // Disable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this).attr('id'), true);
+                        });
                     }
 
                     var enableForm = function() {
@@ -98,6 +103,11 @@
 
                         // Trigger jstree unlock
                         mediator.trigger('jstree:unlock');
+
+                        // Enable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this).attr('id'), false);
+                        });
                     };
 
                     $('select.operation-param').change(function () {

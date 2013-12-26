@@ -2,19 +2,19 @@ oro_menu_config:
     items:
         pim_ie_import:
             label: Import profiles
-            route: pim_importexport_import_index
+            route: pim_importexport_import_profile_index
 
         pim_ie_export:
             label: Export profiles
-            route: pim_importexport_export_index
+            route: pim_importexport_export_profile_index
 
         pim_report_import:
             label: Imports history
-            route: pim_importexport_import_report_index
+            route: pim_importexport_import_execution_index
 
         pim_report_export:
             label: Exports history
-            route: pim_importexport_export_report_index
+            route: pim_importexport_export_execution_index
 
     tree:
         application_menu:
@@ -29,9 +29,9 @@ oro_menu_config:
                         pim_report_export: ~
 
 oro_titles:
-    pim_importexport_import_index: Import management
-    pim_importexport_import_edit:  Import %%job.label%% | Edit
-    pim_importexport_import_show:  Import %%job.label%% | Show
-    pim_importexport_export_index: Export management
-    pim_importexport_export_edit:  Export %%job.label%% | Edit
-    pim_importexport_export_show:  Export %%job.label%% | Show
+    pim_importexport_import_profile_index: Import management
+    pim_importexport_import_profile_edit:  Import %%job.label%% | Edit
+    pim_importexport_import_profile_show:  Import %%job.label%% | Show
+    pim_importexport_export_profile_index: Export management
+    pim_importexport_export_profile_edit:  Export %%job.label%% | Edit
+    pim_importexport_export_profile_show:  Export %%job.label%% | Show

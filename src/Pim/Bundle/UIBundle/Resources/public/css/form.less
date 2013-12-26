@@ -267,21 +267,23 @@ div.btn-group > .has-switch {
 .select2-container-multi .select2-search-choice-close {
   font-family: FontAwesome;
   font-size: 12px;
-  line-height: 12px;
   color: @textColor + #333;
   &:before {
     content: "\f00d";
   }
 }
+.select2-allowclear abbr.select2-search-choice-close {
+  margin-top: 2px;
+}
 
 #attribute-buttons {
   float: right;
   margin: 10px;
-  .channel-switcher .dropdown-toggle {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: 0;
-  }
+}
+#channel-switcher .dropdown-toggle {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
 }
 
 #comparison-buttons {
@@ -299,7 +301,6 @@ div.btn-group > .has-switch {
 #association-buttons {
   padding-top: 7px;
 }
-
 
 .comparison {
   width: 100%;
@@ -648,6 +649,11 @@ table i {
 
 /* Product edit form - attributes tab */
 
+.submit-form .dropdown-menu.right-align {
+  left: auto;
+  right: 0;
+}
+
 .product-edit #attributes {
   #attribute-buttons {
     position: relative;
@@ -792,6 +798,10 @@ table i {
       border-radius: 0;
     }
   }
+}
+
+#copy-selection-switcher, #copy-selection {
+  margin-left: 10px;
 }
 
 // ORO page titles
@@ -1048,10 +1058,12 @@ div.dropdown-menu.channel {
   }
 }
 
-div.entity-updated {
+#entity-updated {
   margin-top: 10px;
   margin-right: 5px;
   clear: right;
+  opacity: 0;
+  cursor: default;
   .label-warning {
     color: @textColor + #333;
     text-shadow: none;
@@ -1193,7 +1205,7 @@ button.pimmultiselect {
 .controls.metric.input-append {
   margin-left: 10px;
   .icons-container {
-    padding-top: 5px;
+    margin-left: 95px;
   }
 }
 .selectize-dropdown {

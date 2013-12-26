@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Group manager
@@ -14,22 +16,38 @@ use Doctrine\Common\Persistence\ObjectManager;
 class GroupManager
 {
     /**
-     * @var ObjectManager
+     * @var RegistryInterface
      */
-    protected $objectManager;
+    protected $doctrine;
 
     /**
-     * @param ObjectManager $objectManager
+     * @var string
      */
-    public function __construct(ObjectManager $objectManager)
+    protected $productClass;
+
+    /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * Constructor
+     *
+     * @param RegistryInterface $doctrine
+     * @param string            $productClass
+     * @param string            $attributeClass
+     */
+    public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
     {
-        $this->objectManager = $objectManager;
+        $this->doctrine = $doctrine;
+        $this->productClass  = $productClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
      * Get available axis
      *
-     * @return ProductAttribute[]
+     * @return ProductAttributeInterface[]
      */
     public function getAvailableAxis()
     {
@@ -65,7 +83,7 @@ class GroupManager
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->objectManager
+        $types = $this->doctrine
             ->getRepository('PimCatalogBundle:GroupType')
             ->findBy(array('variant' => $isVariant));
 
@@ -79,12 +97,84 @@ class GroupManager
     }
 
     /**
+     * Returns the entity repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getRepository()
+    {
+        return $this->doctrine->getRepository('PimCatalogBundle:Group');
+    }
+
+    /**
+     * Returns the group type repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getGroupTypeRepository()
+    {
+        return $this->doctrine->getRepository('PimCatalogBundle:GroupType');
+    }
+
+    /**
+     * Removes a group
+     *
+     * @param Group $group
+     */
+    public function remove(Group $group)
+    {
+        $em = $this->doctrine->getManager();
+        $em->remove($group);
+        $em->flush();
+    }
+
+    /**
+     * Returns an array containing a limited number of product groups, and the total number of products
+     *
+     * @param Group $group
+     * @param int   $maxResults
+     *
+     * @return array
+     */
+    public function getProductList(Group $group, $maxResults)
+    {
+        $manager = $this->doctrine->getManager();
+        $products = $manager
+            ->createQueryBuilder()
+            ->select('p')
+            ->from($this->productClass, 'p')
+            ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
+            ->setParameter('group', $group)
+            ->getQuery()
+            ->setMaxResults($maxResults + 1)
+            ->execute();
+
+        if (count($products) > $maxResults) {
+            array_pop($products);
+            $count = $manager->createQueryBuilder()
+                ->select('COUNT(p)')
+                ->from($this->productClass, 'p')
+                ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
+                ->setParameter('group', $group)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } else {
+            $count = count($products);
+        }
+
+        return array(
+            'products'      => $products,
+            'productCount'  => $count
+        );
+    }
+
+    /**
      * Get the attribute repository
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository
      */
     protected function getAttributeRepository()
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:ProductAttribute');
+        return $this->doctrine->getRepository($this->attributeClass);
     }
 }

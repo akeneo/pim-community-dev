@@ -51,27 +51,11 @@ class MetricFilterType extends NumberFilterType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('operator', 'choice', array('choices' => $this->getOperatorChoices()))
             ->add('value', 'number')
             ->add('unit', 'choice', $this->createUnitOptions($options));
-    }
-
-    /**
-     * Get operator choices
-     *
-     * @return array
-     */
-    protected function getOperatorChoices()
-    {
-        return array(
-            self::TYPE_EQUAL => $this->translator->trans('label_type_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_EQUAL =>
-                $this->translator->trans('label_type_greater_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_THAN => $this->translator->trans('label_type_greater_than', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_EQUAL => $this->translator->trans('label_type_less_equal', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle'),
-        );
     }
 
     /**
@@ -102,7 +86,6 @@ class MetricFilterType extends NumberFilterType
 
         $resolver->setDefaults(
             array(
-                'operator_choices' => $this->getOperatorChoices(),
                 'field_options' => array()
             )
         );
@@ -119,6 +102,5 @@ class MetricFilterType extends NumberFilterType
 
         $view->vars['unit']['type'] = array_combine(array_keys($unitChoices), array_keys($unitChoices));
         $view->vars['value']['type'] = 'number';
-        $view->vars['operator']['type'] = $this->getOperatorChoices();
     }
 }

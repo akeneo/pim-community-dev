@@ -5,10 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 
 /**
  * Form handler for Product attribute
@@ -35,51 +35,51 @@ class ProductAttributeHandler
     protected $manager;
 
     /**
-     * @var AttributeTypeManager
+     * @var ProductAttributeManagerInterface
      */
-    protected $attTypeManager;
+    protected $attributeManager;
 
     /**
      * Constructor for handler
-     * @param FormInterface        $form           Form called
-     * @param Request              $request        Web request
-     * @param ObjectManager        $manager        Storage manager
-     * @param AttributeTypeManager $attTypeManager Attribute type manager
+     * @param FormInterface                    $form             Form called
+     * @param Request                          $request          Web request
+     * @param ObjectManager                    $manager          Storage manager
+     * @param ProductAttributeManagerInterface $attributeManager Attribute type manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        AttributeTypeManager $attTypeManager
+        ProductAttributeManagerInterface $attributeManager
     ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
-        $this->attTypeManager = $attTypeManager;
+        $this->attributeManager = $attributeManager;
     }
 
     /**
      * Preprocess method
-     * @param ProductAttribute $data
+     * @param ProductAttributeInterface $data
      */
     public function preProcess($data)
     {
-        $attribute = $this->attTypeManager->createAttributeFromFormData($data);
+        $attribute = $this->attributeManager->createAttributeFromFormData($data);
 
         $this->form->setData($attribute);
 
-        $data = $this->attTypeManager->prepareFormData($data);
+        $data = $this->attributeManager->prepareFormData($data);
 
         $this->form->bind($data);
     }
 
     /**
      * Process method for handler
-     * @param ProductAttribute $entity
+     * @param ProductAttributeInterface $entity
      *
      * @return boolean
      */
-    public function process(ProductAttribute $entity)
+    public function process(ProductAttributeInterface $entity)
     {
         $this->addMissingOptionValues($entity);
         $this->form->setData($entity);
@@ -100,9 +100,9 @@ class ProductAttributeHandler
     /**
      * Add missing attribute option values
      *
-     * @param ProductAttribute $entity
+     * @param ProductAttributeInterface $entity
      */
-    protected function addMissingOptionValues(ProductAttribute $entity)
+    protected function addMissingOptionValues(ProductAttributeInterface $entity)
     {
         $this->ensureOneOption($entity);
 
@@ -128,9 +128,9 @@ class ProductAttributeHandler
     /**
      * Ensure at least one option for the attribute
      *
-     * @param ProductAttribute $entity
+     * @param ProductAttributeInterface $entity
      */
-    protected function ensureOneOption(ProductAttribute $entity)
+    protected function ensureOneOption(ProductAttributeInterface $entity)
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
@@ -159,9 +159,9 @@ class ProductAttributeHandler
 
     /**
      * Call when form is valid
-     * @param ProductAttribute $entity
+     * @param ProductAttributeInterface $entity
      */
-    protected function onSuccess(ProductAttribute $entity)
+    protected function onSuccess(ProductAttributeInterface $entity)
     {
         foreach ($entity->getOptions() as $option) {
             // Setting translatable to true for now - option not implemented in UI
@@ -177,7 +177,7 @@ class ProductAttributeHandler
             }
         }
 
-        $this->attTypeManager->prepareBackendProperties($entity);
+        $this->attributeManager->prepareBackendProperties($entity);
 
         $this->manager->persist($entity);
         $this->manager->flush();

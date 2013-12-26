@@ -1,0 +1,134 @@
+jobs:
+    csv_product_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import
+        label:     Demo product import
+        type:      import
+        configuration:
+            filePath:           /tmp/product.csv
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+    csv_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     Demo product export
+        type:      export
+        configuration:
+            channel:    mobile
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/product.csv
+    csv_category_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_import
+        label:     Demo category import
+        type:      import
+        configuration:
+            filePath:            /tmp/category.csv
+            uploadAllowed:       true
+            delimiter:           ;
+            enclosure:           '"'
+            escape:              '\'
+            circularRefsChecked: true
+    csv_category_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_export
+        label:     Demo category export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/category.csv
+    csv_association_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_import
+        label:     Demo association import
+        type:      import
+        configuration:
+            filePath:      /tmp/association.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_association_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_export
+        label:     Demo association export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/association.csv
+    csv_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_import
+        label:     Demo group import
+        type:      import
+        configuration:
+            filePath:      /tmp/group.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_export
+        label:     Demo group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/group.csv
+    csv_attribute_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_import
+        label:     Demo attribute import
+        type:      import
+        configuration:
+            filePath:      /tmp/attribute.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_attribute_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_export
+        label:     Demo attribute export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/attribute.csv
+    csv_option_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_import
+        label:     Demo option import
+        type:      import
+        configuration:
+            filePath:      /tmp/option.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_option_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_export
+        label:     Demo option export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/option.csv

@@ -4,11 +4,11 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -168,7 +168,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $fieldName = $this->getFieldValue($value);
 
             return array(
-                $fieldName                     => $data->getData(),
+                $fieldName                     => sprintf('%.4f', $data->getData()),
                 sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
             );
         }

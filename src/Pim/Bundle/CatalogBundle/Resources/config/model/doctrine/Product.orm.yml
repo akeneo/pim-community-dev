@@ -28,8 +28,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                     onDelete: 'SET NULL'
     manyToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Group
-            inversedBy: products
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:
@@ -57,12 +56,6 @@ Pim\Bundle\CatalogBundle\Model\Product:
         productAssociations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAssociation
             mappedBy: owner
-            cascade:
-                - persist
-                - refresh
-        completenesses:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Completeness
-            mappedBy: product
             cascade:
                 - persist
                 - refresh

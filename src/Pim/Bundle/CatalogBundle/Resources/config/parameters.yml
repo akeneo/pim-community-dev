@@ -9,12 +9,12 @@ parameters:
     pim_catalog.form.type.product_value.class:          Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
     pim_catalog.form.type.image.class:                  Pim\Bundle\CatalogBundle\Form\Type\ImageType
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_catalog.form.type.add_to_groups.class:          Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
-    pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
+    pim_catalog.extension.type.metric.class:            Pim\Bundle\CatalogBundle\Form\Type\MetricTypeExtension
     pim_catalog.form.type.conversion_units.class:       Pim\Bundle\CatalogBundle\Form\Type\ConversionUnitsType
 
     pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
-    pim_catalog.doctrine.completeness_query_builder.class:  Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder
 
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
@@ -33,7 +33,7 @@ parameters:
     pim_catalog.event_listener.user_context.class:                      Pim\Bundle\CatalogBundle\EventListener\UserContextListener
     pim_catalog.form.subscriber.add_attribute_type.class:               Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
-    pim_catalog.manager.attribute_type.class:          Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager
+    pim_catalog.manager.product_attribute.class:       Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
     pim_catalog.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager
 
     pim_catalog.form.type.product_value_wysiwyg.class:          Pim\Bundle\CatalogBundle\Form\Type\WysiwygType
@@ -75,6 +75,7 @@ parameters:
     pim_catalog.mass_edit_action.edit_common_attributes.class: Pim\Bundle\CatalogBundle\MassEditAction\EditCommonAttributes
     pim_catalog.mass_edit_action.classify.class:               Pim\Bundle\CatalogBundle\MassEditAction\Classify
     pim_catalog.mass_edit_action.change_family.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeFamily
+    pim_catalog.mass_edit_action.add_to_groups.class:          Pim\Bundle\CatalogBundle\MassEditAction\AddToGroups
 
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
 

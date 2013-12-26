@@ -6,10 +6,6 @@ parameters:
     database_user:     akeneo_pim
     database_password: akeneo_pim
 
-    # MongoDB support
-    #mongodb_server:   mongodb://localhost:27017
-    #mongodb_database: akeneo_pim
-
     mailer_transport:  smtp
     mailer_host:       localhost
     mailer_user:       ~
@@ -29,5 +25,5 @@ parameters:
 
     installed:         true
 
-    installer_data:    PimDemoBundle:demo_dev
+    installer_data:    PimInstallerBundle:demo_dev
     # use PimInstallerBundle:minimal for minimal data set

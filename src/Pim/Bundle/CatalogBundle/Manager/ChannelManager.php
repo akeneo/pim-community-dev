@@ -129,11 +129,19 @@ class ChannelManager
      * Get user channel code
      *
      * @return string
+     *
+     * @throws \Exception
      */
     public function getUserChannelCode()
     {
         $user = $this->securityContext->getToken()->getUser();
 
-        return (string) $user->getValue('catalogscope');
+        $catalogScope = $user->getCatalogScope();
+
+        if (!$catalogScope) {
+            throw new \Exception('User must have a catalog scope defined');
+        }
+
+        return $catalogScope->getCode();
     }
 }

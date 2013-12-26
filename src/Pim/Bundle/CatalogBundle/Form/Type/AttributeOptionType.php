@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType as FlexibleAttributeOptionType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
@@ -14,18 +14,51 @@ use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AttributeOptionType extends FlexibleAttributeOptionType
+class AttributeOptionType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $this->addFieldId($builder);
+
+        $this->addFieldSortOrder($builder);
+
+        $this->addFieldTranslatable($builder);
+
+        $this->addFieldOptionValues($builder);
 
         $this->addFieldCode($builder);
 
         $this->addFieldIsDefault($builder);
+    }
+
+    /**
+     * Add field id to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldId(FormBuilderInterface $builder)
+    {
+        $builder->add('id', 'hidden');
+    }
+
+    /**
+     * Add field sort_order to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldSortOrder(FormBuilderInterface $builder)
+    {
+        $builder->add('sort_order', 'integer', array('required' => false));
+    }
+
+    /**
+     * Add field translatable to form builder
+     * @param FormBuilderInterface $builder
+     */
+    protected function addFieldTranslatable(FormBuilderInterface $builder)
+    {
+        $builder->add('translatable', null, array('required' => false));
     }
 
     /**
@@ -74,5 +107,13 @@ class AttributeOptionType extends FlexibleAttributeOptionType
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_catalog_attribute_option';
     }
 }

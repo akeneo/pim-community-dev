@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Currency entity
@@ -15,19 +15,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @UniqueEntity("code")
- * @Config(
- *  defaultValues={
- *      "entity"={"label"="Currency", "plural_label"="Currencies"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
- * )
  *
  * @ExclusionPolicy("all")
  */
-class Currency
+class Currency implements ReferableInterface
 {
     /**
      * @var integer $id
@@ -170,5 +161,13 @@ class Currency
         $this->locales = new ArrayCollection($locales);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

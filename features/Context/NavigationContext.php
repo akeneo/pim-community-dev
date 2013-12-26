@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Context for navigating the website
@@ -364,6 +365,26 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @Given /^I should be on the products page$/
+     */
+    public function iShouldBeOnTheProductsPage()
+    {
+        $expectedAddress = $this->getPage('Product index')->getUrl();
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @Given /^I should be on the (product "([^"]*)") edit page$/
+     */
+    public function iShouldBeOnTheProductEditPage(Product $product)
+    {
+        $expectedAddress = $this->getPage('Product edit')->getUrl(array('id' => $product->getId()));
         $this->assertAddress($expectedAddress);
     }
 

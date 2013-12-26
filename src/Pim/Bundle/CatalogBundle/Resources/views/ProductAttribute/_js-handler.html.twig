@@ -1,6 +1,6 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch'],
     function ($, _) {
         'use strict';
         $(function() {
@@ -20,17 +20,15 @@ require(
                             $('#'+prop).html(data[prop]);
                         }
                         $(formName+' div.alert').remove();
+                        $(formName).trigger('tab.loaded', $(formName));
                         initializeForm();
                     }
                 );
             }
 
             function initializeForm(preventUpdate) {
-                $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
-                $('[data-toggle="tooltip"]').tooltip();
-
                 initializeOptions();
-                $(formName+'_attributeType').on('change', function() {
+                $('#{{ form.attributeType.vars.id }}').on('change', function() {
                     updateForm();
                 });
 
@@ -65,7 +63,7 @@ require(
                     if (data.value) {
                         $(this).parent().parent().next().show();
                     } else {
-                        $('select[id*=availableLocales]').select2('val', '');
+                        $(formName+'_availableLocales').select2('val', '');
                         $(this).parent().parent().next().hide();
                     }
                 });

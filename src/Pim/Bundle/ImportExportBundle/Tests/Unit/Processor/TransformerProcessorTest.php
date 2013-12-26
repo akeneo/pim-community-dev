@@ -39,7 +39,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             ->getMock();
         $this->processor->setStepExecution($stepExecution);
 
-        $this->entity = new \stdClass;
+        $this->entity = new \stdClass();
     }
 
     protected function initializeTransformer()

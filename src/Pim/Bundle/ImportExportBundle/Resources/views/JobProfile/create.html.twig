@@ -1,0 +1,45 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+
+{{ form_start(form, {
+    'action': actionRoute,
+    'class': 'form-inline',
+    'attr': {
+        'data-title': dataTitle|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
+    }
+}) }}
+    {{ JSFV(form) }}
+
+<script type="text/javascript">
+    require(
+        ['jquery'],
+        function($) {
+            'use strict';
+            $(function() {
+                var formNameAlias = '#{{ form.alias.vars.id }}';
+
+                $(formNameAlias).change(function() {
+                    var alias = $(formNameAlias).val();
+                    var option = $(formNameAlias +' option[value="'+ alias +'"]');
+                    var connector = option.parent().attr('label');
+                    $('#{{ form.connector.vars.id }}').val(connector);
+                });
+            });
+        }
+    );
+</script>
+
+    {{ elements.form_errors(form) }}
+
+    <div class="row-fluid">
+        {{ form_row(form.code) }}
+        {{ form_row(form.label) }}
+        {{ form_row(form.connector) }}
+        {{ form_row(form.alias) }}
+    </div>
+{{ form_end(form) }}

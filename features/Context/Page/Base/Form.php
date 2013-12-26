@@ -3,7 +3,6 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Element\Element;
 
 /**
@@ -25,6 +24,7 @@ class Form extends Base
         $this->elements = array_merge(
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
+                'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Validation errors'               => array('css' => '.validation-tooltip'),
@@ -53,7 +53,11 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $this->getElement('Tabs')->clickLink($tab);
+        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+        $tabs->clickLink($tab);
     }
 
     /**
@@ -248,11 +252,6 @@ class Form extends Base
                     $field->selectOption($value);
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
-                    try {
-                        $field->focus();
-                        $field->setValue('');
-                    } catch (UnsupportedDriverActionException $e) {
-                    }
                     if ($field->getTagName() === 'select') {
                         $field->selectOption($value);
                     } else {
@@ -261,8 +260,15 @@ class Form extends Base
                 }
             } else {
                 foreach (explode(',', $value) as $value) {
-                    $field = $label->getParent()->find('css', 'select');
-                    $field->selectOption(trim($value), true);
+                    $label->getParent()->find('css', 'input[type="text"]')->click();
+                    $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
+                    $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
+                    if (!$option) {
+                        throw new \InvalidArgumentException(
+                            sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
+                        );
+                    }
+                    $option->click();
                 }
             }
         } else {
@@ -300,6 +306,12 @@ class Form extends Base
         }
     }
 
+    /**
+     * @param string $groupField
+     * @param string $field
+     *
+     * @throws \InvalidArgumentException
+     */
     public function findFieldInAccordion($groupField, $field)
     {
         $accordion = $this->find(

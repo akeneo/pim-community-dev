@@ -24,32 +24,4 @@ class ORMTransformer extends AbstractORMTransformer
     {
         return $this->doTransform($class, $data, $defaults);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getEntity($class, array $data)
-    {
-        if (!isset($data['code'])) {
-            throw new MissingIdentifierException;
-        }
-        $object = $this->doctrine->getRepository($class)->findOneBy(array('code' => $data['code']));
-        if (!$object) {
-            $object = $this->create($class);
-        }
-
-        return $object;
-    }
-
-    /**
-     * Creates an entity of the given class
-     *
-     * @param string $class
-     *
-     * @return object
-     */
-    protected function create($class)
-    {
-        return new $class;
-    }
 }

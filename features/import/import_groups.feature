@@ -7,8 +7,8 @@ Feature: Import groups
   Scenario: Successfully import associations
     Given the "default" catalog configuration
     And the following jobs:
-      | connector            | alias        | code              | label                 | type   |
-      | Akeneo CSV Connector | group_import | acme_group_import | Group import for Acme | import |
+      | connector            | alias            | code              | label                 | type   |
+      | Akeneo CSV Connector | csv_group_import | acme_group_import | Group import for Acme | import |
     And I am logged in as "Julia"
     And the following attributes:
       | code  | label | type         |

@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -19,18 +20,14 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Category", "plural_label"="Categories"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Category", "plural_label"="Categories"}
+ *     }
  * )
  *
  * @ExclusionPolicy("all")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableInterface
 {
     /**
      * @var Category $parent
@@ -271,5 +268,13 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function __toString()
     {
         return $this->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

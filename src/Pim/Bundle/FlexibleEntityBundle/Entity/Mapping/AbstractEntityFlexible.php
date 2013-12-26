@@ -168,9 +168,28 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
 
         $values = $this->filterValues($attributeCode, $locale, $scope);
-        $value = (count($values) == 1) ? $values->first() : false;
+        $value = (count($values) == 1) ? $values->first() : null;
 
         return $value;
+    }
+
+    /**
+     * Get wether or not an attribute is part of a product
+     *
+     * @param AbstractEntityAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function hasAttribute(AbstractEntityAttribute $attribute)
+    {
+        return 0 !== $this
+            ->getValues()
+            ->filter(
+                function ($value) use ($attribute) {
+                    return $value->getAttribute() === $attribute;
+                }
+            )
+            ->count();
     }
 
     /**
@@ -265,7 +284,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @throws \Exception
      *
-     * @return Ambigous <mixed, multitype:>
+     * @return mixed
      */
     public function __call($method, $arguments)
     {
@@ -284,19 +303,37 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $method        = 'addData';
         }
 
-        if ($attributeCode !== null) {
-            $data   = $arguments[0];
-            $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
-            $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
-            $value  = $this->getValue($attributeCode, $locale, $scope);
-            if ($value === false) {
-                $value = $this->createValue($attributeCode, $locale, $scope);
-                $this->addValue($value);
-            }
-            $value->$method($data);
+        return $this->updateValue($attributeCode, $method, $arguments);
+    }
 
-            return $this;
+    /**
+     * Update the value with passed method and arguments
+     *
+     * @param string $attributeCode
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @throws \Exception
+     *
+     * @return AbstractEntityFlexible
+     */
+    protected function updateValue($attributeCode, $method, $arguments)
+    {
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
         }
+
+        $data   = $arguments[0];
+        $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
+        $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
+        $value  = $this->getValue($attributeCode, $locale, $scope);
+        if ($value === null) {
+            $value = $this->createValue($attributeCode, $locale, $scope);
+            $this->addValue($value);
+        }
+        $value->$method($data);
+
+        return $this;
     }
 
     /**

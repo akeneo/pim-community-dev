@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Locale entity
@@ -21,17 +22,13 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @Config(
  *     defaultValues={
- *         "entity"={"label"="Locale", "plural_label"="Locales"},
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          }
+ *         "entity"={"label"="Locale", "plural_label"="Locales"}
  *     }
  * )
  *
  * @ExclusionPolicy("all")
  */
-class Locale
+class Locale implements ReferableInterface
 {
     /**
      * @var integer $id
@@ -248,5 +245,13 @@ class Locale
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->code;
     }
 }

@@ -48,7 +48,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
      * Create a channel manager
      * @param string $userScope
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     * @return ChannelManager
      */
     protected function createChannelManager($userScope = 'ecommerce')
     {
@@ -63,22 +63,21 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeChannels()
     {
-        $this->channel1 = $this->createChannel('ecommerce', 'E-Commerce');
-        $this->channel2 = $this->createChannel('mobile', 'Mobile');
+        $this->channel1 = $this->createChannel('ecommerce');
+        $this->channel2 = $this->createChannel('mobile');
     }
 
     /**
      * Create a channel
      * @param string $code
-     * @param string $label
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
-    protected function createChannel($code, $label)
+    protected function createChannel($code)
     {
         $channel = new Channel();
         $channel->setCode($code);
-        $channel->setLabel($label);
+        $channel->setLabel(ucfirst($code));
 
         return $channel;
     }
@@ -178,12 +177,16 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     protected function getUserMock($scope)
     {
         $user = $this
-            ->getMock('Oro\Bundle\UserBundle\Entity\User');
+            ->getMock('Oro\Bundle\UserBundle\Entity\User', array('getCatalogScope'));
 
         $user
             ->expects($this->any())
-            ->method('getValue')
-            ->will($this->returnValue($scope));
+            ->method('getCatalogScope')
+            ->will(
+                $this->returnValue(
+                    $this->createChannel($scope)
+                )
+            );
 
         return $user;
     }
@@ -206,7 +209,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetChannelChoices()
     {
         $expectedArray = array(
-            'ecommerce' => 'E-Commerce',
+            'ecommerce' => 'Ecommerce',
             'mobile'    => 'Mobile'
         );
 
@@ -220,7 +223,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetChannelChoiceWithUserChannel()
     {
         $expectedArray = array(
-            'ecommerce' => 'E-Commerce',
+            'ecommerce' => 'Ecommerce',
             'mobile'    => 'Mobile'
         );
 

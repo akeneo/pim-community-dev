@@ -62,27 +62,27 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array($sku, $name, $color, $description, $price)));
 
         $foo->expects($this->any())
-            ->method('getValue')
+            ->method('hasAttribute')
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('name',         null,  null,  true),
-                        array('color',        null,  null,  true),
-                        array('description',  null,  null,  true),
-                        array('price',        null,  null,  true),
+                        array($name,        true),
+                        array($color,       true),
+                        array($description, true),
+                        array($price,       true),
                     )
                 )
             );
 
         $bar->expects($this->any())
-            ->method('getValue')
+            ->method('hasAttribute')
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('name',         null,  null,  true),
-                        array('color',        null,  null,  false),
-                        array('description',  null,  null,  true),
-                        array('price',        null,  null,  true),
+                        array($name,        true),
+                        array($color,       false),
+                        array($description, true),
+                        array($price,       true),
                     )
                 )
             );
@@ -246,7 +246,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $manager->expects($this->any())
-            ->method('getStorageManager')
+            ->method('getObjectManager')
             ->will($this->returnValue($objectManager));
 
         $manager->expects($this->any())

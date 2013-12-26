@@ -37,9 +37,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
         $this->doctrine->expects($this->any())
             ->method('getRepository')
-            ->with($this->equalTo('PimCatalogBundle:ProductAttribute'))
+            ->with($this->equalTo('attribute_class'))
             ->will($this->returnValue($this->repository));
-        $this->attributeCache = new AttributeCache($this->doctrine);
+        $this->attributeCache = new AttributeCache($this->doctrine, 'attribute_class');
     }
 
     /**
@@ -183,7 +183,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         array $familyAttributeCodes = array(),
         array $categories = array()
     ) {
-        $product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getId', 'getValues', 'getFamily', 'getGroups'))
             ->getMock();
         $product->expects($this->any())
@@ -191,7 +191,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($productId));
         $values = array();
         foreach ($productAttributeCodes as $productAttributeCode) {
-            $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
                 ->setMethods(array('getAttribute', '__toString'))
                 ->getMock();
             $value->expects($this->any())
@@ -217,7 +217,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $groups = array();
         foreach ($categories as $groupCode => $groupAttributeCodes) {
             if (!isset($this->groups[$groupCode])) {
-                $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Model\Group');
+                $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Group');
                 $this->addAttributeCollection($this->groups[$groupCode], $groupCode, $groupAttributeCodes);
             }
             $groups[] = $this->groups[$groupCode];

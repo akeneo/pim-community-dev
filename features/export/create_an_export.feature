@@ -1,3 +1,4 @@
+@javascript
 Feature: Create an export
   In order to use my PIM data into my front applications
   As a user
@@ -6,29 +7,24 @@ Feature: Create an export
   Background:
     Given the "default" catalog configuration
     And I am logged in as "admin"
+    And I am on the exports page
 
-  @javascript
-  Scenario: Successfully create a product export into csv
-    Given I am on the exports page
-    And I create a new "Product export in CSV" export
-    When I fill in the following information:
-      | Code  | mobile_product_export |
-      | Label | Mobile product export |
-    And I fill in the following information:
-      | Channel   | Mobile          |
-      | File path | /tmp/export.csv |
-    And I check "With header"
-    And I save the export
-    Then I should see "Export profile - Mobile product export"
-    And I should see flash message "The export has been successfully created."
-    Then I press the "Edit" button
-    When I visit the "History" tab
-    Then there should be 1 update
-    And I should see history:
-      | action | version | property | value                 |
-      | create | 1       | code     | mobile_product_export |
+  Scenario: Successfully create an export
+    Given I create a new export
+    And I should see the Code, Label and Job fields
+    When I fill in the following information in the popin:
+      | Code  | PRODUCT_EXPORT        |
+      | Label | Products export       |
+      | Job   | Product export in CSV |
+    And I press the "Save" button
+    Then I click back to grid
+    And the grid should contain 1 element
+    And I should see export profile PRODUCT_EXPORT
 
-  Scenario: Fail to create an unknown product export
-    Given I try to create an unknown export
-    Then I should be redirected on the export index page
-    And I should see "Failed to create an export with an unknown job definition."
+  Scenario: Fail to create a job export
+    Given I create a new export
+    When I fill in the following information in the popin:
+      | Code  | PRODUCT_EXPORT  |
+      | Label | Products export |
+    And I press the "Save" button
+    Then I should see "Failed to create an \"export\" with an unknown job definition"

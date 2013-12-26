@@ -17,8 +17,8 @@ Feature: Import media with products
       | Front view  | image |
       | User manual | file  |
     And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following job "acme_product_import" configuration:
       | uploadAllowed     | no         |
       | delimiter         | ;          |

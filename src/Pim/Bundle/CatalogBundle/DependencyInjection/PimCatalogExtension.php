@@ -49,13 +49,13 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             $loader->load('mail_recorder.yml');
         }
 
+        // load validation files
         $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
 
         $finder = new Finder();
         foreach ($finder->files()->in(__DIR__ . '/../Resources/config/validation') as $file) {
             $yamlMappingFiles[] = $file->getRealPath();
         }
-
         $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
 
         $this->loadStorageDriver($config, $container);
@@ -71,10 +71,9 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * Load the mapping for product and product storage
      * @param array            $config
      * @param ContainerBuilder $container
-     *
-     * Load the mapping for product and product storage
      */
     protected function loadStorageDriver(array $config, ContainerBuilder $container)
     {
