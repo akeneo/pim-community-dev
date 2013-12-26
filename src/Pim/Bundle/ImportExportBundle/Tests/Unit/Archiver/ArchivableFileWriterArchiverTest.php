@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Archiver;
 
-use Pim\Bundle\ImportExportBundle\Archiver\FileWriterArchiver;
+use Pim\Bundle\ImportExportBundle\Archiver\ArchivableFileWriterArchiver;
 
 /**
  * Test related class
@@ -11,19 +11,18 @@ use Pim\Bundle\ImportExportBundle\Archiver\FileWriterArchiver;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
+class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $this->filesystem = $this->getFilesystemMock();
-        $this->archiver   = new FileWriterArchiver($this->filesystem);
+        $this->archiver   = new ArchivableFileWriterArchiver($this->filesystem);
     }
 
-    public function testDoNothingIfMoreThan1FileWasWritten()
+    public function testDoNothingIfLessThan2FilesWereWritten()
     {
         $archivableWriter = $this->getArchivableFileWriterMock(array(
             __DIR__.'/../../fixtures/export.csv' => 'export.csv',
-            __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
         ));
         $job = $this->getJobMock(array(
             $this->getItemStepMock($archivableWriter),
@@ -40,28 +39,20 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $fileWriter = $this->getFileWriterMock(__DIR__ . '/../../fixtures/import.csv');
-        $archivableWriter = $this->getArchivableFileWriterMock();
-        $lambdaWriter = $this->getWriterMock();
+        $archivableWriter = $this->getArchivableFileWriterMock(array(
+            __DIR__.'/../../fixtures/export.csv' => 'export.csv',
+            __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
+        ));
         $job = $this->getJobMock(array(
-            $this->getStepMock(),
-            $this->getItemStepMock($fileWriter),
             $this->getItemStepMock($archivableWriter),
-            $this->getItemStepMock($lambdaWriter),
         ));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', 42, $job)
         );
 
-        $this->filesystem
-            ->expects($this->once())
-            ->method('write')
-            ->with(
-                'import/product_import/42/output/import.csv',
-                "firstname;lastname;age\nSeverin;Gero;28\nKyrylo;Zdislav;34\nCenek;Wojtek;7\n",
-                true
-            );
+        $this->filesystem->expects($this->at(0))->method('write')->with('export.csv', "An exported file\n", true);
+        $this->filesystem->expects($this->at(1))->method('write')->with('files/image1.jpg', "An exported image\n", true);
 
         $this->archiver->archive($jobExecution);
     }
@@ -132,24 +123,7 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         return $step;
     }
 
-    protected function getFileWriterMock($path)
-    {
-        $writer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Writer\File\FileWriter')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $writer->expects($this->any())->method('getPath')->will($this->returnValue($path));
-
-        return $writer;
-    }
-
-    protected function getWriterMock()
-    {
-        return $this->getMock('Oro\Bundle\BatchBundle\Item\ItemWriterInterface');
-    }
-
-    protected function getArchivableFileWriterMock(array $writtenFiles = array())
+    protected function getArchivableFileWriterMock(array $writtenFiles)
     {
         $writer = $this->getMock('Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface');
 
