@@ -33,6 +33,9 @@ class AttributeOptionGuesserTest extends GuesserTestCase
             ->method('getClassMetadata')
             ->with($this->equalTo('target_entity'))
             ->will($this->returnValue($this->relatedMetadata));
+        $this->columnInfo->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('name'));
     }
 
     public function getMatchingData()
@@ -70,7 +73,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->assertEquals(
             array(
                 $this->transformer,
-                array('class' => 'target_entity', 'multiple' => $multiple, 'reference_prefix' => 'property_path')
+                array('class' => 'target_entity', 'multiple' => $multiple, 'reference_prefix' => 'name')
             ),
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
