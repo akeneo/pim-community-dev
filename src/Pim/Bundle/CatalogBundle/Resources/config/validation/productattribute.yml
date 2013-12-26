@@ -71,7 +71,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Type: bool
         maxCharacters:
             - Type: numeric
-            - Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal: {} 
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
             - Range:
