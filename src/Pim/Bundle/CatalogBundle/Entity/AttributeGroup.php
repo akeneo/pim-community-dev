@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
@@ -16,16 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Config(
- *     defaultValues={
- *         "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          }
- *     }
- * )
  *
  * @ExclusionPolicy("all")
  */

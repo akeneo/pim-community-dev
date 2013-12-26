@@ -1,19 +1,19 @@
 pim_navigation_collect:
     type: action
-    label: Collect menu entry
+    label: pim_navigation.acl.collect
 
 pim_navigation_enrich:
     type: action
-    label: Enrich menu entry
+    label: pim_navigation.acl.enrich
 
 pim_navigation_spread:
     type: action
-    label: Spread menu entry
+    label: pim_navigation.acl.spread
 
 pim_navigation_settings:
     type: action
-    label: Settings menu entry
+    label: pim_navigation.acl.settings
 
 pim_navigation_system:
     type: action
-    label: System menu entry
+    label: pim_navigation.acl.system

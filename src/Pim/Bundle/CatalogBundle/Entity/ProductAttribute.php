@@ -6,7 +6,6 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -21,15 +20,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Assert\GroupSequenceProvider
- * @Config(
- *    defaultValues={
- *        "entity"={"label"="Attribute", "plural_label"="Attributes"},
- *        "security"={
- *            "type"="ACL",
- *            "group_name"=""
- *        }
- *    }
- * )
  *
  * @ExclusionPolicy("all")
  */
