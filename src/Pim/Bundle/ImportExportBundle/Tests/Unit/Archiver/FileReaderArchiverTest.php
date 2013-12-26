@@ -21,8 +21,13 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $reader = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
-        $job = $this->getJobMock(array($this->getItemStepMock($reader)));
+        $fileReader = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
+        $lambdaReader = $this->getReaderMock();
+        $job = $this->getJobMock(array(
+            $this->getStepMock(),
+            $this->getItemStepMock($fileReader),
+            $this->getItemStepMock($lambdaReader),
+        ));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', 42, $job)
@@ -90,6 +95,11 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         return $job;
     }
 
+    protected function getStepMock()
+    {
+        return $this->getMock('Oro\Bundle\BatchBundle\Step\StepInterface');
+    }
+
     protected function getItemStepMock($reader)
     {
         $step = $this
@@ -112,5 +122,10 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         $reader->expects($this->any())->method('getFilePath')->will($this->returnValue($filePath));
 
         return $reader;
+    }
+
+    public function getReaderMock()
+    {
+        return $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface');
     }
 }
