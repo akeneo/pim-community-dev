@@ -9,6 +9,7 @@ use Oro\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
 use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
 use Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
 
 /**
  * Archive job execution files into conventional directories
@@ -19,15 +20,20 @@ use Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface;
  */
 class ArchivableFileWriterArchiver implements ArchiverInterface
 {
-    /** @var Filesystem */
-    protected $filesystem;
+    /** @var ZipFilesystemFactory */
+    protected $factory;
+
+    /** @var string */
+    protected $directory;
 
     /**
-     * @param Filesystem $filesystem
+     * @param ZipFilesystemFactory $factory
+     * @param string               $directory
      */
-    public function __construct(Filesystem $filesystem = null)
+    public function __construct(ZipFilesystemFactory $factory, $directory)
     {
-        $this->filesystem = $filesystem;
+        $this->factory   = $factory;
+        $this->directory = $directory;
     }
 
     /**
@@ -43,19 +49,16 @@ class ArchivableFileWriterArchiver implements ArchiverInterface
                 continue;
             }
             $writer = $step->getWriter();
-            if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
-                $filesystem = $this->filesystem;
-                if (!$filesystem) {
-                    $zipAdapter = new Adapter\Zip(
-                        strtr(
-                            $this->getRelativeArchivePath($jobExecution),
-                            array(
-                                '%filename%' => sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME)),
-                            )
+            if ($writer instanceof FileWriter &&
+                $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
+                $filesystem = $this->factory->createZip(
+                    strtr(
+                        $this->getRelativeArchivePath($jobExecution),
+                        array(
+                            '%filename%' => sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME)),
                         )
-                    );
-                    $filesystem = new Filesystem($zipAdapter);
-                }
+                    )
+                );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
                     $filesystem->write($localPath, file_get_contents($fullPath), true);
@@ -74,10 +77,11 @@ class ArchivableFileWriterArchiver implements ArchiverInterface
         $jobInstance = $jobExecution->getJobInstance();
 
         return sprintf(
-            '%s/%s/%s/output/%%filename%%',
+            '%s/%s/%s/%s/output/%%filename%%',
+            $this->directory,
             $jobInstance->getType(),
             $jobInstance->getAlias(),
-            $jobInstance->getId()
+            $jobExecution->getId()
         );
     }
 }
