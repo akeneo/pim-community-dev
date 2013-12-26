@@ -81,7 +81,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         return $entity;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -92,7 +91,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
 
     /**
      * Adds a field mapping
-     * 
+     *
      * @param string $original The name of the field as supplied by the reader
      * @param string $target   The name of the field which will be sent to the transformer
      */
