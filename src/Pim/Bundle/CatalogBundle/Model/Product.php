@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
@@ -22,16 +21,6 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Config(
- *     defaultValues={
- *         "entity"={"label"="Product", "plural_label"="Products"},
- *         "security"={
- *             "type"="ACL",
- *             "group_name"=""
- *         }
- *     }
- * )
  *
  * @ExclusionPolicy("all")
  */

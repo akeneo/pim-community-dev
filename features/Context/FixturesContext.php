@@ -585,8 +585,8 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['is_translatable'] == 1), $attribute->isTranslatable());
-            assertEquals(($data['is_scopable'] == 1), $attribute->isScopable());
+            assertEquals(($data['translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
@@ -864,7 +864,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
             $label = isset($data['label']) ? $data['label'] : null;
-            $isVariant = isset($data['is_variant']) ? $data['is_variant'] : 0;
+            $isVariant = isset($data['variant']) ? $data['variant'] : 0;
 
             $this->createGroupType($code, $label, $isVariant);
         }

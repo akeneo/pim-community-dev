@@ -16,9 +16,6 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $referenceRepository = $this->getMockBuilder('Doctrine\Common\DataFixtures\ReferenceRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
         $entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
@@ -27,7 +24,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $processor = $this->getMock('Oro\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $loader = new Loader($objectManager, $referenceRepository, $entityCache, $reader, $processor, $eventSubscriber);
+        $loader = new Loader($objectManager, $entityCache, $reader, $processor, $eventSubscriber);
 
         $reader->expects($this->once())
             ->method('setFilePath')
@@ -63,12 +60,6 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->method('persist')
             ->with($this->identicalTo($object2));
 
-        $referenceRepository->expects($this->at(0))
-            ->method('addReference')
-            ->with($this->matchesRegularExpression('/ReferableInterface.+\.data1$/'));
-        $referenceRepository->expects($this->at(1))
-            ->method('addReference')
-            ->with($this->matchesRegularExpression('/ReferableInterface.+\.data2$/'));
         $loader->load('file');
     }
 

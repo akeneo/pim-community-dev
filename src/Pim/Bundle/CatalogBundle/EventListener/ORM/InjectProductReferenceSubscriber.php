@@ -39,7 +39,6 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         $this->productClass = $productClass;
     }
 
-
     /**
      * Specifies the list of events to listen
      *

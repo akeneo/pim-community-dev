@@ -14,3 +14,5 @@ parameters:
     pim_catalog.entity.attribute_requirement.class:          Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
     pim_catalog.entity.completeness.class:                   Pim\Bundle\CatalogBundle\Entity\Completeness
     pim_catalog.entity.family.class:                         Pim\Bundle\CatalogBundle\Entity\Family
+    pim_catalog.entity.channel.class:                        Pim\Bundle\CatalogBundle\Entity\Channel
+    pim_catalog.entity.job_instance.class:                   Oro\Bundle\BatchBundle\Entity\JobInstance

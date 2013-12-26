@@ -56,7 +56,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     public function testUpdateProductValue($hasFile, $mediaExists)
     {
         $f = tempnam('/tmp', 'pim-media-transformer-test');
-        $this->media = $mediaExists ? new Media : null;
+        $this->media = $mediaExists ? new Media() : null;
         $file = $hasFile ? new File($f) : null;
         $transformer = new MediaTransformer();
         $productValue = $this->getValue($hasFile, $mediaExists);

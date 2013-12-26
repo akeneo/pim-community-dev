@@ -29,8 +29,8 @@ Feature: Execute a job
       | prices      | Prices      | prices   |               |                     |
       | weight      | Weight      | metric   | Weight        | KILOGRAM            |
     And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following job "acme_product_import" configuration:
       | filePath          |            |
       | uploadAllowed     | no         |

@@ -63,9 +63,11 @@ class ORMFamilyTransformer extends ORMTransformer
     /**
      * {@inheritdoc}
      */
-    protected function create($class)
+    protected function createEntity($class, array $data)
     {
-        return ($this->familyClass === $class) ? $this->factory->createFamily() : parent::create($class);
+        return ($this->familyClass === $class)
+            ? $this->factory->createFamily()
+            : parent::createEntity($class, $data);
     }
 
     /**

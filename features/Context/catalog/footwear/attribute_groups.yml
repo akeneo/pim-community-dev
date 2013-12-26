@@ -1,16 +1,21 @@
 attribute_groups:
     info:
+        sort_order: 1
         labels:
             en_US: Product information
     marketing:
+        sort_order: 2
         labels:
             en_US: Marketing
     sizes:
+        sort_order: 3
         labels:
             en_US: Sizes
     colors:
+        sort_order: 4
         labels:
             en_US: Colors
     media:
+        sort_order: 5
         labels:
             en_US: Media

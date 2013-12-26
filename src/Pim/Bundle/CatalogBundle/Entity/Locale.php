@@ -22,11 +22,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @Config(
  *     defaultValues={
- *         "entity"={"label"="Locale", "plural_label"="Locales"},
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          }
+ *         "entity"={"label"="Locale", "plural_label"="Locales"}
  *     }
  * )
  *

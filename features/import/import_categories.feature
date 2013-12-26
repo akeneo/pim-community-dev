@@ -7,8 +7,8 @@ Feature: Import categories
   Scenario: Succesfully import categories
     Given the "default" catalog configuration
     And the following jobs:
-      | connector            | alias           | code                 | label                        | type   |
-      | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
+      | connector            | alias               | code                 | label                        | type   |
+      | Akeneo CSV Connector | csv_category_import | acme_category_import | Category import for Acme.com | import |
     And I am logged in as "Julia"
     And the following file to import:
     """

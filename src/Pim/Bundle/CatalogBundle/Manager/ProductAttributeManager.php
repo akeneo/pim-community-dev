@@ -131,6 +131,14 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function getAttributeOptionClass()
+    {
+        return $this->optionClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createAttributeFromFormData($data)
     {
         if ($data instanceof ProductAttributeInterface) {

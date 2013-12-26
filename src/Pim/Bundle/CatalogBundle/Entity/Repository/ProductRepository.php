@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -17,12 +18,10 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends FlexibleEntityRepository
+class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface
 {
     /**
-     * @param string $scope
-     *
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function buildByScope($scope)
     {
@@ -44,9 +43,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * @param Channel $channel
-     *
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
@@ -78,9 +75,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * Find products by existing family
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * {@inheritdoc}
      */
     public function findByExistingFamily()
     {
@@ -93,9 +88,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * @param array $ids
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * {@inheritdoc}
      */
     public function findByIds(array $ids)
     {
@@ -108,7 +101,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * @return integer[]
+     * {@inheritdoc}
      */
     public function getAllIds()
     {
@@ -120,12 +113,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * Find all products in a variant group (by variant axis attribute values)
-     *
-     * @param Group $variantGroup
-     * @param array $criteria
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
     {

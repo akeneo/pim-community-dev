@@ -23,4 +23,14 @@ class DateTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $transformer->transform(' '));
         $this->assertEquals(new \DateTime('2012-07-10'), $transformer->transform(' 2012-07-10 '));
     }
+
+    /**
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
+     * @expectedExceptionMessage Invalid date
+     */
+    public function testTransformerException()
+    {
+        $transformer = new DateTransformer();
+        $transformer->transform('BOGUS');
+    }
 }
