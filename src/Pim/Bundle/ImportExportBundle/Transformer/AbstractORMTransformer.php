@@ -54,7 +54,7 @@ abstract class AbstractORMTransformer
     /**
      * @var array
      */
-    protected $transformedColumnsInfo = array();
+    protected $transformedColumns = array();
 
     /**
      * @var array
@@ -88,7 +88,7 @@ abstract class AbstractORMTransformer
      */
     public function getTransformedColumnsInfo()
     {
-        return $this->transformedColumnsInfo;
+        return $this->transformedColumns;
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class AbstractORMTransformer
      */
     protected function doTransform($class, array $data, array $defaults = array())
     {
-        $this->transformedColumnsInfo = array();
+        $this->transformedColumns = array();
         $this->errors = array();
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
@@ -172,7 +172,7 @@ abstract class AbstractORMTransformer
             $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
         }
 
-        $this->transformedColumnsInfo[] = $columnInfo;
+        $this->transformedColumns[] = $columnInfo;
     }
 
     /**
