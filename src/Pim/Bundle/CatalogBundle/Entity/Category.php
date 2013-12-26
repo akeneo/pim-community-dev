@@ -20,13 +20,9 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Category", "plural_label"="Categories"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Category", "plural_label"="Categories"}
+ *     }
  * )
  *
  * @ExclusionPolicy("all")

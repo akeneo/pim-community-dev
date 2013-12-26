@@ -10,8 +10,8 @@ Feature: View an import detail page
   @javascript
   Scenario: Successfully display the import information
     Given the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And I am on the imports page
     When I click on the "acme_product_import" row
     Then I should see "Import profile - Product import for Acme.com"
