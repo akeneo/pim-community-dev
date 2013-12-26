@@ -35,22 +35,22 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var AttributeGroupHandler
      */
-    private $formHandler;
+    protected $formHandler;
 
     /**
      * @var Form
      */
-    private $form;
+    protected $form;
 
     /**
      * @var string
      */
-    private $attributeClass;
+    protected $attributeClass;
 
     /**
      * constructor

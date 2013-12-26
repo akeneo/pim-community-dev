@@ -71,10 +71,9 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * Load the mapping for product and product storage
      * @param array            $config
      * @param ContainerBuilder $container
-     *
-     * Load the mapping for product and product storage
      */
     protected function loadStorageDriver(array $config, ContainerBuilder $container)
     {

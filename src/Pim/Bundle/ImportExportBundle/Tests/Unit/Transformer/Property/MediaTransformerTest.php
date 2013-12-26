@@ -55,11 +55,30 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdateProductValue($hasFile, $mediaExists)
     {
-        $test = $this;
         $f = tempnam('/tmp', 'pim-media-transformer-test');
-        $this->media = $mediaExists ? new Media : null;
+        $this->media = $mediaExists ? new Media() : null;
         $file = $hasFile ? new File($f) : null;
         $transformer = new MediaTransformer();
+        $productValue = $this->getValue($hasFile, $mediaExists);
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $transformer->setValue($productValue, $columnInfo, $file);
+        if ($hasFile) {
+            $this->assertEquals($file, $this->media->getFile());
+        }
+        unlink($f);
+    }
+    /**
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
+     * @expectedExceptionMessage File not found: "/bogus-file"
+     */
+    public function testUnvalid()
+    {
+        $transformer = new MediaTransformer();
+        $transformer->transform('/bogus-file');
+    }
+
+    protected function getValue($hasFile, $mediaExists)
+    {
         $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
             ->setMethods(array('getMedia', 'setMedia', '__toString'))
             ->getMock();
@@ -69,6 +88,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 ->method('getMedia')
                 ->will($this->returnValue($this->media));
             if (!$mediaExists) {
+                $test = $this;
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
@@ -86,20 +106,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->never())
                 ->method('getMedia');
         }
-        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
-        $transformer->setValue($productValue, $columnInfo, $file);
-        if ($hasFile) {
-            $this->assertEquals($file, $this->media->getFile());
-        }
-        unlink($f);
-    }
-    /**
-     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage File not found: "/bogus-file"
-     */
-    public function testUnvalid()
-    {
-        $transformer = new MediaTransformer();
-        $transformer->transform('/bogus-file');
+
+        return $productValue;
     }
 }

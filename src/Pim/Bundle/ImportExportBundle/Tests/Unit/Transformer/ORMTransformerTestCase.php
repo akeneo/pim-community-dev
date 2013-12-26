@@ -60,6 +60,11 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(array($this, 'getColumnInfo')));
         $this->transformers = array();
         $this->columnInfos = array();
+        $this->setupRepositories();
+    }
+
+    protected function setupRepositories()
+    {
         $this->repository = $this
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
         $this->repository->expects($this->any())

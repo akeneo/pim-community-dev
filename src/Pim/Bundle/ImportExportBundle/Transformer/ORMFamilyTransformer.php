@@ -63,9 +63,11 @@ class ORMFamilyTransformer extends ORMTransformer
     /**
      * {@inheritdoc}
      */
-    protected function create($class, array $data)
+    protected function createEntity($class, array $data)
     {
-        return ($this->familyClass === $class) ? $this->factory->createFamily() : parent::create($class);
+        return ($this->familyClass === $class)
+            ? $this->factory->createFamily()
+            : parent::createEntity($class, $data);
     }
 
     /**
@@ -92,7 +94,6 @@ class ORMFamilyTransformer extends ORMTransformer
      */
     protected function setRequirements(Family $family, array $requirementsData)
     {
-        $requirements = array();
         foreach ($requirementsData as $channelCode => $attributeCodes) {
             foreach ($this->getRequirements($channelCode, $attributeCodes) as $requirement) {
                 $family->addAttributeRequirement($requirement);

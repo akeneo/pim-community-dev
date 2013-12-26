@@ -10,8 +10,8 @@ Feature: Import options
       | code         | label | type         |
       | manufacturer | Man   | simpleselect |
     And the following jobs:
-      | connector            | alias                   | code               | label                  | type   |
-      | Akeneo CSV Connector | attribute_option_import | acme_option_import | Option import for Acme | import |
+      | connector            | alias                       | code               | label                  | type   |
+      | Akeneo CSV Connector | csv_attribute_option_import | acme_option_import | Option import for Acme | import |
     And I am logged in as "Julia"
     And the following file to import:
     """

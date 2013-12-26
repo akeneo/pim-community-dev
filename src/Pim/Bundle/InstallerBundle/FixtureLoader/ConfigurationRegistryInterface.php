@@ -14,7 +14,7 @@ interface ConfigurationRegistryInterface
     /**
      * Returns true if the registry contains configuration for the given name
      *
-     * @var string $name
+     * @param string $name
      *
      * @return boolean
      */
@@ -60,7 +60,7 @@ interface ConfigurationRegistryInterface
      *
      * @param string $name
      * @param string $extension
-     *      *
+     *
      * @return \Oro\Bundle\BatchBundle\Item\ItemReaderInterface
      */
     public function getReader($name, $extension);

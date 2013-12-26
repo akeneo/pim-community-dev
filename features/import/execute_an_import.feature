@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "default" catalog configuration
     And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
 
   Scenario: Fail to see the import button of a job with validation errors
     Given I am logged in as "Julia"

@@ -25,7 +25,7 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * @var RegistryInterface
      */
-    private $doctrine;
+    protected $doctrine;
 
     /**
      * Constructor

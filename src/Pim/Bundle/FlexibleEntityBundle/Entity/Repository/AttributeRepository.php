@@ -14,8 +14,28 @@ use Doctrine\ORM\AbstractQuery;
  */
 class AttributeRepository extends EntityRepository
 {
+    /**
+     * @var integer
+     */
     const CODE_ATTRIBUTES_TTL = 120;
+
+    /**
+     * @var string
+     */
     const CODE_ATTRIBUTES_PREFIX = 'ATTR_CODE_';
+
+    /**
+     * Get the attribute by code and entity type
+     *
+     * @param string $entity
+     * @param string $code
+     *
+     * @return Attribute
+     */
+    public function findOneByEntityAndCode($entity, $code)
+    {
+        return $this->findOneBy(array('code' => $code, 'entityType' => $entity));
+    }
 
     /**
      * Get associative array of code to attribute

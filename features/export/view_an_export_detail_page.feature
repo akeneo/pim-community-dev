@@ -10,16 +10,16 @@ Feature: View an export detail page
   @javascript
   Scenario: Successfully display the export information
     Given the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_export | acme_product_export | Product export for Acme.com | export |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_export | acme_product_export | Product export for Acme.com | export |
     And I am on the exports page
     When I click on the "acme_product_export" row
     Then I should see "Export profile - Product export for Acme.com"
 
   Scenario: Successfully display the validation errors
     Given the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_export | acme_product_export | Product export for Acme.com | export |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_export | acme_product_export | Product export for Acme.com | export |
     When I am on the "acme_product_export" export job page
     Then I should see "This value should not be blank." next to the channel
 

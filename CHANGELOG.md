@@ -8,8 +8,8 @@
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
-- Fixtures can be in CSV (products, associations and attribute options)
-- Fixture files can be imported through a command (families, products, associations and attribute options)
+- Fixtures can be in CSV (all fixtures except categories, groups, users and currencies)
+- Fixture files can be imported through a command (all fixtures except categories, groups, users and currencies)
 - Add quick create popin for jobs
 - Add WYSIWYG editor
 
@@ -28,6 +28,8 @@
 - Add a loading mask when loading quick creation form
 - Allow to switch configuration between ORM and ODM
 - Update OroPlatform from beta-1 to beta-5
+- Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
+- Remove ACL on entities from PIM part
 
 ## Bug fixes
 - Missing pending versionable entities
@@ -65,6 +67,12 @@
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
 - Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
+- Rename getStorageManager in flexible manager and change related references
+- Rename AttributeTypeManager to ProductAttributeManager and change related references, move createAttribute, createAttributeOption, createAttributeOptionValue from ProductManager to ProductAttributeManager
+- Introduce ProductAttributeManagerInterface andre move references to concret class
+- Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
+- Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
+- Attribute fixtures format has changed
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
-use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -24,20 +25,19 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
             $this->flexibleClassName,
             $this->container->getParameter('pim_flexibleentity.flexible_config'),
             $this->entityManager,
-            $this->container->get('event_dispatcher'),
-            $this->attributeTypeFactory
+            $this->container->get('event_dispatcher')
         );
-        $this->assertNotNull($myManager->getStorageManager());
-        $this->assertEquals($myManager->getStorageManager(), $this->entityManager);
+        $this->assertNotNull($myManager->getObjectManager());
+        $this->assertEquals($myManager->getObjectManager(), $this->entityManager);
     }
 
     /**
      * test related method
      */
-    public function testGetStorageManager()
+    public function testGetObjectManager()
     {
-        $this->assertNotNull($this->manager->getStorageManager());
-        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->manager->getStorageManager());
+        $this->assertNotNull($this->manager->getObjectManager());
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->manager->getObjectManager());
     }
 
     /**
@@ -93,14 +93,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     public function testGetAttributeOptionName()
     {
         $this->assertEquals($this->manager->getAttributeOptionName(), $this->attributeOptionClassName);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetAttributeOptionValueName()
-    {
-        $this->assertEquals($this->manager->getAttributeOptionValueName(), $this->attributeOptionValueClassName);
     }
 
     /**
@@ -163,41 +155,11 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     /**
      * Test related method
      */
-    public function testGetAttributeOptionValueRepository()
-    {
-        $this->assertInstanceOf('Doctrine\ORM\EntityRepository', $this->manager->getAttributeOptionValueRepository());
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetFlexibleValueRepository()
-    {
-        $this->assertInstanceOf('Doctrine\ORM\EntityRepository', $this->manager->getFlexibleValueRepository());
-    }
-
-    /**
-     * Test related method
-     */
     public function testCreateAttribute()
     {
-        $this->assertInstanceOf($this->attributeClassName, $this->manager->createAttribute('pim_flexibleentity_text'));
-    }
-
-    /**
-     * Test related method
-     */
-    public function testCreateAttributeOption()
-    {
-        $this->assertInstanceOf($this->attributeOptionClassName, $this->manager->createAttributeOption());
-    }
-
-    /**
-     * Test related method
-     */
-    public function testCreateAttributeOptionValue()
-    {
-        $this->assertInstanceOf($this->attributeOptionValueClassName, $this->manager->createAttributeOptionValue());
+        $attribute = new Attribute();
+        $attribute->setAttributeType('pim_flexibleentity_text');
+        $this->assertInstanceOf($this->attributeClassName, $attribute);
     }
 
     /**

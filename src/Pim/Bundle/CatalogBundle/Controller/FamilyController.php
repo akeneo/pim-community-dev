@@ -39,22 +39,22 @@ class FamilyController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var ChannelManager
      */
-    private $channelManager;
+    protected $channelManager;
 
     /**
      * @var FamilyFactory
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var CompletenessManager
      */
-    private $completenessManager;
+    protected $completenessManager;
 
     /**
      * @var FamilyHandler

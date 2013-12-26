@@ -72,6 +72,12 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testEmptyTransform()
+    {
+        $this->assertNull($this->transformer->transform('', array('class' => 'class')));
+        $this->assertEquals(array(), $this->transformer->transform('', array('class' => 'class', 'multiple' => true)));
+    }
+
     /**
      * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage No entity of class "class" with code "code"

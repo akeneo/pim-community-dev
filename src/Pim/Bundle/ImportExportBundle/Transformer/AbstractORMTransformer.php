@@ -109,6 +109,7 @@ abstract class AbstractORMTransformer
      * @param array  $defaults
      *
      * @throws InvalidItemException
+     *
      * @return object
      */
     protected function doTransform($class, array $data, array $defaults = array())

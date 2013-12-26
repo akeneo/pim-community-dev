@@ -67,6 +67,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 array(
                     'class'         => 'PimCatalogBundle:Locale',
                     'property'      => 'code',
+                    'select2'       => true,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getActivatedLocalesQB();
                     }
@@ -88,7 +89,8 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'class'    => 'PimCatalogBundle:Channel',
-                    'property' => 'label'
+                    'property' => 'label',
+                    'select2'  => true
                 )
             );
         };
@@ -108,6 +110,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 array(
                     'class'         => 'PimCatalogBundle:Category',
                     'property'      => 'label',
+                    'select2'       => true,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getTreesQB();
                     }
