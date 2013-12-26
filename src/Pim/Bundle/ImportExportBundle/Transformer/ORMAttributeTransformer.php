@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
@@ -20,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 class ORMAttributeTransformer extends ORMTransformer
 {
     /**
-     * @var ProductAttributeManager
+     * @var ProductAttributeManagerInterface
      */
     protected $attributeManager;
 
@@ -32,18 +32,18 @@ class ORMAttributeTransformer extends ORMTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
-     * @param PropertyAccessorInterface      $propertyAccessor
-     * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $columnInfoTransformer
-     * @param ProductAttributeManager        $attributeManager
+     * @param RegistryInterface                $doctrine
+     * @param PropertyAccessorInterface        $propertyAccessor
+     * @param GuesserInterface                 $guesser
+     * @param ColumnInfoTransformerInterface   $columnInfoTransformer
+     * @param ProductAttributeManagerInterface $attributeManager
      */
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
-        ProductAttributeManager $attributeManager,
+        ProductAttributeManagerInterface $attributeManager,
         EntityCache $entityCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
