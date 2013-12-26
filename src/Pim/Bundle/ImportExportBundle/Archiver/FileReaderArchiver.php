@@ -68,7 +68,7 @@ class FileReaderArchiver implements ArchiverInterface
             '%s/%s/%s/input/%%filename%%',
             $jobInstance->getType(),
             $jobInstance->getAlias(),
-            $jobInstance->getId()
+            $jobExecution->getId()
         );
     }
 }

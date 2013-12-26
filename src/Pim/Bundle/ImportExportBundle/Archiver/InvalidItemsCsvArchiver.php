@@ -73,7 +73,7 @@ class InvalidItemsCsvArchiver implements ArchiverInterface
             '%s/%s/%s/invalid_items.csv',
             $jobInstance->getType(),
             $jobInstance->getAlias(),
-            $jobInstance->getId()
+            $jobExecution->getId()
         );
     }
 }

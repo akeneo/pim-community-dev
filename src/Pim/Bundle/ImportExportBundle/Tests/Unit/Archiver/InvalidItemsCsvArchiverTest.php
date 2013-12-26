@@ -34,7 +34,8 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()));
 
         $jobExecution = $this->getJobExecutionMock(
-            $this->getJobInstanceMock('import', 'product_import', 42)
+            $this->getJobInstanceMock('import', 'product_import'),
+            42
         );
 
         $this->filesystem
@@ -67,7 +68,8 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
             );
 
         $jobExecution = $this->getJobExecutionMock(
-            $this->getJobInstanceMock('import', 'product_import', 42)
+            $this->getJobInstanceMock('import', 'product_import'),
+            42
         );
 
         $this->filesystem
@@ -91,7 +93,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder');
     }
 
-    protected function getJobExecutionMock($jobInstance)
+    protected function getJobExecutionMock($jobInstance, $id)
     {
         $jobExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
@@ -102,10 +104,14 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
             ->method('getJobInstance')
             ->will($this->returnValue($jobInstance));
 
+        $jobExecution->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id));
+
         return $jobExecution;
     }
 
-    protected function getJobInstanceMock($type, $alias, $id)
+    protected function getJobInstanceMock($type, $alias)
     {
         $jobInstance = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
@@ -114,7 +120,6 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
 
         $jobInstance->expects($this->any())->method('getType')->will($this->returnValue($type));
         $jobInstance->expects($this->any())->method('getAlias')->will($this->returnValue($alias));
-        $jobInstance->expects($this->any())->method('getId')->will($this->returnValue($id));
 
         return $jobInstance;
     }

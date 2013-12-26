@@ -71,7 +71,7 @@ class FileWriterArchiver implements ArchiverInterface
             '%s/%s/%s/output/%%filename%%',
             $jobInstance->getType(),
             $jobInstance->getAlias(),
-            $jobInstance->getId()
+            $jobExecution->getId()
         );
     }
 }

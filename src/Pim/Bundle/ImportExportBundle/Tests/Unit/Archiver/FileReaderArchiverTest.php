@@ -30,7 +30,8 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         ));
 
         $jobExecution = $this->getJobExecutionMock(
-            $this->getJobInstanceMock('import', 'product_import', 42, $job)
+            $this->getJobInstanceMock('import', 'product_import', $job),
+            42
         );
 
         $this->filesystem
@@ -53,7 +54,7 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    protected function getJobExecutionMock($jobInstance)
+    protected function getJobExecutionMock($jobInstance, $id)
     {
         $jobExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
@@ -64,10 +65,14 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
             ->method('getJobInstance')
             ->will($this->returnValue($jobInstance));
 
+        $jobExecution->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue($id));
+
         return $jobExecution;
     }
 
-    protected function getJobInstanceMock($type, $alias, $id, $job)
+    protected function getJobInstanceMock($type, $alias, $job)
     {
         $jobInstance = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
@@ -76,7 +81,6 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 
         $jobInstance->expects($this->any())->method('getType')->will($this->returnValue($type));
         $jobInstance->expects($this->any())->method('getAlias')->will($this->returnValue($alias));
-        $jobInstance->expects($this->any())->method('getId')->will($this->returnValue($id));
         $jobInstance->expects($this->any())->method('getJob')->will($this->returnValue($job));
 
         return $jobInstance;
