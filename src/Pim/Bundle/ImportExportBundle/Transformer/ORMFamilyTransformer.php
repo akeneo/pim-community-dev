@@ -92,7 +92,6 @@ class ORMFamilyTransformer extends ORMTransformer
      */
     protected function setRequirements(Family $family, array $requirementsData)
     {
-        $requirements = array();
         foreach ($requirementsData as $channelCode => $attributeCodes) {
             foreach ($this->getRequirements($channelCode, $attributeCodes) as $requirement) {
                 $family->addAttributeRequirement($requirement);

@@ -28,7 +28,7 @@ require(
 
             function initializeForm(preventUpdate) {
                 initializeOptions();
-                $(formName+'_attributeType').on('change', function() {
+                $('#{{ form.attributeType.vars.id }}').on('change', function() {
                     updateForm();
                 });
 
@@ -63,7 +63,7 @@ require(
                     if (data.value) {
                         $(this).parent().parent().next().show();
                     } else {
-                        $('select[id*=availableLocales]').select2('val', '');
+                        $(formName+'_availableLocales').select2('val', '');
                         $(this).parent().parent().next().hide();
                     }
                 });

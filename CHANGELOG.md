@@ -28,6 +28,7 @@
 - Add a loading mask when loading quick creation form
 - Allow to switch configuration between ORM and ODM
 - Update OroPlatform from beta-1 to beta-5
+- Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
 
 ## Bug fixes
 - Missing pending versionable entities
@@ -61,10 +62,16 @@
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
 - Completeness and Product are not linked any more via a Doctrine relationship. We are cutting the links between Product and other entities in order to pave the way to the ability to switch between MongoDB and ORM while using the same API (apart from Product repository).
+- Group and Products are not linked any more from Group (same reason than for Completeness)
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
 - Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
+- Rename getStorageManager in flexible manager and change related references
+- Rename AttributeTypeManager to ProductAttributeManager and change related references, move createAttribute, createAttributeOption, createAttributeOptionValue from ProductManager to ProductAttributeManager
+- Introduce ProductAttributeManagerInterface andre move references to concret class
+- Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
+- Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

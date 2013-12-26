@@ -47,32 +47,32 @@ class ProductController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var ProductManager
      */
-    private $productManager;
+    protected $productManager;
 
     /**
      * @var CategoryManager
      */
-    private $categoryManager;
+    protected $categoryManager;
 
     /**
      * @var LocaleManager
      */
-    private $localeManager;
+    protected $localeManager;
 
     /**
      * @var AuditManager
      */
-    private $auditManager;
+    protected $auditManager;
 
     /**
      * @var SecurityFacade
      */
-    private $securityFacade;
+    protected $securityFacade;
 
     /**
      * @staticvar int

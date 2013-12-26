@@ -37,7 +37,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             $this->validator,
             $this->constraintGuesser
         );
-        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getValue'))
             ->getMock();
         $this->product->expects($this->any())

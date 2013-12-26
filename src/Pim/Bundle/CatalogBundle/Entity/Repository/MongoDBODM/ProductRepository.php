@@ -112,7 +112,7 @@ class ProductRepository extends DocumentRepository
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function findWithSortedAttribute($id)
     {

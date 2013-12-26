@@ -133,6 +133,8 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
      *
      * The keys correspond to the originally read columns labels.
      * The values correspond to the column labels needed by the transformer
+     *
+     * @return array
      */
     protected function getMapping()
     {

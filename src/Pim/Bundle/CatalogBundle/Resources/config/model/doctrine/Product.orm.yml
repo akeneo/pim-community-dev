@@ -29,7 +29,6 @@ Pim\Bundle\CatalogBundle\Model\Product:
     manyToMany:
         groups:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
-            inversedBy: products
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:

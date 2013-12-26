@@ -67,7 +67,7 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function ($id) {
-                        $service = new \stdClass;
+                        $service = new \stdClass();
                         $service->id = $id;
 
                         return $service;

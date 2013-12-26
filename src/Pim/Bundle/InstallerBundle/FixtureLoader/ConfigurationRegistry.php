@@ -99,6 +99,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      * Return a fixture service
      *
      * @param string $service
+     * @param string $name
      * @param string $extension
      *
      * @return object

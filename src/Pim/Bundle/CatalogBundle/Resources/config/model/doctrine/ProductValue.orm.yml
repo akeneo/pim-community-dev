@@ -89,7 +89,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             cascade:
                 - refresh
             joinTable:
-                name: pim_catalog_value_option
+                name: pim_catalog_product_value_option
                 joinColumns:
                     value_id:
                         referencedColumnName: id

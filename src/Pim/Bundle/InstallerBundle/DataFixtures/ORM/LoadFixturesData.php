@@ -57,8 +57,7 @@ class LoadFixturesData extends AbstractFixture implements OrderedFixtureInterfac
     /**
      * Returns an array of fixture files
      *
-     * @param  array $config
-     * @return type
+     * @return array
      */
     protected function getFiles()
     {

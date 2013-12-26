@@ -35,17 +35,17 @@ class ChannelController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $datagridHelper;
+    protected $datagridHelper;
 
     /**
      * @var Form
      */
-    private $channelForm;
+    protected $channelForm;
 
     /**
      * @var ChannelHandler
      */
-    private $channelHandler;
+    protected $channelHandler;
 
     /**
      * Constructor

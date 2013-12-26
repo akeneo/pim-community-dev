@@ -52,7 +52,7 @@ class ProgressListener
                     if ($message) {
                         $output->writeln(sprintf($message, $event->getSection()));
                     }
-                    $progress = new ProgressHelper;
+                    $progress = new ProgressHelper();
                     $progress->start($output, $event->getTotalItems());
                 } else {
                     $progress->advance();

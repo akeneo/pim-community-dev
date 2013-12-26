@@ -85,6 +85,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $this->builder->add('switch');
 
         $this->factory = Forms::createFormFactoryBuilder()
+            ->addExtensions($this->getExtensions())
             ->addTypeExtension(new FormTypeSelect2Extension())
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
@@ -101,6 +102,14 @@ abstract class AbstractFormTypeTest extends TypeTestCase
             ->addType($this->createEntityType())
             ->addType(new SwitchType())
             ->getFormFactory();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getExtensions()
+    {
+        return array();
     }
 
     /**

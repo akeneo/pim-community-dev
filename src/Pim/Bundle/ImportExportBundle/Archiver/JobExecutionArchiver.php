@@ -40,12 +40,14 @@ class JobExecutionArchiver
         $archivePath = $this->getJobExecutionPath($jobExecution);
 
         foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
-            $writer = $step->getWriter();
-
-            if ($reader instanceof CsvReader) {
+            if (method_exists($step, 'getReader')) {
+                $reader = $step->getReader();
+            } elseif (method_exists($step, 'getWriter')) {
+                $writer = $step->getWriter();
+            }
+            if (isset($reader) && $reader instanceof CsvReader) {
                 $this->copyFileIfExists($reader->getFilePath(), $archivePath);
-            } elseif ($writer instanceof FileWriter) {
+            } elseif (isset($writer) && $writer instanceof FileWriter) {
                 if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
                     $archivePath = sprintf('%s/%s.zip', $archivePath, pathinfo($writer->getPath(), PATHINFO_FILENAME));
                     $this->createZipArchive($writer->getWrittenFiles(), $archivePath);
