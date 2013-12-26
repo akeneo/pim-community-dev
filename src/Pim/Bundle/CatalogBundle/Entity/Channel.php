@@ -19,7 +19,11 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  *
- * @Config()
+ * @Config(
+ *     defaultValues={
+ *         "entity"={"label"="Channel", "plural_label"="Channels"}
+ *     }
+ * )
  */
 class Channel implements ReferableInterface
 {

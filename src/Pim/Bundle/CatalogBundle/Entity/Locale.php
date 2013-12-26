@@ -20,7 +20,11 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @UniqueEntity("code")
  * @PimAssert\ValidLocaleFallback
  *
- * @Config()
+ * @Config(
+ *     defaultValues={
+ *         "entity"={"label"="Locale", "plural_label"="Locales"}
+ *     }
+ * )
  *
  * @ExclusionPolicy("all")
  */
