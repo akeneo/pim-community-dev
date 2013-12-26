@@ -185,15 +185,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $content = $form->get($binded['fieldName'])->getData();
             $translation = $binded['translation'];
 
-            if ($content !== null) {
-                $method = 'set'.Inflector::camelize($this->getOption('field'));
-                $translation->$method($content);
-                $translation->setForeignKey($entity);
-                $entity->addTranslation($translation);
-            } else {
-                $entity->removeTranslation($translation);
-                $translation->setForeignKey(null);
-            }
+            $method = 'set'.Inflector::camelize($this->getOption('field'));
+            $translation->$method($content);
+            $translation->setForeignKey($entity);
+            $entity->addTranslation($translation);
         }
     }
 
