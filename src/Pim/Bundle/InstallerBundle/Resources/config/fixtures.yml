@@ -11,11 +11,18 @@ default:
         processor_options: {}
 
 associations:
-    order: 50
+    order: 40
     csv:
         processor:         pim_import_export.processor.association
     yml:
         processor:         pim_import_export.processor.association
+
+attributes:
+    order: 40
+    csv:
+        processor:         pim_import_export.processor.attribute
+    yml:
+        processor:         pim_import_export.processor.attribute
 
 attribute_options:
     order: 50

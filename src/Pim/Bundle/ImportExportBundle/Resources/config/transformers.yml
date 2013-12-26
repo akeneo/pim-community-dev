@@ -1,10 +1,11 @@
 parameters:
     pim_import_export.transformer.orm.class:                         Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer
+    pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
+    pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\ORMFamilyTransformer
+    pim_import_export.transformer.attribute.class:                   Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer
     pim_import_export.transformer.label.class:                       Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
     pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
     pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
-    pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
-    pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\ORMFamilyTransformer
     pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
     pim_import_export.transformer.property.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:              Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
@@ -24,6 +25,28 @@ services:
             - '@pim_import_export.transformer.guesser'
             - '@pim_import_export.transformer.label'
 
+    pim_import_export.transformer.product:
+        class: '%pim_import_export.transformer.product.class%'
+        parent: pim_import_export.transformer.orm
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_import_export.attribute_cache'
+
+    pim_import_export.transformer.attribute:
+        class: '%pim_import_export.transformer.attribute.class%'
+        parent: pim_import_export.transformer.orm
+        arguments:
+            - '@pim_catalog.manager.product_attribute'
+            - '@pim_import_export.entity_cache'
+
+    pim_import_export.transformer.family:
+        class: '%pim_import_export.transformer.family.class%'
+        parent: pim_import_export.transformer.orm
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '%pim_catalog.entity.family.class%'
+            - '%pim_catalog.entity.attribute_requirement.class%'
+
     pim_import_export.transformer.label:
         class: %pim_import_export.transformer.label.class%
         arguments:
@@ -38,21 +61,6 @@ services:
         class: %pim_import_export.transformer.property.nested_translation.class%
         arguments:
             - '@property_accessor'
-
-    pim_import_export.transformer.product:
-        class: '%pim_import_export.transformer.product.class%'
-        parent: pim_import_export.transformer.orm
-        arguments:
-            - '@pim_catalog.manager.product'
-            - '@pim_import_export.attribute_cache'
-
-    pim_import_export.transformer.family:
-        class: '%pim_import_export.transformer.family.class%'
-        parent: pim_import_export.transformer.orm
-        arguments:
-            - '@pim_catalog.factory.family'
-            - '%pim_catalog.entity.family.class%'
-            - '%pim_catalog.entity.attribute_requirement.class%'
 
     pim_import_export.transformer.property.default:
         class: '%pim_import_export.transformer.property.default.class%'

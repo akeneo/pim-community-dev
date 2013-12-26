@@ -56,8 +56,6 @@ class AttributeCache
      */
     public function getAttributes($columnsInfo)
     {
-        $this->attributes = array();
-        $this->identifierAttribute = null;
         if (!count($columnsInfo)) {
             return;
         }
