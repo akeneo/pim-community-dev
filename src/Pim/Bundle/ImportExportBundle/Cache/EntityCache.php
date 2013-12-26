@@ -72,7 +72,7 @@ class EntityCache
 
     /**
      * Sets a reference to the object
-     * 
+     *
      * @param object $object
      */
     public function setReference($object)

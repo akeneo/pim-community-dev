@@ -1,5 +1,8 @@
 parameters:
-    pim_import_export.form.type.job_instance.class: Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+    pim_import_export.form.type.job_instance.class:               Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+    pim_import_export.form.type.job_configuration.class:          Pim\Bundle\ImportExportBundle\Form\Type\JobConfigurationType
+    pim_import_export.form.type.step_configuration.class:         Pim\Bundle\ImportExportBundle\Form\Type\StepConfigurationType
+    pim_import_export.form.type.step_element_configuration.class: Pim\Bundle\ImportExportBundle\Form\Type\StepElementConfigurationType
 
 services:
     pim_import_export.form.type.job_instance:
@@ -8,3 +11,18 @@ services:
             - '@oro_batch.connectors'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
+
+    pim_import_export.form.type.job_configuration:
+        class: %pim_import_export.form.type.job_configuration.class%
+        tags:
+            - { name: form.type, alias: pim_import_export_job_configuration }
+
+    pim_import_export.form.type.step_configuration:
+        class: %pim_import_export.form.type.step_configuration.class%
+        tags:
+            - { name: form.type, alias: pim_import_export_step_configuration }
+
+    pim_import_export.form.type.step_element_configuration:
+        class: %pim_import_export.form.type.step_element_configuration.class%
+        tags:
+            - { name: form.type, alias: pim_import_export_step_element_configuration }

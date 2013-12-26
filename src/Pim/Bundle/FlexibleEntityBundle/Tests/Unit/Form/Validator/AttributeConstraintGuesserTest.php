@@ -17,7 +17,7 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->target = new AttributeConstraintGuesser;
+        $this->target = new AttributeConstraintGuesser();
     }
 
     public function testInstanceOfContraintGuesserInterface()

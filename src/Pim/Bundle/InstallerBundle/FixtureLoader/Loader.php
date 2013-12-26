@@ -92,7 +92,7 @@ class Loader implements LoaderInterface
         $this->objectManager->flush();
         $this->objectManager->clear();
         $this->entityCache->clear();
-        
+
         $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ClassifyType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 class Classify extends AbstractMassEditAction
 {
     /**
-     * @var FlexibleManager $manager
+     * @var ProductManager $manager
      */
     protected $manager;
 
@@ -36,10 +36,10 @@ class Classify extends AbstractMassEditAction
     protected $categories;
 
     /**
-     * @param FlexibleManager $manager
+     * @param ProductManager  $manager
      * @param CategoryManager $categoryManager
      */
-    public function __construct(FlexibleManager $manager, CategoryManager $categoryManager)
+    public function __construct(ProductManager $manager, CategoryManager $categoryManager)
     {
         $this->manager         = $manager;
         $this->categoryManager = $categoryManager;

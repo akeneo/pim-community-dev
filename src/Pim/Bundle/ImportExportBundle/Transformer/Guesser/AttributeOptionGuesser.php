@@ -46,7 +46,7 @@ class AttributeOptionGuesser extends EntityGuesser
 
         if ($info) {
             list($transformer, $options) = $info;
-            $options['reference_prefix'] = $columnInfo->getName();
+            $options['reference_prefix'] = $columnInfo->getPropertyPath();
 
             return array($transformer, $options);
         }

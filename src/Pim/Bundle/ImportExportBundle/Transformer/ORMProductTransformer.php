@@ -120,19 +120,21 @@ class ORMProductTransformer extends AbstractORMTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getEntity($class, array $data)
+    protected function findEntity($class, array $data)
     {
-        $product = $this->productManager->getImportProduct(
+        return $this->productManager->getImportProduct(
             $this->attributes,
             $this->identifierAttribute,
             $data[$this->identifierAttribute->getCode()]
         );
+    }
 
-        if (!$product) {
-            $product = $this->productManager->createProduct();
-        }
-
-        return $product;
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEntity($class, array $data)
+    {
+        return $this->productManager->createProduct();
     }
 
     /**

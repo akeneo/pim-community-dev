@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM\Flexible;
 
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Filter\ORM\AbstractFilter;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
+
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
  * Flexible filter
@@ -103,10 +103,10 @@ abstract class AbstractFlexibleFilter implements FilterInterface
     /**
      * Apply filter using flexible repository
      *
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string              $field
-     * @param string              $value
-     * @param string              $operator
+     * @param ProxyQueryInterface $proxyQuery the query
+     * @param string              $field      the field
+     * @param string              $value      the value
+     * @param string              $operator   the operator
      */
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {

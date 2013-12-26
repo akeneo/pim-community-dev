@@ -41,14 +41,14 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
         $this->repository->setScope($this->defaultScope);
         // prepare return of getCodeToAttributes calls
         // attribute name
-        $attributeName = $this->manager->createAttribute();
+        $attributeName = new Attribute();
         $attributeName->setId(1);
         $attributeName->setCode('name');
         $attributeName->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         $this->entityManager->persist($attributeName);
         $attributeName->setTranslatable(true);
         // attribute desc
-        $attributeDesc = $this->manager->createAttribute();
+        $attributeDesc = new Attribute();
         $attributeDesc->setId(2);
         $attributeDesc->setCode('description');
         $attributeDesc->setBackendType(AbstractAttributeType::BACKEND_TYPE_TEXT);

@@ -5,6 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
@@ -19,7 +20,10 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleEntityRepository extends EntityRepository implements TranslatableInterface, ScopableInterface
+class FlexibleEntityRepository extends EntityRepository implements
+    TranslatableInterface,
+    ScopableInterface,
+    FlexibleEntityRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -120,6 +124,94 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
     }
 
     /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findByWithAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        return $this
+            ->findByWithAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Apply a filter by attribute value
+     *
+     * @param QueryBuilder $qb             query builder to update
+     * @param string       $attributeCode  attribute code
+     * @param string|array $attributeValue value(s) used to filter
+     * @param string       $operator       operator to use
+     *
+     * @deprecated Deprecated since version beta-4, to be removed in rc-1
+     */
+    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    {
+        $codeToAttribute = $this->getCodeToAttributes(array());
+        $attributeCodes = array_keys($codeToAttribute);
+        if (in_array($attributeCode, $attributeCodes)) {
+            $attribute = $codeToAttribute[$attributeCode];
+            $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
+
+        } else {
+            $field = current($qb->getRootAliases()).'.'.$attributeCode;
+            $qb->andWhere(
+                $this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue)
+            );
+        }
+    }
+
+    /**
+     * Apply a sort by attribute value
+     *
+     * @param QueryBuilder $qb            query builder to update
+     * @param string       $attributeCode attribute code
+     * @param string       $direction     direction to use
+     *
+     * @deprecated Deprecated since version beta-4, to be removed in rc-1
+     */
+    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    {
+        $codeToAttribute = $this->getCodeToAttributes(array());
+        $attributeCodes = array_keys($codeToAttribute);
+        if (in_array($attributeCode, $attributeCodes)) {
+            $attribute = $codeToAttribute[$attributeCode];
+            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
+        } else {
+            $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
+        }
+    }
+
+    /**
+     * Load a flexible entity with its attributes sorted by sortOrder
+     *
+     * @param integer $id
+     *
+     * @return AbstractFlexible|null
+     * @throws NonUniqueResultException
+     */
+    public function findWithSortedAttribute($id)
+    {
+        return $this
+            ->findByWithAttributesQB(array(), array('id' => $id))
+            ->addOrderBy('Attribute.sortOrder')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Finds attributes
      *
      * @param array $attributeCodes attribute codes
@@ -128,7 +220,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      *
      * @return array The objects.
      */
-    public function getCodeToAttributes(array $attributeCodes)
+    protected function getCodeToAttributes(array $attributeCodes)
     {
         // prepare entity attributes query
         $attributeAlias = 'Attribute';
@@ -165,27 +257,9 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      *
      * @return FlexibleQueryBuilder
      */
-    public function getFlexibleQueryBuilder($qb)
+    protected function getFlexibleQueryBuilder($qb)
     {
         return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
-    }
-
-    /**
-     * Find flexible attribute by code
-     *
-     * @param string $code
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return AbstractEntityAttribute
-     */
-    public function findAttributeByCode($code)
-    {
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneBy(array('entityType' => $this->_entityName, 'code' => $code));
-
-        return $attribute;
     }
 
     /**
@@ -212,7 +286,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      *
      * @return array The objects.
      */
-    public function findByWithAttributesQB(
+    protected function findByWithAttributesQB(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,
@@ -244,103 +318,5 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         }
 
         return $qb;
-    }
-
-    /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
-     *
-     * @return array The objects.
-     */
-    public function findByWithAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        return $this
-            ->findByWithAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Apply a filter by attribute value
-     *
-     * @param QueryBuilder $qb             query builder to update
-     * @param string       $attributeCode  attribute code
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
-     */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
-    {
-        $codeToAttribute = $this->getCodeToAttributes(array());
-        $attributeCodes = array_keys($codeToAttribute);
-        if (in_array($attributeCode, $attributeCodes)) {
-            $attribute = $codeToAttribute[$attributeCode];
-            $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
-
-        } else {
-            $field = current($qb->getRootAliases()).'.'.$attributeCode;
-            $qb->andWhere(
-                $this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue)
-            );
-        }
-    }
-
-    /**
-     * Apply a sort by attribute value
-     *
-     * @param QueryBuilder $qb            query builder to update
-     * @param string       $attributeCode attribute code
-     * @param string       $direction     direction to use
-     */
-    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
-    {
-        $codeToAttribute = $this->getCodeToAttributes(array());
-        $attributeCodes = array_keys($codeToAttribute);
-        if (in_array($attributeCode, $attributeCodes)) {
-            $attribute = $codeToAttribute[$attributeCode];
-            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
-        } else {
-            $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
-        }
-    }
-
-    /**
-     * Find entity with attributes values
-     *
-     * @param int $id entity id
-     *
-     * @return Entity the entity
-     */
-    public function findWithAttributes($id)
-    {
-        $flexibles = $this->findByWithAttributes(array(), array('id' => $id));
-
-        return count($flexibles) ? current($flexibles) : null;
-    }
-
-    /**
-     * Load a flexible entity with its attributes sorted by sortOrder
-     *
-     * @param integer $id
-     *
-     * @return AbstractFlexible|null
-     * @throws NonUniqueResultException
-     */
-    public function findWithSortedAttribute($id)
-    {
-        return $this
-            ->findByWithAttributesQB(array(), array('id' => $id))
-            ->addOrderBy('Attribute.sortOrder')
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 }

@@ -38,7 +38,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
                 )
             );
 
-        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getValue', 'createValue', 'addValue'))
             ->getMock();
 
@@ -131,7 +131,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
 
     public function createValue($name)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValueInterface');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
         $this->values[] = $value;
 
         return $value;

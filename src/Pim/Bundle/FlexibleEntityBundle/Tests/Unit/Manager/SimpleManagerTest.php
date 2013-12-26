@@ -37,17 +37,17 @@ class SimpleManagerTest extends AbstractOrmTest
     public function testConstructWithCustomEntityManager()
     {
         $myManager = new SimpleManager($this->entityName, $this->entityManager);
-        $this->assertNotNull($myManager->getStorageManager());
-        $this->assertEquals($myManager->getStorageManager(), $this->entityManager);
+        $this->assertNotNull($myManager->getObjectManager());
+        $this->assertEquals($myManager->getObjectManager(), $this->entityManager);
     }
 
     /**
      * test related method
      */
-    public function testGetStorageManager()
+    public function testGetObjectManager()
     {
-        $this->assertNotNull($this->manager->getStorageManager());
-        $this->assertTrue($this->manager->getStorageManager() instanceof EntityManager);
+        $this->assertNotNull($this->manager->getObjectManager());
+        $this->assertTrue($this->manager->getObjectManager() instanceof EntityManager);
     }
 
     /**

@@ -4,8 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -33,28 +35,38 @@ class ProductManager extends FlexibleManager
     protected $completenessManager;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * @var ProductBuilder
      */
     protected $builder;
 
     /**
+     * @var EntityManager Used for purely entity stuff
+     */
+    protected $entityManager;
+
+    /**
      * Constructor
      *
-     * @param string                   $flexibleName         Entity name
-     * @param array                    $flexibleConfig       Global flexible entities configuration array
-     * @param ObjectManager            $storageManager       Storage manager
-     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
-     * @param MediaManager             $mediaManager         Media manager
-     * @param CompletenessManager      $completenessManager  Completeness manager
-     * @param ProductBuilder           $builder              Product builder
+     * @param string                   $flexibleName        Entity name
+     * @param array                    $flexibleConfig      Global flexible entities configuration array
+     * @param ObjectManager            $objectManager       Storage manager for product
+     * @param EntityManager            $entityManager       Entity manager for other entitites
+     * @param EventDispatcherInterface $eventDispatcher     Event dispatcher
+     * @param MediaManager             $mediaManager        Media manager
+     * @param CompletenessManager      $completenessManager Completeness manager
+     * @param ProductBuilder           $builder             Product builder
      */
     public function __construct(
         $flexibleName,
         $flexibleConfig,
-        ObjectManager $storageManager,
+        ObjectManager $objectManager,
+        EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
         CompletenessManager $completenessManager,
         ProductBuilder $builder
@@ -62,14 +74,14 @@ class ProductManager extends FlexibleManager
         parent::__construct(
             $flexibleName,
             $flexibleConfig,
-            $storageManager,
-            $eventDispatcher,
-            $attributeTypeFactory
+            $objectManager,
+            $eventDispatcher
         );
 
-        $this->mediaManager         = $mediaManager;
-        $this->completenessManager  = $completenessManager;
-        $this->builder              = $builder;
+        $this->entityManager       = $entityManager;
+        $this->mediaManager        = $mediaManager;
+        $this->completenessManager = $completenessManager;
+        $this->builder             = $builder;
     }
 
     /**
@@ -168,7 +180,7 @@ class ProductManager extends FlexibleManager
     public function getImportProduct($attributes, $identifierAttribute, $code)
     {
         $class = $this->getFlexibleRepository()->getClassName();
-        $em = $this->getStorageManager();
+        $em = $this->getObjectManager();
         try {
             $id = $em->createQuery(
                 'SELECT p.id FROM ' . $class . ' p '.
@@ -232,10 +244,10 @@ class ProductManager extends FlexibleManager
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
-        $this->storageManager->persist($product);
+        $this->objectManager->persist($product);
 
         if ($flush) {
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
         $this->completenessManager->schedule($product);
 
@@ -258,7 +270,7 @@ class ProductManager extends FlexibleManager
         }
 
         if ($flush) {
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
     }
 
@@ -303,7 +315,7 @@ class ProductManager extends FlexibleManager
             if ($media = $value->getMedia()) {
                 if ($id = $media->getCopyFrom()) {
                     $source = $this
-                        ->storageManager
+                        ->objectManager
                         ->getRepository('Pim\Bundle\CatalogBundle\Model\Media')
                         ->find($id);
 
@@ -345,7 +357,7 @@ class ProductManager extends FlexibleManager
      */
     public function ensureAllAssociations(ProductInterface $product)
     {
-        $missingAssociations = $this->storageManager
+        $missingAssociations = $this->objectManager
             ->getRepository('PimCatalogBundle:Association')
             ->findMissingAssociations($product);
 
@@ -355,7 +367,7 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->storageManager->flush();
+            $this->objectManager->flush();
         }
     }
 
@@ -368,9 +380,9 @@ class ProductManager extends FlexibleManager
     {
         $products = $this->getFlexibleRepository()->findByIds($ids);
         foreach ($products as $product) {
-            $this->storageManager->remove($product);
+            $this->objectManager->remove($product);
         }
-        $this->storageManager->flush();
+        $this->objectManager->flush();
     }
 
     /**
@@ -389,5 +401,64 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * FIXME_MONGO: Use an AttributeManager instead of using the same
+     * objectManager than the one used by the FlexibleEntity
+     *
+     * All methods overload below are linked to that issue
+     */
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getAttributeRepository()
+    {
+        return $this->entityManager->getRepository($this->getAttributeName());
+    }
+
+    /**
+     * Return related repository
+     *
+     * @return ObjectRepository
+     */
+    public function getAttributeOptionRepository()
+    {
+        return $this->entityManager->getRepository($this->getAttributeOptionName());
+    }
+
+    /**
+     * Get the entity manager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createFlexible()
+    {
+        $class = $this->getFlexibleName();
+        $attributeClass = $this->getAttributeName();
+        $valueClass = $this->getFlexibleValueName();
+
+        $flexible = new $class();
+        $flexible->setLocale($this->getLocale());
+        $flexible->setScope($this->getScope());
+
+        $codeToAttributeData = $this->getEntityManager()->getRepository($attributeClass)->getCodeToAttributes($class);
+        $flexible->setAllAttributes($codeToAttributeData);
+        $flexible->setValueClass($valueClass);
+
+        $event = new FilterFlexibleEvent($this, $flexible);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
+
+        return $flexible;
     }
 }

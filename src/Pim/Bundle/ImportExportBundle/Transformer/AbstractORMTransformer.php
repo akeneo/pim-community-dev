@@ -109,6 +109,7 @@ abstract class AbstractORMTransformer
      * @param array  $defaults
      *
      * @throws InvalidItemException
+     * 
      * @return object
      */
     protected function doTransform($class, array $data, array $defaults = array())
@@ -235,13 +236,14 @@ abstract class AbstractORMTransformer
 
     /**
      * Finds an entity
-     * 
+     *
      * @param string $class
      * @param array  $data
-     * 
+     *
      * @return object|null
      */
-    protected function findEntity($class, array $data) {
+    protected function findEntity($class, array $data)
+    {
         $repository = $this->doctrine->getRepository($class);
 
         if ($repository instanceof ReferableEntityRepositoryInterface) {
