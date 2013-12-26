@@ -23,7 +23,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->propertyAccessor = new PropertyAccessor;
+        $this->propertyAccessor = new PropertyAccessor();
         $this->manager = $this->getMock('Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface');
         $this->controllerStrategy = $this->getMock(
             'Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface'
