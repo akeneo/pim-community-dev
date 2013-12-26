@@ -1153,6 +1153,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $group
+     * @param array  $products
+     *
      * @Then /^"([^"]*)" group should contain "([^"]*)"$/
      */
     public function groupShouldContain($group, $products)
@@ -1174,20 +1177,10 @@ class FixturesContext extends RawMinkContext
      * @param string $roleLabel
      *
      * @return \Oro\Bundle\UserBundle\Entity\Role
-     * @throws \Exception
      */
     public function getRole($roleLabel)
     {
-        $role = $this
-            ->getEntityManager()
-            ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('label' => $roleLabel));
-
-        if (!$role) {
-            throw new \Exception(sprintf('Role "%s" unknown', $roleLabel));
-        }
-
-        return $role;
+        return $this->getEntityOrException('Role', array('label' => $roleLabel));
     }
 
     /**

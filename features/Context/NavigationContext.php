@@ -2,12 +2,11 @@
 
 namespace Context;
 
-use Oro\Bundle\UserBundle\Entity\Role;
-
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -323,9 +322,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @Given /^I should be on the ("([^"]*)" role) page$/
      */
-    public function iShouldBeOnTheRolePage($uselessParam, $roleLabel)
+    public function iShouldBeOnTheRolePage(Role $role)
     {
-        $role = $this->getFixturesContext()->getRole($roleLabel);
         $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
         $this->assertAddress($expectedAddress);
     }
