@@ -18,6 +18,8 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ExclusionPolicy("all")
+ *
+ * @Config()
  */
 class Channel implements ReferableInterface
 {

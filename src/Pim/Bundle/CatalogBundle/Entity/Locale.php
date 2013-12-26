@@ -20,6 +20,8 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @UniqueEntity("code")
  * @PimAssert\ValidLocaleFallback
  *
+ * @Config()
+ *
  * @ExclusionPolicy("all")
  */
 class Locale implements ReferableInterface
