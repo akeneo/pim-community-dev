@@ -57,10 +57,10 @@ security:
             provider:                       chain_provider
             form_login:
                 csrf_provider:              form.csrf_provider
-                check_path:                 /user/login-check
-                login_path:                 /user/login
+                check_path:                 oro_user_security_check
+                login_path:                 oro_user_security_login
             logout:
-                path:                       /user/logout
+                path:                       oro_user_security_logout
             remember_me:
                 key:                        %secret%
                 name:                       BAPRM
