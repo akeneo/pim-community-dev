@@ -21,15 +21,8 @@ Feature: Define user rights
     But I should be able to access the attributes page
     And I reset the "Administrator" rights
 
-  Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
-    Given I am on the "Administrator" role page
-    And I remove rights to <permission>
-    And I save the role
-    When I am on the <page> page
-    Then I should not see "<button>"
-    And I reset the "Administrator" rights
-
-    Examples:
+  Scenario: Successfully hide entity creation and deletion buttons when user doesn't have the rights
+    Then removing the following permissions should hide the following buttons:
       | permission                | page                                     | button                |
       | Create an association     | associations                             | Create association    |
       | Create a channel          | channels                                 | Create channel        |
