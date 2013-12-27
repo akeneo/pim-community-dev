@@ -93,21 +93,19 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         $this->filesystem
             ->expects($this->any())
             ->method('listKeys')
-            ->will($this->returnValue(array('keys' => array('foo','bar'))));
-
-        $this->filesystem
-            ->expects($this->any())
-            ->method('createStream')
-            ->will($this->returnValueMap(array(
-                array('foo', 'fooStream'),
-                array('bar', 'barStream'),
-            )));
+            ->will($this->returnValue(array('keys' => array('foo/fooFile.txt','bar/barFile.txt'))));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', null),
             42
         );
-        $this->assertSame(array('fooStream', 'barStream'), $this->archiver->getArchives($jobExecution));
+        $this->assertSame(
+            array(
+                'fooFile.txt' => 'foo/fooFile.txt',
+                'barFile.txt' => 'bar/barFile.txt'
+            ),
+            $this->archiver->getArchives($jobExecution)
+        );
     }
 
     protected function getInvalidItemsCollectorMock()

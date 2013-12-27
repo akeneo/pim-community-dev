@@ -73,13 +73,66 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $this->archivist->afterJobExecution($event);
     }
 
-    protected function getArchiverMock($name)
+    public function testGetArchives()
+    {
+        $foo = $this->getArchiverMock('foo', array('fooArch1', 'fooArch2'));
+        $bar = $this->getArchiverMock('bar', array('barArch1', 'barArch2'));
+        $this->archivist->registerArchiver($foo);
+        $this->archivist->registerArchiver($bar);
+
+        $jobExecution = $this->getJobExecutionMock();
+
+        $this->assertSame(
+            array(
+                'foo' => array('fooArch1', 'fooArch2'),
+                'bar' => array('barArch1', 'barArch2'),
+            ),
+            $this->archivist->getArchives($jobExecution)
+        );
+    }
+
+    public function testGetArchive()
+    {
+        $foo = $this->getArchiverMock('foo', array(), 'fooArch1Stream');
+        $this->archivist->registerArchiver($foo);
+
+        $jobExecution = $this->getJobExecutionMock();
+
+        $this->assertSame(
+            'fooArch1Stream',
+            $this->archivist->getArchive($jobExecution, 'foo', 'fooArch1')
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Archiver "bar" is not registered
+     */
+    public function testGetArchiveFromUnknownArchiver()
+    {
+        $foo = $this->getArchiverMock('foo', array(), 'fooArch1Stream');
+        $this->archivist->registerArchiver($foo);
+
+        $jobExecution = $this->getJobExecutionMock();
+
+        $this->archivist->getArchive($jobExecution, 'bar', 'barArch1');
+    }
+
+    protected function getArchiverMock($name, array $archives = array(), $archive = null)
     {
         $archiver = $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
 
         $archiver->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));
+
+        $archiver->expects($this->any())
+            ->method('getArchives')
+            ->will($this->returnValue($archives));
+
+        $archiver->expects($this->any())
+            ->method('getArchive')
+            ->will($this->returnValue($archive));
 
         return $archiver;
     }

@@ -126,7 +126,7 @@ class JobExecutionController extends AbstractDoctrineController
             array(
                 'execution'   => $jobExecution,
                 'existingLog' => file_exists($this->batchLogHandler->getRealPath($jobExecution->getLogFile())),
-                'archives'    => $this->archivist->getAvailableArchives($jobExecution),
+                'archives'    => $this->archivist->getArchives($jobExecution),
             )
         );
     }
