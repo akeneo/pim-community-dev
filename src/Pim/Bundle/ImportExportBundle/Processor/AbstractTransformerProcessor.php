@@ -67,18 +67,15 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     {
         $this->mapValues($item);
         $entity = $this->transform($item);
-        $errors = $this->getTransformerErrors();
 
+        $errors = $this->getTransformerErrors();
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
-            if ($this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-            }
-            throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
+            $this->setItemErrors($item, $errors);
+        } else {
+            return $entity;
         }
-
-        return $entity;
     }
 
     /**
@@ -163,6 +160,22 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     protected function getMapping()
     {
         return $this->mapping;
+    }
+
+    /**
+     * Sets errors on items
+     *
+     * @param array $item
+     * @param array $errors
+     *
+     * @throws InvalidItemException
+     */
+    protected function setItemErrors(array $item, array $errors)
+    {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+        throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
     }
 
     /**

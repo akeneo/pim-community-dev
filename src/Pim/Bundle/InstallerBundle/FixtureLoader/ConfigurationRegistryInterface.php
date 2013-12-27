@@ -39,6 +39,13 @@ interface ConfigurationRegistryInterface
     public function getClass($name);
 
     /**
+     * Returns true if the reader returns multiple files
+     *
+     * @return boolean
+     */
+    public function isMultiple($name);
+
+    /**
      * Returns the processor service for a given extension and configuration
      *
      * @param string $name
