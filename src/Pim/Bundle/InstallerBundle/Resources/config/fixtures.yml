@@ -69,6 +69,13 @@ products:
             homogenize: true
         processor:         pim_import_export.processor.product
 
+groups:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.group
+    yml:
+        processor:         pim_import_export.processor.group
+
 jobs:
     order: 90
     csv:
