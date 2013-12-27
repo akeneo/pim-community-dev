@@ -486,8 +486,6 @@ pim_catalog:
             create: 'Create a category'
             edit: 'Edit a category'
             remove: 'Remove a category'
-            move: 'Move category'
-            children: 'See category children'
         channel:
             index: 'List channels'
             create: 'Create a channel'
