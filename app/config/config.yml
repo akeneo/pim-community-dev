@@ -116,7 +116,7 @@ clank:
 
 a2lix_translation_form:
     locales:                  [en, fr]
-    templating:               "OroUIBundle:Form:translatable.html.twig"
+    templating:               "OroUIBundle:Form:translateable.html.twig"
 
 apy_js_form_validation:
     check_modes: [submit, change]
