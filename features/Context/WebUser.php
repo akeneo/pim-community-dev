@@ -695,17 +695,47 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $permission
      * @param string $resources
      *
-     * @When /^I remove rights to (.*)$/
+     * @When /^I (grant|remove) rights to (.*)$/
      */
-    public function iRemoveRightsToACLResources($resources)
+    public function iSetRightsToACLResources($permission, $resources)
     {
+        $permission = $permission === 'grant' ? 'System' : 'None';
         foreach ($this->listToArray($resources) as $resource) {
             $this->getCurrentPage()->clickResourceField($resource);
             $this->wait();
-            $this->getCurrentPage()->setResourceRights($resource, 'None');
+            $this->getCurrentPage()->setResourceRights($resource, $permission);
         }
+    }
+
+    /**
+     * @When /^I grant all rights$/
+     *
+     * @return Then
+     */
+    public function iGrantAllRightsToACLResources()
+    {
+        $resources = implode(', ', $this->getCurrentPage()->getResourcesByPermission('None'));
+
+        return new Step\Then(sprintf('I grant rights to %s', $resources));
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I reset the "([^"]*)" rights$/
+     *
+     * @return Then[]
+     */
+    public function iResetTheRights($role)
+    {
+        return array(
+            new Step\Then(sprintf('I am on the "%s" role page', $role)),
+            new Step\Then('I grant all rights'),
+            new Step\Then('I save the role')
+        );
     }
 
     /**

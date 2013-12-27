@@ -18,3 +18,4 @@ Feature: Define user rights
     And I should not be able to access the products page
     And I should not be able to access the channels page
     But I should be able to access the attributes page
+    And I reset the "Administrator" rights

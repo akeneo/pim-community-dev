@@ -38,6 +38,27 @@ class Edit extends Form
     }
 
     /**
+     * Get ACL resources with the specified permission
+     *
+     * @param string $permission
+     *
+     * @return string[]
+     */
+    public function getResourcesByPermission($permission)
+    {
+        $elements = $this
+            ->getElement('Container')
+            ->findAll('css', sprintf('div.access_level_value_link a:contains(%s)', $permission));
+
+        $resources = array();
+        foreach ($elements as $element) {
+            $resources[] = $element->getParent()->getParent()->getParent()->find('css', 'strong')->getText();
+        }
+
+        return $resources;
+    }
+
+    /**
      * Click a ACL resource link to load the list of choices
      *
      * @param string $resource
