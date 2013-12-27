@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -460,5 +461,51 @@ class ProductManager extends FlexibleManager
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
 
         return $flexible;
+    }
+
+    /**
+     * Count products linked to a node.
+     * You can define if you just want to get the property of the actual node
+     * or with its children with the direct parameter
+     * The third parameter allow to include the actual node or not
+     *
+     * @param CategoryInterface $category        the requested category node
+     * @param boolean           $inChildren      true to include children in count
+     * @param boolean           $inProvided true to include the provided none to count product
+     *
+     * @return integer
+     */
+    public function getProductsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
+    {
+        $categoryRepository = $this->getEntityManager()->getRepository(get_class($category));
+
+        $categoryQb = null;
+        if ($inChildren) {
+            $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
+        }
+
+        return $this->getFlexibleRepository()->getProductsCountInCategory($category, $categoryQb);
+    }
+
+    /**
+     * Get product ids linked to a category or its children.
+     * You can define if you just want to get the property of the actual node or with its children with the direct
+     * parameter
+     *
+     * @param CategoryInterface $category the requested node
+     * @param boolean           $inChildren true to take children not into account
+     *
+     * @return array
+     */
+    public function getProductIdsInCategory(CategoryInterface $category, $inChildren = false)
+    {
+        $categoryRepository = $this->getEntityManager()->getRepository(get_class($category));
+
+        $categoryQb = null;
+        if ($inChildren) {
+            $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, true);
+        }
+
+        return $this->getFlexibleRepository()->getProductIdsInCategory($category, $categoryQb);
     }
 }

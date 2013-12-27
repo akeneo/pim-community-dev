@@ -17,13 +17,13 @@
         {% for tree in trees %}
             {% set aClass = "" %}
             {% set iClass = "gray" %}
-            {% if (tree['productsCount'] > 0) %}
+            {% if (tree['productCount'] > 0) %}
                 {% set aClass = "tree-has-product" %}
                 {% set iClass = "green" %}
             {% endif %}
             <li>
                 <a class="{{ aClass }}" href="javascript:void(0);" data-toggle="tab" id="tree-link-{{ tree['tree'].id }}">
-                    <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].label }} ({{ tree['productsCount'] }})
+                    <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].label }} ({{ tree['productCount'] }})
                 </a>
             </li>
         {% endfor %}
