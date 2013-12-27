@@ -34,6 +34,7 @@ Feature: Define user rights
       | Create a channel         | channels       | Create channel        |
       | Create a family          | families       | Create family         |
       | Create a group           | product groups | Create group          |
+      | Create a group           | variant groups | Create variant group  |
       | Create a group type      | group types    | Create group type     |
       | Create a product         | products       | Create product        |
       | Create product attribute | attributes     | Create attribute      |
