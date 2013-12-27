@@ -5,9 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
-use Gaufrette\Filesystem;
 use Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Job execution archivist
@@ -53,5 +52,16 @@ class JobExecutionArchivist implements EventSubscriberInterface
         foreach ($this->archivers as $archiver) {
             $archiver->archive($jobExecution);
         }
+    }
+
+    public function getAvailableArchives(JobExecution $jobExecution)
+    {
+        $archives = array();
+
+        foreach ($this->archivers as $archiver) {
+            $archives[$archiver->getName()] = $archiver->getArchives($jobExecution);
+        }
+
+        return $archives;
     }
 }

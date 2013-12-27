@@ -3,10 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Archiver;
 
 use Gaufrette\Filesystem;
-use Gaufrette\Adapter;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
 use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
 use Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
@@ -18,7 +16,7 @@ use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ArchivableFileWriterArchiver implements ArchiverInterface
+class ArchivableFileWriterArchiver extends AbstractArchiver
 {
     /** @var ZipFilesystemFactory */
     protected $factory;
@@ -26,24 +24,25 @@ class ArchivableFileWriterArchiver implements ArchiverInterface
     /** @var string */
     protected $directory;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
      * @param ZipFilesystemFactory $factory
      * @param string               $directory
      */
-    public function __construct(ZipFilesystemFactory $factory, $directory)
+    public function __construct(ZipFilesystemFactory $factory, $directory, Filesystem $filesystem)
     {
-        $this->factory   = $factory;
-        $this->directory = $directory;
+        $this->factory    = $factory;
+        $this->directory  = $directory;
+        $this->filesystem = $filesystem;
     }
 
     /**
-     * Archive files used by job execution (input / output)
-     *
-     * @param JobExecution $jobExecution
+     * {@inheritdoc}
      */
     public function archive(JobExecution $jobExecution)
     {
-
         foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
@@ -51,14 +50,10 @@ class ArchivableFileWriterArchiver implements ArchiverInterface
             $writer = $step->getWriter();
             if ($writer instanceof FileWriter &&
                 $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
-                $filesystem = $this->factory->createZip(
-                    strtr(
-                        $this->getRelativeArchivePath($jobExecution),
-                        array(
-                            '%filename%' => sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME)),
-                        )
-                    )
-                );
+                    $filesystem = $this->getZipFilesystem(
+                        $jobExecution,
+                        sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
+                    );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
                     $filesystem->write($localPath, file_get_contents($fullPath), true);
@@ -68,20 +63,38 @@ class ArchivableFileWriterArchiver implements ArchiverInterface
     }
 
     /**
-     * Get the relative archive path in the file system
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    protected function getRelativeArchivePath(JobExecution $jobExecution)
+    public function getArchives(JobExecution $jobExecution)
     {
-        $jobInstance = $jobExecution->getJobInstance();
+        $archives = array();
+        $keys = $this->filesystem->listKeys(dirname($this->getRelativeArchivePath($jobExecution)));
+        foreach ($keys['keys'] as $key) {
+            $archives[] = $this->filesystem->createStream($key);
+        }
 
-        return sprintf(
-            '%s/%s/%s/%s/output/%%filename%%',
-            $this->directory,
-            $jobInstance->getType(),
-            $jobInstance->getAlias(),
-            $jobExecution->getId()
+        return $archives;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'archive';
+    }
+
+    protected function getZipFilesystem(JobExecution $jobExecution, $zipName)
+    {
+        return $this->factory->createZip(
+            sprintf(
+                '%s/%s',
+                $this->directory,
+                strtr(
+                    $this->getRelativeArchivePath($jobExecution),
+                    array('%filename%' => $zipName)
+                )
+            )
         );
     }
 }

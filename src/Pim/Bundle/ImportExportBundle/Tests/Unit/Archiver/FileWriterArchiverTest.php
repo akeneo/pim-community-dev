@@ -19,6 +19,16 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         $this->archiver   = new FileWriterArchiver($this->filesystem);
     }
 
+    public function testIsAnArchiver()
+    {
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
+    }
+
+    public function testGetName()
+    {
+        $this->assertSame('output', $this->archiver->getName());
+    }
+
     public function testDoNothingIfMoreThan1FileWasWritten()
     {
         $archivableWriter = $this->getArchivableFileWriterMock(array(
@@ -66,6 +76,28 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->archiver->archive($jobExecution);
+    }
+
+    public function testGetArchives()
+    {
+        $this->filesystem
+            ->expects($this->any())
+            ->method('listKeys')
+            ->will($this->returnValue(array('keys' => array('foo','bar'))));
+
+        $this->filesystem
+            ->expects($this->any())
+            ->method('createStream')
+            ->will($this->returnValueMap(array(
+                array('foo', 'fooStream'),
+                array('bar', 'barStream'),
+            )));
+
+        $jobExecution = $this->getJobExecutionMock(
+            $this->getJobInstanceMock('import', 'product_import', null),
+            42
+        );
+        $this->assertSame(array('fooStream', 'barStream'), $this->archiver->getArchives($jobExecution));
     }
 
     protected function getFilesystemMock()

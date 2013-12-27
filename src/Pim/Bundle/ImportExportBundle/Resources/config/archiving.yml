@@ -49,5 +49,6 @@ services:
         arguments:
             - '@pim_import_export.factory.zip_filesystem'
             - %archive_dir%
+            - '@pim_archivist_filesystem'
         tags:
             - { name: pim_import_export.archiver }

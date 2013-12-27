@@ -19,6 +19,16 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         $this->archiver   = new FileReaderArchiver($this->filesystem);
     }
 
+    public function testIsAnArchiver()
+    {
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
+    }
+
+    public function testGetName()
+    {
+        $this->assertSame('input', $this->archiver->getName());
+    }
+
     public function testArchive()
     {
         $fileReader = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
@@ -44,6 +54,28 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->archiver->archive($jobExecution);
+    }
+
+    public function testGetArchives()
+    {
+        $this->filesystem
+            ->expects($this->any())
+            ->method('listKeys')
+            ->will($this->returnValue(array('keys' => array('foo','bar'))));
+
+        $this->filesystem
+            ->expects($this->any())
+            ->method('createStream')
+            ->will($this->returnValueMap(array(
+                array('foo', 'fooStream'),
+                array('bar', 'barStream'),
+            )));
+
+        $jobExecution = $this->getJobExecutionMock(
+            $this->getJobInstanceMock('import', 'product_import', null),
+            42
+        );
+        $this->assertSame(array('fooStream', 'barStream'), $this->archiver->getArchives($jobExecution));
     }
 
     protected function getFilesystemMock()
@@ -85,7 +117,6 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 
         return $jobInstance;
     }
-
 
     protected function getJobMock(array $steps)
     {

@@ -18,6 +18,7 @@ use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
+use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
 
 /**
  * Job execution controller

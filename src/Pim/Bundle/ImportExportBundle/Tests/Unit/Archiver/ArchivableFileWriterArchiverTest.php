@@ -15,8 +15,19 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->factory = $this->getZipFilesystemFactoryMock();
-        $this->archiver   = new ArchivableFileWriterArchiver($this->factory, '/tmp');
+        $this->factory    = $this->getZipFilesystemFactoryMock();
+        $this->filesystem = $this->getFilesystemMock();
+        $this->archiver   = new ArchivableFileWriterArchiver($this->factory, '/tmp', $this->filesystem);
+    }
+
+    public function testIsAnArchiver()
+    {
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
+    }
+
+    public function testGetName()
+    {
+        $this->assertSame('archive', $this->archiver->getName());
     }
 
     public function testDoNothingIfLessThan2FilesWereWritten()
@@ -37,7 +48,7 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         $this->factory
             ->expects($this->any())
             ->method('createZip')
-            ->with('/tmp/import/product_import/42/output/export.zip')
+            ->with('/tmp/import/product_import/42/archive/export.zip')
             ->will($this->returnValue($filesystem));
 
         $filesystem->expects($this->never())->method('write');
@@ -64,7 +75,7 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         $this->factory
             ->expects($this->any())
             ->method('createZip')
-            ->with('/tmp/import/product_import/42/output/export.zip')
+            ->with('/tmp/import/product_import/42/archive/export.zip')
             ->will($this->returnValue($filesystem));
 
         $filesystem->expects($this->at(0))->method('write')->with('export.csv', "An exported file\n", true);
@@ -73,7 +84,29 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         $this->archiver->archive($jobExecution);
     }
 
-    public function getZipFilesystemFactoryMock()
+    public function testGetArchives()
+    {
+        $this->filesystem
+            ->expects($this->any())
+            ->method('listKeys')
+            ->will($this->returnValue(array('keys' => array('foo','bar'))));
+
+        $this->filesystem
+            ->expects($this->any())
+            ->method('createStream')
+            ->will($this->returnValueMap(array(
+                array('foo', 'fooStream'),
+                array('bar', 'barStream'),
+            )));
+
+        $jobExecution = $this->getJobExecutionMock(
+            $this->getJobInstanceMock('import', 'product_import', null),
+            42
+        );
+        $this->assertSame(array('fooStream', 'barStream'), $this->archiver->getArchives($jobExecution));
+    }
+
+    protected function getZipFilesystemFactoryMock()
     {
         return $this->getMock('Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory');
     }

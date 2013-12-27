@@ -26,6 +26,11 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
     }
 
+    public function testGetName()
+    {
+        $this->assertSame('invalid', $this->archiver->getName());
+    }
+
     public function testDoNothingWhenNoInvalidItemsCollected()
     {
         $this->collector
@@ -76,11 +81,33 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('write')
             ->with(
-                'import/product_import/42/invalid_items.csv',
+                'import/product_import/42/invalid/invalid_items.csv',
                 "sku;name;descriptionfoo;\"Teh Foo\"bar;\"Teh Bar\";\"Teh Bar Description\""
             );
 
         $this->archiver->archive($jobExecution);
+    }
+
+    public function testGetArchives()
+    {
+        $this->filesystem
+            ->expects($this->any())
+            ->method('listKeys')
+            ->will($this->returnValue(array('keys' => array('foo','bar'))));
+
+        $this->filesystem
+            ->expects($this->any())
+            ->method('createStream')
+            ->will($this->returnValueMap(array(
+                array('foo', 'fooStream'),
+                array('bar', 'barStream'),
+            )));
+
+        $jobExecution = $this->getJobExecutionMock(
+            $this->getJobInstanceMock('import', 'product_import', null),
+            42
+        );
+        $this->assertSame(array('fooStream', 'barStream'), $this->archiver->getArchives($jobExecution));
     }
 
     protected function getInvalidItemsCollectorMock()

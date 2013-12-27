@@ -28,6 +28,7 @@ class ZipFilesystemFactoryTest extends \PHPUnit_Framework_TestCase
         $fs = $this->factory->createZip('/tmp/foobar.zip');
 
         $this->assertInstanceOf('Gaufrette\Filesystem', $fs);
-        $this->assertAttributeInstanceOf('Gaufrette\Adapter\Zip', 'adapter', $fs);
+        $this->assertInstanceOf('Gaufrette\Adapter\Zip', $fs->getAdapter());
+        $this->assertAttributeEquals('/tmp/foobar.zip', 'zipFile', $fs->getAdapter());
     }
 }
