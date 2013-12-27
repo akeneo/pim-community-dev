@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -89,7 +88,17 @@ class InjectProductReferenceSubscriber implements EventSubscriber
             $this->setProductPersistentCollection(
                 $entity,
                 array(
-                    'mappedBy' => 'productAssociations'
+                    'mappedBy'  => 'productAssociations',
+                    'fetch'     => ClassMetadata::FETCH_EAGER,
+                    'joinTable' => array(
+                        'name' => 'pim_catalog_product_association_product',
+                        'joinColumns' => array(
+                            'productassociation_id' => array('referencedColumnName' => 'id')
+                        ),
+                        'inverseJoinColumns' => array(
+                            'product_id' => array('referencedColumnName' => 'id')
+                        )
+                    )
                 ),
                 $entityManager
             );
