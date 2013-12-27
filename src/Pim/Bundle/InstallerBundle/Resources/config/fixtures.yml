@@ -1,6 +1,7 @@
 default:
     class: Pim\Bundle\InstallerBundle\FixtureLoader\Loader
     order: 100
+    multiple: false
     csv:
         reader:            pim_import_export.reader.file.csv
         reader_options:    {}
@@ -10,12 +11,50 @@ default:
         reader_options:    {}
         processor_options: {}
 
+categories:
+    order: 30
+    multiple: true
+    csv:
+        reader:            pim_import_export.reader.file.csv_category
+        processor:         pim_import_export.processor.category
+    yml:
+        reader:            pim_import_export.reader.file.yaml_multiple
+        processor:         pim_import_export.processor.category
+
+attribute_groups:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.attribute_group
+    yml:
+        processor:         pim_import_export.processor.attribute_group
+
+channels:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.channel
+    yml:
+        processor:         pim_import_export.processor.channel
+
+group_types:
+    order: 30
+    csv:
+        processor:         pim_import_export.processor.group_type
+    yml:
+        processor:         pim_import_export.processor.group_type
+
 associations:
-    order: 50
+    order: 40
     csv:
         processor:         pim_import_export.processor.association
     yml:
         processor:         pim_import_export.processor.association
+
+attributes:
+    order: 40
+    csv:
+        processor:         pim_import_export.processor.attribute
+    yml:
+        processor:         pim_import_export.processor.attribute
 
 attribute_options:
     order: 50
@@ -36,7 +75,19 @@ products:
     csv:
         processor:         pim_import_export.processor.product
     yml:
-        reader_options:
-            code_field: false
-            homogenize: true
+        reader:            pim_import_export.reader.file.yaml_product
         processor:         pim_import_export.processor.product
+
+groups:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.group
+    yml:
+        processor:         pim_import_export.processor.group
+
+jobs:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.job_instance
+    yml:
+        processor:         pim_import_export.processor.job_instance

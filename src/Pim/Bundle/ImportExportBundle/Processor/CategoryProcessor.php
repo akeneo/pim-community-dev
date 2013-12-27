@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Valid category creation (or update) processor
@@ -15,14 +17,30 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryProcessor extends AbstractEntityProcessor
+class CategoryProcessor extends TransformerProcessor
 {
+    /**
+     * @var EntityCache
+     */
+    protected $entityCache;
+
     /**
      * If true, category data will be checked to make sure that there are no circular references between the categories
      *
      * @var boolean
      */
     protected $circularRefsChecked = true;
+
+    public function __construct(
+        ImportValidatorInterface $validator,
+        TranslatorInterface $translator,
+        ORMTransformer $transformer,
+        EntityCache $entityCache,
+        $class
+    ) {
+        parent::__construct($validator, $translator, $transformer, $class);
+        $this->entityCache = $entityCache;
+    }
 
     /**
      * Set circularRefsChecked
@@ -67,146 +85,87 @@ class CategoryProcessor extends AbstractEntityProcessor
      */
     public function process($data)
     {
-        $this->data = new ArrayCollection($data);
-        $this->entities = new ArrayCollection();
+        $categories = array();
+        $parents = array();
+        $items = array();
 
-        foreach ($this->data as $item) {
-            $this->processItem($item);
+        foreach ($data as $item) {
+            $parents[$item['code']] = isset($item['parent']) ? $item['parent'] : null;
+            unset($item['parent']);
+            if ($category = parent::process($item)) {
+                $categories[$item['code']] = $category;
+                $items[$item['code']] = $item;
+            }
         }
 
-        foreach ($this->entities as $category) {
-            $parent = $this->data->filter(
-                function ($item) use ($category) {
-                    return $item['code'] === $category->getCode();
-                }
-            )->first();
-            $parentCode = $parent['parent'];
-            if ($parentCode) {
-                $this->addParent($category, $parentCode);
+        $this->setParents($categories, $parents, $items);
+
+        if (true === $this->circularRefsChecked) {
+            $this->checkCircularReferences($categories, $items);
+        }
+
+        return $categories;
+    }
+
+    /**
+     * Sets the parents and recursively removes categories with bad parents
+     *
+     * @param array $categories
+     * @param array $parents
+     * @param array $category
+     */
+    protected function setParents(array &$categories, array $parents, array $items)
+    {
+        $invalidCodes = array();
+        foreach ($categories as $code => $category) {
+            $parentCode = $parents[$code];
+            if (!$parentCode) {
+                continue;
+            }
+
+            if (isset($categories[$parentCode])) {
+                $parent = $categories[$parentCode];
             } else {
-                $category->setParent(null);
+                $parent = $this->entityCache->find($this->class, $parentCode);
             }
-        }
-
-        if ($this->circularRefsChecked === true) {
-            $this->checkCircularReferences();
-        }
-
-        return $this->entities->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Transforms a category to a form-compatible format and binds it to the CategoryType
-     */
-    protected function processItem($item)
-    {
-        $category = $this->getCategory($item);
-
-        $category->setCode($item['code']);
-        foreach ($item as $key => $value) {
-            if (preg_match('/^label-(.+)/', $key, $matches)) {
-                $category->setLocale($matches[1]);
-                $category->setLabel($value);
-            }
-        }
-
-        $category->setLocale(null);
-
-        $violations = $this->validator->validate($category);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[] = (string) $violation;
-            }
-            $this->skipItem($item, implode(', ', $messages));
-
-        } else {
-            $this->entities[] = $category;
-        }
-    }
-
-    /**
-     * Assigns a parent to the category
-     *
-     * @param CategoryInterface $category
-     * @param string            $parentCode
-     *
-     * @return null
-     */
-    private function addParent(CategoryInterface $category, $parentCode)
-    {
-        if ($category->getCode() === $parentCode) {
-            $this->processInvalidParent($parentCode);
-
-            return;
-        }
-
-        $parent = $this->findCategory($parentCode);
-
-        if ($parent) {
-            $category->setParent($parent);
-        } else {
-            $parent = $this->entities->filter(
-                function ($category) use ($parentCode) {
-                    return $category->getCode() === $parentCode;
-                }
-            )->first();
 
             if ($parent) {
                 $category->setParent($parent);
             } else {
-                $this->processInvalidParent($parentCode);
+                $invalidCodes[] = $code;
             }
+        }
+
+        if (count($invalidCodes)) {
+            foreach ($invalidCodes as $code) {
+                $this->setItemErrors(
+                    $items[$code],
+                    array(
+                        'parent' => array(
+                            array('No category with code %code%', array('%code%' => $parents[$code]))
+                        )
+                    )
+                );
+                unset($categories[$code]);
+            }
+            $this->setParents($categories, $parents, $items);
         }
     }
 
     /**
-     * Recursively removes categories with invalid parent categories
-     *
-     * @param string $parentCode
-     *
-     * @return null
+     * {@inheritdoc}
      */
-    private function processInvalidParent($parentCode)
+    protected function setItemErrors(array $item, array $errors)
     {
-        $invalidItems = $this->data->filter(
-            function ($item) use ($parentCode) {
-                return $item['parent'] === $parentCode;
-            }
-        );
-
-        foreach ($invalidItems as $invalidItem) {
-            $this->data->removeElement($invalidItem);
-        }
-
-        $invalidCodes = $invalidItems->map(
-            function ($item) {
-                return $item['code'];
-            }
-        );
-
-        $em = $this->entityManager;
-        foreach ($invalidCodes as $code) {
-            $this->entities = $this->entities->filter(
-                function ($category) use ($code, $em) {
-                    if ($category->getCode() === $code) {
-                        $em->detach($category);
-                        foreach ($category->getTranslations() as $translation) {
-                            $em->detach($translation);
-                        }
-
-                        // TODO: Log an error = this category can't be imported because it has an invalid parent
-                        // somewhere in the category tree
-                        return false;
-                    }
-
-                    return true;
-                }
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                implode("\n", $this->getErrorMessages($errors)),
+                $item
             );
-
-            $this->processInvalidParent($code);
+        } else {
+            parent::setItemErrors($item, $errors);
         }
     }
 
@@ -215,66 +174,38 @@ class CategoryProcessor extends AbstractEntityProcessor
      *
      * @return null
      */
-    private function checkCircularReferences()
+    private function checkCircularReferences(array $categories, array $items)
     {
-        $categories = $this->entities->filter(
-            function ($category) {
-                return $category->getParent() !== null;
+        $invalidCodes = array();
+        $checkParent = function ($category, $visited = array()) use (&$invalidCodes, &$checkParent) {
+            if ($category === null) {
+                return;
             }
-        );
+            $invalid = in_array($category->getCode(), $visited);
+            $visited[] = $category->getCode();
+            if ($invalid) {
+                $invalidCodes = array_merge($visited, $invalidCodes);
+            } else {
+                $checkParent($category->getParent(), $visited);
+            }
+        };
 
         foreach ($categories as $category) {
-            $this->checkParent($category, array());
-        }
-    }
-
-    /**
-     * Recursively finds the root parent of the category, removes the category if a circular reference is encountered
-     *
-     * @param Category|null $category
-     * @param array         $visited
-     *
-     * @return null
-     */
-    private function checkParent($category, array $visited)
-    {
-        if ($category === null) {
-            return;
+            if (null !== $category->getParent()) {
+                $checkParent($category);
+            }
         }
 
-        if (isset($visited[$category->getCode()])) {
-            $this->processInvalidParent($category->getCode());
-        } else {
-            $visited[$category->getCode()] = true;
-            $this->checkParent($category->getParent(), $visited);
+        foreach (array_unique($invalidCodes) as $code) {
+            unset($categories[$code]);
+            $this->setItemErrors(
+                $items[$code],
+                array(
+                    'parent' => array(
+                        array('Circular reference')
+                    )
+                )
+            );
         }
-    }
-
-    /**
-     * Create a category
-     *
-     * @param array $item
-     *
-     * @return Category
-     */
-    private function getCategory(array $item)
-    {
-        $category = $this->findCategory($item['code']);
-        if (!$category) {
-            $category = new Category();
-        }
-
-        return $category;
-    }
-
-    /**
-     * Find category by code
-     * @param string $code
-     *
-     * @return Category|null
-     */
-    private function findCategory($code)
-    {
-        return $this->entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(array('code' => $code));
     }
 }

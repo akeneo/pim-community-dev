@@ -155,7 +155,7 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
     {
         $flexibleManager = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('getFlexibleRepository'))
+            ->setMethods(array('getFlexibleRepository', 'getAttributeRepository'))
             ->getMock();
 
         return $flexibleManager;
@@ -166,10 +166,10 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
      */
     private function createFlexibleEntityRepository()
     {
-        $flexibleManager = $this->getMockBuilder(
+        $mock = $this->getMockBuilder(
             'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository'
         )->disableOriginalConstructor()->setMethods(array('applySorterByAttribute'))->getMock();
 
-        return $flexibleManager;
+        return $mock;
     }
 }

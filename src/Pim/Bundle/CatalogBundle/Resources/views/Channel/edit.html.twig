@@ -17,7 +17,7 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_channel_index')) }}
-            {% if form.vars.value.id %}
+            {% if form.vars.value.id and resource_granted('pim_catalog_channel_remove') %}
                 {{ elements.deleteLink(
                     path('pim_catalog_channel_remove', { id: form.vars.value.id }),
                     path('pim_catalog_channel_index'), 'confirmation.remove.channel'|trans({"%name%": form.vars.value.label}), "", "flash.channel.removed"|trans)

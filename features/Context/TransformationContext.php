@@ -110,6 +110,18 @@ class TransformationContext extends RawMinkContext
     }
 
     /**
+     * @param string $label
+     *
+     * @Transform /^"([^"]*)" role$/
+     *
+     * @return Role
+     */
+    public function castRoleLabelToRole($label)
+    {
+        return $this->getFixturesContext()->getRole($label);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()

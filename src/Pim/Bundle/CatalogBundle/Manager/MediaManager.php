@@ -217,4 +217,15 @@ class MediaManager
     {
         return $this->filesystem->has($media->getFilename());
     }
+
+    /**
+     * Get the media, base64 encoded
+     * @param Media $media
+     *
+     * @return string
+     */
+    public function getBase64(Media $media)
+    {
+        return base64_encode(file_get_contents($this->getFilePath($media)));
+    }
 }

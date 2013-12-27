@@ -32,15 +32,15 @@
 
         {% set buttons %}
             {{ elements.backLink(path(indexRoute)) }}
-            {{
-                elements.deleteLink(
+            {% if resource_granted('pim_catalog_group_remove') %}
+                {{ elements.deleteLink(
                     path(removeRoute, { id: form.vars.value.id }),
                     path(indexRoute),
                     confirmationMessage|trans({"%name%": form.vars.value.label}),
                     "",
                     removeMessage|trans
-                )
-            }}
+                ) }}
+            {% endif %}
             {{ elements.submitBtn() }}
         {% endset %}
 

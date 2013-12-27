@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
 
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
@@ -173,7 +172,7 @@ class JobInstanceType extends AbstractType
         $builder
             ->add(
                 'job',
-                new JobConfigurationType(),
+                'pim_import_export_job_configuration',
                 array(
                     'required'     => false,
                     'by_reference' => false,

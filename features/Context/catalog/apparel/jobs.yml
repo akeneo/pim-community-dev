@@ -1,7 +1,7 @@
 jobs:
     product_import:
         connector: Akeneo CSV Connector
-        alias:     product_import
+        alias:     csv_product_import
         label:     Product import
         type:      import
         configuration:
@@ -17,7 +17,7 @@ jobs:
             realTimeVersioning: true
     ecommerce_product_export:
         connector: Akeneo CSV Connector
-        alias:     product_export
+        alias:     csv_product_export
         label:     Product export for ecommerce
         type:      export
         configuration:
@@ -28,7 +28,7 @@ jobs:
             filePath:   /tmp/export/products_ecommerce.csv
     tablet_product_export:
         connector: Akeneo CSV Connector
-        alias:     product_export
+        alias:     csv_product_export
         label:     Product export for tablet
         type:      export
         configuration:
@@ -39,7 +39,7 @@ jobs:
             filePath:   /tmp/export/products_tablet.csv
     print_product_export:
         connector: Akeneo CSV Connector
-        alias:     product_export
+        alias:     csv_product_export
         label:     Product export for print
         type:      export
         configuration:
@@ -50,7 +50,7 @@ jobs:
             filePath:   /tmp/export/products_print.csv
     category_import:
         connector: Akeneo CSV Connector
-        alias:     category_import
+        alias:     csv_category_import
         label:     Category import
         type:      import
         configuration:
@@ -62,7 +62,7 @@ jobs:
             circularRefsChecked: true
     category_export:
         connector: Akeneo CSV Connector
-        alias:     category_export
+        alias:     csv_category_export
         label:     Category export
         type:      export
         configuration:
@@ -72,7 +72,7 @@ jobs:
             filePath:   /tmp/export/categories.csv
     association_import:
         connector: Akeneo CSV Connector
-        alias:     association_import
+        alias:     csv_association_import
         label:     Association import
         type:      import
         configuration:
@@ -83,7 +83,7 @@ jobs:
             escape:        '\'
     association_export:
         connector: Akeneo CSV Connector
-        alias:     association_export
+        alias:     csv_association_export
         label:     Association export
         type:      export
         configuration:
@@ -93,7 +93,7 @@ jobs:
             filePath:   /tmp/export/associations.csv
     group_import:
         connector: Akeneo CSV Connector
-        alias:     group_import
+        alias:     csv_group_import
         label:     Group import
         type:      import
         configuration:
@@ -104,7 +104,7 @@ jobs:
             escape:        '\'
     group_export:
         connector: Akeneo CSV Connector
-        alias:     group_export
+        alias:     csv_group_export
         label:     Group export
         type:      export
         configuration:
@@ -114,7 +114,7 @@ jobs:
             filePath:  /tmp/export/groups.csv
     attribute_import:
         connector: Akeneo CSV Connector
-        alias:     attribute_import
+        alias:     csv_attribute_import
         label:     Attribute import
         type:      import
         configuration:
@@ -125,7 +125,7 @@ jobs:
             escape:        '\'
     attribute_export:
         connector: Akeneo CSV Connector
-        alias:     attribute_export
+        alias:     csv_attribute_export
         label:     Attribute export
         type:      export
         configuration:
@@ -135,7 +135,7 @@ jobs:
             filePath:   /tmp/export/attributes.csv
     option_import:
         connector: Akeneo CSV Connector
-        alias:     attribute_option_import
+        alias:     csv_attribute_option_import
         label:     Option import
         type:      import
         configuration:
@@ -146,7 +146,7 @@ jobs:
             escape:        '\'
     option_export:
         connector: Akeneo CSV Connector
-        alias:     attribute_option_export
+        alias:     csv_attribute_option_export
         label:     Option export
         type:      export
         configuration:

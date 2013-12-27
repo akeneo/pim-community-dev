@@ -5,108 +5,99 @@ attributes:
             fr_FR: SKU
         type:  pim_catalog_identifier
         group: general
-        parameters:
-            required:            true
-            unique:              true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
+        required:            true
+        unique:              true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
     name:
         labels:
             en_US: Name
             fr_FR: Nom
         type:  pim_catalog_text
         group: general
-        parameters:
-            translatable:        true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
     price:
         labels:
             en_US: Price
             fr_FR: Prix
         type:  pim_catalog_price_collection
         group: marketing
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            numberMin:           1
-            numberMax:           500
-            sortOrder:           1
-            decimalsAllowed:     true
-            translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           500
+        sortOrder:           1
+        decimalsAllowed:     true
+        translatable:        true
     short_description:
         labels:
             en_US: Short Description
             fr_FR: Description courte
         type:  pim_catalog_textarea
         group: general
-        parameters:
-            translatable:        true
-            scopable:            true
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            maxCharacters:       100
-            sortOrder:           3
+        translatable:        true
+        scopable:            true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        maxCharacters:       100
+        sortOrder:           3
     long_description:
         labels:
             en_US: Long Description
             fr_FR: Description longue
         type:  pim_catalog_textarea
         group: general
-        parameters:
-            translatable:        true
-            scopable:            true
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            wysiwygEnabled:      true
-            sortOrder:           4
+        translatable:        true
+        scopable:            true
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        wysiwygEnabled:      true
+        sortOrder:           4
     release_date:
         labels:
             en_US: Release date
             fr_FR: Date de sortie
         type:  pim_catalog_date
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            dateType:            'date'
-            dateMin:             '2012-01-01'
-            dateMax:             '2014-01-01'
-            sortOrder:           5
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        dateType:            'date'
+        dateMin:             '2012-01-01'
+        dateMax:             '2014-01-01'
+        sortOrder:           5
     file_upload:
         labels:
             en_US: File upload
             fr_FR: Fichier téléchargé
         type:  pim_catalog_file
         group: seo
-        parameters:
-            maxFileSize: 2
-            sortOrder:   1
-            allowedExtensions: 'pdf'
+        maxFileSize: 2
+        sortOrder:   1
+        allowedExtensions: 'pdf'
     image_upload:
         labels:
             en_US: Image upload
             fr_FR: Image téléchargée
         type:  pim_catalog_image
         group: seo
-        parameters:
-            translatable:      true
-            maxFileSize:       2000
-            sortOrder:         2
-            allowedExtensions: 'gif,jpeg,png'
+        translatable:      true
+        maxFileSize:       2000
+        sortOrder:         2
+        allowedExtensions: 'gif,jpeg,png'
     size:
         labels:
             en_US: Size
             fr_FR: Taille
         type:  pim_catalog_simpleselect
         group: sizes
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
-            defaultValue:        M
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
+        defaultValue:        M
         options:
             XS:
                 labels:
@@ -134,11 +125,10 @@ attributes:
             fr_FR: Couleur
         type:  pim_catalog_multiselect
         group: colors
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           1
-            translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
+        translatable:        true
         options:
             Red:
                 labels:
@@ -166,11 +156,10 @@ attributes:
             fr_FR: Fabriquant
         type:  pim_catalog_simpleselect
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           10
-            translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           10
+        translatable:        true
         options:
             MyMug:
                 labels:
@@ -186,10 +175,9 @@ attributes:
             fr_FR: Couleur unique
         type:  pim_catalog_simpleselect
         group: colors
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           2
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
         options:
             uc_black:
                 labels:
@@ -229,56 +217,51 @@ attributes:
             fr_FR: Poids
         type:  pim_catalog_metric
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           10
-            metricFamily:        Weight
-            defaultMetricUnit:   GRAM
-            decimalsAllowed:     true
-            translatable:        true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           10
+        metricFamily:        Weight
+        defaultMetricUnit:   GRAM
+        decimalsAllowed:     true
+        translatable:        true
     washing_temperature:
         labels:
             en_US: Washing Temperature
             fr_FR: Température de lavage
         type:  pim_catalog_metric
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           10
-            metricFamily:        Temperature
-            defaultMetricUnit:   CELSIUS
-            decimalsAllowed:     true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           10
+        metricFamily:        Temperature
+        defaultMetricUnit:   CELSIUS
+        decimalsAllowed:     true
     processor_brand:
         labels:
             en_US: Processor brand
             fr_FR: Marque processeur
         type:  pim_catalog_text
         group: general
-        parameters:
-            useableAsGridColumn: false
-            useableAsGridFilter: true
-            sortOrder:           200
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           200
     core_number:
         labels:
             en_US: Core number
             fr_FR: Nombre de coeurs
         type:  pim_catalog_number
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           100
-            decimalsAllowed:     false
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           100
+        decimalsAllowed:     false
     height:
         labels:
             en_US: Height
             fr_FR: Hauteur
         type:  pim_catalog_number
         group: general
-        parameters:
-            useableAsGridColumn: true
-            useableAsGridFilter: true
-            sortOrder:           100
-            decimalsAllowed:     true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           100
+        decimalsAllowed:     true

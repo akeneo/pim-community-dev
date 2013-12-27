@@ -16,8 +16,12 @@ class DefaultTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
-        $value = trim($value);
+        if (is_scalar($value)) {
+            $value = trim($value);
 
-        return empty($value) ? null : $value;
+            return empty($value) ? null : $value;
+        } else {
+            return $value;
+        }
     }
 }

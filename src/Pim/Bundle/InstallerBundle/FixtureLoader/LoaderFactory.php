@@ -66,35 +66,36 @@ class LoaderFactory
         $reader = $this->configRegistry->getReader($name, $extension);
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
+        $multiple = $this->configRegistry->isMultiple($name);
 
-        return $this->createLoader($objectManager, $referenceRepository, $reader, $processor, $class);
+        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple);
     }
 
     /**
      * Creates a loader
      *
      * @param ObjectManager          $objectManager
-     * @param ReferenceRepository    $referenceRepository
      * @param ItemReaderInterface    $reader
      * @param ItemProcessorInterface $processor
      * @param string                 $class
+     * @param boolean                $multiple
      *
      * @return LoaderInterface
      */
     protected function createLoader(
         ObjectManager $objectManager,
-        ReferenceRepository $referenceRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        $class
+        $class,
+        $multiple
     ) {
         return new $class(
             $objectManager,
-            $referenceRepository,
             $this->entityCache,
             $reader,
             $processor,
-            $this->eventDispatcher
+            $this->eventDispatcher,
+            $multiple
         );
     }
 }

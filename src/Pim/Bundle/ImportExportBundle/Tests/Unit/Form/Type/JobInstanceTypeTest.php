@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobConfigurationType;
 
 /**
  * Test related class
@@ -20,11 +22,26 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
     protected function setUp()
     {
         parent::setUp();
-
-        // create form type
         $connector = $this->getConnectorRegistryMock();
         $this->type = new JobInstanceType($connector);
         $this->form = $this->factory->create($this->type);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExtensions()
+    {
+        $jobType = new JobConfigurationType();
+
+        return array(
+            new PreloadedExtension(
+                array(
+                    $jobType->getName() => $jobType,
+                ),
+                array()
+            )
+        );
     }
 
     /**
@@ -48,7 +65,7 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
         // Assert fields
         $this->assertField('code', 'text');
         $this->assertField('label', 'text');
-        $this->assertField('job', 'oro_batch_job_configuration');
+        $this->assertField('job', 'pim_import_export_job_configuration');
 
         // Assert name
         $this->assertEquals('pim_import_export_jobInstance', $this->form->getName());
