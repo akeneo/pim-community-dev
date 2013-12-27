@@ -33,7 +33,7 @@ interface ArchiverInterface
      * Get a specific archive of a job execution
      *
      * @param JobExecution $jobExecution
-     * @param string $key
+     * @param string       $key
      *
      * @return \Gaufrette\Stream
      */

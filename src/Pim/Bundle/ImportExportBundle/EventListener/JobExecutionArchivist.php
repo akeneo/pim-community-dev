@@ -86,8 +86,8 @@ class JobExecutionArchivist implements EventSubscriberInterface
      * Get an archive of an archiver
      *
      * @param JobExecution $jobExecution
-     * @param string $archiver
-     * @param string $key
+     * @param string       $archiver
+     * @param string       $key
      *
      * @return \Gaufrette\Stream
      */

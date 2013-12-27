@@ -43,7 +43,6 @@ class InvalidItemsCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->collector->collect($event);
 
-
         $this->assertEquals(
             array(
                 '3067c955e49d30d7b352a8e7751f36c4' => array(
