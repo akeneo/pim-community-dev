@@ -695,6 +695,73 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $permission
+     * @param string $resources
+     *
+     * @When /^I (grant|remove) rights to (.*)$/
+     */
+    public function iSetRightsToACLResources($permission, $resources)
+    {
+        $permission = $permission === 'grant' ? 'System' : 'None';
+        foreach ($this->listToArray($resources) as $resource) {
+            $this->getCurrentPage()->clickResourceField($resource);
+            $this->wait();
+            $this->getCurrentPage()->setResourceRights($resource, $permission);
+        }
+    }
+
+    /**
+     * @When /^I grant all rights$/
+     *
+     * @return Then
+     */
+    public function iGrantAllRightsToACLResources()
+    {
+        $resources = implode(', ', $this->getCurrentPage()->getResourcesByPermission('None'));
+
+        return new Step\Then(sprintf('I grant rights to %s', $resources));
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I reset the "([^"]*)" rights$/
+     *
+     * @return Then[]
+     */
+    public function iResetTheRights($role)
+    {
+        return array(
+            new Step\Then(sprintf('I am on the "%s" role page', $role)),
+            new Step\Then('I grant all rights'),
+            new Step\Then('I save the role')
+        );
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^removing the following permissions? should hide the following buttons?:$/
+     *
+     * @return Then[]
+     */
+    public function removingPermissionsShouldHideTheButtons(TableNode $table)
+    {
+        $steps = array();
+
+        foreach ($table->getHash() as $data) {
+            $steps[] = new Step\Then('I am on the "Administrator" role page');
+            $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
+            $steps[] = new Step\Then('I save the role');
+            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
+            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['button']));
+        }
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
+
+        return $steps;
+    }
+
+    /**
      * @param string $file
      * @param string $field
      *
@@ -1402,6 +1469,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $language
+     *
      * @When /^I compare values with the "([^"]*)" translation$/
      */
     public function iCompareValuesWithTheTranslation($language)
@@ -1411,6 +1480,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $languages
+     *
      * @Then /^I should see comparison languages "([^"]*)"$/
      */
     public function iShouldSeeComparisonLanguages($languages)
@@ -1419,6 +1490,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $field
+     *
      * @Given /^I select translations for "([^"]*)"$/
      */
     public function iSelectTranslationsFor($field)
@@ -1427,6 +1500,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $mode
+     *
      * @Given /^I select (.*) translations$/
      */
     public function iSelectTranslations($mode)
@@ -1443,6 +1518,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $groupField
+     * @param TableNode $fields
+     *
      * @Given /^I should see "([^"]*)" fields:$/
      */
     public function iShouldSeeFields($groupField, TableNode $fields)

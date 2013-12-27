@@ -7,8 +7,8 @@ Feature: Import associations
   Scenario: Successfully import associations
     Given the "default" catalog configuration
     And the following jobs:
-      | connector            | alias              | code                    | label                       | type   |
-      | Akeneo CSV Connector | association_import | acme_association_import | Association import for Acme | import |
+      | connector            | alias                  | code                    | label                       | type   |
+      | Akeneo CSV Connector | csv_association_import | acme_association_import | Association import for Acme | import |
     And I am logged in as "Julia"
     And the following file to import:
     """

@@ -8,8 +8,8 @@
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
-- Fixtures can be in CSV (products, associations and attribute options)
-- Fixture files can be imported through a command (families, products, associations and attribute options)
+- Fixtures can be in CSV (all fixtures except users and currencies)
+- Fixture files can be imported through a command (all fixtures except users and currencies)
 - Add quick create popin for jobs
 - Add WYSIWYG editor
 
@@ -29,6 +29,7 @@
 - Allow to switch configuration between ORM and ODM
 - Update OroPlatform from beta-1 to beta-5
 - Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
+- Hide entity creation/deletion buttons if users don't have the corresponding rights
 
 ## Bug fixes
 - Missing pending versionable entities
@@ -56,13 +57,13 @@
 - Search should take account of ACLs
 - Oro mapping issue with search item on beta-1
 - Locale selector in the product header is sometimes too short
+- Allow to remove a translation setting it to empty
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
 - Completeness and Product are not linked any more via a Doctrine relationship. We are cutting the links between Product and other entities in order to pave the way to the ability to switch between MongoDB and ORM while using the same API (apart from Product repository).
-- Group and Products are not linked any more from Group (same reason than for Completeness)
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
@@ -72,6 +73,7 @@
 - Introduce ProductAttributeManagerInterface andre move references to concret class
 - Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
+- Attribute fixtures format has changed
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

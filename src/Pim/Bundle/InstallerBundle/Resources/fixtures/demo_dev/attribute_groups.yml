@@ -1,21 +1,26 @@
 attribute_groups:
     general:
+        sort_order: 1
         labels:
             en_US: General
             fr_FR: Général
     seo:
+        sort_order: 2
         labels:
             en_US: SEO
             fr_FR: SEO
     marketing:
+        sort_order: 3
         labels:
             en_US: Marketing
             fr_FR: Commercial
     sizes:
+        sort_order: 4
         labels:
             en_US: Sizes
             fr_FR: Tailles
     colors:
+        sort_order: 5
         labels:
             en_US: Colors
             fr_FR: Couleurs

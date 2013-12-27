@@ -44,6 +44,11 @@ interface ProductAttributeManagerInterface
     public function getAttributeClass();
 
     /**
+     * @return string the attribute option class
+     */
+    public function getAttributeOptionClass();
+
+    /**
      * Create a ProductAttributeInterface object from data in the form
      *
      * @param array $data Form data

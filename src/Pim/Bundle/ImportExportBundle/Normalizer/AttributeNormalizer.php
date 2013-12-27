@@ -72,8 +72,8 @@ class AttributeNormalizer implements NormalizerInterface
             $results = array_merge(
                 $results,
                 array(
-                    'is_translatable' => (int) $object->isTranslatable(),
-                    'is_scopable'     => (int) $object->isScopable(),
+                    'translatable' => (int) $object->isTranslatable(),
+                    'scopable'     => (int) $object->isScopable(),
                 )
             );
         }

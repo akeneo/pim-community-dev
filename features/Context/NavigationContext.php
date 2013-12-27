@@ -3,9 +3,11 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -108,6 +110,27 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
         $this->openPage($page);
         $this->wait();
+    }
+
+    /**
+     * @param string $not
+     * @param string $page
+     *
+     * @return null|Then
+     * @Given /^I should( not)? be able to access the ([^"]*) page$/
+     */
+    public function iShouldNotBeAbleToAccessThePage($not, $page)
+    {
+        if (!$not) {
+            return $this->iAmOnThePage($page);
+        }
+
+        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+
+        $this->currentPage = $page;
+        $this->getCurrentPage()->open();
+
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -313,6 +336,17 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheGroupTypePage(GroupType $groupType)
     {
         $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Role $role
+     *
+     * @Given /^I should be on the ("([^"]*)" role) page$/
+     */
+    public function iShouldBeOnTheRolePage(Role $role)
+    {
+        $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
         $this->assertAddress($expectedAddress);
     }
 

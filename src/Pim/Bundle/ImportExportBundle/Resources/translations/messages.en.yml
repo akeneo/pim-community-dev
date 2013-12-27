@@ -3,45 +3,69 @@ pim_import_export:
     status:
         0: Ready
 
-    ## Jobs and steps
+    ## Job titles
     jobs:
-        product_export:
+        csv_product_export:
             title: Product export in CSV
             export.title: Product export
-        category_export:
+        csv_category_export:
             title: Category export in CSV
             export.title: Category export
-        attribute_export:
+        csv_attribute_export:
             title: Attribute export in CSV
             export.title: Attribute export
-        attribute_option_export:
+        csv_attribute_option_export:
             title: Attribute option export in CSV
             export.title: Attribute option export
-        association_export:
+        csv_association_export:
             title: Association export in CSV
             export.title: Association export
-        group_export:
+        csv_group_export:
             title: Group export in CSV
             export.title: Group export
-        product_import:
+        csv_product_import:
             title: Product import in CSV
             import.title: Product import
             import_associations.title: Product association import
-        category_import:
+        csv_category_import:
             title: Category import in CSV
             import.title: Category import
-        attribute_import:
+        csv_attribute_import:
             title: Attribute import in CSV
             import.title: Attribute import
-        attribute_option_import:
+        csv_attribute_option_import:
             title: Attribute option import in CSV
             import.title: Attribute option import
-        association_import:
+        csv_association_import:
             title: Association import in CSV
             import.title: Association import
-        group_import:
+        csv_group_import:
             title: Group import in CSV
             import.title: Group import
+
+    ## Step element titles (for readers, processors, writers)
+    steps:
+        dummy_reader.title:                  Dummy reader
+        dummy_processor.title:               Dummy processor
+        dummy_writer.title:                  Dummy writer
+        product_reader.title:                Product extraction
+        entity_reader.title:                 Entity extraction
+        csv_reader.title:                    CSV reader
+        csv_product_reader.title:            CSV product reader
+        csv_category_reader.title:           CSV category reader
+        product_processor.title:             Product creation
+        category_processor.title:            Category creation
+        association_processor.title:         Association creation
+        group_processor.title:               Group creation
+        attribute_processor.title:           Attribute creation
+        attribute_option_processor.title:    Attribute option creation
+        product_association_processor.title: Product association creation
+        heterogeneous_processor.title:       CSV product serializer
+        homogeneous_processor.title:         CSV entity serializer
+        file_writer.title:                   Output
+        product_writer.title:                Product storage
+        category_writer.title:               Category storage
+        writer.title:                        Entity storage
 
     ## Import/export configuration fields (for readers, processors, writers)
     import:
@@ -95,30 +119,6 @@ pim_import_export:
             label: With header
             help: Whether or not to print the column name
 
-## Step element titles (for readers, processors, writers)
-oro_batch:
-    dummy_reader.title:                  Dummy reader
-    dummy_processor.title:               Dummy processor
-    dummy_writer.title:                  Dummy writer
-    product_reader.title:                Product extraction
-    entity_reader.title:                 Entity extraction
-    csv_reader.title:                    CSV reader
-    csv_product_reader.title:            CSV product reader
-    csv_category_reader.title:           CSV category reader
-    product_processor.title:             Product creation
-    category_processor.title:            Category creation
-    association_processor.title:         Association creation
-    group_processor.title:               Group creation
-    attribute_processor.title:           Attribute creation
-    attribute_option_processor.title:    Attribute option creation
-    product_association_processor.title: Product association creation
-    heterogeneous_processor.title:       CSV product serializer
-    homogeneous_processor.title:         CSV entity serializer
-    file_writer.title:                   Output
-    product_writer.title:                Product storage
-    category_writer.title:               Category storage
-    writer.title:                        Entity storage
-
 # Page titles:
 Import management:        Import management
 Import %job.name% | Edit: Import %job.name% | Edit
@@ -126,3 +126,31 @@ Import %job.name% | Show: Import %job.name% | Show
 Export management:        Export management
 Export %job.name% | Edit: Export %job.name% | Edit
 Export %job.name% | Show: Export %job.name% | Show
+
+# ACLs
+pim_importexport:
+    acl:
+        export_profile:
+            index: View export profiles list
+            create: Create an export profile
+            show: Show an export profile
+            edit: Edit an export profile
+            remove: Remove an export profile
+            launch: Launch an export profile
+        import_profile:
+            index: View import profiles list
+            create: Create an import profile
+            show: Show an import profile
+            edit: Edit an import profile
+            remove: Remove an import profile
+            launch: Launch an import profile
+        export_execution:
+            index: View export reports list
+            show: View export report details
+            dl_log: Download export report log
+            dl_files: Download exported files
+        import_execution:
+            index: View import reports list
+            show: View import report details
+            dl_log: Download import report log
+            dl_files: Download imported files

@@ -76,5 +76,17 @@ services:
     pim_import_export.reader.file.yaml:
         class: %pim_import_export.reader.file.yaml.class%
 
+    pim_import_export.reader.file.yaml_multiple:
+        class: %pim_import_export.reader.file.yaml.class%
+        arguments:
+            - true
+
+    pim_import_export.reader.file.yaml_product:
+        class: %pim_import_export.reader.file.yaml.class%
+        arguments:
+            - false
+            - true
+            - false
+
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%

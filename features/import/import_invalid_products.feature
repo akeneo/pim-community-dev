@@ -15,8 +15,8 @@ Feature: Import invalid products
       | product     | attribute   | value |
       | honda-civic | publicPrice |       |
     And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+      | connector            | alias              | code                | label                       | type   |
+      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following file to import:
     """
     sku;publicPrice
