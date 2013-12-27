@@ -31,7 +31,7 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
      */
     public function read()
     {
-        return array_shift($data);
+        return array_shift($this->data);
     }
 
     /**

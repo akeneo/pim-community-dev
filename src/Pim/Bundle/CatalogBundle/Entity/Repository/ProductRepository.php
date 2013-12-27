@@ -188,7 +188,16 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
      */
     public function findByReference($code)
     {
-        return $this->findByWithAttributes(array(), array($this->getIdentifierCode() => $code));
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where('a.attributeType=:attribute_type')
+            ->andWhere('v.varchar=:code')
+            ->setParameter('attribute_type', 'pim_catalog_identifier')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -240,6 +249,6 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     {
         return $this->getEntityManager()
             ->getClassMetadata($this->getValuesClass())
-            ->getAssociationTargetClass('attributes');
+            ->getAssociationTargetClass('attribute');
     }
 }

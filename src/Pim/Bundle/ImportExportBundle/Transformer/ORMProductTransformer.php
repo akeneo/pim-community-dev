@@ -167,10 +167,10 @@ class ORMProductTransformer extends ORMTransformer
                 if (!isset($associations[$key])) {
                     $associations[$key] = array(
                         'owner'       => $entity->getReference(),
-                        'association' => $data[$columnInfo->getLabel()],
+                        'association' => $columnInfo->getName(),
                     );
                 }
-                $associations[$key][$lastSuffix] = $data[$columnInfo->getLabel()];
+                $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
             }
 
             foreach ($associations as $association) {

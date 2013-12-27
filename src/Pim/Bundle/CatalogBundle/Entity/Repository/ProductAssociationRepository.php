@@ -54,11 +54,11 @@ class ProductAssociationRepository extends EntityRepository implements Referable
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'a')
             ->where('a.attributeType=:identifier_type')
-            ->andWhere('p.varchar=:code')
+            ->andWhere('v.varchar=:code')
             ->setParameter('identifier_type', 'pim_catalog_identifier')
             ->setParameter('code', $code)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     /**
