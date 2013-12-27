@@ -294,67 +294,11 @@ datagrid:
             entityHint: product
         source:
             acl_resource: pim_catalog_product_index
-            type: orm
-            query:
-                select:
-                    - p
-                    # - >
-                    #     (CASE WHEN ft.label IS NULL THEN
-                    #         productFamily.code
-                    #     ELSE
-                    #         ft.label
-                    #     END) AS familyLabel
-                    # - values
-                    # - valuePrices
-                    # - valueOptions
-                    # - valueMetrics
-                    # - category
-                    # - pGroup
-                    # - pCompleteness.ratio AS completenessRatio
-                from:
-                    - { table: %pim_catalog.entity.product.class%, alias: p }
-                # join:
-                #     left:
-                        # productFamily:
-                        #     join:  p.family
-                        #     alias: productFamily
-                        # familyTranslations:
-                        #     join:          productFamily.translations
-                        #     alias:         ft
-                        #     conditionType: WITH
-                        #     condition:     ft.locale = :localeCode
-                        # groups:
-                        #     join:  p.groups
-                        #     alias: pGroup
-                        # groupTranslations:
-                        #     join:          pGroup.translations
-                        #     alias:         gt
-                        #     conditionType: WITH
-                        #     condition:     gt.locale = :localeCode
-                        # values:
-                        #     join:  p.values
-                        #     alias: values
-                        # valueOptions:
-                        #     join:  values.options
-                        #     alias: valueOptions
-                        # valuePrices:
-                        #     join:  values.prices
-                        #     alias: valuePrices
-                        # valueMetrics:
-                        #     join:  values.metric
-                        #     alias: valueMetrics
-                        # category:
-                        #     join:  p.categories
-                        #     alias: category
-                        # completeness:
-                        #     join:          Pim\Bundle\CatalogBundle\Entity\Completeness
-                        #     alias:         pCompleteness
-                        #     conditionType: WITH
-                        #     condition:     pCompleteness.locale = :locale AND pCompleteness.channel = :channel AND pCompleteness.productId = p.id
-        columns: ~
-            # family:
-            #     label: Family
-            #     data_name: family.code
+            type: orm_product
+        columns:
+             family:
+                 label: Family
+                 data_name: familyLabel
         properties:
             id: ~
             edit_link:
