@@ -14,7 +14,7 @@ use Oro\Bundle\BatchBundle\Event\EventInterface;
  */
 class InvalidItemsCollectorTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->collector = new InvalidItemsCollector();
     }

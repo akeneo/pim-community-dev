@@ -15,7 +15,7 @@ class TextAreaTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_textarea';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

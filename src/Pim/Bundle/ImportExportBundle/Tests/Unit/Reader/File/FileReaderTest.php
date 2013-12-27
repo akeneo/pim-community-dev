@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
  */
 class FileReaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->reader = new FileReader();
     }

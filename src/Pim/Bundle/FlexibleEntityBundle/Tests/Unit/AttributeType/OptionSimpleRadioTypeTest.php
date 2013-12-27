@@ -15,7 +15,7 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_simpleradio';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

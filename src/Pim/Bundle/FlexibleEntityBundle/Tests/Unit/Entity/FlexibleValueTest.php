@@ -31,7 +31,7 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         // create flexible
         $this->flexible = new Flexible();

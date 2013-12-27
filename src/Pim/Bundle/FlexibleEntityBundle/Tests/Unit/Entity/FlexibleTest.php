@@ -44,7 +44,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->attributeCodeText = 'short_description';
         $this->attributeText = new Attribute();

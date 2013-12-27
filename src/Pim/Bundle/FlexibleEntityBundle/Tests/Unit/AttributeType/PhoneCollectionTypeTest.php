@@ -14,7 +14,7 @@ class PhoneCollectionTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_phone_collection';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

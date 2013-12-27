@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
  */
 class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->collector  = $this->getInvalidItemsCollectorMock();
         $this->encoder    = $this->getCsvEncoderMock();

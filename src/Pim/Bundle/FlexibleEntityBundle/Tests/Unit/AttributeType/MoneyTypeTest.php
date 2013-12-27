@@ -15,7 +15,7 @@ class MoneyTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_money';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

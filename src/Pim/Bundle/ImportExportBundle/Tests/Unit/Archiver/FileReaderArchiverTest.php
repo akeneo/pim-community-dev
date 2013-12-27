@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Archiver\FileReaderArchiver;
  */
 class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->filesystem = $this->getFilesystemMock();
         $this->archiver   = new FileReaderArchiver($this->filesystem);

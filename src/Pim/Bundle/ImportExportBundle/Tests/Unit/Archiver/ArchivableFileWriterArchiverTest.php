@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Archiver\ArchivableFileWriterArchiver;
  */
 class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->factory    = $this->getZipFilesystemFactoryMock();
         $this->filesystem = $this->getFilesystemMock();

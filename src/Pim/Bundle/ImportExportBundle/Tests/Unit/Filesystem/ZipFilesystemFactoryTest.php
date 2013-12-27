@@ -13,12 +13,12 @@ use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
  */
 class ZipFilesystemFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = new ZipFilesystemFactory();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         @unlink('/tmp/foobar.zip');
     }
