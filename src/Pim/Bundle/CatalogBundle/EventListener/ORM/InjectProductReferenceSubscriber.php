@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
+use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -82,6 +84,16 @@ class InjectProductReferenceSubscriber implements EventSubscriber
                 $entityManager
             );
         }
+
+        if ($entity instanceof ProductAssociation) {
+            $this->setProductPersistentCollection(
+                $entity,
+                array(
+                    'mappedBy' => 'productAssociations'
+                ),
+                $entityManager
+            );
+        }
     }
 
     /**
@@ -89,7 +101,7 @@ class InjectProductReferenceSubscriber implements EventSubscriber
      * on the entity to get Products.
      * The entity must have a "products" property defined
      *
-     * @param $entity 
+     * @param $entity
      * @param $assoc Association properties
      * @param EntityManager $entityManager
      */

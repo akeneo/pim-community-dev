@@ -37,15 +37,3 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
                     group_id:
                         referencedColumnName: id
                         onDelete: CASCADE
-        products:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-            joinTable:
-                name: pim_catalog_product_association_product
-                joinColumns:
-                    productassociation_id:
-                        onDelete: CASCADE
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    product_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
