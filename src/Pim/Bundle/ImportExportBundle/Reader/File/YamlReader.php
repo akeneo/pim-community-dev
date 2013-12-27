@@ -136,15 +136,21 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     {
         $fileData = current(Yaml::parse($this->filePath));
 
+        foreach ($fileData as $key => $row) {
+            if ($this->codeField && !isset($row[$this->codeField])) {
+                $fileData[$key][$this->codeField] = $key;
+            }
+        }
+
         if ($this->homogenize) {
             $labels = array();
             foreach ($fileData as $row) {
                 $labels = array_unique(array_merge($labels, array_keys($row)));
             }
-            foreach ($fileData as &$row) {
+            foreach ($fileData as $key => $row) {
                 $missing = array_diff($labels, array_keys($row));
                 foreach ($missing as $label) {
-                    $row[$label] = null;
+                    $fileData[$key][$label] = null;
                 }
             }
         }
