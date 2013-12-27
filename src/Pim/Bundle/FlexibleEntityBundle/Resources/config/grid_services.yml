@@ -40,7 +40,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_string }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_string }
 
     pim_flexibleentity.grid.extension.filter.choice:
         class: %pim_flexibleentity.grid.extension.filter.choice.class%
@@ -48,7 +48,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_choice }
 
     pim_flexibleentity.grid.extension.filter.number:
         class: %pim_flexibleentity.grid.extension.filter.number.class%
@@ -56,7 +56,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_number }
 
     pim_flexibleentity.grid.extension.filter.entity:
         class: %pim_flexibleentity.grid.extension.filter.entity.class%
@@ -64,7 +64,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_entity }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_entity }
 
     pim_flexibleentity.grid.extension.filter.date:
         class: %pim_flexibleentity.grid.extension.filter.date.class%
@@ -72,7 +72,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_date }
 
     pim_flexibleentity.grid.extension.filter.datetime:
         class: %pim_flexibleentity.grid.extension.filter.datetime.class%
@@ -80,7 +80,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_datetime }
 
     pim_flexibleentity.grid.extension.filter.boolean:
         class: %pim_flexibleentity.grid.extension.filter.boolean.class%
@@ -88,4 +88,4 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_boolean }
+            - { name: oro_filter.extension.orm_product_filter.filter, type: flexible_boolean }
