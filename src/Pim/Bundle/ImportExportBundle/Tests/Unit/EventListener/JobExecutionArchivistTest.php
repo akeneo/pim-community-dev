@@ -31,13 +31,26 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterArchiver()
     {
-        $foo = $this->getArchiverMock();
-        $bar = $this->getArchiverMock();
+        $foo = $this->getArchiverMock('foo');
+        $bar = $this->getArchiverMock('bar');
 
         $this->archivist->registerArchiver($foo);
         $this->archivist->registerArchiver($bar);
 
-        $this->assertAttributeEquals(array($foo, $bar), 'archivers', $this->archivist);
+        $this->assertAttributeEquals(array('foo' => $foo, 'bar' => $bar), 'archivers', $this->archivist);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage There is already a registered archiver named "foo"
+     */
+    public function testRegisterArchiverWithAlreadyUsedName()
+    {
+        $foo = $this->getArchiverMock('foo');
+        $bar = $this->getArchiverMock('foo');
+
+        $this->archivist->registerArchiver($foo);
+        $this->archivist->registerArchiver($bar);
     }
 
     public function testArchiveJobExecution()
@@ -47,8 +60,8 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $event = $this->getJobExecutionEventMock($jobExecution);
 
         // Initializing some archivers
-        $foo = $this->getArchiverMock();
-        $bar = $this->getArchiverMock();
+        $foo = $this->getArchiverMock('foo');
+        $bar = $this->getArchiverMock('bar');
         $this->archivist->registerArchiver($foo);
         $this->archivist->registerArchiver($bar);
 
@@ -60,9 +73,15 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $this->archivist->afterJobExecution($event);
     }
 
-    protected function getArchiverMock()
+    protected function getArchiverMock($name)
     {
-        return $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
+        $archiver = $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
+
+        $archiver->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+
+        return $archiver;
     }
 
     protected function getJobExecutionMock()

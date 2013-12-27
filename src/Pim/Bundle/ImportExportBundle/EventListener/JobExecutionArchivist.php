@@ -37,7 +37,17 @@ class JobExecutionArchivist implements EventSubscriberInterface
      */
     public function registerArchiver(ArchiverInterface $archiver)
     {
-        $this->archivers[] = $archiver;
+        if (array_key_exists($archiver->getName(), $this->archivers)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'There is already a registered archiver named "foo": %s',
+                    $archiver->getName(),
+                    get_class($this->archivers[$archiver->getName()])
+                )
+            );
+        }
+
+        $this->archivers[$archiver->getName()] = $archiver;
     }
 
     /**
