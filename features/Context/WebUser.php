@@ -1446,6 +1446,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $language
+     *
      * @When /^I compare values with the "([^"]*)" translation$/
      */
     public function iCompareValuesWithTheTranslation($language)
@@ -1455,6 +1457,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $languages
+     *
      * @Then /^I should see comparison languages "([^"]*)"$/
      */
     public function iShouldSeeComparisonLanguages($languages)
@@ -1463,6 +1467,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $field
+     *
      * @Given /^I select translations for "([^"]*)"$/
      */
     public function iSelectTranslationsFor($field)
@@ -1471,6 +1477,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $mode
+     *
      * @Given /^I select (.*) translations$/
      */
     public function iSelectTranslations($mode)
@@ -1487,6 +1495,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $groupField
+     * @param TableNode $fields
+     *
      * @Given /^I should see "([^"]*)" fields:$/
      */
     public function iShouldSeeFields($groupField, TableNode $fields)

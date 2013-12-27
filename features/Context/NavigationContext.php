@@ -116,7 +116,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @param string $not
      * @param string $page
      *
-     * @return null
+     * @return null|Then
      * @Given /^I should( not)? be able to access the ([^"]*) page$/
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
