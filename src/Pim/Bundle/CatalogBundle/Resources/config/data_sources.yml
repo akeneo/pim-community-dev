@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog.datasource.orm_product.class: Pim\Bundle\CatalogBundle\Datasource\Orm\OrmProductDatasource
+
+services:
+    pim_catalog.datasource.orm_product:
+        class: %pim_catalog.datasource.orm_product.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_security.acl_helper
+            - @pim_catalog.manager.product
+        tags:
+            - { name: oro_datagrid.datasource, type: orm_product }
