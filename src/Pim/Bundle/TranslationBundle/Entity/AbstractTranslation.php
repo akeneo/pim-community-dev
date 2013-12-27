@@ -13,24 +13,16 @@ abstract class AbstractTranslation
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
     protected $id;
 
     /**
      * @var string $locale
-     *
-     * @ORM\Column(type="string", length=10)
      */
     protected $locale;
 
     /**
      * @var string $foreignKey
-     *
-     * @ORM\Column(name="foreign_key", type="string", length=64)
      */
     protected $foreignKey;
 
