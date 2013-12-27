@@ -1,0 +1,29 @@
+parameters:
+    pim_catalog.grid.extension.filter.orm_product_filter.class: Pim\Bundle\CatalogBundle\Grid\Extension\Filter\OrmProductFilterExtension
+    pim_catalog.grid.extension.sorter.orm_product_sorter.class: Pim\Bundle\CatalogBundle\Grid\Extension\Sorter\OrmProductSorterExtension
+    pim_catalog.grid.extension.pager.orm_product_pager.class:   Pim\Bundle\CatalogBundle\Grid\Extension\Pager\OrmProductPagerExtension
+
+services:
+    pim_catalog.grid.extension.filter.orm_product_filter:
+        class: %pim_catalog.grid.extension.filter.orm_product_filter.class%
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+            - @translator
+        tags:
+             - { name: oro_datagrid.extension }
+
+    pim_catalog.grid.extension.sorter.orm_product_sorter:
+        class: "%pim_catalog.grid.extension.sorter.orm_product_sorter.class%"
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pim_catalog.grid.extension.pager.orm_product_pager:
+        class: "%pim_catalog.grid.extension.pager.orm_product_pager.class%"
+        arguments:
+            - @oro_datagrid.extension.pager.orm.pager
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: oro_datagrid.extension }
+
