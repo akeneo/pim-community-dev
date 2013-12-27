@@ -42,7 +42,7 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
      * 
      * @return CacheReader
      */
-    protected function addItem(array $item, $index = null)
+    public function addItem(array $item, $index = null)
     {
         if (null === $index) {
             $this->data[] = $item;
@@ -60,7 +60,7 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
      * 
      * @return array
      */
-    protected function getItem($index)
+    public function getItem($index)
     {
         return isset($this->data[$index])
             ? $this->data[$index]

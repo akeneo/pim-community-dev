@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationRepository extends EntityRepository
+class ProductAssociationRepository extends EntityRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * Return the number of ProductAssociations for a specific association
@@ -41,5 +41,31 @@ class ProductAssociationRepository extends EntityRepository
             ->setParameter('association', $association);
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByReference($code)
+    {
+        return $this->createQueryBuilder('pass')
+            ->select('pass')
+            ->innerJoin('pass.owner', 'p')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where('a.attributeType=:identifier_type')
+            ->andWhere('p.varchar=:code')
+            ->setParameter('identifier_type', 'pim_catalog_identifier')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceProperties()
+    {
+        return array('owner', 'association');
     }
 }

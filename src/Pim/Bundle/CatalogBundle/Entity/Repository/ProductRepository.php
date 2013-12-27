@@ -15,8 +15,14 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface
+class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface,
+    ReferableEntityRepositoryInterface
 {
+    /**
+     * @var string
+     */
+    private $identifierCode;
+
     /**
      * {@inheritdoc}
      */
@@ -175,5 +181,65 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByReference($code)
+    {
+        return $this->findByWithAttributes(array(), array($this->getIdentifierCode() => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceProperties()
+    {
+        return array($this->getIdentifierCode());
+    }
+
+    /**
+     * Returns the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode()
+    {
+        if (!isset($this->identifierCode)) {
+            $this->identifierCode = $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
+                        $this->getAttributeClass()
+                    )
+                )
+                ->setParameter('identifier_type', 'pim_catalog_identifier')
+                ->getSingleScalarResult();
+        }
+
+        return $this->identifierCode;
+    }
+
+    /**
+     * Returns the ProductValue class
+     *
+     * @return string
+     */
+    protected function getValuesClass()
+    {
+        return $this->getClassMetadata()->getAssociationTargetClass('values');
+    }
+
+    /**
+     * Returns the ProductAttribute class
+     *
+     * @return string
+     */
+    protected function getAttributeClass()
+    {
+        return $this->getEntityManager()
+            ->getClassMetadata($this->getValuesClass())
+            ->getAssociationTargetClass('attributes');
     }
 }

@@ -9,6 +9,7 @@ parameters:
     pim_import_export.reader.file.yaml.class:                       Pim\Bundle\ImportExportBundle\Reader\File\YamlReader
 
     pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
+    pim_import_export.reader.cached.class:                          Pim\Bundle\ImportExportBundle\Reader\CachedReader
 
 services:
     pim_import_export.reader.orm.product:
@@ -90,3 +91,6 @@ services:
 
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
+
+    pim_import_export.reader.cached_product_association:
+        class: %pim_import_export.reader.cached.class%

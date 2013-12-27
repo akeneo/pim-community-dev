@@ -61,11 +61,9 @@ services:
             - '%pim_catalog.entity.product.class%'
 
     pim_import_export.processor.product_association:
-        class: %pim_import_export.processor.product_association.class%
+        parent: pim_import_export.processor.transformer
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@validator'
-            - '@pim_catalog.manager.product'
+            - '%pim_catalog.entity.product_association.class%'
 
     pim_import_export.processor.category:
         class: %pim_import_export.processor.category.class%

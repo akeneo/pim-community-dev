@@ -12,6 +12,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
+use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
 
 /**
  * Specialized ORMTransformer for products
@@ -36,6 +37,11 @@ class ORMProductTransformer extends ORMTransformer
      * @var AttributeCache
      */
     protected $attributeCache;
+
+    /**
+     * @var CachedReader
+     */
+    protected $associationReader;
 
     /**
      * @var array
@@ -63,6 +69,11 @@ class ORMProductTransformer extends ORMTransformer
     protected $attributeColumnsInfo;
 
     /**
+     * @var array
+     */
+    protected $associationColumnsInfo;
+
+    /**
      * Constructor
      *
      * @param RegistryInterface              $doctrine
@@ -71,6 +82,7 @@ class ORMProductTransformer extends ORMTransformer
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
+     * @paral CachedReader                   $cachedReader
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -78,11 +90,13 @@ class ORMProductTransformer extends ORMTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ProductManager $productManager,
-        AttributeCache $attributeCache
+        AttributeCache $attributeCache,
+        CachedReader $associationReader
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
         $this->productManager = $productManager;
         $this->attributeCache = $attributeCache;
+        $this->associationReader = $associationReader;
     }
 
     /**
@@ -141,6 +155,26 @@ class ORMProductTransformer extends ORMTransformer
                 if ($error) {
                     $this->errors[$label] = array($error);
                 }
+            }
+        }
+
+        if (count($this->associationColumnsInfo)) {
+            $associations = array();
+            foreach ($this->associationColumnsInfo as $columnInfo) {
+                $key = $entity->getReference() . '.' . $columnInfo->getName();
+                $suffixes = $columnInfo->getSuffixes();
+                $lastSuffix = array_pop($suffixes);
+                if (!isset($associations[$key])) {
+                    $associations[$key] = array(
+                        'owner'       => $entity->getReference(),
+                        'association' => $data[$columnInfo->getLabel()],
+                    );
+                }
+                $associations[$key][$lastSuffix] = $data[$columnInfo->getLabel()];
+            }
+
+            foreach ($associations as $association) {
+                $this->associationReader->addItem($association);
             }
         }
     }
@@ -204,9 +238,14 @@ class ORMProductTransformer extends ORMTransformer
         $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
         $this->attributeColumnsInfo = array();
         $this->propertyColumnsInfo = array();
+        $this->associationColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
             $columnName = $columnInfo->getName();
-            if (isset($this->attributes[$columnName])) {
+            $suffixes = $columnInfo->getSuffixes();
+            $lastSuffix = array_pop($suffixes);
+            if (in_array($lastSuffix, array('groups', 'products'))) {
+                $this->associationColumnsInfo[] = $columnInfo;
+            } elseif (isset($this->attributes[$columnName])) {
                 $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
                 $this->attributeColumnsInfo[] = $columnInfo;
@@ -229,6 +268,7 @@ class ORMProductTransformer extends ORMTransformer
         $this->identifierAttribute = null;
         $this->attributeColumnsInfo = null;
         $this->propertyColumnsInfo = null;
+        $this->associationColumnsInfo = null;
         $this->initialized = false;
     }
 }
