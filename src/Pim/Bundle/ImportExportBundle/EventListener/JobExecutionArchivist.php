@@ -40,7 +40,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
         if (array_key_exists($archiver->getName(), $this->archivers)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'There is already a registered archiver named "foo": %s',
+                    'There is already a registered archiver named "%s": %s',
                     $archiver->getName(),
                     get_class($this->archivers[$archiver->getName()])
                 )
