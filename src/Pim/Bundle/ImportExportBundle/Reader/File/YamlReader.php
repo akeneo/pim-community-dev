@@ -31,9 +31,28 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     protected $homogenize = false;
 
     /**
+     * @var boolean
+     */
+    protected $multiple = false;
+
+    /**
      * @var \ArrayIterator
      */
     protected $yaml;
+
+    /**
+     * Constructor
+     *
+     * @param boolean $multiple
+     * @param boolean $homogenize
+     * @param string  $codeField
+     */
+    public function __construct($multiple = false, $homogenize = false, $codeField = 'code')
+    {
+        $this->codeField = $codeField;
+        $this->multiple = $multiple;
+        $this->homogenize = $homogenize;
+    }
 
     /**
      * Set file path
@@ -83,30 +102,6 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     }
 
     /**
-     * Returns true if the data is homogenized
-     *
-     * @return boolean
-     */
-    public function getHomogenize()
-    {
-        return $this->homogenize;
-    }
-
-    /**
-     * Set to true if the data must be homogenized
-     *
-     * @param boolean $homogenize
-     *
-     * @return YamlReader
-     */
-    public function setHomogenize($homogenize)
-    {
-        $this->homogenize = $homogenize;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function read()
@@ -116,9 +111,6 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
         }
 
         if ($data = $this->yaml->current()) {
-            if ($this->codeField && !isset($data[$this->codeField])) {
-                $data['code'] = $this->yaml->key();
-            }
             $this->yaml->next();
 
             return $data;
@@ -155,7 +147,7 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
             }
         }
 
-        return $fileData;
+        return $this->multiple ? array($fileData) : $fileData;
     }
 
     /**

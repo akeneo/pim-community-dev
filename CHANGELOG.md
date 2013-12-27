@@ -8,8 +8,8 @@
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
-- Fixtures can be in CSV (all fixtures except categories, groups, users and currencies)
-- Fixture files can be imported through a command (all fixtures except categories, groups, users and currencies)
+- Fixtures can be in CSV (all fixtures except users and currencies)
+- Fixture files can be imported through a command (all fixtures except users and currencies)
 - Add quick create popin for jobs
 - Add WYSIWYG editor
 

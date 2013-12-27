@@ -36,7 +36,6 @@ class CatalogConfigurationContext extends RawMinkContext
     protected $preEntityLoaders = array(
         'CurrencyLoader'       => 'currencies',
         'LocaleLoader'         => null,
-        'CategoryLoader'       => 'categories',
     );
 
     /**
