@@ -68,8 +68,5 @@ security:
             anonymous:                      false
 
     access_control:
-        - { path: ^/user/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }
