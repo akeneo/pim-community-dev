@@ -14,5 +14,6 @@ interface ArchiverInterface
 {
     public function archive(JobExecution $jobExecution);
     public function getArchives(JobExecution $JobExecution);
+    public function getArchive(JobExecution $jobExecution, $key);
     public function getName();
 }

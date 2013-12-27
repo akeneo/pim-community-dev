@@ -74,4 +74,15 @@ class JobExecutionArchivist implements EventSubscriberInterface
 
         return $archives;
     }
+
+    public function getArchive(JobExecution $jobExecution, $archiver, $key)
+    {
+        if (!isset($this->archivers[$archiver])) {
+            throw new \InvalidArgumentException(
+                sprintf('Archiver "%s" is not registered', $archiver)
+            );
+        }
+
+        return $this->archivers[$archiver]->getArchive($jobExecution, $key);
+    }
 }

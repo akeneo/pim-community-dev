@@ -17,7 +17,7 @@ pim_importexport_export_execution_show:
         id: \d+
 
 pim_importexport_export_execution_download_file:
-    path: spread/export_execution/{id}/downloadFiles
+    path: spread/export_execution/{id}/download/{archiver}/{key}
     defaults: { _controller: pim_import_export.controller.export_execution:downloadFilesAction }
     requirements:
         id: \d+

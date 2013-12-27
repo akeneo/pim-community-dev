@@ -95,6 +95,12 @@ pim_import_export:
             label: With header
             help: Whether or not to print the column name
 
+    download_archive:
+        archive: download generated file
+        output:  download generated file
+        input:   download read file
+        invalid: download invalid data
+
 ## Step element titles (for readers, processors, writers)
 oro_batch:
     dummy_reader.title:                  Dummy reader

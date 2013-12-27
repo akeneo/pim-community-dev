@@ -48,8 +48,8 @@ class ExportExecutionController extends JobExecutionController
      *
      * @AclAncestor("pim_importexport_export_execution_download_files")
      */
-    public function downloadFilesAction($id)
+    public function downloadFilesAction($id, $archiver, $key)
     {
-        return parent::downloadFilesAction($id);
+        return parent::downloadFilesAction($id, $archiver, $key);
     }
 }

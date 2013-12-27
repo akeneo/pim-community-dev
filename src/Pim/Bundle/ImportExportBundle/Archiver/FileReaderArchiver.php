@@ -14,11 +14,8 @@ use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileReaderArchiver extends AbstractArchiver
+class FileReaderArchiver extends AbstractFilesystemArchiver
 {
-    /** @var Filesystem */
-    protected $filesystem;
-
     /**
      * @param Filesystem $filesystem
      */
@@ -50,20 +47,6 @@ class FileReaderArchiver extends AbstractArchiver
                 $this->filesystem->write($key, file_get_contents($reader->getFilePath()), true);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getArchives(JobExecution $jobExecution)
-    {
-        $archives = array();
-        $keys = $this->filesystem->listKeys(dirname($this->getRelativeArchivePath($jobExecution)));
-        foreach ($keys['keys'] as $key) {
-            $archives[] = $this->filesystem->createStream($key);
-        }
-
-        return $archives;
     }
 
     /**
