@@ -48,7 +48,7 @@ connector:
                 export:
                     title:     pim_import_export.jobs.csv_association_export.export.title
                     services:
-                        reader:    pim_import_export.reader.orm.association
+                        reader:    pim_import_export.reader.orm.association_type
                         processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_group_export:
@@ -116,8 +116,8 @@ connector:
                     title:     pim_import_export.jobs.csv_association_import.import.title
                     services:
                         reader:    pim_import_export.reader.file.csv_association
-                        processor: pim_import_export.processor.association
-                        writer:    pim_import_export.writer.orm.association
+                        processor: pim_import_export.processor.association_type
+                        writer:    pim_import_export.writer.orm.association_type
         csv_group_import:
             title: pim_import_export.jobs.group_import.title
             type: import

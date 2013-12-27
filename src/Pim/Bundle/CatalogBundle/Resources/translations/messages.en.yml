@@ -1,19 +1,19 @@
 # Entities
-attribute:       attribute
-attribute group: attribute group
-category:        category
-tree:            tree
-channel:         channel
-currency:        currency
-export profile:  export profile
-family:          family
-import profile:  import profile
-locale:          locale
-product:         product
-group:           group
-variant group:   variant group
-association:     association
-group type:      group type
+attribute:        attribute
+attribute group:  attribute group
+category:         category
+tree:             tree
+channel:          channel
+currency:         currency
+export profile:   export profile
+family:           family
+import profile:   import profile
+locale:           locale
+product:          product
+group:            group
+variant group:    variant group
+association type: association type
+group type:       group type
 
 # Page header titles
 attribute:
@@ -75,10 +75,10 @@ variant group:
     overview: variant group overview
     create:   create variant group
     edit:     edit variant group
-association:
-    overview: association overview
-    create:   create association
-    edit:     edit association
+association type:
+    overview: association type overview
+    create:   create association type
+    edit:     edit association type
 
 # Custom titles
 products: products
@@ -86,21 +86,21 @@ products: products
 # Buttons
 btn:
     create:
-        attribute:       create attribute
-        attribute group: create attribute group
-        category:        create category
-        tree:            create tree
-        channel:         create channel
-        currency:        create currency
-        export profile:  create export profile
-        family:          create family
-        import profile:  create import profile
-        locale:          create locale
-        product:         create product
-        group:           create group
-        variant group:   create variant group
-        association:     create association
-        group type:      create group type
+        attribute:        create attribute
+        attribute group:  create attribute group
+        category:         create category
+        tree:             create tree
+        channel:          create channel
+        currency:         create currency
+        export profile:   create export profile
+        family:           create family
+        import profile:   create import profile
+        locale:           create locale
+        product:          create product
+        group:            create group
+        variant group:    create variant group
+        association type: create association type
+        group type:       create group type
     edit:            edit
     save:            save
     save and back:   save and back to grid
@@ -120,19 +120,19 @@ confirmation:
     leave:           Are you sure you want to leave this page?
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
-        item:            Are you sure you want to delete this item?
-        attribute:       Are you sure you want to delete the attribute %name%?
-        attribute group: Are you sure you want to delete the attribute group %name%?
-        category:        Are you sure you want to delete the category %name%?
-        family:          Are you sure you want to delete the family %name%?
-        product:         Are you sure you want to delete the product %name%?
-        export profile:  Are you sure you want to delete the export profile %name%?
-        import profile:  Are you sure you want to delete the import profile %name%?
-        channel:         Are you sure you want to delete the channel %name%?
-        group:           Are you sure you want to delete the group %name%?
-        variant group:   Are you sure you want to delete the variant group %name%?
-        association:     Are you sure you want to delete the association %name%?
-        group type:      Are you sure you want to delete the group type %name%?
+        item:             Are you sure you want to delete this item?
+        attribute:        Are you sure you want to delete the attribute %name%?
+        attribute group:  Are you sure you want to delete the attribute group %name%?
+        category:         Are you sure you want to delete the category %name%?
+        family:           Are you sure you want to delete the family %name%?
+        product:          Are you sure you want to delete the product %name%?
+        export profile:   Are you sure you want to delete the export profile %name%?
+        import profile:   Are you sure you want to delete the import profile %name%?
+        channel:          Are you sure you want to delete the channel %name%?
+        group:            Are you sure you want to delete the group %name%?
+        variant group:    Are you sure you want to delete the variant group %name%?
+        association type: Are you sure you want to delete the association type %name%?
+        group type:       Are you sure you want to delete the group type %name%?
 
 # Flash messages
 flash:
@@ -204,10 +204,10 @@ flash:
         cant remove variant: Group type variant can't be removed
         cant remove used: Group type is used by some groups and can't be removed
 
-    association:
-        created: Association successfully created
-        updated: Association successfully updated
-        removed: Association successfully removed
+    association type:
+        created: Association type successfully created
+        updated: Association type successfully updated
+        removed: Association type successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -231,10 +231,10 @@ info:
         axis:                Variation axis: %attributes%
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
-    association:
+    association type:
         show products:        Show products
         show groups:          Show groups
-        remove from products: Deleting the association will remove it from %count% products.
+        remove from products: Deleting the association type will remove it from %count% products.
 
 # Form elements
 Options:                       Options
@@ -280,16 +280,16 @@ Locale specific:               Locale specific
 Label translations:            Label translations
 default:                       Default
 
-Create:               Create
-Cancel:               Cancel
-Create a new product: Create a new product
-Choose a family:      Choose a family
-Create:                   Create
-Cancel:                   Cancel
-Create a new product:     Create a new product
-Create a new association: Create a new association
-Choose a family:          Choose a family
-Create a new option:      Create a new option
+Create:                        Create
+Cancel:                        Cancel
+Create a new product:          Create a new product
+Choose a family:               Choose a family
+Create:                        Create
+Cancel:                        Cancel
+Create a new product:          Create a new product
+Create a new association type: Create a new association type
+Choose a family:               Choose a family
+Create a new option:           Create a new option
 
 # Scopes
 Global:  Global
@@ -370,9 +370,9 @@ Groups %group.label% | Edit:                 Groups %group.label% | Edit
 Variant groups:                              Variant groups
 Variant groups | Create:                     Variant groups | Create
 Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
-Associations:                                Associations
-Associations | Create:                       Associations | Create
-Associations %association.label% | Edit:     Associations %association.label% | Edit
+Association types:                                 Association types
+Association types | Create:                        Association types | Create
+Association types %association type.label% | Edit: Association types %association type.label% | Edit
 Group types:                                 Group types
 Group types | Create:                        Group types | Create
 Group types %group type.label% | Edit:       Group types %group type.label% | Edit
@@ -476,7 +476,7 @@ pim_catalog:
             add_attribute: 'Add an attribute to a product'
             remove_attribute: 'Remove an attribute from a product'
             categories_view: 'Consult the categories of a product'
-            associations_view: 'View the associations of a product'
+            associations_view: 'View the association types of a product'
             change_family: 'Change product family'
             change_state: 'Change state of product'
             add_to_groups: 'Add product to groups'
@@ -523,8 +523,8 @@ pim_catalog:
             create: 'Create a group type'
             edit: 'Edit a group type'
             remove: 'Remove a group type'
-        association:
-            index: 'List associations'
-            create: 'Create an association'
-            edit: 'Edit an association'
-            remove: 'Remove an association'
+        association_type:
+            index: 'List association types'
+            create: 'Create an association type'
+            edit: 'Edit an association type'
+            remove: 'Remove an association type'

@@ -5,16 +5,16 @@ namespace Pim\Bundle\CatalogBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Form handler for association
+ * Form handler for association type
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationHandler
+class AssociationTypeHandler
 {
     /**
      * @var FormInterface
@@ -46,19 +46,19 @@ class AssociationHandler
 
     /**
      * Process method for handler
-     * @param Association $association
+     * @param AssociationType $associationType
      *
      * @return boolean
      */
-    public function process(Association $association)
+    public function process(AssociationType $associationType)
     {
-        $this->form->setData($association);
+        $this->form->setData($associationType);
 
         if ($this->request->isMethod('POST')) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($association);
+                $this->onSuccess($associationType);
 
                 return true;
             }
@@ -69,11 +69,11 @@ class AssociationHandler
 
     /**
      * Call when form is valid
-     * @param Association $association
+     * @param AssociationType $associationType
      */
-    protected function onSuccess(Association $association)
+    protected function onSuccess(AssociationType $associationType)
     {
-        $this->manager->persist($association);
+        $this->manager->persist($associationType);
         $this->manager->flush();
     }
 }

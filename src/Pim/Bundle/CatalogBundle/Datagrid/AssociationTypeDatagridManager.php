@@ -15,13 +15,13 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
- * Association datagrid manager
+ * Association type datagrid manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationDatagridManager extends DatagridManager
+class AssociationTypeDatagridManager extends DatagridManager
 {
     /**
      * @var LocaleManager
@@ -34,8 +34,8 @@ class AssociationDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_catalog_association_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_catalog_association_remove', array('id'))
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_association_type_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_association_type_remove', array('id'))
         );
     }
 
@@ -66,7 +66,7 @@ class AssociationDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Label'),
-                'field_name'  => 'associationLabel',
+                'field_name'  => 'associationTypeLabel',
                 'expression'  => 'translation.label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -89,7 +89,7 @@ class AssociationDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'pim_catalog_association_edit',
+            'acl_resource' => 'pim_catalog_association_type_edit',
             'options'      => array(
                 'label' => $this->translate('Edit'),
                 'icon'  => 'edit',
@@ -104,7 +104,7 @@ class AssociationDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'pim_catalog_association_remove',
+            'acl_resource' => 'pim_catalog_association_type_remove',
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',
@@ -129,7 +129,7 @@ class AssociationDatagridManager extends DatagridManager
 
         $proxyQuery
             ->addSelect($rootAlias)
-            ->addSelect(sprintf("%s AS associationLabel", $labelExpr), true)
+            ->addSelect(sprintf("%s AS associationTypeLabel", $labelExpr), true)
             ->addSelect('translation.label', true);
 
         $proxyQuery
@@ -143,7 +143,7 @@ class AssociationDatagridManager extends DatagridManager
      *
      * @param LocaleManager $localeManager
      *
-     * @return AssociationDatagridManager
+     * @return AssociationTypeDatagridManager
      */
     public function setLocaleManager(LocaleManager $localeManager)
     {

@@ -25,7 +25,7 @@ class ProductAssociationType extends AbstractType
                 'association',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Association',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\AssociationType',
                     'property' => 'id',
                     'multiple' => false
                 )

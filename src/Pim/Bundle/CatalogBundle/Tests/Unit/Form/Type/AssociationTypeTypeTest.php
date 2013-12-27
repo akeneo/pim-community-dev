@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Form\Type\AssociationType;
+use Pim\Bundle\CatalogBundle\Form\Type\AssociationTypeType;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Form\Type\AssociationType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeTest extends AbstractFormTypeTest
+class AssociationTypeTypeTest extends AbstractFormTypeTest
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class AssociationTypeTest extends AbstractFormTypeTest
         parent::setUp();
 
         // Create form type
-        $this->type = new AssociationType();
+        $this->type = new AssociationTypeType();
         $this->form = $this->factory->create($this->type);
     }
 
@@ -35,11 +35,11 @@ class AssociationTypeTest extends AbstractFormTypeTest
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\CatalogBundle\Entity\Association',
+            'Pim\Bundle\CatalogBundle\Entity\AssociationTypeType',
             $this->form->getConfig()->getDataClass()
         );
 
         // Assert name
-        $this->assertEquals('pim_catalog_association', $this->form->getName());
+        $this->assertEquals('pim_catalog_association_type', $this->form->getName());
     }
 }

@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Association:
+Pim\Bundle\CatalogBundle\Entity\AssociationType:
     type: entity
     table: pim_catalog_association
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository

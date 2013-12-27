@@ -56,10 +56,10 @@ services:
             - pim_catalog_group_type_form
             - pim_catalog_group_type
 
-    pim_catalog.form.association:
+    pim_catalog.form.association_type:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_catalog_association_form
-            - pim_catalog_association
+            - pim_catalog_association_type_form
+            - pim_catalog_association_type

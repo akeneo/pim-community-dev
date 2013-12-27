@@ -48,8 +48,8 @@ group:
     prefix: /enrich/group
 
 association:
-    resource: '@PimCatalogBundle/Resources/config/routing/association.yml'
-    prefix: /configuration/association
+    resource: '@PimCatalogBundle/Resources/config/routing/associationtype.yml'
+    prefix: /configuration/association-type
 
 media:
     resource: '@PimCatalogBundle/Resources/config/routing/media.yml'

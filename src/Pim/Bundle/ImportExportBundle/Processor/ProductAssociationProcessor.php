@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationProcessor extends AbstractEntityProcessor
+class ProductAssociationTypeProcessor extends AbstractEntityProcessor
 {
     /**
      * @var ProductManager
@@ -57,12 +57,12 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
 
         $productAssociations = array();
         foreach ($associationsData as $code => $associationData) {
-            $association = $this->findAssociation($code);
-            if (!$association) {
-                $this->skipItem($item, sprintf("The association %s doesn't exist", $code));
+            $associationType = $this->findAssociationType($code);
+            if (!$associationType) {
+                $this->skipItem($item, sprintf("The association type %s doesn't exist", $code));
             }
 
-            $productAssociation = $this->getProductAssociation($product, $association);
+            $productAssociation = $this->getProductAssociation($product, $associationType);
 
             foreach ($associationData as $type => $relatedObjects) {
                 if ($type === '_products') {
@@ -149,11 +149,11 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
      * Get the existing product association or create a new one
      *
      * @param ProductInterface $product
-     * @param Association      $association
+     * @param AssociationType  $association
      *
      * @return ProductAssociation
      */
-    protected function getProductAssociation(ProductInterface $product, Association $association)
+    protected function getProductAssociation(ProductInterface $product, AssociationType $association)
     {
         $productAssociation = $product->getProductAssociationForAssociation($association);
         if (!$productAssociation) {
@@ -197,13 +197,13 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
      *
      * @param string $code
      *
-     * @return Association|null
+     * @return AssociationType|null
      */
-    protected function findAssociation($code)
+    protected function findAssociationType($code)
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:Association')
+            ->getRepository('PimCatalogBundle:AssociationType')
             ->findOneBy(array('code' => $code));
     }
 }

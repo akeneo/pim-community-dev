@@ -8,13 +8,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
- * Type for association form
+ * Type for association type form
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationType extends AbstractType
+class AssociationTypeType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class AssociationType extends AbstractType
             array(
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Association',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
                 'property_path'     => 'translations'
             )
         );
@@ -54,7 +54,7 @@ class AssociationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Association'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
             )
         );
     }
@@ -64,6 +64,6 @@ class AssociationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalog_association';
+        return 'pim_catalog_association_type';
     }
 }

@@ -9,7 +9,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
- * Association entity
+ * Association type entity
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Association implements TranslatableInterface, ReferableInterface
+class AssociationType implements TranslatableInterface, ReferableInterface
 {
     /**
      * @var integer
@@ -75,7 +75,7 @@ class Association implements TranslatableInterface, ReferableInterface
      *
      * @param integer $id
      *
-     * @return Association
+     * @return AssociationType
      */
     public function setId($id)
     {
@@ -99,7 +99,7 @@ class Association implements TranslatableInterface, ReferableInterface
      *
      * @param string $code
      *
-     * @return Association
+     * @return AssociationType
      */
     public function setCode($code)
     {
@@ -245,7 +245,7 @@ class Association implements TranslatableInterface, ReferableInterface
      *
      * @param string $label
      *
-     * @return Association
+     * @return AssociationType
      */
     public function setLabel($label)
     {
@@ -255,7 +255,7 @@ class Association implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Returns the label of the association
+     * Returns the label of the association type
      *
      * @return string
      */

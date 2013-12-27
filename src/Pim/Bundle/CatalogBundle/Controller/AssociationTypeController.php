@@ -19,17 +19,17 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Pim\Bundle\CatalogBundle\Entity\Association;
-use Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler;
 
 /**
- * Association controller
+ * Association type controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationController extends AbstractDoctrineController
+class AssociationTypeController extends AbstractDoctrineController
 {
     /**
      * @var DatagridHelperInterface
@@ -37,14 +37,14 @@ class AssociationController extends AbstractDoctrineController
     protected $datagridHelper;
 
     /**
-     * @var AssociationHandler
+     * @var AssociationTypeHandler
      */
-    protected $associationHandler;
+    protected $associationTypeHandler;
 
     /**
      * @var Form
      */
-    protected $associationForm;
+    protected $associationTypeForm;
 
     /**
      * Constructor
@@ -58,8 +58,8 @@ class AssociationController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridHelperInterface  $dataGridHelper
-     * @param AssociationHandler       $associationHandler
-     * @param Form                     $associationForm
+     * @param AssociationTypeHandler       $associationTypeHandler
+     * @param Form                     $associationTypeForm
      */
     public function __construct(
         Request $request,
@@ -71,8 +71,8 @@ class AssociationController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridHelperInterface $dataGridHelper,
-        AssociationHandler $associationHandler,
-        Form $associationForm
+        AssociationTypeHandler $associationTypeHandler,
+        Form $associationTypeForm
     ) {
         parent::__construct(
             $request,
@@ -85,23 +85,23 @@ class AssociationController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper     = $dataGridHelper;
-        $this->associationHandler = $associationHandler;
-        $this->associationForm    = $associationForm;
+        $this->datagridHelper         = $dataGridHelper;
+        $this->associationTypeHandler = $associationTypeHandler;
+        $this->associationTypeForm    = $associationTypeForm;
     }
 
     /**
-     * List associations
+     * List association types
      *
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_index")
+     * @AclAncestor("pim_catalog_association_type_index")
      * @return Response
      */
     public function indexAction(Request $request)
     {
-        $datagridView = $this->datagridHelper->getDatagrid('association')->createView();
+        $datagridView = $this->datagridHelper->getDatagrid('association_type')->createView();
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
@@ -113,78 +113,81 @@ class AssociationController extends AbstractDoctrineController
     }
 
     /**
-     * Create an association
+     * Create an association type
      *
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_create")
+     * @AclAncestor("pim_catalog_association_type_create")
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_association_index');
+            return $this->redirectToRoute('pim_catalog_association_type_index');
         }
 
-        $association = new Association();
+        $associationType = new AssociationType();
 
-        if ($this->associationHandler->process($association)) {
-            $this->addFlash('success', 'flash.association.created');
+        if ($this->associationTypeHandler->process($associationType)) {
+            $this->addFlash('success', 'flash.association type.created');
 
             $response = array(
                 'status' => 1,
-                'url' => $this->generateUrl('pim_catalog_association_edit', array('id' => $association->getId()))
+                'url' =>
+                    $this->generateUrl('pim_catalog_association_type_edit', array('id' => $associationType->getId()))
             );
 
             return new Response(json_encode($response));
         }
 
         return array(
-            'form' => $this->associationForm->createView(),
+            'form' => $this->associationTypeForm->createView(),
         );
     }
 
     /**
-     * Edit an association
+     * Edit an association type
      *
      * @param Request $request
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_edit")
+     * @AclAncestor("pim_catalog_association_type_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
     {
-        $association = $this->findOr404('PimCatalogBundle:Association', $id);
+        $associationType = $this->findOr404('PimCatalogBundle:AssociationType', $id);
 
-        if ($this->associationHandler->process($association)) {
-            $this->addFlash('success', 'flash.association.updated');
+        if ($this->associationTypeHandler->process($associationType)) {
+            $this->addFlash('success', 'flash.association type.updated');
 
-            return $this->redirectToRoute('pim_catalog_association_edit', array('id' => $id));
+            return $this->redirectToRoute('pim_catalog_association_type_edit', array('id' => $id));
         }
 
-        $usageCount = $this->getRepository('PimCatalogBundle:ProductAssociation')->countForAssociation($association);
+        $usageCount = $this
+            ->getRepository('PimCatalogBundle:ProductAssociation')
+            ->countForAssociationType($associationType);
 
         return array(
-            'form'            => $this->associationForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($association)->createView(),
+            'form'            => $this->associationTypeForm->createView(),
+            'historyDatagrid' => $this->getHistoryGrid($associationType)->createView(),
             'usageCount'      => $usageCount
         );
     }
 
     /**
-     * History of an association
+     * History of an association type
      *
-     * @param Request     $request
-     * @param Association $association
+     * @param Request         $request
+     * @param AssociationType $associationType
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    public function historyAction(Request $request, Association $association)
+    public function historyAction(Request $request, AssociationType $associationType)
     {
-        $historyGridView = $this->getHistoryGrid($association)->createView();
+        $historyGridView = $this->getHistoryGrid($associationType)->createView();
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
@@ -192,36 +195,36 @@ class AssociationController extends AbstractDoctrineController
     }
 
     /**
-     * Remove an association
+     * Remove an association type
      *
-     * @param Association $association
+     * @param AssociationType $associationType
      *
-     * @AclAncestor("pim_catalog_association_remove")
+     * @AclAncestor("pim_catalog_association_type_remove")
      * @return Response|RedirectResponse
      */
-    public function removeAction(Association $association)
+    public function removeAction(AssociationType $associationType)
     {
-        $this->getManager()->remove($association);
+        $this->getManager()->remove($associationType);
         $this->getManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_association_index');
+            return $this->redirectToRoute('pim_catalog_association_type_index');
         }
     }
 
     /**
-     * @param Association $association
+     * @param AssociationType $associationType
      *
      * @return Datagrid
      */
-    protected function getHistoryGrid(Association $association)
+    protected function getHistoryGrid(AssociationType $associationType)
     {
         $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $association,
-            'pim_catalog_association_history',
-            array('id' => $association->getId())
+            $associationType,
+            'pim_catalog_association_type_history',
+            array('id' => $associationType->getId())
         );
 
         return $historyGrid;

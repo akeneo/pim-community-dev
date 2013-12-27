@@ -10,7 +10,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
                 strategy: AUTO
     manyToOne:
         association:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
             joinColumns:
                 association_id:
                     referencedColumnName: id

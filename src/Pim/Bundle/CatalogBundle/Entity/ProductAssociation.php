@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -25,7 +25,7 @@ class ProductAssociation
     protected $id;
 
     /**
-     * @var Association $association
+     * @var AssociationType $association
      */
     protected $association;
 
@@ -66,11 +66,11 @@ class ProductAssociation
     /**
      * Set association
      *
-     * @param Association $association
+     * @param AssociationType $association
      *
      * @return ProductAssociation
      */
-    public function setAssociation(Association $association)
+    public function setAssociation(AssociationType $association)
     {
         $this->association = $association;
 
@@ -80,7 +80,7 @@ class ProductAssociation
     /**
      * Get association
      *
-     * @return Association
+     * @return AssociationType
      */
     public function getAssociation()
     {

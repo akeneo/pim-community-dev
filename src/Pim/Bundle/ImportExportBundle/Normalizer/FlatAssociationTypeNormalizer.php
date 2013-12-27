@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Flat association normalizer
+ * Flat association type normalizer
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatAssociationNormalizer extends AssociationNormalizer
+class FlatAssociationTypeNormalizer extends AssociationTypeNormalizer
 {
     /**
      * @var array
@@ -21,10 +21,10 @@ class FlatAssociationNormalizer extends AssociationNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(Association $association)
+    protected function normalizeLabel(AssociationType $associationType)
     {
         $values = array();
-        foreach ($association->getTranslations() as $translation) {
+        foreach ($associationType->getTranslations() as $translation) {
             $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
         }
 

@@ -3,16 +3,16 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Association normalizer
+ * Association type normalizer
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationNormalizer implements NormalizerInterface
+class AssociationTypeNormalizer implements NormalizerInterface
 {
     /**
      * @var array
@@ -49,6 +49,6 @@ class AssociationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Association && in_array($format, $this->supportedFormats);
+        return $data instanceof AssociationType && in_array($format, $this->supportedFormats);
     }
 }
