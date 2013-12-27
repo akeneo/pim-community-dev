@@ -9,29 +9,30 @@
 
 {% block content %}
 
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/dialogform'],
-            function ($, dialogForm) {
-                'use strict';
-                $(function() {
-                    new dialogForm('#create-group-type');
-                });
-            }
-        );
-    </script>
-
     {% if title is not defined %}
         {% set title = 'group type.overview'|trans %}
     {% endif %}
 
     {% if buttons is not defined %}
         {% set buttons %}
-            {{ elements.createBtn(
-                'group type',
-                null,
-                { 'id': 'create-group-type', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_type_create') }
-            ) }}
+            {% if resource_granted('pim_catalog_group_type_create') %}
+                {{ elements.createBtn(
+                    'group type',
+                    null,
+                    { 'id': 'create-group-type', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_type_create') }
+                ) }}
+                <script type="text/javascript">
+                    require(
+                        ['jquery', 'pim/dialogform'],
+                        function ($, dialogForm) {
+                            'use strict';
+                            $(function() {
+                                new dialogForm('#create-group-type');
+                            });
+                        }
+                    );
+                </script>
+            {% endif %}
         {% endset %}
     {% endif %}
 

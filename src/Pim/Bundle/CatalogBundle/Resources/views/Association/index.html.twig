@@ -12,22 +12,24 @@
     {% set title = 'association.overview'|trans %}
 
     {% set buttons %}
-        {{ elements.createBtn(
-            'association',
-            null,
-            { 'id': 'create-association', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_association_create') }
-        ) }}
-        <script type="text/javascript">
-            require(
-                ['jquery', 'pim/dialogform'],
-                function ($, DialogForm) {
-                    'use strict';
-                    $(function() {
-                        new DialogForm('#create-association');
-                    });
-                }
-            );
-        </script>
+        {% if resource_granted('pim_catalog_association_create') %}
+            {{ elements.createBtn(
+                'association',
+                null,
+                { 'id': 'create-association', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_association_create') }
+            ) }}
+            <script type="text/javascript">
+                require(
+                    ['jquery', 'pim/dialogform'],
+                    function ($, DialogForm) {
+                        'use strict';
+                        $(function() {
+                            new DialogForm('#create-association');
+                        });
+                    }
+                );
+            </script>
+        {% endif %}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

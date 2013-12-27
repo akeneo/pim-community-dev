@@ -18,10 +18,12 @@
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 
     {% set buttons %}
-        {{ elements.deleteLink(
-            path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}),
-            path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}), "", "flash.attribute group.removed"|trans)
-        }}
+        {% if resource_granted('pim_catalog_attribute_group_remove') %}
+            {{ elements.deleteLink(
+                path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}),
+                path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}), "", "flash.attribute group.removed"|trans)
+            }}
+        {% endif %}
         {{ elements.submitBtn() }}
     {% endset %}
 
