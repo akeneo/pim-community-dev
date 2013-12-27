@@ -72,9 +72,6 @@ pim_catalog_category_move:
 pim_catalog_category_children:
     type: action
     label: pim_catalog.acl.category.children
-pim_catalog_category_products:
-    type: action
-    label: pim_catalog.acl.category.products
 
 # Channel
 pim_catalog_channel_index:

@@ -488,7 +488,6 @@ pim_catalog:
             remove: 'Remove a category'
             move: 'Move category'
             children: 'See category children'
-            products: See category's product
         channel:
             index: 'List channels'
             create: 'Create a channel'

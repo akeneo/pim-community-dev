@@ -191,20 +191,6 @@ class CategoryTreeController extends AbstractDoctrineController
     }
 
     /**
-     * List products associated with the provided category
-     *
-     * @param Category $category
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_category_products")
-     * @return array
-     */
-    public function listItemsAction(Category $category)
-    {
-        return array('products' => $category->getProducts());
-    }
-
-    /**
      * Create a tree or category
      *
      * @param Request $request
