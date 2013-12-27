@@ -141,12 +141,14 @@ class CategoryProcessor extends TransformerProcessor
                 $this->setItemErrors(
                     $items[$code],
                     array(
-                        array('No category with code %code%', array('%code%' => $categories[$code]->getParent()))
+                        'parent' => array(
+                            array('No category with code %code%', array('%code%' => $parents[$code]))
+                        )
                     )
                 );
                 unset($categories[$code]);
             }
-            $this->setParents($categories, $parents);
+            $this->setParents($categories, $parents, $items);
         }
     }
 

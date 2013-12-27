@@ -17,6 +17,7 @@ class CategoryProcessorTest extends AbstractTransformerProcessorTestCase
     protected $processor;
     protected $transformer;
     protected $entityCache;
+    protected $stepExecution;
 
     protected function setUp()
     {
@@ -27,6 +28,20 @@ class CategoryProcessorTest extends AbstractTransformerProcessorTestCase
         $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->transformer->expects($this->any())
+            ->method('getTransformedColumnsInfo')
+            ->will($this->returnValue(array('columns_info')));
+        $this->transformer->expects($this->any())
+            ->method('transform')
+            ->will(
+                $this->returnCallback(
+                    function ($class, $data) {
+                        $this->assertEquals('class', $class);
+
+                        return $this->getCategoryMock($data);
+                    }
+                )
+            );
         $this->processor = new CategoryProcessor(
             $this->validator,
             $this->translator,
@@ -35,11 +50,11 @@ class CategoryProcessorTest extends AbstractTransformerProcessorTestCase
             'class'
         );
 
-        $stepExecution = $this
+        $this->stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->processor->setStepExecution($stepExecution);
+        $this->processor->setStepExecution($this->stepExecution);
     }
 
     /**
@@ -81,32 +96,47 @@ class CategoryProcessorTest extends AbstractTransformerProcessorTestCase
     public function testTransform()
     {
         $data = array(
-            'root'  => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2' => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'  => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root')
+            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
         );
-        $this->transformer->expects($this->any())
-            ->method('getTransformedColumnsInfo')
-            ->will($this->returnValue(array()));
+
         $this->transformer->expects($this->any())
             ->method('getErrors')
             ->will($this->returnValue(array()));
-        $this->transformer->expects($this->any())
-            ->method('transform')
-            ->will(
-                $this->returnCallback(
-                    function ($class, $data) {
-                        $this->assertEquals('class', $class);
 
-                        return $this->getCategoryMock($data);
-                    }
-                )
-            );
         $categories = $this->processor->process($data);
 
         $this->assertCategoriesData($data, $categories);
         $this->assertSame($categories['root'], $categories['leaf']->parent);
+        $this->assertSame($categories['root'], $categories['leaf2']->parent);
+        $this->assertSame($categories['leaf'], $categories['subleaf']->parent);
     }
+
+    public function testTransformWithMissingParent()
+    {
+        $data = array(
+            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'bad_root'),
+            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
+        );
+
+        $this->transformer->expects($this->any())
+            ->method('getErrors')
+            ->will($this->returnValue(array()));
+
+        $categories = $this->processor->process($data);
+
+        $validData = $data;
+        unset($validData['leaf'], $validData['subleaf']);
+        $this->assertCategoriesData($validData, $categories);
+        $this->assertSame($categories['root'], $categories['leaf2']->parent);
+    }
+
     protected function assertCategoriesData($data, $categories)
     {
         foreach ($data as $index => $row) {
