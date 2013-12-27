@@ -177,18 +177,15 @@ class CategoryProcessor extends TransformerProcessor
     private function checkCircularReferences(array $categories, array $items)
     {
         $invalidCodes = array();
-        $checked = array();
-        $checkParent = function ($category, $visited = array()) use (&$invalidCodes, &$checked, &$checkParent) {
-            if ($category === null || in_array($category->getCode(), $checked)) {
+        $checkParent = function ($category, $visited = array()) use (&$invalidCodes, &$checkParent) {
+            if ($category === null) {
                 return;
             }
-
             $invalid = in_array($category->getCode(), $visited);
             $visited[] = $category->getCode();
             if ($invalid) {
                 $invalidCodes = array_merge($visited, $invalidCodes);
             } else {
-                $checked[] = $category->getCode();
                 $checkParent($category->getParent(), $visited);
             }
         };
@@ -199,12 +196,14 @@ class CategoryProcessor extends TransformerProcessor
             }
         }
 
-        foreach ($invalidCodes as $code) {
+        foreach (array_unique($invalidCodes) as $code) {
             unset($categories[$code]);
             $this->setItemErrors(
                 $items[$code],
                 array(
-                    array('Circular reference')
+                    'parent' => array(
+                        array('Circular reference')
+                    )
                 )
             );
         }

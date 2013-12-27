@@ -73,9 +73,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
 
         if (count($errors)) {
             $this->setItemErrors($item, $errors);
+        } else {
+            return $entity;
         }
-
-        return $entity;
     }
 
     /**
