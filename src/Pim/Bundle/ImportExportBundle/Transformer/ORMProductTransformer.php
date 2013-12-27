@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -21,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductTransformer extends AbstractORMTransformer
+class ORMProductTransformer extends ORMTransformer
 {
     /**
      * @staticvar the identifier attribute type
@@ -52,11 +51,6 @@ class ORMProductTransformer extends AbstractORMTransformer
      * @var boolean
      */
     protected $initialized=false;
-
-    /**
-     * @var boolean
-     */
-    protected $heterogeneous = false;
 
     /**
      * @var array
@@ -92,29 +86,13 @@ class ORMProductTransformer extends AbstractORMTransformer
     }
 
     /**
-     * Transforms an array in a product
-     *
-     * @param array $data
-     * @param array $defaults
-     *
-     * @throws InvalidItemException
-     * @return ProductInterface
+     * {@inheritdoc}
      */
-    public function transform(array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = array())
     {
         $this->initializeAttributes($data);
 
-        return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
-    }
-
-    /**
-     * Set wether or not the product data are heterogeneous, means different attributes for each product row
-     *
-     * @param boolean $heterogeneous
-     */
-    public function setHeterogeneous($heterogeneous)
-    {
-        $this->heterogeneous = $heterogeneous;
+        return parent::transform($class, $data, $defaults);
     }
 
     /**
@@ -218,10 +196,9 @@ class ORMProductTransformer extends AbstractORMTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->heterogeneous === false and $this->initialized) {
+        if ($this->initialized) {
             return;
         }
-
         $class = $this->productManager->getFlexibleName();
         $columnsInfo = $this->columnInfoTransformer->transform($class, array_keys($data));
         $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
