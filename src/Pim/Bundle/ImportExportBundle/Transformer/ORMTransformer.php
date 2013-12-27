@@ -216,7 +216,6 @@ class ORMTransformer
      * @param string $class
      * @param array  $data
      *
-     * @abstract
      * @return object
      */
     protected function getEntity($class, array $data)

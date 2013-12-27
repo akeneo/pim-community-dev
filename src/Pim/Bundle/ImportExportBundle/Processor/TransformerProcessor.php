@@ -203,7 +203,6 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      *
      * @param array $item
      *
-     * @abstract
      * @return object
      */
     protected function transform($item)
@@ -214,7 +213,6 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     /**
      * Returns the column info of the transformed fields
      *
-     * @abstract
      * @return array
      */
     protected function getTransformedColumnsInfo()
@@ -225,7 +223,6 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     /**
      * Returns an array of errors for each columns
      *
-     * @abstract
      * @return array
      */
     protected function getTransformerErrors()
