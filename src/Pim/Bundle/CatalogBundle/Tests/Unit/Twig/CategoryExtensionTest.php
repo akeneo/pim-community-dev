@@ -191,7 +191,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
 
         $repository
             ->expects($this->any())
-            ->method('countProductsLinked')
+            ->method('getProductsCountInCategory')
             ->will($this->returnValue($resultCount));
 
         $this->categoryManager
