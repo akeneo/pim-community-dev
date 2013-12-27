@@ -220,8 +220,8 @@ class MediaManager
 
     /**
      * Get the media, base64 encoded
+     * @param Media $media
      *
-     * @param  Media  $media
      * @return string
      */
     public function getBase64(Media $media)
