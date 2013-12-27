@@ -42,7 +42,6 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var array Entity loaders and corresponding files
      */
     protected $postEntityLoaders = array(
-        'GroupLoader'          => 'groups',
         'UserLoader'           => 'users',
     );
     /**

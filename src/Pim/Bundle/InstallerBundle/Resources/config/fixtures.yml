@@ -78,6 +78,13 @@ products:
         reader:            pim_import_export.reader.file.yaml_product
         processor:         pim_import_export.processor.product
 
+groups:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.group
+    yml:
+        processor:         pim_import_export.processor.group
+
 jobs:
     order: 90
     csv:
