@@ -25,15 +25,15 @@
         {% endif %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_association_index')) }}
-            {{
-                elements.deleteLink(
+            {% if resource_granted('pim_catalog_association_remove') %}
+                {{ elements.deleteLink(
                     path('pim_catalog_association_remove', { id: form.vars.value.id }),
                     path('pim_catalog_association_index'),
                     confirmationMessage,
                     '',
                     'flash.association.removed'|trans
-                )
-            }}
+                ) }}
+            {% endif %}
             {{ elements.submitBtn() }}
         {% endset %}
 
