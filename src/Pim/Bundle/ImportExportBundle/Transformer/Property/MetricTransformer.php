@@ -14,6 +14,9 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
  */
 class MetricTransformer extends DefaultTransformer implements EntityUpdaterInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
         $suffixes = $columnInfo->getSuffixes();
@@ -29,7 +32,7 @@ class MetricTransformer extends DefaultTransformer implements EntityUpdaterInter
             $parts = preg_explode('/\s+/', $data);
             $object->getMetric()->setData($parts[0]);
             if (isset($parts[1])) {
-                $object->getMetric->setUnit($parts[1]);
+                $object->getMetric()->setUnit($parts[1]);
             }
         }
     }
