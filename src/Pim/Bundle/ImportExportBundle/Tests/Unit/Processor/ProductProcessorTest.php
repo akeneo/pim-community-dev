@@ -31,7 +31,8 @@ class ProductProcessorTest extends TransformerProcessorTestCase
         $processor = new ProductProcessor(
             $this->validator,
             $this->translator,
-            $productTransformer
+            $productTransformer,
+            'product_class'
         );
 
         $stepExecution = $this
@@ -57,6 +58,7 @@ class ProductProcessorTest extends TransformerProcessorTestCase
         $productTransformer->expects($this->once())
             ->method('transform')
             ->with(
+                $this->equalTo('product_class'),
                 $this->equalTo($mappedData),
                 $this->equalTo(
                     array(
