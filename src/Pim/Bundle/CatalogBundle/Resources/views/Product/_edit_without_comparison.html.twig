@@ -11,7 +11,7 @@
                     {{ form_widget(attributeView.value) }}
                 </div>
         {% endif %}
-        {% if attributeView.isRemovable %}
+        {% if attributeView.isRemovable and resource_granted('pim_catalog_product_remove_attribute') %}
             <i {{ elements.deleteLinkAttributes(
                 path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
                 path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
