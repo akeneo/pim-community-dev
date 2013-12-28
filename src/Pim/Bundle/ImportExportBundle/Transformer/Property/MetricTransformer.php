@@ -2,11 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Hermes\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
-use InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Metric attribute transformer
@@ -15,11 +12,31 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricTransformer extends DefaultTransformer implements EntityUpdaterInterface
+class MetricTransformer implements PropertyTransformerInterface
 {
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    /**
+     * {@inheritdoc}
+     */
+    public function transform($value, array $options = array())
     {
-        $suffixes = $columnInfo->getSuffixes();
-        
+        if (!isset($options['family'])) {
+            throw new \InvalidArgumentException('Missing required option "family"');
+        }
+
+        $value = trim($value);
+        if (empty($value)) {
+            return;
+        }
+
+        if (false === strpos($value, ' ')) {
+            throw new PropertyTransformerException('Malformed metric: %value%', array('%value%' => $value));
+        }
+        list($data, $unit) = preg_split('/ +/', $value);
+
+        $metric = new Metric();
+        $metric->setData($data)->setUnit($unit);
+        $metric->setFamily($options['family']);
+
+        return $metric;
     }
 }

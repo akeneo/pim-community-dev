@@ -21,10 +21,13 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
     {
         $suffixes = $columnInfo->getSuffixes();
         $currency = array_pop($suffixes);
-        if (null === $currency && null === $data) {
-            $data = array();
-        }
-        if (is_array($data)) {
+
+        if (null === $currency) {
+            if (null === $data) {
+                $data = array();
+            } elseif (is_string($data)) {
+                $data = $this->parseFlatPrices($data);
+            }
             foreach ($object->getPrices() as $price) {
                 $price->setData(null);
             }
@@ -34,5 +37,23 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
         } else {
             $object->addPriceForCurrency($currency)->setData($value);
         }
+    }
+
+    /**
+     * Parses a string representation of prices and returns an array containing the currency as key
+     *
+     * @param string $data
+     *
+     * @return array
+     */
+    protected function parseFlatPrices($data)
+    {
+        $prices = array();
+        foreach (preg_split('/\s*,\s*/', $data) as $price) {
+            $parts = preg_split('/\s+/', $price);
+            $prices[$parts[0]] = isset($parts[1]) ? $parts[1] : null;
+        }
+
+        return $prices;
     }
 }
