@@ -199,11 +199,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function getPrice($currency)
     {
-        return $this->prices->filter(
-            function ($price) use ($currency) {
-                return $currency === $price->getCurrency();
-            }
-        )->first();
+        return isset($this->prices[$currency]) ? $this->prices[$currency] : null;
     }
 
     /**
@@ -232,10 +228,24 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function addPrice(ProductPrice $price)
     {
-        $this->prices[] = $price;
+        $this->prices[$price->getCurrency()] = $price;
         $price->setValue($this);
 
         return $this;
+    }
+
+    /**
+     * Adds a price for the given currency, or returns the existing price
+     * 
+     * @return ProductPrice
+     */
+    public function addPriceForCurrency($currency)
+    {
+        if (!isset($this->prices[$currency])) {
+            $this->addPrice(new ProductPrice(null, $currency));
+        }
+
+        return $this->prices[$currency];
     }
 
     /**
@@ -247,7 +257,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function removePrice(ProductPrice $price)
     {
-        $this->prices->removeElement($price);
+        $this->prices->remove($price->getCurrency());
 
         return $this;
     }
@@ -261,16 +271,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function addMissingPrices($activeCurrencies)
     {
-        $existingCurrencies = array();
-        foreach ($this->getPrices() as $price) {
-            $existingCurrencies[] = $price->getCurrency();
-        }
-        $newCurrencies = array_diff($activeCurrencies, $existingCurrencies);
-        foreach ($newCurrencies as $currency) {
-            $price = new ProductPrice();
-            $price->setCurrency($currency);
-            $this->addPrice($price);
-        }
+        array_walk($activeCurrencies, array($this, 'addPriceForCurrency'));
 
         return $this;
     }
@@ -284,8 +285,8 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function removeDisabledPrices($activeCurrencies)
     {
-        foreach ($this->getPrices() as $price) {
-            if (!in_array($price->getCurrency(), $activeCurrencies)) {
+        foreach ($this->getPrices() as $currency => $price) {
+            if (!in_array($currency, $activeCurrencies)) {
                 $this->removePrice($price);
             }
         }
