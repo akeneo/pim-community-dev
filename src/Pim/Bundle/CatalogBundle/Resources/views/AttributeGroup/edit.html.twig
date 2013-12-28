@@ -42,44 +42,55 @@
         </div>
         {{ form_row(form.sort_order) }}
 
+        {% set removalGranted = resource_granted('pim_catalog_attribute_group_remove_attribute') %}
+        {% set sortGranted = resource_granted('pim_catalog_attribute_sort') %}
+
         <div class="tab-pane" id="attributes">
             <div id="attribute-buttons"></div>
             <div class="clearfix"></div>
             <table class="table groups">
                 <thead>
-                    <th>&nbsp;</th>
+                    {% if sortGranted %}
+                        <th>&nbsp;</th>
+                    {% endif %}
                     <th>{{ 'Name'|trans }}</th>
                     <th>{{ 'Type'|trans }}</th>
                     <th>{{ 'Scope'|trans }}</th>
                     <th>{{ 'Translatable'|trans }}</th>
-                    <th>&nbsp;</th>
+                    {% if removalGranted %}
+                        <th>&nbsp;</th>
+                    {% endif %}
                 </thead>
                     <tbody id="attributes-sortable">
                         {% for attribute in group.attributes %}
                             <tr>
-                                <td>
-                                    <span class="handle">
-                                        <i class="icon-reorder"></i>
-                                        <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
-                                    </span>
-                                </td>
+                                {% if sortGranted %}
+                                    <td>
+                                        <span class="handle">
+                                            <i class="icon-reorder"></i>
+                                            <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
+                                        </span>
+                                    </td>
+                                {% endif %}
                                 <td>{{ attribute.label }}</td>
                                 <td>{{ attribute.attributeType|trans }}</td>
                                 <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
                                 <td>
                                     <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
                                 </td>
-                                <td>
-                                    <a {{ elements.deleteLinkAttributes(
-                                        path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}),
-                                        path('pim_catalog_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
-                                        'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
-                                        '',
-                                        'flash.attribute group.attribute removed'|trans
-                                    ) }} class="remove-attribute">
-                                        <i class="icon-trash"></i>
-                                    </a>
-                                </td>
+                                {% if removalGranted %}
+                                    <td>
+                                        <a {{ elements.deleteLinkAttributes(
+                                            path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}),
+                                            path('pim_catalog_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
+                                            'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
+                                            '',
+                                            'flash.attribute group.attribute removed'|trans
+                                        ) }} class="remove-attribute">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -92,17 +103,19 @@
     </div>
 {{ form_end(form) }}
 
-{% if form.vars.value.id %}
+{% if form.vars.value.id and resource_granted('pim_catalog_attribute_group_add_attribute') %}
     {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
-        'action': path('pim_catalog_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
+        'action': path('pim_catalog_attributegroup_addproductattributes', { id: form.vars.value.id })
     } %}
 {% endif %}
 
-{% include 'PimCatalogBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
-    'list': '#attributes-sortable',
-    'attributes': group.attributes
-} %}
+{% if sortGranted %}
+    {% include 'PimCatalogBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
+        'list': '#attributes-sortable',
+        'attributes': group.attributes
+    } %}
+{% endif %}
 
 {% endblock %}
 

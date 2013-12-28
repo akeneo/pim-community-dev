@@ -9,10 +9,12 @@
 
 {% block content %}
 
-    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_catalog_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
-    } %}
+    {% if resource_granted('pim_catalog_product_add_attribute') %}
+        {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_catalog_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+        } %}
+    {% endif %}
 
     {{ JSFV(form) }}
     {{ form_start(form, {

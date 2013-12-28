@@ -9,7 +9,7 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %} {% if resource_granted("pim_catalog_category_move") %}data-movable="true"{% endif %}  {% if resource_granted("pim_catalog_category_create") %}data-creatable="true"{% endif %}></div>
+        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}{% if resource_granted("pim_catalog_category_edit") %} data-movable="true"{% endif %}{% if resource_granted("pim_catalog_category_create") %} data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}
