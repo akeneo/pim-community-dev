@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Metric attribute transformer
@@ -12,31 +12,25 @@ use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricTransformer implements PropertyTransformerInterface
+class MetricTransformer extends DefaultTransformer implements EntityUpdaterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function transform($value, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
-        if (!isset($options['family'])) {
-            throw new \InvalidArgumentException('Missing required option "family"');
+        $suffixes = $columnInfo->getSuffixes();
+        $suffix = array_pop($suffixes);
+
+        if (!$object->getMetric()) {
+            $object->setMetric(new Metric);
         }
 
-        $value = trim($value);
-        if (empty($value)) {
-            return;
+        if ('unit' === $suffix) {
+            $object->getMetric()->setUnit($data);
+        } else {
+            $parts = preg_explode('/\s+/', $data);
+            $object->getMetric()->setData($parts[0]);
+            if (isset($parts[1])) {
+                $object->getMetric->setUnit($parts[1]);
+            }
         }
-
-        if (false === strpos($value, ' ')) {
-            throw new PropertyTransformerException('Malformed metric: %value%', array('%value%' => $value));
-        }
-        list($data, $unit) = preg_split('/ +/', $value);
-
-        $metric = new Metric();
-        $metric->setData($data)->setUnit($unit);
-        $metric->setFamily($options['family']);
-
-        return $metric;
     }
 }

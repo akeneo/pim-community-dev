@@ -238,24 +238,4 @@ class ProductProcessor extends AbstractTransformerProcessor
     {
         return $this->transformer->getErrors();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function mapValues(array &$values)
-    {
-        parent::mapValues($values);
-
-        foreach ($values as $key => $value) {
-            if (1 === preg_match('/-unit$/', $key)) {
-                $metricValueKey = substr($key, 0, -5);
-                if (!isset($values[$metricValueKey])) {
-                    throw new \Exception(sprintf('Could not find matching metric value key for unit key "%s"', $value));
-                }
-
-                $values[$metricValueKey] .= sprintf(' %s', $value);
-                unset($values[$key]);
-            }
-        }
-    }
 }
