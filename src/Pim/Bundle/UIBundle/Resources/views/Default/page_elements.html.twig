@@ -1,7 +1,27 @@
-{% macro createBtn(entity, url, attr) %}
+{% macro createBtn(entity, url, attr, acl) %}
 {% spaceless %}
-    {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-    <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
+    {% if acl is null or resource_granted(acl) %}
+        {% if attr == 'dialog' %}
+            {% set buttonId = 'create-'~entity %}
+            {% set attr = { 'id': buttonId, 'data-form': 'dialog', 'data-form-url': url } %}
+            {% set url = null %}
+        {% endif %}
+        {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
+        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
+        {% if buttonId is defined %}
+            <script type="text/javascript">
+                require(
+                    ['jquery', 'pim/dialogform'],
+                    function ($, DialogForm) {
+                        'use strict';
+                        $(function() {
+                            new DialogForm('#{{ buttonId }}');
+                        });
+                    }
+                );
+            </script>
+        {% endif %}
+    {% endif %}
 {% endspaceless %}
 {% endmacro %}
 
