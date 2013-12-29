@@ -2,7 +2,7 @@
 {% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% if attr == 'dialog' %}
-            {% set buttonId = 'create-'~entity %}
+            {% set buttonId = 'create-'~(entity|replace({' ': '-', '.': '-'})|lower) %}
             {% set attr = { 'id': buttonId, 'data-form': 'dialog', 'data-form-url': url } %}
             {% set url = null %}
         {% endif %}
