@@ -19,6 +19,7 @@ parameters:
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
     pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
+    pim_catalog.form.type.attribute_option.class:        Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType
 
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
     pim_catalog.form.type.attribute_group.class:            Pim\Bundle\CatalogBundle\Form\Type\AttributeGroupType

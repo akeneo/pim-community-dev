@@ -38,6 +38,11 @@ services:
             - '@pim_catalog.manager.product_attribute'
             - '@pim_catalog.form.subscriber.attribute'
 
+    pim_catalog.form.type.attribute_option:
+        class: %pim_catalog.form.type.attribute_option.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_option }
+
     pim_catalog.form.type.attribute_option_create:
         class: %pim_catalog.form.type.attribute_option_create.class%
         tags:
