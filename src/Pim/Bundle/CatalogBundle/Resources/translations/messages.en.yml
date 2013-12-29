@@ -492,6 +492,7 @@ pim_catalog:
             edit: Edit a channel
             remove: Remove a channel
         family:
+            index: List families
             create: Create a family
             edit: Edit a family
             remove: Remove a family
