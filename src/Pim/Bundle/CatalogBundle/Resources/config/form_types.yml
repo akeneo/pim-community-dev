@@ -43,6 +43,11 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_attribute_option }
 
+    pim_catalog.form.type.attribute_option_value:
+        class: %pim_catalog.form.type.attribute_option_value.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_option_value }
+
     pim_catalog.form.type.attribute_option_create:
         class: %pim_catalog.form.type.attribute_option_create.class%
         tags:
