@@ -1,10 +1,10 @@
 parameters:
-    pim_catalog.doctrine.completeness_generator.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
-    pim_catalog.event_listener.orm.inject_product_reference.class:  Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
+    pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
+    pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
 
 services:
     pim_catalog.object_manager.product:
-        alias: "doctrine.orm.entity_manager"
+        alias: doctrine.orm.entity_manager
 
     pim_catalog.doctrine.completeness_generator:
         class: %pim_catalog.doctrine.completeness_generator.class%

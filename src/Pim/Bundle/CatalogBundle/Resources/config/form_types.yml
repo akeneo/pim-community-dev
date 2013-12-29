@@ -9,7 +9,7 @@ services:
             - { name: form.type, alias: pim_product }
 
     pim_catalog.form.type.product_edit:
-        class:     %pim_catalog.form.type.product_edit.class%
+        class: %pim_catalog.form.type.product_edit.class%
         arguments:
             - '@pim_catalog.form.type.product.view'
         tags:
@@ -21,7 +21,7 @@ services:
             - { name: form.type, alias: pim_product_create }
 
     pim_catalog.form.type.product_value:
-        class:     %pim_catalog.form.type.product_value.class%
+        class: %pim_catalog.form.type.product_value.class%
         arguments:
             - %pim_catalog.entity.product_value.class%
             - '@pim_flexibleentity.value_form.value_subscriber'
@@ -123,7 +123,7 @@ services:
             - { name: form.type, alias: pim_catalog_mass_add_to_groups }
 
     pim_catalog.form.type.localized_collection:
-        class: '%pim_catalog.form.type.localized_collection.class%'
+        class: %pim_catalog.form.type.localized_collection.class%
         tags:
             - { name: form.type, alias: pim_catalog_localized_collection }
 

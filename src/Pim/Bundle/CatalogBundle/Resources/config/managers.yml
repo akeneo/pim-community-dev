@@ -52,7 +52,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.context'
             - '@oro_security.security_facade'
-            - '%locale%'
+            - %locale%
         calls:
             - [ setRequest, ['@?request='] ]
 
