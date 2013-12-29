@@ -55,6 +55,10 @@ services:
         arguments:
             - '@pim_catalog.form.subscriber.attribute_requirements'
             - %pim_catalog.entity.product_attribute.class%
+    pim_catalog.form.type.attribute_requirement:
+        class: %pim_catalog.form.type.attribute_requirement.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_requirement }
 
     pim_catalog.form.type.wysiwyg:
         class: %pim_catalog.form.type.product_value_wysiwyg.class%
