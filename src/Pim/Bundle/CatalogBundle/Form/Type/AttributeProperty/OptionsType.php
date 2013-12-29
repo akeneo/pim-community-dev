@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 
 /**
  * Form type related to options property of ProductAttributeInterface

@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
