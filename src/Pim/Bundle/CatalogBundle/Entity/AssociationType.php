@@ -225,7 +225,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\AssociationTranslation';
+        return 'Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation';
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AssociationTranslation;
+use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
 
 /**
  * Test related class
@@ -158,11 +158,11 @@ class AssociationTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->associationType->getTranslations());
 
         // Change value and assert new
-        $newTranslation = new AssociationTranslation();
+        $newTranslation = new AssociationTypeTranslation();
         $this->assertEntity($this->associationType->addTranslation($newTranslation));
         $this->assertCount(1, $this->associationType->getTranslations());
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\AssociationTranslation',
+            'Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation',
             $this->associationType->getTranslations()->first()
         );
 

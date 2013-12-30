@@ -15,7 +15,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
         translations:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\AssociationTranslation:
+Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
     properties:
         label:
             - Length:
