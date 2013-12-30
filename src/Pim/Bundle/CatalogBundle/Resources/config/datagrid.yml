@@ -1,11 +1,11 @@
 datagrid:
-    association-grid:
+    association-type-grid:
         options:
             entityHint: association
         source:
             acl_resource: pim_catalog_association_index
             type: pim_orm
-            entity: %pim_catalog.entity.association.class%
+            entity: %pim_catalog.entity.association_type.class%
         columns:
             code:
                 label: Code
@@ -52,57 +52,14 @@ datagrid:
                 label:
                     type: string
                     label: Label
-                    data_name: a.translation.label # TODO: need to create a translation filter
-#                    type:             entity
-#                    label:            Label
-#                    data_name:        association.label
-#                    options:
-#                        field_options:
-#                            class: %pim_catalog.entity.association_translation.class%
-#                            property: label
+                    data_name: translation.label
     attribute-grid:
         options:
             entityHint: attribute
         source:
             acl_resource: pim_catalog_attribute_index
-            type: orm
-            #entity: %pim_catalog.entity.attribute.class%
-            query:
-                select:
-                    - a.id
-                    - a.code
-                    - a.attributeType
-                    - a.translatable
-                    - a.scopable
-                    - >
-                        (CASE WHEN translation.label IS NULL THEN
-                            a.code
-                        ELSE
-                            translation.label
-                        END) AS label
-                    - >
-                        (CASE WHEN gt.label IS NULL THEN
-                            g.code
-                        ELSE
-                            gt.label
-                        END) AS groupLabel
-                from:
-                    - { table: PimCatalogBundle:ProductAttribute, alias: a }
-                join:
-                    left:
-                        translation:
-                            join:          a.translations
-                            alias:         translation
-                            conditionType: WITH
-                            condition:     translation.locale = :localeCode
-                        group:
-                            join:  a.group
-                            alias: g
-                        groupTranslation:
-                            join:          g.translations
-                            alias:         gt
-                            conditionType: WITH
-                            condition:     gt.locale = :localeCode
+            type: pim_orm
+            entity: %pim_catalog.entity.product_attribute.class%
         columns:
             code:
                 label: Code
@@ -164,10 +121,9 @@ datagrid:
                     label:     Code
                     data_name: a.code
                 label:
-                    type:             string
-                    label:            Label
-                    data_name:        label
-                    filter_by_having: true
+                    type:      string
+                    label:     Label
+                    data_name: translation.label
                 attributeType:
                     type:      choice
                     data_name: a.attributeType
@@ -182,7 +138,7 @@ datagrid:
                     data_name: a.translatable
                 group:
                     type:      choice
-                    data_name: groupLabel
+                    data_name: attributeGroup.code
                     options:
                         field_options:
                             choices: @pim_catalog.manager.product_attribute->getAttributeGroupChoices
@@ -192,30 +148,8 @@ datagrid:
             entityHint: channel
         source:
             acl_resource: pim_catalog_channel_index
-            type: orm
-            query:
-                select:
-                    - c.id
-                    - c.code
-                    - c.label
-                    - >
-                        (CASE WHEN ct.label IS NULL THEN
-                            category.code
-                        ELSE
-                            ct.label
-                        END) AS categoryLabel
-                from:
-                    - { table: PimCatalogBundle:Channel, alias: c }
-                join:
-                    left:
-                        category:
-                            join:  c.category
-                            alias: category
-                        categoryTranslation:
-                            join:          category.translations
-                            alias:         ct
-                            conditionType: WITH
-                            condition:     ct.locale = :localeCode
+            type: pim_orm
+            entity: %pim_catalog.entity.channel.class%
         columns:
             code:
                 label: Code
@@ -271,7 +205,7 @@ datagrid:
                 category:
                     type:      choice
                     label:     Category tree
-                    data_name: categoryLabel
+                    data_name: ct.label
                     options:
                         field_options:
                             choices: @pim_catalog.manager.category->getTrees
@@ -379,18 +313,16 @@ datagrid:
                     type:      string
                     label:     Code
                     data_name: f.code
-                # TODO: need to create a translation filter
                 label:
                     type: string
                     label: Label
-                    data_name: f.translation.label
+                    data_name: translation.label
                 # TODO: custom filter to get attribute label
                 attributeAsLabel:
-                    type:             entity
-                    label:            Attribute as label
-                    data_name:        attributeAsLabel
+                    type:      entity
+                    label:     Attribute as label
+                    data_name: f.attributeAsLabel
                     options:
                         field_options:
                             class: %pim_catalog.entity.product_attribute.class%
-                            property: code
-
+                            property: label

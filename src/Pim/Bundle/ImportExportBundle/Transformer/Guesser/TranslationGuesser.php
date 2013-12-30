@@ -35,7 +35,9 @@ class TranslationGuesser implements GuesserInterface
      */
     public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if (!count($columnInfo->getSuffixes()) || !$metadata->hasAssociation('translations')) {
+        if ((!$columnInfo->getLocale() && !count($columnInfo->getSuffixes())) ||
+            !$metadata->hasAssociation('translations')
+        ) {
             return;
         }
 

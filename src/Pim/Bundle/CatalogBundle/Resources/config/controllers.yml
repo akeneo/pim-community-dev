@@ -10,7 +10,7 @@ parameters:
     pim_catalog.controller.product.class:              Pim\Bundle\CatalogBundle\Controller\ProductController
     pim_catalog.controller.product_associations.class: Pim\Bundle\CatalogBundle\Controller\ProductAssociationsController
     pim_catalog.controller.group.class:                Pim\Bundle\CatalogBundle\Controller\GroupController
-    pim_catalog.controller.association.class:          Pim\Bundle\CatalogBundle\Controller\AssociationController
+    pim_catalog.controller.association_type.class:     Pim\Bundle\CatalogBundle\Controller\AssociationTypeController
     pim_catalog.controller.media.class:                Pim\Bundle\CatalogBundle\Controller\MediaController
     pim_catalog.controller.variant_group.class:        Pim\Bundle\CatalogBundle\Controller\VariantGroupController
     pim_catalog.controller.group_type.class:           Pim\Bundle\CatalogBundle\Controller\GroupTypeController
@@ -140,14 +140,14 @@ services:
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
 
-    pim_catalog.controller.association:
+    pim_catalog.controller.association_type:
         scope: request
-        class: %pim_catalog.controller.association.class%
+        class: %pim_catalog.controller.association_type.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.locale'
-            - '@pim_catalog.form.handler.association'
-            - '@pim_catalog.form.association'
+            - '@pim_catalog.form.handler.association_type'
+            - '@pim_catalog.form.association_type'
 
     pim_catalog.controller.media:
         scope: request

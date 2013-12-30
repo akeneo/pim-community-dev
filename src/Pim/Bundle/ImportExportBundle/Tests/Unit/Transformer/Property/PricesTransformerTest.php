@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Tests related class
@@ -14,66 +13,83 @@ use Pim\Bundle\CatalogBundle\Model\ProductPrice;
  */
 class PricesTransformerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $transformer;
-    protected $currencyManager;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
+    public function getSetValuesData()
     {
-        $this->currencyManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->currencyManager
-            ->expects($this->once())
-            ->method('getActiveCodes')
-            ->will($this->returnValue(array('EUR', 'USD', 'CAD')));
-        $this->transformer = new PricesTransformer($this->currencyManager);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testTransform()
-    {
-        $this->assertEquals(array(), $this->transformer->transform(''));
-        $this->assertEquals(array(), $this->transformer->transform(' '));
-        $this->assertEquals(array('EUR' => $this->getPrice(15.2, 'EUR')), $this->transformer->transform(' 15.20 EUR'));
-        $this->assertEquals(
-            array('EUR' => $this->getPrice(15.2, 'EUR'), 'USD' => $this->getPrice(45, 'USD')),
-            $this->transformer->transform(' 15.20 EUR, 45 USD ')
+        return array(
+            'single_price' => array('currency', '25', array('currency' => 25)),
+            'array'        => array(null, array('cur1' => '14', 'cur2' => '25'), array('cur1' => '14', 'cur2' => '25')),
+            'string'       => array(null, '10 cur1, 12.2 cur2', array('cur1' => '10', 'cur2' => '12.2'))
         );
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
+     * @dataProvider getSetValuesData
+     */
+    public function testSetValues($suffix, $data, $expectedPrices)
+    {
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $columnInfo->expects($this->any())
+            ->method('getSuffixes')
+            ->will($this->returnValue(array($suffix)));
+
+        $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->getMock();
+
+        if (!$suffix) {
+            $object->expects($this->once())
+                ->method('setPrices')
+                ->with($this->equalTo(array()));
+        }
+        $object->expects($this->exactly(count($expectedPrices)))
+            ->method('addPriceForCurrency')
+            ->will(
+                $this->returnCallback(
+                    function ($currency) use ($expectedPrices) {
+                        $price = $this->getMockForPrice($currency, $expectedPrices[$currency]);
+                        $price->expects($this->once())
+                            ->method('setData')
+                            ->with($this->equalTo($expectedPrices[$currency]));
+
+                        return $price;
+                    }
+                )
+            );
+
+        $transformer = new PricesTransformer();
+        $transformer->setValue($object, $columnInfo, $data);
+    }
+
+    /**
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage Malformed price: "15"
      */
-    public function testUnvalidTransform()
+    public function testMalformedPrice()
     {
-        $this->transformer->transform(' 15 ');
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $columnInfo->expects($this->any())
+            ->method('getSuffixes')
+            ->will($this->returnValue(array()));
+        $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->getMock();
+
+        $transformer = new PricesTransformer();
+        $transformer->setValue($object, $columnInfo, '12.O2 cur1,15');
     }
 
-    /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage Currency "CHF" is not active
-     */
-    public function testInactiveCurrenctTransform()
+    protected function getMockForPrice($currency, $data = null)
     {
-        $this->transformer->transform(' 15 USD, 30 CHF');
-    }
+        $price = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductPrice');
+        $price->expects($this->any())
+            ->method('getCurrency')
+            ->will($this->returnValue($currency));
+        if (null !== $data) {
+            $price->expects($this->any())
+                ->method('getData')
+                ->will($this->returnValue($data));
+        }
 
-    /**
-     * @param float  $data
-     * @param string $currency
-     *
-     * @return ProductPrice
-     */
-    protected function getPrice($data, $currency)
-    {
-        $price = new ProductPrice();
-
-        return $price->setData($data)->setCurrency($currency);
+        return $price;
     }
 }

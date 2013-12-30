@@ -86,17 +86,21 @@ class FamilyRepository extends ReferableEntityRepository
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('f');
+        $rootAlias = $qb->getRootAlias();
+
+        $labelExpr = sprintf(
+            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
+            $rootAlias
+        );
 
         $qb
-            ->leftJoin('f.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-       ;//     ->leftJoin('f.attributeAsLabel', 'a');
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
+            ->addSelect('translation.label');
 
-        $familyLabelExpr = "(CASE WHEN translation.label IS NULL THEN f.code ELSE translation.label END)";
         $qb
-            ->addSelect('f')
-            ->addSelect(sprintf("%s AS familyLabel", $familyLabelExpr))
-            ->addSelect('translation.label')
-          ;//  ->addSelect('a.id AS attributeAsLabel');
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('f.attributeAsLabel', 'a');
 
         return $qb;
     }

@@ -11,7 +11,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
-use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -241,7 +240,10 @@ class AssociationGroupDatagridManager extends DatagridManager
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
                 'WITH',
-                sprintf('pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.groups', $rootAlias)
+                sprintf(
+                    'pa.associationType = :association AND pa.owner = :product AND %s MEMBER OF pa.groups',
+                    $rootAlias
+                )
             );
 
         $proxyQuery

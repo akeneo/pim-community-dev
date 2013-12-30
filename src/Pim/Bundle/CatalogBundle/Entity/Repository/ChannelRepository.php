@@ -42,4 +42,29 @@ class ChannelRepository extends ReferableEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $rootAlias = $qb->getRootAlias();
+
+        $treeExpr = '(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)';
+
+        $qb
+            ->addSelect($rootAlias)
+            ->addSelect('category')
+            ->addSelect(sprintf('%s AS categoryLabel', $treeExpr))
+            ->addSelect('ct.label');
+
+        $qb
+            ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
+            ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode');
+
+        $qb->groupBy($rootAlias);
+
+        return $qb;
+    }
 }

@@ -1,5 +1,5 @@
-{% if associations is empty %}
-    <div>{% trans %}No associations{% endtrans %}</div>
+{% if associationTypes is empty %}
+    <div>{% trans %}No association types{% endtrans %}</div>
 {% else %}
     {% set productListenerParameters = {
         'columnName': 'has_association',
@@ -80,13 +80,13 @@
 
     <div id="association-list" class="tab-groups">
         <ul class="nav nav-list">
-            {% for association in associations %}
+            {% for associationType in associationTypes %}
                 <li class="tab{% if loop.first %} active{% endif %}">
-                    <a id="association-link-{{ association.id }}" href="#association-tab-{{ association.id }}" data-toggle="tab">
-                        {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
+                    <a id="association-link-{{ associationType.id }}" href="#association-tab-{{ associationType.id }}" data-toggle="tab">
+                        {% set currentAssociation = product.getProductAssociationForAssociation(associationType) %}
                         {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
                         <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
-                        {{ association.label }} ({{ associationCount }})
+                        {{ associationType.label }} ({{ associationCount }})
                     </a>
                 </li>
             {% endfor %}
@@ -97,19 +97,19 @@
         <div id="association-buttons" class="navbar-extra pull-right">
             <button type="button" class="btn pull-right hide" data-target-association="product">
                 <i class="icon-random"></i>
-                {{ 'info.association.show products'|trans }}
+                {{ 'info.association type.show products'|trans }}
             </button>
             <button type="button" class="btn pull-right" data-target-association="group">
                 <i class="icon-random"></i>
-                {{ 'info.association.show groups'|trans }}
+                {{ 'info.association type.show groups'|trans }}
             </button>
         </div>
-        {% for association in associations %}
-             <div id="association-tab-{{ association.id }}" class="tab-pane">
+        {% for associationType in associationTypes %}
+             <div id="association-tab-{{ associationType.id }}" class="tab-pane">
                 <h3 class="unspaced">
-                    {{ association.label }}
+                    {{ associationType.label }}
                     <span class="muted small">
-                        {% set currentAssociation = product.getProductAssociationForAssociation(association) %}
+                        {% set currentAssociation = product.getProductAssociationForAssociation(associationType) %}
                         {{ 'info.product.number of associations'|trans({ '%productCount%': currentAssociation.products|length, '%groupCount%': currentAssociation.groups|length }) }}
                     </span>
                 </h3>

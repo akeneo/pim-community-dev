@@ -268,9 +268,12 @@ class CsvReader extends AbstractConfigurableStepElement implements
             if ($data === array(null) || $data === null) {
                 return null;
             }
-            $this->stepExecution->incrementSummaryInfo('read');
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('read');
+            }
 
             if (count($this->fieldNames) !== count($data)) {
+                var_dump($data);
                 throw new InvalidItemException(
                     sprintf(
                         'Expecting to have %d columns, actually have %d in %s:%d.',
