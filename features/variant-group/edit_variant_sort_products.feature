@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit a variant group adding/removing products
-  In order to manage existing variant groups for the catalog
+Feature: Sort available products for a variant group
+  In order to easily browse products inside a variant group
   As a user
-  I need to be able to add and remove product from a variant group
+  I need to be able to sort products in a variant group
 
   Background:
     Given the "default" catalog configuration

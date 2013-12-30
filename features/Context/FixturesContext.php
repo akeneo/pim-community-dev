@@ -247,6 +247,9 @@ class FixturesContext extends RawMinkContext
                 $data['enabled'] = (int) ($data['enabled'] === 'yes');
             }
         }
+        if (isset($data['categories'])) {
+            $data['categories'] = implode(', ', $this->listToArray($data['categories']));
+        }
 
         // Clear product transformer cache
         $this

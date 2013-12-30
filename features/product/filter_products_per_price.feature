@@ -14,8 +14,6 @@ Feature: Filter products per price
       | sku    | family    | enabled |
       | postit | furniture | yes     |
       | book   | library   | no      |
-    And a "postit" product
-    And a "book" product
     And the following attributes:
       | label | required | translatable | scopable | type   | useable as grid filter |
       | price | no       | no           | yes      | prices | yes                    |

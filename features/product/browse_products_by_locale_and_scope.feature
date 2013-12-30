@@ -12,7 +12,6 @@ Feature: Browse products by locale and scope
     And the following products:
       | sku    | family    |
       | postit | furniture |
-    And a "postit" product
     And the following attributes:
       | label       | translatable | scopable | useable as grid column |
       | name        | yes          | no       | yes                    |
@@ -20,7 +19,6 @@ Feature: Browse products by locale and scope
       | description | yes          | yes      | yes                    |
     And the following product values:
       | product | attribute   | locale | scope     | value                    |
-      | postit  | sku         |        |           | postit                   |
       | postit  | name        | en_US  |           | Post it                  |
       | postit  | name        | fr_FR  |           | Etiquette                |
       | postit  | image       |        | ecommerce | large.jpeg               |
