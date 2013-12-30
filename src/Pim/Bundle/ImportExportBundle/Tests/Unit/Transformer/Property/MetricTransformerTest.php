@@ -61,7 +61,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
                     )
                 );
         } else {
-            $metric = new Metric;
+            $metric = new Metric();
             $metric->setFamily('metric_family');
         }
         $object->expects($this->any())

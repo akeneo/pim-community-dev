@@ -23,7 +23,7 @@ class MetricTransformer extends DefaultTransformer implements EntityUpdaterInter
         $suffix = array_pop($suffixes);
 
         if (!$object->getMetric()) {
-            $metric = new Metric;
+            $metric = new Metric();
             $object->setMetric($metric);
             $metric->setFamily($columnInfo->getAttribute()->getMetricFamily());
         }
