@@ -173,7 +173,9 @@ class ORMProductTransformer extends ORMTransformer
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
             $value = $data[$label];
-            if ((is_scalar($value) && '' !== trim($value)) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
+            if ((is_scalar($value) && '' !== trim($value)) ||
+                in_array($columnInfo->getName(), $requiredAttributeCodes)
+            ) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
                     $this->errors[$label] = array($error);
