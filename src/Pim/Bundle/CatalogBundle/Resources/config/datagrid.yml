@@ -311,18 +311,16 @@ datagrid:
                     type:      string
                     label:     Code
                     data_name: f.code
-                # TODO: need to create a translation filter
                 label:
                     type: string
                     label: Label
-                    data_name: f.translation.label
+                    data_name: translation.label
                 # TODO: custom filter to get attribute label
                 attributeAsLabel:
-                    type:             entity
-                    label:            Attribute as label
-                    data_name:        attributeAsLabel
+                    type:      entity
+                    label:     Attribute as label
+                    data_name: f.attributeAsLabel
                     options:
                         field_options:
                             class: %pim_catalog.entity.product_attribute.class%
-                            property: code
-
+                            property: label
