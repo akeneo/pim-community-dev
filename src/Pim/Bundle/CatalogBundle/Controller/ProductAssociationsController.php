@@ -77,7 +77,7 @@ class ProductAssociationsController
 
         $this->productManager->ensureAllAssociationTypes($product);
 
-        $associations = $this->doctrine->getRepository('PimCatalogBundle:Association')->findAll();
+        $associations = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
 
         $productGrid = $this->datagridHelper->getDatagridManager('association_product');
         $productGrid->setProduct($product);

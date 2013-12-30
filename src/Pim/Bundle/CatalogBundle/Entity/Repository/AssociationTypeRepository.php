@@ -20,20 +20,20 @@ class AssociationTypeRepository extends ReferableEntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildMissingAssociations(ProductInterface $product)
+    public function buildMissingAssociationTypes(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('a');
 
         if ($productAssociations = $product->getProductAssociations()) {
-            $associationIds = $productAssociations->map(
+            $associationTypeIds = $productAssociations->map(
                 function ($productAssociation) {
-                    return $productAssociation->getAssociation()->getId();
+                    return $productAssociation->getAssociationType()->getId();
                 }
             );
 
-            if (!$associationIds->isEmpty()) {
+            if (!$associationTypeIds->isEmpty()) {
                 $qb->andWhere(
-                    $qb->expr()->notIn('a.id', $associationIds->toArray())
+                    $qb->expr()->notIn('a.id', $associationTypeIds->toArray())
                 );
             }
         }

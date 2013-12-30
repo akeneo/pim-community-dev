@@ -284,7 +284,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
                 'pa',
                 'WITH',
                 sprintf(
-                    'pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.products',
+                    'pa.associationType = :association AND pa.owner = :product AND %s MEMBER OF pa.products',
                     $rootAlias
                 )
             );

@@ -456,7 +456,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     {
         return $this->productAssociations->filter(
             function ($productAssociation) use ($association) {
-                return $productAssociation->getAssociation() === $association;
+                return $productAssociation->getAssociationType() === $association;
             }
         )->first();
     }
