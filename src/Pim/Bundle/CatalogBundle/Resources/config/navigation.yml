@@ -161,9 +161,9 @@ oro_titles:
     pim_catalog_variant_group_index:     Variant groups
     pim_catalog_variant_group_create:    Variant groups | Create
     pim_catalog_variant_group_edit:      Variant groups %%group.label%% | Edit
-    pim_catalog_association_index:       Associations
-    pim_catalog_association_create:      Associations | Create
-    pim_catalog_association_edit:        Associations %%association.label%% | Edit
+    pim_catalog_association_type_index:  Association types
+    pim_catalog_association_type_create: Association types | Create
+    pim_catalog_association_type_edit:   Association types %%association type.label%% | Edit
     pim_catalog_group_type_index:        Group types
     pim_catalog_group_type_create:       Group types | Create
     pim_catalog_group_type_edit:         Group types %%group type.label%% | Edit

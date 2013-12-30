@@ -1,16 +1,16 @@
 @javascript
-Feature: Browse associations
-  In order to list the existing associations in the catalog
+Feature: Browse association types
+  In order to list the existing association types in the catalog
   As a user
-  I need to be able to see associations
+  I need to be able to see association types
 
-  Scenario: Successfully view, sort and filter associations
+  Scenario: Successfully view, sort and filter association types
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
-    And I am on the associations page
+    And I am on the association types page
     Then the grid should contain 4 elements
     And I should see the columns Code and Label
-    And I should see associations X_SELL, UPSELL, SUBSTITUTION and PACK
+    And I should see association types X_SELL, UPSELL, SUBSTITUTION and PACK
     And the rows should be sorted ascending by code
     And I should be able to sort the rows by code and label
     And I should be able to use the following filters:

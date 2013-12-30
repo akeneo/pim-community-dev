@@ -225,6 +225,6 @@ class ProductAssociation implements ReferableInterface
      */
     public function getReference()
     {
-        return $this->owner->getIdentifier() . '.' . $this->association->getCode();
+        return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
     }
 }

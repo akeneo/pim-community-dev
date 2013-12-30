@@ -1,20 +1,20 @@
 <?php
 
-namespace Context\Page\Association;
+namespace Context\Page\AssociationType;
 
-use Context\Page\Base\Form;
+use Context\Page\Base\Grid;
 
 /**
- * Association edit page
+ * Association type index page
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Edit extends Form
+class Index extends Grid
 {
     /**
      * @var string
      */
-    protected $path = '/configuration/association/{id}/edit';
+    protected $path = '/configuration/association-type/';
 }

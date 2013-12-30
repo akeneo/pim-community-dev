@@ -1,4 +1,4 @@
-associations:
+association_types:
     X_SELL:
         labels:
             en_US: Cross sell

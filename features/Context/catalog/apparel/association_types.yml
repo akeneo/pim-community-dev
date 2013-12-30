@@ -1,4 +1,4 @@
-associations:
+association_types:
     variant:
         labels:
             en_US: Variant
