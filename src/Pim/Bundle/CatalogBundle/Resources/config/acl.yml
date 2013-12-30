@@ -169,18 +169,18 @@ pim_catalog_group_type_remove:
     label: pim_catalog.acl.group_type.remove
 
 # Association
-pim_catalog_association_index:
+pim_catalog_association_type_index:
     type: action
-    label: pim_catalog.acl.association.index
-pim_catalog_association_create:
+    label: pim_catalog.acl.association_type.index
+pim_catalog_association_type_create:
     type: action
-    label: pim_catalog.acl.association.create
-pim_catalog_association_edit:
+    label: pim_catalog.acl.association_type.create
+pim_catalog_association_type_edit:
     type: action
-    label: pim_catalog.acl.association.edit
-pim_catalog_association_remove:
+    label: pim_catalog.acl.association_type.edit
+pim_catalog_association_type_remove:
     type: action
-    label: pim_catalog.acl.association.remove
+    label: pim_catalog.acl.association_type.remove
 
 # Locales
 pim_catalog_locale_af_ZA:

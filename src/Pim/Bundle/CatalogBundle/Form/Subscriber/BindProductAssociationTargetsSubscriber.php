@@ -41,15 +41,15 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
         for ($count = $form->count(), $i = 0; $count > $i; $i++) {
             $child = $form->get($i);
 
-            $association    = $child->get('association')->getData();
-            $appendProducts = $child->get('appendProducts')->getData();
-            $removeProducts = $child->get('removeProducts')->getData();
-            $appendGroups   = $child->get('appendGroups')->getData();
-            $removeGroups   = $child->get('removeGroups')->getData();
+            $associationType = $child->get('associationType')->getData();
+            $appendProducts  = $child->get('appendProducts')->getData();
+            $removeProducts  = $child->get('removeProducts')->getData();
+            $appendGroups    = $child->get('appendGroups')->getData();
+            $removeGroups    = $child->get('removeGroups')->getData();
 
             $productAssociation = $productAssociations->filter(
-                function ($productAssociation) use ($association) {
-                    return $productAssociation->getAssociation() === $association;
+                function ($productAssociation) use ($associationType) {
+                    return $productAssociation->getAssociationType() === $associationType;
                 }
             )->first();
 

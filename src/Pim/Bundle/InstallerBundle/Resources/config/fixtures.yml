@@ -42,12 +42,12 @@ group_types:
     yml:
         processor:         pim_import_export.processor.group_type
 
-associations:
+association_types:
     order: 40
     csv:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
     yml:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
 
 attributes:
     order: 40
