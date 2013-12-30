@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
@@ -15,132 +12,51 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PricesTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
+class PricesTransformer extends DefaultTransformer implements EntityUpdaterInterface
 {
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
-     * @var array
-     */
-    private $currencies;
-
-    /**
-     * Constructor
-     *
-     * @param CurrencyManager $currencyManager
-     */
-    public function __construct(CurrencyManager $currencyManager)
-    {
-        $this->currencyManager = $currencyManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function transform($value, array $options = array())
-    {
-        $currencies = $this->getCurrencies();
-
-        $result = array();
-        foreach (preg_split('/\s*,\s*/', trim($value)) as $price) {
-            if (empty($price)) {
-                continue;
-            }
-
-            if (0 === preg_match('/^([^\s]+) (\w+)$/', $price, $matches)) {
-                throw new PropertyTransformerException('Malformed price: "%value%"', array('%value%' => $price));
-            }
-
-            if (!in_array($matches[2], $currencies)) {
-                throw new PropertyTransformerException(
-                    'Currency "%currency%" is not active',
-                    array('%currency%' => $matches[2])
-                );
-            }
-
-            $result[$matches[2]] = $this->createPrice($matches[1], $matches[2]);
-        }
-
-        return $result;
-    }
-
     /**
      * {@inheritdoc}
      */
 
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
-        $currencies = $this->getCurrencies();
-        $removeCurrency = function ($code) use (&$currencies) {
-            $pos = array_search($code, $currencies);
-            if (false !== $pos) {
-                unset($currencies[$pos]);
+        $suffixes = $columnInfo->getSuffixes();
+        $currency = array_pop($suffixes);
+
+        if (null === $currency) {
+            if (null === $data) {
+                $data = array();
+            } elseif (is_string($data)) {
+                $data = $this->parseFlatPrices($data);
             }
-        };
-
-        foreach ($object->getPrices() as $price) {
-            $currency = $price->getCurrency();
-            if (isset($data[$currency])) {
-                $price->setData($data[$currency]->getData());
-                $removeCurrency($currency);
-                unset($data[$currency]);
+            $object->setPrices(array());
+            foreach ($data as $currency => $value) {
+                $object->addPriceForCurrency($currency)->setData($value);
             }
-        }
-
-        foreach ($data as $currency => $price) {
-            $this->addPrice($object, $price->getData(), $currency);
-            $removeCurrency($currency);
-        }
-
-        foreach ($currencies as $currency) {
-            $this->addPrice($object, null, $currency);
+        } else {
+            $object->addPriceForCurrency($currency)->setData($data);
         }
     }
 
     /**
-     * Returns the active currencies
+     * Parses a string representation of prices and returns an array containing the currency as key
+     *
+     * @param string $data
      *
      * @return array
      */
-    protected function getCurrencies()
+    protected function parseFlatPrices($data)
     {
-        if (!isset($this->currencies)) {
-            $this->currencies = $this->currencyManager->getActiveCodes();
+        $prices = array();
+        foreach (preg_split('/\s*,\s*/', $data) as $price) {
+            $parts = preg_split('/\s+/', $price);
+            if (count($parts) > 1) {
+                $prices[$parts[1]] = $parts[0];
+            } else {
+                throw new PropertyTransformerException('Malformed price: "%price%"', array('%price%' => $price));
+            }
         }
 
-        return $this->currencies;
-    }
-
-    /**
-     * Creates a ProductPrice object and adds it to the product value
-     *
-     * @param ProductValueInterface $productValue
-     * @param float                 $data
-     * @param string                $currency
-     *
-     * @return ProductPrice
-     */
-    protected function addPrice(ProductValueInterface $productValue, $data, $currency)
-    {
-        $productValue->addPrice($this->createPrice($data, $currency)->setValue($productValue));
-    }
-
-    /**
-     * Creates a ProductPrice object
-     *
-     * @param float  $data
-     * @param string $currency
-     *
-     * @return ProductPrice
-     */
-    protected function createPrice($data, $currency)
-    {
-        $price = new ProductPrice();
-        $price->setData($data)->setCurrency($currency);
-
-        return $price;
+        return $prices;
     }
 }
