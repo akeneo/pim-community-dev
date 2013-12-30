@@ -4,26 +4,27 @@ datagrid:
             entityHint: association
         source:
             acl_resource: pim_catalog_association_index
-            type: orm
-            query:
-                select:
-                    - a.id
-                    - a.code
-                    - >
-                        (CASE WHEN translation.label IS NULL THEN
-                            a.code
-                        ELSE
-                            translation.label
-                        END) AS label
-                from:
-                    - { table: PimCatalogBundle:Association, alias: a }
-                join:
-                    left:
-                        translation:
-                            join:          a.translations
-                            alias:         translation
-                            conditionType: WITH
-                            condition:     translation.locale = :localeCode
+            type: pim_orm
+            entity: %pim_catalog.entity.association.class%
+#            query:
+#                select:
+#                    - a.id
+#                    - a.code
+#                    - >
+#                        (CASE WHEN translation.label IS NULL THEN
+#                            a.code
+#                        ELSE
+#                            translation.label
+#                        END) AS label
+#                from:
+#                    - { table: PimCatalogBundle:Association, alias: a }
+#                join:
+#                    left:
+#                        translation:
+#                            join:          a.translations
+#                            alias:         translation
+#                            conditionType: WITH
+#                            condition:     translation.locale = :localeCode
         columns:
             code:
                 label: Code
@@ -68,11 +69,16 @@ datagrid:
                     label:     Code
                     data_name: a.code
                 label:
-                    type:             string
-                    label:            Label
-                    data_name:        label
-                    filter_by_having: true
-
+                    type: string
+                    label: Label
+                    data_name: a.translation.label # TODO: need to create a translation filter
+#                    type:             entity
+#                    label:            Label
+#                    data_name:        association.label
+#                    options:
+#                        field_options:
+#                            class: %pim_catalog.entity.association_translation.class%
+#                            property: label
     attribute-grid:
         options:
             entityHint: attribute
