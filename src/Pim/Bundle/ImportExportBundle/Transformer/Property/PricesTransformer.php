@@ -53,7 +53,7 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
             if (count($parts) > 1) {
                 $prices[$parts[1]] = $parts[0];
             } else {
-                throw new PropertyTransformerException('Malformed price "%price%""', array('%price%' => $price));
+                throw new PropertyTransformerException('Malformed price: "%price%"', array('%price%' => $price));
             }
         }
 

@@ -62,7 +62,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage Malformed price "15"
+     * @expectedExceptionMessage Malformed price: "15"
      */
     public function testMalformedPrice()
     {
