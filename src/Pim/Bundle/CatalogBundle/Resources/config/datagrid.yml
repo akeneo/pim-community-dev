@@ -67,6 +67,7 @@ datagrid:
                 label: Label
             attributeType:
                 label: Type
+                type: translateable
             scopable:
                 label:         Scopable
                 frontend_type: boolean
