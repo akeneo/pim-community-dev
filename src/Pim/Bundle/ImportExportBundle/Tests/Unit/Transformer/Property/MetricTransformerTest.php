@@ -14,38 +14,71 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
  */
 class MetricTransformerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Test related method
-     */
-    public function testTransform()
+    public function getSetValueData()
     {
-        $transformer = new MetricTransformer();
-        $this->assertEquals(null, $transformer->transform('', array('family' => 'foo')));
-        $this->assertEquals(null, $transformer->transform(' ', array('family' => 'foo')));
-        $m = new Metric();
-        $m->setData(15.2);
-        $m->setUnit('KILOGRAM');
-        $m->setFamily('foo');
-        $this->assertEquals($m, $transformer->transform('15.2 KILOGRAM', array('family' => 'foo')));
+        return array(
+            'only_data'     => array(null, '54.25', false, '54.25', null),
+            'create'        => array(null, '54.25', true, '54.25', null),
+            'data_and_unit' => array(null, '54.25 KG', false, '54.25', 'KG'),
+            'only_unit'     => array('unit', 'KG', false, null, 'KG'),
+            'null'          => array(null, null, false, null, null)
+        );
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Missing required option "family"
+     * @dataProvider getSetValueData
      */
-    public function testTransformWithoutFamily()
+    public function testSetValue($columnSuffix, $data, $createMetric, $expectedData, $expectedUnit)
     {
-        $transformer = new MetricTransformer();
-        $transformer->transform('15.2 KILOGRAM');
-    }
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $columnInfo->expects($this->any())
+            ->method('getSuffixes')
+            ->will($this->returnValue(array($columnSuffix)));
 
-    /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage Malformed metric: 15.2
-     */
-    public function testUnvalidTransform()
-    {
+        $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface')
+            ->setMethods(array('getMetricFamily'))
+            ->getMock();
+        $columnInfo->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($attribute));
+        $attribute->expects($this->any())
+            ->method('getMetricFamily')
+            ->will($this->returnValue('metric_family'));
+
+        $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->setMethods(array('getMetric', 'setMetric', '__toString'))
+            ->getMock();
+
+        $metric = null;
+        if ($createMetric) {
+            $object->expects($this->once())
+                ->method('setMetric')
+                ->will(
+                    $this->returnCallback(
+                        function ($createdMetric) use (&$metric) {
+                            $metric = $createdMetric;
+                        }
+                    )
+                );
+        } else {
+            $metric = new Metric;
+            $metric->setFamily('metric_family');
+        }
+        $object->expects($this->any())
+            ->method('getMetric')
+            ->will(
+                $this->returnCallback(
+                    function () use (&$metric) {
+                        return $metric;
+                    }
+                )
+            );
+
         $transformer = new MetricTransformer();
-        $transformer->transform('15.2', array('family' => 'foo'));
+        $transformer->setValue($object, $columnInfo, $data);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Metric', $metric);
+        $this->assertEquals('metric_family', $metric->getFamily());
+        $this->assertEquals($expectedData, $metric->getData());
+        $this->assertEquals($expectedUnit, $metric->getUnit());
     }
 }
