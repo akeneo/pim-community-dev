@@ -18,6 +18,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     protected $context;
     protected $validator;
     protected $constraint;
+    protected $propertyAccessor;
 
     /**
      * @var array Measures
@@ -49,8 +50,9 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->propertyAccessor = $this->getMock('Symfony\Component\PropertyAccess\PropertyAccessorInterface');
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
-        $this->validator = new ValidMetricValidator($this->measures);
+        $this->validator = new ValidMetricValidator($this->propertyAccessor, $this->measures);
         $this->validator->initialize($this->context);
         $this->constraint = new ValidMetric();
     }
@@ -75,13 +77,21 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductAttribute
      */
-    protected function createProductAttribute($metricFamily, $metricUnit = '')
+    protected function createProductAttribute($metricFamily, $defaultMetricUnit = '')
     {
-        $attribute = new ProductAttribute();
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface');
 
-        $attribute->setAttributeType('pim_catalog_metric');
-        $attribute->setMetricFamily($metricFamily);
-        $attribute->setDefaultMetricUnit($metricUnit);
+        $this->propertyAccessor->expects($this->any())
+            ->method('getValue')
+            ->will(
+                $this->returnCallback(
+                    function ($object, $property) use ($attribute, $metricFamily, $defaultMetricUnit) {
+                        $this->assertSame($attribute, $object);
+
+                        return $$property;
+                    }
+                )
+            );
 
         return $attribute;
     }
