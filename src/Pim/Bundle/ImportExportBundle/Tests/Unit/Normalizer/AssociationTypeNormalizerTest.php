@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\AssociationTypeNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 

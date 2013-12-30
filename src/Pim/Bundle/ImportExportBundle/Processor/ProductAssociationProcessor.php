@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationTypeProcessor extends AbstractEntityProcessor
+class ProductAssociationProcessor extends AbstractEntityProcessor
 {
     /**
      * @var ProductManager

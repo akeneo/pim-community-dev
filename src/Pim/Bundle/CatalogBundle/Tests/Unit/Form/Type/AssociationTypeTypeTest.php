@@ -35,7 +35,7 @@ class AssociationTypeTypeTest extends AbstractFormTypeTest
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\CatalogBundle\Entity\AssociationTypeType',
+            'Pim\Bundle\CatalogBundle\Entity\AssociationType',
             $this->form->getConfig()->getDataClass()
         );
 
