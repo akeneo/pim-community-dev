@@ -163,6 +163,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @Given /^I edit the "([^"]*)" association type$/
+     */
+    public function iEditTheAssociationType($identifier)
+    {
+        $page = 'AssociationType';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
      * @param Category $category
      *
      * @Given /^I am on the (category "([^"]*)") node creation page$/
