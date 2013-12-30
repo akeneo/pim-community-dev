@@ -22,13 +22,6 @@ class JSONWriter extends AbstractConfigurableStepElement implements
 {
     
     const JSON_HEADERS_CONTENT_TYPE = 'application/json';
-    
-    protected $allowedMathods = array(
-        'POST' => HTTP_METH_POST, 
-        'GET' => HTTP_METH_GET,
-        'PUT' => HTTP_METH_PUT,
-        'DELETE' => HTTP_METH_DELETE,
-        );
   
     
     /**
@@ -37,8 +30,6 @@ class JSONWriter extends AbstractConfigurableStepElement implements
      */
     protected $url;
     
-    
-    protected $method = 'POST';
 
     /**
      * Get the url
@@ -53,32 +44,13 @@ class JSONWriter extends AbstractConfigurableStepElement implements
     /**
      * Set the url
      *
-     * @return string
+     * @param string $url
+     * 
+     * @return JSONWriter
      */
     public function setUrl($url)
     {
         $this->url = $url;
-        return $this;
-    }
-
-    /**
-     * Get the $method
-     *
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
-     * Set the method
-     *
-     * @return string
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
         return $this;
     }
 
@@ -90,7 +62,7 @@ class JSONWriter extends AbstractConfigurableStepElement implements
         $request = $this->generateHttpRequest($items);
         $response = $request->send();
         if( $this->handleResponse($response)){
-            $this->incrementCount();
+            $this->incrementCount($items);
         }
     }
     
@@ -115,5 +87,73 @@ class JSONWriter extends AbstractConfigurableStepElement implements
                 )),
         );
     }
+    
+    /**
+     * generate a post resquest which contain products in json
+     * 
+     * @param array $items
+     * 
+     * @return \HttpRequest
+     */
+    protected function generateHttpRequest($items)
+    {
 
+        $request = new \HttpRequest($this->url);
+        $request->setBody($this->generateBody($items));
+        $request->setMethod(HTTP_METH_POST);
+        $request->addHeaders(array(
+            'Content-type' => self::JSON_HEADERS_CONTENT_TYPE,
+        ));
+       
+        return $request;
+    }
+    
+    /**
+     * generate the post body 
+     * 
+     * @param array $items
+     * 
+     * @return \HttpRequest
+     */  
+    protected function generateBody($items)
+    {
+        return json_encode($items);
+    }
+
+    
+    /**
+     * Handle response object
+     * Extends JSONWriter and override this method
+     * to set your own logical
+     * 
+     * @param \HttpMessage $response
+     * 
+     * @return boolean
+     */      
+    protected function handleResponse(\HttpMessage $response)
+    {
+        if ($response->getResponseCode() !== 200){
+            throw new \Exception("Server reponse error. \n".
+                "Code : ".$response->getResponseCode()."\n".
+                "Message : ".$response->getBody()
+                );
+        }
+
+        return $response->getResponseCode() == 200;
+    }
+
+    
+    /**
+     * count the number of entry sent 
+     * 
+     * @param array $items
+     * 
+     * @return
+     */      
+    protected function incrementCount($items)
+    {
+        foreach ($items as $item) {
+            $this->stepExecution->incrementSummaryInfo('write');
+        }
+    }
 }
