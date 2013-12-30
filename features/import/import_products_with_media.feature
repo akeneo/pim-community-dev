@@ -12,10 +12,10 @@ Feature: Import media with products
       | code  | label | parent |
       | sport | Sport |        |
     And the following attributes:
-      | label       | type  |
-      | Name        | text  |
-      | Front view  | image |
-      | User manual | file  |
+      | label       | type  | allowed extensions |
+      | Name        | text  |                    |
+      | Front view  | image | gif, jpg           |
+      | User manual | file  | txt, pdf           |
     And the following job:
       | connector            | alias              | code                | label                       | type   |
       | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
@@ -38,7 +38,7 @@ Feature: Import media with products
     """
     And the following job "acme_product_import" configuration:
       | filePath | {{ file to import }} |
-    And import directory of "acme_product_import" contain the following media:
+    And import directory of "acme_product_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
       | fanatic-freewave-76.gif |
@@ -63,7 +63,7 @@ Feature: Import media with products
     """
     And the following job "acme_product_import" configuration:
       | filePath | {{ file to import }} |
-    And import directory of "acme_product_import" contain the following media:
+    And import directory of "acme_product_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
     When I am on the "acme_product_import" import job page

@@ -7,8 +7,8 @@ Feature: Display the family history
     Given the "default" catalog configuration
     And I am logged in as "admin"
     And the following attribute group:
-      | code    | label   |
-      | general | General |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
       | label       | group   |
       | Description | General |

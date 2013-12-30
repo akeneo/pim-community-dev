@@ -22,14 +22,8 @@ Feature: Execute a job
 
   Scenario: Successfully launch a valid job
     Given the following product:
-      | sku       | family | categories        |
-      | boots-001 | boots  | winter_collection |
-    And the following product values:
-      | product   | attribute | value          | locale |
-      | boots-001 | Name      | Boots 1        | en_US  |
-      | boots-001 | Price     | 20 EUR, 25 USD |        |
-      | boots-001 | Size      | 40             |        |
-      | boots-001 | Color     | black          |        |
+      | sku       | family | categories        | name-en_US | price          | size | color |
+      | boots-001 | boots  | winter_collection | Boots 1    | 20 EUR, 25 USD | 40   | black |
     And I launched the completeness calculator
     And I am on the "footwear_product_export" export job page
     When I launch the "footwear_product_export" export job

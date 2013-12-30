@@ -90,11 +90,10 @@ Feature: Execute a job
       | description | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |
 
   Scenario: Successfully update an existing product
-    Given a "SKU-001" product
-    Given the following product values:
-      | product | attribute | value  |
-      | SKU-001 | name      | FooBar |
-    Given the following file to import:
+    Given the following product:
+      | sku     | name   |
+      | SKU-001 | FooBar |
+    And the following file to import:
       """
       sku;family;groups;categories;name;description
       SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -150,10 +149,9 @@ Feature: Execute a job
       | prices | 50.00 EUR |
 
   Scenario: Successfully update existing products prices
-    Given a "SKU-001" product
-    And the following product values:
-      | product | attribute | value            |
-      | SKU-001 | Prices    | 100 EUR, 150 USD |
+    Given the following product:
+      | sku     | prices           |
+      | SKU-001 | 100 EUR, 150 USD |
     And the following file to import:
       """
       sku;prices

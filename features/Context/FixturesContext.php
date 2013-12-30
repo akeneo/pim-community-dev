@@ -233,15 +233,36 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string         $sku
-     * @param TableNode|null $translations
+     * @param array|string $data
      *
      * @return Product
      * @Given /^a "([^"]*)" product$/
      */
-    public function aProduct($sku, TableNode $translations = null)
+    public function createProduct($data)
     {
-        $product = $this->getOrCreateProduct($sku);
+        if (is_string($data)) {
+            $data = array('sku' => $data);
+        } elseif (isset($data['enabled'])) {
+            if (in_array($data['enabled'], array('yes', 'no'))) {
+                $data['enabled'] = (int) ($data['enabled'] === 'yes');
+            }
+        }
+        if (isset($data['categories'])) {
+            $data['categories'] = implode(', ', $this->listToArray($data['categories']));
+        }
+
+        // Clear product transformer cache
+        $this
+            ->getContainer()
+            ->get('pim_import_export.transformer.product')
+            ->reset();
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('products', 'csv');
+
+        $product = $processor->process($data);
 
         $this->getProductManager()->save($product);
 
@@ -256,25 +277,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->aProduct($data['sku']);
-
-            if (!empty($data['family'])) {
-                $product->setFamily($this->getFamily($data['family']));
-            }
-
-            if (isset($data['enabled'])) {
-                $product->setEnabled($data['enabled'] === 'yes');
-            }
-
-            if (isset($data['categories'])) {
-                $categoryCodes = $this->listToArray($data['categories']);
-                foreach ($categoryCodes as $code) {
-                    $category = $this->getCategory($code);
-                    $product->addCategory($category);
-                }
-            }
-
-            $this->getProductManager()->save($product);
+            $this->createProduct($data);
         }
     }
 
@@ -282,13 +285,17 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
+     * @return Product
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
     public function anEnabledOrDisabledProduct($status, $sku)
     {
-        $product = $this->aProduct($sku);
-        $product->setEnabled($status === 'enabled');
-        $this->persist($product);
+        return $this->createProduct(
+            array(
+                'sku'     => $sku,
+                'enabled' => $status === 'enabled' ? 'yes' : 'no'
+            )
+        );
     }
 
     /**
@@ -299,23 +306,8 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(
-                array(
-                    'locale' => 'english'
-                ),
-                $data
-            );
-
-            $family = $this->createFamily($data['code']);
-            if (isset($data['label'])) {
-                $family
-                    ->setLocale($this->getLocaleCode($data['locale']))
-                    ->setLabel($data['label']);
-            }
-            $this->persist($family, false);
+            $this->createFamily($data);
         }
-
-        $this->flush();
     }
 
     /**
@@ -374,26 +366,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $index => $data) {
-            $data = array_merge(
-                array(
-                    'locale' => 'english'
-                ),
-                $data
-            );
-
-            $group = $this->findAttributeGroup($data['code']);
-
-            if (!$group) {
-                $group = new AttributeGroup();
-                $group->setSortOrder($index);
-                $group->setCode($data['code']);
-            }
-
-            $group
-                ->setLocale($this->getLocaleCode($data['locale']))
-                ->setLabel($data['label']);
-
-            $this->persist($group);
+            $this->createAttributeGroup($data);
         }
     }
 
@@ -1044,9 +1017,9 @@ class FixturesContext extends RawMinkContext
      * @param string    $code
      * @param TableNode $table
      *
-     * @Given /^import directory of "([^"]*)" contain the following media:$/
+     * @Given /^import directory of "([^"]*)" contains the following media:$/
      */
-    public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
+    public function importDirectoryOfContainsTheFollowingMedia($code, TableNode $table)
     {
         $configuration = $this
             ->getJobInstance($code)
@@ -1314,83 +1287,54 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $sku
-     *
-     * @return Product
-     */
-    private function createProduct($sku)
-    {
-        $product = $this->getProductManager()->createFlexible();
-
-        $product->getIdentifier()->setData($sku);
-
-        $this->getProductManager()->save($product);
-
-        return $product;
-    }
-
-    /**
-     * @param array $data
+     * @param string|array $data
      *
      * @return ProductAttribute
      */
     private function createAttribute($data)
     {
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
         $data = array_merge(
             array(
-                'code'                   => null,
-                'label'                  => null,
-                'position'               => 0,
-                'group'                  => null,
-                'families'               => null,
-                'type'                   => 'text',
-                'scopable'               => 'no',
-                'translatable'           => 'no',
-                'useable as grid column' => false,
-                'useable as grid filter' => false,
+                'code'     => null,
+                'label'    => null,
+                'families' => null,
+                'type'     => 'text',
             ),
             $data
         );
 
-        if ('identifier' === $data['type']) {
-            throw new \InvalidArgumentException('Identifier attribute can\'t be created after catalog initialization');
+        if (isset($data['label']) && !isset($data['label-en_US'])) {
+            $data['label-en_US'] = $data['label'];
         }
 
         $data['code'] = $data['code'] ?: $this->camelize($data['label']);
+        unset($data['label']);
 
-        $attribute = $this->getProductAttributeManager()->createAttribute($this->getAttributeType($data['type']));
+        $families = $data['families'];
+        unset($data['families']);
 
-        $attribute->setCode($data['code']);
-        $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
+        $data['type'] = $this->getAttributeType($data['type']);
 
-        $attribute->setScopable(strtolower($data['scopable']) === 'yes');
-        $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
-        $attribute->setUseableAsGridColumn(strtolower($data['useable as grid column']) === 'yes');
-        $attribute->setUseableAsGridFilter(strtolower($data['useable as grid filter']) === 'yes');
-
-        $attribute->setSortOrder($data['position']);
-
-        if ($data['group']) {
-            $attribute->setGroup($this->getAttributeGroup($data['group']));
-        }
-
-        if ($data['families']) {
-            foreach ($this->listToArray($data['families']) as $familyCode) {
-                $this->getFamily($familyCode)->addAttribute($attribute);
+        foreach ($data as $key => $element) {
+            if (in_array($element, array('yes', 'no'))) {
+                $data[$key] = $element === 'yes';
             }
         }
 
-        if ($data['type'] === 'metric') {
-            if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
-                $attribute->setMetricFamily($data['metric family']);
-                $attribute->setDefaultMetricUnit($data['default metric unit']);
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
-                        $data['label']
-                    )
-                );
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('attributes', 'csv');
+
+        $attribute = $processor->process($data);
+
+        if ($families) {
+            foreach ($this->listToArray($families) as $familyCode) {
+                $this->getFamily($familyCode)->addAttribute($attribute);
             }
         }
 
@@ -1692,20 +1636,52 @@ class FixturesContext extends RawMinkContext
     /**
      * Create a family
      *
-     * @param string $code
+     * @param array|string $data
      *
      * @return Family
      */
-    private function createFamily($code)
+    private function createFamily($data)
     {
-        $family = $this->getFamilyFactory()->createFamily();
-        $family->setCode($code);
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('families', 'csv');
+
+        $family = $processor->process($data);
 
         $this->persist($family);
 
         return $family;
     }
 
+    /**
+     * Create an attribute group
+     *
+     * @param array|string $data
+     *
+     * @return AttributeGroup
+     */
+    private function createAttributeGroup($data)
+    {
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('attribute_groups', 'csv');
+
+        $attributeGroup = $processor->process($data);
+
+        $this->persist($attributeGroup);
+
+        return $attributeGroup;
+    }
 
     /**
      * @param string $string
@@ -1803,14 +1779,6 @@ class FixturesContext extends RawMinkContext
     private function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Factory\FamilyFactory
-     */
-    private function getFamilyFactory()
-    {
-        return $this->getContainer()->get('pim_catalog.factory.family');
     }
 
     /**
