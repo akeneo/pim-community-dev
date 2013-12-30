@@ -9,7 +9,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -48,7 +48,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @var array $pageMapping
      */
     private $pageMapping = array(
-        'associations'             => 'Association index',
+        'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
         'categories'               => 'Category tree creation',
         'channels'                 => 'Channel index',
@@ -362,13 +362,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param Association $association
+     * @param AssociationType $associationType
      *
-     * @Given /^I should be on the ("([^"]*)" association) page$/
+     * @Given /^I should be on the ("([^"]*)" association type) page$/
      */
-    public function iShouldBeOnTheAssociationPage(Association $association)
+    public function iShouldBeOnTheAssociationTypePage(AssociationType $associationType)
     {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
+        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(array('id' => $associationType->getId()));
         $this->assertAddress($expectedAddress);
     }
 

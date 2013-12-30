@@ -4,7 +4,7 @@ Feature: Import groups
   As Julia
   I need to be able to import groups
 
-  Scenario: Successfully import associations
+  Scenario: Successfully import groups
     Given the "default" catalog configuration
     And the following jobs:
       | connector            | alias            | code              | label                 | type   |
