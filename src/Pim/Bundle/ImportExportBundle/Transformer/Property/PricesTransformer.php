@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
@@ -28,14 +29,12 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
             } elseif (is_string($data)) {
                 $data = $this->parseFlatPrices($data);
             }
-            foreach ($object->getPrices() as $price) {
-                $price->setData(null);
-            }
+            $object->setPrices(array());
             foreach ($data as $currency => $value) {
                 $object->addPriceForCurrency($currency)->setData($value);
             }
         } else {
-            $object->addPriceForCurrency($currency)->setData($value);
+            $object->addPriceForCurrency($currency)->setData($data);
         }
     }
 
@@ -51,7 +50,11 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
         $prices = array();
         foreach (preg_split('/\s*,\s*/', $data) as $price) {
             $parts = preg_split('/\s+/', $price);
-            $prices[$parts[0]] = isset($parts[1]) ? $parts[1] : null;
+            if (count($parts) > 1) {
+                $prices[$parts[1]] = $parts[0];
+            } else {
+                throw new PropertyTransformerException('Malformed price "%price%""', array('%price%' => $price));
+            }
         }
 
         return $prices;

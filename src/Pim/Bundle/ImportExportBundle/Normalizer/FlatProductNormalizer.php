@@ -160,7 +160,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $data->format('m/d/Y');
         } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
             $data = $data->getCode();
-        } elseif ($value->getAttribute()->getAttributeType == 'pim_catalog_price_collection') {
+        } elseif ($value->getAttribute()->getAttributeType() == 'pim_catalog_price_collection') {
             return $this->normalizePriceCollection($value);
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             $data = $this->normalizeCollectionData($data);
@@ -180,7 +180,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
     /**
      * Normalizes a price collection
-     * 
+     *
      * @param ProductValueInterface $value
      *
      * @return array
