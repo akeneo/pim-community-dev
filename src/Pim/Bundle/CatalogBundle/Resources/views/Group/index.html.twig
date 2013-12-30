@@ -15,24 +15,12 @@
 
     {% if buttons is not defined %}
         {% set buttons %}
-            {% if resource_granted('pim_catalog_group_create') %}
-                {{ elements.createBtn(
-                    'group',
-                    null,
-                    { 'id': 'create-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_create') }
-                ) }}
-                <script type="text/javascript">
-                    require(
-                        ['jquery', 'pim/dialogform'],
-                        function ($, dialogForm) {
-                            'use strict';
-                            $(function() {
-                                new dialogForm('#create-group');
-                            });
-                        }
-                    );
-                </script>
-            {% endif %}
+            {{ elements.createBtn(
+                'group',
+                path('pim_catalog_group_create'),
+                'dialog',
+                'pim_catalog_group_create'
+            ) }}
         {% endset %}
     {% endif %}
 

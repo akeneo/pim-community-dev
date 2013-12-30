@@ -1,20 +1,20 @@
 parameters:
-    pim_catalog.controller.attribute_group.class:       Pim\Bundle\CatalogBundle\Controller\AttributeGroupController
-    pim_catalog.controller.category_tree.class:         Pim\Bundle\CatalogBundle\Controller\CategoryTreeController
-    pim_catalog.controller.channel.class:               Pim\Bundle\CatalogBundle\Controller\ChannelController
-    pim_catalog.controller.currency.class:              Pim\Bundle\CatalogBundle\Controller\CurrencyController
-    pim_catalog.controller.family.class:                Pim\Bundle\CatalogBundle\Controller\FamilyController
-    pim_catalog.controller.locale.class:                Pim\Bundle\CatalogBundle\Controller\LocaleController
-    pim_catalog.controller.mass_edit_action.class:      Pim\Bundle\CatalogBundle\Controller\MassEditActionController
-    pim_catalog.controller.product_attribute.class:     Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
-    pim_catalog.controller.product.class:               Pim\Bundle\CatalogBundle\Controller\ProductController
-    pim_catalog.controller.product_associations.class:  Pim\Bundle\CatalogBundle\Controller\ProductAssociationsController
-    pim_catalog.controller.group.class:                 Pim\Bundle\CatalogBundle\Controller\GroupController
-    pim_catalog.controller.association.class:           Pim\Bundle\CatalogBundle\Controller\AssociationController
-    pim_catalog.controller.media.class:                 Pim\Bundle\CatalogBundle\Controller\MediaController
-    pim_catalog.controller.variant_group.class:         Pim\Bundle\CatalogBundle\Controller\VariantGroupController
-    pim_catalog.controller.group_type.class:            Pim\Bundle\CatalogBundle\Controller\GroupTypeController
-    pim_catalog.controller.completeness.class:          Pim\Bundle\CatalogBundle\Controller\CompletenessController
+    pim_catalog.controller.attribute_group.class:      Pim\Bundle\CatalogBundle\Controller\AttributeGroupController
+    pim_catalog.controller.category_tree.class:        Pim\Bundle\CatalogBundle\Controller\CategoryTreeController
+    pim_catalog.controller.channel.class:              Pim\Bundle\CatalogBundle\Controller\ChannelController
+    pim_catalog.controller.currency.class:             Pim\Bundle\CatalogBundle\Controller\CurrencyController
+    pim_catalog.controller.family.class:               Pim\Bundle\CatalogBundle\Controller\FamilyController
+    pim_catalog.controller.locale.class:               Pim\Bundle\CatalogBundle\Controller\LocaleController
+    pim_catalog.controller.mass_edit_action.class:     Pim\Bundle\CatalogBundle\Controller\MassEditActionController
+    pim_catalog.controller.product_attribute.class:    Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
+    pim_catalog.controller.product.class:              Pim\Bundle\CatalogBundle\Controller\ProductController
+    pim_catalog.controller.product_associations.class: Pim\Bundle\CatalogBundle\Controller\ProductAssociationsController
+    pim_catalog.controller.group.class:                Pim\Bundle\CatalogBundle\Controller\GroupController
+    pim_catalog.controller.association.class:          Pim\Bundle\CatalogBundle\Controller\AssociationController
+    pim_catalog.controller.media.class:                Pim\Bundle\CatalogBundle\Controller\MediaController
+    pim_catalog.controller.variant_group.class:        Pim\Bundle\CatalogBundle\Controller\VariantGroupController
+    pim_catalog.controller.group_type.class:           Pim\Bundle\CatalogBundle\Controller\GroupTypeController
+    pim_catalog.controller.completeness.class:         Pim\Bundle\CatalogBundle\Controller\CompletenessController
 
 services:
     pim_catalog.controller.abstract:
@@ -42,7 +42,7 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
-            - '%pim_catalog.entity.product_attribute.class%'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_catalog.controller.category_tree:
         scope: request
@@ -79,7 +79,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.form.handler.family'
             - '@pim_catalog.form.family'
-            - '%pim_catalog.entity.product_attribute.class%'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_catalog.controller.locale:
         scope: request

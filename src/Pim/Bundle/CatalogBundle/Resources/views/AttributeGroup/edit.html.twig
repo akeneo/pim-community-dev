@@ -18,12 +18,13 @@
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 
     {% set buttons %}
-        {% if resource_granted('pim_catalog_attribute_group_remove') %}
-            {{ elements.deleteLink(
-                path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}),
-                path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}), "", "flash.attribute group.removed"|trans)
-            }}
-        {% endif %}
+        {{ elements.deleteLink(
+            path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}),
+            'pim_catalog_attribute_group_remove',
+            path('pim_catalog_attributegroup_index'),
+            'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}),
+            'flash.attribute group.removed'|trans)
+        }}
         {{ elements.submitBtn() }}
     {% endset %}
 
@@ -84,7 +85,6 @@
                                             path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}),
                                             path('pim_catalog_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
                                             'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
-                                            '',
                                             'flash.attribute group.attribute removed'|trans
                                         ) }} class="remove-attribute">
                                             <i class="icon-trash"></i>

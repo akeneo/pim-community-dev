@@ -24,11 +24,14 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_family_index')) }}
-            {% if form.vars.value.id and resource_granted('pim_catalog_family_remove') %}
+            {% if form.vars.value.id %}
                 {{ elements.deleteLink(
                     path('pim_catalog_family_remove', { 'id': form.vars.value.id }),
-                    path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }), "", "flash.family.removed"|trans)
-                }}
+                    'pim_catalog_family_remove',
+                    path('pim_catalog_family_index'),
+                    'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }),
+                    'flash.family.removed'|trans
+                ) }}
             {% endif %}
             {{ elements.submitBtn() }}
         {% endset %}

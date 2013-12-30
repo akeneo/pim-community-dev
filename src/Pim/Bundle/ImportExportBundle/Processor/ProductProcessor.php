@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
  * Product import processor
@@ -15,13 +12,8 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractTransformerProcessor
+class ProductProcessor extends TransformerProcessor
 {
-    /**
-     * @var ORMProductTransformer
-     */
-    protected $transformer;
-
     /**
      * @var boolean
      */
@@ -43,30 +35,9 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected $groupsColumn  = 'groups';
 
     /**
-     * @var boolean
-     */
-    protected $heterogeneous = false;
-
-    /**
      * @var StepExecution
      */
     protected $stepExecution;
-
-    /**
-     * Constructor
-     *
-     * @param ImportValidatorInterface $validator
-     * @param TranslatorInterface      $translator
-     * @param ORMProductTransformer    $transformer
-     */
-    public function __construct(
-        ImportValidatorInterface $validator,
-        TranslatorInterface $translator,
-        ORMProductTransformer $transformer
-    ) {
-        parent::__construct($validator, $translator);
-        $this->transformer = $transformer;
-    }
 
     /**
      * Set wether or not the created product should be activated or not
@@ -149,27 +120,6 @@ class ProductProcessor extends AbstractTransformerProcessor
     }
 
     /**
-     * Set wether or not the product data are heterogeneous, means different attributes for each product row
-     *
-     * @param boolean $heterogeneous
-     */
-    public function setHeterogeneous($heterogeneous)
-    {
-        $this->heterogeneous = $heterogeneous;
-        $this->transformer->setHeterogeneous($heterogeneous);
-    }
-
-    /**
-     * Wether or not the products are heterogeneous
-     *
-     * @return bool
-     */
-    public function isHeterogeneous()
-    {
-        return $this->heterogeneous;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -208,7 +158,7 @@ class ProductProcessor extends AbstractTransformerProcessor
      */
     protected function transform($item)
     {
-        return $this->transformer->transform($item, array('enabled' => $this->enabled));
+        return $this->transformer->transform($this->class, $item, array('enabled' => $this->enabled));
     }
 
     /**

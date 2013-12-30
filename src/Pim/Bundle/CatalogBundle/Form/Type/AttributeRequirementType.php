@@ -40,6 +40,6 @@ class AttributeRequirementType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_attribute_requirement';
+        return 'pim_catalog_attribute_requirement';
     }
 }

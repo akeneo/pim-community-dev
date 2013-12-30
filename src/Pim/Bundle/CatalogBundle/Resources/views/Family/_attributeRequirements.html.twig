@@ -41,7 +41,6 @@
                                 path('pim_catalog_family_removeproductattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
                                 path('pim_catalog_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),
                                 'confirmation.remove.attribute'|trans({ '%name%': attribute.label }),
-                                '',
                                 'flash.family.attribute removed'|trans
                             )}} class="remove-attribute">
                             <i class="icon-trash"></i>

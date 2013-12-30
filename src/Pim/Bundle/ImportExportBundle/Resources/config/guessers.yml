@@ -126,16 +126,6 @@ services:
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 
-    pim_import_export.transformer.guesser.skip_product_associations:
-        class: %pim_import_export.transformer.guesser.regexp.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.skip'
-            - %pim_catalog.entity.product.class%
-            - ['/(_products|_groups)$/']
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 50 }
-
     pim_import_export.transformer.guesser.skip_attribute_type:
         class: %pim_import_export.transformer.guesser.regexp.class%
         public: false

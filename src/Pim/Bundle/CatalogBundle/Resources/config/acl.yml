@@ -81,6 +81,9 @@ pim_catalog_channel_remove:
     label: pim_catalog.acl.channel.remove
 
 #Family
+pim_catalog_family_index:
+    type: action
+    label: pim_catalog.acl.family.index
 pim_catalog_family_create:
     type: action
     label: pim_catalog.acl.family.create
