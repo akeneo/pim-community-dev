@@ -201,8 +201,8 @@ class ORMProductTransformer extends ORMTransformer
             $lastSuffix = array_pop($suffixes);
             if (!isset($associations[$key])) {
                 $associations[$key] = array(
-                    'owner'       => $entity->getReference(),
-                    'association' => $columnInfo->getName(),
+                    'owner'           => $entity->getReference(),
+                    'associationType' => $columnInfo->getName(),
                 );
             }
             $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
