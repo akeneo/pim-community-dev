@@ -124,7 +124,7 @@ oro_menu_config:
                         pim_enrich_attributegroup: ~
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
-                        pim_catalog_association: ~
+                        pim_catalog_association_type: ~
                         pim_catalog_group_type: ~
                         pim_catalog_currency: ~
                         pim_catalog_locale: ~
