@@ -1,6 +1,6 @@
 product_associations:
     - owner: sku-000
-      association: X_SELL
+      associationType: X_SELL
       products:
         - sku-001
         - sku-002
@@ -8,7 +8,7 @@ product_associations:
         - sku-004
 
     - owner: sku-001
-      association: SUBSTITUTION
+      associationType: SUBSTITUTION
       products:
         - sku-007
         - sku-011

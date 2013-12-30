@@ -10,7 +10,7 @@ products:
         name-fr_FR: 'Neque eveniet quasi accusantium.'
         price-en_US:
             EUR: 43.21
-            USD: 19.70 USD
+            USD: 19.70
         release_date: 12/28/2012
         enabled: '1'
         weight-en_US: 360 GRAM
@@ -24,7 +24,7 @@ products:
         name-fr_FR: 'Hic itaque quos excepturi et.'
         price-en_US:
             EUR: 375.03
-            USD: 488.14 USD
+            USD: 488.14
         enabled: '1'
         processor_brand: 'Intel'
         core_number: '4'
@@ -40,7 +40,7 @@ products:
         name-fr_FR: 'Mon nom'
         price-en_US:
             EUR: 20.40
-            USD: 25.02 USD
+            USD: 25.02
         release_date: 10/30/2013
         enabled: '1'
         short_description-en_US-mobile: 'My short mobile desc'
@@ -64,7 +64,7 @@ products:
         name-fr_FR: 'Nihil vitae ad.'
         price-en_US:
             EUR: 5.75
-            USD: 32.88 USD
+            USD: 32.88
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -86,7 +86,7 @@ products:
         name-fr_FR: 'Adipisci nam fugiat est.'
         price-en_US:
             EUR: 39.24
-            USD: 78.07 USD
+            USD: 78.07
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Nesciunt in aspernatur ab eveniet.'
@@ -108,7 +108,7 @@ products:
         name-fr_FR: 'Voluptatem id fuga explicabo.'
         price-en_US:
             EUR: 95.38
-            USD: 58.61 USD
+            USD: 58.61
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Voluptates necessitatibus voluptas perferendis amet alias tempora.'
@@ -130,7 +130,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 72.91
-            USD: 32.81 USD
+            USD: 32.81
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Alias corrupti temporibus voluptates molestiae impedit.'
@@ -152,7 +152,7 @@ products:
         name-fr_FR: 'Consequatur illo dolorem omnis nemo.'
         price-en_US:
             EUR: 69.43
-            USD: 93.56 USD
+            USD: 93.56
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -174,7 +174,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 49.79
-            USD: 47.07 USD
+            USD: 47.07
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolores fugiat est cum consequatur.'
@@ -215,7 +215,7 @@ products:
         name-fr_FR: 'Nesciunt voluptatem sapiente id.'
         price-en_US:
             EUR: 66.64
-            USD: 35.59 USD
+            USD: 35.59
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Temporibus reprehenderit natus est culpa.'
@@ -237,7 +237,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 51.84
-            USD: 60.97 USD
+            USD: 60.97
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Nihil tempora veniam sed.'
@@ -278,7 +278,7 @@ products:
         name-fr_FR: 'Qui repellendus eum.'
         price-en_US:
             EUR: 62.41
-            USD: 52.30 USD
+            USD: 52.30
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -300,7 +300,7 @@ products:
         name-fr_FR: 'Et dicta eligendi doloremque.'
         price-en_US:
             EUR: 97.95
-            USD: 9.37 USD
+            USD: 9.37
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Aperiam excepturi aperiam porro.'
@@ -322,7 +322,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 9.12
-            USD: 44.30 USD
+            USD: 44.30
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -344,7 +344,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 96.95
-            USD: 25.20 USD
+            USD: 25.20
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Laboriosam veniam et laborum.'
@@ -366,7 +366,7 @@ products:
         name-fr_FR: 'Distinctio aut at.'
         price-en_US:
             EUR: 55.10
-            USD: 62.53 USD
+            USD: 62.53
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Cumque nobis quam aut.'
@@ -388,7 +388,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 61.82
-            USD: 17.07 USD
+            USD: 17.07
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Et est dicta nihil unde.'
@@ -410,7 +410,7 @@ products:
         name-fr_FR: 'Expedita et alias exercitationem.'
         price-en_US:
             EUR: 93.12
-            USD: 7.11 USD
+            USD: 7.11
         release_date: 11/04/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -432,7 +432,7 @@ products:
         name-fr_FR: 'Voluptatum et velit.'
         price-en_US:
             EUR: 79.83
-            USD: 15.82 USD
+            USD: 15.82
         release_date: 03/26/2013
         enabled: '1'
         short_description-en_US-mobile: 'Facere ea commodi aliquid.'
@@ -473,7 +473,7 @@ products:
         name-fr_FR: 'Natus illum autem dignissimos.'
         price-en_US:
             EUR: 88.42
-            USD: 76.15 USD
+            USD: 76.15
         release_date: 07/30/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -495,7 +495,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 33.56
-            USD: 5.70 USD
+            USD: 5.70
         release_date: 01/14/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -517,7 +517,7 @@ products:
         name-fr_FR: 'Qui voluptatem repellat.'
         price-en_US:
             EUR: 84.81
-            USD: 42.72 USD
+            USD: 42.72
         release_date: 04/09/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -539,7 +539,7 @@ products:
         name-fr_FR: 'Accusantium aut eligendi.'
         price-en_US:
             EUR: 55.47
-            USD: 38.72 USD
+            USD: 38.72
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -580,7 +580,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 78.43
-            USD: 60.67 USD
+            USD: 60.67
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Quia qui repudiandae ut hic dolor.'
@@ -602,7 +602,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 7.46
-            USD: 11.28 USD
+            USD: 11.28
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Est beatae ea incidunt libero ut.'
@@ -643,7 +643,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 59.63
-            USD: 52.17 USD
+            USD: 52.17
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Distinctio voluptates ut sed nostrum magni amet.'
@@ -665,7 +665,7 @@ products:
         name-fr_FR: 'Et molestias.'
         price-en_US:
             EUR: 66.93
-            USD: 21.62 USD
+            USD: 21.62
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -687,7 +687,7 @@ products:
         name-fr_FR: 'Laborum earum sunt.'
         price-en_US:
             EUR: 8.48
-            USD: 34.11 USD
+            USD: 34.11
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Perferendis repellendus eos nobis est eum.'
@@ -709,7 +709,7 @@ products:
         name-fr_FR: 'Est corporis necessitatibus.'
         price-en_US:
             EUR: 95.02
-            USD: 42.71 USD
+            USD: 42.71
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Sunt provident quidem dolorum ipsam et.'
@@ -731,7 +731,7 @@ products:
         name-fr_FR: 'Assumenda et quo sit.'
         price-en_US:
             EUR: 30.76
-            USD: 75.92 USD
+            USD: 75.92
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Hic eligendi officiis doloremque sunt.'
@@ -753,7 +753,7 @@ products:
         name-fr_FR: 'Rerum possimus voluptatum harum aut.'
         price-en_US:
             EUR: 71.62
-            USD: 86.85 USD
+            USD: 86.85
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ratione consequatur non beatae deleniti doloribus.'
@@ -775,7 +775,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 94.51
-            USD: 67.29 USD
+            USD: 67.29
         release_date: 03/24/2013
         enabled: '1'
         short_description-en_US-mobile: 'Nostrum accusamus sit corporis qui voluptatum quia.'
@@ -797,7 +797,7 @@ products:
         name-fr_FR: 'Eos ipsam ad.'
         price-en_US:
             EUR: 72.01
-            USD: 60.35 USD
+            USD: 60.35
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -838,7 +838,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 30.93
-            USD: 33.48 USD
+            USD: 33.48
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -860,7 +860,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 50.93
-            USD: 87.88 USD
+            USD: 87.88
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -882,7 +882,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 94.03
-            USD: 24.69 USD
+            USD: 24.69
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Veritatis itaque aut molestiae consequuntur.'
@@ -923,7 +923,7 @@ products:
         name-fr_FR: 'Quia molestiae aut.'
         price-en_US:
             EUR: 80.01
-            USD: 69.23 USD
+            USD: 69.23
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -964,7 +964,7 @@ products:
         name-fr_FR: 'Vero eum consequuntur et.'
         price-en_US:
             EUR: 88.57
-            USD: 28.34 USD
+            USD: 28.34
         release_date: 12/15/2012
         enabled: '1'
         short_description-en_US-mobile: 'Ut reprehenderit sed quaerat sed consequatur aut.'
@@ -1005,7 +1005,7 @@ products:
         name-fr_FR: 'Incidunt quam quibusdam.'
         price-en_US:
             EUR: 71.28
-            USD: 85.16 USD
+            USD: 85.16
         release_date: 02/16/2013
         enabled: '1'
         short_description-en_US-mobile: 'Culpa veritatis error rerum.'
@@ -1027,7 +1027,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 97.49
-            USD: 36.57 USD
+            USD: 36.57
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Libero fugiat quas et aspernatur voluptatem voluptatibus.'
@@ -1068,7 +1068,7 @@ products:
         name-fr_FR: 'Qui dolor quae odio.'
         price-en_US:
             EUR: 85.81
-            USD: 24.74 USD
+            USD: 24.74
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1090,7 +1090,7 @@ products:
         name-fr_FR: 'Labore qui consequatur iste.'
         price-en_US:
             EUR: 9.44
-            USD: 98.59 USD
+            USD: 98.59
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Repudiandae ut maiores labore ex inventore laudantium.'
@@ -1112,7 +1112,7 @@ products:
         name-fr_FR: 'Magni commodi iusto.'
         price-en_US:
             EUR: 49.39
-            USD: 44.89 USD
+            USD: 44.89
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1134,7 +1134,7 @@ products:
         name-fr_FR: 'Excepturi voluptatum consequatur voluptatem.'
         price-en_US:
             EUR: 87.15
-            USD: 20.13 USD
+            USD: 20.13
         release_date: 06/20/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1194,7 +1194,7 @@ products:
         name-fr_FR: 'Ratione non maiores.'
         price-en_US:
             EUR: 10.28
-            USD: 21.86 USD
+            USD: 21.86
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolorem ipsa fugit magnam nesciunt.'
@@ -1216,7 +1216,7 @@ products:
         name-fr_FR: 'Est qui voluptas.'
         price-en_US:
             EUR: 89.56
-            USD: 51.65 USD
+            USD: 51.65
         release_date: 04/29/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1238,7 +1238,7 @@ products:
         name-fr_FR: 'Facilis non.'
         price-en_US:
             EUR: 16.18
-            USD: 44.05 USD
+            USD: 44.05
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Animi itaque ullam aut ut.'
@@ -1260,7 +1260,7 @@ products:
         name-fr_FR: 'Enim voluptatem sit vel inventore.'
         price-en_US:
             EUR: 49.63
-            USD: 9.65 USD
+            USD: 9.65
         release_date: 08/21/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1282,7 +1282,7 @@ products:
         name-fr_FR: 'Aut modi nesciunt minus praesentium.'
         price-en_US:
             EUR: 81.34
-            USD: 42.99 USD
+            USD: 42.99
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ducimus dolores quisquam unde ad sint.'
@@ -1323,7 +1323,7 @@ products:
         name-fr_FR: 'Quibusdam consequatur aliquid vero.'
         price-en_US:
             EUR: 12.54
-            USD: 96.27 USD
+            USD: 96.27
         release_date: 06/09/2013
         enabled: '1'
         short_description-en_US-mobile: 'Sunt qui saepe temporibus.'
@@ -1364,7 +1364,7 @@ products:
         name-fr_FR: 'Officiis id sed.'
         price-en_US:
             EUR: 40.36
-            USD: 35.68 USD
+            USD: 35.68
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Excepturi molestias nihil enim.'
@@ -1386,7 +1386,7 @@ products:
         name-fr_FR: 'Rerum aut consectetur est.'
         price-en_US:
             EUR: 61.52
-            USD: 39.97 USD
+            USD: 39.97
         release_date: 10/04/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1427,7 +1427,7 @@ products:
         name-fr_FR: 'Necessitatibus velit repudiandae libero.'
         price-en_US:
             EUR: 14.07
-            USD: 14.56 USD
+            USD: 14.56
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Hic nihil aut ab.'
@@ -1449,7 +1449,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 9.54
-            USD: 6.61 USD
+            USD: 6.61
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1471,7 +1471,7 @@ products:
         name-fr_FR: 'Laborum minima vel.'
         price-en_US:
             EUR: 99.57
-            USD: 15.09 USD
+            USD: 15.09
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Et debitis rerum eveniet quas sed pariatur.'
@@ -1493,7 +1493,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 9.11
-            USD: 84.52 USD
+            USD: 84.52
         release_date: 10/13/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1553,7 +1553,7 @@ products:
         name-fr_FR: 'Ea sit quidem fugiat.'
         price-en_US:
             EUR: 54.72
-            USD: 64.90 USD
+            USD: 64.90
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Vero quia consequuntur nam non error.'
@@ -1575,7 +1575,7 @@ products:
         name-fr_FR: 'Reprehenderit eos qui.'
         price-en_US:
             EUR: 34.92
-            USD: 83.76 USD
+            USD: 83.76
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1635,7 +1635,7 @@ products:
         name-fr_FR: 'Vitae a asperiores.'
         price-en_US:
             EUR: 19.60
-            USD: 99.01 USD
+            USD: 99.01
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Ipsum rerum aliquam dicta atque.'
@@ -1657,7 +1657,7 @@ products:
         name-fr_FR: 'Non rerum est.'
         price-en_US:
             EUR: 18.52
-            USD: 23.59 USD
+            USD: 23.59
         release_date: 07/19/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1679,7 +1679,7 @@ products:
         name-fr_FR: 'Maxime qui maiores optio.'
         price-en_US:
             EUR: 92.53
-            USD: 97.60 USD
+            USD: 97.60
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1701,7 +1701,7 @@ products:
         name-fr_FR: 'Labore molestiae veritatis ut.'
         price-en_US:
             EUR: 76.50
-            USD: 94.49 USD
+            USD: 94.49
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1723,7 +1723,7 @@ products:
         name-fr_FR: 'Voluptatum sint error repudiandae.'
         price-en_US:
             EUR: 72.69
-            USD: 20.65 USD
+            USD: 20.65
         release_date: 07/01/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1745,7 +1745,7 @@ products:
         name-fr_FR: 'Doloribus et ut.'
         price-en_US:
             EUR: 48.26
-            USD: 92.07 USD
+            USD: 92.07
         release_date: 05/22/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1786,7 +1786,7 @@ products:
         name-fr_FR: 'Nam itaque consequatur voluptas.'
         price-en_US:
             EUR: 50.80
-            USD: 52.23 USD
+            USD: 52.23
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'In labore consequatur aut placeat sit voluptas.'
@@ -1808,7 +1808,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 30.75
-            USD: 78.24 USD
+            USD: 78.24
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Totam sed dolor quibusdam et hic ut.'
@@ -1849,7 +1849,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 5.23
-            USD: 41.66 USD
+            USD: 41.66
         release_date: 07/10/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1871,7 +1871,7 @@ products:
         name-fr_FR: ''
         price-en_US:
             EUR: 71.46
-            USD: 41.08 USD
+            USD: 41.08
         release_date: 06/30/2013
         enabled: '1'
         short_description-en_US-mobile: ''
@@ -1893,7 +1893,7 @@ products:
         name-fr_FR: 'In incidunt aliquid.'
         price-en_US:
             EUR: 25.38
-            USD: 59.56 USD
+            USD: 59.56
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Natus et et laudantium.'
@@ -1915,7 +1915,7 @@ products:
         name-fr_FR: 'Minus et.'
         price-en_US:
             EUR: 13.64
-            USD: 60.07 USD
+            USD: 60.07
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Quia ratione itaque deleniti veritatis cumque necessitatibus.'
@@ -1937,7 +1937,7 @@ products:
         name-fr_FR: 'Officia numquam et sunt.'
         price-en_US:
             EUR: 48.20
-            USD: 98.32 USD
+            USD: 98.32
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Sed commodi voluptatem reprehenderit esse velit dolorem.'
@@ -1978,7 +1978,7 @@ products:
         name-fr_FR: 'At repellendus vero consectetur.'
         price-en_US:
             EUR: 57.28
-            USD: 70.57 USD
+            USD: 70.57
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Non rerum enim ut a atque.'
@@ -2019,7 +2019,7 @@ products:
         name-fr_FR: 'Natus dolores autem eaque.'
         price-en_US:
             EUR: 41.42
-            USD: 28.91 USD
+            USD: 28.91
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Impedit rem soluta nihil.'
@@ -2041,7 +2041,7 @@ products:
         name-fr_FR: 'Sed et aut totam.'
         price-en_US:
             EUR: 98.19
-            USD: 99.22 USD
+            USD: 99.22
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Doloremque alias officia impedit quia et.'
@@ -2063,7 +2063,7 @@ products:
         name-fr_FR: 'Praesentium laudantium aut eum aut.'
         price-en_US:
             EUR: 64.23
-            USD: 88.08 USD
+            USD: 88.08
         release_date: ''
         enabled: '1'
         short_description-en_US-mobile: 'Dolore sunt sit et iure.'
@@ -2104,7 +2104,7 @@ products:
         name-fr_FR: 'Mon ordinateur'
         price-en_US:
             EUR: 45.34
-            USD: 99.30 USD
+            USD: 99.30
         release_date: 10/07/2013
         enabled: '1'
         short_description-en_US-mobile: ''

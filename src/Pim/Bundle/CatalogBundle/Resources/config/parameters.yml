@@ -67,8 +67,8 @@ parameters:
     pim_catalog.form.handler.group_type.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler
     pim_catalog.form.type.group_type.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupTypeType
 
-    pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
-    pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
+    pim_catalog.form.handler.association_type.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler
+    pim_catalog.form.type.association_type.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationTypeType
 
     pim_catalog.form.type.product_association.class: Pim\Bundle\CatalogBundle\Form\Type\ProductAssociationType
 

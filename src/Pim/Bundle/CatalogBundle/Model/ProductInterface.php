@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
 /**
@@ -157,11 +157,11 @@ interface ProductInterface
     /**
      * Get the product productAssociation for an Association entity
      *
-     * @param Association $association
+     * @param AssociationType $association
      *
      * @return ProductAssociation|null
      */
-    public function getProductAssociationForAssociation(Association $association);
+    public function getProductAssociationForAssociation(AssociationType $association);
 
     /**
      * Set product productAssociations

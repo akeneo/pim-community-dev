@@ -1,0 +1,28 @@
+pim_catalog_association_type_index:
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.association_type:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_catalog_association_type_create:
+    path: /create
+    defaults: { _controller: pim_catalog.controller.association_type:createAction }
+
+pim_catalog_association_type_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_catalog.controller.association_type:editAction }
+    requirements:
+        id: \d+
+
+pim_catalog_association_type_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_catalog.controller.association_type:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_catalog_association_type_history:
+    path: /{id}/history
+    defaults: { _controller: pim_catalog.controller.association_type:historyAction }
+    requirements:
+        id: \d+

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -26,9 +26,9 @@ class ProductAssociation implements ReferableInterface
     protected $id;
 
     /**
-     * @var Association $association
+     * @var AssociationType $associationType
      */
-    protected $association;
+    protected $associationType;
 
     /**
      * @var ProductInterface $owner
@@ -65,27 +65,27 @@ class ProductAssociation implements ReferableInterface
     }
 
     /**
-     * Set association
+     * Set association type
      *
-     * @param Association $association
+     * @param AssociationType $associationType
      *
      * @return ProductAssociation
      */
-    public function setAssociation(Association $association)
+    public function setAssociationType(AssociationType $associationType)
     {
-        $this->association = $association;
+        $this->associationType = $associationType;
 
         return $this;
     }
 
     /**
-     * Get association
+     * Get association type
      *
-     * @return Association
+     * @return AssociationType
      */
-    public function getAssociation()
+    public function getAssociationType()
     {
-        return $this->association;
+        return $this->associationType;
     }
 
     /**
@@ -225,6 +225,6 @@ class ProductAssociation implements ReferableInterface
      */
     public function getReference()
     {
-        return $this->owner->getIdentifier() . '.' . $this->association->getCode();
+        return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
     }
 }

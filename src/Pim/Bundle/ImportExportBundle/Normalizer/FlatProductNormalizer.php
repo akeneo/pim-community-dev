@@ -282,7 +282,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeAssociations($productAssociations = array())
     {
         foreach ($productAssociations as $productAssociation) {
-            $columnPrefix = $productAssociation->getAssociation()->getCode();
+            $columnPrefix = $productAssociation->getAssociationType()->getCode();
 
             $groups = array();
             foreach ($productAssociation->getGroups() as $group) {

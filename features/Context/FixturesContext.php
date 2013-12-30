@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -62,7 +62,7 @@ class FixturesContext extends RawMinkContext
         'Currency'        => 'PimCatalogBundle:Currency',
         'Family'          => 'PimCatalogBundle:Family',
         'Category'        => 'PimCatalogBundle:Category',
-        'Association'     => 'PimCatalogBundle:Association',
+        'AssociationType' => 'PimCatalogBundle:AssociationType',
         'JobInstance'     => 'OroBatchBundle:JobInstance',
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
@@ -617,16 +617,16 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Then /^there should be the following associations:$/
+     * @Then /^there should be the following association types:$/
      */
-    public function thereShouldBeTheFollowingAssociations(TableNode $table)
+    public function thereShouldBeTheFollowingAssociationTypes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $association = $this->getAssociation($data['code']);
-            $this->getEntityManager()->refresh($association);
+            $associationType = $this->getAssociationType($data['code']);
+            $this->getEntityManager()->refresh($associationType);
 
-            assertEquals($data['label-en_US'], $association->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $association->getTranslation('fr_FR')->getLabel());
+            assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
         }
     }
 
@@ -815,15 +815,15 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following associations?:$/
+     * @Given /^the following association types?:$/
      */
-    public function theFollowingAssociations(TableNode $table)
+    public function theFollowingAssociationTypes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
             $label = isset($data['label']) ? $data['label'] : null;
 
-            $this->createAssociation($code, $label);
+            $this->createAssociationType($code, $label);
         }
     }
 
@@ -1530,13 +1530,13 @@ class FixturesContext extends RawMinkContext
      * @param string $code
      * @param string $label
      */
-    private function createAssociation($code, $label)
+    private function createAssociationType($code, $label)
     {
-        $association = new Association();
-        $association->setCode($code);
-        $association->setLocale('en_US')->setLabel($label);
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setLocale('en_US')->setLabel($label);
 
-        $this->persist($association);
+        $this->persist($associationType);
     }
 
     /**
