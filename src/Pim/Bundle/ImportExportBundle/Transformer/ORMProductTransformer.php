@@ -134,8 +134,20 @@ class ORMProductTransformer extends ORMTransformer
      */
     protected function setProperties($class, $entity, array $data)
     {
-        $flexibleValueClass = $this->productManager->getFlexibleValueName();
+        $this->setProductProperties($class, $entity, $data);
+        $this->setProductValues($entity, $data);
+        $this->setProductAssociations($entity, $data);
+    }
 
+    /**
+     * Sets the product entitie's properties
+     *
+     * @param string $class
+     * @param type   $entity
+     * @param array  $data
+     */
+    protected function setProductProperties($class, $entity, array $data)
+    {
         foreach ($this->propertyColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
@@ -144,8 +156,19 @@ class ORMProductTransformer extends ORMTransformer
                 $this->errors[$label] = array($error);
             }
         }
+    }
 
+
+    /**
+     * Sets the product entitie's properties
+     *
+     * @param type  $entity
+     * @param array $data
+     */
+    protected function setProductValues($entity, array $data)
+    {
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
+        $flexibleValueClass = $this->productManager->getFlexibleValueName();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
@@ -157,25 +180,36 @@ class ORMProductTransformer extends ORMTransformer
                 }
             }
         }
+    }
 
-        if (count($this->associationColumnsInfo)) {
-            $associations = array();
-            foreach ($this->associationColumnsInfo as $columnInfo) {
-                $key = $entity->getReference() . '.' . $columnInfo->getName();
-                $suffixes = $columnInfo->getSuffixes();
-                $lastSuffix = array_pop($suffixes);
-                if (!isset($associations[$key])) {
-                    $associations[$key] = array(
-                        'owner'       => $entity->getReference(),
-                        'association' => $columnInfo->getName(),
-                    );
-                }
-                $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
-            }
+    /**
+     * Sets the product's associations
+     *
+     * @param type  $entity
+     * @param array $data
+     */
+    protected function setProductAssociations($entity, array $data)
+    {
+        if (!count($this->associationColumnsInfo)) {
+            return;
+        }
 
-            foreach ($associations as $association) {
-                $this->associationReader->addItem($association);
+        $associations = array();
+        foreach ($this->associationColumnsInfo as $columnInfo) {
+            $key = $entity->getReference() . '.' . $columnInfo->getName();
+            $suffixes = $columnInfo->getSuffixes();
+            $lastSuffix = array_pop($suffixes);
+            if (!isset($associations[$key])) {
+                $associations[$key] = array(
+                    'owner'       => $entity->getReference(),
+                    'association' => $columnInfo->getName(),
+                );
             }
+            $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
+        }
+
+        foreach ($associations as $association) {
+            $this->associationReader->addItem($association);
         }
     }
 

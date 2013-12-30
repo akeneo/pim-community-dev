@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface,
-    ReferableEntityRepositoryInterface
+ ReferableEntityRepositoryInterface
 {
     /**
      * @var string
