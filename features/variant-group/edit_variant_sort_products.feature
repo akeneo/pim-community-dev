@@ -7,9 +7,9 @@ Feature: Sort available products for a variant group
   Background:
     Given the "default" catalog configuration
     And the following families:
-      | code      | label     |
-      | mug       | Mug       |
-      | furniture | Furniture |
+      | code      | label-en_US |
+      | mug       | Mug         |
+      | furniture | Furniture   |
     And the following attributes:
       | code  | label | type         | useable as grid column |
       | color | Color | simpleselect | yes                    |

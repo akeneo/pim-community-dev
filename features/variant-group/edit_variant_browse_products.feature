@@ -7,9 +7,9 @@ Feature: Edit a variant group adding/removing products
   Background:
     Given the "default" catalog configuration
     And the following families:
-      | code      | label     |
-      | mug       | Mug       |
-      | furniture | Furniture |
+      | code      | label-en_US |
+      | mug       | Mug         |
+      | furniture | Furniture   |
     And the following attributes:
       | code  | label | type         |
       | color | Color | simpleselect |

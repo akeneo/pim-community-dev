@@ -306,23 +306,8 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(
-                array(
-                    'locale' => 'english'
-                ),
-                $data
-            );
-
-            $family = $this->createFamily($data['code']);
-            if (isset($data['label'])) {
-                $family
-                    ->setLocale($this->getLocaleCode($data['locale']))
-                    ->setLabel($data['label']);
-            }
-            $this->persist($family, false);
+            $this->createFamily($data);
         }
-
-        $this->flush();
     }
 
     /**
@@ -1687,14 +1672,22 @@ class FixturesContext extends RawMinkContext
     /**
      * Create a family
      *
-     * @param string $code
+     * @param array|string $data
      *
      * @return Family
      */
-    private function createFamily($code)
+    private function createFamily($data)
     {
-        $family = $this->getFamilyFactory()->createFamily();
-        $family->setCode($code);
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('families', 'csv');
+
+        $family = $processor->process($data);
 
         $this->persist($family);
 
@@ -1797,14 +1790,6 @@ class FixturesContext extends RawMinkContext
     private function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Factory\FamilyFactory
-     */
-    private function getFamilyFactory()
-    {
-        return $this->getContainer()->get('pim_catalog.factory.family');
     }
 
     /**
