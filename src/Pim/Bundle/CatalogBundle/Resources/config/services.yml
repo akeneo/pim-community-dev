@@ -74,7 +74,9 @@ services:
     # Validators
     pim_catalog.form.validator.metric:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
-        arguments: [%oro_measure.measures_config%]
+        arguments:
+            - '@property_accessor'
+            - %oro_measure.measures_config%
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
