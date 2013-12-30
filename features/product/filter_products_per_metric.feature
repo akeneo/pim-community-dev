@@ -11,8 +11,8 @@ Feature: Filter products per metric
       | furniture |
       | library   |
     And the following attributes:
-      | label  | required | translatable | scopable | type   | useable as grid filter | metric family | default metric unit | decimals |
-      | weight | no       | no           | yes      | metric | yes                    | Weight        | GRAM                | yes      |
+      | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
+      | weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce |
       | postit | furniture | yes     | 120 GRAM         |

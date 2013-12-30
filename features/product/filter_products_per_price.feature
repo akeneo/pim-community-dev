@@ -11,8 +11,8 @@ Feature: Filter products per price
       | furniture |
       | library   |
     And the following attributes:
-      | label | required | translatable | scopable | type   | useable as grid filter | decimals |
-      | price | no       | no           | yes      | prices | yes                    | yes      |
+      | label | scopable | type   | useable as grid filter | decimals_allowed |
+      | price | yes      | prices | yes                    | yes              |
     And the following products:
       | sku    | family    | enabled | price-mobile | price-ecommerce |
       | postit | furniture | yes     | 10.5 EUR     | 12.5 EUR        |

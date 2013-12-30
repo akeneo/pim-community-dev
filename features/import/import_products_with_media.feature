@@ -12,10 +12,10 @@ Feature: Import media with products
       | code  | label | parent |
       | sport | Sport |        |
     And the following attributes:
-      | label       | type  |
-      | Name        | text  |
-      | Front view  | image |
-      | User manual | file  |
+      | label       | type  | allowed extensions |
+      | Name        | text  |                    |
+      | Front view  | image | gif, jpg           |
+      | User manual | file  | txt, pdf           |
     And the following job:
       | connector            | alias              | code                | label                       | type   |
       | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |

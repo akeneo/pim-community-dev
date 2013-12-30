@@ -11,10 +11,10 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | label       | required | translatable | scopable | useable as grid filter |
-      | name        | no       | yes          | no       | yes                    |
-      | image       | no       | no           | yes      | yes                    |
-      | description | no       | yes          | yes      | yes                    |
+      | label       | translatable | scopable | useable as grid filter |
+      | name        | yes          | no       | yes                    |
+      | image       | no           | yes      | yes                    |
+      | description | yes          | yes      | yes                    |
     And the following products:
       | sku    | family    | enabled | name-en_US | name-fr_FR | description-en_US-ecommerce | description-en_US-mobile | description-fr_FR-ecommerce | description-fr_FR-mobile |
       | postit | furniture | yes     | Post it    | Etiquette  | My ecommerce description    | My mobile description    | Ma description ecommerce    | Ma description mobile    |

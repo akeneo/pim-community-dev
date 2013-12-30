@@ -1287,72 +1287,55 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param array $data
+     * @param string|array $data
      *
      * @return ProductAttribute
      */
     private function createAttribute($data)
     {
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
         $data = array_merge(
             array(
-                'code'                   => null,
-                'label'                  => null,
-                'position'               => 0,
-                'group'                  => null,
-                'families'               => null,
-                'type'                   => 'text',
-                'scopable'               => 'no',
-                'translatable'           => 'no',
-                'useable as grid column' => false,
-                'useable as grid filter' => false,
+                'code'     => null,
+                'label'    => null,
+                'families' => null,
+                'type'     => 'text',
             ),
             $data
         );
 
-        if ('identifier' === $data['type']) {
-            throw new \InvalidArgumentException('Identifier attribute can\'t be created after catalog initialization');
+        if (isset($data['label']) && !isset($data['label-en_US'])) {
+            $data['label-en_US'] = $data['label'];
         }
 
         $data['code'] = $data['code'] ?: $this->camelize($data['label']);
+        unset($data['label']);
 
-        $attribute = $this->getProductAttributeManager()->createAttribute($this->getAttributeType($data['type']));
+        $families = $data['families'];
+        unset($data['families']);
 
-        $attribute->setCode($data['code']);
-        $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
+        $data['type'] = $this->getAttributeType($data['type']);
 
-        $attribute->setScopable(strtolower($data['scopable']) === 'yes');
-        $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
-        $attribute->setUseableAsGridColumn(strtolower($data['useable as grid column']) === 'yes');
-        $attribute->setUseableAsGridFilter(strtolower($data['useable as grid filter']) === 'yes');
-
-        $attribute->setSortOrder($data['position']);
-
-        if ($data['group']) {
-            $attribute->setGroup($this->getAttributeGroup($data['group']));
+        foreach ($data as $key => $element) {
+            if (in_array($element, array('yes', 'no'))) {
+                $data[$key] = $element === 'yes';
+            }
         }
 
-        if ($data['families']) {
-            foreach ($this->listToArray($data['families']) as $familyCode) {
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('attributes', 'csv');
+
+        $attribute = $processor->process($data);
+
+        if ($families) {
+            foreach ($this->listToArray($families) as $familyCode) {
                 $this->getFamily($familyCode)->addAttribute($attribute);
             }
-        }
-
-        if ($data['type'] === 'metric') {
-            if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
-                $attribute->setMetricFamily($data['metric family']);
-                $attribute->setDefaultMetricUnit($data['default metric unit']);
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expecting "metric family" and "default metric unit" columns to be defined for attribute "%s"',
-                        $data['label']
-                    )
-                );
-            }
-        }
-
-        if (isset($data['decimals'])) {
-            $attribute->setDecimalsAllowed($data['decimals'] === 'yes');
         }
 
         $this->persist($attribute);
