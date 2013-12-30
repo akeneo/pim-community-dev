@@ -1,6 +1,6 @@
-Pim\Bundle\CatalogBundle\Entity\AssociationTranslation:
+Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
     type: entity
-    table: pim_catalog_association_translation
+    table: pim_catalog_association_type_translation
     uniqueConstraints:
         locale_foreign_key_idx:
             columns:

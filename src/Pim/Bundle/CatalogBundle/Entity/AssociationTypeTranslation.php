@@ -6,7 +6,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
- * Association translation entity
+ * Association type translation entity
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class AssociationTranslation extends AbstractTranslation
+class AssociationTypeTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -35,7 +35,7 @@ class AssociationTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return AssociationTranslation
+     * @return AssociationTypeTranslation
      */
     public function setLabel($label)
     {
