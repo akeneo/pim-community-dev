@@ -148,30 +148,8 @@ datagrid:
             entityHint: channel
         source:
             acl_resource: pim_catalog_channel_index
-            type: orm
-            query:
-                select:
-                    - c.id
-                    - c.code
-                    - c.label
-                    - >
-                        (CASE WHEN ct.label IS NULL THEN
-                            category.code
-                        ELSE
-                            ct.label
-                        END) AS categoryLabel
-                from:
-                    - { table: PimCatalogBundle:Channel, alias: c }
-                join:
-                    left:
-                        category:
-                            join:  c.category
-                            alias: category
-                        categoryTranslation:
-                            join:          category.translations
-                            alias:         ct
-                            conditionType: WITH
-                            condition:     ct.locale = :localeCode
+            type: pim_orm
+            entity: %pim_catalog.entity.channel.class%
         columns:
             code:
                 label: Code
@@ -227,7 +205,7 @@ datagrid:
                 category:
                     type:      choice
                     label:     Category tree
-                    data_name: categoryLabel
+                    data_name: ct.label
                     options:
                         field_options:
                             choices: @pim_catalog.manager.category->getTrees
