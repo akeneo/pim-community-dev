@@ -8,17 +8,17 @@ Feature: Filter products per family
     Given the "default" catalog configuration
     And the following families:
       | code             |
-      | Computers        |
-      | Hi-fi            |
-      | Washing machines |
+      | computers        |
+      | hi_fi            |
+      | washing_machines |
     And the following products:
       | sku        | family           |
-      | PC         | Computers        |
-      | Laptop     | Computers        |
-      | Amplifier  | Hi-fi            |
-      | CD changer | Hi-fi            |
-      | Whirlpool  | Washing machines |
-      | Electrolux | Washing machines |
+      | PC         | computers        |
+      | Laptop     | computers        |
+      | Amplifier  | hi_fi            |
+      | CD changer | hi_fi            |
+      | Whirlpool  | washing_machines |
+      | Electrolux | washing_machines |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by a single family
@@ -26,6 +26,6 @@ Feature: Filter products per family
     Then I should see the filter "Family"
     And I should be able to use the following filters:
       | filter | value            | result                   |
-      | Family | Computers        | PC and Laptop            |
-      | Family | Hi-fi            | Amplifier and CD changer |
-      | Family | Washing machines | Whirlpool and Electrolux |
+      | Family | computers        | PC and Laptop            |
+      | Family | hi_fi            | Amplifier and CD changer |
+      | Family | washing_machines | Whirlpool and Electrolux |
