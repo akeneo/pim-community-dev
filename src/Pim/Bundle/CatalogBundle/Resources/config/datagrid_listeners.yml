@@ -6,7 +6,7 @@ services:
           - @oro_datagrid.datagrid.request_params
           - false
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-type-grid, method: onBuildAfter }
 
     pim_catalog.event_listener.attribute_grid_listener:
         class: %oro_datagrid.event_listener.base_orm_relation.class%

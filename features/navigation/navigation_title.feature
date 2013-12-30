@@ -10,8 +10,8 @@ Feature: Well display navigation titles
     And I am logged in as "admin"
     Then the following pages should have the following titles:
       | page                                      | title                                        |
-      | associations                              | Associations                                 |
-      | "X_SELL" association                      | Associations Cross sell \| Edit              |
+      | association types                         | Association types                            |
+      | "X_SELL" association type                 | Association types Cross sell \| Edit         |
       | attributes                                | Product attributes                           |
       | attribute creation                        | Product attributes \| Create                 |
       | "size" attribute                          | Product attributes Size \| Edit              |

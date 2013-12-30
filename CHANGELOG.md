@@ -32,6 +32,7 @@
 - Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
 - Don't display several UI elements when users don't have the corresponding rights
 - Use aliases for subforms, no more manual instanciation to enhance extensibility
+- Product prices can now be imported with a single column per currency
 
 ## Bug fixes
 - Missing pending versionable entities
@@ -77,6 +78,7 @@
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 - Attribute fixtures format has changed
 - Product associations import/export format has changed.
+- Rename Association by AssociationType and all properties/methods linked to this class.
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

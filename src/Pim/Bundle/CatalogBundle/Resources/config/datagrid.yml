@@ -1,5 +1,5 @@
 datagrid:
-    association-grid:
+    association-type-grid:
         options:
             entityHint: association
         source:

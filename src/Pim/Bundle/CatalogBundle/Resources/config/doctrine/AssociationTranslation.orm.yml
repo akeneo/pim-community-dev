@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
             inversedBy: translations
             joinColumns:
                 foreign_key:

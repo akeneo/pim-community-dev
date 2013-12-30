@@ -10,6 +10,8 @@ services:
             - '@service_container'
             - '@property_accessor'
             - %kernel.bundles%
+            - %kernel.cache_dir%
+            - %kernel.debug%
 
     pim_installer.fixture_loader.loader_factory:
         class: %pim_installer.fixture_loader.loader_factory.class%

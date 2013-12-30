@@ -35,8 +35,13 @@ class TranslationTransformer extends DefaultTransformer implements EntityUpdater
      */
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
-        $suffixes = $columnInfo->getSuffixes();
-        $object->setLocale($suffixes[0]);
+        if ($columnInfo->getLocale()) {
+            $locale = $columnInfo->getLocale();
+        } else {
+            $suffixes = $columnInfo->getSuffixes();
+            $locale = array_shift($suffixes);
+        }
+        $object->setLocale($locale);
         $this->propertyAccessor->setValue($object, 'translation.' . $columnInfo->getPropertyPath(), $data);
     }
 }

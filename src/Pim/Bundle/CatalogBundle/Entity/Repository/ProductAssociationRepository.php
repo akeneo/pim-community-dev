@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Product association repository
@@ -15,13 +15,13 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
 class ProductAssociationRepository extends EntityRepository implements ReferableEntityRepositoryInterface
 {
     /**
-     * Return the number of ProductAssociations for a specific association
+     * Return the number of ProductAssociations for a specific association type
      *
-     * @param Association $association
+     * @param AssociationType $associationType
      *
      * @return mixed
      */
-    public function countForAssociation(Association $association)
+    public function countForAssociationType(AssociationType $associationType)
     {
         $qb = $this->createQueryBuilder('pa');
 
@@ -31,14 +31,14 @@ class ProductAssociationRepository extends EntityRepository implements Referable
             )
             ->leftJoin('pa.products', 'products')
             ->leftJoin('pa.groups', 'groups')
-            ->where('pa.association = :association')
+            ->where('pa.associationType = :association_type')
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->isNotNull('products'),
                     $qb->expr()->isNotNull('groups')
                 )
             )
-            ->setParameter('association', $association);
+            ->setParameter('association_type', $associationType);
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -55,10 +55,10 @@ class ProductAssociationRepository extends EntityRepository implements Referable
             ->innerJoin('pass.owner', 'p')
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'at')
-            ->innerJoin('pass.association', 'ass')
+            ->innerJoin('pass.associationType', 'assType')
             ->where('at.attributeType=:identifier_type')
             ->andWhere('v.varchar=:product_code')
-            ->andWhere('ass.code=:association_code')
+            ->andWhere('assType.code=:association_code')
             ->setParameter('identifier_type', 'pim_catalog_identifier')
             ->setParameter('product_code', $productCode)
             ->setParameter('association_code', $associationCode)
@@ -71,6 +71,6 @@ class ProductAssociationRepository extends EntityRepository implements Referable
      */
     public function getReferenceProperties()
     {
-        return array('owner', 'association');
+        return array('owner', 'associationType');
     }
 }
