@@ -48,15 +48,20 @@ class ProductAssociationRepository extends EntityRepository implements Referable
      */
     public function findByReference($code)
     {
+        list($productCode, $associationCode) = explode('.', $code);
+
         return $this->createQueryBuilder('pass')
             ->select('pass')
             ->innerJoin('pass.owner', 'p')
             ->innerJoin('p.values', 'v')
-            ->innerJoin('v.attribute', 'a')
-            ->where('a.attributeType=:identifier_type')
-            ->andWhere('v.varchar=:code')
+            ->innerJoin('v.attribute', 'at')
+            ->innerJoin('pass.association', 'ass')
+            ->where('at.attributeType=:identifier_type')
+            ->andWhere('v.varchar=:product_code')
+            ->andWhere('ass.code=:association_code')
             ->setParameter('identifier_type', 'pim_catalog_identifier')
-            ->setParameter('code', $code)
+            ->setParameter('product_code', $productCode)
+            ->setParameter('association_code', $associationCode)
             ->getQuery()
             ->getOneOrNullResult();
     }
