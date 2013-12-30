@@ -39,12 +39,12 @@ class AssociationTypeController extends AbstractDoctrineController
     /**
      * @var AssociationTypeHandler
      */
-    protected $associationTypeHandler;
+    protected $assocTypeHandler;
 
     /**
      * @var Form
      */
-    protected $associationTypeForm;
+    protected $assocTypeForm;
 
     /**
      * Constructor
@@ -58,8 +58,8 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridHelperInterface  $dataGridHelper
-     * @param AssociationTypeHandler       $associationTypeHandler
-     * @param Form                     $associationTypeForm
+     * @param AssociationTypeHandler   $assocTypeHandler
+     * @param Form                     $assocTypeForm
      */
     public function __construct(
         Request $request,
@@ -71,8 +71,8 @@ class AssociationTypeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridHelperInterface $dataGridHelper,
-        AssociationTypeHandler $associationTypeHandler,
-        Form $associationTypeForm
+        AssociationTypeHandler $assocTypeHandler,
+        Form $assocTypeForm
     ) {
         parent::__construct(
             $request,
@@ -85,9 +85,9 @@ class AssociationTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper         = $dataGridHelper;
-        $this->associationTypeHandler = $associationTypeHandler;
-        $this->associationTypeForm    = $associationTypeForm;
+        $this->datagridHelper   = $dataGridHelper;
+        $this->assocTypeHandler = $assocTypeHandler;
+        $this->assocTypeForm    = $assocTypeForm;
     }
 
     /**
@@ -129,7 +129,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
         $associationType = new AssociationType();
 
-        if ($this->associationTypeHandler->process($associationType)) {
+        if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.created');
 
             $response = array(
@@ -142,7 +142,7 @@ class AssociationTypeController extends AbstractDoctrineController
         }
 
         return array(
-            'form' => $this->associationTypeForm->createView(),
+            'form' => $this->assocTypeForm->createView(),
         );
     }
 
@@ -160,7 +160,7 @@ class AssociationTypeController extends AbstractDoctrineController
     {
         $associationType = $this->findOr404('PimCatalogBundle:AssociationType', $id);
 
-        if ($this->associationTypeHandler->process($associationType)) {
+        if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
 
             return $this->redirectToRoute('pim_catalog_association_type_edit', array('id' => $id));
@@ -171,7 +171,7 @@ class AssociationTypeController extends AbstractDoctrineController
             ->countForAssociationType($associationType);
 
         return array(
-            'form'            => $this->associationTypeForm->createView(),
+            'form'            => $this->assocTypeForm->createView(),
             'historyDatagrid' => $this->getHistoryGrid($associationType)->createView(),
             'usageCount'      => $usageCount
         );
