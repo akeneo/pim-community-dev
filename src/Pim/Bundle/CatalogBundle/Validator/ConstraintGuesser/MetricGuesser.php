@@ -30,7 +30,6 @@ class MetricGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return 'pim_catalog_metric' == $attribute->getAttributeType();
+        return 'pim_catalog_metric' === $attribute->getAttributeType();
     }
-
 }
