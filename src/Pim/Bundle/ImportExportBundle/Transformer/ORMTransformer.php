@@ -271,6 +271,6 @@ class ORMTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return new $class;
+        return new $class();
     }
 }
