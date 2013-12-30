@@ -15,6 +15,9 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  */
 class MetricGuesser implements ConstraintGuesserInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function guessConstraints(AbstractAttribute $attribute)
     {
         return array(
@@ -22,6 +25,9 @@ class MetricGuesser implements ConstraintGuesserInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportAttribute(AbstractAttribute $attribute)
     {
         return 'pim_catalog_metric' == $attribute->getAttributeType();
