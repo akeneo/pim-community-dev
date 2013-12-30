@@ -3,7 +3,7 @@ namespace Pim\Bundle\CatalogBundle\Datasource\Orm;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductDatasource extends OrmDatasource
+class OrmProductDatasource extends OroOrmDatasource
 {
     /**
      * @var string

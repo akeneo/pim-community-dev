@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Grid\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension;
+use Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension as OroOrmPagerExtension;
 use Oro\Bundle\DataGridBundle\Extension\Pager\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Datasource\Orm\OrmProductDatasource;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductPagerExtension extends OrmPagerExtension
+class OrmProductPagerExtension extends OroOrmPagerExtension
 {
     /**
      * {@inheritDoc}
