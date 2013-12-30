@@ -12,7 +12,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
         locale_foreign_key_idx:
             columns:
                 - owner_id
-                - association_id
+                - association_type_id
     manyToOne:
         associationType:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType

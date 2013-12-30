@@ -31,7 +31,7 @@ class ProductAssociationRepository extends EntityRepository implements Referable
             )
             ->leftJoin('pa.products', 'products')
             ->leftJoin('pa.groups', 'groups')
-            ->where('pa.association = :association_type')
+            ->where('pa.associationType = :association_type')
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->isNotNull('products'),
@@ -55,10 +55,10 @@ class ProductAssociationRepository extends EntityRepository implements Referable
             ->innerJoin('pass.owner', 'p')
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'at')
-            ->innerJoin('pass.association', 'ass')
+            ->innerJoin('pass.associationType', 'assType')
             ->where('at.attributeType=:identifier_type')
             ->andWhere('v.varchar=:product_code')
-            ->andWhere('ass.code=:association_code')
+            ->andWhere('assType.code=:association_code')
             ->setParameter('identifier_type', 'pim_catalog_identifier')
             ->setParameter('product_code', $productCode)
             ->setParameter('association_code', $associationCode)
@@ -71,6 +71,6 @@ class ProductAssociationRepository extends EntityRepository implements Referable
      */
     public function getReferenceProperties()
     {
-        return array('owner', 'association');
+        return array('owner', 'associationType');
     }
 }
