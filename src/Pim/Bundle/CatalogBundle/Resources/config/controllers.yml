@@ -73,6 +73,7 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.form.handler.family'

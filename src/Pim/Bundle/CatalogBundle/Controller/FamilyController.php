@@ -23,6 +23,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
@@ -45,6 +46,11 @@ class FamilyController extends AbstractDoctrineController
      * @var ChannelManager
      */
     protected $channelManager;
+
+    /**
+     * @var LocaleManager
+     */
+    private $localeManager;
 
     /**
      * @var FamilyFactory
@@ -84,6 +90,7 @@ class FamilyController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelManager           $channelManager
+     * @param LocaleManager            $localeManager
      * @param FamilyFactory            $factory
      * @param CompletenessManager      $completenessManager
      * @param FamilyHandler            $familyHandler
@@ -101,6 +108,7 @@ class FamilyController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
+        LocaleManager $localeManager,
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
         FamilyHandler $familyHandler,
@@ -120,6 +128,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->datagridHelper      = $datagridHelper;
         $this->channelManager      = $channelManager;
+        $this->localeManager       = $localeManager;
         $this->factory             = $factory;
         $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
@@ -136,18 +145,10 @@ class FamilyController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-
-        $datagridView = $this->datagridHelper->getDatagrid('family', $queryBuilder)->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'datagrid' => $datagridView
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
         );
+
     }
 
     /**

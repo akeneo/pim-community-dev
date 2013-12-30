@@ -79,4 +79,25 @@ class FamilyRepository extends ReferableEntityRepository
             ->setParameter('family', $family)
             ->setParameter('localeCode', $localeCode);
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('f');
+
+        $qb
+            ->leftJoin('f.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+       ;//     ->leftJoin('f.attributeAsLabel', 'a');
+
+        $familyLabelExpr = "(CASE WHEN translation.label IS NULL THEN f.code ELSE translation.label END)";
+        $qb
+            ->addSelect('f')
+            ->addSelect(sprintf("%s AS familyLabel", $familyLabelExpr))
+            ->addSelect('translation.label')
+          ;//  ->addSelect('a.id AS attributeAsLabel');
+
+        return $qb;
+    }
 }

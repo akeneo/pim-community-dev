@@ -25,3 +25,13 @@ services:
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.channel-grid, method: onBuildAfter }
+
+    pim_catalog.event_listener.family_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - localeCode
+          - @oro_datagrid.datagrid.request_params
+          - false
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-grid, method: onBuildAfter }
+

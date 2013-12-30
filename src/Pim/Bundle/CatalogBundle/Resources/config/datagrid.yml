@@ -6,25 +6,6 @@ datagrid:
             acl_resource: pim_catalog_association_index
             type: pim_orm
             entity: %pim_catalog.entity.association.class%
-#            query:
-#                select:
-#                    - a.id
-#                    - a.code
-#                    - >
-#                        (CASE WHEN translation.label IS NULL THEN
-#                            a.code
-#                        ELSE
-#                            translation.label
-#                        END) AS label
-#                from:
-#                    - { table: PimCatalogBundle:Association, alias: a }
-#                join:
-#                    left:
-#                        translation:
-#                            join:          a.translations
-#                            alias:         translation
-#                            conditionType: WITH
-#                            condition:     translation.locale = :localeCode
         columns:
             code:
                 label: Code
@@ -85,6 +66,7 @@ datagrid:
         source:
             acl_resource: pim_catalog_attribute_index
             type: orm
+            #entity: %pim_catalog.entity.attribute.class%
             query:
                 select:
                     - a.id
@@ -341,3 +323,72 @@ datagrid:
                     type:      boolean
                     label:     Enabled
                     data_name: p.enabled
+    family-grid:
+        options:
+            entityHint: family
+        source:
+            acl_resource: pim_catalog_family_index
+            type: pim_orm
+            entity: %pim_catalog.entity.family.class%
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            attributeAsLabel:
+                label: Attribute as label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_family_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_family_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: f.code
+                label:
+                    data_name: label
+                attributeAsLabel:
+                    data_name: attributeAsLabel
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: f.code
+                # TODO: need to create a translation filter
+                label:
+                    type: string
+                    label: Label
+                    data_name: f.translation.label
+                # TODO: custom filter to get attribute label
+                attributeAsLabel:
+                    type:             entity
+                    label:            Attribute as label
+                    data_name:        attributeAsLabel
+                    options:
+                        field_options:
+                            class: %pim_catalog.entity.product_attribute.class%
+                            property: code
+
