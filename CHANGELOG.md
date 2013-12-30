@@ -8,6 +8,7 @@
 - Allow to back to the grid or create another product when editing one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
+- Product associations fixture
 - Fixtures can be in CSV (all fixtures except users and currencies)
 - Fixture files can be imported through a command (all fixtures except users and currencies)
 - Add quick create popin for jobs
@@ -74,6 +75,7 @@
 - Change attribute type configuration, refactor the attribute type compiler pass and attribute type factory
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 - Attribute fixtures format has changed
+- Product associations import/export format has changed.
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 
