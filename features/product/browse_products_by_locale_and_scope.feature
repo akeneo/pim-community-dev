@@ -15,12 +15,8 @@ Feature: Browse products by locale and scope
       | image       | no           | yes      | yes                    |
       | description | yes          | yes      | yes                    |
     And the following product:
-      | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile |
-      | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    |
-    And the following product values:
-      | product | attribute | scope     | value      |
-      | postit  | image     | ecommerce | large.jpeg |
-      | postit  | image     | mobile    | small.jpeg |
+      | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
+      | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
     And I am logged in as "admin"
     And I am on the products page
 
