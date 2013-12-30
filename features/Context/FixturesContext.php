@@ -366,26 +366,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $index => $data) {
-            $data = array_merge(
-                array(
-                    'locale' => 'english'
-                ),
-                $data
-            );
-
-            $group = $this->findAttributeGroup($data['code']);
-
-            if (!$group) {
-                $group = new AttributeGroup();
-                $group->setSortOrder($index);
-                $group->setCode($data['code']);
-            }
-
-            $group
-                ->setLocale($this->getLocaleCode($data['locale']))
-                ->setLabel($data['label']);
-
-            $this->persist($group);
+            $this->createAttributeGroup($data);
         }
     }
 
@@ -1692,6 +1673,31 @@ class FixturesContext extends RawMinkContext
         $this->persist($family);
 
         return $family;
+    }
+
+    /**
+     * Create an attribute group
+     *
+     * @param array|string $data
+     *
+     * @return AttributeGroup
+     */
+    private function createAttributeGroup($data)
+    {
+        if (is_string($data)) {
+            $data = array('code' => $data);
+        }
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('attribute_groups', 'csv');
+
+        $attributeGroup = $processor->process($data);
+
+        $this->persist($attributeGroup);
+
+        return $attributeGroup;
     }
 
     /**
