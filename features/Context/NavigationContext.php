@@ -295,6 +295,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" association type page$/
+     */
+    public function iAmOnTheAssociationTypeEditPage($identifier)
+    {
+        $page = 'AssociationType';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
      * @param JobInstance $job
      *
      * @When /^I launch the ("([^"]*)" export job)$/
