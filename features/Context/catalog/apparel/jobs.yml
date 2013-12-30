@@ -70,27 +70,27 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/export/categories.csv
-    association_import:
+    association_type_import:
         connector: Akeneo CSV Connector
-        alias:     csv_association_import
-        label:     Association import
+        alias:     csv_association_type_import
+        label:     Association type import
         type:      import
         configuration:
-            filePath:      /tmp/import/associations.csv
+            filePath:      /tmp/import/association_types.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    association_export:
+    association_type_export:
         connector: Akeneo CSV Connector
-        alias:     csv_association_export
-        label:     Association export
+        alias:     csv_association_type_export
+        label:     Association type export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/associations.csv
+            filePath:   /tmp/export/association_types.csv
     group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import

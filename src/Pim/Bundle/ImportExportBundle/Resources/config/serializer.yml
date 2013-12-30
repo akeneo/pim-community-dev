@@ -18,8 +18,8 @@ parameters:
     pim_serializer.normalizer.flat_family.class:            Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer
     pim_serializer.normalizer.attribute_group.class:        Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer
     pim_serializer.normalizer.flat_attribute_group.class:   Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer
-    pim_serializer.normalizer.association.class:            Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer
-    pim_serializer.normalizer.flat_association.class:       Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer
+    pim_serializer.normalizer.association_type.class:       Pim\Bundle\ImportExportBundle\Normalizer\AssociationTypeNormalizer
+    pim_serializer.normalizer.flat_association_type.class:  Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationTypeNormalizer
     pim_serializer.normalizer.group.class:                  Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer
     pim_serializer.normalizer.flat_group.class:             Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
     pim_serializer.normalizer.job_instance.class:           Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer
@@ -116,15 +116,15 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_serializer.normalizer.association:
-        class: %pim_serializer.normalizer.association.class%
+    pim_serializer.normalizer.association_type:
+        class: %pim_serializer.normalizer.association_type.class%
         arguments:
             - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_serializer.normalizer.flat_association:
-        class: %pim_serializer.normalizer.flat_association.class%
+    pim_serializer.normalizer.flat_association_type:
+        class: %pim_serializer.normalizer.flat_association_type.class%
         arguments:
             - '@pim_serializer.normalizer.flat_label_translation'
         tags:
