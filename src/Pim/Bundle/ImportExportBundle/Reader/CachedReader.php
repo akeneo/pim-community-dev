@@ -36,10 +36,10 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
 
     /**
      * Adds an item to the reader
-     * 
+     *
      * @param array $item
      * @param mixed $index
-     * 
+     *
      * @return CacheReader
      */
     public function addItem(array $item, $index = null)
@@ -55,9 +55,9 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
 
     /**
      * Returns an item from the reader's data
-     * 
+     *
      * @param mixed $index
-     * 
+     *
      * @return array
      */
     public function getItem($index)

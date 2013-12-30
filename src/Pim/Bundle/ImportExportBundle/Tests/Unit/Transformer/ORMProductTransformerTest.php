@@ -60,7 +60,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->attributeCache->expects($this->any())
             ->method('getAttributes')
             ->will($this->returnCallback(array($this, 'getAttributes')));
-        
+
         $this->associationsReader = $this->getMock('Pim\Bundle\ImportExportBundle\Reader\CachedReader');
 
         $this->addAttribute('identifier', ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
