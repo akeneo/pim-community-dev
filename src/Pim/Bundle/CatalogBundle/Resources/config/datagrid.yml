@@ -52,14 +52,7 @@ datagrid:
                 label:
                     type: string
                     label: Label
-                    data_name: a.translation.label # TODO: need to create a translation filter
-#                    type:             entity
-#                    label:            Label
-#                    data_name:        association.label
-#                    options:
-#                        field_options:
-#                            class: %pim_catalog.entity.association_translation.class%
-#                            property: label
+                    data_name: translation.label
     attribute-grid:
         options:
             entityHint: attribute
