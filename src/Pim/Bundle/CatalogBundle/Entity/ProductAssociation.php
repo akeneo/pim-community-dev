@@ -25,9 +25,9 @@ class ProductAssociation
     protected $id;
 
     /**
-     * @var AssociationType $association
+     * @var AssociationType $associationType
      */
-    protected $association;
+    protected $associationType;
 
     /**
      * @var ProductInterface $owner
@@ -64,27 +64,27 @@ class ProductAssociation
     }
 
     /**
-     * Set association
+     * Set association type
      *
-     * @param AssociationType $association
+     * @param AssociationType $associationType
      *
      * @return ProductAssociation
      */
-    public function setAssociation(AssociationType $association)
+    public function setAssociationType(AssociationType $associationType)
     {
-        $this->association = $association;
+        $this->associationType = $associationType;
 
         return $this;
     }
 
     /**
-     * Get association
+     * Get association type
      *
      * @return AssociationType
      */
-    public function getAssociation()
+    public function getAssociationType()
     {
-        return $this->association;
+        return $this->associationType;
     }
 
     /**

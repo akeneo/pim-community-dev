@@ -9,10 +9,10 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
             generator:
                 strategy: AUTO
     manyToOne:
-        association:
+        associationType:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
             joinColumns:
-                association_id:
+                association_type_id:
                     referencedColumnName: id
                     nullable: false
                     onDelete: CASCADE

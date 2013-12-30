@@ -149,17 +149,17 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
      * Get the existing product association or create a new one
      *
      * @param ProductInterface $product
-     * @param AssociationType  $association
+     * @param AssociationType  $associationType
      *
      * @return ProductAssociation
      */
-    protected function getProductAssociation(ProductInterface $product, AssociationType $association)
+    protected function getProductAssociation(ProductInterface $product, AssociationType $associationType)
     {
-        $productAssociation = $product->getProductAssociationForAssociation($association);
+        $productAssociation = $product->getProductAssociationForAssociation($associationType);
         if (!$productAssociation) {
             $productAssociation = new ProductAssociation();
             $productAssociation->setOwner($product);
-            $productAssociation->setAssociation($association);
+            $productAssociation->setAssociationType($associationType);
         }
 
         return $productAssociation;
@@ -177,7 +177,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         return $this->productManager->findByIdentifier($identifier);
     }
 
-    /**
+    /**Is it for data
      * Find group by code
      *
      * @param string $code

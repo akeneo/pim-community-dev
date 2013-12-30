@@ -75,7 +75,7 @@ class ProductAssociationsController
     {
         $product = $this->findProductOr404($id);
 
-        $this->productManager->ensureAllAssociations($product);
+        $this->productManager->ensureAllAssociationTypes($product);
 
         $associations = $this->doctrine->getRepository('PimCatalogBundle:Association')->findAll();
 

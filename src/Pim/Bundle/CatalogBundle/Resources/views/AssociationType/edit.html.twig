@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { '%association.label%': form.vars.value.label } }) %}
+{% oro_title_set({ params: { '%association type.label%': form.vars.value.label } }) %}
 
 {% block head_script %}
     {{ parent() }}
@@ -10,28 +10,28 @@
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_catalog_association_edit', { id: form.vars.value.id}),
+        'action': path('pim_catalog_association_type_edit', { id: form.vars.value.id}),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'association'|trans })
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'association type'|trans })
         }
     }) }}
 
-        {% set title = 'association.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+        {% set title = 'association type.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
-        {% set confirmationMessage = 'confirmation.remove.association'|trans({ '%name%': form.vars.value.label }) %}
+        {% set confirmationMessage = 'confirmation.remove.association type'|trans({ '%name%': form.vars.value.label }) %}
         {% if usageCount %}
-            {% set confirmationMessage = confirmationMessage ~ '</br>' ~ 'info.association.remove from products'|trans({ '%count%': usageCount }) %}
+            {% set confirmationMessage = confirmationMessage ~ '</br>' ~ 'info.association type.remove from products'|trans({ '%count%': usageCount }) %}
         {% endif %}
         {% set buttons %}
-            {{ elements.backLink(path('pim_catalog_association_index')) }}
-            {% if resource_granted('pim_catalog_association_remove') %}
+            {{ elements.backLink(path('pim_catalog_association_type_index')) }}
+            {% if resource_granted('pim_catalog_association_type_remove') %}
                 {{ elements.deleteLink(
-                    path('pim_catalog_association_remove', { id: form.vars.value.id }),
-                    path('pim_catalog_association_index'),
+                    path('pim_catalog_association_type_remove', { id: form.vars.value.id }),
+                    path('pim_catalog_association_type_index'),
                     confirmationMessage,
                     '',
-                    'flash.association.removed'|trans
+                    'flash.association type.removed'|trans
                 ) }}
             {% endif %}
             {{ elements.submitBtn() }}
