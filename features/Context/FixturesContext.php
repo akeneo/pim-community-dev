@@ -1017,9 +1017,9 @@ class FixturesContext extends RawMinkContext
      * @param string    $code
      * @param TableNode $table
      *
-     * @Given /^import directory of "([^"]*)" contain the following media:$/
+     * @Given /^import directory of "([^"]*)" contains the following media:$/
      */
-    public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
+    public function importDirectoryOfContainsTheFollowingMedia($code, TableNode $table)
     {
         $configuration = $this
             ->getJobInstance($code)
