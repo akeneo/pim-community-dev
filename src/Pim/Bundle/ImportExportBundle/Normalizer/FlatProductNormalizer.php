@@ -273,8 +273,8 @@ class FlatProductNormalizer implements NormalizerInterface
                 $products[] = $product->getIdentifier();
             }
 
-            $this->results[$columnPrefix .'_groups'] = implode(',', $groups);
-            $this->results[$columnPrefix .'_products'] = implode(',', $products);
+            $this->results[$columnPrefix .'-groups'] = implode(',', $groups);
+            $this->results[$columnPrefix .'-products'] = implode(',', $products);
         }
     }
 }

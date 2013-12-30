@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -13,6 +12,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
+use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
 
 /**
  * Specialized ORMTransformer for products
@@ -21,7 +21,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductTransformer extends AbstractORMTransformer
+class ORMProductTransformer extends ORMTransformer
 {
     /**
      * @staticvar the identifier attribute type
@@ -39,6 +39,11 @@ class ORMProductTransformer extends AbstractORMTransformer
     protected $attributeCache;
 
     /**
+     * @var CachedReader
+     */
+    protected $associationReader;
+
+    /**
      * @var array
      */
     protected $attributes;
@@ -54,11 +59,6 @@ class ORMProductTransformer extends AbstractORMTransformer
     protected $initialized=false;
 
     /**
-     * @var boolean
-     */
-    protected $heterogeneous = false;
-
-    /**
      * @var array
      */
     protected $propertyColumnsInfo;
@@ -69,6 +69,11 @@ class ORMProductTransformer extends AbstractORMTransformer
     protected $attributeColumnsInfo;
 
     /**
+     * @var array
+     */
+    protected $associationColumnsInfo;
+
+    /**
      * Constructor
      *
      * @param RegistryInterface              $doctrine
@@ -77,6 +82,7 @@ class ORMProductTransformer extends AbstractORMTransformer
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
+     * @paral CachedReader                   $cachedReader
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -84,37 +90,23 @@ class ORMProductTransformer extends AbstractORMTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ProductManager $productManager,
-        AttributeCache $attributeCache
+        AttributeCache $attributeCache,
+        CachedReader $associationReader
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
         $this->productManager = $productManager;
         $this->attributeCache = $attributeCache;
+        $this->associationReader = $associationReader;
     }
 
     /**
-     * Transforms an array in a product
-     *
-     * @param array $data
-     * @param array $defaults
-     *
-     * @throws InvalidItemException
-     * @return ProductInterface
+     * {@inheritdoc}
      */
-    public function transform(array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = array())
     {
         $this->initializeAttributes($data);
 
-        return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
-    }
-
-    /**
-     * Set wether or not the product data are heterogeneous, means different attributes for each product row
-     *
-     * @param boolean $heterogeneous
-     */
-    public function setHeterogeneous($heterogeneous)
-    {
-        $this->heterogeneous = $heterogeneous;
+        return parent::transform($class, $data, $defaults);
     }
 
     /**
@@ -142,8 +134,20 @@ class ORMProductTransformer extends AbstractORMTransformer
      */
     protected function setProperties($class, $entity, array $data)
     {
-        $flexibleValueClass = $this->productManager->getFlexibleValueName();
+        $this->setProductProperties($class, $entity, $data);
+        $this->setProductValues($entity, $data);
+        $this->setProductAssociations($entity, $data);
+    }
 
+    /**
+     * Sets the product entitie's properties
+     *
+     * @param string $class
+     * @param type   $entity
+     * @param array  $data
+     */
+    protected function setProductProperties($class, $entity, array $data)
+    {
         foreach ($this->propertyColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
@@ -152,8 +156,19 @@ class ORMProductTransformer extends AbstractORMTransformer
                 $this->errors[$label] = array($error);
             }
         }
+    }
 
+
+    /**
+     * Sets the product entitie's properties
+     *
+     * @param type  $entity
+     * @param array $data
+     */
+    protected function setProductValues($entity, array $data)
+    {
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
+        $flexibleValueClass = $this->productManager->getFlexibleValueName();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
@@ -164,6 +179,37 @@ class ORMProductTransformer extends AbstractORMTransformer
                     $this->errors[$label] = array($error);
                 }
             }
+        }
+    }
+
+    /**
+     * Sets the product's associations
+     *
+     * @param type  $entity
+     * @param array $data
+     */
+    protected function setProductAssociations($entity, array $data)
+    {
+        if (!count($this->associationColumnsInfo)) {
+            return;
+        }
+
+        $associations = array();
+        foreach ($this->associationColumnsInfo as $columnInfo) {
+            $key = $entity->getReference() . '.' . $columnInfo->getName();
+            $suffixes = $columnInfo->getSuffixes();
+            $lastSuffix = array_pop($suffixes);
+            if (!isset($associations[$key])) {
+                $associations[$key] = array(
+                    'owner'       => $entity->getReference(),
+                    'association' => $columnInfo->getName(),
+                );
+            }
+            $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
+        }
+
+        foreach ($associations as $association) {
+            $this->associationReader->addItem($association);
         }
     }
 
@@ -218,18 +264,22 @@ class ORMProductTransformer extends AbstractORMTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->heterogeneous === false and $this->initialized) {
+        if ($this->initialized) {
             return;
         }
-
         $class = $this->productManager->getFlexibleName();
         $columnsInfo = $this->columnInfoTransformer->transform($class, array_keys($data));
         $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
         $this->attributeColumnsInfo = array();
         $this->propertyColumnsInfo = array();
+        $this->associationColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
             $columnName = $columnInfo->getName();
-            if (isset($this->attributes[$columnName])) {
+            $suffixes = $columnInfo->getSuffixes();
+            $lastSuffix = array_pop($suffixes);
+            if (in_array($lastSuffix, array('groups', 'products'))) {
+                $this->associationColumnsInfo[] = $columnInfo;
+            } elseif (isset($this->attributes[$columnName])) {
                 $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
                 $this->attributeColumnsInfo[] = $columnInfo;
@@ -252,6 +302,7 @@ class ORMProductTransformer extends AbstractORMTransformer
         $this->identifierAttribute = null;
         $this->attributeColumnsInfo = null;
         $this->propertyColumnsInfo = null;
+        $this->associationColumnsInfo = null;
         $this->initialized = false;
     }
 }

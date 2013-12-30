@@ -85,3 +85,9 @@ services:
         class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
         tags:
             - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.metric:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
