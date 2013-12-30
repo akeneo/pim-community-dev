@@ -44,6 +44,17 @@ class OrmProductDatasource extends OroOrmDatasource
      */
     public function process(DatagridInterface $grid, array $config)
     {
+//        $this->productManager->setLocale('en_US');
+//        $this->productManager->setScope('mobile');
+
+
+        $entity = $config['entity'];
+        $repository = $this->em->getRepository($entity);
+        $this->qb = $repository->createDatagridQueryBuilder();
+
+/*
+        // TODO : remove the custom data source ?
+
         // TODO : we should inject in product manager
         $this->productManager->setLocale('en_US');
         $this->productManager->setScope('ecommerce');
@@ -66,11 +77,11 @@ class OrmProductDatasource extends OroOrmDatasource
         $familyExpr = "(CASE WHEN familyTrans.label IS NULL THEN family.code ELSE familyTrans.label END)";
         $this->qb
             ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'familyTrans', 'WITH', 'familyTrans.locale = :localeCode')
+            ->leftJoin('family.translations', 'familyTrans', 'WITH', 'familyTrans.locale = :dataLocale')
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr));
 
-        $this->qb->setParameter('localeCode', $this->productManager->getLocale());
-
+        //$this->qb->setParameter('dataLocale', $this->productManager->getLocale());
+ */
         $grid->setDatasource(clone $this);
     }
 }

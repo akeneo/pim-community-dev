@@ -145,6 +145,7 @@ class ProductController extends AbstractDoctrineController
 
         $this->productManager->setLocale($this->getDataLocale());
     }
+
     /**
      * List product attributes
      *
@@ -156,13 +157,26 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
+        // TODO : change the query to use only code or id
+        $dataLocale = $this->getDataLocale();
+        $locale = $this->productManager
+            ->getEntityManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findOneBy(array('code' => $dataLocale));
+        $dataScope = $this->getDataScope();
+        $scope = $this->productManager
+            ->getEntityManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findOneBy(array('code' => $dataScope));
         return array(
             'locales'    => $this->localeManager->getUserLocales(),
-            'dataLocale' => $this->getDataLocale(),
-            'dataScope'  => $this->getDataScope()
+            'dataLocale' => $dataLocale,
+            'dataScope'  => $dataScope,
+            'localeId'   => $locale->getId(),
+            'scopeId'    => $scope->getId()
         );
 
-        /** @var $gridManager ProductDatagridManager */
+        /** @var $gridManager ProductDatagridManager *
         $gridManager = $this->datagridHelper->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
@@ -212,6 +226,7 @@ class ProductController extends AbstractDoctrineController
         );
 
         return $this->render($view, $params);
+         */
     }
 
     /**

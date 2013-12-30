@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -250,5 +251,104 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
         return $this->getEntityManager()
             ->getClassMetadata($this->getValuesClass())
             ->getAssociationTargetClass('attribute');
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $rootAlias = $qb->getRootAlias();
+
+        $qb
+            ->leftJoin($rootAlias .'.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->leftJoin($rootAlias .'.groups', 'pGroup')
+            ->leftJoin('pGroup.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
+            ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin('values.metric', 'valueMetrics')
+            ->leftJoin($rootAlias .'.categories', 'category');
+
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $qb
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect('values')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('valueMetrics')
+            ->addSelect('category')
+            ->addSelect('pGroup');
+
+        $this->prepareQueryForCompleteness($qb, $rootAlias);
+/*        $this->prepareQueryForCategory($qb, $rootAlias);
+
+        $localeCode = $this->flexibleManager->getLocale();
+        $channelCode = $this->flexibleManager->getScope();
+
+        $locale = $this->flexibleManager
+            ->getObjectManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findBy(array('code' => $localeCode));
+
+        $channel = $this->flexibleManager
+            ->getObjectManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy(array('code' => $channelCode));
+ */
+//        $proxyQuery->setParameter('localeCode', $localeCode);
+//        $proxyQuery->setParameter('locale', $locale);
+//        $proxyQuery->setParameter('channel', $channel);
+
+        return $qb;
+    }
+    /**
+     * Prepare query for categories field
+     *
+     * @param QueryBuilder $qb
+     * @param string       $rootAlias
+     */
+    protected function prepareQueryForCategory(QueryBuilder $qb, $rootAlias)
+    {
+        $repository = $this->categoryManager->getEntityRepository();
+
+        $treeExists = $repository->find($this->filterTreeId) != null;
+
+        $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+            && $repository->find($this->filterCategoryId) != null;
+
+        if ($treeExists && $categoryExists) {
+            $includeSub = ($this->filterIncludeSub == 1);
+            $productIds = $repository->getLinkedProductIds($this->filterCategoryId, $includeSub);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
+        } elseif ($treeExists && ($this->filterCategoryId == static::UNCLASSIFIED_CATEGORY)) {
+            $productIds = $repository->getLinkedProductIds($this->filterTreeId, true);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
+        }
+    }
+
+    /**
+     * Prepare query for completeness field
+     *
+     * @param QueryBuilder $qb
+     * @param string       $rootAlias
+     */
+    protected function prepareQueryForCompleteness(QueryBuilder $qb, $rootAlias)
+    {
+        $qb
+            ->addSelect('pCompleteness.ratio AS completenessRatio')
+            ->leftJoin(
+                'PimCatalogBundle:Completeness',
+                'pCompleteness',
+                'WITH',
+                'pCompleteness.locale = :localeId AND pCompleteness.channel = :scopeId '.
+                'AND pCompleteness.productId = '.$rootAlias.'.id'
+            );
     }
 }
