@@ -53,6 +53,7 @@ datagrid:
                     type: string
                     label: Label
                     data_name: translation.label
+
     attribute-grid:
         options:
             entityHint: attribute
@@ -260,6 +261,7 @@ datagrid:
                     type:      boolean
                     label:     Enabled
                     data_name: p.enabled
+
     family-grid:
         options:
             entityHint: family
@@ -318,7 +320,6 @@ datagrid:
                     type: string
                     label: Label
                     data_name: translation.label
-                # TODO: custom filter to get attribute label
                 attributeAsLabel:
                     type:      entity
                     label:     Attribute as label
@@ -327,3 +328,52 @@ datagrid:
                         field_options:
                             class: %pim_catalog.entity.product_attribute.class%
                             property: label
+
+    currency-grid:
+        options:
+            entityHint: currency
+        source:
+            acl_resource: pim_catalog_currency_index
+            type: pim_orm
+            entity: %pim_catalog.entity.currency.class%
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+                data_name: c.code
+            activated:
+                label: Activated
+                frontend_type: boolean
+        properties:
+            id: ~
+            toggle_link:
+                type: url
+                route: pim_catalog_currency_toggle
+                params:
+                    - id
+        actions:
+            toggle:
+                type:         navigate
+                label:        Change status
+                icon:         random
+                link:         toggle_link
+                acl_resource: pim_catalog_currency_toggle
+        sorters:
+            columns:
+                code:
+                    data_name: c.code
+                activated:
+                    data_name: c.activated
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: f.code
+                activated:
+                    type:      boolean
+                    label:     Activated
+                    data_name: c.activated

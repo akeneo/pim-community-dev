@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
@@ -73,27 +75,17 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @param Request $request
      *
+     * @Template
      * @AclAncestor("pim_catalog_currency_index")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
-        /** @var $queryBuilder QueryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('c')
-            ->from('PimCatalogBundle:Currency', 'c');
-
-        $datagrid = $this->datagridHelper->getDatagrid('currency', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Currency:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array();
     }
 
     /**
-     * Activate/Desactivate a currency
+     * Activate/Deactivate a currency
      *
      * @param Currency $currency
      *
