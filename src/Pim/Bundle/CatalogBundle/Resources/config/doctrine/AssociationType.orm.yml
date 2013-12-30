@@ -24,7 +24,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
                     on: update
     oneToMany:
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationTranslation
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation
             mappedBy: foreignKey
             cascade:
                 - persist

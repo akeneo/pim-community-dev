@@ -40,7 +40,7 @@ class AssociationTypeType extends AbstractType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTranslation',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
                 'property_path'     => 'translations'
             )
