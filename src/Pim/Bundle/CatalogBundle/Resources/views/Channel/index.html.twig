@@ -6,9 +6,7 @@
     {% set title = 'channel.overview'|trans %}
 
     {% set buttons %}
-        {% if resource_granted('pim_catalog_channel_create') %}
-            {{ elements.createBtn('channel', path('pim_catalog_channel_create')) }}
-        {% endif %}
+        {{ elements.createBtn('channel', path('pim_catalog_channel_create'), null, 'pim_catalog_channel_create') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

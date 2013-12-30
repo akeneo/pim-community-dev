@@ -21,9 +21,7 @@
 
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}
-            {% if resource_granted(removeAcl) %}
-                {{ elements.deleteLink(removeRoute, indexRoute, removeMessage, "", removeSuccessMessage) }}
-            {% endif %}
+            {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage) }}
             {{ elements.submitBtn }}
         {% endset %}
 

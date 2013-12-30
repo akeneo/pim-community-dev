@@ -12,20 +12,20 @@ pim_catalog_product_edit:
     path: /{id}/edit
     defaults: { _controller: pim_catalog.controller.product:editAction }
     requirements:
-        id: "[0-9a-f]+"
+        id: '[0-9a-f]+'
 
 pim_catalog_product_addproductattributes:
     path: /{id}/attributes
     defaults: { _controller: pim_catalog.controller.product:addProductAttributesAction }
     requirements:
-        id: "[0-9a-f]+"
+        id: '[0-9a-f]+'
     methods: [POST]
 
 pim_catalog_product_removeproductattribute:
     path: /{productId}/attribute/{attributeId}/remove
     defaults: { _controller: pim_catalog.controller.product:removeProductAttributeAction }
     requirements:
-        productId: "[0-9a-f]+"
+        productId: '[0-9a-f]+'
         attributeId: \d+
     methods: [DELETE]
 

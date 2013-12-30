@@ -17,12 +17,12 @@
         {% set confirmationMessage = 'confirmation.remove.group type'|trans({ '%name%': form.vars.value.label }) %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_type_index')) }}
-            {% if not form.vars.value.isVariant and resource_granted('pim_catalog_group_type_remove') %}
+            {% if not form.vars.value.isVariant %}
                 {{ elements.deleteLink(
                     path('pim_catalog_group_type_remove', { id: form.vars.value.id }),
+                    'pim_catalog_group_type_remove',
                     path('pim_catalog_group_type_index'),
                     confirmationMessage,
-                    '',
                     'flash.group type.removed'|trans
                 ) }}
             {% endif %}

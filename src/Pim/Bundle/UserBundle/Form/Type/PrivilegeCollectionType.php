@@ -49,7 +49,7 @@ class PrivilegeCollectionType extends OroPrivilegeCollectionType
             $id = $subForm->get('identity')->get('id')->getData();
             if (strpos($id, self::LOCALE_ACL_PATTERN) === 0) {
                 $localeCode = str_replace(self::LOCALE_ACL_PATTERN, '', $id);
-                if (!in_array($localeCode, $enabledCodes)) {
+                if ($localeCode !== 'index' && !in_array($localeCode, $enabledCodes)) {
                     $form->remove($index);
                 }
             }

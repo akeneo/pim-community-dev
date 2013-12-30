@@ -86,7 +86,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 value: 0
         unique:
             - Type: bool
-            - "False":
+            - 'False':
                 message: This attribute type can't have unique value
                 groups:
                     - pim_catalog_textarea

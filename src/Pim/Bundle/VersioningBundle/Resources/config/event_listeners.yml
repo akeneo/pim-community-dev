@@ -10,7 +10,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     pim_versioning.event_listener.adduser:
-        class:     %pim_versioning.event_listener.adduser.class%
+        class: %pim_versioning.event_listener.adduser.class%
         arguments:
             - '@pim_versioning.event_listener.addversion'
             - '@security.context'
@@ -18,7 +18,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
 
     pim_versioning.event_listener.addcontext:
-        class:     %pim_versioning.event_listener.addcontext.class%
+        class: %pim_versioning.event_listener.addcontext.class%
         arguments:
             - '@pim_versioning.builder.audit'
         tags:

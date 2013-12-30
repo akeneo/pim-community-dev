@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
 
 /**
  * Type for option attribute form
@@ -80,7 +79,7 @@ class AttributeOptionType extends AbstractType
             'optionValues',
             'collection',
             array(
-                'type'         => new AttributeOptionValueType(),
+                'type'         => 'pim_catalog_attribute_option_value',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false

@@ -26,15 +26,15 @@
 }) }}
 
     {% set buttons %}
-        {% if form.vars.value.id and resource_granted("pim_catalog_category_remove") %}
+        {% if form.vars.value.id %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
+                'pim_catalog_category_remove',
                 form.vars.value.parent ? path('pim_catalog_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_catalog_categorytree_create'),
                 'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                 ~ 'info.category.remove children'|trans ~ '<br />'
                 ~ 'info.category.keep products'|trans,
-                "",
-                (form.vars.value.parent ? "flash.category.removed" : "flash.tree.removed")|trans
+                (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans
             ) }}
         {% elseif parentId %}
             {{ elements.backLink(path('pim_catalog_categorytree_edit', { id: parentId }), 'btn.to parent') }}

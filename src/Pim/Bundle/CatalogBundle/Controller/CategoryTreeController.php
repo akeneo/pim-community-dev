@@ -105,7 +105,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * Move a node
      * @param Request $request
      *
-     * @AclAncestor("pim_catalog_category_move")
+     * @AclAncestor("pim_catalog_category_edit")
      * @return Response
      */
     public function moveNodeAction(Request $request)
@@ -134,7 +134,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_category_children")
+     * @AclAncestor("pim_catalog_category_list")
      * @return array
      */
     public function childrenAction(Request $request)
@@ -179,20 +179,6 @@ class CategoryTreeController extends AbstractDoctrineController
             ),
             new JsonResponse()
         );
-    }
-
-    /**
-     * List products associated with the provided category
-     *
-     * @param Category $category
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_category_products")
-     * @return array
-     */
-    public function listItemsAction(Category $category)
-    {
-        return array('products' => $category->getProducts());
     }
 
     /**
