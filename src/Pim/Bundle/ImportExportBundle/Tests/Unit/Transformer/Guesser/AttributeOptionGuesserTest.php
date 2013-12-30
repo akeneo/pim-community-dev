@@ -26,13 +26,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->doctrine->expects($this->any())
             ->method('getManager')
             ->will($this->returnValue($this->manager));
-        $this->relatedMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->manager->expects($this->any())
-            ->method('getClassMetadata')
-            ->with($this->equalTo('target_entity'))
-            ->will($this->returnValue($this->relatedMetadata));
+
         $this->columnInfo->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('name'));
@@ -64,10 +58,11 @@ class AttributeOptionGuesserTest extends GuesserTestCase
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => $type))
             );
 
-        $this->relatedMetadata->expects($this->once())
-            ->method('hasField')
-            ->with($this->equalTo('code'))
-            ->will($this->returnValue(true));
+        $repository = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
+        $this->doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with($this->equalTo('target_entity'))
+            ->will($this->returnValue($repository));
 
         $guesser = new AttributeOptionGuesser($this->transformer, $this->doctrine, 'class');
         $this->assertEquals(
@@ -96,7 +91,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
-    public function testNoCodeField()
+    public function testNotReferable()
     {
         $this->metadata
             ->expects($this->once())
@@ -111,10 +106,11 @@ class AttributeOptionGuesserTest extends GuesserTestCase
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => ClassMetadataInfo::MANY_TO_MANY))
             );
 
-        $this->relatedMetadata->expects($this->once())
-            ->method('hasField')
-            ->with($this->equalTo('code'))
-            ->will($this->returnValue(false));
+        $repository = new \stdClass;
+        $this->doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with($this->equalTo('target_entity'))
+            ->will($this->returnValue($repository));
 
         $guesser = new AttributeOptionGuesser($this->transformer, $this->doctrine, 'class');
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
