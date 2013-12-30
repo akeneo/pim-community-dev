@@ -6,7 +6,7 @@ Feature: Change family of many products at once
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
+    And the following families:
       | code     |
       | Food     |
       | Clothing |
