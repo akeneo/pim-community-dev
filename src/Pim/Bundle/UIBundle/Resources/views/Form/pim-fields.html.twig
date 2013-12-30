@@ -327,7 +327,7 @@
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 
-{% block pim_attribute_requirement_widget %}
+{% block pim_catalog_attribute_requirement_widget %}
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
         {% if form.required.vars.checked %}
@@ -336,7 +336,7 @@
         <i class="icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
         {% endif %}
     </div>
-{% endblock pim_attribute_requirement_widget %}
+{% endblock pim_catalog_attribute_requirement_widget %}
 
 {% block pim_ajax_entity_row %}
     {{ block('form_row_field') }}

@@ -1,12 +1,12 @@
 parameters:
-    pim_import_export.writer.orm.product.class:                     Pim\Bundle\ImportExportBundle\Writer\ORM\ProductWriter
-    pim_import_export.writer.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Writer\ORM\Writer
-    pim_import_export.writer.orm.category.class:                    Pim\Bundle\ImportExportBundle\Writer\ORM\CategoryWriter
+    pim_import_export.writer.orm.product.class:  Pim\Bundle\ImportExportBundle\Writer\ORM\ProductWriter
+    pim_import_export.writer.orm.entity.class:   Pim\Bundle\ImportExportBundle\Writer\ORM\Writer
+    pim_import_export.writer.orm.category.class: Pim\Bundle\ImportExportBundle\Writer\ORM\CategoryWriter
 
-    pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\File\FileWriter
-    pim_import_export.writer.file.product.class:                    Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter
+    pim_import_export.writer.file.class:         Pim\Bundle\ImportExportBundle\Writer\File\FileWriter
+    pim_import_export.writer.file.product.class: Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter
 
-    pim_import_export.writer.dummy.class:                           Pim\Bundle\ImportExportBundle\Writer\DummyWriter
+    pim_import_export.writer.dummy.class:        Pim\Bundle\ImportExportBundle\Writer\DummyWriter
 
 services:
     pim_import_export.writer.file:
@@ -28,7 +28,7 @@ services:
             - '@pim_import_export.entity_cache'
             - '@pim_versioning.event_listener.addversion'
         calls:
-            - [ addNonClearableEntity, [ '%pim_catalog.entity.product_attribute.class%' ] ]
+            - [ addNonClearableEntity, [ %pim_catalog.entity.product_attribute.class% ] ]
 
     pim_import_export.writer.orm.category:
         class: %pim_import_export.writer.orm.category.class%

@@ -25,17 +25,19 @@ require(
                 update: updateSortOrder
             });
 
-            var createBtn = $('<a>', {
-                'href': '{{ path("pim_catalog_attributegroup_create") }}',
-                'data-toggle': 'tooltip',
-                'data-placement': 'right',
-                'data-original-title': '{{ "btn.create.attribute group"|trans|capitalize }}'
-            }).html(
-                $('<i>', { 'class': 'icon-plus-sign' })
-            );
+            var buttons = [];
+            {% if resource_granted('pim_catalog_attribute_group_create') %}
+                buttons.push($('<a>', {
+                    'href': '{{ path("pim_catalog_attributegroup_create") }}',
+                    'data-toggle': 'tooltip',
+                    'data-placement': 'right',
+                    'data-original-title': '{{ "btn.create.attribute group"|trans|capitalize }}'
+                }).html(
+                    $('<i>', { 'class': 'icon-plus-sign' })
+                ).tooltip());
+            {% endif %}
 
-            $('#group-container').sidebarize({ buttons: [ createBtn ] });
-            $('[data-toggle="tooltip"]').tooltip();
+            $('#group-container').sidebarize({ buttons: buttons });
         });
     }
 );

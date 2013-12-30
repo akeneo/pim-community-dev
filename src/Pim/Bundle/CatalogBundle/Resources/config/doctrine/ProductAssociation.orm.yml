@@ -8,6 +8,11 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - owner_id
+                - association_id
     manyToOne:
         associationType:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType

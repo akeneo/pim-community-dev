@@ -7,6 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Product association entity
@@ -17,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ExclusionPolicy("all")
  */
-class ProductAssociation
+class ProductAssociation implements ReferableInterface
 {
     /**
      * @var integer
@@ -217,5 +218,13 @@ class ProductAssociation
         $this->groups->removeElement($group);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->owner->getIdentifier() . '.' . $this->association->getCode();
     }
 }

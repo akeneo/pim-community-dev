@@ -25,15 +25,13 @@
         {% endif %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_association_type_index')) }}
-            {% if resource_granted('pim_catalog_association_type_remove') %}
-                {{ elements.deleteLink(
-                    path('pim_catalog_association_type_remove', { id: form.vars.value.id }),
-                    path('pim_catalog_association_type_index'),
-                    confirmationMessage,
-                    '',
-                    'flash.association type.removed'|trans
-                ) }}
-            {% endif %}
+            {{ elements.deleteLink(
+                path('pim_catalog_association_type_remove', { id: form.vars.value.id }),
+                'pim_catalog_association_type_remove',
+                path('pim_catalog_association_type_index'),
+                confirmationMessage,
+                'flash.association type.removed'|trans
+            ) }}
             {{ elements.submitBtn() }}
         {% endset %}
 

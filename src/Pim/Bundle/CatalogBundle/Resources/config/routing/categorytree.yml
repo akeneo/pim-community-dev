@@ -14,13 +14,6 @@ pim_catalog_categorytree_children:
     requirements:
         _format: json
 
-pim_catalog_categorytree_listitems:
-    path: /list-items.{_format}/{id}
-    defaults: { _controller: pim_catalog.controller.category_tree:listItemsAction }
-    requirements:
-        _format: json
-        id: \d+
-
 pim_catalog_categorytree_create:
     path: /create/{parent}
     defaults: { _controller: pim_catalog.controller.category_tree:createAction, parent: null }

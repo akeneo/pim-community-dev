@@ -1,22 +1,22 @@
-'pim_flexibleentity_boolean'             : 'Yes/No'
-'pim_flexibleentity_text'                : 'Text field'
-'pim_flexibleentity_textarea'            : 'Text area'
-'pim_flexibleentity_date'                : 'Date'
-'pim_flexibleentity_datetime'            : 'Date time'
-'pim_flexibleentity_integer'             : 'integer'
-'pim_flexibleentity_money'               : 'Money'
-'pim_flexibleentity_number'              : 'Number'
-'pim_flexibleentity_multiselect'         : 'Multi select'
-'pim_flexibleentity_simpleselect'        : 'Simple select'
-'pim_flexibleentity_metric'              : 'Metric'
-'pim_flexibleentity_file'                : 'File upload'
-'pim_flexibleentity_image'               : 'Image upload'
-'pim_flexibleentity_fileurl'             : 'File url'
-'pim_flexibleentity_imageurl'            : 'Image url'
-'pim_flexibleentity_email'               : 'E-mail'
-'pim_flexibleentity_url'                 : 'Url'
-'pim_flexibleentity_multicheckbox'       : 'Checkboxes'
-'pim_flexibleentity_simpleradio'         : 'Radio'
-'pim_flexibleentity_price'               : 'Price'
-'pim_flexibleentity_phone_collection'    : 'Phone Collection'
-'pim_flexibleentity_email_collection'    : 'Email Collection'
+pim_flexibleentity_boolean:          Yes/No
+pim_flexibleentity_text:             Text field
+pim_flexibleentity_textarea:         Text area
+pim_flexibleentity_date:             Date
+pim_flexibleentity_datetime:         Date time
+pim_flexibleentity_integer:          Integer
+pim_flexibleentity_money:            Money
+pim_flexibleentity_number:           Number
+pim_flexibleentity_multiselect:      Multi select
+pim_flexibleentity_simpleselect:     Simple select
+pim_flexibleentity_metric:           Metric
+pim_flexibleentity_file:             File upload
+pim_flexibleentity_image:            Image upload
+pim_flexibleentity_fileurl:          File url
+pim_flexibleentity_imageurl:         Image url
+pim_flexibleentity_email:            E-mail
+pim_flexibleentity_url:              Url
+pim_flexibleentity_multicheckbox:    Checkboxes
+pim_flexibleentity_simpleradio:      Radio
+pim_flexibleentity_price:            Price
+pim_flexibleentity_phone_collection: Phone Collection
+pim_flexibleentity_email_collection: Email Collection

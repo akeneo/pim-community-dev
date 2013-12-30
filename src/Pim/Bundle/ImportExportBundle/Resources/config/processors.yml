@@ -6,9 +6,6 @@ parameters:
     pim_import_export.processor.transformer.class:                  Pim\Bundle\ImportExportBundle\Processor\TransformerProcessor
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
     pim_import_export.processor.category.class:                     Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor
-    pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
-    pim_import_export.processor.product_association.class:          Pim\Bundle\ImportExportBundle\Processor\ProductAssociationProcessor
-    pim_import_export.processor.nested_family.class:                Pim\Bundle\ImportExportBundle\Processor\NestedFamilyProcessor
 
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
 
@@ -43,14 +40,14 @@ services:
     pim_import_export.processor.channel:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.channel.class%'
+            - %pim_catalog.entity.channel.class%
         calls:
             - [ addMapping, [ tree, category ] ]
 
     pim_import_export.processor.group_type:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.group_type.class%'
+            - %pim_catalog.entity.group_type.class%
 
     pim_import_export.processor.product:
         class: %pim_import_export.processor.product.class%
@@ -58,13 +55,12 @@ services:
             - '@pim_import_export.validator.product_import'
             - '@translator'
             - '@pim_import_export.transformer.product'
+            - '%pim_catalog.entity.product.class%'
 
     pim_import_export.processor.product_association:
-        class: %pim_import_export.processor.product_association.class%
+        parent: pim_import_export.processor.transformer
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@validator'
-            - '@pim_catalog.manager.product'
+            - '%pim_catalog.entity.product_association.class%'
 
     pim_import_export.processor.category:
         class: %pim_import_export.processor.category.class%
@@ -73,22 +69,22 @@ services:
             - '@translator'
             - '@pim_import_export.transformer.orm'
             - '@pim_import_export.entity_cache'
-            - '%pim_catalog.entity.category.class%'
+            - %pim_catalog.entity.category.class%
 
     pim_import_export.processor.association_type:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.association_type.class%'
+            - %pim_catalog.entity.association_type.class%
 
     pim_import_export.processor.group:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.group.class%'
+            - %pim_catalog.entity.group.class%
 
     pim_import_export.processor.attribute_group:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.attribute_group.class%'
+            - %pim_catalog.entity.attribute_group.class%
 
     pim_import_export.processor.attribute:
         class: %pim_import_export.processor.transformer.class%
@@ -96,12 +92,12 @@ services:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.attribute'
-            - '%pim_catalog.entity.product_attribute.class%'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.processor.attribute_option:
         parent: pim_import_export.processor.transformer
         arguments:
-            - '%pim_catalog.entity.product_attribute_option.class%'
+            - %pim_catalog.entity.product_attribute_option.class%
 
     pim_import_export.processor.family:
         class: %pim_import_export.processor.transformer.class%
@@ -109,7 +105,7 @@ services:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_import_export.transformer.family'
-            - '%pim_catalog.entity.family.class%'
+            - %pim_catalog.entity.family.class%
 
     pim_import_export.processor.job_instance:
         class: %pim_import_export.processor.transformer.class%
@@ -117,6 +113,6 @@ services:
             - '@pim_import_export.validator.job_instance_import'
             - '@translator'
             - '@pim_import_export.transformer.job_instance'
-            - '%pim_catalog.entity.job_instance.class%'
+            - %pim_catalog.entity.job_instance.class%
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
