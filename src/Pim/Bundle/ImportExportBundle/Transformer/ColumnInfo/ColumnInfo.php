@@ -96,6 +96,7 @@ class ColumnInfo implements ColumnInfoInterface
                 );
             }
         }
+        $this->suffixes = $suffixes;
     }
 
     /**

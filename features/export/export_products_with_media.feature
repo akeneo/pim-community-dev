@@ -24,10 +24,10 @@ Feature: Export products with media
     And I wait for the job to finish
     Then exported file of "footwear_product_export" should contain:
     """
-    sku;family;groups;categories;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price;rating;side_view;size;top_view;weather_conditions;enabled
-    SNKRS-1B;sneakers;;summer_collection;black;;;;"Model 1";"50.00 EUR,70.00 USD";;;45;;;1
-    SNKRS-1R;sneakers;;summer_collection;red;;;;"Model 1";"50.00 EUR,70.00 USD";;files/SNKRS-1R/side_view/SNKRS-1R.png;45;;;1
-    SNKRS-1C;sneakers;;summer_collection;charcoal;;;;"Model 1";"55.00 EUR,75.00 USD";;files/SNKRS-1C/side_view/SNKRS-1C-s.png;45;files/SNKRS-1C/top_view/SNKRS-1C-t.png;;1
+    sku;family;groups;categories;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions;enabled
+    SNKRS-1B;sneakers;;summer_collection;black;;;;"Model 1";50.00;70.00;;;45;;;1
+    SNKRS-1R;sneakers;;summer_collection;red;;;;"Model 1";50.00;70.00;;files/SNKRS-1R/side_view/SNKRS-1R.png;45;;;1
+    SNKRS-1C;sneakers;;summer_collection;charcoal;;;;"Model 1";55.00;75.00;;files/SNKRS-1C/side_view/SNKRS-1C-s.png;45;files/SNKRS-1C/top_view/SNKRS-1C-t.png;;1
 
     """
     And export directory of "footwear_product_export" should contain the following media:

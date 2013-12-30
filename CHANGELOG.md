@@ -32,6 +32,7 @@
 - Move Batch Form Types to ImportExport bundle and refactor them to be able to configure any kind of job
 - Don't display several UI elements when users don't have the corresponding rights
 - Use aliases for subforms, no more manual instanciation to enhance extensibility
+- Product prices can now be imported with a single column per currency
 
 ## Bug fixes
 - Missing pending versionable entities

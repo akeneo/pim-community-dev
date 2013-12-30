@@ -17,7 +17,7 @@ Feature: Import invalid products
     And the following file to import:
     """
     sku;publicPrice
-    honda-civic;15EUR
+    honda-civic;15
     """
     And the following job "acme_product_import" configuration:
       | filePath          | {{ file to import }} |
@@ -34,4 +34,4 @@ Feature: Import invalid products
     And I launch the import job
     And I wait for the job to finish
     Then there should be 1 product
-    And I should see "Malformed price: \"15EUR\""
+    And I should see "Malformed price: \"15\""
