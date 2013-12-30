@@ -5,15 +5,12 @@ Feature: Import invalid products
 
   Scenario: Fail to import malformed prices
     Given the "default" catalog configuration
-    And the following product:
-      | sku         |
-      | honda-civic |
     And the following attributes:
       | label        | type   |
       | Public Price | prices |
-    And the following product values:
-      | product     | attribute   | value |
-      | honda-civic | publicPrice |       |
+    And the following product:
+      | sku         | publicPrice |
+      | honda-civic |             |
     And the following job:
       | connector            | alias              | code                | label                       | type   |
       | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |

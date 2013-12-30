@@ -10,21 +10,13 @@ Feature: Filter products per price
       | code      |
       | furniture |
       | library   |
-    And the following products:
-      | sku    | family    | enabled |
-      | postit | furniture | yes     |
-      | book   | library   | no      |
     And the following attributes:
-      | label | required | translatable | scopable | type   | useable as grid filter |
-      | price | no       | no           | yes      | prices | yes                    |
-    And the following product values:
-      | product | attribute | scope     | value  |
-      | postit  | SKU       |           | postit |
-      | postit  | price     | mobile    | 10.5   |
-      | postit  | price     | ecommerce | 12.5   |
-      | book    | SKU       |           | book   |
-      | book    | price     | mobile    | 20     |
-      | book    | price     | ecommerce | 22.5   |
+      | label | required | translatable | scopable | type   | useable as grid filter | decimals |
+      | price | no       | no           | yes      | prices | yes                    | yes      |
+    And the following products:
+      | sku    | family    | enabled | price-mobile | price-ecommerce |
+      | postit | furniture | yes     | 10.5 EUR     | 12.5 EUR        |
+      | book   | library   | no      | 20 EUR       | 22.5 EUR        |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by price

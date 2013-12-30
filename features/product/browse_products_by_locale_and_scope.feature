@@ -9,23 +9,18 @@ Feature: Browse products by locale and scope
     And the following family:
       | code      |
       | furniture |
-    And the following products:
-      | sku    | family    |
-      | postit | furniture |
     And the following attributes:
       | label       | translatable | scopable | useable as grid column |
       | name        | yes          | no       | yes                    |
       | image       | no           | yes      | yes                    |
       | description | yes          | yes      | yes                    |
+    And the following product:
+      | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile |
+      | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    |
     And the following product values:
-      | product | attribute   | locale | scope     | value                    |
-      | postit  | name        | en_US  |           | Post it                  |
-      | postit  | name        | fr_FR  |           | Etiquette                |
-      | postit  | image       |        | ecommerce | large.jpeg               |
-      | postit  | image       |        | mobile    | small.jpeg               |
-      | postit  | description | en_US  | ecommerce | My ecommerce description |
-      | postit  | description | fr_FR  | ecommerce | Ma description ecommerce |
-      | postit  | description | fr_FR  | mobile    | Ma description mobile    |
+      | product | attribute | scope     | value      |
+      | postit  | image     | ecommerce | large.jpeg |
+      | postit  | image     | mobile    | small.jpeg |
     And I am logged in as "admin"
     And I am on the products page
 

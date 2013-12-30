@@ -7,15 +7,8 @@ Feature: Compare and copy localized fields
   Background:
     Given a "apparel" catalog configuration
     And the following product:
-      | sku    | family  |
-      | tshirt | tshirts |
-    And the following product values:
-      | product | attribute   | value               | locale | scope     |
-      | tshirt  | description | City shoes          | en_US  | ecommerce |
-      | tshirt  | description | Chaussures de ville | fr_FR  | ecommerce |
-      | tshirt  | name        | Floup               | fr_FR  |           |
-      | tshirt  | legend      | Front view          | en_US  |           |
-      | tshirt  | legend      | Vue de face         | fr_FR  |           |
+      | sku    | family  | name-fr_FR | legend-en_US | legend-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce |
+      | tshirt | tshirts | Floup      | Front view   | Vue de face  | City shoes                  | Chaussures de ville         |
     And I am logged in as "Julia"
 
   Scenario: Successfully display available comparison languages

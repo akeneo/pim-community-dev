@@ -7,33 +7,11 @@ Feature: Filter available products for a variant group
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku         | family   |
-      | black_boots | boots    |
-      | white_boots | boots    |
-      | blue_boots  | sneakers |
-      | sneakers    | sneakers |
-    And the following product values:
-      | product      | attribute   | value             | locale | scope  |
-      | black_boots  | color       | black             |        |        |
-      | white_boots  | color       | white             |        |        |
-      | blue_boots   | color       | blue              |        |        |
-      | sneakers     | color       | black             |        |        |
-      | black_boots  | size        | 41                |        |        |
-      | white_boots  | size        | 42                |        |        |
-      | blue_boots   | size        | 43                |        |        |
-      | black_boots  | name        | Black boots       | en_US  |        |
-      | white_boots  | name        | White boots       | en_US  |        |
-      | blue_boots   | name        | Blue boots        | en_US  |        |
-      | black_boots  | description | Nice boots        | en_US  | mobile |
-      | black_boots  | description | Nice shiny boots  | en_US  | tablet |
-      | white_boots  | description | Great boots       | en_US  | mobile |
-      | white_boots  | description | Great shiny boots | en_US  | tablet |
-      | blue_boots   | description | Nice boots        | en_US  | mobile |
-      | blue_boots   | description | Nice shiny boots  | en_US  | tablet |
-      | black_boots  | price       | 45 EUR, 60 USD    |        |        |
-      | white_boots  | price       | 50 EUR, 65 USD    |        |        |
-      | blue_boots   | price       | 45 EUR, 60 USD    |        |        |
-      | sneakers     | price       | 40 EUR, 55 USD    |        |        |
+      | sku         | family   | color | size | price          | name-en_US  | description-en_US-mobile | description-en_US-tablet |
+      | black_boots | boots    | black | 41   | 45 EUR, 60 USD | Black boots | Nice boots               | Nice shiny boots         |
+      | white_boots | boots    | white | 42   | 50 EUR, 65 USD | White boots | Great boots              | Great shiny boots        |
+      | blue_boots  | sneakers | blue  | 43   | 45 EUR, 60 USD | Blue boots  | Nice boots               | Nice shiny boots         |
+      | sneakers    | sneakers | black |      | 40 EUR, 55 USD |             |                          |                          |
     And I am logged in as "admin"
     And I am on the "caterpillar_boots" variant group page
 

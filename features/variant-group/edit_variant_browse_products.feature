@@ -10,26 +10,18 @@ Feature: Edit a variant group adding/removing products
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
-    And the following products:
-      | sku    | family    |
-      | MUG_1  | mug       |
-      | MUG_2  | mug       |
-      | MUG_3  | mug       |
-      | POSTIT | furniture |
     And the following attributes:
       | code  | label | type         |
       | color | Color | simpleselect |
       | size  | Size  | simpleselect |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
-    And the following product values:
-      | product | attribute | value |
-      | MUG_1   | color     | Red   |
-      | MUG_1   | size      | XL    |
-      | MUG_2   | color     | Green |
-      | MUG_3   | size      | S     |
-      | POSTIT  | color     | Blue  |
-      | POSTIT  | size      | M     |
+    And the following products:
+      | sku    | family    | color | size |
+      | MUG_1  | mug       | Red   | XL   |
+      | MUG_2  | mug       | Green |      |
+      | MUG_3  | mug       |       | S    |
+      | POSTIT | furniture | Blue  | M    |
     And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |

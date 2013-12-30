@@ -1385,6 +1385,10 @@ class FixturesContext extends RawMinkContext
             }
         }
 
+        if (isset($data['decimals'])) {
+            $attribute->setDecimalsAllowed($data['decimals'] === 'yes');
+        }
+
         $this->persist($attribute);
 
         return $attribute;

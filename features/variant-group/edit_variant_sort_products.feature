@@ -10,22 +10,16 @@ Feature: Sort available products for a variant group
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
-    And the following products:
-      | sku    | family    |
-      | MUG_1  | mug       |
-      | POSTIT | furniture |
     And the following attributes:
       | code  | label | type         | useable as grid column |
       | color | Color | simpleselect | yes                    |
       | size  | Size  | simpleselect | yes                    |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
-    And the following product values:
-      | product | attribute | value |
-      | MUG_1   | color     | Red   |
-      | MUG_1   | size      | M     |
-      | POSTIT  | color     | Blue  |
-      | POSTIT  | size      | XL    |
+    And the following products:
+      | sku    | family    | color | size |
+      | MUG_1  | mug       | Red   | M    |
+      | POSTIT | furniture | Blue  | XL   |
     And the following product groups:
       | code   | label  | attributes  | products | type    |
       | POSTIT | Postit | color, size | POSTIT   | VARIANT |
