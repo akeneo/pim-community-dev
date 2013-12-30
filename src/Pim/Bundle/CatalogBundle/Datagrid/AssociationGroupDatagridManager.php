@@ -240,7 +240,10 @@ class AssociationGroupDatagridManager extends DatagridManager
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
                 'WITH',
-                sprintf('pa.associationType = :association AND pa.owner = :product AND %s MEMBER OF pa.groups', $rootAlias)
+                sprintf(
+                    'pa.associationType = :association AND pa.owner = :product AND %s MEMBER OF pa.groups',
+                    $rootAlias
+                )
             );
 
         $proxyQuery
