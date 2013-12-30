@@ -17,7 +17,7 @@ class MultipleLoader
     /**
      * @var ConfigurationRegistryInterface
      */
-    protected $configurationRegistry;
+    protected $registry;
 
     /**
      * @var LoaderFactory
@@ -27,13 +27,13 @@ class MultipleLoader
     /**
      * Constructor
      *
-     * @param ConfigurationRegistryInterface $configurationRegistry
+     * @param ConfigurationRegistryInterface $registry
      * @param LoaderFactory                  $factory
      */
-    public function __construct(ConfigurationRegistryInterface $configurationRegistry, LoaderFactory $factory)
+    public function __construct(ConfigurationRegistryInterface $registry, LoaderFactory $factory)
     {
-        $this->configurationRegistry = $configurationRegistry;
-        $this->factory = $factory;
+        $this->registry = $registry;
+        $this->factory  = $factory;
     }
 
     /**
@@ -53,8 +53,8 @@ class MultipleLoader
                 'extension' => array_pop($parts),
                 'name'      => implode('.', $parts)
             );
-            if ($this->configurationRegistry->contains($file['name'])) {
-                $order = $this->configurationRegistry->getOrder($file['name']);
+            if ($this->registry->contains($file['name'])) {
+                $order = $this->registry->getOrder($file['name']);
                 if (!isset($fileIndex[$order])) {
                     $fileIndex[$order] = array();
                 }

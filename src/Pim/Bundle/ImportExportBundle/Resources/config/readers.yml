@@ -1,15 +1,15 @@
 parameters:
-    pim_import_export.reader.orm.product.class:                     Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
-    pim_import_export.reader.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
+    pim_import_export.reader.orm.product.class:       Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
+    pim_import_export.reader.orm.entity.class:        Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
 
-    pim_import_export.reader.file.csv.class:                        Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
-    pim_import_export.reader.file.csv_product.class:                Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader
-    pim_import_export.reader.file.csv_category.class:               Pim\Bundle\ImportExportBundle\Reader\File\CsvCategoryReader
+    pim_import_export.reader.file.csv.class:          Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
+    pim_import_export.reader.file.csv_product.class:  Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader
+    pim_import_export.reader.file.csv_category.class: Pim\Bundle\ImportExportBundle\Reader\File\CsvCategoryReader
 
-    pim_import_export.reader.file.yaml.class:                       Pim\Bundle\ImportExportBundle\Reader\File\YamlReader
+    pim_import_export.reader.file.yaml.class:         Pim\Bundle\ImportExportBundle\Reader\File\YamlReader
 
-    pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
-    pim_import_export.reader.cached.class:                          Pim\Bundle\ImportExportBundle\Reader\CachedReader
+    pim_import_export.reader.dummy.class:             Pim\Bundle\ImportExportBundle\Reader\DummyReader
+    pim_import_export.reader.cached.class:            Pim\Bundle\ImportExportBundle\Reader\CachedReader
 
 services:
     pim_import_export.reader.orm.product:

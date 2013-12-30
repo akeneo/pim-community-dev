@@ -6,8 +6,9 @@
     {% set buttons %}
         {{ elements.createBtn(
             'variant group',
-            null,
-            { 'id': 'create-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_variant_group_create') }
+            path('pim_catalog_variant_group_create'),
+            'dialog',
+            'pim_catalog_group_create'
         ) }}
     {% endset %}
 

@@ -20,10 +20,10 @@
                 {{
                     elements.deleteLink(
                         path(removeRoute, { customEntityName: customEntityName, id: form.vars.value.id }),
+                        null,
                         indexUrl,
-                        ("confirmation.remove." ~ customEntityName)|trans,
-                        '',
-                        ("flash." ~ customEntityName ~ ".removed")|trans
+                        ('confirmation.remove.' ~ customEntityName)|trans,
+                        ('flash.' ~ customEntityName ~ '.removed')|trans
                     )
                 }}
                 {{ elements.submitBtn() }}

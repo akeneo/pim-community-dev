@@ -1,7 +1,27 @@
-{% macro createBtn(entity, url, attr) %}
+{% macro createBtn(entity, url, attr, acl) %}
 {% spaceless %}
-    {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-    <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
+    {% if acl is null or resource_granted(acl) %}
+        {% if attr == 'dialog' %}
+            {% set buttonId = 'create-'~(entity|replace({' ': '-', '.': '-'})|lower) %}
+            {% set attr = { 'id': buttonId, 'data-form-url': url } %}
+            {% set url = null %}
+        {% endif %}
+        {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
+        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
+        {% if buttonId is defined %}
+            <script type="text/javascript">
+                require(
+                    ['jquery', 'pim/dialogform'],
+                    function ($, DialogForm) {
+                        'use strict';
+                        $(function() {
+                            new DialogForm('#{{ buttonId }}');
+                        });
+                    }
+                );
+            </script>
+        {% endif %}
+    {% endif %}
 {% endspaceless %}
 {% endmacro %}
 
@@ -39,19 +59,21 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro deleteLinkAttributes(url, redirectUrl, message, title, successMessage) %}{% spaceless %}
+{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
     {% set successMessage = successMessage|default('flash.entity.removed'|trans) %}
     href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
 {% endspaceless %}{% endmacro %}
 
-{% macro deleteLink(url, redirectUrl, message, title, successMessage) %}{% spaceless %}
-    {% import _self as elements %}
-    <a class="btn icons-holder-text no-hash" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, title, successMessage)}} >
-        <i class="icon-trash"></i>
-        {{ 'btn.delete'|trans|capitalize }}
-    </a>
+{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title) %}{% spaceless %}
+    {% if acl is null or resource_granted(acl) %}
+        {% import _self as elements %}
+        <a class="btn icons-holder-text no-hash" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
+            <i class="icon-trash"></i>
+            {{ 'btn.delete'|trans|capitalize }}
+        </a>
+    {% endif %}
 {% endspaceless %}{% endmacro %}
 
 {% macro link(text, url, opts = {}) %}
@@ -161,7 +183,7 @@
 {% macro quickCreateOption(id, route) %}
 {% spaceless %}
     {% set id = 'add-option-link-' ~ id %}
-    <a id="{{ id }}" data-form="dialog" data-form-url="{{ route }}" class="btn btn-small icons-holder add-attribute-option" href="javascript:void(0);" data-toggle="tooltip" data-original-title="{{ 'Add an option'|trans }}">
+    <a id="{{ id }}" data-form-url="{{ route }}" class="btn btn-small icons-holder add-attribute-option" href="javascript:void(0);" data-toggle="tooltip" data-original-title="{{ 'Add an option'|trans }}">
         <i class="icon-plus"></i>
     </a>
     <script type="text/javascript">

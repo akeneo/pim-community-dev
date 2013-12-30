@@ -65,7 +65,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFunction('children_response', 'childrenResponse', $twigFunctions);
         $this->assertFunction('children_tree_response', 'childrenTreeResponse', $twigFunctions);
         $this->assertFunction('list_categories_response', 'listCategoriesResponse', $twigFunctions);
-        $this->assertFunction('list_products', 'listProducts', $twigFunctions);
         $this->assertFunction('list_trees_response', 'listTreesResponse', $twigFunctions);
     }
 
@@ -129,52 +128,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->categoryExtension->listTreesResponse($treeEntities, $selectedTreeId);
         $this->assertSame($expectedResult, $result);
-    }
-
-    /**
-     * Data provider for listProducts method
-     *
-     * @return array
-     *
-     * @static
-     */
-    public static function dataProviderListProducts()
-    {
-        return array(
-            array(
-                array(
-                    array('id' => 5, 'identifier' => 'sku-005', 'label' => 'MyDescription5'),
-                    array('id' => 3, 'identifier' => 'sku-003', 'label' => 'MyDescription3'),
-                    array('id' => 14, 'identifier' => 'sku-014', 'label' => 'MyDescription14')
-                )
-            )
-        );
-    }
-
-    /**
-     * Test related method
-     *
-     * @param array $products
-     *
-     * @dataProvider dataProviderListProducts
-     */
-    public function testListProducts(array $products)
-    {
-        $expectedResult = array();
-        $productMocks = array();
-
-        foreach ($products as $product) {
-            $expectedResult[] = array(
-                'id'          => $product['id'],
-                'name'        => $product['identifier'],
-                'description' => $product['label']
-            );
-
-            $productMocks[] = $this->getProductMock($product);
-        }
-
-        $result = $this->categoryExtension->listProducts($productMocks);
-        $this->assertEquals($expectedResult, $result);
     }
 
     /**

@@ -4,10 +4,12 @@
 
 {% block content %}
 
-    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_catalog_family_addproductattributes', {'id': form.vars.value.id})
-    } %}
+    {% if resource_granted('pim_catalog_family_add_attribute') %}
+        {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_catalog_family_addproductattributes', {'id': form.vars.value.id})
+        } %}
+    {% endif %}
 
     {{ JSFV(form) }}
     {{ form_start(form, {
@@ -25,8 +27,11 @@
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(
                     path('pim_catalog_family_remove', { 'id': form.vars.value.id }),
-                    path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }), "", "flash.family.removed"|trans)
-                }}
+                    'pim_catalog_family_remove',
+                    path('pim_catalog_family_index'),
+                    'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }),
+                    'flash.family.removed'|trans
+                ) }}
             {% endif %}
             {{ elements.submitBtn() }}
         {% endset %}

@@ -53,6 +53,7 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
         $this->multiple = $multiple;
         $this->homogenize = $homogenize;
     }
+
     /**
      * Set file path
      * @param string $filePath

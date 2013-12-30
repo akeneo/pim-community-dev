@@ -231,7 +231,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                             : array();
                     }
                 )
-        );
+            );
 
         $this->assertErrors(
             array(
