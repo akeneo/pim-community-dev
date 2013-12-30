@@ -233,15 +233,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string         $sku
-     * @param TableNode|null $translations
+     * @param string $sku
      *
      * @return Product
      * @Given /^a "([^"]*)" product$/
      */
-    public function aProduct($sku, TableNode $translations = null)
+    public function createProduct($sku)
     {
-        $product = $this->getOrCreateProduct($sku);
+        $product = $this->getProductManager()->createFlexible();
+
+        $product->getIdentifier()->setData($sku);
 
         $this->getProductManager()->save($product);
 
@@ -256,7 +257,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->aProduct($data['sku']);
+            $product = $this->createProduct($data['sku']);
 
             if (!empty($data['family'])) {
                 $product->setFamily($this->getFamily($data['family']));
@@ -286,7 +287,7 @@ class FixturesContext extends RawMinkContext
      */
     public function anEnabledOrDisabledProduct($status, $sku)
     {
-        $product = $this->aProduct($sku);
+        $product = $this->createProduct($sku);
         $product->setEnabled($status === 'enabled');
         $this->persist($product);
     }
@@ -1314,22 +1315,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $sku
-     *
-     * @return Product
-     */
-    private function createProduct($sku)
-    {
-        $product = $this->getProductManager()->createFlexible();
-
-        $product->getIdentifier()->setData($sku);
-
-        $this->getProductManager()->save($product);
-
-        return $product;
-    }
-
-    /**
      * @param array $data
      *
      * @return ProductAttribute
@@ -1705,7 +1690,6 @@ class FixturesContext extends RawMinkContext
 
         return $family;
     }
-
 
     /**
      * @param string $string
