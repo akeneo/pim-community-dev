@@ -1,18 +1,18 @@
 parameters:
-    pim_flexibleentity.flexible_config:                               ~
-    pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    pim_flexibleentity.attributetype.factory.class:                   Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
-    pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
-    pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    pim_flexibleentity.validator.attribute_constraint_guesser.class:  Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
-    pim_flexibleentity.listener.add_attributes.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
-    pim_flexibleentity.listener.translatable.class:                   Pim\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
-    pim_flexibleentity.listener.scopable.class:                       Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
-    pim_flexibleentity.listener.timestampable.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
-    pim_flexibleentity.listener.has_required_value.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
-    pim_flexibleentity.listener.default_value.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
-    pim_flexibleentity.listener.initialize_flexible.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
-    pim_flexibleentity.listener.attribute_cache.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
+    pim_flexibleentity.flexible_config:                              ~
+    pim_flexibleentity.registry.class:                               Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
+    pim_flexibleentity.attributetype.factory.class:                  Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+    pim_flexibleentity.value_form.value_subscriber.class:            Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+    pim_flexibleentity.filterAttributes.twig.extension.class:        Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
+    pim_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
+    pim_flexibleentity.listener.add_attributes.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
+    pim_flexibleentity.listener.translatable.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
+    pim_flexibleentity.listener.scopable.class:                      Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
+    pim_flexibleentity.listener.timestampable.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
+    pim_flexibleentity.listener.has_required_value.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
+    pim_flexibleentity.listener.default_value.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
+    pim_flexibleentity.listener.initialize_flexible.class:           Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
+    pim_flexibleentity.listener.attribute_cache.class:               Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
 
 services:
     pim_flexibleentity.value_form.value_subscriber:

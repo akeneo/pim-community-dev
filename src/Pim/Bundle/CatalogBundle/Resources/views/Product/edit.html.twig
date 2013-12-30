@@ -32,7 +32,13 @@
             {{ elements.backLink(path('pim_catalog_product_index')) }}
             {{ elements.enabledSwitch(form) }}
             {% if resource_granted("pim_catalog_product_remove") %}
-                {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
+                {{ elements.deleteLink(
+                    path('pim_catalog_product_remove', { id: form.vars.value.id }),
+                    'pim_catalog_product_remove',
+                    path('pim_catalog_product_index'),
+                    'confirmation.remove.product'|trans({ '%name%': product.label }),
+                    'flash.product.removed'|trans
+                ) }}
             {% endif %}
             {{ elements.submitDropdownBtn(
                 'btn.save',
@@ -118,6 +124,5 @@
 
     <a href="javascript:void(0);"
         id="create-product"
-        data-form="dialog"
         data-form-url="{{ path('pim_catalog_product_create', { 'dataLocale': dataLocale }) }}"></a>
 {% endblock %}

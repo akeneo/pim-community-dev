@@ -18,8 +18,14 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_productattribute_index')) }}
-            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' and resource_granted('pim_catalog_attribute_remove') %}
-                {{ elements.deleteLink(path('pim_catalog_productattribute_remove', { id: form.vars.value.id }), path('pim_catalog_productattribute_index'), 'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }), "", "flash.attribute.removed"|trans) }}
+            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
+                {{ elements.deleteLink(
+                    path('pim_catalog_productattribute_remove', { id: form.vars.value.id }),
+                    'pim_catalog_attribute_remove',
+                    path('pim_catalog_productattribute_index'),
+                    'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }),
+                    'flash.attribute.removed'|trans
+                ) }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}

@@ -17,6 +17,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
     protected $attributeCache;
     protected $attributes;
     protected $transformer;
+    protected $associationsReader;
     protected $fields;
     protected $product;
     protected $values;
@@ -60,6 +61,8 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
             ->method('getAttributes')
             ->will($this->returnCallback(array($this, 'getAttributes')));
 
+        $this->associationsReader = $this->getMock('Pim\Bundle\ImportExportBundle\Reader\CachedReader');
+
         $this->addAttribute('identifier', ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
         $this->addColumn('identifier', true, false);
 
@@ -69,7 +72,8 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
             $this->guesser,
             $this->columnInfoTransformer,
             $this->productManager,
-            $this->attributeCache
+            $this->attributeCache,
+            $this->associationsReader
         );
     }
 
@@ -79,6 +83,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->addColumn('col1');
         $this->addColumn('col2', true, false);
         $product = $this->transformer->transform(
+            'Pim\Bundle\CatalogBundle\Model\Product',
             array(
                 'identifier' => 'id',
                 'col1' => 'value1',

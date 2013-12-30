@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 
 /**
  * Form type related to options property of ProductAttributeInterface
@@ -30,7 +29,7 @@ class OptionsType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'type'         => new AttributeOptionType(),
+                'type'         => 'pim_catalog_attribute_option',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false

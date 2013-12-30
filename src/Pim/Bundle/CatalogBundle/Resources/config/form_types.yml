@@ -9,7 +9,7 @@ services:
             - { name: form.type, alias: pim_product }
 
     pim_catalog.form.type.product_edit:
-        class:     %pim_catalog.form.type.product_edit.class%
+        class: %pim_catalog.form.type.product_edit.class%
         arguments:
             - '@pim_catalog.form.type.product.view'
         tags:
@@ -21,7 +21,7 @@ services:
             - { name: form.type, alias: pim_product_create }
 
     pim_catalog.form.type.product_value:
-        class:     %pim_catalog.form.type.product_value.class%
+        class: %pim_catalog.form.type.product_value.class%
         arguments:
             - %pim_catalog.entity.product_value.class%
             - '@pim_flexibleentity.value_form.value_subscriber'
@@ -37,6 +37,16 @@ services:
             - %pim_catalog.entity.product_attribute.class%
             - '@pim_catalog.manager.product_attribute'
             - '@pim_catalog.form.subscriber.attribute'
+
+    pim_catalog.form.type.attribute_option:
+        class: %pim_catalog.form.type.attribute_option.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_option }
+
+    pim_catalog.form.type.attribute_option_value:
+        class: %pim_catalog.form.type.attribute_option_value.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_option_value }
 
     pim_catalog.form.type.attribute_option_create:
         class: %pim_catalog.form.type.attribute_option_create.class%
@@ -55,6 +65,10 @@ services:
         arguments:
             - '@pim_catalog.form.subscriber.attribute_requirements'
             - %pim_catalog.entity.product_attribute.class%
+    pim_catalog.form.type.attribute_requirement:
+        class: %pim_catalog.form.type.attribute_requirement.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_attribute_requirement }
 
     pim_catalog.form.type.wysiwyg:
         class: %pim_catalog.form.type.product_value_wysiwyg.class%
@@ -109,7 +123,7 @@ services:
             - { name: form.type, alias: pim_catalog_mass_add_to_groups }
 
     pim_catalog.form.type.localized_collection:
-        class: '%pim_catalog.form.type.localized_collection.class%'
+        class: %pim_catalog.form.type.localized_collection.class%
         tags:
             - { name: form.type, alias: pim_catalog_localized_collection }
 

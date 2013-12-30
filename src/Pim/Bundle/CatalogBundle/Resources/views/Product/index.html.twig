@@ -62,24 +62,12 @@
 {% block content %}
 
     {% set buttons %}
-        {% if resource_granted('pim_catalog_product_create') %}
-            {{ elements.createBtn(
-                'product',
-                null,
-                { 'id': 'create-product', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }
-            ) }}
-            <script type="text/javascript">
-                require(
-                    ['jquery', 'pim/dialogform'],
-                    function ($, DialogForm) {
-                        'use strict';
-                        $(function() {
-                            new DialogForm('#create-product');
-                        });
-                    }
-                );
-            </script>
-        {% endif %}
+        {{ elements.createBtn(
+            'product',
+            path('pim_catalog_product_create'),
+            'dialog',
+            'pim_catalog_product_create'
+        ) }}
     {% endset %}
 
     {% set subtitle %}

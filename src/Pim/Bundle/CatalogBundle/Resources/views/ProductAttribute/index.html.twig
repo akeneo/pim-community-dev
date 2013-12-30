@@ -12,9 +12,7 @@
 {% block content %}
 
     {% set buttons %}
-        {% if resource_granted('pim_catalog_attribute_create') %}
-            {{ elements.createBtn('attribute', path('pim_catalog_productattribute_create')) }}
-        {% endif %}
+        {{ elements.createBtn('attribute', path('pim_catalog_productattribute_create'), null, 'pim_catalog_attribute_create') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

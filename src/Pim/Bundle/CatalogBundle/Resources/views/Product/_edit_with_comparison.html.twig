@@ -19,7 +19,6 @@
                         path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
                         path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
                         'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
-                        '',
                         'flash.product.attribute removed'|trans
                         )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
                 {% endif %}

@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Processor\ProductProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessorTest extends AbstractTransformerProcessorTestCase
+class ProductProcessorTest extends TransformerProcessorTestCase
 {
     public function testProcess()
     {
@@ -31,7 +31,8 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
         $processor = new ProductProcessor(
             $this->validator,
             $this->translator,
-            $productTransformer
+            $productTransformer,
+            'product_class'
         );
 
         $stepExecution = $this
@@ -57,6 +58,7 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
         $productTransformer->expects($this->once())
             ->method('transform')
             ->with(
+                $this->equalTo('product_class'),
                 $this->equalTo($mappedData),
                 $this->equalTo(
                     array(
