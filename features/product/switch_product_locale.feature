@@ -6,12 +6,8 @@ Feature: Switch product locale
   Background:
     Given an "apparel" catalog configuration
     And the following product:
-      | sku    | family  |
-      | jacket | jackets |
-    And the following product values:
-      | product | attribute | value     | locale |
-      | jacket  | name      | My jacket | en_US  |
-      | jacket  | name      | Ma veste  | fr_FR  |
+      | sku    | family  | name-en_US | name-fr_FR |
+      | jacket | jackets | My jacket  | Ma veste   |
     And I am logged in as "admin"
     And I am on the "jacket" product page
 

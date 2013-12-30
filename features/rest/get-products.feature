@@ -16,17 +16,16 @@ Feature: Expose product data via a REST API
     Then the response code should be 200
 
   Scenario: Successfully retrieve a product
-    Given a "Car" product
-    And the following attributes:
+    Given the following attributes:
       | type   | label             | scopable | translatable |
       | prices | Price             | no       | no           |
       | text   | Color             | no       | yes          |
       | text   | Short description | yes      | yes          |
+    And the following product:
+      | sku | price                | color-en_US | color-fr_FR |
+      | Car | 10000 EUR, 15000 USD | red         | rouge       |
     And the following product values:
       | product | attribute         | locale | scope     | value                  |
-      | Car     | Price             |        |           | 10000 EUR, 15000 USD   |
-      | Car     | Color             | en_US  |           | red                    |
-      | Car     | Color             | fr_FR  |           | rouge                  |
       | Car     | Short description | en_US  | mobile    | A nice car             |
       | Car     | Short description | fr_FR  | mobile    | Une belle voiture      |
       | Car     | Short description | en_US  | ecommerce | A very nice car        |

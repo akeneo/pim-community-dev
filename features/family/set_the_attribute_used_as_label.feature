@@ -32,11 +32,8 @@ Feature: Set the attribute used as label
   Scenario: Succesfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label
     And the following products:
-      | sku      | family |
-      | bag-jean | Bags   |
-    And the following product value:
-      | product  | attribute | value |
-      | bag-jean | Brand     | Levis |
+      | sku      | family | brand |
+      | bag-jean | Bags   | Levis |
     When I am on the "bag-jean" product page
     Then the title of the product should be "Product/en Levis"
 

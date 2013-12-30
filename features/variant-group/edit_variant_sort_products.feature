@@ -1,31 +1,25 @@
 @javascript
-Feature: Edit a variant group adding/removing products
-  In order to manage existing variant groups for the catalog
+Feature: Sort available products for a variant group
+  In order to easily browse products inside a variant group
   As a user
-  I need to be able to add and remove product from a variant group
+  I need to be able to sort products in a variant group
 
   Background:
     Given the "default" catalog configuration
     And the following families:
-      | code      | label     |
-      | mug       | Mug       |
-      | furniture | Furniture |
-    And the following products:
-      | sku    | family    |
-      | MUG_1  | mug       |
-      | POSTIT | furniture |
+      | code      | label-en_US |
+      | mug       | Mug         |
+      | furniture | Furniture   |
     And the following attributes:
       | code  | label | type         | useable as grid column |
       | color | Color | simpleselect | yes                    |
       | size  | Size  | simpleselect | yes                    |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
-    And the following product values:
-      | product | attribute | value |
-      | MUG_1   | color     | Red   |
-      | MUG_1   | size      | M     |
-      | POSTIT  | color     | Blue  |
-      | POSTIT  | size      | XL    |
+    And the following products:
+      | sku    | family    | color | size |
+      | MUG_1  | mug       | Red   | M    |
+      | POSTIT | furniture | Blue  | XL   |
     And the following product groups:
       | code   | label  | attributes  | products | type    |
       | POSTIT | Postit | color, size | POSTIT   | VARIANT |
