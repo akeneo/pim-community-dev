@@ -5,7 +5,7 @@ datagrid:
         source:
             acl_resource: pim_catalog_association_index
             type: pim_orm
-            entity: %pim_catalog.entity.association.class%
+            entity: %pim_catalog.entity.association_type.class%
         columns:
             code:
                 label: Code
