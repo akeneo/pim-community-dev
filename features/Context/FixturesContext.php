@@ -233,16 +233,33 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $sku
+     * @param array|string $data
      *
      * @return Product
      * @Given /^a "([^"]*)" product$/
      */
-    public function createProduct($sku)
+    public function createProduct($data)
     {
-        $product = $this->getProductManager()->createFlexible();
+        if (is_string($data)) {
+            $data = array('sku' => $data);
+        } elseif (isset($data['enabled'])) {
+            if (in_array($data['enabled'], array('yes', 'no'))) {
+                $data['enabled'] = (int) ($data['enabled'] === 'yes');
+            }
+        }
 
-        $product->getIdentifier()->setData($sku);
+        // Clear product transformer cache
+        $this
+            ->getContainer()
+            ->get('pim_import_export.transformer.product')
+            ->reset();
+
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor('products', 'csv');
+
+        $product = $processor->process($data);
 
         $this->getProductManager()->save($product);
 
@@ -257,25 +274,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->createProduct($data['sku']);
-
-            if (!empty($data['family'])) {
-                $product->setFamily($this->getFamily($data['family']));
-            }
-
-            if (isset($data['enabled'])) {
-                $product->setEnabled($data['enabled'] === 'yes');
-            }
-
-            if (isset($data['categories'])) {
-                $categoryCodes = $this->listToArray($data['categories']);
-                foreach ($categoryCodes as $code) {
-                    $category = $this->getCategory($code);
-                    $product->addCategory($category);
-                }
-            }
-
-            $this->getProductManager()->save($product);
+            $this->createProduct($data);
         }
     }
 
@@ -283,13 +282,17 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
+     * @return Product
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
     public function anEnabledOrDisabledProduct($status, $sku)
     {
-        $product = $this->createProduct($sku);
-        $product->setEnabled($status === 'enabled');
-        $this->persist($product);
+        return $this->createProduct(
+            array(
+                'sku'     => $sku,
+                'enabled' => $status === 'enabled' ? 'yes' : 'no'
+            )
+        );
     }
 
     /**

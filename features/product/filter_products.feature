@@ -14,10 +14,8 @@ Feature: Filter products
       | sku    | family    | enabled |
       | postit | furniture | yes     |
       | book   | library   | no      |
-    And a "postit" product
-    And a "book" product
-    And a "book2" product
-    And a "ebook" product
+      | book2  |           | yes     |
+      | ebook  |           | yes     |
     And the following attributes:
       | label       | required | translatable | scopable | useable as grid filter |
       | name        | no       | yes          | no       | yes                    |
