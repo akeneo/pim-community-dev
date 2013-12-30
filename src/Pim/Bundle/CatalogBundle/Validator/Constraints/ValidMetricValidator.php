@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -20,12 +23,18 @@ class ValidMetricValidator extends ConstraintValidator
     protected $measures;
 
     /**
+     * @var PropertyAccessorInterface
+     */
+    protected $propertyAccessor;
+
+    /**
      * Constructor
      *
      * @param array $measures
      */
-    public function __construct($measures)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, $measures)
     {
+        $this->propertyAccessor = $propertyAccessor;
         $this->measures = $measures['measures_config'];
     }
 
@@ -37,13 +46,21 @@ class ValidMetricValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        $type = $entity->getMetricFamily();
-        $unit = $entity->getDefaultMetricUnit();
+        if ($entity instanceof Attribute) {
+            $familyProperty = 'metricFamily';
+            $unitProperty   = 'defaultMetricUnit';
+        } else {
+            $familyProperty = 'family';
+            $unitProperty   = 'unit';
+        }
 
-        if (!array_key_exists($type, $this->measures)) {
-            $this->context->addViolationAt('metricFamily', $constraint->familyMessage);
-        } elseif (!array_key_exists($unit, $this->measures[$type]['units'])) {
-            $this->context->addViolationAt('defaultMetricUnit', $constraint->unitMessage);
+        $family = $this->propertyAccessor->getValue($entity, $familyProperty);
+        $unit   = $this->propertyAccessor->getValue($entity, $unitProperty);
+
+        if (!array_key_exists($family, $this->measures)) {
+            $this->context->addViolationAt($familyProperty, $constraint->familyMessage);
+        } elseif (!array_key_exists($unit, $this->measures[$family]['units'])) {
+            $this->context->addViolationAt($unitProperty, $constraint->unitMessage);
         }
     }
 }
