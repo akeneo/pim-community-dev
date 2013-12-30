@@ -208,7 +208,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
         $groups = $this->objectManager->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getLabel();
+            $choices[$group->getCode()] = $group->getLabel();
         }
         asort($choices);
 
