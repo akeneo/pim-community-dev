@@ -49,6 +49,9 @@ class ValidMetricValidator extends ConstraintValidator
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
         } else {
+            if (!$entity->getData()) {
+                return;
+            }
             $familyProperty = 'family';
             $unitProperty   = 'unit';
         }
