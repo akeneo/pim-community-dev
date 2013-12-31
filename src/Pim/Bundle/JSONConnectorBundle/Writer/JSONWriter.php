@@ -109,7 +109,7 @@ class JSONWriter extends AbstractConfigurableStepElement implements
     }
     
     /**
-     * generate the post body 
+     * Generate the post body 
      * 
      * @param array $items
      * 
@@ -144,7 +144,7 @@ class JSONWriter extends AbstractConfigurableStepElement implements
 
     
     /**
-     * count the number of entry sent 
+     * Count the number of entry sent 
      * 
      * @param array $items
      * 
