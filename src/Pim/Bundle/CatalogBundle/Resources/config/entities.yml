@@ -18,3 +18,4 @@ parameters:
     pim_catalog.entity.channel.class:                        Pim\Bundle\CatalogBundle\Entity\Channel
     pim_catalog.entity.job_instance.class:                   Oro\Bundle\BatchBundle\Entity\JobInstance
     pim_catalog.entity.currency.class:                       Pim\Bundle\CatalogBundle\Entity\Currency
+    pim_catalog.entity.locale.class:                         Pim\Bundle\CatalogBundle\Entity\Locale

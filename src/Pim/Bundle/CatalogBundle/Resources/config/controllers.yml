@@ -82,8 +82,6 @@ services:
         scope: request
         class: %pim_catalog.controller.locale.class%
         parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_grid.datagrid.helper'
 
     pim_catalog.controller.product_attribute:
         scope: request

@@ -372,8 +372,42 @@ datagrid:
                 code:
                     type:      string
                     label:     Code
-                    data_name: f.code
+                    data_name: c.code
                 activated:
                     type:      boolean
                     label:     Activated
                     data_name: c.activated
+
+    locale-grid:
+        options:
+            entityHint: locale
+        source:
+            acl_resource: pim_catalog_locale_index
+            type: pim_orm
+            entity: %pim_catalog.entity.locale.class%
+        columns:
+            code:
+                label: Code
+            activated:
+                label: Activated
+                frontend_type: boolean
+        properties: ~
+        actions: ~
+        sorters:
+            columns:
+                code:
+                    data_name: l.code
+                activated:
+                    data_name: l.activated
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: l.code
+                activated:
+                    type:      boolean
+                    label:     Activated
+                    data_name: l.activated
