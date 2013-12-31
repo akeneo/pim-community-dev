@@ -1076,15 +1076,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $categories = $this->getProduct($productCode)->getCategories();
-        if (!$categories) {
-            if (!$categoryCodes) {
-                return;
-            } else {
-                throw \Exception(sprintf('Product "%s" doesn\'t belong to any categories', $productCode));
-            }
-        }
-        $categories = $categories->map(
+        $categories = $this->getProduct($productCode)->getCategories()->map(
             function ($category) {
                 return $category->getCode();
             }
