@@ -32,7 +32,7 @@ class MetricTransformer extends DefaultTransformer implements EntityUpdaterInter
             $object->getMetric()->setUnit($data);
         } else {
             $parts = preg_split('/\s+/', $data);
-            $object->getMetric()->setData($parts[0]);
+            $object->getMetric()->setData($parts[0] ?: null);
             if (isset($parts[1])) {
                 $object->getMetric()->setUnit($parts[1]);
             }
