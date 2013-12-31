@@ -73,12 +73,12 @@ class EventListener
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
 
             foreach ($attributes as $attributeCode => $attribute) {
-                $showFilter    = $attribute->isUseableAsGridFilter();
-                $showColumn    = $attribute->isUseableAsGridColumn();
+                $showFilter = $attribute->isUseableAsGridFilter();
+                $showColumn = $attribute->isUseableAsGridColumn();
                 if (!$showFilter && !$showColumn) {
                     continue;
                 }
-                $sortable = true;
+                $sortable = $showColumn;
 
                 $attributeType = $attribute->getAttributeType();
 
@@ -86,14 +86,25 @@ class EventListener
                     continue;
                 }
 
-                $config->offsetSetByPath(
-                    sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attributeCode),
-                    [
-                        FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
-                        FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
-                        'label'                                 => $attribute->getLabel()
-                    ]
-                );
+                if ($showColumn) {
+                    $config->offsetSetByPath(
+                        sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attributeCode),
+                        [
+                            FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
+                            FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
+                            'label'                                 => $attribute->getLabel()
+                        ]
+                    );
+                    if ($sortable) {
+                        $config->offsetSetByPath(
+                            sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
+                            [
+                                PropertyInterface::DATA_NAME_KEY => $attributeCode,
+                                'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
+                            ]
+                        );
+                    }
+                }
 
                 if ($showFilter) {
                     $map         = FlexibleFieldProperty::$typeMatches;
@@ -113,17 +124,8 @@ class EventListener
                             FilterUtility::TYPE_KEY        => $filterType,
                             FilterUtility::FEN_KEY         => $flexibleEntity,
                             FilterUtility::DATA_NAME_KEY   => $attributeCode,
-                            FilterUtility::PARENT_TYPE_KEY => $parentType
-                        ]
-                    );
-                }
-
-                if ($sortable) {
-                    $config->offsetSetByPath(
-                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                        [
-                            PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                            'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
+                            FilterUtility::PARENT_TYPE_KEY => $parentType,
+                            'label'                        => $attribute->getLabel()
                         ]
                     );
                 }
