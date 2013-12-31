@@ -19,7 +19,7 @@ Feature: Edit a user
   @javascript
   Scenario: Successfully edit and apply user preferences
     Given the following categories:
-      | code        | label       | parent      |
+      | code        | label-en_US | parent      |
       | books       | Books       |             |
       | kitchenware | Kitchenware |             |
       | kettle      | Kettle      | kitchenware |

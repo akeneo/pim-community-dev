@@ -257,12 +257,7 @@ class FixturesContext extends RawMinkContext
             ->get('pim_import_export.transformer.product')
             ->reset();
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('products', 'csv');
-
-        $product = $processor->process($data);
+        $product = $this->loadFixture('products', $data);
 
         $this->getProductManager()->save($product);
 
@@ -526,22 +521,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $category = $this->createCategory($data['code']);
-            $category->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
-
-            if (!empty($data['parent'])) {
-                $parent = $this->getOrCreateCategory($data['parent']);
-                $category->setParent($parent);
-            }
-
-            if (isset($data['products']) && trim($data['products']) != '') {
-                $skus = explode(',', $data['products']);
-                foreach ($skus as $sku) {
-                    $category->addProduct($this->getOrCreateProduct(trim($sku)));
-                }
-            }
-
-            $this->persist($category);
+            $this->createCategory(array($data));
         }
     }
 
@@ -1096,15 +1076,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $categories = $this->getProduct($productCode)->getCategories();
-        if (!$categories) {
-            if (!$categoryCodes) {
-                return;
-            } else {
-                throw \Exception(sprintf('Product "%s" doesn\'t belong to any categories', $productCode));
-            }
-        }
-        $categories = $categories->map(
+        $categories = $this->getProduct($productCode)->getCategories()->map(
             function ($category) {
                 return $category->getCode();
             }
@@ -1325,12 +1297,7 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('attributes', 'csv');
-
-        $attribute = $processor->process($data);
+        $attribute = $this->loadFixture('attributes', $data);
 
         if ($families) {
             foreach ($this->listToArray($families) as $familyCode) {
@@ -1449,17 +1416,23 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $code
+     * @param array|string $data
      *
      * @return Category
      */
-    private function createCategory($code)
+    private function createCategory($data)
     {
-        $category = new Category();
-        $category->setCode($code);
-        $this->persist($category);
+        if (is_string($data)) {
+            $data = array(array('code' => $data));
+        }
 
-        return $category;
+        $categories = $this->loadFixture('categories', $data);
+
+        foreach ($categories as $category) {
+            $this->persist($category);
+        }
+
+        return reset($categories);
     }
 
     /**
@@ -1646,12 +1619,7 @@ class FixturesContext extends RawMinkContext
             $data = array('code' => $data);
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('families', 'csv');
-
-        $family = $processor->process($data);
+        $family = $this->loadFixture('families', $data);
 
         $this->persist($family);
 
@@ -1671,16 +1639,32 @@ class FixturesContext extends RawMinkContext
             $data = array('code' => $data);
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('attribute_groups', 'csv');
-
-        $attributeGroup = $processor->process($data);
+        $attributeGroup = $this->loadFixture('attribute_groups', $data);
 
         $this->persist($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    /**
+     * Load an installer fixture
+     *
+     * @param string $type
+     * @param array  $data
+     * @param string $format
+     *
+     * @return object
+     */
+    private function loadFixture($type, array $data, $format = 'csv')
+    {
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor($type, $format);
+
+        $entity = $processor->process($data);
+
+        return $entity;
     }
 
     /**

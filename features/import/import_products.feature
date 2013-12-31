@@ -11,14 +11,14 @@ Feature: Execute a job
       | Bag  |
       | Hat  |
     And the following categories:
-      | code    | label   | parent |
-      | master  | Master  |        |
-      | leather | Leather | master |
-      | silk    | Silk    | master |
-      | coton   | Coton   | master |
-      | travel  | Travel  | master |
-      | men     | Men     | master |
-      | women   | Women   | master |
+      | code    | label-en_US | parent |
+      | master  | Master      |        |
+      | leather | Leather     | master |
+      | silk    | Silk        | master |
+      | coton   | Coton       | master |
+      | travel  | Travel      | master |
+      | men     | Men         | master |
+      | women   | Women       | master |
     And the following product groups:
       | code  | label     | attributes | type   |
       | CROSS | Bag Cross |            | X_SELL |
