@@ -144,3 +144,14 @@ services:
             - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 200 }
+
+    pim_import_export.transformer.guesser.category_product:
+        class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_import_export.transformer.property.entity'
+            - %pim_catalog.entity.category.class%
+            - ['/^product/']
+            - { class: %pim_catalog.entity.product.class%, multiple: true }
+        tags:
+            - { name: pim_import_export.transformer.guesser, priority: 40 }

@@ -135,6 +135,29 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     }
 
     /**
+     * Set products for this category node
+     *
+     * @param mixed products Traversable object or array
+     *
+     * @return Category
+     */
+    public function setProducts($products)
+    {
+        var_dump($products);
+        if (null !== $this->getProducts()) {
+            foreach ($this->getProducts() as $product) {
+                $product->removeCategory($this);
+            }
+        }
+      
+        if (null !== $products) {
+            foreach ($products as $product) {
+                $product->addCategory($this);
+            }
+        }
+    }
+
+    /**
      * Get products count
      *
      * @return number
