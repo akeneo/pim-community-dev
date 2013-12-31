@@ -17,9 +17,9 @@ pim_import_export:
         csv_attribute_option_export:
             title: Attribute option export in CSV
             export.title: Attribute option export
-        csv_association_export:
-            title: Association export in CSV
-            export.title: Association export
+        csv_association_type_export:
+            title: Association type export in CSV
+            export.title: Association type export
         csv_group_export:
             title: Group export in CSV
             export.title: Group export
@@ -36,9 +36,9 @@ pim_import_export:
         csv_attribute_option_import:
             title: Attribute option import in CSV
             import.title: Attribute option import
-        csv_association_import:
-            title: Association import in CSV
-            import.title: Association import
+        csv_association_type_import:
+            title: Association type import in CSV
+            import.title: Association type import
         csv_group_import:
             title: Group import in CSV
             import.title: Group import

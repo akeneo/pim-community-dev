@@ -17,18 +17,23 @@ oro_menu_config:
         pim_enrich_product:
             label: Products
             route: pim_catalog_product_index
+            aclResourceId: pim_catalog_product_index
         pim_enrich_attribute:
             label: Attributes
             route: pim_catalog_productattribute_index
+            aclResourceId: pim_catalog_attribute_index
         pim_enrich_family:
             label: Families
             route: pim_catalog_family_index
+            aclResourceId: pim_catalog_family_index
         pim_enrich_attributegroup:
             label: Attribute groups
             route: pim_catalog_attributegroup_create
+            aclResourceId: pim_catalog_attribute_group_create
         pim_enrich_categorytree:
             label: Categories
             route: pim_catalog_categorytree_create
+            aclResourceId: pim_catalog_category_create
         pim_import_tab:
             label: Collect
             uri: '#'
@@ -59,24 +64,31 @@ oro_menu_config:
         pim_catalog_locale:
             label: Locales
             route: pim_catalog_locale_index
+            aclResourceId: pim_catalog_locale_index
         pim_catalog_currency:
             label: Currencies
             route: pim_catalog_currency_index
+            aclResourceId: pim_catalog_currency_index
         pim_catalog_channel:
             label: Channels
             route: pim_catalog_channel_index
+            aclResourceId: pim_catalog_channel_index
         pim_enrich_variant_group:
             label: Variant groups
             route: pim_catalog_variant_group_index
+            aclResourceId: pim_catalog_group_index
         pim_enrich_group:
             label: Groups
             route: pim_catalog_group_index
-        pim_catalog_association:
-            label: Associations
-            route: pim_catalog_association_index
+            aclResourceId: pim_catalog_group_index
+        pim_catalog_association_type:
+            label: Association types
+            route: pim_catalog_association_type_index
+            aclResourceId: pim_catalog_association_type_index
         pim_catalog_group_type:
             label: Group types
             route: pim_catalog_group_type_index
+            aclResourceId: pim_catalog_group_type_index
 
         oro_tag_list:
             display: false
@@ -112,7 +124,7 @@ oro_menu_config:
                         pim_enrich_attributegroup: ~
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
-                        pim_catalog_association: ~
+                        pim_catalog_association_type: ~
                         pim_catalog_group_type: ~
                         pim_catalog_currency: ~
                         pim_catalog_locale: ~
@@ -149,9 +161,9 @@ oro_titles:
     pim_catalog_variant_group_index:     Variant groups
     pim_catalog_variant_group_create:    Variant groups | Create
     pim_catalog_variant_group_edit:      Variant groups %%group.label%% | Edit
-    pim_catalog_association_index:       Associations
-    pim_catalog_association_create:      Associations | Create
-    pim_catalog_association_edit:        Associations %%association.label%% | Edit
+    pim_catalog_association_type_index:  Association types
+    pim_catalog_association_type_create: Association types | Create
+    pim_catalog_association_type_edit:   Association types %%association type.label%% | Edit
     pim_catalog_group_type_index:        Group types
     pim_catalog_group_type_create:       Group types | Create
     pim_catalog_group_type_edit:         Group types %%group type.label%% | Edit

@@ -1,0 +1,30 @@
+Pim\Bundle\CatalogBundle\Entity\AssociationType:
+    type: entity
+    table: pim_catalog_association_type
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation
+            mappedBy: foreignKey
+            cascade:
+                - persist

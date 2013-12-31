@@ -20,7 +20,7 @@ interface ColumnInfoInterface
      *
      * @throws \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
      */
-    public function setAttribute(ProductAttributeInterface $attribute);
+    public function setAttribute(ProductAttributeInterface $attribute = null);
 
     /**
      * Get the full label

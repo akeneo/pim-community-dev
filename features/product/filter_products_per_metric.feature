@@ -10,21 +10,13 @@ Feature: Filter products per metric
       | code      |
       | furniture |
       | library   |
-    And the following products:
-      | sku    | family    | enabled |
-      | postit | furniture | yes     |
-      | book   | library   | no      |
-    And a "postit" product
-    And a "book" product
     And the following attributes:
-      | label  | required | translatable | scopable | type   | useable as grid filter | metric family | default metric unit |
-      | weight | no       | no           | yes      | metric | yes                    | Weight        | GRAM                |
-    And the following product values:
-      | product | attribute | value        |
-      | postit  | SKU       | postit       |
-      | postit  | weight    | 120 GRAM     |
-      | book    | SKU       | book         |
-      | book    | weight    | 0.2 KILOGRAM |
+      | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
+      | weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
+    And the following products:
+      | sku    | family    | enabled | weight-ecommerce |
+      | postit | furniture | yes     | 120 GRAM         |
+      | book   | library   | no      | 0.2 KILOGRAM     |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by metric

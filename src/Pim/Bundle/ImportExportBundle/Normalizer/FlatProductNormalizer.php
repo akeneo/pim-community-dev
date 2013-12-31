@@ -160,6 +160,8 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $data->format('m/d/Y');
         } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
             $data = $data->getCode();
+        } elseif ($value->getAttribute()->getAttributeType() == 'pim_catalog_price_collection') {
+            return $this->normalizePriceCollection($value);
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             $data = $this->normalizeCollectionData($data);
         } elseif ($data instanceof Media) {
@@ -174,6 +176,25 @@ class FlatProductNormalizer implements NormalizerInterface
         }
 
         return array($this->getFieldValue($value) => (string) $data);
+    }
+
+    /**
+     * Normalizes a price collection
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return array
+     */
+    protected function normalizePriceCollection($value)
+    {
+        $normalized = array();
+        $fieldName = $this->getFieldValue($value);
+
+        foreach ($value->getPrices() as $currency => $price) {
+            $normalized[sprintf('%s-%s', $fieldName, $currency)] = $price->getData();
+        }
+
+        return $normalized;
     }
 
     /**
@@ -261,7 +282,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeAssociations($productAssociations = array())
     {
         foreach ($productAssociations as $productAssociation) {
-            $columnPrefix = $productAssociation->getAssociation()->getCode();
+            $columnPrefix = $productAssociation->getAssociationType()->getCode();
 
             $groups = array();
             foreach ($productAssociation->getGroups() as $group) {
@@ -273,8 +294,8 @@ class FlatProductNormalizer implements NormalizerInterface
                 $products[] = $product->getIdentifier();
             }
 
-            $this->results[$columnPrefix .'_groups'] = implode(',', $groups);
-            $this->results[$columnPrefix .'_products'] = implode(',', $products);
+            $this->results[$columnPrefix .'-groups'] = implode(',', $groups);
+            $this->results[$columnPrefix .'-products'] = implode(',', $products);
         }
     }
 }

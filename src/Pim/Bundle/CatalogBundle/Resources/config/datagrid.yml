@@ -1,12 +1,12 @@
 parameters:
-    pim_catalog.datagrid.manager.productattribute.class:         Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
-    pim_catalog.datagrid.manager.product.class:                  Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
-    pim_catalog.datagrid.manager.channel_datagrid.class:         Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
-    pim_catalog.datagrid.manager.currency_datagrid.class:        Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
-    pim_catalog.datagrid.manager.locale_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
-    pim_catalog.datagrid.manager.group_datagrid.class:           Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
-    pim_catalog.datagrid.manager.group_product_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\GroupProductDatagridManager
-    pim_catalog.datagrid.manager.association_datagrid.class:     Pim\Bundle\CatalogBundle\Datagrid\AssociationDatagridManager
+    pim_catalog.datagrid.manager.productattribute.class:             Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
+    pim_catalog.datagrid.manager.product.class:                           Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
+    pim_catalog.datagrid.manager.channel_datagrid.class:                  Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
+    pim_catalog.datagrid.manager.currency_datagrid.class:                 Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
+    pim_catalog.datagrid.manager.locale_datagrid.class:                   Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
+    pim_catalog.datagrid.manager.group_datagrid.class:                    Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
+    pim_catalog.datagrid.manager.group_product_datagrid.class:        Pim\Bundle\CatalogBundle\Datagrid\GroupProductDatagridManager
+    pim_catalog.datagrid.manager.association_type_datagrid.class:         Pim\Bundle\CatalogBundle\Datagrid\AssociationTypeDatagridManager
     pim_catalog.datagrid.manager.association_product_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\AssociationProductDatagridManager
     pim_catalog.datagrid.manager.association_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\AssociationGroupDatagridManager
     pim_catalog.datagrid.manager.variant_group_datagrid.class:       Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
@@ -122,14 +122,14 @@ services:
         calls:
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
 
-    pim_catalog.datagrid.manager.association:
-        class: %pim_catalog.datagrid.manager.association_datagrid.class%
+    pim_catalog.datagrid.manager.association_type:
+        class: %pim_catalog.datagrid.manager.association_type_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: associations
-              entity_name: %pim_catalog.entity.association.class%
-              entity_hint: associations
-              route_name: pim_catalog_association_index
+              datagrid_name: association_types
+              entity_name: %pim_catalog.entity.association_type.class%
+              entity_hint: association type
+              route_name: pim_catalog_association_type_index
         calls:
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
 

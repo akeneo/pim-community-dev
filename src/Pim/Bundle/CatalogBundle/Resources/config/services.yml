@@ -1,9 +1,9 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:                        Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
-    pim_catalog.event_listener.progress.class:                           Pim\Bundle\CatalogBundle\EventListener\ProgressListener
-    pim_catalog.event_listener.create_attribute_requirement.class:       Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
-    pim_catalog.form.subscriber.add_attribute_requirements.class:        Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
-    pim_catalog.event_listener.metric_base_values.class:                 Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
+    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
+    pim_catalog.form.subscriber.add_attribute_requirements.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
 services:
     # Attribute property types
@@ -29,7 +29,7 @@ services:
 
     # Subscribers
     pim_catalog.form.subscriber.attribute:
-        class:     %pim_catalog.form.subscriber.add_attribute_type.class%
+        class: %pim_catalog.form.subscriber.add_attribute_type.class%
         arguments:
             - '@pim_catalog.manager.product_attribute'
             - '@pim_flexibleentity.attributetype.factory'
@@ -74,7 +74,9 @@ services:
     # Validators
     pim_catalog.form.validator.metric:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
-        arguments: [%oro_measure.measures_config%]
+        arguments:
+            - '@property_accessor'
+            - %oro_measure.measures_config%
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 

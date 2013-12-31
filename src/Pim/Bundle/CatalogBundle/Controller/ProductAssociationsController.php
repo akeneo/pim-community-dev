@@ -75,9 +75,9 @@ class ProductAssociationsController
     {
         $product = $this->findProductOr404($id);
 
-        $this->productManager->ensureAllAssociations($product);
+        $this->productManager->ensureAllAssociationTypes($product);
 
-        $associations = $this->doctrine->getRepository('PimCatalogBundle:Association')->findAll();
+        $associationTypes = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
 
         $productGrid = $this->datagridHelper->getDatagridManager('association_product');
         $productGrid->setProduct($product);
@@ -85,11 +85,11 @@ class ProductAssociationsController
         $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
         $groupGrid->setProduct($product);
 
-        $association = null;
-        if (!empty($associations)) {
-            $association = reset($associations);
-            $productGrid->setAssociationId($association->getId());
-            $groupGrid->setAssociationId($association->getId());
+        $associationType = null;
+        if (!empty($associationTypes)) {
+            $associationType = reset($associationTypes);
+            $productGrid->setAssociationId($associationType->getId());
+            $groupGrid->setAssociationId($associationType->getId());
         }
 
         $routeParameters = array('id' => $product->getId());
@@ -103,7 +103,7 @@ class ProductAssociationsController
             'PimCatalogBundle:ProductAssociations:_associations.html.twig',
             array(
                 'product'                => $product,
-                'associations'           => $associations,
+                'associationTypes'       => $associationTypes,
                 'associationProductGrid' => $productGridView,
                 'associationGroupGrid'   => $groupGridView,
             )

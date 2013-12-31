@@ -13,7 +13,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
-use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
@@ -285,7 +284,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
                 'pa',
                 'WITH',
                 sprintf(
-                    'pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.products',
+                    'pa.associationType = :association AND pa.owner = :product AND %s MEMBER OF pa.products',
                     $rootAlias
                 )
             );

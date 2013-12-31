@@ -1,9 +1,9 @@
 parameters:
-    pim_catalog.event_listener.mongodb.inject_orm_references.class:      Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
+    pim_catalog.event_listener.mongodb.inject_orm_references.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
 
 services:
     pim_catalog.object_manager.product:
-        alias: "doctrine.odm.mongodb.document_manager"
+        alias: doctrine.odm.mongodb.document_manager
 
     pim_catalog.event_listener.mongodb.inject_orm_references:
         class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%

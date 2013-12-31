@@ -7,7 +7,6 @@ parameters:
     pim_import_export.transformer.guesser.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
     pim_import_export.transformer.guesser.regexp.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
     pim_import_export.transformer.guesser.attribute.class:          Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
-    pim_import_export.transformer.guesser.metric.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\MetricAttributeGuesser
     pim_import_export.transformer.guesser.attribute_option.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeOptionGuesser
 
 services:
@@ -80,7 +79,7 @@ services:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
 
     pim_import_export.transformer.guesser.metric:
-        class: %pim_import_export.transformer.guesser.metric.class%
+        class: %pim_import_export.transformer.guesser.attribute.class%
         public: false
         arguments:
             - '@pim_import_export.transformer.property.metric'
@@ -124,16 +123,6 @@ services:
         arguments:
             - '@pim_import_export.transformer.property.entity'
             - '@doctrine'
-        tags:
-            - { name: pim_import_export.transformer.guesser, priority: 50 }
-
-    pim_import_export.transformer.guesser.skip_product_associations:
-        class: %pim_import_export.transformer.guesser.regexp.class%
-        public: false
-        arguments:
-            - '@pim_import_export.transformer.property.skip'
-            - %pim_catalog.entity.product.class%
-            - ['/(_products|_groups)$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 

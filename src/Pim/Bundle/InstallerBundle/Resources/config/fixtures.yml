@@ -42,12 +42,12 @@ group_types:
     yml:
         processor:         pim_import_export.processor.group_type
 
-associations:
+association_types:
     order: 40
     csv:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
     yml:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
 
 attributes:
     order: 40
@@ -71,7 +71,7 @@ families:
         processor:         pim_import_export.processor.family
 
 products:
-    order: 90
+    order: 70
     csv:
         processor:         pim_import_export.processor.product
     yml:
@@ -79,11 +79,19 @@ products:
         processor:         pim_import_export.processor.product
 
 groups:
-    order: 90
+    order: 80
     csv:
         processor:         pim_import_export.processor.group
     yml:
         processor:         pim_import_export.processor.group
+
+product_associations:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.product_association
+    yml:
+        reader:            pim_import_export.reader.file.yaml_product_associations
+        processor:         pim_import_export.processor.product_association
 
 jobs:
     order: 90

@@ -8,11 +8,9 @@ Feature: Define product prices
     And the following attribute:
       | label        | type   | translatable |
       | Public price | prices | yes          |
-    And a "bike" product
-    And the following product values:
-      | product | attribute   | locale | value            |
-      | bike    | publicPrice | en_US  | 50 EUR, 100 USD  |
-      | bike    | publicPrice | fr_FR  | 150 EUR, 200 USD |
+    And the following product:
+      | sku  | publicPrice-en_US | publicPrice-fr_FR |
+      | bike | 50 EUR, 100 USD   | 150 EUR, 200 USD  |
     And I am logged in as "Julia"
 
   Scenario: Successfully display english and french public prices

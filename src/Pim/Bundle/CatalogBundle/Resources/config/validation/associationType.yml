@@ -1,0 +1,22 @@
+Pim\Bundle\CatalogBundle\Entity\AssociationType:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Association type code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100

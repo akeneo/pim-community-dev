@@ -9,7 +9,9 @@ services:
         arguments:
             - '@service_container'
             - '@property_accessor'
-            - '%kernel.bundles%'
+            - %kernel.bundles%
+            - %kernel.cache_dir%
+            - %kernel.debug%
 
     pim_installer.fixture_loader.loader_factory:
         class: %pim_installer.fixture_loader.loader_factory.class%
@@ -20,7 +22,7 @@ services:
 
 
     pim_installer.fixture_loader.multiple_loader:
-        class: '%pim_installer.fixture_loader.multiple_loader.class%'
+        class: %pim_installer.fixture_loader.multiple_loader.class%
         arguments:
             - '@pim_installer.fixture_loader.configuration_registry'
             - '@pim_installer.fixture_loader.loader_factory'

@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Form\Type;
 
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
+use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 
 /**
  * Test related class
@@ -12,9 +14,8 @@ use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionTypeTest extends TypeTestCase
+class AttributeOptionTypeTest extends AbstractFormTypeTest
 {
-
     /**
      * {@inheritdoc}
      */
@@ -24,6 +25,23 @@ class AttributeOptionTypeTest extends TypeTestCase
 
         $this->type = new AttributeOptionType();
         $this->form = $this->factory->create($this->type);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExtensions()
+    {
+        $optionValueType = new AttributeOptionValueType();
+
+        return array(
+            new PreloadedExtension(
+                array(
+                    $optionValueType->getName() => $optionValueType,
+                ),
+                array()
+            )
+        );
     }
 
     /**

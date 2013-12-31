@@ -1,8 +1,8 @@
 parameters:
-    pim_ui.form.type.ajax_entity.class:                 Pim\Bundle\UIBundle\Form\Type\AjaxEntityType
-    pim_ui.form.transformer.ajax_entity.factory.class:  Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
-    pim_ui.form.transformer.ajax_entity.class:          Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
-    pim_ui.controller.ajax_option.class:                Pim\Bundle\UIBundle\Controller\AjaxOptionController
+    pim_ui.form.type.ajax_entity.class:                Pim\Bundle\UIBundle\Form\Type\AjaxEntityType
+    pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
+    pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
+    pim_ui.controller.ajax_option.class:               Pim\Bundle\UIBundle\Controller\AjaxOptionController
 
 services:
     pim_ui.form.extension.help:

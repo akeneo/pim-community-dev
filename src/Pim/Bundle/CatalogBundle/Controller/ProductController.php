@@ -305,7 +305,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $this->productManager->ensureAllAssociations($product);
+        $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
             'pim_product_edit',

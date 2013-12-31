@@ -18,7 +18,10 @@ parameters:
 
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
+    pim_catalog.form.type.attribute_option_value.class:  Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType
+
     pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
+    pim_catalog.form.type.attribute_option.class:        Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType
 
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
     pim_catalog.form.type.attribute_group.class:            Pim\Bundle\CatalogBundle\Form\Type\AttributeGroupType
@@ -26,6 +29,7 @@ parameters:
     pim_catalog.form.handler.family.class:                  Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler
     pim_catalog.manager.family.class:                       Pim\Bundle\CatalogBundle\Manager\FamilyManager
     pim_catalog.form.type.family.class:                     Pim\Bundle\CatalogBundle\Form\Type\FamilyType
+    pim_catalog.form.type.attribute_requirement.class:      Pim\Bundle\CatalogBundle\Form\Type\AttributeRequirementType
 
     pim_catalog.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
@@ -63,8 +67,8 @@ parameters:
     pim_catalog.form.handler.group_type.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler
     pim_catalog.form.type.group_type.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupTypeType
 
-    pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
-    pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
+    pim_catalog.form.handler.association_type.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler
+    pim_catalog.form.type.association_type.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationTypeType
 
     pim_catalog.form.type.product_association.class: Pim\Bundle\CatalogBundle\Form\Type\ProductAssociationType
 

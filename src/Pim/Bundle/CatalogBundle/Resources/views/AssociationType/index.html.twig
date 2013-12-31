@@ -1,0 +1,27 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#association-type-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    {% set title = 'association type.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'association type',
+            path('pim_catalog_association_type_create'),
+            'dialog',
+            'pim_catalog_association_type_create'
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    <div id="association-type-grid"></div>
+
+{% endblock %}
