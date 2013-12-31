@@ -257,12 +257,7 @@ class FixturesContext extends RawMinkContext
             ->get('pim_import_export.transformer.product')
             ->reset();
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('products', 'csv');
-
-        $product = $processor->process($data);
+        $product = $this->loadFixture('products', $data);
 
         $this->getProductManager()->save($product);
 
@@ -1325,12 +1320,7 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('attributes', 'csv');
-
-        $attribute = $processor->process($data);
+        $attribute = $this->loadFixture('attributes', $data);
 
         if ($families) {
             foreach ($this->listToArray($families) as $familyCode) {
@@ -1646,12 +1636,7 @@ class FixturesContext extends RawMinkContext
             $data = array('code' => $data);
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('families', 'csv');
-
-        $family = $processor->process($data);
+        $family = $this->loadFixture('families', $data);
 
         $this->persist($family);
 
@@ -1671,16 +1656,32 @@ class FixturesContext extends RawMinkContext
             $data = array('code' => $data);
         }
 
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor('attribute_groups', 'csv');
-
-        $attributeGroup = $processor->process($data);
+        $attributeGroup = $this->loadFixture('attribute_groups', $data);
 
         $this->persist($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    /**
+     * Load an installer fixture
+     *
+     * @param string $type
+     * @param array  $data
+     * @param string $format
+     *
+     * @return object
+     */
+    private function loadFixture($type, array $data, $format = 'csv')
+    {
+        $processor = $this
+            ->getContainer()
+            ->get('pim_installer.fixture_loader.configuration_registry')
+            ->getProcessor($type, $format);
+
+        $entity = $processor->process($data);
+
+        return $entity;
     }
 
     /**

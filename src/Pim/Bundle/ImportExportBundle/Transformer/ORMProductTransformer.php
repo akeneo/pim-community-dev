@@ -289,6 +289,7 @@ class ORMProductTransformer extends ORMTransformer
                     $this->identifierAttribute = $attribute;
                 }
             } else {
+                $columnInfo->setAttribute(null);
                 $this->propertyColumnsInfo[] = $columnInfo;
             }
         }
