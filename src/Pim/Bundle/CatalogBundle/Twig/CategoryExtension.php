@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Twig extension to render category from twig templates
@@ -50,7 +49,6 @@ class CategoryExtension extends \Twig_Extension
             'children_response'        => new \Twig_Function_Method($this, 'childrenResponse'),
             'children_tree_response'   => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'list_products'            => new \Twig_Function_Method($this, 'listProducts'),
             'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse')
         );
     }
@@ -143,23 +141,6 @@ class CategoryExtension extends \Twig_Extension
         }
 
         return $this->formatCategoriesAndCount($categories, $selectedIds, true);
-    }
-
-    /**
-     * List products for jstree
-     *
-     * @param array $products
-     *
-     * @return array
-     */
-    public function listProducts(array $products)
-    {
-        $productsList = array();
-        foreach ($products as $product) {
-            $productsList[] = $this->formatProduct($product);
-        }
-
-        return $productsList;
     }
 
     /**
@@ -463,21 +444,5 @@ class CategoryExtension extends \Twig_Extension
         $hasChild = (count($children) > 0);
 
         return $this->defineCategoryState($category, $hasChild, $selectedIds);
-    }
-
-    /**
-     * Format a product interface for jstree
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function formatProduct(ProductInterface $product)
-    {
-        return array(
-            'id'          => $product->getId(),
-            'name'        => $product->getIdentifier(),
-            'description' => (string) $product
-        );
     }
 }

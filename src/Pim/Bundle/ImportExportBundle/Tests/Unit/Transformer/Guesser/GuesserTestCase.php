@@ -14,6 +14,7 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
     protected $transformer;
     protected $metadata;
     protected $columnInfo;
+    protected $propertyPath = 'property_path';
 
     protected function setUp()
     {
@@ -29,7 +30,7 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
         $this->columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $this->columnInfo->expects($this->any())
             ->method('getPropertyPath')
-            ->will($this->returnValue('property_path'));
+            ->will($this->returnValue($this->propertyPath));
 
     }
 }

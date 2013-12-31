@@ -24,5 +24,5 @@ Feature: Edit a group type
     Then I should see "There are unsaved changes."
     When I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                        |
-      | content | You will lose changes to the association if you leave this page. |
+      | title   | Are you sure you want to leave this page?                       |
+      | content | You will lose changes to the group type if you leave this page. |

@@ -25,8 +25,6 @@ Feature: Filter products
       | MUG    | Mug    | color      | VARIANT | MUG-1, MUG-2 |
       | POSTIT | Postit |            | X_SELL  | POSTIT       |
       | EMPTY  | Empty  |            | X_SELL  |              |
-    And a "postit" product
-    And a "book" product
     And I am logged in as "admin"
 
   Scenario: Successfully display datagrid with group

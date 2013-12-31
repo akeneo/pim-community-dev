@@ -3,11 +3,13 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -46,7 +48,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @var array $pageMapping
      */
     private $pageMapping = array(
-        'associations'             => 'Association index',
+        'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
         'categories'               => 'Category tree creation',
         'channels'                 => 'Channel index',
@@ -111,6 +113,27 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $not
+     * @param string $page
+     *
+     * @return null|Then
+     * @Given /^I should( not)? be able to access the ([^"]*) page$/
+     */
+    public function iShouldNotBeAbleToAccessThePage($not, $page)
+    {
+        if (!$not) {
+            return $this->iAmOnThePage($page);
+        }
+
+        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+
+        $this->currentPage = $page;
+        $this->getCurrentPage()->open();
+
+        return new Step\Then('I should see "403 Forbidden"');
+    }
+
+    /**
      * @param string $identifier
      * @param string $page
      *
@@ -134,6 +157,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
         $page = 'AttributeGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I edit the "([^"]*)" association type$/
+     */
+    public function iEditTheAssociationType($identifier)
+    {
+        $page = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
@@ -259,6 +295,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" association type page$/
+     */
+    public function iAmOnTheAssociationTypeEditPage($identifier)
+    {
+        $page = 'AssociationType';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
      * @param JobInstance $job
      *
      * @When /^I launch the ("([^"]*)" export job)$/
@@ -317,6 +366,17 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param Role $role
+     *
+     * @Given /^I should be on the ("([^"]*)" role) page$/
+     */
+    public function iShouldBeOnTheRolePage(Role $role)
+    {
+        $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param Family $family
      *
      * @Given /^I should be on the ("([^"]*)" family) page$/
@@ -328,13 +388,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param Association $association
+     * @param AssociationType $associationType
      *
-     * @Given /^I should be on the ("([^"]*)" association) page$/
+     * @Given /^I should be on the ("([^"]*)" association type) page$/
      */
-    public function iShouldBeOnTheAssociationPage(Association $association)
+    public function iShouldBeOnTheAssociationTypePage(AssociationType $associationType)
     {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
+        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(array('id' => $associationType->getId()));
         $this->assertAddress($expectedAddress);
     }
 

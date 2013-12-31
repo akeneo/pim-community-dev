@@ -9,23 +9,12 @@
 
 {% block content %}
 
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/dialogform'],
-            function ($, dialogForm) {
-                'use strict';
-                $(function() {
-                    new dialogForm('#create-job');
-                });
-            }
-        );
-    </script>
-
     {% set buttons %}
         {{ elements.createBtn(
             entityName,
-            null,
-            { 'id': 'create-job', 'data-form': 'dialog', 'data-form-url': createRoute }
+            createRoute,
+            'dialog',
+            createRouteAcl
         ) }}
     {% endset %}
 

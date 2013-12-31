@@ -11,13 +11,13 @@ Feature: Order product attributes
   @javascript @skip
   Scenario: Successfully update an attribute position
     Given the following attribute group:
-      | code    | label   |
-      | general | General |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
-      | label        | group   | position |
-      | Release Date | General | 1        |
-      | Color        | General | 2        |
-      | Price        | General | 3        |
+      | label        | group   | sort order |
+      | Release Date | General | 1          |
+      | Color        | General | 2          |
+      | Price        | General | 3          |
     When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 3
@@ -29,17 +29,17 @@ Feature: Order product attributes
 
   Scenario: Display product attribute fields ordered by their position
     Given the following attribute groups:
-      | code    | label   |
-      | general | General |
-      | shape   | Shape   |
+      | code    | label-en_US |
+      | general | General     |
+      | shape   | Shape       |
     And the following attributes:
-      | label        | position | group   |
-      | Release date | 20       | General |
-      | Manufacturer | 30       | General |
-      | File upload  | 10       | General |
-      | Color        | 10       | Shape   |
-      | Weight       | 30       | Shape   |
-      | Height       | 20       | Shape   |
+      | label        | sort order | group   |
+      | Release date | 20         | General |
+      | Manufacturer | 30         | General |
+      | File upload  | 10         | General |
+      | Color        | 10         | Shape   |
+      | Weight       | 30         | Shape   |
+      | Height       | 20         | Shape   |
     And the following product values:
       | product | attribute    | value |
       | Car     | releaseDate  |       |

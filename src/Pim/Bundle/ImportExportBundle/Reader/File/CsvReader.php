@@ -125,6 +125,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
+        $this->csv = null;
 
         return $this;
     }
@@ -138,6 +139,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
+        $this->csv = null;
 
         return $this;
     }
@@ -268,7 +270,9 @@ class CsvReader extends AbstractConfigurableStepElement implements
             if ($data === array(null) || $data === null) {
                 return null;
             }
-            $this->stepExecution->incrementSummaryInfo('read');
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('read');
+            }
 
             if (count($this->fieldNames) !== count($data)) {
                 throw new InvalidItemException(

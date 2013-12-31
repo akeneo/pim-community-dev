@@ -7,7 +7,7 @@ parameters:
     pim_import_export.attribute_cache.class:                         Pim\Bundle\ImportExportBundle\Cache\AttributeCache
     pim_import_export.validator.import.class:                        Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
     pim_import_export.validator.product_import.class:                Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
-    pim_import_export.validator.job_instance_import.class:           Pim\Bundle\ImportExportBundle\Validator\Import\JobInstanceImportValidator
+    pim_import_export.validator.skip_import.class:                   Pim\Bundle\ImportExportBundle\Validator\Import\SkipImportValidator
     pim_import_export.converter.metric.class:                        Pim\Bundle\ImportExportBundle\Converter\MetricConverter
 
 services:
@@ -36,33 +36,32 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_import_export.entity_cache:
-        class: '%pim_import_export.entity_cache.class%'
+        class: %pim_import_export.entity_cache.class%
         arguments:
             - '@doctrine'
 
     pim_import_export.attribute_cache:
-        class: '%pim_import_export.attribute_cache.class%'
+        class: %pim_import_export.attribute_cache.class%
         arguments:
             - '@doctrine'
-            - '%pim_catalog.entity.product_attribute.class%'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.validator.import:
-        class: '%pim_import_export.validator.import.class%'
+        class: %pim_import_export.validator.import.class%
         arguments:
             - '@validator'
 
     pim_import_export.validator.product_import:
-        class: '%pim_import_export.validator.product_import.class%'
+        class: %pim_import_export.validator.product_import.class%
         parent: pim_import_export.validator.import
         arguments:
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
 
-    pim_import_export.validator.job_instance_import:
-        class: '%pim_import_export.validator.job_instance_import.class%'
-        parent: pim_import_export.validator.import
+    pim_import_export.validator.skip_import:
+        class: %pim_import_export.validator.skip_import.class%
 
     pim_import_export.converter.metric:
-        class : '%pim_import_export.converter.metric.class%'
+        class: %pim_import_export.converter.metric.class%
         arguments:
             - '@oro_measure.measure_converter'
 

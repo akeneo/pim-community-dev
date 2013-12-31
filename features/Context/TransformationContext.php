@@ -100,13 +100,25 @@ class TransformationContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @Transform /^"([^"]*)" association$/
+     * @Transform /^"([^"]*)" association type$/
      *
-     * @return Association
+     * @return AssociationType
      */
-    public function castAssociationCodeToAssociation($code)
+    public function castAssociationTypeCodeToAssociationType($code)
     {
-        return $this->getFixturesContext()->getAssociation($code);
+        return $this->getFixturesContext()->getAssociationType($code);
+    }
+
+    /**
+     * @param string $label
+     *
+     * @Transform /^"([^"]*)" role$/
+     *
+     * @return Role
+     */
+    public function castRoleLabelToRole($label)
+    {
+        return $this->getFixturesContext()->getRole($label);
     }
 
     /**

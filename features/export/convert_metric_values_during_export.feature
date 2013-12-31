@@ -18,31 +18,24 @@ Feature: Convert metric values during export
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
     And the following products:
-      | sku          | family  | categories      |
-      | tshirt-white | tshirts | 2014_collection |
+      | sku          | family  | categories      | price                 | size   | color | manufacturer     | washing_temperature | weight     | material |
+      | tshirt-white | tshirts | 2014_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | 60 CELSIUS          | 5 KILOGRAM | cotton   |
     And the following product values:
-      | product      | attribute           | value                        | locale | scope     |
-      | tshirt-white | Name                | White t-shirt                | en_US  |           |
-      | tshirt-white | Name                | White t-shirt                | en_GB  |           |
-      | tshirt-white | Name                | T-shirt blanc                | fr_FR  |           |
-      | tshirt-white | Name                | Weißes T-Shirt               | de_DE  |           |
-      | tshirt-white | Description         | A stylish white t-shirt      | en_US  | ecommerce |
-      | tshirt-white | Description         | An elegant white t-shirt     | en_GB  | ecommerce |
-      | tshirt-white | Description         | Un T-shirt blanc élégant     | fr_FR  | ecommerce |
-      | tshirt-white | Description         | Ein elegantes weißes T-Shirt | de_DE  | ecommerce |
-      | tshirt-white | Price               | 10 EUR, 15 USD, 9 GBP        |        |           |
-      | tshirt-white | Size                | size_M                       |        |           |
-      | tshirt-white | Color               | white                        |        |           |
-      | tshirt-white | Manufacturer        | american_apparel             |        |           |
-      | tshirt-white | material            | cotton                       |        |           |
-      | tshirt-white | Weight              | 5 KILOGRAM                   |        |           |
-      | tshirt-white | Washing temperature | 60 CELSIUS                   |        |           |
+      | product      | attribute   | value                        | locale | scope     |
+      | tshirt-white | Name        | White t-shirt                | en_US  |           |
+      | tshirt-white | Name        | White t-shirt                | en_GB  |           |
+      | tshirt-white | Name        | T-shirt blanc                | fr_FR  |           |
+      | tshirt-white | Name        | Weißes T-Shirt               | de_DE  |           |
+      | tshirt-white | Description | A stylish white t-shirt      | en_US  | ecommerce |
+      | tshirt-white | Description | An elegant white t-shirt     | en_GB  | ecommerce |
+      | tshirt-white | Description | Un T-shirt blanc élégant     | fr_FR  | ecommerce |
+      | tshirt-white | Description | Ein elegantes weißes T-Shirt | de_DE  | ecommerce |
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit;enabled;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR
-    tshirt-white;tshirts;;2014_collection;;white;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;"10.00 EUR,9.00 GBP,15.00 USD";;size_M;;60.0000;CELSIUS;5000.0000;GRAM;1;;;;
+    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit;enabled;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR
+    tshirt-white;tshirts;;2014_collection;;white;;;;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;60.0000;CELSIUS;5000.0000;GRAM;1;;;;
     """

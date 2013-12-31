@@ -5,7 +5,7 @@ namespace Context\Page\GroupType;
 use Context\Page\Base\Grid;
 
 /**
- * Association index page
+ * Group type index page
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

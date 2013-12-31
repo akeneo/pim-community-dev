@@ -132,6 +132,9 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->method('getLabel')
             ->will($this->returnValue($label));
         $columnInfo->expects($this->any())
+            ->method('getSuffixes')
+            ->will($this->returnValue(array()));
+        $columnInfo->expects($this->any())
             ->method('getPropertyPath')
             ->will($this->returnValue($label . '_path'));
         $this->columnInfos[$label] = $columnInfo;

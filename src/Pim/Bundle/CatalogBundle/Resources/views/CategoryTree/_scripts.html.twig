@@ -1,11 +1,11 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize', 'bootstrap-tooltip'],
-        function($, TreeManage, Navigation){
+        ['jquery', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap-tooltip'],
+        function($, TreeManage){
             'use strict';
             $(function() {
-                var buttons = []
-                {% if resource_granted("pim_catalog_category_move") %}
+                var buttons = [];
+                {% if resource_granted('pim_catalog_category_create') %}
                     buttons.push($('<a>', {
                         'href': '{{ path("pim_catalog_categorytree_create") }}',
                         'data-toggle': 'tooltip',
@@ -13,12 +13,11 @@
                         'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
-                    ));
+                    ).tooltip());
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });
                 new TreeManage('#tree');
-                $('[data-toggle="tooltip"]').tooltip();
             });
         }
     );

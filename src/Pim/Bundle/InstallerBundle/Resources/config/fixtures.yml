@@ -1,6 +1,7 @@
 default:
     class: Pim\Bundle\InstallerBundle\FixtureLoader\Loader
     order: 100
+    multiple: false
     csv:
         reader:            pim_import_export.reader.file.csv
         reader_options:    {}
@@ -9,6 +10,16 @@ default:
         reader:            pim_import_export.reader.file.yaml
         reader_options:    {}
         processor_options: {}
+
+categories:
+    order: 30
+    multiple: true
+    csv:
+        reader:            pim_import_export.reader.file.csv_category
+        processor:         pim_import_export.processor.category
+    yml:
+        reader:            pim_import_export.reader.file.yaml_multiple
+        processor:         pim_import_export.processor.category
 
 attribute_groups:
     order: 30
@@ -31,12 +42,12 @@ group_types:
     yml:
         processor:         pim_import_export.processor.group_type
 
-associations:
+association_types:
     order: 40
     csv:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
     yml:
-        processor:         pim_import_export.processor.association
+        processor:         pim_import_export.processor.association_type
 
 attributes:
     order: 40
@@ -60,14 +71,27 @@ families:
         processor:         pim_import_export.processor.family
 
 products:
-    order: 90
+    order: 70
     csv:
         processor:         pim_import_export.processor.product
     yml:
-        reader_options:
-            code_field: false
-            homogenize: true
+        reader:            pim_import_export.reader.file.yaml_product
         processor:         pim_import_export.processor.product
+
+groups:
+    order: 80
+    csv:
+        processor:         pim_import_export.processor.group
+    yml:
+        processor:         pim_import_export.processor.group
+
+product_associations:
+    order: 90
+    csv:
+        processor:         pim_import_export.processor.product_association
+    yml:
+        reader:            pim_import_export.reader.file.yaml_product_associations
+        processor:         pim_import_export.processor.product_association
 
 jobs:
     order: 90

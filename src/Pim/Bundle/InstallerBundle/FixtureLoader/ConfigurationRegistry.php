@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -36,17 +38,36 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     private $config;
 
     /**
+     * @var string
+     */
+    protected $cacheDir;
+
+    /**
+     * @var boolean
+     */
+    protected $debug;
+
+    /**
      * Constructor
      *
      * @param ContainerInterface        $container
      * @param PropertyAccessorInterface $propertyAccessor
      * @param array                     $bundles
+     * @param string                    $cacheDir
+     * @param boolean                   $debug
      */
-    public function __construct(ContainerInterface $container, PropertyAccessorInterface $propertyAccessor, $bundles)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        PropertyAccessorInterface $propertyAccessor,
+        $bundles,
+        $cacheDir,
+        $debug
+    ) {
         $this->container = $container;
         $this->propertyAccessor = $propertyAccessor;
         $this->bundles = $bundles;
+        $this->cacheDir = $cacheDir;
+        $this->debug = $debug;
     }
 
     /**
@@ -64,9 +85,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getOrder($name)
     {
-        $config = $this->getConfiguration();
-
-        return isset($config[$name]['order']) ? $config[$name]['order'] : $config['default']['order'];
+        return $this->getConfigProperty($name, 'order');
     }
 
     /**
@@ -74,9 +93,15 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getClass($name)
     {
-        $config = $this->getConfiguration();
+        return $this->getConfigProperty($name, 'class');
+    }
 
-        return isset($config[$name]['class']) ? $config[$name]['class'] : $config['default']['class'];
+    /**
+     * {@inheritdoc}
+     */
+    public function isMultiple($name)
+    {
+        return $this->getConfigProperty($name, 'multiple');
     }
 
     /**
@@ -93,6 +118,13 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     public function getReader($name, $extension)
     {
         return $this->getFixtureService('reader', $name, $extension);
+    }
+
+    protected function getConfigProperty($name, $property)
+    {
+        $config = $this->getConfiguration();
+
+        return isset($config[$name][$property]) ? $config[$name][$property] : $config['default'][$property];
     }
 
     /**
@@ -134,17 +166,40 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function getConfiguration()
     {
+        $cachePath = $this->cacheDir . '/pim_fixtures.php';
         if (!isset($this->config)) {
-            $this->config = array();
-            foreach ($this->bundles as $class) {
-                $reflection = new \ReflectionClass($class);
-                $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
-                if (file_exists($path)) {
-                    $this->config = Yaml::parse($path) + $this->config;
-                }
+            $configCache = new ConfigCache($cachePath, $this->debug);
+            if ($configCache->isFresh()) {
+                $this->config = include $cachePath;
+            } else {
+                $this->config = $this->parseConfiguration($configCache);
             }
         }
 
         return $this->config;
+    }
+
+    /**
+     * Parses the configuration files
+     *
+     * @param ConfigCache $configCache
+     *
+     * @return array
+     */
+    protected function parseConfiguration(ConfigCache $configCache)
+    {
+        $config = array();
+        $resources = array();
+        foreach ($this->bundles as $class) {
+            $reflection = new \ReflectionClass($class);
+            $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
+            if (file_exists($path)) {
+                $config = Yaml::parse($path) + $config;
+                $resources[] = new FileResource($path);
+            }
+        }
+        $configCache->write('<?php return ' . var_export($config, true) . ';', $resources);
+
+        return $config;
     }
 }

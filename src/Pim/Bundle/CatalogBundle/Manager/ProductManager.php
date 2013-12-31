@@ -356,16 +356,16 @@ class ProductManager extends FlexibleManager
     /**
      * @param ProductInterface $product
      */
-    public function ensureAllAssociations(ProductInterface $product)
+    public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssociations = $this->objectManager
-            ->getRepository('PimCatalogBundle:Association')
-            ->findMissingAssociations($product);
+        $missingAssocTypes = $this->objectManager
+            ->getRepository('PimCatalogBundle:AssociationType')
+            ->findMissingAssociationTypes($product);
 
-        if (!empty($missingAssociations)) {
-            foreach ($missingAssociations as $association) {
+        if (!empty($missingAssocTypes)) {
+            foreach ($missingAssocTypes as $associationType) {
                 $productAssociation = new ProductAssociation();
-                $productAssociation->setAssociation($association);
+                $productAssociation->setAssociationType($associationType);
                 $product->addProductAssociation($productAssociation);
             }
             $this->objectManager->flush();

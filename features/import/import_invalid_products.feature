@@ -5,22 +5,19 @@ Feature: Import invalid products
 
   Scenario: Fail to import malformed prices
     Given the "default" catalog configuration
-    And the following product:
-      | sku         |
-      | honda-civic |
     And the following attributes:
       | label        | type   |
       | Public Price | prices |
-    And the following product values:
-      | product     | attribute   | value |
-      | honda-civic | publicPrice |       |
+    And the following product:
+      | sku         | publicPrice |
+      | honda-civic |             |
     And the following job:
       | connector            | alias              | code                | label                       | type   |
       | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following file to import:
     """
     sku;publicPrice
-    honda-civic;15EUR
+    honda-civic;15
     """
     And the following job "acme_product_import" configuration:
       | filePath          | {{ file to import }} |
@@ -37,4 +34,4 @@ Feature: Import invalid products
     And I launch the import job
     And I wait for the job to finish
     Then there should be 1 product
-    And I should see "Malformed price: \"15EUR\""
+    And I should see "Malformed price: \"15\""

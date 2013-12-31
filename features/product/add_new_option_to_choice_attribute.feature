@@ -6,11 +6,9 @@ Feature: Add a new option to a choice attribute directly from the product edit f
 
   Background:
     Given a "footwear" catalog configuration
-    And a "boots" product
-    And the following product values:
-      | product | attribute          | value |
-      | boots   | size               | 40    |
-      | boots   | weather_conditions | wet   |
+    And the following product:
+      | sku   | size | weather_conditions |
+      | boots | 40   | wet                |
     And I am logged in as "Julia"
     And I am on the "boots" product page
 

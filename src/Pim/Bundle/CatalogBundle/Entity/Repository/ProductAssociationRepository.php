@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Product association repository
@@ -12,16 +12,16 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationRepository extends EntityRepository
+class ProductAssociationRepository extends EntityRepository implements ReferableEntityRepositoryInterface
 {
     /**
-     * Return the number of ProductAssociations for a specific association
+     * Return the number of ProductAssociations for a specific association type
      *
-     * @param Association $association
+     * @param AssociationType $associationType
      *
      * @return mixed
      */
-    public function countForAssociation(Association $association)
+    public function countForAssociationType(AssociationType $associationType)
     {
         $qb = $this->createQueryBuilder('pa');
 
@@ -31,15 +31,46 @@ class ProductAssociationRepository extends EntityRepository
             )
             ->leftJoin('pa.products', 'products')
             ->leftJoin('pa.groups', 'groups')
-            ->where('pa.association = :association')
+            ->where('pa.associationType = :association_type')
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->isNotNull('products'),
                     $qb->expr()->isNotNull('groups')
                 )
             )
-            ->setParameter('association', $association);
+            ->setParameter('association_type', $associationType);
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByReference($code)
+    {
+        list($productCode, $associationCode) = explode('.', $code);
+
+        return $this->createQueryBuilder('pass')
+            ->select('pass')
+            ->innerJoin('pass.owner', 'p')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'at')
+            ->innerJoin('pass.associationType', 'assType')
+            ->where('at.attributeType=:identifier_type')
+            ->andWhere('v.varchar=:product_code')
+            ->andWhere('assType.code=:association_code')
+            ->setParameter('identifier_type', 'pim_catalog_identifier')
+            ->setParameter('product_code', $productCode)
+            ->setParameter('association_code', $associationCode)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceProperties()
+    {
+        return array('owner', 'associationType');
     }
 }

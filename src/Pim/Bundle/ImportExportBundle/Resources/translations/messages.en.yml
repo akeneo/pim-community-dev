@@ -17,9 +17,9 @@ pim_import_export:
         csv_attribute_option_export:
             title: Attribute option export in CSV
             export.title: Attribute option export
-        csv_association_export:
-            title: Association export in CSV
-            export.title: Association export
+        csv_association_type_export:
+            title: Association type export in CSV
+            export.title: Association type export
         csv_group_export:
             title: Group export in CSV
             export.title: Group export
@@ -36,9 +36,9 @@ pim_import_export:
         csv_attribute_option_import:
             title: Attribute option import in CSV
             import.title: Attribute option import
-        csv_association_import:
-            title: Association import in CSV
-            import.title: Association import
+        csv_association_type_import:
+            title: Association type import in CSV
+            import.title: Association type import
         csv_group_import:
             title: Group import in CSV
             import.title: Group import
@@ -118,6 +118,30 @@ pim_import_export:
         withHeader:
             label: With header
             help: Whether or not to print the column name
+
+## Step element titles (for readers, processors, writers) TODO: keys should be refactored
+oro_batch:
+    dummy_reader.title:                  Dummy reader
+    dummy_processor.title:               Dummy processor
+    dummy_writer.title:                  Dummy writer
+    product_reader.title:                Product extraction
+    entity_reader.title:                 Entity extraction
+    csv_reader.title:                    CSV reader
+    csv_product_reader.title:            CSV product reader
+    csv_category_reader.title:           CSV category reader
+    product_processor.title:             Product creation
+    category_processor.title:            Category creation
+    association_processor.title:         Association creation
+    group_processor.title:               Group creation
+    attribute_processor.title:           Attribute creation
+    attribute_option_processor.title:    Attribute option creation
+    product_association_processor.title: Product association creation
+    heterogeneous_processor.title:       CSV product serializer
+    homogeneous_processor.title:         CSV entity serializer
+    file_writer.title:                   Output
+    product_writer.title:                Product storage
+    category_writer.title:               Category storage
+    writer.title:                        Entity storage
 
 # Page titles:
 Import management:        Import management

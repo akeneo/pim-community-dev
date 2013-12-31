@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Flexible product
@@ -448,15 +448,15 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Get the product productAssociation for an Association entity
      *
-     * @param Association $association
+     * @param AssociationType $association
      *
      * @return ProductAssociation|null
      */
-    public function getProductAssociationForAssociation(Association $association)
+    public function getProductAssociationForAssociation(AssociationType $association)
     {
         return $this->productAssociations->filter(
             function ($productAssociation) use ($association) {
-                return $productAssociation->getAssociation() === $association;
+                return $productAssociation->getAssociationType() === $association;
             }
         )->first();
     }
@@ -480,6 +480,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function getReference()
     {
-        return $this->getIdentifier();
+        return $this->getIdentifier()->getData();
     }
 }

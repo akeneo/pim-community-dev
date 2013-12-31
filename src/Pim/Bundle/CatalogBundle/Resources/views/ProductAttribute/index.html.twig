@@ -10,11 +10,13 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        {% set buttons = elements.createBtn('attribute', path('pim_catalog_productattribute_create')) %}
 
-        {{ elements.page_header(title, buttons) }}
+    {% set buttons %}
+        {{ elements.createBtn('attribute', path('pim_catalog_productattribute_create'), null, 'pim_catalog_attribute_create') }}
+    {% endset %}
 
-        <div id="attribute-grid"></div>
-    </div>
+    {{ elements.page_header(title, buttons) }}
+
+    <div id="attribute-grid"></div>
+
 {% endblock %}

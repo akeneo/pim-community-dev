@@ -24,12 +24,8 @@ Feature: Remove attribute from a family
 
   Scenario: Successfully display an attribute as removable on a product when it has been removed from the family
     Given the following products:
-      | sku            | family |
-      | bag-dolce-vita | Bags   |
-    And the following product values:
-      | product        | attribute        | locale | scope | value          |
-      | bag-dolce-vita | Long description |        |       | my description |
-      | bag-dolce-vita | Manufacturer     |        |       | dolce          |
+      | sku            | family | longDescription | manufacturer |
+      | bag-dolce-vita | Bags   | my description  | dolce        |
     And the attribute "Manufacturer" has been removed from the "Bags" family
     When I am on the "bag-dolce-vita" product page
     Then I should see a remove link next to the "Manufacturer" field

@@ -13,20 +13,9 @@
     {% set buttons %}
         {{ elements.createBtn(
             customEntityName,
-            null,
-            { id: "create-" ~ customEntityName, "data-form": "dialog", "data-form-url": path(createRoute, {customEntityName: customEntityName}) }
+            path(createRoute, {customEntityName: customEntityName}),
+            'dialog'
         ) }}
-        <script type="text/javascript">
-            require(
-                ['jquery', 'pim/dialogform'],
-                function ($, dialogForm) {
-                    'use strict';
-                    $(function() {
-                        new dialogForm('#create-{{ customEntityName }}');
-                    });
-                }
-            );
-        </script>
     {% endset %}
 
     {{ elements.page_header(title, buttons, null) }}
