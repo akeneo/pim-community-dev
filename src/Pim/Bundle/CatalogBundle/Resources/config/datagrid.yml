@@ -261,6 +261,13 @@ datagrid:
                     type:      boolean
                     label:     Enabled
                     data_name: p.enabled
+                scope:
+                    type:      choice
+                    label:     Scope
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: @pim_catalog.manager.channel->getChannelChoices
 
     family-grid:
         options:

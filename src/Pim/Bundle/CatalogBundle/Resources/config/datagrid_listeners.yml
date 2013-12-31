@@ -44,7 +44,7 @@ services:
         arguments:
           - [dataLocale, dataScope, localeId, scopeId]
           - @oro_datagrid.datagrid.request_params
-          - @pim_catalog.manager.product 
+          - @pim_catalog.manager.product
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 

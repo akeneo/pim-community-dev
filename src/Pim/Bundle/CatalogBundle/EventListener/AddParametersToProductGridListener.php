@@ -37,7 +37,7 @@ class AddParametersToProductGridListener
     {
         $this->paramNames      = $paramNames;
         $this->requestParams   = $requestParams;
-        $this-> productManager = $productManager;
+        $this->productManager  = $productManager;
     }
 
     /**

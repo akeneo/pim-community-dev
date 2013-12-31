@@ -84,16 +84,14 @@ class ChannelManager
     }
 
     /**
-     * Get channel choices with criterias
+     * Get channel choices
      * Allow to list channels in an array like array[<code>] = <label>
-     *
-     * @param array $criterias
      *
      * @return string[]
      */
-    public function getChannelChoices($criterias = array())
+    public function getChannelChoices()
     {
-        $channels = $this->getChannels($criterias);
+        $channels = $this->getChannels();
 
         $choices = array();
         foreach ($channels as $channel) {
