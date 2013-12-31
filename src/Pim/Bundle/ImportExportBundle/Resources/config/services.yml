@@ -5,7 +5,7 @@ parameters:
     pim_import_export.attribute_cache.class:                         Pim\Bundle\ImportExportBundle\Cache\AttributeCache
     pim_import_export.validator.import.class:                        Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
     pim_import_export.validator.product_import.class:                Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
-    pim_import_export.validator.job_instance_import.class:           Pim\Bundle\ImportExportBundle\Validator\Import\JobInstanceImportValidator
+    pim_import_export.validator.skip_import.class:                   Pim\Bundle\ImportExportBundle\Validator\Import\SkipImportValidator
     pim_import_export.converter.metric.class:                        Pim\Bundle\ImportExportBundle\Converter\MetricConverter
 
 services:
@@ -43,9 +43,8 @@ services:
         arguments:
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
 
-    pim_import_export.validator.job_instance_import:
-        class: %pim_import_export.validator.job_instance_import.class%
-        parent: pim_import_export.validator.import
+    pim_import_export.validator.skip_import:
+        class: %pim_import_export.validator.skip_import.class%
 
     pim_import_export.converter.metric:
         class: %pim_import_export.converter.metric.class%
