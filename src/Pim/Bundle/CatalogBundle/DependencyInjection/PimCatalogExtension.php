@@ -50,6 +50,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         }
 
         $this->loadStorageDriver($config, $container);
+        $this->loadValidationFiles($container);
     }
 
 
@@ -58,7 +59,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
      */
     protected function loadValidationFiles(ContainerBuilder $container)
     {
-        $this->loadValidationFiles($container);
         // load validation files
         $dirs = array();
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
