@@ -28,16 +28,33 @@ class InvalidItemsCollector implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Collect unique invalid items
+     *
+     * @param InvalidItemEvent $event
+     */
     public function collect(InvalidItemEvent $event)
     {
         $this->invalidItems[$this->getHashKey($event->getItem())] = $event->getItem();
     }
 
+    /**
+     * Get invalid items
+     *
+     * @return array
+     */
     public function getInvalidItems()
     {
         return $this->invalidItems;
     }
 
+    /**
+     * Get an unique hash for the given item
+     *
+     * @param array $item
+     *
+     * @return string
+     */
     protected function getHashKey(array $item)
     {
         return md5(serialize($item));

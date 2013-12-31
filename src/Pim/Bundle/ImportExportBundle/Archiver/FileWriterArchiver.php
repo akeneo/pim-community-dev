@@ -54,6 +54,9 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'output';

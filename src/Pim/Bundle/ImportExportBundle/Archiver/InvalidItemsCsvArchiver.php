@@ -27,6 +27,8 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
 
     /**
      * @param InvalidItemsCollector $collector
+     * @param CsvEncoder            $encoder
+     * @param Filesystem            $filesystem
      */
     public function __construct(InvalidItemsCollector $collector, CsvEncoder $encoder, Filesystem $filesystem)
     {

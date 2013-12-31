@@ -85,6 +85,9 @@ class CsvReader extends FileReader implements
     /** @var InvalidItemsCsvArchiver */
     protected $archiver;
 
+    /**
+     * @param InvalidItemsCsvArchiver $archiver
+     */
     public function __construct(InvalidItemsCsvArchiver $archiver)
     {
         $this->archiver = $archiver;

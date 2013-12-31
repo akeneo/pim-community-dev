@@ -14,13 +14,26 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
  */
 class FileReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
+    /** @var string */
     protected $filePath;
 
+    /**
+     * Get the file path
+     *
+     * @return string
+     */
     public function getFilePath()
     {
         return $this->filePath;
     }
 
+    /**
+     * Set the file path
+     *
+     * @param string $filePath
+     *
+     * @return FileReader
+     */
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;

@@ -27,6 +27,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * @param ZipFilesystemFactory $factory
      * @param string               $directory
+     * @param Filesystem           $filesystem
      */
     public function __construct(ZipFilesystemFactory $factory, $directory, Filesystem $filesystem)
     {
@@ -67,6 +68,14 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
         return 'archive';
     }
 
+    /**
+     * Get a fresh zip filesystem for the given job execution
+     *
+     * @param JobExecution $jobExecution
+     * @param string       $zipName
+     *
+     * @return Filesystem
+     */
     protected function getZipFilesystem(JobExecution $jobExecution, $zipName)
     {
         return $this->factory->createZip(
