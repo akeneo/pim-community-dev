@@ -521,22 +521,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $category = $this->createCategory($data['code']);
-            $category->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
-
-            if (!empty($data['parent'])) {
-                $parent = $this->getOrCreateCategory($data['parent']);
-                $category->setParent($parent);
-            }
-
-            if (isset($data['products']) && trim($data['products']) != '') {
-                $skus = explode(',', $data['products']);
-                foreach ($skus as $sku) {
-                    $category->addProduct($this->getOrCreateProduct(trim($sku)));
-                }
-            }
-
-            $this->persist($category);
+            $this->createCategory(array($data));
         }
     }
 
@@ -1439,17 +1424,23 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $code
+     * @param array|string $data
      *
      * @return Category
      */
-    private function createCategory($code)
+    private function createCategory($data)
     {
-        $category = new Category();
-        $category->setCode($code);
-        $this->persist($category);
+        if (is_string($data)) {
+            $data = array(array('code' => $data));
+        }
 
-        return $category;
+        $categories = $this->loadFixture('categories', $data);
+
+        foreach ($categories as $category) {
+            $this->persist($category);
+        }
+
+        return reset($categories);
     }
 
     /**

@@ -17,8 +17,8 @@ Feature: Create a category
 
   Scenario: Create a category node
     Given the following category:
-      | code | label |
-      | shoe | Shoe  |
+      | code | label-en_US |
+      | shoe | Shoe        |
     And I am on the category "shoe" node creation page
     When I fill in the following information:
       | Code | flipflap |
@@ -29,8 +29,8 @@ Feature: Create a category
   @javascript
   Scenario: Go to category creation page from the category tree right click menu
     Given the following category:
-      | code | label | parent  |
-      | shoe | Shoe  | default |
+      | code | label-en_US | parent  |
+      | shoe | Shoe        | default |
     And I am on the categories page
     When I right click on the "Shoe" category
     And I click on "Create" in the right click menu

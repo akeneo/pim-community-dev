@@ -11,10 +11,10 @@ Feature: Classify a product
       | tea    |
       | coffee |
     Given the following categories:
-      | code      | label     | parent    |
-      | beverages | Beverages |           |
-      | hot       | Hot       | beverages |
-      | cold      | Cold      | beverages |
+      | code      | label-en_US | parent    |
+      | beverages | Beverages   |           |
+      | hot       | Hot         | beverages |
+      | cold      | Cold        | beverages |
     And I am logged in as "Julia"
 
   Scenario: Associate a product to categories

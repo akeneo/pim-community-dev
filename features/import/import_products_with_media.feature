@@ -8,9 +8,9 @@ Feature: Import media with products
     And the following families:
       | code     |
       | funboard |
-    And the following categories:
-      | code  | label | parent |
-      | sport | Sport |        |
+    And the following category:
+      | code  | label-en_US |
+      | sport | Sport       |
     And the following attributes:
       | label       | type  | allowed extensions |
       | Name        | text  |                    |

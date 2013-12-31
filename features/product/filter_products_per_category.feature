@@ -13,11 +13,11 @@ Feature: Filter products by category
       | akeneo-mug    |
       | blue-jeans    |
     And the following categories:
-      | code     | parent   | label    | products                   |
-      | catalog  |          | Catalog  |                            |
-      | tshirts  | catalog  | TShirts  | purple-tshirt,green-tshirt |
-      | trousers | catalog  | Trousers |                            |
-      | jeans    | trousers | Jeans    | blue-jeans                 |
+      | code     | parent   | label-en_US | products                   |
+      | catalog  |          | Catalog     |                            |
+      | tshirts  | catalog  | TShirts     | purple-tshirt,green-tshirt |
+      | trousers | catalog  | Trousers    |                            |
+      | jeans    | trousers | Jeans       | blue-jeans                 |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by category
