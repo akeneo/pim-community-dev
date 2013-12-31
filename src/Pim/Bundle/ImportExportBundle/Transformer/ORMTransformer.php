@@ -157,16 +157,15 @@ class ORMTransformer
 
         try {
             $value = $transformerInfo[0]->transform($value, $transformerInfo[1]);
+            if ($transformerInfo[0] instanceof EntityUpdaterInterface) {
+                $transformerInfo[0]->setValue($entity, $columnInfo, $value, $transformerInfo[1]);
+            } else {
+                $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
+            }
         } catch (PropertyTransformerException $ex) {
             return array($ex->getMessageTemplate(), $ex->getMessageParameters());
         }
-
-        if ($transformerInfo[0] instanceof EntityUpdaterInterface) {
-            $transformerInfo[0]->setValue($entity, $columnInfo, $value, $transformerInfo[1]);
-        } else {
-            $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
-        }
-
+        
         $this->transformedColumns[] = $columnInfo;
     }
 
