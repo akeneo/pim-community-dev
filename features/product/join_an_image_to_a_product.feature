@@ -11,7 +11,7 @@ Feature: Join an image to a product
       | Visual | image | jpg                |
     And the following product value:
       | product | attribute | value |
-      | Car     | Visual    |       |
+      | Car     | visual    |       |
     And I am logged in as "admin"
     And I am on the "Car" product page
 

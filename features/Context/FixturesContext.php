@@ -403,7 +403,7 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
-            $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
+            $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
             if ($value) {
                 if ($data['scope']) {
@@ -459,34 +459,12 @@ class FixturesContext extends RawMinkContext
                     }
                 }
             } else {
-                $code = $this->camelize($data['attribute']);
-                $attribute = $this->findAttribute($code);
-                if (!$attribute) {
-                    $code = implode('_', explode(' ', strtolower($data['attribute'])));
-                    $attribute = $this->getAttribute($code);
-                }
+                $attribute = $this->getAttribute($data['attribute']);
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
             $this->getProductManager()->save($product);
         }
-
-        $this->flush();
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $family
-     *
-     * @Given /^the attribute "([^"]*)" has been removed from the "([^"]*)" family$/
-     */
-    public function theAttributeHasBeenRemovedFromTheFamily($attribute, $family)
-    {
-        $code      = $this->camelize($attribute);
-        $attribute = $this->getAttribute($code);
-        $family    = $this->getFamily($family);
-
-        $family->removeAttribute($attribute);
 
         $this->flush();
     }

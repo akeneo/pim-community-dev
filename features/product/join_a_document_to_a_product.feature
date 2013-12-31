@@ -11,7 +11,7 @@ Feature: Join a document to a product
       | Description | file | txt                |
     And the following product value:
       | product | attribute   | value |
-      | Car     | Description |       |
+      | Car     | description |       |
     And I am logged in as "admin"
     And I am on the "Car" product page
 
