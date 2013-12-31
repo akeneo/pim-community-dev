@@ -242,13 +242,8 @@ class FixturesContext extends RawMinkContext
     {
         if (is_string($data)) {
             $data = array('sku' => $data);
-        } elseif (isset($data['enabled'])) {
-            if (in_array($data['enabled'], array('yes', 'no'))) {
-                $data['enabled'] = (int) ($data['enabled'] === 'yes');
-            }
-        }
-        if (isset($data['categories'])) {
-            $data['categories'] = implode(', ', $this->listToArray($data['categories']));
+        } elseif (isset($data['enabled']) && in_array($data['enabled'], array('yes', 'no'))) {
+            $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
         // Clear product transformer cache
