@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -23,13 +24,20 @@ class AddParametersToProductGridListener
     protected $requestParams;
 
     /**
-     * @param array             $paramNames    Parameter name that should be binded to query
-     * @param RequestParameters $requestParams Request params
+     * @var ProductManager
      */
-    public function __construct($paramNames, RequestParameters $requestParams)
+    protected $productManager;
+
+    /**
+     * @param array             $paramNames     Parameter name that should be binded to query
+     * @param RequestParameters $requestParams  Request params
+     * @param ProductManager    $productManager Product manager
+     */
+    public function __construct($paramNames, RequestParameters $requestParams, ProductManager $productManager)
     {
-        $this->paramNames    = $paramNames;
-        $this->requestParams = $requestParams;
+        $this->paramNames      = $paramNames;
+        $this->requestParams   = $requestParams;
+        $this->productManager  = $productManager;
     }
 
     /**
@@ -46,6 +54,10 @@ class AddParametersToProductGridListener
             $queryParameters = array();
             foreach ($this->paramNames as $paramName) {
                 $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
+            }
+            // TODO : how to avoid this inject
+            if (isset($queryParameters['dataLocale'])) {
+                $this->productManager->setLocale($queryParameters['dataLocale']);
             }
 
             $queryBuilder->setParameters($queryParameters);
