@@ -46,6 +46,11 @@ class ColumnInfo implements ColumnInfoInterface
     protected $suffixes;
 
     /**
+     * @var array
+     */
+    protected $rawSuffixes;
+
+    /**
      * @var ProductAttributeInterface
      */
     protected $attribute;
@@ -62,6 +67,7 @@ class ColumnInfo implements ColumnInfoInterface
         $this->name = array_shift($parts);
         $this->propertyPath = lcfirst(Inflector::classify($this->name));
         $this->suffixes = $parts;
+        $this->rawSuffixes = $parts;
     }
 
     /**
@@ -71,40 +77,39 @@ class ColumnInfo implements ColumnInfoInterface
      *
      * @throws ColumnLabelException
      */
-    public function setAttribute(ProductAttributeInterface $attribute)
+    public function setAttribute(ProductAttributeInterface $attribute = null)
     {
-        if ($this->attribute) {
-            if ($this->attribute->getId() === $attribute->getId()) {
-                return;
-            } else {
-                throw new \Exception('Attribute was already set');
-            }
-        }
-
         $this->attribute = $attribute;
-        $this->propertyPath = $attribute->getBackendType();
-        $suffixes = $this->suffixes;
-        if ($attribute->isTranslatable()) {
-            if (count($suffixes)) {
-                $this->locale = array_shift($suffixes);
-            } else {
-                throw new ColumnLabelException(
-                    'The column "%column%" must contain a locale code',
-                    array('%column%' => $this->label)
-                );
+        if (null === $attribute) {
+            $this->locale = null;
+            $this->scope = null;
+            $this->suffixes = $this->rawSuffixes;
+            $this->propertyPath = lcfirst(Inflector::classify($this->name));
+        } else {
+            $this->propertyPath = $attribute->getBackendType();
+            $suffixes = $this->rawSuffixes;
+            if ($attribute->isTranslatable()) {
+                if (count($suffixes)) {
+                    $this->locale = array_shift($suffixes);
+                } else {
+                    throw new ColumnLabelException(
+                        'The column "%column%" must contain a locale code',
+                        array('%column%' => $this->label)
+                    );
+                }
             }
-        }
-        if ($attribute->isScopable()) {
-            if (count($suffixes)) {
-                $this->scope = array_shift($suffixes);
-            } else {
-                throw new ColumnLabelException(
-                    'The column "%column%" must contain a scope code',
-                    array('%column%' => $this->label)
-                );
+            if ($attribute->isScopable()) {
+                if (count($suffixes)) {
+                    $this->scope = array_shift($suffixes);
+                } else {
+                    throw new ColumnLabelException(
+                        'The column "%column%" must contain a scope code',
+                        array('%column%' => $this->label)
+                    );
+                }
             }
+            $this->suffixes = $suffixes;
         }
-        $this->suffixes = $suffixes;
     }
 
     /**
