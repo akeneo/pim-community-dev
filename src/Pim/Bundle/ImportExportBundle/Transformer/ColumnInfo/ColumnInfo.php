@@ -73,6 +73,14 @@ class ColumnInfo implements ColumnInfoInterface
      */
     public function setAttribute(ProductAttributeInterface $attribute)
     {
+        if ($this->attribute) {
+            if ($this->attribute->getId() === $attribute->getId()) {
+                return;
+            } else {
+                throw new \Exception('Attribute was already set');
+            }
+        }
+
         $this->attribute = $attribute;
         $this->propertyPath = $attribute->getBackendType();
         $suffixes = $this->suffixes;
