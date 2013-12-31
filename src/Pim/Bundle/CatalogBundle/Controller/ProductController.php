@@ -168,10 +168,10 @@ class ProductController extends AbstractDoctrineController
             ->getEntityManager()
             ->getRepository('PimCatalogBundle:Channel')
             ->findOneBy(array('code' => $dataScope));
+
         return array(
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $dataLocale,
-            'dataScope'  => $dataScope,
             'localeId'   => $locale->getId(),
             'scopeId'    => $scope->getId()
         );

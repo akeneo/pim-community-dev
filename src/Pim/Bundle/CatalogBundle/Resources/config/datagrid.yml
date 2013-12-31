@@ -262,7 +262,7 @@ datagrid:
                     label:     Enabled
                     data_name: p.enabled
                 scope:
-                    type:      choice
+                    type:      scope
                     label:     Scope
                     data_name: values.scope
                     options:

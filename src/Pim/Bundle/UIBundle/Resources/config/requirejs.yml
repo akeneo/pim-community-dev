@@ -53,7 +53,7 @@ config:
         pim/scopable:                       pimui/js/pim-scopable
         pim/datafilter/currency-filter:     pimfilter/js/datafilter/filter/currency-filter
         pim/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
-        pim/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
+        oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
         pim/tree/associate:                 pimcatalog/js/tree-associate.jstree
         pim/tree/mass-associate:            pimcatalog/js/tree-mass-associate.jstree
         pim/tree/manage:                    pimcatalog/js/tree-manage.jstree

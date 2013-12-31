@@ -195,10 +195,7 @@ class EventListener
     {
         $flexManager = $this->registry->getManager($entityFQCN);
 
-        $rootValue = $this->requestParams->getRootParameterValue();
-        $scope     = isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
-
-        $flexManager->setLocale($this->requestParams->getLocale())->setScope($scope);
+        $flexManager->setLocale($this->requestParams->getLocale());
 
         return $flexManager;
     }

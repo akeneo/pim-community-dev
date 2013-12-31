@@ -29,9 +29,9 @@ class AddParametersToProductGridListener
     protected $productManager;
 
     /**
-     * @param array             $paramNames    Parameter name that should be binded to query
-     * @param RequestParameters $requestParams Request params
-     * @param ProductManager    $productManager
+     * @param array             $paramNames     Parameter name that should be binded to query
+     * @param RequestParameters $requestParams  Request params
+     * @param ProductManager    $productManager Product manager
      */
     public function __construct($paramNames, RequestParameters $requestParams, ProductManager $productManager)
     {
@@ -53,15 +53,11 @@ class AddParametersToProductGridListener
             $queryBuilder = $datasource->getQueryBuilder();
             $queryParameters = array();
             foreach ($this->paramNames as $paramName) {
-                $queryParameters[$paramName]= $this->requestParams->get($paramName, null);
+                $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
             }
             // TODO : how to avoid this inject
             if (isset($queryParameters['dataLocale'])) {
                 $this->productManager->setLocale($queryParameters['dataLocale']);
-            }
-            if (isset($queryParameters['dataScope'])) {
-                $this->productManager->setScope($queryParameters['dataScope']);
-                unset($queryParameters['dataScope']);
             }
 
             $queryBuilder->setParameters($queryParameters);
