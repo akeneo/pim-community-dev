@@ -22,12 +22,20 @@ class CsvCategoryReader extends CsvReader
     /**
      * {@inheritdoc}
      */
+    public function setFilePath($filePath)
+    {
+        parent::setFilePath($filePath);
+        $this->executed = false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function read()
     {
         if ($this->executed) {
             return null;
         }
-
         $this->executed = true;
 
         $data = array();
