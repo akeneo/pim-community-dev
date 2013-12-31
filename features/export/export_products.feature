@@ -7,9 +7,9 @@ Feature: Export products
   Scenario: Successfully export products to multiple channels
     Given an "apparel" catalog configuration
     And the following products:
-      | sku          | family  | categories                                           | price                 | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | 2013_collection, 2014_collection and 2015_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | 2013_collection, 2014_collection and 2015_collection | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family  | categories                                        | price                 | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | 2013_collection, 2014_collection, 2015_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | 2013_collection, 2014_collection, 2015_collection | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
       | product      | attribute   | value                                | locale | scope     |
       | tshirt-white | Name        | White t-shirt                        | en_US  |           |
