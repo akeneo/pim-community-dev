@@ -39,7 +39,9 @@ class AttributeOptionGuesser extends EntityGuesser
      */
     public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if ($this->valueClass != $metadata->getName()) {
+        if ($this->valueClass != $metadata->getName() ||
+            !in_array($columnInfo->getPropertyPath(), array('option', 'options'))
+        ) {
             return;
         }
         $info = parent::getTransformerInfo($columnInfo, $metadata);
