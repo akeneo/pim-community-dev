@@ -49,4 +49,12 @@ class ColumnInfoTransformer implements ColumnInfoTransformerInterface
             ? array_map($transform, $label)
             : $transform($label);
     }
+
+    /**
+     * Clears the cache
+     */
+    public function clearCache()
+    {
+        $this->labels = array();
+    }
 }
