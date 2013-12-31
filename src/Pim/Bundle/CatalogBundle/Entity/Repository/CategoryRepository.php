@@ -114,7 +114,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getNodeQueryBuilder(Category $category)
+    protected function getNodeQueryBuilder(Category $category)
     {
         $qb = $this->createQueryBuilder('ps');
         $qb->where('ps.id = :nodeId')
