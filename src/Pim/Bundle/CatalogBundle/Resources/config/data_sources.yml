@@ -17,6 +17,5 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @oro_security.acl_helper
-            - @pim_catalog.manager.product
         tags:
             - { name: oro_datagrid.datasource, type: orm_product }

@@ -1,11 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Datasource\Orm;
 
-use Doctrine\ORM\EntityManager;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product data source
@@ -22,66 +19,14 @@ class OrmProductDatasource extends OroOrmDatasource
     const TYPE = 'orm_product';
 
     /**
-     * @var ProductManager
-     */
-    protected $productManager;
-
-    /**
-     * Instanciate a product data source
-     *
-     * @param EntityManager  $em
-     * @param AclHelper      $aclHelper
-     * @param ProductManager $productManager
-     */
-    public function __construct(EntityManager $em, AclHelper $aclHelper, ProductManager $productManager)
-    {
-        parent::__construct($em, $aclHelper);
-        $this->productManager = $productManager;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function process(DatagridInterface $grid, array $config)
     {
-//        $this->productManager->setLocale('en_US');
-//        $this->productManager->setScope('mobile');
-
-
         $entity = $config['entity'];
         $repository = $this->em->getRepository($entity);
         $this->qb = $repository->createDatagridQueryBuilder();
 
-/*
-        // TODO : remove the custom data source ?
-
-        // TODO : we should inject in product manager
-        $this->productManager->setLocale('en_US');
-        $this->productManager->setScope('ecommerce');
-
-        $this->qb = $this->em->getRepository('Pim\Bundle\CatalogBundle\Model\Product')
-            ->createQueryBuilder('p');
-        $rootAlias = $this->qb->getRootAlias();
-        $this->qb->addSelect('p');
-
-        $this->qb
-            ->leftJoin($rootAlias.'.values', 'values')
-            ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('values.prices', 'valuePrices')
-            ->leftJoin('values.metric', 'valueMetrics')
-            ->addSelect('values')
-            ->addSelect('valuePrices')
-            ->addSelect('valueOptions')
-            ->addSelect('valueMetrics');
-
-        $familyExpr = "(CASE WHEN familyTrans.label IS NULL THEN family.code ELSE familyTrans.label END)";
-        $this->qb
-            ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'familyTrans', 'WITH', 'familyTrans.locale = :dataLocale')
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr));
-
-        //$this->qb->setParameter('dataLocale', $this->productManager->getLocale());
- */
         $grid->setDatasource(clone $this);
     }
 }
