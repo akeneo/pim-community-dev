@@ -25,11 +25,11 @@ Feature: Expose product data via a REST API
       | sku | price                | color-en_US | color-fr_FR |
       | Car | 10000 EUR, 15000 USD | red         | rouge       |
     And the following product values:
-      | product | attribute         | locale | scope     | value                  |
-      | Car     | Short description | en_US  | mobile    | A nice car             |
-      | Car     | Short description | fr_FR  | mobile    | Une belle voiture      |
-      | Car     | Short description | en_US  | ecommerce | A very nice car        |
-      | Car     | Short description | fr_FR  | ecommerce | Une très belle voiture |
+      | product | attribute        | locale | scope     | value                  |
+      | Car     | shortDescription | en_US  | mobile    | A nice car             |
+      | Car     | shortDescription | fr_FR  | mobile    | Une belle voiture      |
+      | Car     | shortDescription | en_US  | ecommerce | A very nice car        |
+      | Car     | shortDescription | fr_FR  | ecommerce | Une très belle voiture |
     And I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "Car"
     Then the response code should be 200

@@ -7,31 +7,31 @@ Feature: Export products
   Scenario: Successfully export products to multiple channels
     Given an "apparel" catalog configuration
     And the following products:
-      | sku          | family  | categories                                           | price                 | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | 2013_collection, 2014_collection and 2015_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | 2013_collection, 2014_collection and 2015_collection | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family  | categories                                        | price                 | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | 2013_collection, 2014_collection, 2015_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | 2013_collection, 2014_collection, 2015_collection | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
       | product      | attribute   | value                                | locale | scope     |
-      | tshirt-white | Name        | White t-shirt                        | en_US  |           |
-      | tshirt-white | Name        | White t-shirt                        | en_GB  |           |
-      | tshirt-white | Name        | T-shirt blanc                        | fr_FR  |           |
-      | tshirt-white | Name        | Weißes T-Shirt                       | de_DE  |           |
-      | tshirt-white | Description | A stylish white t-shirt              | en_US  | ecommerce |
-      | tshirt-white | Description | An elegant white t-shirt             | en_GB  | ecommerce |
-      | tshirt-white | Description | Un T-shirt blanc élégant             | fr_FR  | ecommerce |
-      | tshirt-white | Description | Ein elegantes weißes T-Shirt         | de_DE  | ecommerce |
-      | tshirt-white | Description | A really stylish white t-shirt       | en_US  | print     |
-      | tshirt-white | Description | Ein sehr elegantes weißes T-Shirt    | de_DE  | print     |
-      | tshirt-black | Name        | Black t-shirt                        | en_US  |           |
-      | tshirt-black | Name        | Black t-shirt                        | en_GB  |           |
-      | tshirt-black | Name        | T-shirt noir                         | fr_FR  |           |
-      | tshirt-black | Name        | Schwarzes T-Shirt                    | de_DE  |           |
-      | tshirt-black | Description | A stylish black t-shirt              | en_US  | ecommerce |
-      | tshirt-black | Description | An elegant black t-shirt             | en_GB  | ecommerce |
-      | tshirt-black | Description | Un T-shirt noir élégant              | fr_FR  | ecommerce |
-      | tshirt-black | Description | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
-      | tshirt-black | Description | A really stylish black t-shirt       | en_US  | print     |
-      | tshirt-black | Description | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
+      | tshirt-white | name        | White t-shirt                        | en_US  |           |
+      | tshirt-white | name        | White t-shirt                        | en_GB  |           |
+      | tshirt-white | name        | T-shirt blanc                        | fr_FR  |           |
+      | tshirt-white | name        | Weißes T-Shirt                       | de_DE  |           |
+      | tshirt-white | description | A stylish white t-shirt              | en_US  | ecommerce |
+      | tshirt-white | description | An elegant white t-shirt             | en_GB  | ecommerce |
+      | tshirt-white | description | Un T-shirt blanc élégant             | fr_FR  | ecommerce |
+      | tshirt-white | description | Ein elegantes weißes T-Shirt         | de_DE  | ecommerce |
+      | tshirt-white | description | A really stylish white t-shirt       | en_US  | print     |
+      | tshirt-white | description | Ein sehr elegantes weißes T-Shirt    | de_DE  | print     |
+      | tshirt-black | name        | Black t-shirt                        | en_US  |           |
+      | tshirt-black | name        | Black t-shirt                        | en_GB  |           |
+      | tshirt-black | name        | T-shirt noir                         | fr_FR  |           |
+      | tshirt-black | name        | Schwarzes T-Shirt                    | de_DE  |           |
+      | tshirt-black | description | A stylish black t-shirt              | en_US  | ecommerce |
+      | tshirt-black | description | An elegant black t-shirt             | en_GB  | ecommerce |
+      | tshirt-black | description | Un T-shirt noir élégant              | fr_FR  | ecommerce |
+      | tshirt-black | description | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
+      | tshirt-black | description | A really stylish black t-shirt       | en_US  | print     |
+      | tshirt-black | description | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page

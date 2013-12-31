@@ -22,14 +22,14 @@ Feature: Convert metric values during export
       | tshirt-white | tshirts | 2014_collection | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | 60 CELSIUS          | 5 KILOGRAM | cotton   |
     And the following product values:
       | product      | attribute   | value                        | locale | scope     |
-      | tshirt-white | Name        | White t-shirt                | en_US  |           |
-      | tshirt-white | Name        | White t-shirt                | en_GB  |           |
-      | tshirt-white | Name        | T-shirt blanc                | fr_FR  |           |
-      | tshirt-white | Name        | Weißes T-Shirt               | de_DE  |           |
-      | tshirt-white | Description | A stylish white t-shirt      | en_US  | ecommerce |
-      | tshirt-white | Description | An elegant white t-shirt     | en_GB  | ecommerce |
-      | tshirt-white | Description | Un T-shirt blanc élégant     | fr_FR  | ecommerce |
-      | tshirt-white | Description | Ein elegantes weißes T-Shirt | de_DE  | ecommerce |
+      | tshirt-white | name        | White t-shirt                | en_US  |           |
+      | tshirt-white | name        | White t-shirt                | en_GB  |           |
+      | tshirt-white | name        | T-shirt blanc                | fr_FR  |           |
+      | tshirt-white | name        | Weißes T-Shirt               | de_DE  |           |
+      | tshirt-white | description | A stylish white t-shirt      | en_US  | ecommerce |
+      | tshirt-white | description | An elegant white t-shirt     | en_GB  | ecommerce |
+      | tshirt-white | description | Un T-shirt blanc élégant     | fr_FR  | ecommerce |
+      | tshirt-white | description | Ein elegantes weißes T-Shirt | de_DE  | ecommerce |
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
