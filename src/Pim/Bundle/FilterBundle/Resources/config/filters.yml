@@ -2,7 +2,7 @@ parameters:
     pim_filter.scope_filter.class: Pim\Bundle\FilterBundle\Filter\ScopeFilter
 
 services:
-    oro_filter.choice_filter:
+    pim_filter.scope_filter:
         class: %pim_filter.scope_filter.class%
         arguments:
             - @form.factory
