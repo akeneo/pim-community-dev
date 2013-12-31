@@ -301,28 +301,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string    $family
-     * @param TableNode $table
-     *
-     * @Given /^the family "([^"]*)" has the following attributes?:$/
-     */
-    public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
-    {
-        $family = $this->getFamily($family);
-
-        foreach ($table->getHash() as $data) {
-            $code = $this->camelize($data['label']);
-            $attribute = $this->getAttribute($code);
-            $family->addAttribute($attribute);
-            if ('yes' === $data['attribute as label']) {
-                $family->setAttributeAsLabel($attribute);
-            }
-        }
-
-        $this->flush();
-    }
-
-    /**
      * @param string $entityName
      *
      * @Given /^there is no (.*)$/
