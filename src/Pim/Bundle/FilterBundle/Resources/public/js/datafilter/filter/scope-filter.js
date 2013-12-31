@@ -23,13 +23,6 @@ define(
             contextSearch: false,
 
             /**
-             * @override
-             * @property {Boolean}
-             * @see Oro.Filter.SelectFilter
-             */
-            populateDefault: false,
-
-            /**
              * @inheritDoc
              */
             disable: function () {

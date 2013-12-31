@@ -76,6 +76,17 @@ class ScopeFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
+    public function getMetadata()
+    {
+        $metadata = parent::getMetadata();
+        $metadata['populateDefault'] = false;
+
+        return $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getFormType()
     {
         return ScopeFilterType::NAME;
