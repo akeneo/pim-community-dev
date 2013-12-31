@@ -49,7 +49,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             $loader->load('mail_recorder.yml');
         }
 
-        $this->loadValidationFiles($container);
         $this->loadStorageDriver($config, $container);
     }
 
@@ -59,6 +58,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
      */
     protected function loadValidationFiles(ContainerBuilder $container)
     {
+        $this->loadValidationFiles($container);
         // load validation files
         $dirs = array();
         foreach ($container->getParameter('kernel.bundles') as $bundle) {

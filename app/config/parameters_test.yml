@@ -1,0 +1,29 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     akeneo_pim_test
+    database_user:     root
+    database_password: root
+
+    mailer_transport:  smtp
+    mailer_host:       localhost
+    mailer_user:       ~
+    mailer_password:   ~
+
+    # WebSocket server config
+    websocket_host:    "127.0.0.1"
+    websocket_port:    8080
+
+    session_handler:   ~
+
+    locale:            en_US
+    default_locale:    default
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    upload_dir:        %kernel.root_dir%/uploads_test/product
+
+    installed:         true
+
+    installer_data:    PimInstallerBundle:demo_dev
+    # use PimInstallerBundle:minimal for minimal data set

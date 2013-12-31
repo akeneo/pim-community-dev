@@ -49,9 +49,5 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->container->getServiceIds());
         $this->extension->load($this->configs, $this->container);
         $this->assertGreaterThanOrEqual(1, $this->container->getServiceIds());
-
-        // assert validation configuration
-        $yamlMappingFiles = $this->container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
-        $this->assertGreaterThanOrEqual(5, count($yamlMappingFiles));
     }
 }
