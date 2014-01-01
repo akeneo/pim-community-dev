@@ -82,7 +82,7 @@ class ORMProductTransformer extends ORMTransformer
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
-     * @paral CachedReader                   $cachedReader
+     * @param CachedReader                   $associationReader
      */
     public function __construct(
         RegistryInterface $doctrine,
