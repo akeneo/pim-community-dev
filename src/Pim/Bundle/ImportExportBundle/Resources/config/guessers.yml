@@ -151,7 +151,7 @@ services:
         arguments:
             - '@pim_import_export.transformer.property.entity'
             - %pim_catalog.entity.category.class%
-            - ['/^product/']
+            - ['/^products/']
             - { class: %pim_catalog.entity.product.class%, multiple: true }
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
