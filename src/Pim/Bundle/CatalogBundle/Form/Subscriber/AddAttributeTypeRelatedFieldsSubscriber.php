@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -149,7 +148,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
                 'collection',
                 null,
                 array(
-                    'type'            => new AttributeOptionType(),
+                    'type'            => 'pim_catalog_attribute_option',
                     'allow_add'       => true,
                     'allow_delete'    => true,
                     'by_reference'    => false,
