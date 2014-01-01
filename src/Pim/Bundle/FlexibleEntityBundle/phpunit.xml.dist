@@ -17,7 +17,7 @@
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
-    
+
     <filter>
         <whitelist>
             <directory suffix=".php">.</directory>
@@ -27,5 +27,5 @@
             </exclude>
         </whitelist>
     </filter>
-    
+
 </phpunit>

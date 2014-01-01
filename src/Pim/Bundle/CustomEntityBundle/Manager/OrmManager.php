@@ -41,7 +41,7 @@ class OrmManager implements OrmManagerInterface
      */
     public function create($entityClass, array $defaultValues = array(), array $options = array())
     {
-        $object = new $entityClass;
+        $object = new $entityClass();
         foreach ($defaultValues as $propertyPath => $value) {
             $this->propertyAccessor->setValue($object, $propertyPath, $value);
         }

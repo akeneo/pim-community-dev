@@ -165,7 +165,7 @@ class ORMTransformer
         } catch (PropertyTransformerException $ex) {
             return array($ex->getMessageTemplate(), $ex->getMessageParameters());
         }
-        
+
         $this->transformedColumns[] = $columnInfo;
     }
 
