@@ -330,6 +330,10 @@ datagrid:
                     options:
                         field_options:
                             choices: @pim_catalog.manager.channel->getChannelChoices
+                category:
+                    type:      category
+                    label:     Category
+                    data_name: category
 
     family-grid:
         options:

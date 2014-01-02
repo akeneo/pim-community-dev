@@ -31,8 +31,8 @@
     #}
     <script type="text/javascript">
         require(
-            ['jquery', 'oro/mediator', 'pim/tree/view', 'jquery.sidebarize'],
-            function ($, mediator, TreeView){
+            ['jquery', 'oro/mediator', 'jquery.sidebarize'],
+            function ($, mediator) {
                 'use strict';
 
                 // Move scope filter to the proper location and remove it from the 'Manage filters' selector
@@ -46,6 +46,7 @@
                     $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
 
                     $('#add-filter-select').find('option[value="scope"]').remove();
+                    $('#add-filter-select').find('option[value="category"]').remove();
                     $('#add-filter-select').multiselect('refresh');
                 }
 
@@ -54,7 +55,6 @@
                 $(function() {
                     moveScopeFilter();
                     $('.has-sidebar').sidebarize();
-                    new TreeView('#tree');
                 });
             }
         );
@@ -98,7 +98,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale }}" data-node-id="{{ app.request.get("categoryId") }}" data-tree-id="{{ app.request.get("treeId") }}" data-include-sub="{{ app.request.get("includeSub") }}"></div>
+        <div id="tree" data-datalocale="{{ dataLocale }}"></div>
         <div id="product-grid">
             {{ dataGrid.renderGrid('product-grid', { dataLocale: dataLocale, localeId: localeId, scopeId: scopeId }) }}
         </div>

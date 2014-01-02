@@ -1,5 +1,6 @@
 parameters:
-    pim_filter.scope_filter.class: Pim\Bundle\FilterBundle\Filter\ScopeFilter
+    pim_filter.scope_filter.class:    Pim\Bundle\FilterBundle\Filter\ScopeFilter
+    pim_filter.category_filter.class: Pim\Bundle\FilterBundle\Filter\CategoryFilter
 
 services:
     pim_filter.scope_filter:
@@ -11,3 +12,13 @@ services:
             - @pim_catalog.manager.channel
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: scope }
+
+    pim_filter.category_filter:
+        class: %pim_filter.category_filter.class%
+        arguments:
+            - @form.factory
+            - @oro_filter.filter_utility
+            - @pim_catalog.manager.product
+            - @pim_catalog.manager.category
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: category }
