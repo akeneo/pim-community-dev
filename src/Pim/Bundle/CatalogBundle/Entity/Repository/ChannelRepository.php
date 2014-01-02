@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
+
 /**
  * Channel repository
  * Define a default sort order by label
@@ -10,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelRepository extends ReferableEntityRepository
+class ChannelRepository extends ReferableEntityRepository implements DataGridRepositoryInterface
 {
     /**
      * {@inheritdoc}

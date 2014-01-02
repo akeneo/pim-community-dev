@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
 
 /**
  * Repository
@@ -11,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyRepository extends ReferableEntityRepository
+class FamilyRepository extends ReferableEntityRepository implements DataGridRepositoryInterface
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder

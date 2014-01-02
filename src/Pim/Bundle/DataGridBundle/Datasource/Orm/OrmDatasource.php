@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource As OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -19,8 +20,6 @@ class OrmDatasource extends OroOrmDatasource
      */
     const TYPE = 'pim_orm';
 
-    // TODO: how to get extra info as current locale, current scope ? introduce a new service by default ?
-
     /**
      * {@inheritDoc}
      */
@@ -32,8 +31,7 @@ class OrmDatasource extends OroOrmDatasource
 
         $entity = $config['entity'];
         $repository = $this->em->getRepository($entity);
-        // TODO: could be replaced by an interface
-        if (method_exists($repository, 'createDatagridQueryBuilder')) {
+        if ($repository instanceof DatagridRepositoryInterface) {
             $this->qb = $repository->createDatagridQueryBuilder();
         } else {
             $this->qb = $repository->createQueryBuilder('o');

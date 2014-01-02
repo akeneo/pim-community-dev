@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
 
 /**
  * Product repository
@@ -19,7 +20,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    DatagridRepositoryInterface
 {
     /**
      * @var string
