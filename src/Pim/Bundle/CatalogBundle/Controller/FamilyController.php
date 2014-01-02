@@ -26,7 +26,6 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Family controller
@@ -37,11 +36,6 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
  */
 class FamilyController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var ChannelManager
      */
@@ -88,7 +82,6 @@ class FamilyController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelManager           $channelManager
      * @param LocaleManager            $localeManager
      * @param FamilyFactory            $factory
@@ -106,7 +99,6 @@ class FamilyController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
         LocaleManager $localeManager,
         FamilyFactory $factory,
@@ -126,7 +118,6 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper      = $datagridHelper;
         $this->channelManager      = $channelManager;
         $this->localeManager       = $localeManager;
         $this->factory             = $factory;
