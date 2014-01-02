@@ -7,7 +7,11 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Translation transformer
+ * Nested translation transformer
+ * 
+ * The following options are required:
+ * 
+ * - propertyPath: the name of the translated property
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

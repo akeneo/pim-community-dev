@@ -6,7 +6,16 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
- * Transform entity codes in entity arrays
+ * Transform entity codes in entity / entity arrays
+ * 
+ * The following options are required:
+ * 
+ * - class:             the class of the related entity
+ * 
+ * The following options are optional:
+ * 
+ * - multiple:          set to true to return an array of entities
+ * - reference_prefix:  a string to be prepended to the entity references
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
