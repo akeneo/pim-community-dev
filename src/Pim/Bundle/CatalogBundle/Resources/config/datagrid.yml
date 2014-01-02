@@ -3,7 +3,7 @@ datagrid:
         options:
             entityHint: association
         source:
-            acl_resource: pim_catalog_association_index
+            acl_resource: pim_catalog_association_type_index
             type: pim_orm
             entity: %pim_catalog.entity.association_type.class%
         columns:
@@ -15,12 +15,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_association_edit
+                route: pim_catalog_association_type_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_association_remove
+                route: pim_catalog_association_type_remove
                 params:
                     - id
         actions:
@@ -49,6 +49,61 @@ datagrid:
                     type:      string
                     label:     Code
                     data_name: a.code
+                label:
+                    type: string
+                    label: Label
+                    data_name: translation.label
+
+    group-type-grid:
+        options:
+            entityHint: grouptype
+        source:
+            acl_resource: pim_catalog_group_type_index
+            type: pim_orm
+            entity: %pim_catalog.entity.group_type.class%
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_group_type_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_group_type_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: g.code
+                label:
+                    data_name: label
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: g.code
                 label:
                     type: string
                     label: Label
