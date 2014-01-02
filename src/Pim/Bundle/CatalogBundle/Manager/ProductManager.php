@@ -368,7 +368,6 @@ class ProductManager extends FlexibleManager
                 $association->setAssociationType($associationType);
                 $product->addAssociation($association);
             }
-            $this->objectManager->flush();
         }
     }
 
