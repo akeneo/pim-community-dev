@@ -148,7 +148,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
                 $product->removeCategory($this);
             }
         }
-      
+
         if (null !== $products) {
             foreach ($products as $product) {
                 $product->addCategory($this);

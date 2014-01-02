@@ -469,8 +469,8 @@ class ProductManager extends FlexibleManager
      * or with its children with the direct parameter
      * The third parameter allow to include the actual node or not
      *
-     * @param CategoryInterface $category        the requested category node
-     * @param boolean           $inChildren      true to include children in count
+     * @param CategoryInterface $category   the requested category node
+     * @param boolean           $inChildren true to include children in count
      * @param boolean           $inProvided true to include the provided none to count product
      *
      * @return integer
@@ -492,7 +492,7 @@ class ProductManager extends FlexibleManager
      * You can define if you just want to get the property of the actual node or with its children with the direct
      * parameter
      *
-     * @param CategoryInterface $category the requested node
+     * @param CategoryInterface $category   the requested node
      * @param boolean           $inChildren true to take children not into account
      *
      * @return array
