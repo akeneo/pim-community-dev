@@ -135,19 +135,32 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
         }
 
         if ($this->homogenize) {
-            $labels = array();
-            foreach ($fileData as $row) {
-                $labels = array_unique(array_merge($labels, array_keys($row)));
-            }
-            foreach ($fileData as $key => $row) {
-                $missing = array_diff($labels, array_keys($row));
-                foreach ($missing as $label) {
-                    $fileData[$key][$label] = null;
-                }
-            }
+            $fileData = $this->homogenizeData($fileData);
         }
 
         return $this->multiple ? array($fileData) : $fileData;
+    }
+
+    /**
+     * Homogenize the read data
+     *
+     * @param  array $data
+     * @return array
+     */
+    protected function homogenizeData($data)
+    {
+        $labels = array();
+        foreach ($data as $row) {
+            $labels = array_unique(array_merge($labels, array_keys($row)));
+        }
+        foreach ($data as $key => $row) {
+            $data[$key] += array_fill_keys(
+                array_diff($labels, array_keys($row)),
+                null
+            );
+        }
+
+        return $data;
     }
 
     /**

@@ -1,0 +1,8 @@
+entities:
+    entity1:
+        key1: value1
+    entity2:
+        key1: value2
+        key2: value3
+    entity3:
+        key1: value4
