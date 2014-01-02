@@ -213,13 +213,13 @@ datagrid:
                             choices: @pim_catalog.manager.category->getTrees
 
     product-grid:
-        # TODO: useless ?
+        # TODO: useless config ?
         flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
         source:
             acl_resource: pim_catalog_product_index
-            type: orm_product
+            type: pim_orm
             entity: %pim_catalog.entity.product.class%
         columns:
             family:

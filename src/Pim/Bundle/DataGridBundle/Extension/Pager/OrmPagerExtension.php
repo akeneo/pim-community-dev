@@ -22,6 +22,26 @@ class OrmPagerExtension extends OroOrmPagerExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
+        return $this->matchDatasource($config) && !$this->isFlexible($config);
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     *
+     * @return boolean
+     */
+    protected function matchDatasource(DatagridConfiguration $config)
+    {
         return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     *
+     * @return boolean
+     */
+    protected function isFlexible(DatagridConfiguration $config)
+    {
+        return isset($config['flexible_entity']);
     }
 }

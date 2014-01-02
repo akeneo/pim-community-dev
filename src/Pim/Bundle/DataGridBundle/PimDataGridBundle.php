@@ -3,6 +3,8 @@
 namespace Pim\Bundle\DataGridBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 
 /**
  * Pim DataGrid Bundle
@@ -13,4 +15,14 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimDataGridBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container
+            ->addCompilerPass(new Compiler\AddFilterTypesPass());
+    }
 }
