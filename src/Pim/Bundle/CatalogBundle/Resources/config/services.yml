@@ -132,6 +132,7 @@ services:
         class: Pim\Bundle\CatalogBundle\Twig\CategoryExtension
         arguments:
             - '@pim_catalog.manager.category'
+            - '@pim_catalog.manager.product'
         tags:
             - { name: twig.extension }
 

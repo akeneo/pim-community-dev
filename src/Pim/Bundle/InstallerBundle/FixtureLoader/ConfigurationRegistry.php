@@ -120,6 +120,14 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         return $this->getFixtureService('reader', $name, $extension);
     }
 
+    /**
+     * Get a configuration property
+     *
+     * @param string $name
+     * @param string $property
+     *
+     * @return string
+     */
     protected function getConfigProperty($name, $property)
     {
         $config = $this->getConfiguration();

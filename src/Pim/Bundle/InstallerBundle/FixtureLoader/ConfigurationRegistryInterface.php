@@ -41,6 +41,8 @@ interface ConfigurationRegistryInterface
     /**
      * Returns true if the reader returns multiple files
      *
+     * @param string $name
+     *
      * @return boolean
      */
     public function isMultiple($name);

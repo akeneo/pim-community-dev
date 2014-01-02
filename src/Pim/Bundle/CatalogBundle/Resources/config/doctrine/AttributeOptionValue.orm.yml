@@ -13,6 +13,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
             column: locale_code
         value:
             type: string
+            nullable: true
             length: 100
     manyToOne:
         option:

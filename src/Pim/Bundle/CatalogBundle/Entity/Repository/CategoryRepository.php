@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 /**
  * Category repository
  * Override SegmentRepository of OroSegmentationTreeBundle
- *     Allow to count products linked to nodes
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,33 +26,6 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
     public function getTreesQB()
     {
         return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
-    }
-
-    /**
-     * Count products linked to a node.
-     * You can define if you just want to get the property of the actual node
-     * or with its children with the direct parameter
-     * The third parameter allow to include the actual node or not
-     *
-     * @param Category $category    the requested node
-     * @param boolean  $onlyActual  true to take only actual node
-     * @param boolean  $includeNode true to include actual node in query result
-     *
-     * @return integer
-     */
-    public function countProductsLinked(Category $category, $onlyActual = true, $includeNode = true)
-    {
-        $qb = ($onlyActual) ?
-            $this->getNodeQueryBuilder($category) :
-            $this->getAllChildrenQueryBuilder($category, $includeNode);
-
-        $rootAlias = $qb->getRootAliases();
-        $firstRootAlias = $rootAlias[0];
-
-        $qb->select($qb->expr()->count('distinct p'))
-            ->join($firstRootAlias .'.products', 'p');
-
-        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -76,76 +48,6 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
         $qb->select($qb->expr()->count($firstRootAlias));
 
         return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Get product ids linked to a node or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param integer $categoryId   the requested node
-     * @param boolean $withChildren true to take only actual node
-     *
-     * @return array
-     */
-    public function getLinkedProductIds($categoryId, $withChildren = true)
-    {
-        $category = $this->find($categoryId);
-
-        $qb = ($withChildren) ?
-            $this->getAllChildrenQueryBuilder($category, $withChildren) :
-            $this->getNodeQueryBuilder($category);
-
-        $rootAlias = $qb->getRootAliases();
-        $firstRootAlias = $rootAlias[0];
-
-        $qb->select('p.id')->join($firstRootAlias .'.products', 'p');
-
-        $products = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        $productIds = array();
-        foreach ($products as $product) {
-            $productIds[] = $product['id'];
-        }
-        $productIds = array_unique($productIds);
-
-        return $productIds;
-    }
-
-    /**
-     * Return the number of times the product is present in each tree
-     *
-     * @param ProductInterface $product The product to look for in the trees
-     *
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'productsCount'=>integer
-     */
-    public function getProductsCountByTree(ProductInterface $product)
-    {
-        $meta = $this->getClassMetadata();
-        $config = $this->listener->getConfiguration($this->_em, $meta->name);
-
-        $nodeTable = $config['useObjectClass'];
-
-        $dql = "SELECT tree, COUNT(product.id)".
-               "  FROM $nodeTable tree".
-               "  JOIN $nodeTable category".
-               "  WITH category.root = tree.id".
-               "  LEFT JOIN category.products product".
-               " WHERE (product.id = :productId OR product.id IS NULL)".
-               " GROUP BY tree.id";
-
-        $query = $this->_em->createQuery($dql);
-        $query->setParameter('productId', $product->getId());
-
-        $rawTrees = $query->getResult();
-        $trees = array();
-        $treeKeys = array('tree', 'productsCount');
-
-        foreach ($rawTrees as $rawTree) {
-            $trees[] = array_combine($treeKeys, $rawTree);
-        }
-
-        return $trees;
-
     }
 
     /**
@@ -229,7 +131,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getAllChildrenQueryBuilder(Category $category, $includeNode = false)
+    public function getAllChildrenQueryBuilder(Category $category, $includeNode = false)
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }

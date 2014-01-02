@@ -361,7 +361,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
+        $trees    = $this->productManager->getFlexibleRepository()->getProductCountByTree($product);
 
         return array(
             'form'             => $form->createView(),

@@ -15,7 +15,7 @@ class CachedReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
-        $reader = new CachedReader;
+        $reader = new CachedReader();
         $data = array(
             'row1' => array('key1' => 'value1', 'key2' => 'value2'),
             'row2' => array('key1' => 'value3', 'key2' => 'value4'),

@@ -107,7 +107,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => ClassMetadataInfo::MANY_TO_MANY))
             );
 
-        $repository = new \stdClass;
+        $repository = new \stdClass();
         $this->doctrine->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('target_entity'))

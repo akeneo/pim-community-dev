@@ -383,7 +383,7 @@ class FixturesContext extends RawMinkContext
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
-            if ($value) {
+            if ($value && $value->getAttribute()->getBackendType() !== 'media') {
                 if ($data['scope']) {
                     $value->setScope($data['scope']);
                 }

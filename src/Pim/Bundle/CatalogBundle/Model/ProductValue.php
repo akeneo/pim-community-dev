@@ -237,6 +237,8 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Adds a price for the given currency, or returns the existing price
      *
+     * @param string $currency
+     *
      * @return ProductPrice
      */
     public function addPriceForCurrency($currency)

@@ -29,7 +29,8 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Constructor
      *
-     * @param array $measures
+     * @param PropertyAccessorInterface $propertyAccessor
+     * @param array                     $measures
      */
     public function __construct(PropertyAccessorInterface $propertyAccessor, $measures)
     {

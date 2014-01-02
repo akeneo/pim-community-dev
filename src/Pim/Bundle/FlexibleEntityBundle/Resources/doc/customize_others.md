@@ -3,10 +3,10 @@ Add some behavior related to flexible
 
 - use event / subscriber to plug custom code, notice that bundle define some custom events on global dispatcher
 - if needed, you can retrieve relevant flexible manager from entity full qualified class name as :
- 
+
 ```php
 <?php
-// get manager from registry 
+// get manager from registry
 $registry = $this->container->get('pim_flexibleentity.registry');
 $registry->getManagers();
 $registry->getEntityToManager();
