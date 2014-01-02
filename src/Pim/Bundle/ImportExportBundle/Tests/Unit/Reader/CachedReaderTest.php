@@ -39,4 +39,10 @@ class CachedReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($reader->read());
     }
+
+    public function testGetConfigurationFields()
+    {
+        $reader = new CachedReader;
+        $this->assertEquals(array(), $reader->getConfigurationFields());
+    }
 }

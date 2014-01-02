@@ -69,39 +69,6 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     }
 
     /**
-     * Get file path
-     * @return string $filePath
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * Get the code field
-     *
-     * @return string
-     */
-    public function getCodeField()
-    {
-        return $this->codeField;
-    }
-
-    /**
-     * Set the code field
-     *
-     * @param string $codeField
-     *
-     * @return YamlReader
-     */
-    public function setCodeField($codeField)
-    {
-        $this->codeField = $codeField;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function read()

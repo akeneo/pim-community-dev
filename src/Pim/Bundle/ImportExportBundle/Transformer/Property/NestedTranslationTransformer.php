@@ -8,9 +8,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Nested translation transformer
- * 
+ *
  * The following options are required:
- * 
+ *
  * - propertyPath: the name of the translated property
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
