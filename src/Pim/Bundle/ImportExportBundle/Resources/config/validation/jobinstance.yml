@@ -1,3 +1,0 @@
-Oro\Bundle\BatchBundle\Entity\JobInstance:
-    constraints:
-        - Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance:

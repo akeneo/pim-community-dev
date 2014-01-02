@@ -39,13 +39,5 @@ class PimImportExportExtension extends Extension
         $loader->load('transformers.yml');
         $loader->load('guessers.yml');
         $loader->load('entities.yml');
-
-        // load validation files
-        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
-        $finder = new Finder();
-        foreach ($finder->files()->in(__DIR__ . '/../Resources/config/validation') as $file) {
-            $yamlMappingFiles[] = $file->getRealPath();
-        }
-        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
     }
 }
