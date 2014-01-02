@@ -51,6 +51,10 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
      */
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
+        if (!isset($options['propertyPath'])) {
+            throw new \InvalidArgumentException('propertyPath option is required');
+        }
+
         foreach ($data as $locale => $value) {
             $object->setLocale($locale);
             $this->propertyAccessor->setValue($object, 'translation.'.$options['propertyPath'], $value);

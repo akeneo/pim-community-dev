@@ -66,4 +66,14 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
             array('propertyPath' => 'key')
         );
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage propertyPath option is required
+     */
+    public function testNoPropertyPath()
+    {
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $this->transformer->setValue(new \stdClass, $columnInfo, array());
+    }
 }

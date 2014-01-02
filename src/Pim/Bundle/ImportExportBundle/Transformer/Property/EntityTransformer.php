@@ -43,6 +43,9 @@ class EntityTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        if (!isset($options['class'])) {
+            throw new \InvalidArgumentException('class option is required');
+        }
         if (is_scalar($value)) {
             $value = trim($value);
         }
