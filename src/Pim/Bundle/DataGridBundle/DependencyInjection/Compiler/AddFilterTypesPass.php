@@ -26,28 +26,13 @@ class AddFilterTypesPass implements CompilerPassInterface
     const TAG_NAME            = 'oro_filter.extension.orm_filter.filter';
 
     /**
-     * @var string
-     */
-    const PRODUCT_TAG_NAME    = 'oro_filter.extension.orm_product_filter.filter';
-
-    /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        /**
-         * Find and add available filters to extension
-         */
         $extension = $container->getDefinition(self::FILTER_EXTENSION_ID);
         if ($extension) {
-            // add base filters
             $filters = $container->findTaggedServiceIds(self::TAG_NAME);
-            foreach ($filters as $serviceId => $tags) {
-                $tagAttrs = reset($tags);
-                $extension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
-            // add flexible filters
-            $filters = $container->findTaggedServiceIds(self::PRODUCT_TAG_NAME);
             foreach ($filters as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
                 $extension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
