@@ -101,7 +101,7 @@ class AssociationGroupDatagridManager extends DatagridManager
     protected function getProduct()
     {
         if (!$this->product) {
-            throw new \LogicException('Product association datagrid manager has no configured product');
+            throw new \LogicException('Association datagrid manager has no configured product');
         }
 
         return $this->product;
@@ -237,7 +237,7 @@ class AssociationGroupDatagridManager extends DatagridManager
             ->leftJoin($rootAlias . '.type', 'type')
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin(
-                'PimCatalogBundle:ProductAssociation',
+                'PimCatalogBundle:Association',
                 'pa',
                 'WITH',
                 sprintf(

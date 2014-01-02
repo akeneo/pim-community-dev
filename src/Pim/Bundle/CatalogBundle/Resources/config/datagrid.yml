@@ -142,7 +142,7 @@ services:
               entity_name: %pim_catalog.entity.product.class%
               entity_hint: product
               flexible: true
-              route_name: pim_catalog_product_list_product_associations
+              route_name: pim_catalog_product_list_associations
               cache_disabled: true
         calls:
             - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
