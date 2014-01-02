@@ -39,4 +39,34 @@ class TranslationTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = new TranslationTransformer($propertyAccessor);
         $transformer->setValue($object, $column, 'value');
     }
+
+    public function testSetValueWithLocale()
+    {
+        $column = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $column->expects($this->any())
+            ->method('getSuffixes')
+            ->will($this->returnValue(array()));
+        $column->expects($this->any())
+            ->method('getLocale')
+            ->will($this->returnValue('locale'));
+        $column->expects($this->any())
+            ->method('getPropertyPath')
+            ->will($this->returnValue('property_path'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('setLocale'))
+            ->getMock();
+        $object->expects($this->once())
+            ->method('setLocale')
+            ->with($this->equalTo('locale'));
+        $propertyAccessor = $this->getMock('Symfony\Component\PropertyAccess\PropertyAccessorInterface');
+        $propertyAccessor->expects($this->once())
+            ->method('setValue')
+            ->with(
+                $this->identicalTo($object),
+                $this->equalTo('translation.property_path'),
+                $this->equalTo('value')
+            );
+        $transformer = new TranslationTransformer($propertyAccessor);
+        $transformer->setValue($object, $column, 'value');
+    }
 }
