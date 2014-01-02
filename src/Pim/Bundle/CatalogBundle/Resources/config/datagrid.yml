@@ -222,9 +222,9 @@ datagrid:
             type: orm_product
             entity: %pim_catalog.entity.product.class%
         columns:
-             family:
-                 label: Family
-                 data_name: familyLabel
+            family:
+                label: Family
+                data_name: familyLabel
         properties:
             id: ~
             edit_link:
@@ -250,13 +250,20 @@ datagrid:
                 icon:  trash
                 link:  delete_link
         sorters:
-            columns: ~
-                # family:
-                #     data_name: family.code
+            columns:
+                family:
+                    data_name: familyLabel
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
+                family:
+                    type:      entity
+                    data_name: productFamily
+                    options:
+                        field_options:
+                            class: %pim_catalog.entity.family.class%
+                            property: label
                 enabled:
                     type:      boolean
                     label:     Enabled

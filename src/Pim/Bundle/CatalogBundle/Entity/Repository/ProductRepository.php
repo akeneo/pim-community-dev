@@ -211,7 +211,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             $tree['tree'] = $this->getEntityManager()->getRepository($categoryClass)->find($productCount['tree_id']);
             $trees[] = $tree;
         }
-        
+
         return $trees;
     }
 
@@ -250,7 +250,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
      * You can define if you just want to get the property of the actual node or with its children with the direct
      * parameter
      *
-     * @param CategoryInterface $categoryId   the requested node
+     * @param CategoryInterface $category   the requested node
      * @param QueryBuilder      $categoryQb category query buider
      *
      * @return array
