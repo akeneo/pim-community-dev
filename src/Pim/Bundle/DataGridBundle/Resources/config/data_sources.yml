@@ -1,0 +1,13 @@
+parameters:
+    pim_datagrid.datasource.orm.class: Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+
+services:
+
+    pim_catalog.datasource.orm:
+        class: %pim_datagrid.datasource.orm.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_security.acl_helper
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_orm }
+

@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Grid\Extension\Sorter;
+namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
 use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension as OroOrmSorterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Pim\Bundle\CatalogBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Orm filter extension

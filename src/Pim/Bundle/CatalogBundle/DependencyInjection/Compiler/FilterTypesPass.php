@@ -18,9 +18,10 @@ class FilterTypesPass implements CompilerPassInterface
     /**
      * @var string
      * TODO : use same filter for product datasource ?
+     * TODO: should be move in DataGridBundle
      */
     protected $filterExtensionIds = array(
-        'pim_catalog.grid.extension.filter.orm_filter',
+        'pim_datagrid.extension.filter.orm_filter',
         'pim_catalog.grid.extension.filter.orm_product_filter'
     );
 
