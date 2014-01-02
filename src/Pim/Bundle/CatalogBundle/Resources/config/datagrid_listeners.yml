@@ -1,39 +1,38 @@
 parameters:
-    pim_catalog.event_listener.add_parameters_to_grid.class:         Pim\Bundle\CatalogBundle\EventListener\AddParametersToGridListener
     pim_catalog.event_listener.add_parameters_to_product_grid.class: Pim\Bundle\CatalogBundle\EventListener\AddParametersToProductGridListener
 
 services:
     pim_catalog.event_listener.association_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-          - localeCode
+          - [localeCode]
           - @oro_datagrid.datagrid.request_params
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-type-grid, method: onBuildAfter }
 
     pim_catalog.event_listener.attribute_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-          - localeCode
+          - [localeCode]
           - @oro_datagrid.datagrid.request_params
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.attribute-grid, method: onBuildAfter }
 
     pim_catalog.event_listener.channel_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-          - localeCode
+          - [localeCode]
           - @oro_datagrid.datagrid.request_params
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.channel-grid, method: onBuildAfter }
 
     pim_catalog.event_listener.family_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-          - localeCode
+          - [localeCode]
           - @oro_datagrid.datagrid.request_params
           - false
         tags:

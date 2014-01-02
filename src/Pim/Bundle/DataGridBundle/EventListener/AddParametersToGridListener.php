@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener;
+namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
- * Get parameters from request and bind then to query builder
+ * Get parameters from request and bind them to query builder
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

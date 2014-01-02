@@ -1,0 +1,4 @@
+parameters:
+    pim_datagrid.event_listener.add_parameters_to_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
+
+services: ~
