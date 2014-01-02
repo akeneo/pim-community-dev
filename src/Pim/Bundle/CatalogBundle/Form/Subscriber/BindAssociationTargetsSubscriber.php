@@ -35,7 +35,7 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
      */
     public function submit(FormEvent $event)
     {
-        $form                = $event->getForm();
+        $form         = $event->getForm();
         $associations = $event->getData();
 
         for ($count = $form->count(), $i = 0; $count > $i; $i++) {
@@ -60,7 +60,7 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
     /**
      * Bind target entities
      *
-     * @param Association $association
+     * @param Association        $association
      * @param ProductInterface[] $appendProducts
      * @param ProductInterface[] $removeProducts
      * @param Group[]            $appendGroups

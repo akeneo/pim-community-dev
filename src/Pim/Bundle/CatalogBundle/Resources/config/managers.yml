@@ -91,4 +91,3 @@ services:
         class: %pim_catalog.manager.association.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-
