@@ -23,7 +23,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -44,11 +43,6 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
  */
 class ProductController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var ProductManager
      */
@@ -102,7 +96,6 @@ class ProductController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
@@ -118,7 +111,6 @@ class ProductController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
@@ -136,7 +128,6 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper       = $datagridHelper;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
