@@ -82,7 +82,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
     protected function getProduct()
     {
         if (!$this->product) {
-            throw new \LogicException('Product association datagrid manager has no configured product');
+            throw new \LogicException('Association datagrid manager has no configured product');
         }
 
         return $this->product;
@@ -93,7 +93,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $field = $this->createProductAssociationField();
+        $field = $this->createAssociationField();
         $fieldsCollection->add($field);
 
         $identifier = $this->flexibleManager->getIdentifierAttribute();
@@ -117,7 +117,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
      *
      * @return FieldDescription
      */
-    protected function createProductAssociationField()
+    protected function createAssociationField()
     {
         $field = new FieldDescription();
         $field->setName('has_association');
@@ -280,7 +280,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin(
-                'PimCatalogBundle:ProductAssociation',
+                'PimCatalogBundle:Association',
                 'pa',
                 'WITH',
                 sprintf(

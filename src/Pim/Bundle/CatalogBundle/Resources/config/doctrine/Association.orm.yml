@@ -1,7 +1,7 @@
-Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
+Pim\Bundle\CatalogBundle\Entity\Association:
     type: entity
-    table: pim_catalog_product_association
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository
+    table: pim_catalog_association
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
     fields:
         id:
             type: integer
@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
                     onDelete: CASCADE
         owner:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-            inversedBy: productAssociations
+            inversedBy: associations
             joinColumns:
                 owner_id:
                     referencedColumnName: id
@@ -33,7 +33,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
         groups:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             joinTable:
-                name: pim_catalog_product_association_group
+                name: pim_catalog_association_group
                 joinColumns:
                     productassociation_id:
                         referencedColumnName: id
@@ -45,7 +45,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
         products:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             joinTable:
-                name: pim_catalog_product_association_product
+                name: pim_catalog_association_product
                 joinColumns:
                     productassociation_id:
                         onDelete: CASCADE

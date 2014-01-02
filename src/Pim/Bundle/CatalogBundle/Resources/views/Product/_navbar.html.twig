@@ -4,7 +4,7 @@
     {% set form_tabs = form_tabs|merge(['Categories']) %}
 {% endif %}
 
-{% if resource_granted('pim_catalog_product_associations_view') %}
+{% if resource_granted('pim_catalog_associations_view') %}
     {% set form_tabs = form_tabs|merge(['Associations']) %}
 {% endif %}
 

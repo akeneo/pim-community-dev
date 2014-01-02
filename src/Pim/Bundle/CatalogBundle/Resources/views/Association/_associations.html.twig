@@ -4,8 +4,8 @@
     {% set productListenerParameters = {
         'columnName': 'has_association',
         'selectors': {
-            'included': '#pim_product_edit_productAssociations_0_appendProducts',
-            'excluded': '#pim_product_edit_productAssociations_0_removeProducts'
+            'included': '#pim_product_edit_associations_0_appendProducts',
+            'excluded': '#pim_product_edit_associations_0_removeProducts'
         }
     } %}
 
@@ -14,8 +14,8 @@
     {% set groupListenerParameters = {
         'columnName': 'has_association',
         'selectors': {
-            'included': '#pim_product_edit_productAssociations_0_appendGroups',
-            'excluded': '#pim_product_edit_productAssociations_0_removeGroups'
+            'included': '#pim_product_edit_associations_0_appendGroups',
+            'excluded': '#pim_product_edit_associations_0_removeGroups'
         }
     } %}
 
@@ -46,7 +46,7 @@
                     };
 
                     function changeAssociation(associationId) {
-                        var $idField = $('#pim_product_edit_productAssociations').find('input[type="hidden"][value="' + associationId + '"]');
+                        var $idField = $('#pim_product_edit_associations').find('input[type="hidden"][value="' + associationId + '"]');
 
                         _.each(dataGrids, function(datagrid) {
                             var appendFieldId = '#' + $idField.siblings('[id$="' + datagrid.appendField + '"]').attr('id'),
@@ -83,7 +83,7 @@
             {% for associationType in associationTypes %}
                 <li class="tab{% if loop.first %} active{% endif %}">
                     <a id="association-link-{{ associationType.id }}" href="#association-tab-{{ associationType.id }}" data-toggle="tab">
-                        {% set currentAssociation = product.getProductAssociationForAssociation(associationType) %}
+                        {% set currentAssociation = product.getAssociationForType(associationType) %}
                         {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
                         <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
                         {{ associationType.label }} ({{ associationCount }})
@@ -109,7 +109,7 @@
                 <h3 class="unspaced">
                     {{ associationType.label }}
                     <span class="muted small">
-                        {% set currentAssociation = product.getProductAssociationForAssociation(associationType) %}
+                        {% set currentAssociation = product.getAssociationForType(associationType) %}
                         {{ 'info.product.number of associations'|trans({ '%productCount%': currentAssociation.products|length, '%groupCount%': currentAssociation.groups|length }) }}
                     </span>
                 </h3>

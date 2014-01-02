@@ -12,7 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
@@ -364,9 +364,9 @@ class ProductManager extends FlexibleManager
 
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {
-                $productAssociation = new ProductAssociation();
-                $productAssociation->setAssociationType($associationType);
-                $product->addProductAssociation($productAssociation);
+                $association = new Association();
+                $association->setAssociationType($associationType);
+                $product->addAssociation($association);
             }
             $this->objectManager->flush();
         }

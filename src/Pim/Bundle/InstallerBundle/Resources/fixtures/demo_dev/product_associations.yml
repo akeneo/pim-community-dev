@@ -1,4 +1,4 @@
-product_associations:
+associations:
     - owner: sku-000
       associationType: X_SELL
       products:

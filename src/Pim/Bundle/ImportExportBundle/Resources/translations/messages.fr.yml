@@ -150,7 +150,7 @@ oro_batch:
     title: Créer / mettre à jour les attributs
   attribute_option_processor:
     title: Créer / mettre à jour les attributs
-  product_association_processor:
+  association_processor:
     title: "Création de l'association de produit"
   csv_serializer:
     help: Définit si la première ligne du fichier contient les libellés des colonnes

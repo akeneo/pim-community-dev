@@ -73,7 +73,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $this->normalizeAssociations($object->getProductAssociations());
+        $this->normalizeAssociations($object->getAssociations());
 
         $this->normalizeValues($object, $scopeCode, $localeCodes);
 
@@ -277,20 +277,20 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * Normalize associations
      *
-     * @param ProductAssociation[] $productAssociations
+     * @param Association[] $associations
      */
-    protected function normalizeAssociations($productAssociations = array())
+    protected function normalizeAssociations($associations = array())
     {
-        foreach ($productAssociations as $productAssociation) {
-            $columnPrefix = $productAssociation->getAssociationType()->getCode();
+        foreach ($associations as $association) {
+            $columnPrefix = $association->getAssociationType()->getCode();
 
             $groups = array();
-            foreach ($productAssociation->getGroups() as $group) {
+            foreach ($association->getGroups() as $group) {
                 $groups[] = $group->getCode();
             }
 
             $products = array();
-            foreach ($productAssociation->getProducts() as $product) {
+            foreach ($association->getProducts() as $product) {
                 $products[] = $product->getIdentifier();
             }
 
