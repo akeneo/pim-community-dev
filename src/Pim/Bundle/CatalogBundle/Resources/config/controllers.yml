@@ -111,7 +111,6 @@ services:
         arguments:
             - '@doctrine'
             - '@templating'
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.product'
 
     pim_catalog.controller.mass_edit_action:
@@ -120,7 +119,6 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.mass_edit_action.operator'
-            - '@pim_grid.datagrid.helper'
             - '@oro_grid.mass_action.parameters_parser'
             - '@pim_catalog.manager.product'
 
@@ -130,7 +128,6 @@ services:
         parent: pim_catalog.controller.abstract
         arguments:
             - '@pim_catalog.manager.group'
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
 

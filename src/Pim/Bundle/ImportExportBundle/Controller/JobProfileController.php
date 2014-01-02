@@ -21,7 +21,6 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
@@ -35,29 +34,24 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 class JobProfileController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridHelperInterface
-     */
-    private $datagridHelper;
-
-    /**
      * @var ConnectorRegistry
      */
-    private $connectorRegistry;
+    protected $connectorRegistry;
 
     /**
      * @var string
      */
-    private $jobType;
+    protected $jobType;
 
     /**
      * @var string
      */
-    private $rootDir;
+    protected $rootDir;
 
     /**
      * @var string
      */
-    private $environment;
+    protected $environment;
 
     /**
      * @var JobInstanceType
@@ -75,7 +69,6 @@ class JobProfileController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
      * @param string                   $rootDir
@@ -91,7 +84,6 @@ class JobProfileController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir,
@@ -109,7 +101,6 @@ class JobProfileController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper    = $datagridHelper;
         $this->connectorRegistry = $connectorRegistry;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
@@ -117,33 +108,6 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->jobInstanceType   = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
-    }
-
-    /**
-     * List the jobs instances
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
-    {
-        $gridManager  = $this->getDatagridManager();
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = sprintf('PimImportExportBundle:%sProfile:index.html.twig', ucfirst($this->getJobType()));
-        }
-
-        return $this->render(
-            $view,
-            array(
-                'datagrid' => $datagridView,
-                'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
-            )
-        );
     }
 
     /**

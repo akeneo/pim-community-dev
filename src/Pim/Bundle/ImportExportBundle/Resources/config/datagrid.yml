@@ -1,0 +1,62 @@
+datagrid:
+    export-profile-grid:
+        options:
+            entityHint: exportprofile
+        source:
+            acl_resource: pim_importexport_export_profile_index
+            type: pim_orm
+            entity: %oro_batch.entity.job_instance.class%
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            job:
+                label: Job
+            connector:
+                label: Connector
+            status:
+                label: Status
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_importexport_export_profile_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_importexport_export_profile_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: o.code
+                label:
+                    data_name: label
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: o.code
+                label:
+                    type: string
+                    label: Label
+                    data_name: o.label
+
