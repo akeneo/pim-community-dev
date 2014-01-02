@@ -41,7 +41,6 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         onDelete: CASCADE
         categories:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
-            inversedBy: products
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:

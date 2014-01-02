@@ -89,7 +89,7 @@ class InjectProductReferenceSubscriber implements EventSubscriber
      * on the entity to get Products.
      * The entity must have a "products" property defined
      *
-     * @param $entity 
+     * @param $entity
      * @param $assoc Association properties
      * @param EntityManager $entityManager
      */
