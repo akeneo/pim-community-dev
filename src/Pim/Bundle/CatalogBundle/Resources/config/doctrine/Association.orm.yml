@@ -35,7 +35,7 @@ Pim\Bundle\CatalogBundle\Entity\Association:
             joinTable:
                 name: pim_catalog_association_group
                 joinColumns:
-                    productassociation_id:
+                    association_id:
                         referencedColumnName: id
                         onDelete: CASCADE
                 inverseJoinColumns:
@@ -47,7 +47,7 @@ Pim\Bundle\CatalogBundle\Entity\Association:
             joinTable:
                 name: pim_catalog_association_product
                 joinColumns:
-                    productassociation_id:
+                    association_id:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
