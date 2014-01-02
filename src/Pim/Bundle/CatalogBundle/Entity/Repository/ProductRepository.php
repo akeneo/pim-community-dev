@@ -382,7 +382,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->addSelect('category')
             ->addSelect('pGroup');
 
-        $this->prepareQueryForCompleteness($qb, $rootAlias);
+    //    $this->prepareQueryForCompleteness($qb, $rootAlias);
 /*        $this->prepareQueryForCategory($qb, $rootAlias);
 
         $localeCode = $this->flexibleManager->getLocale();

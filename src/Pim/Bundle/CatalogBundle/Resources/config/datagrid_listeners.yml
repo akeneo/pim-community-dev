@@ -41,7 +41,7 @@ services:
     pim_catalog.event_listener.product_grid_listener:
         class: %pim_catalog.event_listener.add_parameters_to_product_grid.class%
         arguments:
-          - [dataLocale, localeId, scopeId]
+          - [dataLocale]
           - @oro_datagrid.datagrid.request_params
           - @pim_catalog.manager.product
         tags:
