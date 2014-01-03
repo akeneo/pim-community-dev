@@ -172,5 +172,4 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
 
         return $processor;
     }
-
 }

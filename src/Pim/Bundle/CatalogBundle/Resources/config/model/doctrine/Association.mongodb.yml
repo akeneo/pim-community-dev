@@ -1,0 +1,21 @@
+Pim\Bundle\CatalogBundle\Model\Association:
+    type: embeddedDocument
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\MongoDBODM\AssociationRepository
+    indexes:
+        association_type_idx:
+        options:
+            unique: true
+        keys:
+            associationTypeId
+    fields:
+        id:
+            id: true
+        # References ORM AssociationType id
+        associationTypeId:
+            type: int
+        # Collection to references ORM groups code
+        #groups:
+        #    type: collection
+  referenceMany:
+    products:
+      targetDocument: Pim\Bundle\CatalogBundle\Model\Product

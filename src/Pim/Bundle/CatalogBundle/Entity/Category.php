@@ -137,7 +137,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * Set products for this category node
      *
-     * @param mixed products Traversable object or array
+     * @param mixed $products Traversable object or array
      *
      * @return Category
      */

@@ -138,7 +138,8 @@ class YamlReader extends FileReader implements ItemReaderInterface
     /**
      * Homogenize the read data
      *
-     * @param  array $data
+     * @param array $data
+     *
      * @return array
      */
     protected function homogenizeData($data)

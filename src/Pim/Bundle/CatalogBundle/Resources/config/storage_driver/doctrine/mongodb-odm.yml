@@ -1,9 +1,18 @@
 parameters:
+    pim_catalog.doctrine.completeness_generator.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.inject_orm_references.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
 
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
+
+    pim_catalog.doctrine.completeness_generator:
+        class: %pim_catalog.doctrine.completeness_generator.class%
+        arguments:
+            - '@doctrine_mongodb'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%
+
 
     pim_catalog.event_listener.mongodb.inject_orm_references:
         class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%
