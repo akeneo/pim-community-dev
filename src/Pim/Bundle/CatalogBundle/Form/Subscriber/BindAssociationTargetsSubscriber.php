@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Subscriber that updates target entities inside the Association
