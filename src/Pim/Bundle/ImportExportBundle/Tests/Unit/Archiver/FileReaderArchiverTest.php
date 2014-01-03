@@ -31,13 +31,15 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $fileReader = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
+        $fileReader   = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
         $lambdaReader = $this->getReaderMock();
-        $job = $this->getJobMock(array(
-            $this->getStepMock(),
-            $this->getItemStepMock($fileReader),
-            $this->getItemStepMock($lambdaReader),
-        ));
+        $job          = $this->getJobMock(
+            array(
+                $this->getStepMock(),
+                $this->getItemStepMock($fileReader),
+                $this->getItemStepMock($lambdaReader),
+            )
+        );
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', $job),
