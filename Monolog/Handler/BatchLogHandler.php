@@ -10,14 +10,10 @@ use Monolog\Handler\StreamHandler;
  */
 class BatchLogHandler extends StreamHandler
 {
-    /**
-     * @var string $filename
-     */
+    /** @var string */
     protected $filename;
 
-    /**
-     * @var string $logDir
-     */
+    /** @var string */
     protected $logDir;
 
     /**
@@ -25,14 +21,10 @@ class BatchLogHandler extends StreamHandler
      */
     public function __construct($logDir)
     {
-        if (!is_dir($logDir)) {
-            mkdir($logDir, 0755, true);
-        }
 
-        $this->logDir   = $logDir;
-        $this->filename = $this->generateLogFilename();
+        $this->logDir = $logDir;
 
-        parent::__construct($this->getRealPath($this->filename));
+        parent::__construct(false);
     }
 
     /**
@@ -40,19 +32,44 @@ class BatchLogHandler extends StreamHandler
      */
     public function getFilename()
     {
-        return $this->filename;
+        return $this->url;
+    }
+
+    public function setSubDirectory($subDirectory)
+    {
+        $this->url = $this->getRealPath($subDirectory, $this->generateLogFilename());
     }
 
     /**
      * Get the real path of the log file
      *
+     * @param string $subDirectory
      * @param string $filename
      *
      * @return string
      */
-    public function getRealPath($filename)
+    public function getRealPath($subDirectory, $filename)
     {
-        return sprintf('%s/%s', $this->logDir, $filename);
+        return sprintf('%s/%s/%s', $this->logDir, $subDirectory, $filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function write(array $record)
+    {
+        if (!is_dir(dirname($this->url))) {
+            mkdir(dirname($this->url), 0755, true);
+        }
+
+        if (!$this->url) {
+            throw new \LogicException(
+                'Missing stream url, the stream can not be opened. ' .
+                'This may be caused by a premature call to close() or a missing sub directory configuration.'
+            );
+        }
+
+        parent::write($record);
     }
 
     /**

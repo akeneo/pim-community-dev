@@ -67,6 +67,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $jobExecution = new JobExecution();
         $jobInstance->addJobExecution($jobExecution);
 
+        $this->updateJobExecution($jobExecution);
+
         return $jobExecution;
     }
 
