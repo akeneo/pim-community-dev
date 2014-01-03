@@ -24,10 +24,10 @@ class AssociationTypeRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('a');
 
-        if ($productAssociations = $product->getProductAssociations()) {
-            $associationTypeIds = $productAssociations->map(
-                function ($productAssociation) {
-                    return $productAssociation->getAssociationType()->getId();
+        if ($associations = $product->getAssociations()) {
+            $associationTypeIds = $associations->map(
+                function ($association) {
+                    return $association->getAssociationType()->getId();
                 }
             );
 

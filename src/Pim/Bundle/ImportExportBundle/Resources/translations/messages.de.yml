@@ -150,8 +150,8 @@ oro_batch:
     title: Create / update attributes
   attribute_option_processor:
     title: Create / update attributes
-  product_association_processor:
-    title: Product association creation
+  association_processor:
+    title: Association creation
   csv_serializer:
     help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
   heterogeneous_processor:

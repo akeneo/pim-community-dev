@@ -27,18 +27,18 @@ class FamilyType extends AbstractType
     /**
      * @var AddAttributeRequirementsSubscriber
      */
-    protected $requirementsSubscriber;
+    protected $requireSubscriber;
 
     /**
      * Constructor
      *
-     * @param AddAttributeRequirementsSubscriber $requirementsSubscriber
+     * @param AddAttributeRequirementsSubscriber $requireSubscriber
      * @param string                             $attributeClass
      */
-    public function __construct(AddAttributeRequirementsSubscriber $requirementsSubscriber, $attributeClass)
+    public function __construct(AddAttributeRequirementsSubscriber $requireSubscriber, $attributeClass)
     {
-        $this->requirementsSubscriber = $requirementsSubscriber;
-        $this->attributeClass = $attributeClass;
+        $this->requireSubscriber = $requireSubscriber;
+        $this->attributeClass    = $attributeClass;
     }
 
     /**
@@ -117,7 +117,7 @@ class FamilyType extends AbstractType
 
         $builder
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($this->attributeClass, $factory))
-            ->addEventSubscriber($this->requirementsSubscriber)
+            ->addEventSubscriber($this->requireSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 

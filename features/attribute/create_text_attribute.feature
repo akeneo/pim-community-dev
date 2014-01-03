@@ -14,7 +14,7 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see "Attribute successfully created"
 
-  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
+  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with an invalid or reserved code
     Given I change the Code to an invalid value
     And I save the attribute
@@ -28,7 +28,7 @@ Feature: Create an attribute
       | enabled             |
       | family              |
       | groups              |
-      | productAssociations |
+      | associations |
       | products            |
       | scope               |
       | treeId              |
