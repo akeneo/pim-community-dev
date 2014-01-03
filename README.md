@@ -113,6 +113,7 @@ You must give write permission to the Apache user on the following directories:
 - app/emails
 - web/bundles
 - app/uploads/product
+- app/archive
 
 Configure crontab
 -----------------
