@@ -32,7 +32,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up test environment
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->extension = new FilterAttributesExtension();
         $this->entityMock = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible');

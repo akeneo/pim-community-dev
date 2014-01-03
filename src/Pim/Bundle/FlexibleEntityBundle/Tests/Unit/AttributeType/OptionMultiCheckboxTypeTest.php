@@ -15,7 +15,7 @@ class OptionMultiCheckboxTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_multicheckbox';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

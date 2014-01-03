@@ -18,7 +18,8 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->reader = new CsvReader();
+        $this->archiver = $this->getArchiverMock();
+        $this->reader = new CsvReader($this->archiver);
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
 
@@ -42,6 +43,11 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     public function testRead()
     {
         $this->reader->setFilePath(__DIR__ . '/../../../fixtures/import.csv');
+
+        $this->archiver
+            ->expects($this->once())
+            ->method('setHeader')
+            ->with(array('firstname', 'lastname', 'age'));
 
         $this->stepExecution
             ->expects($this->exactly(3))
@@ -85,6 +91,13 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     {
         return $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getArchiverMock()
+    {
+        return $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver')
             ->disableOriginalConstructor()
             ->getMock();
     }

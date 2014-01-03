@@ -26,7 +26,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
     /**
      * Prepare test
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         // create a mock of repository (mock only getCodeToAttributes method)

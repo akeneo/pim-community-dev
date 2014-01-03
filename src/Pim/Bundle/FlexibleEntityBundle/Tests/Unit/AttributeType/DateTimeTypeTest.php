@@ -15,7 +15,7 @@ class DateTimeTypeTest extends AttributeTypeTest
 {
     protected $name  = 'pim_flexibleentity_datetime';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

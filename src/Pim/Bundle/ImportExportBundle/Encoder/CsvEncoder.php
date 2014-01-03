@@ -71,7 +71,6 @@ class CsvEncoder implements EncoderInterface
             if ($this->withHeader && !$this->hasHeader) {
                 $this->encodeHeader($data, $output, $this->delimiter, $this->enclosure);
             }
-            $this->checkHasStringKeys($data);
             $this->write($output, $data, $this->delimiter, $this->enclosure);
         }
 
