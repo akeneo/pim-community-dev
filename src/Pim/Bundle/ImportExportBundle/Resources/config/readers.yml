@@ -52,26 +52,34 @@ services:
 
     pim_import_export.reader.file.csv:
         class: %pim_import_export.reader.file.csv.class%
+        arguments:
+            - '@pim_import_export.archiver.invalid_item_csv_archiver'
 
     pim_import_export.reader.file.csv_category:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv_category.class%
 
     pim_import_export.reader.file.csv_product:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.reader.file.csv_attribute_option:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv.class%
 
     pim_import_export.reader.file.csv_attribute:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv.class%
 
     pim_import_export.reader.file.csv_association_type:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv.class%
 
     pim_import_export.reader.file.csv_group:
+        parent: pim_import_export.reader.file.csv
         class: %pim_import_export.reader.file.csv.class%
 
     pim_import_export.reader.file.yaml:

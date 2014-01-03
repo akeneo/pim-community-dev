@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
  */
 class ChannelTest extends \PHPUnit_Framework_TestCase
 {
-    protected $channel;
+    protected $constraint;
 
     /**
      * {@inheritdoc}
@@ -37,5 +37,10 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     public function testMessage()
     {
         $this->assertEquals('The channel you selected does not exist.', $this->constraint->message);
+    }
+
+    public function testValidatedBy()
+    {
+        $this->assertInternalType('string', $this->constraint->validatedBy());
     }
 }

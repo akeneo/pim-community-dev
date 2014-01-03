@@ -36,4 +36,14 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
             $this->constraint->message
         );
     }
+
+    public function testValidatedBy()
+    {
+        $this->assertInternalType('string', $this->constraint->validatedBy());
+    }
+
+    public function testGetTargets()
+    {
+        $this->assertEquals(JobInstance::CLASS_CONSTRAINT, $this->constraint->getTargets());
+    }
 }

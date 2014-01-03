@@ -14,7 +14,7 @@ class EmailCollectionTypeTest extends AttributeTypeTest
 {
     protected $name  = 'pim_flexibleentity_email_collection';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

@@ -26,7 +26,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         'auto_initialize' => null
     );
 
-    public function setUp()
+    protected function setUp()
     {
         $this->guesser = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())

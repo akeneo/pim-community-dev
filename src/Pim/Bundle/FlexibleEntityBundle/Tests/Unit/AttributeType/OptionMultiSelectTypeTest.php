@@ -15,7 +15,7 @@ class OptionMultiSelectTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_multiselect';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
