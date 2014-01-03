@@ -1,6 +1,8 @@
 parameters:
     pim_catalog.entity.product.class:                        Pim\Bundle\CatalogBundle\Model\Product
     pim_catalog.entity.product_value.class:                  Pim\Bundle\CatalogBundle\Model\ProductValue
+    pim_catalog.entity.association.class:                    Pim\Bundle\CatalogBundle\Model\Association
+    pim_catalog.entity.association_type.class:               Pim\Bundle\CatalogBundle\Entity\AssociationType
     pim_catalog.entity.category.class:                       Pim\Bundle\CatalogBundle\Entity\Category
     pim_catalog.entity.category_translation.class:           Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
     pim_catalog.entity.group.class:                          Pim\Bundle\CatalogBundle\Entity\Group
@@ -8,8 +10,6 @@ parameters:
     pim_catalog.entity.product_attribute.class:              Pim\Bundle\CatalogBundle\Entity\ProductAttribute
     pim_catalog.entity.attribute_group.class:                Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.entity.association_type.class:               Pim\Bundle\CatalogBundle\Entity\AssociationType
-    pim_catalog.entity.association_type.class:               Pim\Bundle\CatalogBundle\Entity\AssociationType
-    pim_catalog.entity.association.class:                    Pim\Bundle\CatalogBundle\Entity\Association
     pim_catalog.entity.product_attribute_option.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOption
     pim_catalog.entity.product_attribute_option_value.class: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
     pim_catalog.entity.attribute_requirement.class:          Pim\Bundle\CatalogBundle\Entity\AttributeRequirement

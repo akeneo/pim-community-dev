@@ -161,7 +161,7 @@ class AssociationTypeController extends AbstractDoctrineController
         }
 
         $usageCount = $this
-            ->getRepository('PimCatalogBundle:Association')
+            ->getRepository('Pim\Bundle\CatalogBundle\Model\Association')
             ->countForAssociationType($associationType);
 
         return array(

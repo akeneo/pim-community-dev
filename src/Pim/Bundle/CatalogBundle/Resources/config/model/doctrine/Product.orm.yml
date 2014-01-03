@@ -53,7 +53,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
             mappedBy: owner
             cascade:
                 - persist

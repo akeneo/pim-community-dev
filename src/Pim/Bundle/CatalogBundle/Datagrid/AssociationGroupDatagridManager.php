@@ -237,7 +237,7 @@ class AssociationGroupDatagridManager extends DatagridManager
             ->leftJoin($rootAlias . '.type', 'type')
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin(
-                'PimCatalogBundle:Association',
+                'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
                 'WITH',
                 sprintf(
