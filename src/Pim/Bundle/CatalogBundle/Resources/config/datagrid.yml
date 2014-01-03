@@ -304,6 +304,20 @@ datagrid:
                 label: Delete
                 icon:  trash
                 link:  delete_link
+        mass_actions:
+            delete:
+                type: delete
+                entity_name: product
+                data_identifier: p
+                messages:
+                    confirm_title: Delete confirmation
+                    confirm_content: Are you sure you want to delete selected products?
+                    confirm_ok: OK
+                    success: Selected products successfully deleted
+                    error: Error ocurred when trying to delete selected products, please try again
+                    empty_selection: No products selected
+                launcherOptions:
+                    iconClassName: icon-trash
         sorters:
             columns:
                 family:
