@@ -18,7 +18,8 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         return array(
             'single_price' => array('currency', '25', array('currency' => 25)),
             'array'        => array(null, array('cur1' => '14', 'cur2' => '25'), array('cur1' => '14', 'cur2' => '25')),
-            'string'       => array(null, '10 cur1, 12.2 cur2', array('cur1' => '10', 'cur2' => '12.2'))
+            'string'       => array(null, '10 cur1, 12.2 cur2', array('cur1' => '10', 'cur2' => '12.2')),
+            'null'         => array(null, null, array())
         );
     }
 

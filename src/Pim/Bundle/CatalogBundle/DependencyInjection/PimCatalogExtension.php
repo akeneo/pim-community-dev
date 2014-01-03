@@ -54,7 +54,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $this->loadValidationFiles($container);
     }
 
-
     /**
      * Loads the validation files
      */

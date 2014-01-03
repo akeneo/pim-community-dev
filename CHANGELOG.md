@@ -79,7 +79,8 @@
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 - Attribute fixtures format has changed
 - Product associations import/export format has changed.
-- Rename Association by AssociationType and all properties/methods linked to this class.
+- Rename Association to AssociationType and all properties/methods linked to this class.
+- Rename ProductAssociation to Association
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

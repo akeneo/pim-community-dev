@@ -7,7 +7,11 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Translation transformer
+ * Nested translation transformer
+ *
+ * The following options are required:
+ *
+ * - propertyPath: the name of the translated property
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -47,6 +51,10 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
      */
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
+        if (!isset($options['propertyPath'])) {
+            throw new \InvalidArgumentException('propertyPath option is required');
+        }
+
         foreach ($data as $locale => $value) {
             $object->setLocale($locale);
             $this->propertyAccessor->setValue($object, 'translation.'.$options['propertyPath'], $value);

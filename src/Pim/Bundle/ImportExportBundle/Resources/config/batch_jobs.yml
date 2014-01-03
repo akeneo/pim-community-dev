@@ -75,9 +75,9 @@ connector:
                 import_associations:
                     title:     pim_import_export.jobs.csv_product_import.import_associations.title
                     services:
-                        reader:    pim_import_export.reader.cached_product_association
-                        processor: pim_import_export.processor.product_association
-                        writer:    pim_import_export.writer.orm.product_association
+                        reader:    pim_import_export.reader.cached_association
+                        processor: pim_import_export.processor.association
+                        writer:    pim_import_export.writer.orm.association
         csv_category_import:
             title: pim_import_export.jobs.csv_category_import.title
             type:  import

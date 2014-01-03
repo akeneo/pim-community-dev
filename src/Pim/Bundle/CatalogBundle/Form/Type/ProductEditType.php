@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BindProductAssociationTargetsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 
 /**
  * Product edit form type
@@ -62,14 +62,14 @@ class ProductEditType extends AbstractType
         }
         $builder
             ->add(
-                'productAssociations',
+                'associations',
                 'collection',
                 array(
-                    'type' => 'pim_catalog_product_association'
+                    'type' => 'pim_catalog_association'
                 )
             )
-            ->get('productAssociations')
-            ->addEventSubscriber(new BindProductAssociationTargetsSubscriber());
+            ->get('associations')
+            ->addEventSubscriber(new BindAssociationTargetsSubscriber());
 
         if ($options['enable_family']) {
             $builder->add(

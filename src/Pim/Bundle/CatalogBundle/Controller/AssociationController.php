@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Product associations controller
+ * Association controller
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationsController
+class AssociationController
 {
     /**
      * @var RegistryInterface
@@ -67,7 +67,7 @@ class ProductAssociationsController
      *
      * @param int $id
      *
-     * @AclAncestor("pim_catalog_product_associations_view")
+     * @AclAncestor("pim_catalog_associations_view")
      *
      * @return Response
      */
@@ -100,7 +100,7 @@ class ProductAssociationsController
         $groupGridView   = $groupGrid->getDatagrid()->createView();
 
         return $this->templating->renderResponse(
-            'PimCatalogBundle:ProductAssociations:_associations.html.twig',
+            'PimCatalogBundle:Association:_associations.html.twig',
             array(
                 'product'                => $product,
                 'associationTypes'       => $associationTypes,
@@ -117,10 +117,10 @@ class ProductAssociationsController
      * @param integer $id      Product id
      *
      * @Template
-     * @AclAncestor("pim_catalog_product_associations_view")
+     * @AclAncestor("pim_catalog_associations_view")
      * @return Response
      */
-    public function listProductAssociationsAction(Request $request, $id)
+    public function listAssociationsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
 
@@ -139,7 +139,7 @@ class ProductAssociationsController
      * @param integer $id      Product id
      *
      * @Template
-     * @AclAncestor("pim_catalog_product_associations_view")
+     * @AclAncestor("pim_catalog_associations_view")
      * @return Response
      */
     public function listGroupAssociationsAction(Request $request, $id)

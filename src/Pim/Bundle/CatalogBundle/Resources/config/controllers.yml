@@ -8,7 +8,7 @@ parameters:
     pim_catalog.controller.mass_edit_action.class:     Pim\Bundle\CatalogBundle\Controller\MassEditActionController
     pim_catalog.controller.product_attribute.class:    Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
     pim_catalog.controller.product.class:              Pim\Bundle\CatalogBundle\Controller\ProductController
-    pim_catalog.controller.product_associations.class: Pim\Bundle\CatalogBundle\Controller\ProductAssociationsController
+    pim_catalog.controller.association.class:          Pim\Bundle\CatalogBundle\Controller\AssociationController
     pim_catalog.controller.group.class:                Pim\Bundle\CatalogBundle\Controller\GroupController
     pim_catalog.controller.association_type.class:     Pim\Bundle\CatalogBundle\Controller\AssociationTypeController
     pim_catalog.controller.media.class:                Pim\Bundle\CatalogBundle\Controller\MediaController
@@ -106,8 +106,8 @@ services:
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
 
-    pim_catalog.controller.product_associations:
-        class: %pim_catalog.controller.product_associations.class%
+    pim_catalog.controller.association:
+        class: %pim_catalog.controller.association.class%
         arguments:
             - '@doctrine'
             - '@templating'

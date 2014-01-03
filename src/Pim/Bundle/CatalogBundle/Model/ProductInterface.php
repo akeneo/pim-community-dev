@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
@@ -130,47 +130,47 @@ interface ProductInterface
     public function removeGroup(Group $group);
 
     /**
-     * Add product productAssociation
+     * Add product association
      *
-     * @param ProductAssociation $productAssociation
-     *
-     * @return Product
-     */
-    public function addProductAssociation(ProductAssociation $productAssociation);
-
-    /**
-     * Remove product productAssociation
-     *
-     * @param ProductAssociation $productAssociation
+     * @param Association $association
      *
      * @return Product
      */
-    public function removeProductAssociation(ProductAssociation $productAssociation);
+    public function addAssociation(Association $association);
 
     /**
-     * Get the product productAssociations
+     * Remove product association
      *
-     * @return ProductAssociation[]|null
+     * @param Association $association
+     *
+     * @return Product
      */
-    public function getProductAssociations();
+    public function removeAssociation(Association $association);
 
     /**
-     * Get the product productAssociation for an Association entity
+     * Get the product associations
+     *
+     * @return Association[]|null
+     */
+    public function getAssociations();
+
+    /**
+     * Get the product association for an AssociationType entity
      *
      * @param AssociationType $association
      *
-     * @return ProductAssociation|null
+     * @return Association|null
      */
-    public function getProductAssociationForAssociation(AssociationType $association);
+    public function getAssociationForType(AssociationType $association);
 
     /**
-     * Set product productAssociations
+     * Set product associations
      *
-     * @param ProductAssociation[] $productAssociations
+     * @param Association[] $associations
      *
      * @return Product
      */
-    public function setProductAssociations(array $productAssociations = array());
+    public function setAssociations(array $associations = array());
 
     /**
      * {@inheritdoc}
