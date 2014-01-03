@@ -16,17 +16,6 @@
                 {% endfor %}
             },
         {% endblock %}
-        {% block javascript_collection_state_options %}
-            {% if app.request.get("categoryId") %}
-                categoryId: {{ app.request.get("categoryId")|json_encode|raw }},
-            {% endif %}
-            {% if app.request.get("treeId") %}
-                treeId: {{ app.request.get("treeId")|json_encode|raw }},
-            {% endif %}
-            {% if app.request.get("dataLocale") %}
-                dataLocale: {{ app.request.get("dataLocale")|json_encode|raw }},
-            {% endif %}
-        {% endblock %}
     {% endembed %}
     #}
     <script type="text/javascript">

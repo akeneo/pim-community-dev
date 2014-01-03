@@ -7,8 +7,6 @@ use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher as OroMassActionDispatcher;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
-
 /**
  * Extends Oro MassActionDispatcher to add category filters
  */
@@ -30,11 +28,6 @@ class MassActionDispatcher extends OroMassActionDispatcher
         list($inset, $filters, $values) = $this->prepareParameters($parameters, $actionName);
 
         $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
-
-        if ($datagridManager instanceof ProductDatagridManager) {
-            $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
-            $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
-        }
 
         $datagrid = $datagridManager->getDatagrid();
         $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);

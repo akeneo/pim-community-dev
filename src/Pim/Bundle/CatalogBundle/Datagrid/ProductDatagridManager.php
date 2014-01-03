@@ -48,11 +48,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const SCOPE_FIELD_NAME  = 'scope';
 
     /**
-     * @staticvar integer
-     */
-    const UNCLASSIFIED_CATEGORY = 0;
-
-    /**
      * @var Pim\Bundle\CatalogBundle\Manager\CategoryManager
      */
     protected $categoryManager;
@@ -71,24 +66,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @var SecurityFacade
      */
     protected $securityFacade;
-
-    /**
-     * Filter by tree id, 0 means not tree selected
-     * @var integer
-     */
-    protected $filterTreeId = self::UNCLASSIFIED_CATEGORY;
-
-    /**
-     * Filter by category id, 0 means unclassified
-     * @var integer
-     */
-    protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
-
-    /**
-     * Filter with sub-categories
-     * @var integer
-     */
-    protected $filterIncludeSub = 0;
 
     /**
      * Define constructor to add new price type
@@ -142,36 +119,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setLocaleManager(LocaleManager $manager)
     {
         $this->localeManager = $manager;
-    }
-
-    /**
-     * Define the tree to use to filter the product collection
-     *
-     * @param integer $treeId
-     */
-    public function setFilterTreeId($treeId)
-    {
-        $this->filterTreeId = $treeId;
-    }
-
-    /**
-     * Define the category to use to filter the product collection
-     *
-     * @param integer $categoryId
-     */
-    public function setFilterCategoryId($categoryId)
-    {
-        $this->filterCategoryId = $categoryId;
-    }
-
-    /**
-     * Define if the sub-category are used to filter the product collection
-     *
-     * @param integer $includeSub
-     */
-    public function setIncludeSub($includeSub)
-    {
-        $this->filterIncludeSub = $includeSub;
     }
 
     /**
@@ -650,7 +597,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('pGroup');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
-        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
         $localeCode = $this->flexibleManager->getLocale();
         $channelCode = $this->flexibleManager->getScope();
@@ -668,39 +614,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery->setParameter('localeCode', $localeCode);
         $proxyQuery->setParameter('locale', $locale);
         $proxyQuery->setParameter('channel', $channel);
-    }
-
-    /**
-     * Prepare query for categories field
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string              $rootAlias
-     */
-    protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
-    {
-        $repository = $this->categoryManager->getEntityRepository();
-
-        $tree = $repository->find($this->filterTreeId);
-        $treeExists = ($repository->find($this->filterTreeId) != null);
-
-        $category = $repository->find($this->filterCategoryId);
-        $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
-            && ($category != null);
-
-        if ($treeExists && $categoryExists) {
-            $includeSub = ($this->filterIncludeSub == 1);
-            $productIds = $this->productManager->getProductIdsInCategory($category, $includeSub);
-            $productIds = (empty($productIds)) ? array(0) : $productIds;
-
-            $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
-            $proxyQuery->andWhere($expression);
-        } elseif ($treeExists && ($this->filterCategoryId == static::UNCLASSIFIED_CATEGORY)) {
-            $productIds = $this->productManager->getProductIdsInCategory($tree, true);
-            $productIds = (empty($productIds)) ? array(0) : $productIds;
-
-            $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
-            $proxyQuery->andWhere($expression);
-        }
     }
 
     /**
