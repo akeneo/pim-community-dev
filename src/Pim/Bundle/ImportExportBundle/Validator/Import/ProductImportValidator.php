@@ -110,11 +110,15 @@ class ProductImportValidator extends ImportValidator
     protected function getIdentifier(array $columnsInfo, $entity)
     {
         $columnLabel = $this->getIdentifierColumn($columnsInfo);
+        $identifier = null;
         foreach ($columnsInfo as $columnInfo) {
             if ($columnLabel === $columnInfo->getLabel()) {
-                return $this->getProductValue($entity, $columnInfo)->getData();
+                $identifier = $this->getProductValue($entity, $columnInfo)->getData();
+                break;
             }
         }
+
+        return $identifier;
     }
 
     /**
@@ -122,12 +126,16 @@ class ProductImportValidator extends ImportValidator
      */
     protected function getIdentifierColumn(array $columnsInfo)
     {
+        $label = null;
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
                 ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
-                return $columnInfo->getLabel();
+                $label = $columnInfo->getLabel();
+                break;
             }
         }
+
+        return $label;
     }
 
     /**
