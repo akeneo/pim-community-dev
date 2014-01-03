@@ -25,7 +25,7 @@
                         type:    'checkbox',
                         id:      nested_switch_id,
                         'class': 'input-large jstree-tree-select',
-                        checked: this.data.nested_switch.state
+                        checked: !!this.data.nested_switch.state
                     });
 
                     var switch_wrapper = $('<div>', {

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
- * Product association entity
+ * Association entity
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class ProductAssociation implements ReferableInterface
+class Association implements ReferableInterface
 {
     /**
      * @var integer
@@ -69,7 +69,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param AssociationType $associationType
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function setAssociationType(AssociationType $associationType)
     {
@@ -93,7 +93,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param ProductInterface $owner
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function setOwner(ProductInterface $owner)
     {
@@ -117,7 +117,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param ProductInterface[] $products
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function setProducts($products)
     {
@@ -141,7 +141,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function addProduct(ProductInterface $product)
     {
@@ -157,7 +157,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -171,7 +171,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param Group[] $groups
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function setGroups($groups)
     {
@@ -195,7 +195,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param Group $group
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function addGroup(Group $group)
     {
@@ -211,7 +211,7 @@ class ProductAssociation implements ReferableInterface
      *
      * @param Group $group
      *
-     * @return ProductAssociation
+     * @return Association
      */
     public function removeGroup(Group $group)
     {

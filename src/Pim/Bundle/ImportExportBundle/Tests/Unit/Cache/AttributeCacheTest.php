@@ -107,6 +107,12 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->attributes['col1'], $attributes['col1']);
     }
 
+    public function testGetEmptyAttributes()
+    {
+        $attributes = $this->attributeCache->getAttributes(array());
+        $this->assertEquals(array(), $attributes);
+    }
+
     /**
      * Test related method
      */

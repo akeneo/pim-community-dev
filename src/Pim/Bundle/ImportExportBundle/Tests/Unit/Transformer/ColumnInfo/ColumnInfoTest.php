@@ -63,6 +63,19 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($scope, $info->getScope());
     }
 
+    public function testRemoveAttribute()
+    {
+        $info = new ColumnInfo('label-locale-scope');
+        $attribute = $this->getAttributeMock(true, true);
+        $info->setAttribute($attribute);
+        $info->setAttribute(null);
+        $this->assertEquals(array('locale', 'scope'), $info->getSuffixes());
+        $this->assertNull($info->getAttribute());
+        $this->assertNull($info->getLocale());
+        $this->assertNull($info->getScope());
+        $this->assertEquals('label', $info->getPropertyPath());
+    }
+
     /**
      * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
      * @expectedExceptionMessage The column "label" must contain a locale code

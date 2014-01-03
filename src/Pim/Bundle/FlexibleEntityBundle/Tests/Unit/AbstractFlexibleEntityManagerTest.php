@@ -65,7 +65,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         // flexible entity manager configuration

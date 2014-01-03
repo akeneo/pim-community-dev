@@ -6,16 +6,16 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Product association repository
+ * Association repository
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationRepository extends EntityRepository implements ReferableEntityRepositoryInterface
+class AssociationRepository extends EntityRepository implements ReferableEntityRepositoryInterface
 {
     /**
-     * Return the number of ProductAssociations for a specific association type
+     * Return the number of Associations for a specific association type
      *
      * @param AssociationType $associationType
      *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
 
 use Pim\Bundle\ImportExportBundle\Reader\File\YamlReader;
 
@@ -48,14 +48,14 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
         $reader = $this->createReader(true);
         $reader->read();
 
-        $reader->setFilePath(__DIR__ . '/../../fixtures/fixture2.yml');
+        $reader->setFilePath(__DIR__ . '/../../../fixtures/fixture2.yml');
         $this->assertEquals(array('entity5' => array('key1' => 'value5')), $reader->read());
     }
 
     protected function createReader($multiple = false, $homogenize = false, $codeField = false)
     {
         $reader = new YamlReader($multiple, $homogenize, $codeField);
-        $reader->setFilePath(__DIR__ . '/../../fixtures/fixture.yml');
+        $reader->setFilePath(__DIR__ . '/../../../fixtures/fixture.yml');
 
         return $reader;
     }
@@ -84,5 +84,11 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
 
             return $expected[$index];
         }
+    }
+
+    public function testGetConfigurationFields()
+    {
+        $reader = new YamlReader;
+        $this->assertEquals(array(), $reader->getConfigurationFields());
     }
 }

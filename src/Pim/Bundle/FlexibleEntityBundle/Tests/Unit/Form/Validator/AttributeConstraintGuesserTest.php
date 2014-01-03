@@ -15,7 +15,7 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
  */
 class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new AttributeConstraintGuesser();
     }

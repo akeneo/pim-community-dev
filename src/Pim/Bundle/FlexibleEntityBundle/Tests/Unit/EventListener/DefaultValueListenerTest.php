@@ -47,7 +47,7 @@ class DefaultValueListenerTest extends AbstractOrmTest
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         // create attribute

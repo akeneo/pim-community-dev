@@ -151,10 +151,10 @@ services:
         tags:
             - { name: form.type, alias: pim_available_product_attributes }
 
-    pim_catalog.form.type.product_association:
-        class: %pim_catalog.form.type.product_association.class%
+    pim_catalog.form.type.association:
+        class: %pim_catalog.form.type.association.class%
         tags:
-            - { name: form.type, alias: pim_catalog_product_association }
+            - { name: form.type, alias: pim_catalog_association }
 
     pim_catalog.form.type.conversion_units:
         class: %pim_catalog.form.type.conversion_units.class%

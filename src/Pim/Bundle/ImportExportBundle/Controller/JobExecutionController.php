@@ -17,7 +17,10 @@ use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
+use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Gaufrette\StreamMode;
 
 /**
  * Job execution controller
@@ -39,9 +42,9 @@ class JobExecutionController extends AbstractDoctrineController
     private $batchLogHandler;
 
     /**
-     * @var JobExecutionArchiver
+     * @var JobExecutionArchivist
      */
-    private $jobExecutionArchiver;
+    private $archivist;
 
     /**
      * @var string
@@ -60,7 +63,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param DatagridHelperInterface  $datagridHelper
      * @param BatchLogHandler          $batchLogHandler
-     * @param JobExecutionArchiver     $archiver
+     * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
      */
     public function __construct(
@@ -74,7 +77,7 @@ class JobExecutionController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         BatchLogHandler $batchLogHandler,
-        JobExecutionArchiver $archiver,
+        JobExecutionArchivist $archivist,
         $jobType
     ) {
         parent::__construct(
@@ -88,10 +91,10 @@ class JobExecutionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper       = $datagridHelper;
-        $this->batchLogHandler      = $batchLogHandler;
-        $this->jobExecutionArchiver = $archiver;
-        $this->jobType              = $jobType;
+        $this->datagridHelper  = $datagridHelper;
+        $this->batchLogHandler = $batchLogHandler;
+        $this->archivist       = $archivist;
+        $this->jobType         = $jobType;
     }
     /**
      * List the reports
@@ -121,9 +124,9 @@ class JobExecutionController extends AbstractDoctrineController
         return $this->render(
             $view,
             array(
-                'execution'        => $jobExecution,
-                'existingLog'      => file_exists($this->batchLogHandler->getRealPath($jobExecution->getLogFile())),
-                'existingDownload' => file_exists($this->jobExecutionArchiver->getDownloadPath($jobExecution)),
+                'execution'   => $jobExecution,
+                'existingLog' => file_exists($this->batchLogHandler->getRealPath($jobExecution->getLogFile())),
+                'archives'    => $this->archivist->getArchives($jobExecution),
             )
         );
     }
@@ -146,20 +149,31 @@ class JobExecutionController extends AbstractDoctrineController
     }
 
     /**
-     * Download the input / output files of the job execution
+     * Download an archived file
      *
      * @param integer $id
+     * @param string  $archiver
+     * @param string  $key
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return StreamedResponse
      */
-    public function downloadFilesAction($id)
+    public function downloadFilesAction($id, $archiver, $key)
     {
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
-        $path = $this->jobExecutionArchiver->getDownloadPath($jobExecution);
-        $response = new BinaryFileResponse($path);
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return $response;
+        return new StreamedResponse(
+            function () use ($stream) {
+                $stream->open(new StreamMode('rb'));
+                while (!$stream->eof()) {
+                    echo $stream->read(8192);
+                }
+                $stream->close();
+            },
+            200,
+            array('Content-Type' => 'application/octet-stream')
+        );
+
     }
 
     /**

@@ -85,13 +85,13 @@ groups:
     yml:
         processor:         pim_import_export.processor.group
 
-product_associations:
+associations:
     order: 90
     csv:
-        processor:         pim_import_export.processor.product_association
+        processor:         pim_import_export.processor.association
     yml:
-        reader:            pim_import_export.reader.file.yaml_product_associations
-        processor:         pim_import_export.processor.product_association
+        reader:            pim_import_export.reader.file.yaml_associations
+        processor:         pim_import_export.processor.association
 
 jobs:
     order: 90

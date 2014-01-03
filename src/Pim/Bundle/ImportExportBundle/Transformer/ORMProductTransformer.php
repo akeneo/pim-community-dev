@@ -136,7 +136,7 @@ class ORMProductTransformer extends ORMTransformer
     {
         $this->setProductProperties($class, $entity, $data);
         $this->setProductValues($entity, $data);
-        $this->setProductAssociations($entity, $data);
+        $this->setAssociations($entity, $data);
     }
 
     /**
@@ -190,7 +190,7 @@ class ORMProductTransformer extends ORMTransformer
      * @param type  $entity
      * @param array $data
      */
-    protected function setProductAssociations($entity, array $data)
+    protected function setAssociations($entity, array $data)
     {
         if (!count($this->associationColumnsInfo)) {
             return;
