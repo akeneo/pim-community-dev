@@ -5,13 +5,14 @@ namespace Pim\Bundle\ImportExportBundle\Reader\File;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
+use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
+use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
 
 /**
  * Csv reader
@@ -20,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvReader extends AbstractConfigurableStepElement implements
+class CsvReader extends FileReader implements
     ItemReaderInterface,
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
@@ -80,6 +81,17 @@ class CsvReader extends AbstractConfigurableStepElement implements
      * @var SplFileObject
      */
     protected $csv;
+
+    /** @var InvalidItemsCsvArchiver */
+    protected $archiver;
+
+    /**
+     * @param InvalidItemsCsvArchiver $archiver
+     */
+    public function __construct(InvalidItemsCsvArchiver $archiver)
+    {
+        $this->archiver = $archiver;
+    }
 
     /**
      * Remove the extracted directory
@@ -262,6 +274,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
             );
             $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
             $this->fieldNames = $this->csv->fgetcsv();
+            $this->archiver->setHeader($this->fieldNames);
         }
 
         $data = $this->csv->fgetcsv();

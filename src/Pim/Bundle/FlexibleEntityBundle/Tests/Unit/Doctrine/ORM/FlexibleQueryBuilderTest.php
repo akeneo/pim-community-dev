@@ -24,7 +24,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     /**
      * Prepare test
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

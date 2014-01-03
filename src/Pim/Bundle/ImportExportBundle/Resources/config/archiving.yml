@@ -1,0 +1,54 @@
+parameters:
+    pim_import_export.event_listener.archivist.class:                 Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist
+    pim_import_export.event_listener.invalid_items_collector.class:   Pim\Bundle\ImportExportBundle\EventListener\InvalidItemsCollector
+    pim_import_export.factory.zip_filesystem.class:                   Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory
+    pim_import_export.archiver.invalid_item_csv_archiver.class:       Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver
+    pim_import_export.archiver.file_reader_archiver.class:            Pim\Bundle\ImportExportBundle\Archiver\FileReaderArchiver
+    pim_import_export.archiver.file_writer_archiver.class:            Pim\Bundle\ImportExportBundle\Archiver\FileWriterArchiver
+    pim_import_export.archiver.archivable_file_writer_archiver.class: Pim\Bundle\ImportExportBundle\Archiver\ArchivableFileWriterArchiver
+
+services:
+    pim_import_export.event_listener.archivist:
+        class: %pim_import_export.event_listener.archivist.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_import_export.event_listener.invalid_items_collector:
+        class: %pim_import_export.event_listener.invalid_items_collector.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_import_export.factory.zip_filesystem:
+        class: %pim_import_export.factory.zip_filesystem.class%
+
+    pim_import_export.archiver.invalid_item_csv_archiver:
+        class: %pim_import_export.archiver.invalid_item_csv_archiver.class%
+        arguments:
+            - '@pim_import_export.event_listener.invalid_items_collector'
+            - '@pim_serializer.encoder.csv'
+            - '@pim_archivist_filesystem'
+        tags:
+            - { name: pim_import_export.archiver }
+
+    pim_import_export.archiver.file_reader_archiver:
+        class: %pim_import_export.archiver.file_reader_archiver.class%
+        arguments:
+            - '@pim_archivist_filesystem'
+        tags:
+            - { name: pim_import_export.archiver }
+
+    pim_import_export.archiver.file_writer_archiver:
+        class: %pim_import_export.archiver.file_writer_archiver.class%
+        arguments:
+            - '@pim_archivist_filesystem'
+        tags:
+            - { name: pim_import_export.archiver }
+
+    pim_import_export.archiver.archivable_file_writer_archiver:
+        class: %pim_import_export.archiver.archivable_file_writer_archiver.class%
+        arguments:
+            - '@pim_import_export.factory.zip_filesystem'
+            - %archive_dir%
+            - '@pim_archivist_filesystem'
+        tags:
+            - { name: pim_import_export.archiver }

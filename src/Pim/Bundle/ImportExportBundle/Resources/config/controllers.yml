@@ -37,7 +37,7 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.archiver.job_execution_archiver'
+            - '@pim_import_export.event_listener.archivist'
             - export
 
     pim_import_export.controller.import_execution:
@@ -47,5 +47,5 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.archiver.job_execution_archiver'
+            - '@pim_import_export.event_listener.archivist'
             - import

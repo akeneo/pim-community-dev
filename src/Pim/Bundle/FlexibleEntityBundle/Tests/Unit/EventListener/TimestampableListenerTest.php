@@ -36,7 +36,7 @@ class TimestampableListenerTest extends OrmTestCase
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         // create attribute
         $this->attribute = new Attribute();
