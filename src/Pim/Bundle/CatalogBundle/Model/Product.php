@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
@@ -52,9 +52,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     protected $groups;
 
     /**
-     * @var ArrayCollection $productAssociations
+     * @var ArrayCollection $associations
      */
-    protected $productAssociations;
+    protected $associations;
 
     /**
      * @var ArrayCollection $completenesses
@@ -68,10 +68,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     {
         parent::__construct();
 
-        $this->categories          = new ArrayCollection();
-        $this->completenesses      = new ArrayCollection();
-        $this->groups              = new ArrayCollection();
-        $this->productAssociations = new ArrayCollection();
+        $this->categories     = new ArrayCollection();
+        $this->completenesses = new ArrayCollection();
+        $this->groups         = new ArrayCollection();
+        $this->associations   = new ArrayCollection();
     }
 
     /**
@@ -405,72 +405,72 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     }
 
     /**
-     * Add product productAssociation
+     * Add product association
      *
-     * @param ProductAssociation $productAssociation
+     * @param Association $association
      *
      * @return Product
      */
-    public function addProductAssociation(ProductAssociation $productAssociation)
+    public function addAssociation(Association $association)
     {
-        if (!$this->productAssociations->contains($productAssociation)) {
-            $productAssociation->setOwner($this);
-            $this->productAssociations->add($productAssociation);
+        if (!$this->associations->contains($association)) {
+            $association->setOwner($this);
+            $this->associations->add($association);
         }
 
         return $this;
     }
 
     /**
-     * Remove product productAssociation
+     * Remove product association
      *
-     * @param ProductAssociation $productAssociation
+     * @param Association $association
      *
      * @return Product
      */
-    public function removeProductAssociation(ProductAssociation $productAssociation)
+    public function removeAssociation(Association $association)
     {
-        $this->productAssociations->removeElement($productAssociation);
+        $this->associations->removeElement($association);
 
         return $this;
     }
 
     /**
-     * Get the product productAssociations
+     * Get the product associations
      *
-     * @return ProductAssociation[]|null
+     * @return Association[]|null
      */
-    public function getProductAssociations()
+    public function getAssociations()
     {
-        return $this->productAssociations;
+        return $this->associations;
     }
 
     /**
-     * Get the product productAssociation for an Association entity
+     * Get the product association for an Association type
      *
      * @param AssociationType $association
      *
-     * @return ProductAssociation|null
+     * @return Association|null
      */
-    public function getProductAssociationForAssociation(AssociationType $association)
+    public function getAssociationForType(AssociationType $type)
     {
-        return $this->productAssociations->filter(
-            function ($productAssociation) use ($association) {
-                return $productAssociation->getAssociationType() === $association;
+        return $this->associations->filter(
+            function ($association) use ($type) {
+                return $association->getAssociationType() === $type;
             }
         )->first();
     }
 
     /**
-     * Set product productAssociations
+     * Set product associations
      *
-     * @param ProductAssociation[] $productAssociations
+     * @param Association[] $associations
      *
      * @return Product
      */
-    public function setProductAssociations(array $productAssociations = array())
+    public function setAssociations(array $associations = array())
     {
-        $this->productAssociations = new ArrayCollection($productAssociations);
+        $this->associations = new ArrayCollection($associations);
 
         return $this;
     }

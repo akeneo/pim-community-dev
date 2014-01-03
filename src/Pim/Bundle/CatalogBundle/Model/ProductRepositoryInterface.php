@@ -58,14 +58,6 @@ interface ProductRepositoryInterface
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array());
 
     /**
-     * Find products with missing completeness
-     * @param Channel $channel
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByMissingCompleteness(Channel $channel);
-
-    /**
      * Returns a full product with all relations
      *
      * @param int $id

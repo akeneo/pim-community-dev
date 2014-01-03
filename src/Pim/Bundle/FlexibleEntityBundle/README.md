@@ -48,7 +48,7 @@ Main classes / concepts
 - Flexible : the flexible entity, ie, an entity which support usage of dynamic attributes
 - FlexibleValue : the value related to an entity and an attribute
 - FlexibleManager : the service which allows to easily manipulate flexible entity and provides "glue" between pieces
-- FlexibleRepository : aims to build query on flexible storage 
+- FlexibleRepository : aims to build query on flexible storage
 
 How to use ?
 ============

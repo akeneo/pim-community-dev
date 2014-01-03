@@ -18,6 +18,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -55,6 +56,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @var Pim\Bundle\CatalogBundle\Manager\CategoryManager
      */
     protected $categoryManager;
+
+    /**
+     * @var Pim\Bundle\CatalogBundle\Manager\ProductManager
+     */
+    protected $productManager;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
@@ -116,6 +122,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setCategoryManager(CategoryManager $manager)
     {
         $this->categoryManager = $manager;
+    }
+
+    /**
+     * Configure the product manager
+     *
+     * @param ProductManager $manager
+     */
+    public function setProductManager(ProductManager $manager)
+    {
+        $this->productManager = $manager;
     }
 
     /**
@@ -664,20 +680,24 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $repository = $this->categoryManager->getEntityRepository();
 
-        $treeExists = $repository->find($this->filterTreeId) != null;
+        $tree = $repository->find($this->filterTreeId);
+        $treeExists = ($repository->find($this->filterTreeId) != null);
 
+        $category = $repository->find($this->filterCategoryId);
         $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
-            && $repository->find($this->filterCategoryId) != null;
+            && ($category != null);
 
         if ($treeExists && $categoryExists) {
             $includeSub = ($this->filterIncludeSub == 1);
-            $productIds = $repository->getLinkedProductIds($this->filterCategoryId, $includeSub);
+            $productIds = $this->productManager->getProductIdsInCategory($category, $includeSub);
             $productIds = (empty($productIds)) ? array(0) : $productIds;
+
             $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
             $proxyQuery->andWhere($expression);
         } elseif ($treeExists && ($this->filterCategoryId == static::UNCLASSIFIED_CATEGORY)) {
-            $productIds = $repository->getLinkedProductIds($this->filterTreeId, true);
+            $productIds = $this->productManager->getProductIdsInCategory($tree, true);
             $productIds = (empty($productIds)) ? array(0) : $productIds;
+
             $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
             $proxyQuery->andWhere($expression);
         }

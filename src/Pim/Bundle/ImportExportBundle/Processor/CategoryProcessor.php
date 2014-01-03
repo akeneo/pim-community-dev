@@ -31,6 +31,15 @@ class CategoryProcessor extends TransformerProcessor
      */
     protected $circularRefsChecked = true;
 
+    /**
+     * Constructor
+     *
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface      $translator
+     * @param ORMTransformer           $transformer
+     * @param EntityCache              $entityCache
+     * @param string                   $class
+     */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -110,9 +119,9 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * Sets the parents and recursively removes categories with bad parents
      *
-     * @param array $categories
+     * @param array &$categories
      * @param array $parents
-     * @param array $category
+     * @param array $items
      */
     protected function setParents(array &$categories, array $parents, array $items)
     {
@@ -171,6 +180,9 @@ class CategoryProcessor extends TransformerProcessor
 
     /**
      * Checks for circular references in the category tree
+     *
+     * @param array $categories
+     * @param array $items
      *
      * @return null
      */

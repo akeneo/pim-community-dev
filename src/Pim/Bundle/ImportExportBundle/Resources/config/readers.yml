@@ -97,7 +97,7 @@ services:
             - true
             - false
 
-    pim_import_export.reader.file.yaml_product_associations:
+    pim_import_export.reader.file.yaml_associations:
         class: %pim_import_export.reader.file.yaml.class%
         arguments:
             - false
@@ -107,5 +107,5 @@ services:
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
 
-    pim_import_export.reader.cached_product_association:
+    pim_import_export.reader.cached_association:
         class: %pim_import_export.reader.cached.class%

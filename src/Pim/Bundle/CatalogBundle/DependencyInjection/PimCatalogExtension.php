@@ -49,16 +49,36 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             $loader->load('mail_recorder.yml');
         }
 
-        // load validation files
-        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
-
-        $finder = new Finder();
-        foreach ($finder->files()->in(__DIR__ . '/../Resources/config/validation') as $file) {
-            $yamlMappingFiles[] = $file->getRealPath();
-        }
-        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
-
         $this->loadStorageDriver($config, $container);
+        $this->loadValidationFiles($container);
+    }
+
+    /**
+     * Loads the validation files
+     */
+    protected function loadValidationFiles(ContainerBuilder $container)
+    {
+        // load validation files
+        $dirs = array();
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $dir = dirname($reflection->getFileName()) . '/Resources/config/validation';
+            if (is_dir($dir)) {
+                $dirs[] = $dir;
+            }
+        }
+        $finder = new Finder();
+        $mappingFiles = array();
+        foreach ($finder->files()->in($dirs) as $file) {
+            $mappingFiles[$file->getBasename('.yml')] = $file->getRealPath();
+        }
+        $container->setParameter(
+            'validator.mapping.loader.yaml_files_loader.mapping_files',
+            array_merge(
+                $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files'),
+                array_values($mappingFiles)
+            )
+        );
     }
 
     /**

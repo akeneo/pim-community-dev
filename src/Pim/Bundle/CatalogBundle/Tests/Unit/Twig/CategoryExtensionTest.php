@@ -25,17 +25,25 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     protected $categoryManager;
 
     /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->categoryExtension = new CategoryExtension($this->getCategoryManagerMock());
+        $this->categoryExtension = new CategoryExtension(
+            $this->getCategoryManagerMock(),
+            $this->getProductManagerMock()
+        );
     }
 
     /**
      * Get category manager mock
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManagerCategoryManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
      */
     protected function getCategoryManagerMock()
     {
@@ -45,6 +53,21 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         return $this->categoryManager;
+    }
+
+    /**
+     * Get product manager mock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
+     */
+    protected function getProductManagerMock()
+    {
+        $this->productManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $this->productManager;
     }
 
     /**
@@ -119,7 +142,10 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testListTreesResponse(array $trees, $selectedTreeId, $resultCount, $expectedResult)
     {
-        $this->defineCategoryCountResult($resultCount);
+        $this->productManager
+            ->expects($this->any())
+            ->method('getProductsCountInCategory')
+            ->will($this->returnValue($resultCount));
 
         $treeEntities = array();
         foreach ($trees as $tree) {
@@ -137,14 +163,9 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function defineCategoryCountResult($resultCount)
     {
-        $repository = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repository
+        $productManager
             ->expects($this->any())
-            ->method('countProductsLinked')
+            ->method('getProductsCountInCategory')
             ->will($this->returnValue($resultCount));
 
         $this->categoryManager

@@ -150,7 +150,7 @@ oro_batch:
     title: Kenmerken aanmaken/bewerken
   attribute_option_processor:
     title: Kenmerken aanmaken/bewerken
-  product_association_processor:
+  association_processor:
     title: Productkoppeling aanmaken
   csv_serializer:
     help: Of de kolomnaam geprint moet worden

@@ -7,8 +7,8 @@
     </div>
 {% endif %}
 
-{% if resource_granted("pim_catalog_product_associations_view") %}
-    <div class="tab-pane" id="associations" data-url="{{ path('pim_catalog_product_associations', { id: product.id }) }}">
+{% if resource_granted("pim_catalog_associations_view") %}
+    <div class="tab-pane" id="associations" data-url="{{ path('pim_catalog_associations', { id: product.id }) }}">
     </div>
 {% endif %}
 

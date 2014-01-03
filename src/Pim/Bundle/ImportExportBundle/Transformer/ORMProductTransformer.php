@@ -82,7 +82,7 @@ class ORMProductTransformer extends ORMTransformer
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
-     * @paral CachedReader                   $cachedReader
+     * @param CachedReader                   $associationReader
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -136,7 +136,7 @@ class ORMProductTransformer extends ORMTransformer
     {
         $this->setProductProperties($class, $entity, $data);
         $this->setProductValues($entity, $data);
-        $this->setProductAssociations($entity, $data);
+        $this->setAssociations($entity, $data);
     }
 
     /**
@@ -190,7 +190,7 @@ class ORMProductTransformer extends ORMTransformer
      * @param type  $entity
      * @param array $data
      */
-    protected function setProductAssociations($entity, array $data)
+    protected function setAssociations($entity, array $data)
     {
         if (!count($this->associationColumnsInfo)) {
             return;

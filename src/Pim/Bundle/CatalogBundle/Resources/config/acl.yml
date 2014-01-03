@@ -34,7 +34,7 @@ pim_catalog_product_remove_attribute:
 pim_catalog_product_categories_view:
     type: action
     label: pim_catalog.acl.product.categories_view
-pim_catalog_product_associations_view:
+pim_catalog_associations_view:
     type: action
     label: pim_catalog.acl.product.associations_view
 pim_catalog_product_change_family:

@@ -119,4 +119,13 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
             array('class' => 'class', 'multiple' => true)
         );
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage class option is required
+     */
+    public function testNoClass()
+    {
+        $this->transformer->transform('test');
+    }
 }

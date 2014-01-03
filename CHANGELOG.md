@@ -67,6 +67,7 @@
 - Product, ProductValue, Media and ProductPrice have switched from Pim\Bundle\CatalogBundle\Entity namespace to the Pim\Bundle\CatalogBundle\Model namespace, to pave the way for the MongoDB implementation
 - AbstractEntityFlexible getValue method now returns null in place of false when there is now value related to attribute + locale + scope
 - Completeness and Product are not linked any more via a Doctrine relationship. We are cutting the links between Product and other entities in order to pave the way to the ability to switch between MongoDB and ORM while using the same API (apart from Product repository).
+- Same thing than above for Category
 - Remove PimDataAuditBundle
 - Remode PimDemoBundle
 - Move product metric in catalog bundle
@@ -78,7 +79,8 @@
 - Remove getAttributeOptionValueRepository, getFlexibleValueRepository from FlexibleManager
 - Attribute fixtures format has changed
 - Product associations import/export format has changed.
-- Rename Association by AssociationType and all properties/methods linked to this class.
+- Rename Association to AssociationType and all properties/methods linked to this class.
+- Rename ProductAssociation to Association
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

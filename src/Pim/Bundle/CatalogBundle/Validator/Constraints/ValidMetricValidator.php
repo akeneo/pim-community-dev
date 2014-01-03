@@ -29,7 +29,8 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Constructor
      *
-     * @param array $measures
+     * @param PropertyAccessorInterface $propertyAccessor
+     * @param array                     $measures
      */
     public function __construct(PropertyAccessorInterface $propertyAccessor, $measures)
     {
@@ -49,6 +50,9 @@ class ValidMetricValidator extends ConstraintValidator
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
         } else {
+            if (!$entity->getData()) {
+                return;
+            }
             $familyProperty = 'family';
             $unitProperty   = 'unit';
         }

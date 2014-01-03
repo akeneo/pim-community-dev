@@ -42,6 +42,7 @@ class RegexpGuesser implements GuesserInterface
      * @param PropertyTransformerInterface $transformer
      * @param string                       $class
      * @param array                        $regexps
+     * @param array                        $options
      */
     public function __construct(
         PropertyTransformerInterface $transformer,

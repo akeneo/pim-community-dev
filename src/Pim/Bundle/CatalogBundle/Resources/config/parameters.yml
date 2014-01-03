@@ -53,11 +53,11 @@ parameters:
     pim_catalog.form.handler.currency.class: Pim\Bundle\CatalogBundle\Form\Handler\CurrencyHandler
     pim_catalog.form.type.currency.class:    Pim\Bundle\CatalogBundle\Form\Type\CurrencyType
 
-    pim_catalog.manager.locale.class:        Pim\Bundle\CatalogBundle\Manager\LocaleManager
+    pim_catalog.manager.locale.class: Pim\Bundle\CatalogBundle\Manager\LocaleManager
 
-    pim_catalog.manager.channel.class:       Pim\Bundle\CatalogBundle\Manager\ChannelManager
-    pim_catalog.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
-    pim_catalog.form.type.channel.class:     Pim\Bundle\CatalogBundle\Form\Type\ChannelType
+    pim_catalog.manager.channel.class:      Pim\Bundle\CatalogBundle\Manager\ChannelManager
+    pim_catalog.form.handler.channel.class: Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
+    pim_catalog.form.type.channel.class:    Pim\Bundle\CatalogBundle\Form\Type\ChannelType
 
     pim_catalog.manager.group.class:      Pim\Bundle\CatalogBundle\Manager\GroupManager
 
@@ -70,9 +70,9 @@ parameters:
     pim_catalog.form.handler.association_type.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler
     pim_catalog.form.type.association_type.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationTypeType
 
-    pim_catalog.form.type.product_association.class: Pim\Bundle\CatalogBundle\Form\Type\ProductAssociationType
+    pim_catalog.form.type.association.class: Pim\Bundle\CatalogBundle\Form\Type\AssociationType
 
-    pim_catalog.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
+    pim_catalog.event_listener.user_preferences.class: Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
 
     pim_catalog.mass_edit_action.operator.class:               Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator
     pim_catalog.mass_edit_action.change_status.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeStatus
@@ -83,4 +83,6 @@ parameters:
 
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
 
-    doctrine.orm.cache.apc.class:  Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
+    pim_catalog.manager.association.class: Pim\Bundle\CatalogBundle\Manager\AssociationManager
+
+    doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache

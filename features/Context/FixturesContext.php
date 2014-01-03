@@ -242,13 +242,8 @@ class FixturesContext extends RawMinkContext
     {
         if (is_string($data)) {
             $data = array('sku' => $data);
-        } elseif (isset($data['enabled'])) {
-            if (in_array($data['enabled'], array('yes', 'no'))) {
-                $data['enabled'] = (int) ($data['enabled'] === 'yes');
-            }
-        }
-        if (isset($data['categories'])) {
-            $data['categories'] = implode(', ', $this->listToArray($data['categories']));
+        } elseif (isset($data['enabled']) && in_array($data['enabled'], array('yes', 'no'))) {
+            $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
         // Clear product transformer cache
@@ -303,28 +298,6 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this->createFamily($data);
         }
-    }
-
-    /**
-     * @param string    $family
-     * @param TableNode $table
-     *
-     * @Given /^the family "([^"]*)" has the following attributes?:$/
-     */
-    public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
-    {
-        $family = $this->getFamily($family);
-
-        foreach ($table->getHash() as $data) {
-            $code = $this->camelize($data['label']);
-            $attribute = $this->getAttribute($code);
-            $family->addAttribute($attribute);
-            if ('yes' === $data['attribute as label']) {
-                $family->setAttributeAsLabel($attribute);
-            }
-        }
-
-        $this->flush();
     }
 
     /**
@@ -408,9 +381,9 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
-            $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
+            $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
-            if ($value) {
+            if ($value && $value->getAttribute()->getBackendType() !== 'media') {
                 if ($data['scope']) {
                     $value->setScope($data['scope']);
                 }
@@ -464,34 +437,12 @@ class FixturesContext extends RawMinkContext
                     }
                 }
             } else {
-                $code = $this->camelize($data['attribute']);
-                $attribute = $this->findAttribute($code);
-                if (!$attribute) {
-                    $code = implode('_', explode(' ', strtolower($data['attribute'])));
-                    $attribute = $this->getAttribute($code);
-                }
+                $attribute = $this->getAttribute($data['attribute']);
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
             $this->getProductManager()->save($product);
         }
-
-        $this->flush();
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $family
-     *
-     * @Given /^the attribute "([^"]*)" has been removed from the "([^"]*)" family$/
-     */
-    public function theAttributeHasBeenRemovedFromTheFamily($attribute, $family)
-    {
-        $code      = $this->camelize($attribute);
-        $attribute = $this->getAttribute($code);
-        $family    = $this->getFamily($family);
-
-        $family->removeAttribute($attribute);
 
         $this->flush();
     }

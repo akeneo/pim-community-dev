@@ -17,6 +17,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
     protected $doctrine;
     protected $manager;
     protected $relatedMetadata;
+    protected $propertyPath = 'options';
 
     protected function setUp()
     {
@@ -48,12 +49,12 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->metadata
             ->expects($this->once())
             ->method('hasAssociation')
-            ->with($this->equalTo('property_path'))
+            ->with($this->equalTo('options'))
             ->will($this->returnValue(true));
 
         $this->metadata->expects($this->any())
             ->method('getAssociationMapping')
-            ->with($this->equalTo('property_path'))
+            ->with($this->equalTo('options'))
             ->will(
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => $type))
             );
@@ -79,7 +80,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->metadata
             ->expects($this->once())
             ->method('hasAssociation')
-            ->with($this->equalTo('property_path'))
+            ->with($this->equalTo('options'))
             ->will($this->returnValue(false));
         $guesser = new AttributeOptionGuesser($this->transformer, $this->doctrine, 'class');
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
@@ -96,17 +97,17 @@ class AttributeOptionGuesserTest extends GuesserTestCase
         $this->metadata
             ->expects($this->once())
             ->method('hasAssociation')
-            ->with($this->equalTo('property_path'))
+            ->with($this->equalTo('options'))
             ->will($this->returnValue(true));
 
         $this->metadata->expects($this->any())
             ->method('getAssociationMapping')
-            ->with($this->equalTo('property_path'))
+            ->with($this->equalTo('options'))
             ->will(
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => ClassMetadataInfo::MANY_TO_MANY))
             );
 
-        $repository = new \stdClass;
+        $repository = new \stdClass();
         $this->doctrine->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('target_entity'))

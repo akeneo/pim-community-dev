@@ -208,22 +208,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     public function initialize(array $products)
     {
         $this->initializeCommonAttributes();
-
-        foreach ($products as $product) {
-            foreach ($this->commonAttributes as $key => $attribute) {
-                if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->isUnique() ||
-                    !$product->hasAttribute($attribute)) {
-                    /**
-                     * Attribute is not available for mass editing if:
-                     *   - it is an identifier
-                     *   - it is unique
-                     *   - it isn't set on one of the selected products
-                     */
-                    unset($this->commonAttributes[$key]);
-                }
-            }
-        }
+        $this->skipUneditableAttributes($products);
 
         foreach ($this->commonAttributes as $key => $attribute) {
             if ($this->attributesToDisplay->contains($attribute)) {
@@ -264,6 +249,27 @@ class EditCommonAttributes extends AbstractMassEditAction
                 ->setLocale($currentLocaleCode);
 
             $this->commonAttributes[] = $attribute;
+        }
+    }
+
+    /**
+     * Attribute is not available for mass editing if:
+     *   - it is an identifier
+     *   - it is unique
+     *   - it isn't set on one of the selected products
+     *
+     * @param array $products
+     */
+    protected function skipUneditableAttributes(array $products)
+    {
+        foreach ($products as $product) {
+            foreach ($this->commonAttributes as $key => $attribute) {
+                if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
+                    $attribute->isUnique() ||
+                    !$product->hasAttribute($attribute)) {
+                    unset($this->commonAttributes[$key]);
+                }
+            }
         }
     }
 
