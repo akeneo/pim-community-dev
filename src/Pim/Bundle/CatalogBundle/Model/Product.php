@@ -448,7 +448,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Get the product association for an Association type
      *
-     * @param AssociationType $association
+     * @param AssociationType $type
      *
      * @return Association|null
      */

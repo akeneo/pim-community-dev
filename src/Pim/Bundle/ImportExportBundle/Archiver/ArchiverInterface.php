@@ -25,9 +25,11 @@ interface ArchiverInterface
     /**
      * Get the archives of a job execution
      *
+     * @param JobExecution $jobExecution
+     *
      * @return array
      */
-    public function getArchives(JobExecution $JobExecution);
+    public function getArchives(JobExecution $jobExecution);
 
     /**
      * Get a specific archive of a job execution
