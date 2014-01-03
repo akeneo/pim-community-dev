@@ -115,9 +115,14 @@ class BatchCommand extends ContainerAwareCommand
                 );
             }
         } else {
-            $jobExecution = new JobExecution();
+            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance);
         }
         $jobExecution->setJobInstance($jobInstance);
+
+        $this
+            ->getContainer()
+            ->get('oro_batch.logger.batch_log_handler')
+            ->setSubDirectory($jobExecution->getId());
 
         $job->execute($jobExecution);
 
