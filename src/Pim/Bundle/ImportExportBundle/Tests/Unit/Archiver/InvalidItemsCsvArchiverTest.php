@@ -67,7 +67,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
                     array(
                         array(array('sku', 'name', 'description'), 'csv', array(), 'sku;name;description'),
                         array('item1',                             'csv', array(), 'foo;"Teh Foo"'),
-                        array('item2',                             'csv', array(), 'bar;"Teh Bar";"Teh Bar Description"'),
+                        array('item2',                             'csv', array(), 'bar;"Teh Bar";"Teh Bar Descr"'),
                     )
                 )
             );
@@ -82,7 +82,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
             ->method('write')
             ->with(
                 'import/product_import/42/invalid/invalid_items.csv',
-                "sku;name;descriptionfoo;\"Teh Foo\"bar;\"Teh Bar\";\"Teh Bar Description\""
+                "sku;name;descriptionfoo;\"Teh Foo\"bar;\"Teh Bar\";\"Teh Bar Descr\""
             );
 
         $this->archiver->archive($jobExecution);

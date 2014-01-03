@@ -31,13 +31,17 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testDoNothingIfMoreThan1FileWasWritten()
     {
-        $archivableWriter = $this->getArchivableFileWriterMock(array(
-            __DIR__.'/../../fixtures/export.csv' => 'export.csv',
-            __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
-        ));
-        $job = $this->getJobMock(array(
-            $this->getItemStepMock($archivableWriter),
-        ));
+        $archivableWriter = $this->getArchivableFileWriterMock(
+            array(
+                __DIR__.'/../../fixtures/export.csv' => 'export.csv',
+                __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
+            )
+        );
+        $job = $this->getJobMock(
+            array(
+                $this->getItemStepMock($archivableWriter),
+            )
+        );
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', $job),
@@ -51,15 +55,17 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $fileWriter = $this->getFileWriterMock(__DIR__ . '/../../fixtures/import.csv');
+        $fileWriter       = $this->getFileWriterMock(__DIR__ . '/../../fixtures/import.csv');
         $archivableWriter = $this->getArchivableFileWriterMock();
-        $lambdaWriter = $this->getWriterMock();
-        $job = $this->getJobMock(array(
-            $this->getStepMock(),
-            $this->getItemStepMock($fileWriter),
-            $this->getItemStepMock($archivableWriter),
-            $this->getItemStepMock($lambdaWriter),
-        ));
+        $lambdaWriter     = $this->getWriterMock();
+        $job              = $this->getJobMock(
+            array(
+                $this->getStepMock(),
+                $this->getItemStepMock($fileWriter),
+                $this->getItemStepMock($archivableWriter),
+                $this->getItemStepMock($lambdaWriter),
+            )
+        );
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', $job),
