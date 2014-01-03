@@ -490,7 +490,11 @@ class StepExecution
     public function addWarning($name, $reason, $item)
     {
         $this->warnings[] = array(
-            'name'   => sprintf('oro_batch.%s.title', $name),
+            'name'   => sprintf(
+                '%s.steps.%s.title',
+                substr($this->stepName, 0, strpos($this->stepName, '.')),
+                $name
+            ),
             'reason' => $reason,
             'item'   => $item,
         );
