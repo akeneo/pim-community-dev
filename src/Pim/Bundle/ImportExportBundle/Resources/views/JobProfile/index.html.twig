@@ -14,7 +14,6 @@
 
     {{ elements.page_header((entityName ~ '.overview')|trans, buttons) }}
 
-    {% block jobgrid %}
-    {% endblock %}
+    {{ dataGrid.renderGrid(gridName, {jobType: jobType}) }}
 
 {% endblock %}

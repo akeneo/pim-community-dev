@@ -1,12 +1,7 @@
-{% extends 'PimImportExportBundle:JobProfile:index.html.twig' %}
-
 {% set entityName     = 'export profile' %}
+{% set gridName       = 'export-profile-grid' %}
 {% set createRoute    = path('pim_importexport_export_profile_create') %}
 {% set createRouteAcl = 'pim_importexport_export_profile_create' %}
 
-{% block content %}
-    {% block jobgrid %}
-        {{ dataGrid.renderGrid('export-profile-grid', {jobType: jobType}) }}
-    {% endblock %}
-{% endblock %}
+{% include 'PimImportExportBundle:JobProfile:index.html.twig' %}
 
