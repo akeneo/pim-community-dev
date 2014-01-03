@@ -489,12 +489,12 @@ class StepExecution
      */
     public function addWarning($name, $reason, $item)
     {
+        $element = $this->stepName;
+        if (strpos($element, '.')) {
+            $element = substr($element, 0, strpos($element, '.'));
+        }
         $this->warnings[] = array(
-            'name'   => sprintf(
-                '%s.steps.%s.title',
-                substr($this->stepName, 0, strpos($this->stepName, '.')),
-                $name
-            ),
+            'name'   => sprintf('%s.steps.%s.title', $element, $name),
             'reason' => $reason,
             'item'   => $item,
         );

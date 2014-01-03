@@ -184,17 +184,45 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    'name'   => 'oro_batch.foo.title',
+                    'name'   => 'my_step_execution.steps.foo.title',
                     'reason' => 'something is wrong on line 1',
                     'item'   => array('foo' => 'bar')
                 ),
                 array(
-                    'name'   => 'oro_batch.bar.title',
+                    'name'   => 'my_step_execution.steps.bar.title',
                     'reason' => 'something is wrong on line 2',
                     'item'   => array('baz' => false)
                 )
             ),
             $this->stepExecution->getWarnings()
+        );
+
+        $stepExecution = new StepExecution('my_step_execution.foobarbaz', $this->jobExecution);
+        $stepExecution->addWarning(
+            'foo',
+            'something is wrong on line 1',
+            array('foo' => 'bar')
+        );
+        $stepExecution->addWarning(
+            'bar',
+            'something is wrong on line 2',
+            array('baz' => false)
+        );
+
+        $this->assertEquals(
+            array(
+                array(
+                    'name'   => 'my_step_execution.steps.foo.title',
+                    'reason' => 'something is wrong on line 1',
+                    'item'   => array('foo' => 'bar')
+                ),
+                array(
+                    'name'   => 'my_step_execution.steps.bar.title',
+                    'reason' => 'something is wrong on line 2',
+                    'item'   => array('baz' => false)
+                )
+            ),
+            $stepExecution->getWarnings()
         );
     }
 
