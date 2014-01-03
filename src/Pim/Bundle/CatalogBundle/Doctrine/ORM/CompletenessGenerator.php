@@ -122,6 +122,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                         JOIN pim_catalog_channel c ON c.id = r.channel_id
                         JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
                         JOIN pim_catalog_locale l ON l.id = cl.locale_id
+                        JOIN pim_catalog_channel_currency ccur ON ccur.channel_id = c.id
+                        JOIN pim_catalog_currency cur ON cur.id = ccur.currency_id
                         JOIN %product_interface% p ON p.family_id = r.family_id
                         JOIN %product_value_interface% v ON v.attribute_id = r.attribute_id
                             AND (v.scope_code = c.code OR v.scope_code IS NULL)
@@ -275,21 +277,23 @@ SQL;
      */
     protected function getClassContentFields($className, $prefix)
     {
-        if ('Pim\Bundle\CatalogBundle\Model\Metric' == $className ||
-            'Pim\Bundle\CatalogBundle\Model\ProductPrice' == $className) {
-            return array(sprintf('%s.%s', $prefix, 'data'));
-        } elseif ('Pim\Bundle\CatalogBundle\Model\Media' == $className) {
-            return array(sprintf('%s.%s', $prefix, 'filename'));
-        } else {
-            return array_map(
-                function ($name) use ($prefix) {
-                    return sprintf('%s.%s', $prefix, $name);
-                },
-                array_diff(
-                    $this->getClassMetadata($className)->getColumnNames(),
-                    array('id', 'locale_code', 'scope_code')
-                )
-            );
+        switch ($className) {
+            case 'Pim\Bundle\CatalogBundle\Model\Metric':
+                return array(sprintf('%s.%s', $prefix, 'data'));
+            case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
+                return array(sprintf('%s.%s', $prefix, 'VID'));
+            case 'Pim\Bundle\CatalogBundle\Model\Media':
+                return array(sprintf('%s.%s', $prefix, 'filename'));
+            default:
+                return array_map(
+                    function ($name) use ($prefix) {
+                        return sprintf('%s.%s', $prefix, $name);
+                    },
+                    array_diff(
+                        $this->getClassMetadata($className)->getColumnNames(),
+                        array('id', 'locale_code', 'scope_code')
+                    )
+                );
         }
     }
 
@@ -302,7 +306,7 @@ SQL;
     {
         $index = 0;
 
-        return array_reduce(
+        $tmpArray = array_reduce(
             $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
             function ($joins, $mapping) use (&$index) {
                 $index++;
@@ -311,6 +315,8 @@ SQL;
             },
             array()
         );
+
+        return $tmpArray;
     }
 
     /**
@@ -327,11 +333,15 @@ SQL;
             return array();
         }
 
+        if ($mapping['targetEntity'] === 'Pim\Bundle\CatalogBundle\Model\ProductPrice') {
+            return $this->getProductPriceJoin($mapping, $prefix);
+        }
+
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
                 return array(
                     sprintf(
-                        'LEFT JOIN %s %s ON %s.%s=v.id ',
+                        'LEFT JOIN %s %s ON %s.%s = v.id ',
                         $mapping['joinTable']['name'],
                         $prefix,
                         $prefix,
@@ -345,7 +355,7 @@ SQL;
 
                 return array(
                     sprintf(
-                        'LEFT JOIN %s %s ON %s.%s=v.id',
+                        'LEFT JOIN %s %s ON %s.%s = v.id',
                         $relatedMetadata->getTableName(),
                         $prefix,
                         $prefix,
@@ -355,7 +365,7 @@ SQL;
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
-                $joinPattern = 'LEFT JOIN %s %s ON %s.id=v.%s';
+                $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
                 $joinColumn = $mapping['joinColumns'][0]['name'];
 
                 return array(
@@ -371,6 +381,38 @@ SQL;
             default:
                 return array();
         }
+    }
+
+    /**
+     * Returns the SQL joins for the price association
+     *
+     * @param array  $mapping
+     * @param string $prefix
+     *
+     * @return array
+     */
+    protected function getProductPriceJoin($mapping, $prefix)
+    {
+        $sql = <<<SQL
+            LEFT JOIN (
+                SELECT l.id AS LID, c.id AS CID, v.id AS VID
+                FROM pim_catalog_channel c
+                JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
+                JOIN pim_catalog_locale l ON l.id = cl.locale_id
+                JOIN pim_catalog_channel_currency ccur ON ccur.channel_id = c.id
+                JOIN pim_catalog_currency cur ON cur.id = ccur.currency_id
+                JOIN pim_catalog_product_value v ON
+                    (v.scope_code = c.code OR v.scope_code IS NULL)
+                    AND (v.locale_code = l.code OR v.locale_code IS NULL)
+                JOIN pim_catalog_attribute att ON v.attribute_id = att.id AND att.backend_type = "prices"
+                LEFT JOIN pim_catalog_product_value_price %prefix%
+                    ON %prefix%.value_id = v.id AND %prefix%.currency_code = cur.code
+                GROUP BY l.id, c.id, v.id
+                HAVING COUNT(%prefix%.data) = COUNT(%prefix%.id))
+            AS %prefix% ON %prefix%.VID = v.id AND %prefix%.CID = c.id AND %prefix%.LID = l.id
+SQL;
+
+        return array(str_replace('%prefix%', $prefix, $sql));
     }
 
     /**
