@@ -79,7 +79,7 @@ class AssociationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Association'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Association'
             )
         );
     }
