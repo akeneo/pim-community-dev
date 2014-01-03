@@ -24,3 +24,5 @@ web/uploads_test/*
 web/log
 uploads_test/
 app/uploads/
+app/phpunit.xml
+app/phpunit.xml.dist

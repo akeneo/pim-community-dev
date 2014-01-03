@@ -5,6 +5,8 @@ namespace Pim\Bundle\JSONConnectorBundle\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Class ProductNormalizer transform a product entity into an array
@@ -27,9 +29,14 @@ class ProductNormalizer implements NormalizerInterface
     protected $locales;
 
     /**
+     * @var array other product attributes
+     */
+    protected $otherAttributes;
+
+    /**
      * @var array
      */
-    protected $supportedFormats = array('json');
+    protected $supportedFormats = array('json', 'xml');
 
     const DATE_FORMAT = 'Y-m-d H:i:s';
 
@@ -37,24 +44,21 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(ProductInterface $product, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
         $this->handleContext($context);
-        $values = $this->filterValues($product->getValues());
-        $identifier = $product->getIdentifier();
-        
-        $normalizedValues = $values->map(
-            function ($value) {
-                return $this->getNormalizedValue($value);
+        $values = $this->filterValues($object->getValues());
+        $normalizedValues = array();
+        $values->map(
+            function ($value) use (&$normalizedValues) {
+                $normalizedValues = array_merge($normalizedValues, $this->getNormalizedValue($value));
             }
         );
-        
-        $normalizedRelatedEntities = $this->getNormalizedRelatedEntities($product);
+        $normalizedOtherAttributes = $this->getNormalizedOtherAttributes($object);
         
         $normalizedProduct = array_merge(
-            array('id' => $identifier->getData()), 
             $normalizedValues, 
-            $normalizedRelatedEntities
+            $normalizedOtherAttributes
         );
         
         return $normalizedProduct;
@@ -135,17 +139,20 @@ class ProductNormalizer implements NormalizerInterface
         if ($data instanceof \Doctrine\Common\Collections\Collection) {
             $items = array();
             foreach ($data as $item) {
-                $items[] = (string) $item;
+                $items[] = $item instanceof Category ? $item->getCode() :(string) $item;
             }
 
             return implode(', ', $items);
+        }
+        if ($data instanceof Family) {
+            return $data->getCode();
         }
 
         if (method_exists($data, '__toString')) {
             return (string) $data;
         }
         if ($data instanceof \DateTime) {
-            return $data->format('c');
+            return $data->format(self::DATE_FORMAT);
         }
 
         return $data;
@@ -173,7 +180,7 @@ class ProductNormalizer implements NormalizerInterface
                 $context['locales'] :
                 null;
         
-        $this->locales = $this->channel ? $localeCodes : $this->channel->getLocales()->map(
+        $this->locales = !$this->channel ? $localeCodes : $this->channel->getLocales()->map(
                 function ($locale) use ($localeCodes) {
                     if (in_array($locale->getCode(), $localeCodes)) {
                         return $locale->getCode();
@@ -184,6 +191,10 @@ class ProductNormalizer implements NormalizerInterface
                     }
                 }
             )->toArray();
+            
+        $this->otherAttributes = isset($context['other_attributes']) ? 
+                $context['other_attributes']:
+                array();
     }
 
     /**
@@ -193,33 +204,20 @@ class ProductNormalizer implements NormalizerInterface
      * 
      * @return array
      */
-    protected function getNormalizedRelatedEntities($product)
+    protected function getNormalizedOtherAttributes($product)
     {
-        
-        return array(
-            'family' => $product->getFamily()->getCode(),
-            'categories' => $this->getProductCategoriesCodes($product),
-            'created' => $product->getCreated()->format(self::DATE_FORMAT),
-            'updated' => $product->getUpdated()->format(self::DATE_FORMAT),
-            
+        $normalizedOtherAttributes = array();
+                
+        array_map (
+            function ($attributeName) use ($product, &$normalizedOtherAttributes){
+                $methodName = 'get'.ucfirst($attributeName);
+                if (method_exists($product, $methodName) && $product->{$methodName}()){
+                    $normalizedOtherAttributes[$attributeName] = $this->normalizeValueData($product->{$methodName}());
+                }
+            }, 
+            $this->otherAttributes
         );
+        return $normalizedOtherAttributes;
     }
 
-    /**
-     * get product's categories codes
-     * 
-     * @param ProductInterface $product
-     * 
-     * @return String
-     */
-    protected function getProductCategoriesCodes($product)
-    {
-        $categories = $product->getCategories()->map(
-            function ($category) {
-                return $category->getCode();
-            }
-        );
-        
-        return implode(', ', $categories);
-    }
 }
