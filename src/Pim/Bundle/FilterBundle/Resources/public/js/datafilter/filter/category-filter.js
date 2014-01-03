@@ -1,7 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/number-filter', 'routing', 'oro/mediator', 'oro/app',
-    'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
-    function ($, _, __, NumberFilter, Routing, mediator, app) {
+    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view', 'oro/mediator'],
+    function ($, _, NumberFilter, TreeView, mediator) {
         'use strict';
 
         /**
@@ -16,7 +15,6 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
-
             /**
              * Filter container selector
              *
@@ -35,9 +33,6 @@ define(
                 type: 0
             },
 
-            selectedNode: 0,
-            dataLocale: null,
-
             /**
              * @inheritDoc
              */
@@ -49,89 +44,17 @@ define(
             events: {},
 
             /**
-             * jsTree config
-             *
-             * @property {Object}
+             * @inheritDoc
              */
-            getTreeConfig: function() {
-                return {
-                    core: {
-                        animation: 200
-                    },
-                    plugins: [
-                        'tree_selector',
-                        'nested_switch',
-                        'themes',
-                        'json_data',
-                        'ui',
-                        'crrm',
-                        'types'
-                    ],
-                    nested_switch: {
-                        state:    this.value.type,
-                        label:    __('jstree.include_sub'),
-                        callback: _.bind(function(state) {
-                            this.value.type = +state;
+            initialize: function(options) {
+                mediator.once('datagrid_filters:rendered', this._init, this);
 
-                            this.$el.jstree('instance').data.tree_selector.ajax.url = this._getTreeUrl();
-                            this.$el.jstree('refresh');
-                            this.$el.trigger('after_tree_loaded.jstree');
-                            this._triggerUpdate();
-                        }, this)
-
-                    },
-                    tree_selector: {
-                        ajax: {
-                            'url': this._getTreeUrl()
-                        },
-                        auto_open_root: true,
-                        node_label_field: 'label',
-                        preselect_node_id: this.selectedNode
-                    },
-                    themes: {
-                        dots: true,
-                        icons: true
-                    },
-                    json_data: {
-                        ajax: {
-                            url: this._getChildrenUrl(),
-                            data: _.bind(function (node) {
-                                // the result is fed to the AJAX request `data` option
-                                return {
-                                    id: this._getNodeId(node),
-                                    select_node_id: this.selectedNode,
-                                    with_products_count: 1,
-                                    include_sub: this.value.type
-                                };
-                            }, this)
-                        }
-                    },
-                    types: {
-                        max_depth: -2,
-                        max_children: -2,
-                        valid_children: ['folder'],
-                        types: {
-                            'default': {
-                                valid_children: 'folder'
-                            }
-                        }
-                    },
-                    ui: {
-                        select_limit: 1,
-                        select_multiple_modifier: false
-                    }
-                };
+                NumberFilter.prototype.initialize.apply(this, arguments);
             },
 
             /**
              * @inheritDoc
              */
-            initialize: function(options) {
-                mediator.on('datagrid_filters:rendered', this._init, this);
-
-                NumberFilter.prototype.initialize.apply(this, arguments);
-            },
-
             render: function() {
             },
 
@@ -143,90 +66,56 @@ define(
             _init: function() {
                 this.$el.remove();
                 this.$el = $(this.container);
-                this.dataLocale = this.$el.attr('data-datalocale');
 
-                var treeId = +this.value.value.treeId,
-                    categoryId = +this.value.value.categoryId;
+                this.value.value.categoryId = +this.value.value.categoryId;
+                this.value.value.treeId     = +this.value.value.treeId;
+                this.value.type             = +this.value.type;
 
-                this.selectedNode = categoryId !== 0 ? categoryId : treeId;
-
-                this.$el.jstree(this.getTreeConfig())
-                    .on('trees_loaded.jstree', this._onTreesLoaded)
-                    .on('after_tree_loaded.jstree', _.bind(this._afterTreeLoaded, this))
-                    .on('after_open.jstree correct_state.jstree', _.bind(this._afterOpenNode, this))
-                    .on('select_node.jstree', _.bind(this._onSelectNode, this));
+                this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
+                TreeView.init(this.$el, this._getInitialState());
             },
 
-            _onTreesLoaded: function(event, tree_select_id) {
-                $('#' + tree_select_id).select2({ width: '100%' });
+            /**
+             * Get the current tree state
+             */
+            _getTreeState: function() {
+                var state = TreeView.getState();
+
+                return {
+                    value: {
+                        treeId:     state.selectedTree,
+                        categoryId: state.selectedNode
+                    },
+                    type: +state.includeSub
+                };
             },
 
-            _afterTreeLoaded: function (e, root_node_id) {
-                if (!$('#node_0').length) {
-                    this.$el.jstree('create', -1, 'last', {
-                        attr: { 'class': 'jstree-unclassified', id: 'node_0' },
-                        data: { title: __('jstree.all') }
-                    }, null, true);
-                    if (0 === this.selectedNode) {
-                        this.$el.jstree('select_node', '#node_0');
-                    }
+            /**
+             * Get initial state for the tree
+             */
+            _getInitialState: function() {
+                return {
+                    selectedNode: +this.value.value.categoryId,
+                    selectedTree: +this.value.value.treeId,
+                    includeSub: !!this.value.type
+                };
+            },
+
+            /**
+             * Sync the tree state with the filter value
+             */
+            _updateState: function() {
+                this.value = this._getTreeState();
+            },
+
+            /**
+             * On tree updated
+             */
+            _onTreeUpdated: function (e, data) {
+                if (!_.isEqual(this.value, this._getTreeState())) {
+                    this._updateState();
+                    this._triggerUpdate();
                 }
-            },
-
-            _afterOpenNode: function (e, data) {
-                var $node = $(data.args[0]);
-
-                if ($node.attr('rel') === 'folder' && !$('#node_-1').length) {
-                    this.$el.jstree('create', '#' + $node.attr('id'), 'last', {
-                        attr: { 'class': 'jstree-unclassified', id: 'node_-1' },
-                        data: { title: __('jstree.unclassified') }
-                    }, null, true);
-                    if (-1 === this.selectedNode) {
-                        this.$el.jstree('select_node', '#node_-1');
-                    }
-                }
-            },
-
-            _getNodeId: function (node) {
-                var nodeId = (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
-                return +nodeId;
-            },
-
-            _onSelectNode: function (e, data) {
-                var $node = $(data.args).parent();
-                var nodeId = this._getNodeId($node);
-                this.selectedNode = nodeId;
-
-                if ($node.attr('rel') === 'folder') {
-                    this.value.value.treeId     = nodeId;
-                    this.value.value.categoryId = 0;
-                } else {
-                    this.value.value.categoryId = nodeId;
-                    this.value.value.treeId     = this._getNodeId(this.$el.find('li').first());
-                }
-                this._triggerUpdate();
-            },
-
-            _getTreeUrl: function() {
-                return Routing.generate(
-                    'pim_catalog_categorytree_listtree',
-                    {
-                        _format: 'json',
-                        dataLocale: this.dataLocale,
-                        select_node_id: this.selectedNode,
-                        include_sub: this.value.type
-                    }
-                );
-            },
-
-            _getChildrenUrl: function() {
-                return Routing.generate(
-                    'pim_catalog_categorytree_children',
-                    {
-                        _format: 'json',
-                        dataLocale: this.dataLocale
-                    }
-                );
             },
 
             /**
@@ -240,7 +129,7 @@ define(
              * @inheritDoc
              */
             isEmpty: function() {
-                return false;
+                return _.isEqual(this.emptyValue, this._getTreeState());
             },
 
             /**
