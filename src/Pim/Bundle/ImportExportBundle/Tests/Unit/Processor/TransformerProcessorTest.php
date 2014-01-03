@@ -60,7 +60,6 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->assertSame($this->entity, $processor->process($this->data));
     }
 
-
     public function testProcessWithSkip()
     {
         $processor = $this->createProcessor(true);
