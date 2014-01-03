@@ -1,0 +1,121 @@
+datagrid:
+    job-profile-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - j
+                from:
+                    - { table: OroBatchBundle:JobInstance, alias: j }
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            alias:
+                label:     Job
+                data_name: j.alias
+            connector:
+                label: Connector
+            status:
+                label: Status
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                params:
+                    - id
+            delete_link:
+                type: url
+                params:
+                    - id
+            launch_link:
+                type: url
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+            launch:
+                type:  navigate
+                label: Launch
+                icon:  play
+                link:  launch_link
+        sorters:
+            columns:
+                code:
+                    data_name: j.code
+                label:
+                    data_name: j.label
+                alias:
+                    data_name: j.alias
+                connector:
+                    data_name: j.connector
+                status:
+                    data_name: j.status
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: j.code
+                label:
+                    type:      string
+                    data_name: j.label
+                alias:
+                    type:      string
+                    data_name: j.alias
+                connector:
+                    type:      string
+                    data_name: j.connector
+                status:
+                    type:      string
+                    data_name: j.status
+
+    export-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: exportprofile
+        source:
+            acl_resource: pim_importexport_export_profile_index
+            query:
+                where:
+                    and:
+                        - j.type = 'export'
+        properties:
+            id: ~
+            edit_link:
+                route: pim_importexport_export_profile_edit
+            delete_link:
+                route: pim_importexport_export_profile_remove
+            launch_link:
+                route: pim_importexport_export_profile_show
+
+    import-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: importprofile
+        source:
+            acl_resource: pim_importexport_import_profile_index
+            query:
+                where:
+                    and:
+                        - j.type = 'import'
+        properties:
+            id: ~
+            edit_link:
+                route: pim_importexport_import_profile_edit
+            delete_link:
+                route: pim_importexport_import_profile_remove
+            launch_link:
+                route: pim_importexport_import_profile_show

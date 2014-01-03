@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
@@ -16,13 +17,18 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
 class ImportProfileController extends JobProfileController
 {
     /**
-     * {@inheritdoc}
+     * List the import profiles
+     *
+     * @Template
      *
      * @AclAncestor("pim_importexport_import_profile_index")
      */
     public function indexAction(Request $request)
     {
-        return parent::indexAction($request);
+        return array(
+            'jobType'    => $this->getJobType(),
+            'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
+        );
     }
 
     /**
