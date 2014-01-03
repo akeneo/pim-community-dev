@@ -15,9 +15,10 @@ use Pim\Bundle\ImportExportBundle\Exception\ParametrizedException;
  */
 class TransformerProcessorTest extends TransformerProcessorTestCase
 {
-    protected $processor;
     protected $transformer;
-    protected $data = array('key' => 'val');
+    protected $data = array('key' => 'val', 'key2' => null);
+    protected $mappedData = array('mapped_key' => 'val', 'key2' => null);
+    protected $skipEmptyData = array('key' => 'val');
     protected $entity;
 
     protected function setUp()
@@ -26,28 +27,15 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->processor = new TransformerProcessor(
-            $this->validator,
-            $this->translator,
-            $this->transformer,
-            'class'
-        );
-
-        $stepExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->processor->setStepExecution($stepExecution);
-
         $this->entity = new \stdClass();
     }
 
-    protected function initializeTransformer()
+    protected function initializeTransformer($mappedData)
     {
         $this->transformer
             ->expects($this->once())
             ->method('transform')
-            ->with($this->equalTo('class'), $this->equalTo($this->data))
+            ->with($this->equalTo('class'), $this->equalTo($mappedData))
             ->will($this->returnValue($this->entity));
         $this->transformer
             ->expects($this->once())
@@ -57,7 +45,9 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
 
     public function testProcess()
     {
-        $this->initializeTransformer();
+        $processor = $this->createProcessor();
+        $this->initializeTransformer($this->mappedData);
+        $processor->addMapping('key', 'mapped_key');
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
@@ -67,7 +57,24 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('validate')
             ->will($this->returnArgument(4));
 
-        $this->assertSame($this->entity, $this->processor->process($this->data));
+        $this->assertSame($this->entity, $processor->process($this->data));
+    }
+
+
+    public function testProcessWithSkip()
+    {
+        $processor = $this->createProcessor(true);
+        $this->initializeTransformer($this->skipEmptyData);
+        $this->transformer
+            ->expects($this->once())
+            ->method('getErrors')
+            ->will($this->returnValue(array()));
+        $this->validator
+            ->expects($this->once())
+            ->method('validate')
+            ->will($this->returnArgument(4));
+
+        $this->assertSame($this->entity, $processor->process($this->data));
     }
 
     /**
@@ -84,7 +91,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
                     new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
                 )
             );
-        $this->processor->process($this->data);
+        $this->createProcessor()->process($this->data);
     }
 
     /**
@@ -93,7 +100,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
      */
     public function testProcessWithValidatorException()
     {
-        $this->initializeTransformer();
+        $this->initializeTransformer($this->data);
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
@@ -107,12 +114,12 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
                 )
             );
 
-        $this->processor->process($this->data);
+        $this->createProcessor()->process($this->data);
     }
 
     public function testProcessWithErrors()
     {
-        $this->initializeTransformer();
+        $this->initializeTransformer($this->data);
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
@@ -134,7 +141,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('validate')
             ->will($this->returnArgument(3));
         try {
-            $this->processor->process($this->data);
+            $this->createProcessor()->process($this->data);
         } catch (InvalidItemException $ex) {
             $message = "field1: <tr>exception value1</tr>,<tr>exception value1</tr>\n" .
                 "field2: <tr>exception value3</tr>";
@@ -142,4 +149,29 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         }
         $this->assertTrue(isset($ex), 'No exception thrown');
     }
+
+    public function testGetConfigurationFields()
+    {
+        $this->assertEquals(array(), $this->createProcessor()->getConfigurationFields());
+    }
+
+    protected function createProcessor($skipEmpty = false)
+    {
+        $processor = new TransformerProcessor(
+            $this->validator,
+            $this->translator,
+            $this->transformer,
+            'class',
+            $skipEmpty
+        );
+
+        $stepExecution = $this
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $processor->setStepExecution($stepExecution);
+
+        return $processor;
+    }
+
 }
