@@ -67,7 +67,7 @@ class AttributeRequirement
     }
 
     /**
-     * Setter product attribute
+     * Set attribute
      *
      * @param AttributeInterface $attribute
      *
@@ -81,7 +81,7 @@ class AttributeRequirement
     }
 
     /**
-     * Getter product attribute
+     * Get attribute
      *
      * @return AttributeInterface
      */

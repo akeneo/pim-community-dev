@@ -140,9 +140,9 @@ oro_titles:
     pim_catalog_categorytree_listtree:   Category trees | List
     pim_catalog_categorytree_create:     Category trees | Create
     pim_catalog_categorytree_edit:       Category trees %%category.label%% | Edit
-    pim_catalog_attribute_index:         Product attributes
-    pim_catalog_attribute_create:        Product attributes | Create
-    pim_catalog_attribute_edit:          Product attributes %%attribute.label%% | Edit
+    pim_catalog_attribute_index:         Attributes
+    pim_catalog_attribute_create:        Attributes | Create
+    pim_catalog_attribute_edit:          Attributes %%attribute.label%% | Edit
     pim_catalog_product_index:           Products
     pim_catalog_product_create:          Products | Create
     pim_catalog_product_edit:            Products %%product.sku%% | Edit

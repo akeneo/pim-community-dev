@@ -146,7 +146,7 @@ class ProductController extends AbstractDoctrineController
         $this->productManager->setLocale($this->getDataLocale());
     }
     /**
-     * List product attributes
+     * List products
      *
      * @param Request $request the request
      *
@@ -632,7 +632,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * Get the AvailbleAttributes form
      *
-     * @param array               $attributes          The product attributes
+     * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form

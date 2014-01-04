@@ -278,7 +278,7 @@ class FamilyController extends AbstractDoctrineController
     }
 
     /**
-     * Remove product attribute
+     * Remove an attribute
      *
      * @param integer $familyId
      * @param integer $attributeId
@@ -313,7 +313,7 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Get the AvailableAttributes form
      *
-     * @param array               $attributes          The product attributes
+     * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form

@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
- * Product attribute controller
+ * Attribute controller
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -138,7 +138,7 @@ class AttributeController extends AbstractDoctrineController
         $this->measuresConfig   = $measuresConfig;
     }
     /**
-     * List product attributes
+     * List attributes
      * @param Request $request
      *
      * @AclAncestor("pim_catalog_attribute_index")
@@ -386,7 +386,7 @@ class AttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Finds a product attribute
+     * Find an attribute
      *
      * @param int $id
      *

@@ -233,7 +233,7 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * Get the AvailbleAttributes form
      *
-     * @param array               $attributes          The product attributes
+     * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Form
@@ -284,7 +284,7 @@ class AttributeGroupController extends AbstractDoctrineController
     }
 
     /**
-     * Remove a product attribute
+     * Remove an attribute
      *
      * @param integer $groupId
      * @param integer $attributeId

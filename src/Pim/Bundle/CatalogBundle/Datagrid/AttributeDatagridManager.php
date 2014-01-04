@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 
 /**
- * Product attribute grid manager
+ * Attribute grid manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

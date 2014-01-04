@@ -70,10 +70,10 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a product attribute entity
+     * Create an attribute entity
      *
      * @param string $metricFamily
-     * @param string $metricUnit
+     * @param string $defaultMetricUnit
      *
      * @return Attribute
      */
