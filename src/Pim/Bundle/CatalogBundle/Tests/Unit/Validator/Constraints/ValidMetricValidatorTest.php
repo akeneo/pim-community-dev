@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator;
 
@@ -75,11 +75,11 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $metricFamily
      * @param string $metricUnit
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
     protected function createProductAttribute($metricFamily, $defaultMetricUnit = '')
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AttributeInterface');
 
         $this->propertyAccessor->expects($this->any())
             ->method('getValue')

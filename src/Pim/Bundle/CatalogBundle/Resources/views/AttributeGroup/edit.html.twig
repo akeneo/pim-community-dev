@@ -104,7 +104,7 @@
 {{ form_end(form) }}
 
 {% if form.vars.value.id and resource_granted('pim_catalog_attribute_group_add_attribute') %}
-    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+    {% include 'PimCatalogBundle:Attribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
         'action': path('pim_catalog_attributegroup_addproductattributes', { id: form.vars.value.id })
     } %}

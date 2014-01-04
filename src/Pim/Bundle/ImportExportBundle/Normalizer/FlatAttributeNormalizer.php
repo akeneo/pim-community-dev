@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * A normalizer to transform a ProductAttributeInterface entity into a flat array
+ * A normalizer to transform a AttributeInterface entity into a flat array
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 
@@ -13,7 +13,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductAttributeManagerInterface
+interface AttributeManagerInterface
 {
     /**
      * Return a new attribute instance
@@ -49,11 +49,11 @@ interface ProductAttributeManagerInterface
     public function getAttributeOptionClass();
 
     /**
-     * Create a ProductAttributeInterface object from data in the form
+     * Create a AttributeInterface object from data in the form
      *
      * @param array $data Form data
      *
-     * @return ProductAttributeInterface $attribute | null
+     * @return AttributeInterface $attribute | null
      */
     public function createAttributeFromFormData($data);
 
@@ -74,11 +74,11 @@ interface ProductAttributeManagerInterface
     public function getAttributeTypes();
 
     /**
-     * Make sure the ProductAttributeInterface entity has the right backend properties
+     * Make sure the AttributeInterface entity has the right backend properties
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
-     * @return ProductAttributeInterface $attribute
+     * @return AttributeInterface $attribute
      */
-    public function prepareBackendProperties(ProductAttributeInterface $attribute);
+    public function prepareBackendProperties(AttributeInterface $attribute);
 }

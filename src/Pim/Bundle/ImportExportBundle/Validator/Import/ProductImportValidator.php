@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
@@ -86,11 +86,11 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string
      */
-    protected function getAttributeConstraints(ProductAttributeInterface $attribute)
+    protected function getAttributeConstraints(AttributeInterface $attribute)
     {
         $code = $attribute->getCode();
         if (!isset($this->constraints[$code])) {

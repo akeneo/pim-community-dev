@@ -4,10 +4,10 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 
 /**
@@ -20,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 class ORMAttributeTransformer extends ORMTransformer
 {
     /**
-     * @var ProductAttributeManagerInterface
+     * @var AttributeManagerInterface
      */
     protected $attributeManager;
 
@@ -36,7 +36,7 @@ class ORMAttributeTransformer extends ORMTransformer
      * @param PropertyAccessorInterface        $propertyAccessor
      * @param GuesserInterface                 $guesser
      * @param ColumnInfoTransformerInterface   $columnInfoTransformer
-     * @param ProductAttributeManagerInterface $attributeManager
+     * @param AttributeManagerInterface        $attributeManager
      * @param EntityCache                      $entityCache
      */
     public function __construct(
@@ -44,7 +44,7 @@ class ORMAttributeTransformer extends ORMTransformer
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
-        ProductAttributeManagerInterface $attributeManager,
+        AttributeManagerInterface $attributeManager,
         EntityCache $entityCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
@@ -71,10 +71,10 @@ class ORMAttributeTransformer extends ORMTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                     $optionsData
      */
-    protected function setOptions(ProductAttributeInterface $attribute, array $optionsData)
+    protected function setOptions(AttributeInterface $attribute, array $optionsData)
     {
         $this->entityCache->setReference($attribute);
         foreach ($optionsData as $code => $optionData) {
