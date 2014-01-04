@@ -1697,7 +1697,7 @@ class FixturesContext extends RawMinkContext
      */
     private function getAttributeManager()
     {
-        return $this->getContainer()->get('pim_catalog.manager.product_attribute');
+        return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
 
     /**

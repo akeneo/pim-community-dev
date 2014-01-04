@@ -206,7 +206,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
     /**
      * @param Attribute $attribute
-     * @param array            $data
+     * @param array     $data
      */
     protected function addLabels($attribute, $data)
     {
@@ -218,7 +218,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
     /**
      * @param Attribute $attribute
-     * @param array            $data
+     * @param array     $data
      */
     protected function addAvailableLocales($attribute, $data)
     {
@@ -233,7 +233,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
      * Create attribute options
      *
      * @param Attribute $attribute
-     * @param array            $data
+     * @param array     $data
      */
     protected function addOptions(Attribute $attribute, $data)
     {
@@ -259,7 +259,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
      * Add attribute default options
      *
      * @param Attribute $attribute
-     * @param array            $data
+     * @param array     $data
      */
     protected function addDefaultOptions(Attribute $attribute, $data)
     {

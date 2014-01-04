@@ -6,7 +6,7 @@ parameters:
     pim_catalog.controller.family.class:               Pim\Bundle\CatalogBundle\Controller\FamilyController
     pim_catalog.controller.locale.class:               Pim\Bundle\CatalogBundle\Controller\LocaleController
     pim_catalog.controller.mass_edit_action.class:     Pim\Bundle\CatalogBundle\Controller\MassEditActionController
-    pim_catalog.controller.product_attribute.class:    Pim\Bundle\CatalogBundle\Controller\AttributeController
+    pim_catalog.controller.attribute.class:            Pim\Bundle\CatalogBundle\Controller\AttributeController
     pim_catalog.controller.product.class:              Pim\Bundle\CatalogBundle\Controller\ProductController
     pim_catalog.controller.association.class:          Pim\Bundle\CatalogBundle\Controller\AssociationController
     pim_catalog.controller.group.class:                Pim\Bundle\CatalogBundle\Controller\GroupController
@@ -42,7 +42,7 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.category_tree:
         scope: request
@@ -79,7 +79,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.form.handler.family'
             - '@pim_catalog.form.family'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.locale:
         scope: request
@@ -88,19 +88,19 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
 
-    pim_catalog.controller.product_attribute:
+    pim_catalog.controller.attribute:
         scope: request
-        class: %pim_catalog.controller.product_attribute.class%
+        class: %pim_catalog.controller.attribute.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute'
             - '@pim_catalog.form.attribute'
-            - '@pim_catalog.manager.product_attribute'
+            - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - %oro_measure.measures_config%
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.product:
         scope: request

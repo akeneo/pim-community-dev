@@ -334,9 +334,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param Attribute $attribute
-     * @param mixed            $data
-     * @param string           $locale
-     * @param string           $scope
+     * @param mixed     $data
+     * @param string    $locale
+     * @param string    $scope
      *
      * @return ProductValue
      */

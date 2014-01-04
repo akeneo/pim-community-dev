@@ -26,7 +26,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements Referab
     }
 
     /**
-     * Get the query builder to find all product attributes except the ones
+     * Get the query builder to find all attributes except the ones
      * defined in arguments
      *
      * @param array $attributes The attributes to exclude from the results set
@@ -54,7 +54,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements Referab
     }
 
     /**
-     * Find all product attributes that belong to a group
+     * Find all attributes that belong to a group
      *
      * @return array
      */
@@ -67,7 +67,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements Referab
     }
 
     /**
-     * Find all unique product attribute codes
+     * Find all unique attribute codes
      *
      * @return string[]
      */

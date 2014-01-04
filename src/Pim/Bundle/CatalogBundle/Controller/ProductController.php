@@ -146,7 +146,7 @@ class ProductController extends AbstractDoctrineController
         $this->productManager->setLocale($this->getDataLocale());
     }
     /**
-     * List product attributes
+     * List products
      *
      * @param Request $request the request
      *
@@ -418,7 +418,7 @@ class ProductController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_product_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Request $request, $id)
+    public function addAttributesAction(Request $request, $id)
     {
         $product             = $this->findProductOr404($id);
         $availableAttributes = new AvailableAttributes();
@@ -471,7 +471,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws NotFoundHttpException
      */
-    public function removeProductAttributeAction($productId, $attributeId)
+    public function removeAttributeAction($productId, $attributeId)
     {
         $product   = $this->findOr404('Pim\Bundle\CatalogBundle\Model\Product', $productId);
         $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
@@ -632,7 +632,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * Get the AvailbleAttributes form
      *
-     * @param array               $attributes          The product attributes
+     * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form
@@ -642,7 +642,7 @@ class ProductController extends AbstractDoctrineController
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            'pim_available_product_attributes',
+            'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );

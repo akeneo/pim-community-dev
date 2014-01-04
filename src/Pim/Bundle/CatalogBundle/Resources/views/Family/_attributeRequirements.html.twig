@@ -38,7 +38,7 @@
                 <td>
                     {% if attribute.attributeType != 'pim_catalog_identifier' and resource_granted('pim_catalog_family_remove_atribute') %}
                         <a {{ elements.deleteLinkAttributes(
-                                path('pim_catalog_family_removeproductattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
+                                path('pim_catalog_family_removeattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
                                 path('pim_catalog_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),
                                 'confirmation.remove.attribute'|trans({ '%name%': attribute.label }),
                                 'flash.family.attribute removed'|trans

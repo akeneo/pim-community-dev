@@ -18,6 +18,6 @@ services:
         class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }

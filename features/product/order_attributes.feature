@@ -1,4 +1,4 @@
-Feature: Order product attributes
+Feature: Order attributes
   In order to always have the same attribute fields order in each locale
   As a user
   I need to be able to set an order parameter which will manage fields order
@@ -27,7 +27,7 @@ Feature: Order product attributes
     Then the attribute "Price" should be in position 1
     And the attribute "Color" should be in position 3
 
-  Scenario: Display product attribute fields ordered by their position
+  Scenario: Display attribute fields ordered by their position
     Given the following attribute groups:
       | code    | label-en_US |
       | general | General     |

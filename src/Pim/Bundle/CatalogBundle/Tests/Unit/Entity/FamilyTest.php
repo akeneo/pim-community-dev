@@ -293,7 +293,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get product attribute mock with attribute type
+     * Get attribute mock with attribute type
      *
      * @param string $type
      * @param string $code

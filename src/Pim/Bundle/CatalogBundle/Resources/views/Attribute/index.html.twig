@@ -12,7 +12,7 @@
 {% block content %}
 
     {% set buttons %}
-        {{ elements.createBtn('attribute', path('pim_catalog_productattribute_create'), null, 'pim_catalog_attribute_create') }}
+        {{ elements.createBtn('attribute', path('pim_catalog_attribute_create'), null, 'pim_catalog_attribute_create') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

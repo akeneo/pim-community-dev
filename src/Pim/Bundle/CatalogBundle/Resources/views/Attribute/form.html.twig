@@ -6,8 +6,8 @@
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': form.vars.value.id ?
-            path('pim_catalog_productattribute_edit', { id: form.vars.value.id }) :
-            path('pim_catalog_productattribute_create'),
+            path('pim_catalog_attribute_edit', { id: form.vars.value.id }) :
+            path('pim_catalog_attribute_create'),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute'|trans })
@@ -17,12 +17,12 @@
         {% set title = form.vars.value.id ? 'attribute.edit'|trans ~ ' - ' ~ form.vars.value.label : 'attribute.create'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_catalog_productattribute_index')) }}
+            {{ elements.backLink(path('pim_catalog_attribute_index')) }}
             {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
                 {{ elements.deleteLink(
-                    path('pim_catalog_productattribute_remove', { id: form.vars.value.id }),
+                    path('pim_catalog_attribute_remove', { id: form.vars.value.id }),
                     'pim_catalog_attribute_remove',
-                    path('pim_catalog_productattribute_index'),
+                    path('pim_catalog_attribute_index'),
                     'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }),
                     'flash.attribute.removed'|trans
                 ) }}

@@ -38,8 +38,8 @@ class AttributeType extends AbstractType
     /**
      * Constructor
      *
-     * @param string                           $attributeClass Attribute class
-     * @param AttributeManagerInterface        $manager        Attribute manager
+     * @param string                                  $attributeClass Attribute class
+     * @param AttributeManagerInterface               $manager        Attribute manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(

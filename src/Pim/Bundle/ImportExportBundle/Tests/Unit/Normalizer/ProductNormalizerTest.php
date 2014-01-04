@@ -227,7 +227,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get a product attribute mock
+     * Get an attribute mock
      * @param string  $code
      * @param boolean $translatable
      *

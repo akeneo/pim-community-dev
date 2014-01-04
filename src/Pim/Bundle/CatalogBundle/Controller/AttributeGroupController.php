@@ -233,7 +233,7 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * Get the AvailbleAttributes form
      *
-     * @param array               $attributes          The product attributes
+     * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Form
@@ -243,7 +243,7 @@ class AttributeGroupController extends AbstractDoctrineController
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            'pim_available_product_attributes',
+            'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
@@ -258,7 +258,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_attribute_group_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Request $request, $id)
+    public function addAttributesAction(Request $request, $id)
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
         $maxOrder            = $group->getMaxAttributeSortOrder();
@@ -284,7 +284,7 @@ class AttributeGroupController extends AbstractDoctrineController
     }
 
     /**
-     * Remove a product attribute
+     * Remove an attribute
      *
      * @param integer $groupId
      * @param integer $attributeId
@@ -292,7 +292,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_attribute_group_remove_attribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeProductAttributeAction($groupId, $attributeId)
+    public function removeAttributeAction($groupId, $attributeId)
     {
         $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
         $attribute = $this->findOr404($this->attributeClass, $attributeId);

@@ -13,7 +13,7 @@ require(
 
             function updateForm() {
                 $.post(
-                    '{{ path("pim_catalog_productattribute_preprocess") }}',
+                    '{{ path("pim_catalog_attribute_preprocess") }}',
                     $(formName).serialize(),
                     function(data) {
                         for (var prop in data) {

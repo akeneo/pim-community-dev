@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 
 /**
- * Product attribute grid manager
+ * Attribute grid manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -56,8 +56,8 @@ class AttributeDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_catalog_productattribute_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_catalog_productattribute_remove', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_attribute_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_attribute_remove', array('id')),
         );
     }
 

@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 
 /**
- * Form handler for Product attribute
+ * Form handler for attribute
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

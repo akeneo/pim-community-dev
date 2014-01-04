@@ -349,9 +349,9 @@ Export profiles %export.label% | Edit:       Export profiles %export.label% | Ed
 Import profiles:                             Import profiles
 Import profiles | Create:                    Import profiles | Create
 Import profiles %import.label% | Edit:       Import profiles %import.label% | Edit
-Product attributes:                          Product attributes
-Product attributes | Create:                 Product attributes | Create
-Product attributes %attribute.label% | Edit: Product attributes %attribute.label% | Edit
+Attributes:                                  Attributes
+Attributes | Create:                         Attributes | Create
+Attributes %attribute.label% | Edit:         Attributes %attribute.label% | Edit
 Products:                                    Products
 Products | Create:                           Products | Create
 Products %product.sku% | Edit:               Products %product.sku% | Edit
@@ -507,12 +507,12 @@ pim_catalog:
             sort: 'Sort attribute groups'
             add_attribute: 'Add attribute to a group'
             remove_attribute: 'Remove attribute from a group'
-        product_attribute:
-            index: 'List product attributes'
-            create: 'Create product attribute'
-            edit: 'Edit product attribute'
-            remove: 'Remove product attribute'
-            sort: 'Sort product attributes inside attribute groups'
+        attribute:
+            index: List attributes
+            create: Create an attribute
+            edit: Edit an attribute
+            remove: Remove an attribute
+            sort: Sort attributes inside attribute groups
         group:
             index: 'List groups'
             create: 'Create a group'
