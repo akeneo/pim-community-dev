@@ -34,7 +34,7 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_attribute }
         arguments:
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
             - '@pim_catalog.manager.product_attribute'
             - '@pim_catalog.form.subscriber.attribute'
 
@@ -64,7 +64,7 @@ services:
             - { name: form.type, alias: pim_catalog_family }
         arguments:
             - '@pim_catalog.form.subscriber.attribute_requirements'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
     pim_catalog.form.type.attribute_requirement:
         class: %pim_catalog.form.type.attribute_requirement.class%
         tags:
@@ -113,7 +113,7 @@ services:
         arguments:
             - '@pim_catalog.form.type.product.view'
             - '@pim_catalog.helper.locale'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
 
@@ -130,7 +130,7 @@ services:
     pim_catalog.form.type.group:
         class: %pim_catalog.form.type.group.class%
         arguments:
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
@@ -147,7 +147,7 @@ services:
     pim_catalog.form.type.available_product_attributes:
         class: %pim_catalog.form.type.available_product_attributes.class%
         arguments:
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: form.type, alias: pim_available_product_attributes }
 
@@ -161,7 +161,7 @@ services:
         arguments:
             - '@oro_measure.manager'
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_conversion_units }
 

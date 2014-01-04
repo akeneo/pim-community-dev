@@ -30,7 +30,7 @@ services:
         class: %pim_import_export.attribute_cache.class%
         arguments:
             - '@doctrine'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_import_export.validator.import:
         class: %pim_import_export.validator.import.class%

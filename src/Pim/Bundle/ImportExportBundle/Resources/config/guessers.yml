@@ -131,7 +131,7 @@ services:
         public: false
         arguments:
             - '@pim_import_export.transformer.property.skip'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
             - ['/^type$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }

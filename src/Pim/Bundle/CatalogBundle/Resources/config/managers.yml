@@ -38,7 +38,7 @@ services:
     pim_catalog.manager.product_attribute:
         class: %pim_catalog.manager.product_attribute.class%
         arguments:
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.product_attribute_option.class%
             - %pim_catalog.entity.product_attribute_option_value.class%
             - %pim_catalog.entity.product.class%
@@ -72,7 +72,7 @@ services:
         arguments:
             - '@doctrine'
             - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%

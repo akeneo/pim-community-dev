@@ -42,7 +42,7 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.category_tree:
         scope: request
@@ -79,7 +79,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.form.handler.family'
             - '@pim_catalog.form.family'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.locale:
         scope: request
@@ -100,7 +100,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - %oro_measure.measures_config%
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.controller.product:
         scope: request

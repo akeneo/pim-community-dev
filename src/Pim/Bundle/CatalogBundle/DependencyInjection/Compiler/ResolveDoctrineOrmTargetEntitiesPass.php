@@ -19,7 +19,7 @@ class ResolveDoctrineOrmTargetEntitiesPass extends AbstractResolveDoctrineOrmTar
         return array(
             'Symfony\Component\Security\Core\User\UserInterface'   => 'oro_user.entity.class',
             'Pim\Bundle\CatalogBundle\Model\ProductValueInterface' => 'pim_catalog.entity.product_value.class',
-            'Pim\Bundle\CatalogBundle\Model\AttributeInterface'    => 'pim_catalog.entity.product_attribute.class',
+            'Pim\Bundle\CatalogBundle\Model\AttributeInterface'    => 'pim_catalog.entity.attribute.class',
             'Pim\Bundle\CatalogBundle\Model\ProductInterface'      => 'pim_catalog.entity.product.class',
             'Pim\Bundle\CatalogBundle\Model\CategoryInterface'     => 'pim_catalog.entity.category.class',
         );
