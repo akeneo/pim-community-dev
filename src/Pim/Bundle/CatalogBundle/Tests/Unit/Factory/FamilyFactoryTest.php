@@ -140,7 +140,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param Attribute $attribute
-     * @param Channel          $channel
+     * @param Channel   $channel
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */
