@@ -12,7 +12,7 @@
     {% if resource_granted('pim_catalog_product_add_attribute') %}
         {% include 'PimCatalogBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
-            'action': path('pim_catalog_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+            'action': path('pim_catalog_product_addattributes', {'id': product.id, 'dataLocale': dataLocale})
         } %}
     {% endif %}
 

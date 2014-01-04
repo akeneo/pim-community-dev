@@ -258,7 +258,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_attribute_group_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Request $request, $id)
+    public function addAttributesAction(Request $request, $id)
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
         $maxOrder            = $group->getMaxAttributeSortOrder();
@@ -292,7 +292,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_attribute_group_remove_attribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeProductAttributeAction($groupId, $attributeId)
+    public function removeAttributeAction($groupId, $attributeId)
     {
         $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
         $attribute = $this->findOr404($this->attributeClass, $attributeId);

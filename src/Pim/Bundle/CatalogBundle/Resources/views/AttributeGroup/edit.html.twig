@@ -82,7 +82,7 @@
                                 {% if removalGranted %}
                                     <td>
                                         <a {{ elements.deleteLinkAttributes(
-                                            path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}),
+                                            path('pim_catalog_attributegroup_removeattribute', {'groupId': group.id, 'attributeId': attribute.id}),
                                             path('pim_catalog_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
                                             'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
                                             'flash.attribute group.attribute removed'|trans
@@ -106,7 +106,7 @@
 {% if form.vars.value.id and resource_granted('pim_catalog_attribute_group_add_attribute') %}
     {% include 'PimCatalogBundle:Attribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
-        'action': path('pim_catalog_attributegroup_addproductattributes', { id: form.vars.value.id })
+        'action': path('pim_catalog_attributegroup_addattributes', { id: form.vars.value.id })
     } %}
 {% endif %}
 
