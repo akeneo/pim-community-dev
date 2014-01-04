@@ -171,7 +171,7 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -198,7 +198,7 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -243,7 +243,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $data = $request->request->all();
         if (!isset($data['pim_catalog_attribute_form'])) {
-            return $this->redirectToRoute('pim_catalog_productattribute_create');
+            return $this->redirectToRoute('pim_catalog_attribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
@@ -286,7 +286,7 @@ class AttributeController extends AbstractDoctrineController
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_attribute_index');
         }
 
         $data = $request->request->all();
@@ -322,7 +322,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id'=> $attribute->getId()));
         }
 
         $option = new AttributeOption();
@@ -381,7 +381,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_attribute_index');
         }
     }
 
@@ -426,7 +426,7 @@ class AttributeController extends AbstractDoctrineController
             } else {
                 $this->addFlash($errorMessage, $messageParameters);
 
-                return $this->redirectToRoute('pim_catalog_productattribute_index');
+                return $this->redirectToRoute('pim_catalog_attribute_index');
             }
         }
     }
@@ -440,7 +440,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
             $attribute,
-            'pim_catalog_productattribute_history',
+            'pim_catalog_attribute_history',
             array('id' => $attribute->getId())
         );
 

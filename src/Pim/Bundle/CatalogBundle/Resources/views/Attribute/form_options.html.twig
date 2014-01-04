@@ -5,7 +5,7 @@
 {% endspaceless %}
 
 {{ form_start(form, {
-    'action': path('pim_catalog_productattribute_create_option', { id: attribute.id, dataLocale: dataLocale }),
+    'action': path('pim_catalog_attribute_create_option', { id: attribute.id, dataLocale: dataLocale }),
     'class': 'form-inline',
     'attr': {
         'data-title': 'Create a new option'|trans,

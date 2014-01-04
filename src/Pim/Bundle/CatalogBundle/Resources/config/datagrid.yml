@@ -18,10 +18,10 @@ services:
         class: %pim_catalog.datagrid.manager.attribute.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: productattributes
+              datagrid_name: attributes
               entity_name: %pim_catalog.entity.attribute.class%
               entity_hint: attributes
-              route_name: pim_catalog_productattribute_index
+              route_name: pim_catalog_attribute_index
         calls:
             - [ setProductManager, ['@pim_catalog.manager.product'] ]
             - [ setAttributeManager, ['@pim_catalog.manager.attribute'] ]

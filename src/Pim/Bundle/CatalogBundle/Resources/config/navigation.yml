@@ -20,7 +20,7 @@ oro_menu_config:
             aclResourceId: pim_catalog_product_index
         pim_enrich_attribute:
             label: Attributes
-            route: pim_catalog_productattribute_index
+            route: pim_catalog_attribute_index
             aclResourceId: pim_catalog_attribute_index
         pim_enrich_family:
             label: Families
@@ -140,9 +140,9 @@ oro_titles:
     pim_catalog_categorytree_listtree:   Category trees | List
     pim_catalog_categorytree_create:     Category trees | Create
     pim_catalog_categorytree_edit:       Category trees %%category.label%% | Edit
-    pim_catalog_productattribute_index:  Product attributes
-    pim_catalog_productattribute_create: Product attributes | Create
-    pim_catalog_productattribute_edit:   Product attributes %%attribute.label%% | Edit
+    pim_catalog_attribute_index:         Product attributes
+    pim_catalog_attribute_create:        Product attributes | Create
+    pim_catalog_attribute_edit:          Product attributes %%attribute.label%% | Edit
     pim_catalog_product_index:           Products
     pim_catalog_product_create:          Products | Create
     pim_catalog_product_edit:            Products %%product.sku%% | Edit
