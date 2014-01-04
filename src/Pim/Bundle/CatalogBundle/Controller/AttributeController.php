@@ -20,14 +20,14 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
+use Pim\Bundle\CatalogBundle\Form\Handler\AttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
@@ -37,7 +37,7 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeController extends AbstractDoctrineController
+class AttributeController extends AbstractDoctrineController
 {
     /**
      * @var DatagridHelperInterface
@@ -45,7 +45,7 @@ class ProductAttributeController extends AbstractDoctrineController
     protected $datagridHelper;
 
     /**
-     * @var ProductAttributeHandler
+     * @var AttributeHandler
      */
     protected $attributeHandler;
 
@@ -85,21 +85,21 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                          $request
-     * @param EngineInterface                  $templating
-     * @param RouterInterface                  $router
-     * @param SecurityContextInterface         $securityContext
-     * @param FormFactoryInterface             $formFactory
-     * @param ValidatorInterface               $validator
-     * @param TranslatorInterface              $translator
-     * @param RegistryInterface                $doctrine
-     * @param DatagridHelperInterface          $datagridHelper
-     * @param ProductAttributeHandler          $attributeHandler
-     * @param Form                             $attributeForm
-     * @param ProductAttributeManagerInterface $attributeManager
-     * @param LocaleManager                    $localeManager
-     * @param AuditManager                     $auditManager
-     * @param array                            $measuresConfig
+     * @param Request                   $request
+     * @param EngineInterface           $templating
+     * @param RouterInterface           $router
+     * @param SecurityContextInterface  $securityContext
+     * @param FormFactoryInterface      $formFactory
+     * @param ValidatorInterface        $validator
+     * @param TranslatorInterface       $translator
+     * @param RegistryInterface         $doctrine
+     * @param DatagridHelperInterface   $datagridHelper
+     * @param AttributeHandler          $attributeHandler
+     * @param Form                      $attributeForm
+     * @param AttributeManagerInterface $attributeManager
+     * @param LocaleManager             $localeManager
+     * @param AuditManager              $auditManager
+     * @param array                     $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -111,9 +111,9 @@ class ProductAttributeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
-        ProductAttributeHandler $attributeHandler,
+        AttributeHandler $attributeHandler,
         Form $attributeForm,
-        ProductAttributeManagerInterface $attributeManager,
+        AttributeManagerInterface $attributeManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
         $measuresConfig
@@ -151,7 +151,7 @@ class ProductAttributeController extends AbstractDoctrineController
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = 'PimCatalogBundle:ProductAttribute:index.html.twig';
+            $view = 'PimCatalogBundle:Attribute:index.html.twig';
         }
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
@@ -160,7 +160,7 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Create attribute
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_create")
      * @return array
      */
@@ -188,7 +188,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $id
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return array
      */
@@ -235,7 +235,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
+     * @Template("PimCatalogBundle:Attribute:_form_parameters.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return array
      */
@@ -255,7 +255,7 @@ class ProductAttributeController extends AbstractDoctrineController
 
         $data = array(
             'parameters' => $this->renderView(
-                'PimCatalogBundle:ProductAttribute:_form_parameters.html.twig',
+                'PimCatalogBundle:Attribute:_form_parameters.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -263,7 +263,7 @@ class ProductAttributeController extends AbstractDoctrineController
                 )
             ),
             'values' => $this->renderView(
-                'PimCatalogBundle:ProductAttribute:_form_values.html.twig',
+                'PimCatalogBundle:Attribute:_form_values.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -276,7 +276,7 @@ class ProductAttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Edit ProductAttributeInterface sort order
+     * Edit AttributeInterface sort order
      *
      * @param Request $request
      *
@@ -314,7 +314,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param int     $id
      * @param string  $dataLocale
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return Response
      */
@@ -390,7 +390,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param int $id
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
@@ -401,13 +401,13 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Check if the attribute is removable, otherwise throw an exception or redirect
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
      * @return RedirectResponse|null
      */
-    protected function validateRemoval(ProductAttributeInterface $attribute)
+    protected function validateRemoval(AttributeInterface $attribute)
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
@@ -432,11 +432,11 @@ class ProductAttributeController extends AbstractDoctrineController
     }
 
     /**
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Datagrid
      */
-    protected function getHistoryGrid(ProductAttributeInterface $attribute)
+    protected function getHistoryGrid(AttributeInterface $attribute)
     {
         $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
             $attribute,

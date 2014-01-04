@@ -6,7 +6,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
- * ProductAttribute translation entity
+ * Attribute translation entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class ProductAttributeTranslation extends AbstractTranslation
+class AttributeTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -35,7 +35,7 @@ class ProductAttributeTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return ProductAttributeTranslation
+     * @return AttributeTranslation
      */
     public function setLabel($label)
     {

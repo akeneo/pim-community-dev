@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
+Pim\Bundle\CatalogBundle\Entity\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute: ~
@@ -38,7 +38,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 - pim_catalog_metric
         - Callback:
             methods:
-                - [Pim\Bundle\CatalogBundle\Validator\ProductAttributeValidator, areOptionsValid]
+                - [Pim\Bundle\CatalogBundle\Validator\AttributeValidator, areOptionsValid]
             groups:
                 - pim_catalog_multiselect
                 - pim_catalog_simpleselect
@@ -160,7 +160,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
         translations:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
+Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     properties:
         label:
             - Length:

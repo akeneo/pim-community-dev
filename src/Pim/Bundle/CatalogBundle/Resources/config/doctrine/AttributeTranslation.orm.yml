@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
+Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     type: entity
     table: pim_catalog_attribute_translation
     uniqueConstraints:
@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

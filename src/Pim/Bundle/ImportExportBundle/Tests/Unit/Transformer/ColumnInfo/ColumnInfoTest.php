@@ -122,7 +122,7 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttributeMock($translatable = false, $scopable = false)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
         $attribute->expects($this->any())
             ->method('isTranslatable')
             ->will($this->returnValue($translatable));

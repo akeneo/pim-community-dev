@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -122,16 +122,16 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testGetAddRemoveAttribute()
     {
         // Change value and assert new
-        $newAttribute = new ProductAttribute();
+        $newAttribute = new Attribute();
         $this->assertEntity($this->group->addAttribute($newAttribute));
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->group->getAttributes()->first()
         );
 
         $this->assertEntity($this->group->removeAttribute($newAttribute));
         $this->assertNotInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->group->getAttributes()->first()
         );
         $this->assertCount(0, $this->group->getAttributes());
@@ -144,7 +144,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedIds = array(1, 4, 6);
         foreach ($expectedIds as $id) {
-            $attribute = new ProductAttribute();
+            $attribute = new Attribute();
             $attribute->setId($id);
             $this->group->addAttribute($attribute);
         }

@@ -50,11 +50,11 @@
             {{ elements.form_errors(form) }}
 
             <div class="tab-pane active" id="parameters">
-                {% include 'PimCatalogBundle:ProductAttribute:_form_parameters.html.twig' with {'form': form} %}
+                {% include 'PimCatalogBundle:Attribute:_form_parameters.html.twig' with {'form': form} %}
             </div>
 
             <div class="tab-pane" id="values">
-                {% include 'PimCatalogBundle:ProductAttribute:_form_values.html.twig' with {'form': form} %}
+                {% include 'PimCatalogBundle:Attribute:_form_values.html.twig' with {'form': form} %}
             </div>
 
             {% if form.vars.value.id %}
@@ -70,7 +70,7 @@
 
 {% block head_script_component %}
     {{ parent() }}
-    {% include 'PimCatalogBundle:ProductAttribute:_js-handler.html.twig' with measures %}
+    {% include 'PimCatalogBundle:Attribute:_js-handler.html.twig' with measures %}
     {% if form.vars.value.id %}
         {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
     {% endif %}

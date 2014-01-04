@@ -122,7 +122,7 @@ pim_catalog_attribute_group_remove_attribute:
     type: action
     label: pim_catalog.acl.attribute_group.remove_attribute
 
-# ProductAttributeInterface
+# AttributeInterface
 pim_catalog_attribute_index:
     type: action
     label: pim_catalog.acl.product_attribute.index

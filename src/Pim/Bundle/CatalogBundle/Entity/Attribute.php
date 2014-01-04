@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -23,10 +23,10 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class ProductAttribute extends AbstractEntityAttribute implements
+class Attribute extends AbstractEntityAttribute implements
     TranslatableInterface,
     GroupSequenceProviderInterface,
-    ProductAttributeInterface,
+    AttributeInterface,
     ReferableInterface
 {
     /**
@@ -235,7 +235,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param mixed $defaultValue
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDefaultValue($defaultValue)
     {
@@ -318,7 +318,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param AttributeGroup $group
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setGroup(AttributeGroup $group = null)
     {
@@ -342,7 +342,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param boolean $useableAsGridColumn
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setUseableAsGridColumn($useableAsGridColumn)
     {
@@ -366,7 +366,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param boolean $useableAsGridFilter
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setUseableAsGridFilter($useableAsGridFilter)
     {
@@ -380,7 +380,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param Locale $availableLocale
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function addAvailableLocale(Locale $availableLocale)
     {
@@ -394,7 +394,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param Locale $availableLocale
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function removeAvailableLocale(Locale $availableLocale)
     {
@@ -418,7 +418,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param ArrayCollection $availableLocales
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setAvailableLocales($availableLocales)
     {
@@ -442,7 +442,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param integer $maxCharacters
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setMaxCharacters($maxCharacters)
     {
@@ -466,7 +466,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $validationRule
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setValidationRule($validationRule)
     {
@@ -490,7 +490,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $validationRegexp
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setValidationRegexp($validationRegexp)
     {
@@ -514,7 +514,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param boolean $wysiwygEnabled
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setWysiwygEnabled($wysiwygEnabled)
     {
@@ -538,7 +538,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param mixed $numberMin
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setNumberMin($numberMin)
     {
@@ -562,7 +562,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param mixed $numberMax
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setNumberMax($numberMax)
     {
@@ -586,7 +586,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param boolean $decimalsAllowed
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDecimalsAllowed($decimalsAllowed)
     {
@@ -610,7 +610,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param boolean $negativeAllowed
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setNegativeAllowed($negativeAllowed)
     {
@@ -634,7 +634,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $dateType
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDateType($dateType)
     {
@@ -658,7 +658,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param datetime $dateMin
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDateMin($dateMin)
     {
@@ -682,7 +682,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param datetime $dateMax
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDateMax($dateMax)
     {
@@ -706,7 +706,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $metricFamily
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setMetricFamily($metricFamily)
     {
@@ -730,7 +730,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $defaultMetricUnit
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setDefaultMetricUnit($defaultMetricUnit)
     {
@@ -754,7 +754,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param decimal $maxFileSize
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setMaxFileSize($maxFileSize)
     {
@@ -778,7 +778,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param string $allowedExtensions
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setAllowedExtensions($allowedExtensions)
     {
@@ -804,7 +804,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param int $minimumInputLength
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setMinimumInputLength($minimumInputLength)
     {
@@ -828,7 +828,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param number $sortOrder
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function setSortOrder($sortOrder)
     {
@@ -842,7 +842,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      *
      * @param array $parameters
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      *
      * @throws \Exception
      */
@@ -928,7 +928,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation';
+        return 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation';
     }
 
     /**

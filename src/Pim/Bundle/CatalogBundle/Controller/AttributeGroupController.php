@@ -19,7 +19,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
@@ -121,7 +121,7 @@ class AttributeGroupController extends AbstractDoctrineController
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->form->createView(),
-            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
+            'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
         );
     }
 
@@ -148,7 +148,7 @@ class AttributeGroupController extends AbstractDoctrineController
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->form->createView(),
-            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
+            'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
             'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
     }
@@ -231,20 +231,20 @@ class AttributeGroupController extends AbstractDoctrineController
     }
 
     /**
-     * Get the AvailbleProductAttributes form
+     * Get the AvailbleAttributes form
      *
-     * @param array                      $attributes          The product attributes
-     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     * @param array               $attributes          The product attributes
+     * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Form
      */
-    protected function getAvailableProductAttributesForm(
+    protected function getAvailableAttributesForm(
         array $attributes = array(),
-        AvailableProductAttributes $availableAttributes = null
+        AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_product_attributes',
-            $availableAttributes ?: new AvailableProductAttributes(),
+            $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
     }
@@ -262,9 +262,9 @@ class AttributeGroupController extends AbstractDoctrineController
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
         $maxOrder            = $group->getMaxAttributeSortOrder();
-        $availableAttributes = new AvailableProductAttributes();
+        $availableAttributes = new AvailableAttributes();
 
-        $attributesForm      = $this->getAvailableProductAttributesForm(
+        $attributesForm      = $this->getAvailableAttributesForm(
             $this->getGroupedAttributes(),
             $availableAttributes
         );

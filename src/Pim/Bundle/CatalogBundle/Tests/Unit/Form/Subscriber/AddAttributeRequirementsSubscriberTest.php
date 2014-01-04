@@ -164,11 +164,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     private function getAttributeMock($code)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')
@@ -231,11 +231,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     protected function getProductAttributeMock($type)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getAttributeType')

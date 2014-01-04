@@ -81,6 +81,7 @@
 - Product associations import/export format has changed.
 - Rename Association to AssociationType and all properties/methods linked to this class.
 - Rename ProductAssociation to Association
+- Rename ProductAttribute to Attribute
 
 # 1.0.0-beta-3 - "Hare Conditioned"
 

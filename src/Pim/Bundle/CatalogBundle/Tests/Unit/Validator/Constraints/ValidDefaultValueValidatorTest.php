@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValueValidator;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Valid default value validator test
@@ -229,15 +229,15 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a ProductAttribute entity
+     * Create a Attribute entity
      * @param string $attributeType
      * @param array  $properties
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
     protected function createAttribute($attributeType, $properties = array())
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
 
         $attribute->setAttributeType($attributeType);
 

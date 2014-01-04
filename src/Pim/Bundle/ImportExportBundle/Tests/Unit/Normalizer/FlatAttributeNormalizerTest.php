@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -33,9 +33,9 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'json', false),
             array('stdClass', 'csv', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
@@ -103,8 +103,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * @param ProductAttribute $attribute
-     * @param array            $data
+     * @param Attribute $attribute
+     * @param array     $data
      */
     protected function addLabels($attribute, $data)
     {
@@ -118,8 +118,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * @param ProductAttribute $attribute
-     * @param array            $data
+     * @param Attribute $attribute
+     * @param array     $data
      */
     protected function addAvailableLocales($attribute, $data)
     {
@@ -136,10 +136,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     /**
      * Create attribute options
      *
-     * @param ProductAttribute $attribute
-     * @param array            $data
+     * @param Attribute $attribute
+     * @param array     $data
      */
-    protected function addOptions(ProductAttribute $attribute, $data)
+    protected function addOptions(Attribute $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
@@ -165,10 +165,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     /**
      * Add attribute default options
      *
-     * @param ProductAttribute $attribute
-     * @param array            $data
+     * @param Attribute $attribute
+     * @param array     $data
      */
-    protected function addDefaultOptions(ProductAttribute $attribute, $data)
+    protected function addDefaultOptions(Attribute $attribute, $data)
     {
         $defaultOptions = array_filter(explode('|', $data['default_options']));
         foreach ($defaultOptions as $defaultOption) {

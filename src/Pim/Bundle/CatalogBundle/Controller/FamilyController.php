@@ -23,7 +23,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
@@ -198,7 +198,7 @@ class FamilyController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->familyForm->createView(),
-            'attributesForm'  => $this->getAvailableProductAttributesForm(
+            'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
             'channels' => $this->channelManager->getChannels()
@@ -258,8 +258,8 @@ class FamilyController extends AbstractDoctrineController
      */
     public function addProductAttributesAction(Family $family)
     {
-        $availableAttributes = new AvailableProductAttributes();
-        $attributesForm      = $this->getAvailableProductAttributesForm(
+        $availableAttributes = new AvailableAttributes();
+        $attributesForm      = $this->getAvailableAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes
         );
@@ -311,20 +311,20 @@ class FamilyController extends AbstractDoctrineController
     }
 
     /**
-     * Get the AvailbleProductAttributes form
+     * Get the AvailableAttributes form
      *
-     * @param array                      $attributes          The product attributes
-     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     * @param array               $attributes          The product attributes
+     * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form
      */
-    protected function getAvailableProductAttributesForm(
+    protected function getAvailableAttributesForm(
         array $attributes = array(),
-        AvailableProductAttributes $availableAttributes = null
+        AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_product_attributes',
-            $availableAttributes ?: new AvailableProductAttributes(),
+            $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
     }

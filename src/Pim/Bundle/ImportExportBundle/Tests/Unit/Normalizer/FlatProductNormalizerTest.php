@@ -285,10 +285,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param ProductAttribute $identifier
-     * @param array            $values
-     * @param Family           $family
-     * @param string           $categories
+     * @param Attribute $identifier
+     * @param array     $values
+     * @param Family    $family
+     * @param string    $categories
      *
      * @return ProductInterface
      */
@@ -333,7 +333,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param ProductAttribute $attribute
+     * @param Attribute $attribute
      * @param mixed            $data
      * @param string           $locale
      * @param string           $scope
@@ -369,11 +369,11 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      * @param boolean $scopable
      * @param string  $type
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
     protected function getAttributeMock($code, $translatable = false, $scopable = false, $type = 'pim_catalog_text')
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')

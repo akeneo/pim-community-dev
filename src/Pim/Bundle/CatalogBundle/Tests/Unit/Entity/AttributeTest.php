@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
@@ -14,10 +14,10 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeTest extends \PHPUnit_Framework_TestCase
+class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ProductAttribute
+     * @var Attribute
      */
     protected $attribute;
 
@@ -28,7 +28,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->attribute = new ProductAttribute();
+        $this->attribute = new Attribute();
     }
 
     /**
@@ -405,11 +405,11 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->attribute->getTranslations());
 
         // Change value and assert new
-        $newTranslation = new ProductAttributeTranslation();
+        $newTranslation = new AttributeTranslation();
         $this->assertEntity($this->attribute->addTranslation($newTranslation));
         $this->assertCount(1, $this->attribute->getTranslations());
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation',
+            'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation',
             $this->attribute->getTranslations()->first()
         );
 
@@ -490,10 +490,10 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert entity
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductAttribute $entity
+     * @param Pim\Bundle\CatalogBundle\Entity\Attribute $entity
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $entity);
     }
 }

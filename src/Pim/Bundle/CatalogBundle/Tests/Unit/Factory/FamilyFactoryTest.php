@@ -33,7 +33,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFamily()
     {
-        $identifier = $this->getProductAttributeMock('sku');
+        $identifier = $this->getAttributeMock('sku');
         $this->productManager
             ->expects($this->any())
             ->method('getIdentifierAttribute')
@@ -109,11 +109,11 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    protected function getProductAttributeMock($code)
+    protected function getAttributeMock($code)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')
@@ -139,7 +139,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param ProductAttribute $attribute
+     * @param Attribute $attribute
      * @param Channel          $channel
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement

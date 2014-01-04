@@ -16,11 +16,11 @@ parameters:
 
     pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
 
-    pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
+    pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\AttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
     pim_catalog.form.type.attribute_option_value.class:  Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType
 
-    pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
+    pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\AttributeHandler
     pim_catalog.form.type.attribute_option.class:        Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType
 
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
@@ -37,13 +37,13 @@ parameters:
     pim_catalog.event_listener.user_context.class:                      Pim\Bundle\CatalogBundle\EventListener\UserContextListener
     pim_catalog.form.subscriber.add_attribute_type.class:               Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
 
-    pim_catalog.manager.product_attribute.class:       Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
+    pim_catalog.manager.product_attribute.class:       Pim\Bundle\CatalogBundle\Manager\AttributeManager
     pim_catalog.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager
 
     pim_catalog.form.type.product_value_wysiwyg.class:          Pim\Bundle\CatalogBundle\Form\Type\WysiwygType
     pim_catalog.form.type.product_value_price.class:            Pim\Bundle\CatalogBundle\Form\Type\PriceType
     pim_catalog.form.type.product_value_price_collection.class: Pim\Bundle\CatalogBundle\Form\Type\PriceCollectionType
-    pim_catalog.form.type.available_product_attributes.class:   Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType
+    pim_catalog.form.type.available_product_attributes.class:   Pim\Bundle\CatalogBundle\Form\Type\AvailableAttributesType
 
     pim_catalog.form.type.attribute_property_scopable.class:         Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty\ScopableType
     pim_catalog.form.type.attribute_property_available_locale.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty\AvailableLocalesType

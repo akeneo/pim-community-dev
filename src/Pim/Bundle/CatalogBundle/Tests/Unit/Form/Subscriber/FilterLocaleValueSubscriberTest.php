@@ -62,14 +62,14 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $data = array(
             'name_current'               => $this->getProductValueMock(
-                $this->getProductAttributeMock(),
+                $this->getAttributeMock(),
                 self::CURRENT_LOCALE
             ),
             'name_other'                 => $this->getProductValueMock(
-                $this->getProductAttributeMock(),
+                $this->getAttributeMock(),
                 self::OTHER_LOCALE
             ),
-            'not_translatable_attribute' => $this->getProductValueMock($this->getProductAttributeMock(false), null),
+            'not_translatable_attribute' => $this->getProductValueMock($this->getAttributeMock(false), null),
         );
 
         $form  = $this->getFormMock();
@@ -85,8 +85,8 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testSetComparisonAttributesDisabled()
     {
         $data = array(
-            'name_current'    => $this->getProductValueMock($this->getProductAttributeMock(), self::CURRENT_LOCALE),
-            'name_comparison' => $this->getProductValueMock($this->getProductAttributeMock(), self::COMPARISON_LOCALE),
+            'name_current'    => $this->getProductValueMock($this->getAttributeMock(), self::CURRENT_LOCALE),
+            'name_comparison' => $this->getProductValueMock($this->getAttributeMock(), self::COMPARISON_LOCALE),
         );
 
         $form  = $this->getFormMock();
@@ -167,11 +167,11 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param boolean $translatable
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    private function getProductAttributeMock($translatable = true)
+    private function getAttributeMock($translatable = true)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('isTranslatable')

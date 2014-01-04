@@ -143,7 +143,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

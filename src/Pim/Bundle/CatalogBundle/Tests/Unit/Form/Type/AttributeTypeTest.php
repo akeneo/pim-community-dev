@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeType;
 
 /**
  * Test related class
@@ -11,10 +11,10 @@ use Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeTypeTest extends AbstractFormTypeTest
+class AttributeTypeTest extends AbstractFormTypeTest
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
+     * @var \Pim\Bundle\CatalogBundle\Form\Type\AttributeType
      */
     protected $type;
 
@@ -32,9 +32,9 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
 
         // Create a mock for the form and exclude the availableLocales and getAttributeTypeChoices methods
         $this->type = $this->getMock(
-            'Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType',
+            'Pim\Bundle\CatalogBundle\Form\Type\AttributeType',
             array('addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber'),
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute')
+            array('Pim\Bundle\CatalogBundle\Entity\Attribute')
         );
         $this->form = $this->factory->create($this->type);
     }
@@ -55,7 +55,7 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->form->getConfig()->getDataClass()
         );
 
