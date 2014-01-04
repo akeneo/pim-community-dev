@@ -67,20 +67,33 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      * Constructor
      *
      * @param string                   $flexibleName    Entity name
-     * @param array                    $flexibleConfig  Global flexible entities configuration array
      * @param ObjectManager            $manager         Object manager
      * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
-    public function __construct(
-        $flexibleName,
-        $flexibleConfig,
-        ObjectManager $manager,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct($flexibleName, ObjectManager $manager, EventDispatcherInterface $eventDispatcher)
+    {
         $this->flexibleName         = $flexibleName;
-        $this->flexibleConfig       = $flexibleConfig['entities_config'][$flexibleName];
         $this->objectManager        = $manager;
         $this->eventDispatcher      = $eventDispatcher;
+
+        // TODO : use a configuration object
+        $this->flexibleConfig       = array();
+        $entityMeta      = $this->objectManager->getClassMetadata($this->flexibleName);
+        $valueClass      = $entityMeta->getAssociationMappings()['values']['targetEntity'];
+        $valueMeta       = $this->objectManager->getClassMetadata($valueClass);
+        $attributeClass  = $valueMeta->getAssociationMappings()['attribute']['targetEntity'];
+        $attributeMeta   = $this->objectManager->getClassMetadata($attributeClass);
+        $optionClass     = $attributeMeta->getAssociationMappings()['options']['targetEntity'];
+        $optionMeta      = $this->objectManager->getClassMetadata($optionClass);
+        $optionValClass  = $optionMeta->getAssociationMappings()['optionValues']['targetEntity'];
+
+        $this->flexibleConfig = array(
+            'flexible_class'               => $flexibleName,
+            'flexible_value_class'         => $valueClass,
+            'attribute_class'              => $attributeClass,
+            'attribute_option_class'       => $optionClass,
+            'attribute_option_value_class' => $optionValClass
+        );
 
         $this->flexibleRepository   = $manager->getRepository($this->flexibleName);
         $this->flexibleRepository->setFlexibleConfig($this->flexibleConfig);
@@ -91,7 +104,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @return array
      */
-    public function getFlexibleConfig()
+    protected function getFlexibleConfig()
     {
         return $this->flexibleConfig;
     }
@@ -103,7 +116,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getFlexibleInitMode()
     {
-        return $this->flexibleConfig['flexible_init_mode'];
+        return 'required_attributes';
     }
 
     /**
@@ -113,11 +126,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            // use default locale
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
         return $this->locale;
     }
 
@@ -143,11 +151,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            // use default scope
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
         return $this->scope;
     }
 

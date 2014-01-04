@@ -51,6 +51,13 @@ class FlexibleQueryBuilder
     public function __construct(QueryBuilder $qb, $locale, $scope)
     {
         $this->qb     = $qb;
+        if (!$locale) {
+            throw new \Exception('locale must be configured');
+        }
+        if (!$scope) {
+            throw new \Exception('scope must be configured');
+        }
+
         $this->locale = $locale;
         $this->scope  = $scope;
     }

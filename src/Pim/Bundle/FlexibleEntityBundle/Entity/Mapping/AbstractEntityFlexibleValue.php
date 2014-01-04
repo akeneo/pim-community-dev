@@ -557,6 +557,6 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
             return (string) $data;
         }
 
-        return (string) $data;
+        return (string) $this->locale . (string) $this->scope .(string) $data;
     }
 }
