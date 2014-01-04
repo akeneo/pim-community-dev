@@ -125,20 +125,20 @@ pim_catalog_attribute_group_remove_attribute:
 # AttributeInterface
 pim_catalog_attribute_index:
     type: action
-    label: pim_catalog.acl.product_attribute.index
+    label: pim_catalog.acl.attribute.index
 pim_catalog_attribute_create:
     type: action
-    label: pim_catalog.acl.product_attribute.create
+    label: pim_catalog.acl.attribute.create
 pim_catalog_attribute_edit:
     type: action
-    label: pim_catalog.acl.product_attribute.edit
+    label: pim_catalog.acl.attribute.edit
 pim_catalog_attribute_remove:
     type: action
-    label: pim_catalog.acl.product_attribute.remove
+    label: pim_catalog.acl.attribute.remove
 
 pim_catalog_attribute_sort:
     type: action
-    label: pim_catalog.acl.product_attribute.sort
+    label: pim_catalog.acl.attribute.sort
 
 # Groups
 pim_catalog_group_index:

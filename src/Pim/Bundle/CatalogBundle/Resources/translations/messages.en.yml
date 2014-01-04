@@ -507,12 +507,12 @@ pim_catalog:
             sort: 'Sort attribute groups'
             add_attribute: 'Add attribute to a group'
             remove_attribute: 'Remove attribute from a group'
-        product_attribute:
-            index: 'List product attributes'
-            create: 'Create product attribute'
-            edit: 'Edit product attribute'
-            remove: 'Remove product attribute'
-            sort: 'Sort product attributes inside attribute groups'
+        attribute:
+            index: List attributes
+            create: Create an attribute
+            edit: Edit an attribute
+            remove: Remove an attribute
+            sort: Sort attributes inside attribute groups
         group:
             index: 'List groups'
             create: 'Create a group'
