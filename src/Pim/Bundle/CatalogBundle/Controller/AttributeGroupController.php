@@ -243,7 +243,7 @@ class AttributeGroupController extends AbstractDoctrineController
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            'pim_available_product_attributes',
+            'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );

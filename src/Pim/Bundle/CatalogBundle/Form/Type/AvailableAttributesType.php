@@ -69,6 +69,6 @@ class AvailableAttributesType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_available_product_attributes';
+        return 'pim_available_attributes';
     }
 }

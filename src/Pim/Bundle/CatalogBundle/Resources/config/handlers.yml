@@ -1,7 +1,7 @@
 services:
 
     pim_catalog.form.handler.attribute:
-        class: %pim_catalog.form.handler.product_attribute.class%
+        class: %pim_catalog.form.handler.attribute.class%
         scope: request
         arguments:
             - '@pim_catalog.form.attribute'

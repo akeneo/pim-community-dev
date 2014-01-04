@@ -30,7 +30,7 @@ services:
             - { name: form.type, alias: pim_product_value }
 
     pim_catalog.form.type.attribute:
-        class: %pim_catalog.form.type.product_attribute.class%
+        class: %pim_catalog.form.type.attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_attribute }
         arguments:
@@ -144,12 +144,12 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_association_type }
 
-    pim_catalog.form.type.available_product_attributes:
-        class: %pim_catalog.form.type.available_product_attributes.class%
+    pim_catalog.form.type.available_attributes:
+        class: %pim_catalog.form.type.available_attributes.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
         tags:
-            - { name: form.type, alias: pim_available_product_attributes }
+            - { name: form.type, alias: pim_available_attributes }
 
     pim_catalog.form.type.association:
         class: %pim_catalog.form.type.association.class%
