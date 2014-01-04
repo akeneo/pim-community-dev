@@ -35,8 +35,8 @@ services:
             - '@pim_filesystem'
             - %upload_dir%
 
-    pim_catalog.manager.product_attribute:
-        class: %pim_catalog.manager.product_attribute.class%
+    pim_catalog.manager.attribute:
+        class: %pim_catalog.manager.attribute.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.attribute_option.class%
