@@ -1,8 +1,3 @@
-api:
-    resource: '@PimCatalogBundle/Controller/Api/ProductController.php'
-    type:   rest
-    prefix: api/rest/{scope}/
-
 attributegroup:
     resource: '@PimCatalogBundle/Resources/config/routing/attributegroup.yml'
     prefix: /configuration/attribute-group
