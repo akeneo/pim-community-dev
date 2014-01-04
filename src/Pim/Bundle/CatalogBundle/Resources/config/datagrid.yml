@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.datagrid.manager.productattribute.class:             Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
+    pim_catalog.datagrid.manager.attribute.class:                         Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
     pim_catalog.datagrid.manager.product.class:                           Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
     pim_catalog.datagrid.manager.channel_datagrid.class:                  Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
     pim_catalog.datagrid.manager.currency_datagrid.class:                 Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
@@ -14,8 +14,8 @@ parameters:
     pim_catalog.datagrid.manager.family_datagrid.class:              Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
 
 services:
-    pim_catalog.datagrid.manager.productattribute:
-        class: %pim_catalog.datagrid.manager.productattribute.class%
+    pim_catalog.datagrid.manager.attribute:
+        class: %pim_catalog.datagrid.manager.attribute.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: productattributes

@@ -146,7 +146,7 @@ class AttributeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->datagridHelper->getDatagrid('productattribute');
+        $datagrid = $this->datagridHelper->getDatagrid('attribute');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
