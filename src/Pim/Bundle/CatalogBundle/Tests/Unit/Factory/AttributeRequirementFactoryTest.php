@@ -26,12 +26,12 @@ class AttributeRequirementFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateAttributeRequirement()
     {
-        $productAttribute = $this->getAttributeMock();
-        $channel          = $this->getChannelMock();
-        $requirement      = $this->factory->createAttributeRequirement($productAttribute, $channel, true);
+        $attribute   = $this->getAttributeMock();
+        $channel     = $this->getChannelMock();
+        $requirement = $this->factory->createAttributeRequirement($attribute, $channel, true);
 
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement', $requirement);
-        $this->assertEquals($productAttribute, $requirement->getAttribute());
+        $this->assertEquals($attribute, $requirement->getAttribute());
         $this->assertEquals($channel, $requirement->getChannel());
         $this->assertTrue($requirement->isRequired());
     }
@@ -41,12 +41,12 @@ class AttributeRequirementFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateUnrequiredAttributeRequirement()
     {
-        $productAttribute = $this->getAttributeMock();
-        $channel          = $this->getChannelMock();
-        $requirement      = $this->factory->createAttributeRequirement($productAttribute, $channel, false);
+        $attribute   = $this->getAttributeMock();
+        $channel     = $this->getChannelMock();
+        $requirement = $this->factory->createAttributeRequirement($attribute, $channel, false);
 
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement', $requirement);
-        $this->assertEquals($productAttribute, $requirement->getAttribute());
+        $this->assertEquals($attribute, $requirement->getAttribute());
         $this->assertEquals($channel, $requirement->getChannel());
         $this->assertFalse($requirement->isRequired());
     }

@@ -77,8 +77,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $channels    = array($mobile, $ecommerce);
 
-        $requirement1 = $this->getAttributeRequirementMock($this->getProductAttributeMock('bar'));
-        $requirement2 = $this->getAttributeRequirementMock($this->getProductAttributeMock('pim_catalog_identifier'));
+        $requirement1 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'bar'));
+        $requirement2 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'pim_catalog_identifier'));
         $requirement2->expects($this->once())
             ->method('setRequired')
             ->with(true);
@@ -163,16 +163,21 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $code
+     * @param string $type
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    private function getAttributeMock($code)
+    private function getAttributeMock($code, $type = null)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')
             ->will($this->returnValue($code));
+
+        $attribute->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue($type));
 
         return $attribute;
     }
@@ -226,22 +231,6 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
-     */
-    protected function getProductAttributeMock($type)
-    {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
-
-        $attribute->expects($this->any())
-            ->method('getAttributeType')
-            ->will($this->returnValue($type));
-
-        return $attribute;
     }
 
     /**
