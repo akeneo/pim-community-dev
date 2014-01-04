@@ -31,7 +31,7 @@ Feature: Define user rights
       | Create a group             | variant groups                           | Create variant group    |
       | Create a group type        | group types                              | Create group type       |
       | Create a product           | products                                 | Create product          |
-      | Create product attribute   | attributes                               | Create attribute        |
+      | Create an attribute        | attributes                               | Create attribute        |
       | Create an export profile   | exports                                  | Create export profile   |
       | Create an import profile   | imports                                  | Create import profile   |
       | Remove an association type | "X_SELL" association type                | Delete                  |
@@ -43,6 +43,6 @@ Feature: Define user rights
       | Remove a group             | "caterpillar_boots" variant group        | Delete                  |
       | Remove a group type        | "RELATED" group type                     | Delete                  |
       | Remove a product           | "boot" product                           | Delete                  |
-      | Remove product attribute   | "color" attribute                        | Delete                  |
+      | Remove an attribute        | "color" attribute                        | Delete                  |
       | Remove an export profile   | "footwear_option_export" export job edit | Delete                  |
       | Remove an import profile   | "footwear_group_import" import job edit  | Delete                  |

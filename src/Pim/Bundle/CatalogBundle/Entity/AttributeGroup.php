@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -211,11 +211,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface
     /**
      * Add attributes
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function addAttribute(ProductAttributeInterface $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -226,11 +226,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface
     /**
      * Remove attributes
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function removeAttribute(ProductAttributeInterface $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -251,11 +251,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface
     /**
      * Check if the group has an attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(ProductAttributeInterface $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }

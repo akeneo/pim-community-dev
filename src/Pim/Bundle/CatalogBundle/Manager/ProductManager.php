@@ -11,7 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -172,9 +172,9 @@ class ProductManager extends FlexibleManager
     /**
      * Returns a product for the import process
      *
-     * @param array                     $attributes
-     * @param ProductAttributeInterface $identifierAttribute
-     * @param string                    $code
+     * @param array              $attributes
+     * @param AttributeInterface $identifierAttribute
+     * @param string             $code
      *
      * @return ProductInterface
      */
@@ -213,12 +213,12 @@ class ProductManager extends FlexibleManager
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface          $product
-     * @param ProductAttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, ProductAttributeInterface $attribute)
+    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $this->builder->addAttributeToProduct($product, $attribute);
     }
@@ -226,12 +226,12 @@ class ProductManager extends FlexibleManager
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface          $product
-     * @param ProductAttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, ProductAttributeInterface $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $this->builder->removeAttributeFromProduct($product, $attribute);
     }
@@ -278,7 +278,7 @@ class ProductManager extends FlexibleManager
     /**
      * Return the identifier attribute
      *
-     * @return ProductAttributeInterface|null
+     * @return AttributeInterface|null
      */
     public function getIdentifierAttribute()
     {

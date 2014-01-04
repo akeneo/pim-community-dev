@@ -6,8 +6,8 @@
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': form.vars.value.id ?
-            path('pim_catalog_productattribute_edit', { id: form.vars.value.id }) :
-            path('pim_catalog_productattribute_create'),
+            path('pim_catalog_attribute_edit', { id: form.vars.value.id }) :
+            path('pim_catalog_attribute_create'),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute'|trans })
@@ -17,12 +17,12 @@
         {% set title = form.vars.value.id ? 'attribute.edit'|trans ~ ' - ' ~ form.vars.value.label : 'attribute.create'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_catalog_productattribute_index')) }}
+            {{ elements.backLink(path('pim_catalog_attribute_index')) }}
             {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
                 {{ elements.deleteLink(
-                    path('pim_catalog_productattribute_remove', { id: form.vars.value.id }),
+                    path('pim_catalog_attribute_remove', { id: form.vars.value.id }),
                     'pim_catalog_attribute_remove',
-                    path('pim_catalog_productattribute_index'),
+                    path('pim_catalog_attribute_index'),
                     'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }),
                     'flash.attribute.removed'|trans
                 ) }}
@@ -50,17 +50,17 @@
             {{ elements.form_errors(form) }}
 
             <div class="tab-pane active" id="parameters">
-                {% include 'PimCatalogBundle:ProductAttribute:_form_parameters.html.twig' with {'form': form} %}
+                {% include 'PimCatalogBundle:Attribute:_form_parameters.html.twig' with {'form': form} %}
             </div>
 
             <div class="tab-pane" id="values">
-                {% include 'PimCatalogBundle:ProductAttribute:_form_values.html.twig' with {'form': form} %}
+                {% include 'PimCatalogBundle:Attribute:_form_values.html.twig' with {'form': form} %}
             </div>
 
             {% if form.vars.value.id %}
                 <div class="tab-pane" id="history">
                     {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-                    {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_ProductAttribute', object_id: form.vars.value.id }) }}
+                    {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Attribute', object_id: form.vars.value.id }) }}
                 </div>
             {% endif %}
 
@@ -71,5 +71,5 @@
 
 {% block head_script_component %}
     {{ parent() }}
-    {% include 'PimCatalogBundle:ProductAttribute:_js-handler.html.twig' with measures %}
+    {% include 'PimCatalogBundle:Attribute:_js-handler.html.twig' with measures %}
 {% endblock %}

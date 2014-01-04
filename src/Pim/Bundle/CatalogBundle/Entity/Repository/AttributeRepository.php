@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
 use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeRepository extends AttributeRepository implements ReferableEntityRepositoryInterface, DatagridRepositoryInterface
+class AttributeRepository extends FlexibleAttributeRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -27,7 +27,7 @@ class ProductAttributeRepository extends AttributeRepository implements Referabl
     }
 
     /**
-     * Get the query builder to find all product attributes except the ones
+     * Get the query builder to find all attributes except the ones
      * defined in arguments
      *
      * @param array $attributes The attributes to exclude from the results set
@@ -55,7 +55,7 @@ class ProductAttributeRepository extends AttributeRepository implements Referabl
     }
 
     /**
-     * Find all product attributes that belong to a group
+     * Find all attributes that belong to a group
      *
      * @return array
      */
@@ -68,7 +68,7 @@ class ProductAttributeRepository extends AttributeRepository implements Referabl
     }
 
     /**
-     * Find all unique product attribute codes
+     * Find all unique attribute codes
      *
      * @return string[]
      */

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
 
@@ -14,10 +14,10 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeManagerTest extends \PHPUnit_Framework_TestCase
+class AttributeManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ProductAttributeManager
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -41,8 +41,8 @@ class ProductAttributeManagerTest extends \PHPUnit_Framework_TestCase
         $localeManager = $this->getLocaleManagerMock();
         $factory       = $this->getAttributeTypeFactoryMock();
 
-        $this->attributeManager = new ProductAttributeManager(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+        $this->attributeManager = new AttributeManager(
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
             'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
             'Pim\Bundle\CatalogBundle\Model\Product',
@@ -133,11 +133,11 @@ class ProductAttributeManagerTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('attributeType' => 'pim_catalog_metric');
         $attribute = $this->attributeManager->createAttributeFromFormData($data);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $attribute);
 
         $attribute = $this->attributeManager->createAttribute('pim_catalog_price_collection');
         $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $newAttribute);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
 
         $attribute = 'ImageType';
@@ -162,7 +162,7 @@ class ProductAttributeManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateAttribute()
     {
         $attribute = $this->attributeManager->createAttribute();
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $attribute);
     }
 
     /**

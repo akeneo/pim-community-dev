@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
@@ -313,11 +313,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Check if an attribute can be removed from the product
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function isAttributeRemovable(ProductAttributeInterface $attribute)
+    public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             return false;

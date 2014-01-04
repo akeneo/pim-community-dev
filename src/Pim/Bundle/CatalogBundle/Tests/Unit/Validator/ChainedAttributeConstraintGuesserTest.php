@@ -47,7 +47,7 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
     /**
      * Test related method
      */
-    public function testSupportProductAttribute()
+    public function testSupportAttribute()
     {
         $this->assertTrue($this->target->supportAttribute($this->getAttributeMock()));
     }

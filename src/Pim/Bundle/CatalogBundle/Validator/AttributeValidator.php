@@ -3,16 +3,16 @@
 namespace Pim\Bundle\CatalogBundle\Validator;
 
 use Symfony\Component\Validator\ExecutionContext;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Validator for options and default value of ProductAttributeInterface entity
+ * Validator for options and default value of AttributeInterface entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeValidator
+class AttributeValidator
 {
     /**
      * Violation message for missing code of attribute option
@@ -29,12 +29,12 @@ class ProductAttributeValidator
     /**
      * Validation rule for attribute option values
      *
-     * @param ProductAttributeInterface $attribute
-     * @param ExecutionContext          $context
+     * @param AttributeInterface $attribute
+     * @param ExecutionContext   $context
      *
      * @static
      */
-    public static function areOptionsValid(ProductAttributeInterface $attribute, ExecutionContext $context)
+    public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {

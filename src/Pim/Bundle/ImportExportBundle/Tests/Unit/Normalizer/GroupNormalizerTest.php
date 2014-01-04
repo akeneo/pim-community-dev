@@ -6,7 +6,7 @@ use Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -113,7 +113,7 @@ class GroupNormalizerTest extends NormalizerTestCase
         $attributes = array();
         $codes = $data['attributes'];
         foreach ($codes as $code) {
-            $attribute = new ProductAttribute();
+            $attribute = new Attribute();
             $attribute->setCode($code);
             $attributes[] = $attribute;
         }

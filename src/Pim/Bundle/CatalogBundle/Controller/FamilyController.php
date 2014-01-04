@@ -24,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 
 /**
@@ -139,7 +139,6 @@ class FamilyController extends AbstractDoctrineController
         return array(
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
         );
-
     }
 
     /**
@@ -190,7 +189,7 @@ class FamilyController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->familyForm->createView(),
-            'attributesForm'  => $this->getAvailableProductAttributesForm(
+            'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
             'channels' => $this->channelManager->getChannels()
@@ -242,10 +241,10 @@ class FamilyController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_family_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Family $family)
+    public function addAttributesAction(Family $family)
     {
-        $availableAttributes = new AvailableProductAttributes();
-        $attributesForm      = $this->getAvailableProductAttributesForm(
+        $availableAttributes = new AvailableAttributes();
+        $attributesForm      = $this->getAvailableAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes
         );
@@ -264,7 +263,7 @@ class FamilyController extends AbstractDoctrineController
     }
 
     /**
-     * Remove product attribute
+     * Remove an attribute
      *
      * @param integer $familyId
      * @param integer $attributeId
@@ -274,7 +273,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @throws DeleteException
      */
-    public function removeProductAttributeAction($familyId, $attributeId)
+    public function removeAttributeAction($familyId, $attributeId)
     {
         $family    = $this->findOr404('PimCatalogBundle:Family', $familyId);
         $attribute = $this->findOr404($this->attributeClass, $attributeId);
@@ -297,20 +296,20 @@ class FamilyController extends AbstractDoctrineController
     }
 
     /**
-     * Get the AvailbleProductAttributes form
+     * Get the AvailableAttributes form
      *
-     * @param array                      $attributes          The product attributes
-     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     * @param array               $attributes          The attributes
+     * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form
      */
-    protected function getAvailableProductAttributesForm(
+    protected function getAvailableAttributesForm(
         array $attributes = array(),
-        AvailableProductAttributes $availableAttributes = null
+        AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            'pim_available_product_attributes',
-            $availableAttributes ?: new AvailableProductAttributes(),
+            'pim_available_attributes',
+            $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
     }

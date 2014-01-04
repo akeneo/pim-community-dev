@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeOptionNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
@@ -64,7 +64,7 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
      */
     protected function createEntity(array $data)
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $attribute->setCode($data['attribute']);
 
         $option = new AttributeOption();

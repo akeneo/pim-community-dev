@@ -1,11 +1,11 @@
-Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
+Pim\Bundle\CatalogBundle\Entity\Attribute:
     type: entity
     table: pim_catalog_attribute
     indexes:
         searchcode_idx:
             columns:
                 - code
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
     uniqueConstraints:
         searchunique_idx:
             columns:
@@ -159,7 +159,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
             mappedBy: foreignKey
             cascade:
                 - persist
@@ -177,7 +177,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:
-                    productattribute_id:
+                    attribute_id:
                         referencedColumnName: id
                         onDelete: CASCADE
                 inverseJoinColumns:

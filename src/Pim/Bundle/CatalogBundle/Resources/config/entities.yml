@@ -7,11 +7,11 @@ parameters:
     pim_catalog.entity.category_translation.class:           Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
     pim_catalog.entity.group.class:                          Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.entity.group_type.class:                     Pim\Bundle\CatalogBundle\Entity\GroupType
-    pim_catalog.entity.product_attribute.class:              Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+    pim_catalog.entity.attribute.class:                      Pim\Bundle\CatalogBundle\Entity\Attribute
     pim_catalog.entity.attribute_group.class:                Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.entity.association_type.class:               Pim\Bundle\CatalogBundle\Entity\AssociationType
-    pim_catalog.entity.product_attribute_option.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOption
-    pim_catalog.entity.product_attribute_option_value.class: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+    pim_catalog.entity.attribute_option.class:               Pim\Bundle\CatalogBundle\Entity\AttributeOption
+    pim_catalog.entity.attribute_option_value.class:         Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
     pim_catalog.entity.attribute_requirement.class:          Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
     pim_catalog.entity.completeness.class:                   Pim\Bundle\CatalogBundle\Entity\Completeness
     pim_catalog.entity.family.class:                         Pim\Bundle\CatalogBundle\Entity\Family

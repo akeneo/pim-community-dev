@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 
 /**
  * Type for attribute form
@@ -16,11 +16,11 @@ use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeType extends AbstractType
+class AttributeType extends AbstractType
 {
     /**
      * Attribute type manager
-     * @var ProductAttributeManagerInterface
+     * @var AttributeManagerInterface
      */
     protected $attributeManager;
 
@@ -39,12 +39,12 @@ class ProductAttributeType extends AbstractType
      * Constructor
      *
      * @param string                                  $attributeClass Attribute class
-     * @param ProductAttributeManagerInterface        $manager        Attribute manager
+     * @param AttributeManagerInterface               $manager        Attribute manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(
         $attributeClass,
-        ProductAttributeManagerInterface $manager = null,
+        AttributeManagerInterface $manager = null,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
     ) {
         $this->attributeClass   = $attributeClass;
@@ -142,7 +142,7 @@ class ProductAttributeType extends AbstractType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttributeTranslation',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
                 'entity_class'      => $this->attributeClass,
                 'property_path'     => 'translations'
             )

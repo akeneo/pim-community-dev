@@ -8,13 +8,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Type for available product attributes
+ * Type for available attributes
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AvailableProductAttributesType extends AbstractType
+class AvailableAttributesType extends AbstractType
 {
     /**
      * @var string
@@ -58,7 +58,7 @@ class AvailableProductAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes',
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
                 'attributes' => array(),
             )
         );
@@ -69,6 +69,6 @@ class AvailableProductAttributesType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_available_product_attributes';
+        return 'pim_available_attributes';
     }
 }

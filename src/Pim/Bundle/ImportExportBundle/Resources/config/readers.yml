@@ -30,13 +30,13 @@ services:
         class: %pim_import_export.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_import_export.reader.orm.attribute_option:
         class: %pim_import_export.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - %pim_catalog.entity.product_attribute_option.class%
+            - %pim_catalog.entity.attribute_option.class%
 
     pim_import_export.reader.orm.association_type:
         class: %pim_import_export.reader.orm.entity.class%
@@ -64,7 +64,7 @@ services:
         class: %pim_import_export.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_import_export.reader.file.csv_attribute_option:
         parent: pim_import_export.reader.file.csv

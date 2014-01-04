@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -395,9 +395,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Add all the values required by the given attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      */
-    protected function addValues(ProductAttributeInterface $attribute)
+    protected function addValues(AttributeInterface $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->isScopable()) {
@@ -413,13 +413,13 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Create a value
      *
-     * @param ProductAttributeInterface $attribute
-     * @param Locale                    $locale
-     * @param Channel                   $channel
+     * @param AttributeInterface $attribute
+     * @param Locale             $locale
+     * @param Channel            $channel
      *
      * @return ProductValueInterface
      */
-    protected function createValue(ProductAttributeInterface $attribute, Locale $locale, Channel $channel = null)
+    protected function createValue(AttributeInterface $attribute, Locale $locale, Channel $channel = null)
     {
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);

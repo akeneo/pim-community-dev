@@ -12,9 +12,9 @@ Feature: Well display navigation titles
       | page                                      | title                                        |
       | association types                         | Association types                            |
       | "X_SELL" association type                 | Association types Cross sell \| Edit         |
-      | attributes                                | Product attributes                           |
-      | attribute creation                        | Product attributes \| Create                 |
-      | "size" attribute                          | Product attributes Size \| Edit              |
+      | attributes                                | Attributes                                   |
+      | attribute creation                        | Attributes \| Create                         |
+      | "size" attribute                          | Attributes Size \| Edit                      |
       | channels                                  | Channels                                     |
       | channel creation                          | Channels \| Create                           |
       | "tablet" channel                          | Channels Tablet \| Edit                      |

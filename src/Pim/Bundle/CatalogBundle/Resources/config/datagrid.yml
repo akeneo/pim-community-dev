@@ -115,7 +115,7 @@ datagrid:
         source:
             acl_resource: pim_catalog_attribute_index
             type: pim_orm
-            entity: %pim_catalog.entity.product_attribute.class%
+            entity: %pim_catalog.entity.attribute.class%
         columns:
             code:
                 label: Code
@@ -137,12 +137,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_productattribute_edit
+                route: pim_catalog_attribute_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_productattribute_remove
+                route: pim_catalog_attribute_remove
                 params:
                     - id
         actions:
@@ -186,7 +186,7 @@ datagrid:
                     data_name: a.attributeType
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.product_attribute->getAttributeTypes
+                            choices: @pim_catalog.manager.attribute->getAttributeTypes
                 scopable:
                     type:      boolean
                     data_name: a.scopable
@@ -198,7 +198,7 @@ datagrid:
                     data_name: attributeGroup.code
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.product_attribute->getAttributeGroupChoices
+                            choices: @pim_catalog.manager.attribute->getAttributeGroupChoices
 
     channel-grid:
         options:
@@ -413,7 +413,7 @@ datagrid:
                     data_name: f.attributeAsLabel
                     options:
                         field_options:
-                            class: %pim_catalog.entity.product_attribute.class%
+                            class: %pim_catalog.entity.attribute.class%
                             property: label
 
     currency-grid:

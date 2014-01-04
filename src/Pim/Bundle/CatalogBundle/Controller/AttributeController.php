@@ -19,27 +19,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
+use Pim\Bundle\CatalogBundle\Form\Handler\AttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
- * Product attribute controller
+ * Attribute controller
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeController extends AbstractDoctrineController
+class AttributeController extends AbstractDoctrineController
 {
     /**
-     * @var ProductAttributeHandler
+     * @var AttributeHandler
      */
     protected $attributeHandler;
 
@@ -79,20 +79,20 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                          $request
-     * @param EngineInterface                  $templating
-     * @param RouterInterface                  $router
-     * @param SecurityContextInterface         $securityContext
-     * @param FormFactoryInterface             $formFactory
-     * @param ValidatorInterface               $validator
-     * @param TranslatorInterface              $translator
-     * @param RegistryInterface                $doctrine
-     * @param ProductAttributeHandler          $attributeHandler
-     * @param Form                             $attributeForm
-     * @param ProductAttributeManagerInterface $attributeManager
-     * @param LocaleManager                    $localeManager
-     * @param AuditManager                     $auditManager
-     * @param array                            $measuresConfig
+     * @param Request                   $request
+     * @param EngineInterface           $templating
+     * @param RouterInterface           $router
+     * @param SecurityContextInterface  $securityContext
+     * @param FormFactoryInterface      $formFactory
+     * @param ValidatorInterface        $validator
+     * @param TranslatorInterface       $translator
+     * @param RegistryInterface         $doctrine
+     * @param AttributeHandler          $attributeHandler
+     * @param Form                      $attributeForm
+     * @param AttributeManagerInterface $attributeManager
+     * @param LocaleManager             $localeManager
+     * @param AuditManager              $auditManager
+     * @param array                     $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -103,9 +103,9 @@ class ProductAttributeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        ProductAttributeHandler $attributeHandler,
+        AttributeHandler $attributeHandler,
         Form $attributeForm,
-        ProductAttributeManagerInterface $attributeManager,
+        AttributeManagerInterface $attributeManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
         $measuresConfig
@@ -129,12 +129,12 @@ class ProductAttributeController extends AbstractDoctrineController
         $this->measuresConfig   = $measuresConfig;
     }
     /**
-     * List product attributes
+     * List attributes
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_catalog_attribute_index")
-     * @return Response
+     * @return template
      */
     public function indexAction(Request $request)
     {
@@ -146,7 +146,7 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Create attribute
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_create")
      * @return array
      */
@@ -157,7 +157,7 @@ class ProductAttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -174,7 +174,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $id
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return array
      */
@@ -184,7 +184,7 @@ class ProductAttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -202,7 +202,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
+     * @Template("PimCatalogBundle:Attribute:_form_parameters.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return array
      */
@@ -210,7 +210,7 @@ class ProductAttributeController extends AbstractDoctrineController
     {
         $data = $request->request->all();
         if (!isset($data['pim_catalog_attribute_form'])) {
-            return $this->redirectToRoute('pim_catalog_productattribute_create');
+            return $this->redirectToRoute('pim_catalog_attribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
@@ -222,7 +222,7 @@ class ProductAttributeController extends AbstractDoctrineController
 
         $data = array(
             'parameters' => $this->renderView(
-                'PimCatalogBundle:ProductAttribute:_form_parameters.html.twig',
+                'PimCatalogBundle:Attribute:_form_parameters.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -230,7 +230,7 @@ class ProductAttributeController extends AbstractDoctrineController
                 )
             ),
             'values' => $this->renderView(
-                'PimCatalogBundle:ProductAttribute:_form_values.html.twig',
+                'PimCatalogBundle:Attribute:_form_values.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -243,7 +243,7 @@ class ProductAttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Edit ProductAttributeInterface sort order
+     * Edit AttributeInterface sort order
      *
      * @param Request $request
      *
@@ -253,7 +253,7 @@ class ProductAttributeController extends AbstractDoctrineController
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_attribute_index');
         }
 
         $data = $request->request->all();
@@ -281,7 +281,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param int     $id
      * @param string  $dataLocale
      *
-     * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
+     * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return Response
      */
@@ -289,7 +289,7 @@ class ProductAttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id'=> $attribute->getId()));
         }
 
         $option = new AttributeOption();
@@ -348,16 +348,16 @@ class ProductAttributeController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_attribute_index');
         }
     }
 
     /**
-     * Finds a product attribute
+     * Find an attribute
      *
      * @param int $id
      *
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
@@ -368,13 +368,13 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Check if the attribute is removable, otherwise throw an exception or redirect
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
      * @return RedirectResponse|null
      */
-    protected function validateRemoval(ProductAttributeInterface $attribute)
+    protected function validateRemoval(AttributeInterface $attribute)
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
@@ -393,7 +393,7 @@ class ProductAttributeController extends AbstractDoctrineController
             } else {
                 $this->addFlash($errorMessage, $messageParameters);
 
-                return $this->redirectToRoute('pim_catalog_productattribute_index');
+                return $this->redirectToRoute('pim_catalog_attribute_index');
             }
         }
     }

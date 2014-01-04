@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
@@ -55,7 +55,7 @@ class FixturesContext extends RawMinkContext
     );
 
     private $entities = array(
-        'Attribute'       => 'PimCatalogBundle:ProductAttribute',
+        'Attribute'       => 'PimCatalogBundle:Attribute',
         'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption' => 'PimCatalogBundle:AttributeOption',
         'Channel'         => 'PimCatalogBundle:Channel',
@@ -1212,7 +1212,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string|array $data
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
     private function createAttribute($data)
     {
@@ -1282,14 +1282,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param ProductAttribute $attribute
-     * @param mixed            $data
-     * @param string           $locale
-     * @param string           $scope
+     * @param Attribute $attribute
+     * @param mixed     $data
+     * @param string    $locale
+     * @param string    $scope
      *
      * @return ProductValue
      */
-    private function createValue(ProductAttribute $attribute, $data = null, $locale = null, $scope = null)
+    private function createValue(Attribute $attribute, $data = null, $locale = null, $scope = null)
     {
         $manager = $this->getProductManager();
 
@@ -1693,11 +1693,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductAttributeManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
      */
-    private function getProductAttributeManager()
+    private function getAttributeManager()
     {
-        return $this->getContainer()->get('pim_catalog.manager.product_attribute');
+        return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
 
     /**

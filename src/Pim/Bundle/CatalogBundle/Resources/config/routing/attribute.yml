@@ -1,0 +1,38 @@
+pim_catalog_attribute_index:
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.attribute:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_catalog_attribute_create:
+    path: /create
+    defaults: { _controller: pim_catalog.controller.attribute:createAction }
+
+pim_catalog_attribute_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_catalog.controller.attribute:editAction }
+    requirements:
+        id: \d+
+
+pim_catalog_attribute_preprocess:
+    path: /preprocess
+    defaults: { _controller: pim_catalog.controller.attribute:preprocessAction }
+    methods: [POST]
+
+pim_catalog_attribute_sort:
+    path: /sort
+    defaults: { _controller: pim_catalog.controller.attribute:sortAction }
+    methods: [POST]
+
+pim_catalog_attribute_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_catalog.controller.attribute:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_catalog_attribute_create_option:
+    path: /{id}/create-option/{dataLocale}
+    defaults: { _controller: pim_catalog.controller.attribute:createOptionAction }
+    requirements:
+        id: \d+

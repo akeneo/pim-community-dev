@@ -35,12 +35,12 @@ services:
             - '@pim_filesystem'
             - %upload_dir%
 
-    pim_catalog.manager.product_attribute:
-        class: %pim_catalog.manager.product_attribute.class%
+    pim_catalog.manager.attribute:
+        class: %pim_catalog.manager.attribute.class%
         arguments:
-            - %pim_catalog.entity.product_attribute.class%
-            - %pim_catalog.entity.product_attribute_option.class%
-            - %pim_catalog.entity.product_attribute_option_value.class%
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.attribute_option.class%
+            - %pim_catalog.entity.attribute_option_value.class%
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.locale'
@@ -72,7 +72,7 @@ services:
         arguments:
             - '@doctrine'
             - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%

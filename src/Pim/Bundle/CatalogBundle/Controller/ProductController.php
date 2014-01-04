@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
@@ -138,7 +138,7 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * List product attributes
+     * List products
      *
      * @param Request $request the request
      *
@@ -357,7 +357,7 @@ class ProductController extends AbstractDoctrineController
             'comparisonLocale' => $this->getComparisonLocale(),
             'channels'         => $channels,
             'attributesForm'   =>
-                $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
+                $this->getAvailableAttributesForm($product->getAttributes())->createView(),
             'product'          => $product,
             'trees'            => $trees,
             'created'          => $this->auditManager->getOldestLogEntry($product),
@@ -420,11 +420,11 @@ class ProductController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_product_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Request $request, $id)
+    public function addAttributesAction(Request $request, $id)
     {
         $product             = $this->findProductOr404($id);
-        $availableAttributes = new AvailableProductAttributes();
-        $attributesForm      = $this->getAvailableProductAttributesForm(
+        $availableAttributes = new AvailableAttributes();
+        $attributesForm      = $this->getAvailableAttributesForm(
             $product->getAttributes(),
             $availableAttributes
         );
@@ -473,7 +473,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws NotFoundHttpException
      */
-    public function removeProductAttributeAction($productId, $attributeId)
+    public function removeAttributeAction($productId, $attributeId)
     {
         $product   = $this->findOr404('Pim\Bundle\CatalogBundle\Model\Product', $productId);
         $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
@@ -632,20 +632,20 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Get the AvailbleProductAttributes form
+     * Get the AvailbleAttributes form
      *
-     * @param array                      $attributes          The product attributes
-     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     * @param array               $attributes          The attributes
+     * @param AvailableAttributes $availableAttributes The available attributes container
      *
      * @return Symfony\Component\Form\Form
      */
-    protected function getAvailableProductAttributesForm(
+    protected function getAvailableAttributesForm(
         array $attributes = array(),
-        AvailableProductAttributes $availableAttributes = null
+        AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            'pim_available_product_attributes',
-            $availableAttributes ?: new AvailableProductAttributes(),
+            'pim_available_attributes',
+            $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
     }

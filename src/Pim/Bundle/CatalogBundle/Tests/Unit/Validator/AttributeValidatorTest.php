@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Validator\ProductAttributeValidator;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidator;
 
 /**
  * Test related class
@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Validator\ProductAttributeValidator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
+class AttributeValidatorTest extends \PHPUnit_Framework_TestCase
 {
     protected $context;
 
@@ -59,7 +59,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('addViolation')
             ->with($expectedViolation);
 
-        ProductAttributeValidator::areOptionsValid($attribute, $this->context);
+        AttributeValidator::areOptionsValid($attribute, $this->context);
     }
 
     /**
@@ -74,31 +74,31 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
             array(
                 'pim_catalog_multiselect',
                 array('a', 'b', null),
-                ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
+                AttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
                 'pim_catalog_simpleselect',
                 array(1, null, 3),
-                ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
+                AttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
                 'pim_catalog_simpleselect',
                 array('a', 'a', 'b'),
-                ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_CODE
+                AttributeValidator::VIOLATION_DUPLICATE_OPTION_CODE
             ),
         );
     }
 
     /**
-     * Create a ProductAttribute entity
+     * Create a Attribute entity
      * @param string $attributeType
      * @param array  $properties
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
     protected function createAttribute($attributeType, $properties = array())
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
 
         $attribute->setAttributeType($attributeType);
 

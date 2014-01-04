@@ -24,7 +24,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                     on: update
     manyToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             cascade:
                 - persist
             joinTable:
@@ -53,7 +53,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             mappedBy: family
     manyToOne:
         attributeAsLabel:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             joinColumns:
                 label_attribute_id:
                     referencedColumnName: id

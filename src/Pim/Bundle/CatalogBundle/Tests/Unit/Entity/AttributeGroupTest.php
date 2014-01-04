@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -177,11 +177,11 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->group->getAttributes());
 
         // Change value and assert new
-        $newAttribute = new ProductAttribute();
+        $newAttribute = new Attribute();
         $this->assertEntity($this->group->addAttribute($newAttribute));
         $this->assertCount(1, $this->group->getAttributes());
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->group->getAttributes()->first()
         );
         $this->assertTrue($this->group->hasAttribute($newAttribute));
@@ -197,7 +197,7 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     {
         $max = 5;
         for ($i = 1; $i <= $max; $i++) {
-            $attribute = new ProductAttribute();
+            $attribute = new Attribute();
             $attribute->setSortOrder($i);
             $this->group->addAttribute($attribute);
         }

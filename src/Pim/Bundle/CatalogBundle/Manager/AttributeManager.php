@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeManager implements ProductAttributeManagerInterface
+class AttributeManager implements AttributeManagerInterface
 {
     /**
      * @var string
@@ -141,7 +141,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
      */
     public function createAttributeFromFormData($data)
     {
-        if ($data instanceof ProductAttributeInterface) {
+        if ($data instanceof AttributeInterface) {
             return $data;
         }
 
@@ -218,7 +218,7 @@ class ProductAttributeManager implements ProductAttributeManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareBackendProperties(ProductAttributeInterface $attribute)
+    public function prepareBackendProperties(AttributeInterface $attribute)
     {
         $baseAttribute = $this->createAttribute($attribute->getAttributeType());
 

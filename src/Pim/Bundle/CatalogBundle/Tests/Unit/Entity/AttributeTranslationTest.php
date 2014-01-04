@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 
 /**
  * Test related class
@@ -11,14 +11,14 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeTranslationTest extends \PHPUnit_Framework_TestCase
+class AttributeTranslationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test related method
      */
     public function testConstruct()
     {
-        $attribute = new ProductAttributeTranslation();
+        $attribute = new AttributeTranslation();
 
         $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $attribute);
     }

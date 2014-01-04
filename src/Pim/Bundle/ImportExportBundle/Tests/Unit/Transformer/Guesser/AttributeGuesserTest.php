@@ -15,7 +15,7 @@ class AttributeGuesserTest extends GuesserTestCase
 {
     protected function setAttributeMock()
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
         $attribute->expects($this->any())
             ->method('getBackendType')
             ->will($this->returnValue('backend_type'));
