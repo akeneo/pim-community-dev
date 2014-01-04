@@ -928,7 +928,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation';
+        return 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation';
     }
 
     /**

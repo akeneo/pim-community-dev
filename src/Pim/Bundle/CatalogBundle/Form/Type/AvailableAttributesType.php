@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AvailableProductAttributesType extends AbstractType
+class AvailableAttributesType extends AbstractType
 {
     /**
      * @var string
@@ -58,7 +58,7 @@ class AvailableProductAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes',
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
                 'attributes' => array(),
             )
         );

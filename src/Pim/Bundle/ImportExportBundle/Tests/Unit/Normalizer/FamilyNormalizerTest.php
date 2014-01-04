@@ -6,7 +6,7 @@ use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 /**
@@ -82,7 +82,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
         $codes = array('attribute1', 'attribute2', 'attribute3');
         $attributes = array();
         foreach ($codes as $code) {
-            $attribute = new ProductAttribute();
+            $attribute = new Attribute();
             $attribute->setCode($code);
             $family->addAttribute($attribute);
             $attributes[] = $attribute;

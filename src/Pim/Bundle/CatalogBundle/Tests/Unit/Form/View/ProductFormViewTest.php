@@ -525,7 +525,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     private function getAttributeMock(array $options)
     {
@@ -542,7 +542,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getId')

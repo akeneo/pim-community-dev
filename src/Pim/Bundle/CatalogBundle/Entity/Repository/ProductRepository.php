@@ -340,7 +340,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Returns the ProductAttribute class
+     * Returns the Attribute class
      *
      * @return string
      */

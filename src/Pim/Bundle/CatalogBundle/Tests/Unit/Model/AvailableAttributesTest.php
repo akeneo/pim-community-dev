@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Model;
 
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
+class AvailableAttributesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test related method
@@ -37,10 +37,10 @@ class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AvailableProductAttributes
+     * @return AvailableAttributes
      */
     private function getTargetedClass()
     {
-        return new AvailableProductAttributes();
+        return new AvailableAttributes();
     }
 }
