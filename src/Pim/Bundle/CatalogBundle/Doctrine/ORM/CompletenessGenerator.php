@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
@@ -33,11 +33,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
-     * @param string            $productClass
-     * @param string            $productValueClass
+     * @param ManagerRegistry $doctrine
+     * @param string          $productClass
+     * @param string          $productValueClass
      */
-    public function __construct(RegistryInterface $doctrine, $productClass, $productValueClass)
+    public function __construct(ManagerRegistry $doctrine, $productClass, $productValueClass)
     {
         $this->doctrine = $doctrine;
         $this->productClass = $productClass;
