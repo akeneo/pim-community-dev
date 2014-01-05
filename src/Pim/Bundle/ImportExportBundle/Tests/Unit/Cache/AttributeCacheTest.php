@@ -68,11 +68,11 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $attributeType
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     public function addAttribute($code, $attributeType = 'default')
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')

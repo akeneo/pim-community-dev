@@ -114,7 +114,7 @@ class MetricConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttributeMock($code)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')

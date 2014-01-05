@@ -21,7 +21,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return $attribute instanceof \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+        return $attribute instanceof \Pim\Bundle\CatalogBundle\Model\AttributeInterface;
     }
 
     /**

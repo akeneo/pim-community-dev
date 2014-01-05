@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -119,17 +119,17 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     public function testGetAddRemoveAttribute()
     {
         // Change value and assert new
-        $newAttribute = new ProductAttribute();
+        $newAttribute = new Attribute();
         $this->assertEntity($this->family->addAttribute($newAttribute));
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->family->getAttributes()->first()
         );
         $this->assertTrue($this->family->hasAttribute($newAttribute));
 
         $this->assertEntity($this->family->removeAttribute($newAttribute));
         $this->assertNotInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             $this->family->getAttributes()->first()
         );
         $this->assertCount(0, $this->family->getAttributes());
@@ -293,16 +293,16 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get product attribute mock with attribute type
+     * Get attribute mock with attribute type
      *
      * @param string $type
      * @param string $code
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     protected function getAttributeMock($type = 'pim_catalog_text', $code = null)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
                   ->method('getAttributeType')

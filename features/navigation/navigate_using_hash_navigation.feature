@@ -22,8 +22,8 @@ Feature: Navigate the application in hash navigation mode
       | pim_catalog_group_type_index            |
       | pim_catalog_locale_index                |
       | pim_catalog_product_index               |
-      | pim_catalog_productattribute_create     |
-      | pim_catalog_productattribute_index      |
+      | pim_catalog_attribute_create            |
+      | pim_catalog_attribute_index             |
       | pim_catalog_variant_group_index         |
       | pim_importexport_export_profile_index   |
       | pim_importexport_export_execution_index |

@@ -24,7 +24,7 @@ class FamilyTypeTest extends AbstractFormTypeTest
         // Create form type
         $this->type = new FamilyType(
             $this->getRequirementsSubscriber(),
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
+            'Pim\Bundle\CatalogBundle\Entity\Attribute'
         );
         $this->form = $this->factory->create($this->type);
     }

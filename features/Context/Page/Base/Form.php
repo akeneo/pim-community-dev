@@ -28,7 +28,7 @@ class Form extends Base
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
                 'Validation errors'               => array('css' => '.validation-tooltip'),
-                'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
+                'Available attributes form'       => array('css' => '#pim_available_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
                 'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),

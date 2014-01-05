@@ -22,11 +22,11 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
-        $this->attributeManager = $this->getMock('Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface');
+        $this->attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
+        $this->attributeManager = $this->getMock('Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface');
         $this->attributeManager->expects($this->any())
             ->method('getAttributeClass')
-            ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\ProductAttribute'));
+            ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\Attribute'));
         $this->attributeManager->expects($this->any())
             ->method('getAttributeOptionClass')
             ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\AttributeOption'));
@@ -67,7 +67,7 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $this->repository),
+                        array('Pim\Bundle\CatalogBundle\Entity\Attribute', $this->repository),
                         array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', $this->optionRepository),
                     )
                 )
@@ -83,7 +83,7 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
         $this->addColumn('attribute');
 
         $object = $this->transformer->transform(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             array(
                 'code' => 'code',
                 'type' => 'type',
@@ -102,7 +102,7 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
                 )
             )
         );
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $object);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $object);
         $this->assertEmpty($this->transformer->getErrors());
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);

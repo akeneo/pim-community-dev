@@ -25,7 +25,7 @@ class CsvProductReaderTest extends CsvReaderTest
                 array('sku', 'name'),
                 array('view', 'manual')
             ),
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
+            'Pim\Bundle\CatalogBundle\Entity\Attribute'
         );
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);

@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
                     on: create
     oneToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             mappedBy: group
             orderBy:
                 sortOrder: ASC

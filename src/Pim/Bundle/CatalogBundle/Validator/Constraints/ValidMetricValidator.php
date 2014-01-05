@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Metric attribute validator
@@ -41,12 +41,12 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param ProductAttributeInterface $entity
-     * @param Constraint                $constraint
+     * @param AttributeInterface $entity
+     * @param Constraint         $constraint
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof ProductAttributeInterface) {
+        if ($entity instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
         } else {

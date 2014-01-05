@@ -51,6 +51,8 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     /**
      * Get the relative archive path in the file system
      *
+     * @param JobExecution $jobExecution
+     *
      * @return string
      */
     protected function getRelativeArchivePath(JobExecution $jobExecution)

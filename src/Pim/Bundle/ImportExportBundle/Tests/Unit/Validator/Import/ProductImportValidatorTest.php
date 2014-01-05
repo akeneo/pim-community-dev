@@ -152,7 +152,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->method('getScope')
             ->will($this->returnValue('scope'));
         if ($withAttribute) {
-            $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+            $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
             $attribute->expects($this->any())
                 ->method('getCode')
                 ->will($this->returnValue($label . '_code'));

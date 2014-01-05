@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
 
 /**
@@ -51,7 +51,7 @@ class ColumnInfo implements ColumnInfoInterface
     protected $rawSuffixes;
 
     /**
-     * @var ProductAttributeInterface
+     * @var AttributeInterface
      */
     protected $attribute;
 
@@ -73,11 +73,11 @@ class ColumnInfo implements ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws ColumnLabelException
      */
-    public function setAttribute(ProductAttributeInterface $attribute = null)
+    public function setAttribute(AttributeInterface $attribute = null)
     {
         $this->attribute = $attribute;
         if (null === $attribute) {

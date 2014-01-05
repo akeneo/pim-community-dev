@@ -1,0 +1,4 @@
+api:
+    resource: '@PimWebServiceBundle/Controller/Rest/ProductController.php'
+    type:   rest
+    prefix: api/rest/{scope}/
