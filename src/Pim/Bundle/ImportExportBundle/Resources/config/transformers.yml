@@ -72,7 +72,7 @@ services:
         class: %pim_import_export.transformer.property.default.class%
         public: false
         tags:
-            - name: pim_import_export.transformer.product.attribute
+            - name: pim_import_export.transformer.attribute
               backend_type: default
 
     pim_import_export.transformer.property.entity:
@@ -85,7 +85,7 @@ services:
         class: %pim_import_export.transformer.property.media.class%
         public: false
         tags:
-            - name: pim_import_export.transformer.product.attribute
+            - name: pim_import_export.transformer.attribute
               backend_type: media
 
     pim_import_export.transformer.property.prices:
