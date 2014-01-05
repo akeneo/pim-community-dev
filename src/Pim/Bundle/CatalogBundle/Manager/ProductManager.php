@@ -54,7 +54,6 @@ class ProductManager extends FlexibleManager
      * Constructor
      *
      * @param string                   $flexibleName        Entity name
-     * @param array                    $flexibleConfig      Global flexible entities configuration array
      * @param ObjectManager            $objectManager       Storage manager for product
      * @param EntityManager            $entityManager       Entity manager for other entitites
      * @param EventDispatcherInterface $eventDispatcher     Event dispatcher
@@ -64,7 +63,6 @@ class ProductManager extends FlexibleManager
      */
     public function __construct(
         $flexibleName,
-        $flexibleConfig,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
@@ -74,7 +72,6 @@ class ProductManager extends FlexibleManager
     ) {
         parent::__construct(
             $flexibleName,
-            $flexibleConfig,
             $objectManager,
             $eventDispatcher
         );
@@ -83,30 +80,6 @@ class ProductManager extends FlexibleManager
         $this->mediaManager        = $mediaManager;
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($code)
-    {
-        parent::setLocale($code);
-
-        $this->getFlexibleRepository()->setLocale($code);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        parent::setScope($code);
-
-        $this->getFlexibleRepository()->setScope($code);
-
-        return $this;
     }
 
     /**

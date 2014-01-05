@@ -22,17 +22,18 @@ class PimFlexibleEntityExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
-        $configs[]= $this->mergeFlexibleConfig($bundles);
 
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        //$bundles = $container->getParameter('kernel.bundles');
+        //$configs[]= $this->mergeFlexibleConfig($bundles);
+
+//        $configuration = new Configuration();
+//        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('attribute_types.yml');
 
-        $container->setParameter('pim_flexibleentity.flexible_config', $config);
+        //$container->setParameter('pim_flexibleentity.flexible_config', $config);
     }
 
     /**

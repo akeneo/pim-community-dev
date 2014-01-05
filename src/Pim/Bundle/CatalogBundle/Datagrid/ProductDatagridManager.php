@@ -17,8 +17,8 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -53,14 +53,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
     const UNCLASSIFIED_CATEGORY = 0;
 
     /**
-     * @var Pim\Bundle\CatalogBundle\Manager\CategoryManager
-     */
-    protected $categoryManager;
-
-    /**
      * @var Pim\Bundle\CatalogBundle\Manager\ProductManager
      */
     protected $productManager;
+
+    /**
+     * @var Pim\Bundle\CatalogBundle\Manager\CategoryManager
+     */
+    protected $categoryManager;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
@@ -122,16 +122,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setCategoryManager(CategoryManager $manager)
     {
         $this->categoryManager = $manager;
-    }
-
-    /**
-     * Configure the product manager
-     *
-     * @param ProductManager $manager
-     */
-    public function setProductManager(ProductManager $manager)
-    {
-        $this->productManager = $manager;
     }
 
     /**
@@ -227,7 +217,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             AbstractAttributeType::BACKEND_TYPE_MEDIA
         );
 
-        // create flexible columns
+        // create columns
         foreach ($this->getFlexibleAttributes() as $attribute) {
             $backendType = $attribute->getBackendType();
             if (in_array($backendType, $excludedBackend)) {
@@ -333,7 +323,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         if (null === $this->attributes) {
             /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
-            $attributeRepository = $this->flexibleManager->getAttributeRepository();
+            $attributeRepository = $this->productManager->getAttributeRepository();
             $attributes = $attributeRepository->findAllWithTranslations();
             $this->attributes = array();
             /** @var $attribute AbstractAttribute */
@@ -431,8 +421,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $fieldCompleteness,
                 'PimCatalogBundle:Completeness:_datagridCompleteness.html.twig',
                 array(
-                    'localeCode'  => $this->flexibleManager->getLocale(),
-                    'channelCode' => $this->flexibleManager->getScope()
+                    'localeCode'  => $this->productManager->getLocale(),
+                    'channelCode' => $this->productManager->getScope()
                 )
             )
         );
@@ -447,7 +437,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createGroupField()
     {
-        $em = $this->flexibleManager->getObjectManager();
+        $em = $this->productManager->getObjectManager();
         $choices = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->getChoices();
 
         $field = new FieldDescription();
@@ -617,7 +607,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
-        $this->flexibleManager->setScope($this->getScopeFilterValue());
+        if ($scope = $this->getScopeFilterValue()) {
+            $this->productManager->setScope($scope);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductManager(ProductManager $manager)
+    {
+        $this->productManager = $manager;
     }
 
     /**
@@ -652,18 +652,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
-        $localeCode = $this->flexibleManager->getLocale();
-        $channelCode = $this->flexibleManager->getScope();
+        $localeCode = $this->productManager->getLocale();
+        $channelCode = $this->productManager->getScope();
 
-        $locale = $this->flexibleManager
+        $locale = $this->productManager
             ->getObjectManager()
             ->getRepository('PimCatalogBundle:Locale')
-            ->findBy(array('code' => $localeCode));
+            ->findOneBy(array('code' => $localeCode));
 
-        $channel = $this->flexibleManager
+        $channel = $this->productManager
             ->getObjectManager()
             ->getRepository('PimCatalogBundle:Channel')
-            ->findBy(array('code' => $channelCode));
+            ->findOneBy(array('code' => $channelCode));
 
         $proxyQuery->setParameter('localeCode', $localeCode);
         $proxyQuery->setParameter('locale', $locale);
@@ -729,14 +729,15 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getScopeFilterValue()
     {
-        $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
-            $dataScope = $filtersArray[self::SCOPE_FIELD_NAME]['value'];
-        } else {
-            $dataScope = $this->flexibleManager->getScope();
+        $scopeCode = null;
+        if ($this->parameters) {
+            $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
+            if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
+                $scopeCode = $filtersArray[self::SCOPE_FIELD_NAME]['value'];
+            }
         }
 
-        return $dataScope;
+        return $scopeCode;
     }
 
     /**

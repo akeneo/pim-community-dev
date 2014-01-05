@@ -86,9 +86,6 @@ abstract class FlexibleDatagridManager extends DatagridManager
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
-
-        $this->flexibleManager->setLocale($this->parameters->getLocale());
-        $this->flexibleManager->setScope($this->parameters->getScope());
     }
 
     /**

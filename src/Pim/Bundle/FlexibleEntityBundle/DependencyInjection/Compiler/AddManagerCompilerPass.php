@@ -26,14 +26,17 @@ class AddManagerCompilerPass implements CompilerPassInterface
 
         $registryDefinition = $container->getDefinition('pim_flexibleentity.registry');
         $taggedServices = $container->findTaggedServiceIds('pim_flexibleentity_manager');
-
+        $entitiesConfig = array();
         foreach ($taggedServices as $managerId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
+                $entity = $attributes['entity'];
                 $registryDefinition->addMethodCall(
                     'addManager',
-                    array($managerId, new Reference($managerId), $attributes['entity'])
+                    array($managerId, $container->getDefinition($managerId), $entity)
                 );
+                $entitiesConfig['entities_config'][$entity]= $managerId;
             }
         }
+        $container->setParameter('pim_flexibleentity.flexible_config', $entitiesConfig);
     }
 }

@@ -142,9 +142,8 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
-
-        $this->productManager->setLocale($this->getDataLocale());
     }
+
     /**
      * List products
      *
@@ -200,8 +199,7 @@ class ProductController extends AbstractDoctrineController
         $params = array(
             'datagrid'   => $datagrid->createView(),
             'locales'    => $this->localeManager->getUserLocales(),
-            'dataLocale' => $this->getDataLocale(),
-            'dataScope'  => $this->getDataScope()
+            'dataLocale' => $this->getDataLocale()
         );
 
         return $this->render($view, $params);
@@ -582,29 +580,6 @@ class ProductController extends AbstractDoctrineController
         $dataLocale = $this->localeManager->getLocaleByCode($dataLocaleCode);
 
         return $dataLocale->getDefaultCurrency();
-    }
-
-    /**
-     * Get data scope
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataScope()
-    {
-        $dataScope = $this->getRequest()->get('dataScope');
-        if ($dataScope === null) {
-            $catalogScope = $this->getUser()->getCatalogScope();
-            if ($catalogScope) {
-                $dataScope = $catalogScope->getCode();
-            }
-        }
-        if (!$dataScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $dataScope;
     }
 
     /**

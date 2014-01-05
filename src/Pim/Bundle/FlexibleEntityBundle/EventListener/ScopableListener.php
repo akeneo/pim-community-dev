@@ -68,10 +68,12 @@ class ScopableListener implements EventSubscriber
                 array_key_exists($flexibleEntityClass, $flexibleConfig['entities_config'])) {
 
                 // get flexible config and manager
-                $flexibleManagerName = $flexibleConfig['entities_config'][$flexibleEntityClass]['flexible_manager'];
+                $flexibleManagerName = $flexibleConfig['entities_config'][$flexibleEntityClass];
                 $flexibleManager = $this->container->get($flexibleManagerName);
+
                 // set scope setted in manager
-                $entity->setScope($flexibleManager->getScope());
+                $scopeCode = $flexibleManager->getScope();
+                $entity->setScope($scopeCode);
             }
         }
     }

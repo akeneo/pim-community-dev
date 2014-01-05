@@ -37,8 +37,8 @@ services:
               flexible: true
               route_name: pim_catalog_product_index
         calls:
-            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
             - [ setProductManager, ['@pim_catalog.manager.product'] ]
+            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
             - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
             - [ setSecurityFacade, ['@oro_security.security_facade'] ]
