@@ -3,10 +3,10 @@ Pim\Bundle\CatalogBundle\Model\Association:
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\MongoDBODM\AssociationRepository
     indexes:
         association_type_idx:
-        options:
-            unique: true
-        keys:
-            associationTypeId
+            options:
+                unique: true
+            keys:
+                associationTypeId:
     fields:
         id:
             id: true
@@ -16,6 +16,7 @@ Pim\Bundle\CatalogBundle\Model\Association:
         # Collection to references ORM groups code
         #groups:
         #    type: collection
-  referenceMany:
-    products:
-      targetDocument: Pim\Bundle\CatalogBundle\Model\Product
+    referenceMany:
+        products:
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Product
+

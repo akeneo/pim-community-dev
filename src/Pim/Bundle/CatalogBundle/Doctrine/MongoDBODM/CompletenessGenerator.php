@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 /**
  * Generate the completeness when Product are in ORM
@@ -36,7 +36,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * @param string            $productClass
      * @param string            $productValueClass
      */
-    public function __construct(RegistryInterface $doctrine, $productClass, $productValueClass)
+    public function __construct(ManagerRegistry $doctrine, $productClass, $productValueClass)
     {
         $this->doctrine = $doctrine;
         $this->productClass = $productClass;
