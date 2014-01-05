@@ -104,7 +104,7 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
      *
      * @return array
      */
-    protected function getFlexibleConfig()
+    public function getFlexibleConfig()
     {
         return $this->flexibleConfig;
     }

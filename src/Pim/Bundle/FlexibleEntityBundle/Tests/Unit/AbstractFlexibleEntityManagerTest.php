@@ -77,24 +77,24 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->defaultLocale                 = 'en';
         $this->defaultScope                  = 'mobile';
         $this->flexibleConfig = array(
-            'entities_config' => array(
-                $this->flexibleClassName => array(
-                    'flexible_manager'             => 'demo_manager',
-                    'flexible_class'               => $this->flexibleClassName,
-                    'flexible_value_class'         => $this->flexibleValueClassName,
-                    'attribute_class'              => $this->attributeClassName,
-                    'attribute_option_class'       => $this->attributeOptionClassName,
-                    'attribute_option_value_class' => $this->attributeOptionValueClassName,
-                    'default_locale'               => $this->defaultLocale,
-                    'default_scope'                => $this->defaultScope
-                )
-            )
+            'flexible_class'               => $this->flexibleClassName,
+            'flexible_value_class'         => $this->flexibleValueClassName,
+            'attribute_class'              => $this->attributeClassName,
+            'attribute_option_class'       => $this->attributeOptionClassName,
+            'attribute_option_value_class' => $this->attributeOptionValueClassName,
         );
         // mock global event dispatcher 'event_dispatcher'
         $dispatcher = new EventDispatcher();
 
         // prepare test container
-        $this->container->setParameter('pim_flexibleentity.flexible_config', $this->flexibleConfig);
+        $this->container->setParameter(
+            'pim_flexibleentity.flexible_config',
+            array(
+                'entities_config' => array(
+                    $this->flexibleClassName => 'demo_manager'
+                )
+            )
+        );
 
         // prepare attribute type factory
         $attType = new TextType(
@@ -107,7 +107,6 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         // prepare simple entity manager (use default entity manager)
         $this->manager = new FlexibleManager(
             $this->flexibleClassName,
-            $this->flexibleConfig,
             $this->entityManager,
             $dispatcher
         );
