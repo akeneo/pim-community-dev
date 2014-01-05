@@ -136,11 +136,9 @@ class UserContextListener implements EventSubscriberInterface
     {
         $dataScope = $request->get('dataScope');
         if ($dataScope === null) {
-            $catalogScope = $this->getUser()->getCatalogScope();
-            if ($catalogScope) {
-                $dataScope = $catalogScope->getCode();
-            }
+            $dataScope = $this->getCatalogScope();
         }
+
         if (!$dataScope) {
             throw new \Exception('User must have a catalog scope defined');
         }
@@ -158,6 +156,18 @@ class UserContextListener implements EventSubscriberInterface
         $catalogLocale = $this->getUser()->getCatalogLocale();
 
         return $catalogLocale ? $catalogLocale->getCode() : null;
+    }
+
+    /**
+     * Get user catalog scope
+     *
+     * @return string
+     */
+    protected function getCatalogScope()
+    {
+        $catalogScope = $this->getUser()->getCatalogScope();
+
+        return $catalogScope ? $catalogScope->getCode() : null;
     }
 
     /**
