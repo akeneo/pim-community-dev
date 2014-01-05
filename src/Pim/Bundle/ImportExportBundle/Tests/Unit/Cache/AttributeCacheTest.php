@@ -175,7 +175,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param integer $productId
-     * @param array   $productAttributeCodes
+     * @param array   $attributeCodes
      * @param string  $familyCode
      * @param array   $familyAttributeCodes
      * @param array   $categories
@@ -184,7 +184,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock(
         $productId = null,
-        $productAttributeCodes = array(),
+        $attributeCodes = array(),
         $familyCode = null,
         array $familyAttributeCodes = array(),
         array $categories = array()
@@ -196,13 +196,13 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue($productId));
         $values = array();
-        foreach ($productAttributeCodes as $productAttributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
                 ->setMethods(array('getAttribute', '__toString'))
                 ->getMock();
             $value->expects($this->any())
                 ->method('getAttribute')
-                ->will($this->returnValue($this->addAttribute($productAttributeCode)));
+                ->will($this->returnValue($this->addAttribute($attributeCode)));
             $values[] = $value;
         }
         $product->expects($this->any())
