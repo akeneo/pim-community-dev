@@ -32,12 +32,12 @@ class ORMAttributeTransformer extends ORMTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface                $doctrine
-     * @param PropertyAccessorInterface        $propertyAccessor
-     * @param GuesserInterface                 $guesser
-     * @param ColumnInfoTransformerInterface   $columnInfoTransformer
-     * @param AttributeManagerInterface        $attributeManager
-     * @param EntityCache                      $entityCache
+     * @param RegistryInterface              $doctrine
+     * @param PropertyAccessorInterface      $propertyAccessor
+     * @param GuesserInterface               $guesser
+     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param AttributeManagerInterface      $attributeManager
+     * @param EntityCache                    $entityCache
      */
     public function __construct(
         RegistryInterface $doctrine,
@@ -72,7 +72,7 @@ class ORMAttributeTransformer extends ORMTransformer
      * Sets the options of the attribute
      *
      * @param AttributeInterface $attribute
-     * @param array                     $optionsData
+     * @param array              $optionsData
      */
     protected function setOptions(AttributeInterface $attribute, array $optionsData)
     {
