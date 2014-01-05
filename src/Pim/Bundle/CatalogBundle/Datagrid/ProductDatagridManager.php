@@ -729,14 +729,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getScopeFilterValue()
     {
+        $scopeCode = null;
         if ($this->parameters) {
             $filtersArray = $this->parameters->get(ParametersInterface::FILTER_PARAMETERS);
             if (isset($filtersArray[self::SCOPE_FIELD_NAME]) && isset($filtersArray[self::SCOPE_FIELD_NAME]['value'])) {
                 $scopeCode = $filtersArray[self::SCOPE_FIELD_NAME]['value'];
             }
-        }
-        if (!isset($scopeCode)) {
-            $scopeCode = $this->productManager->getScope();
         }
 
         return $scopeCode;
