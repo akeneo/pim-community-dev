@@ -32,9 +32,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
     {
         parent::setUp();
         $this->importValidator = new ImportValidator($this->validator);
-        $this->entity = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getReference'))
-            ->getMock();
+        $this->entity = $this->getMock('Pim\Bundle\CatalogBundle\Model\ReferableInterface');
         $this->entity->expects($this->any())
             ->method('getReference')
             ->will($this->returnValue('id'));

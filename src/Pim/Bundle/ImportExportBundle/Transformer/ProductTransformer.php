@@ -170,6 +170,7 @@ class ProductTransformer extends EntityTransformer
     {
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         $flexibleValueClass = $this->productManager->getFlexibleValueName();
+        $this->transformedColumns[$flexibleValueClass] = array();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
@@ -308,5 +309,16 @@ class ProductTransformer extends EntityTransformer
         $this->propertyColumnsInfo = null;
         $this->associationColumnsInfo = null;
         $this->initialized = false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTransformedColumnsInfo($class)
+    {
+        return array_merge(
+            parent::getTransformedColumnsInfo($class),
+            $this->transformedColumns[$this->productManager->getFlexibleValueName()]
+        );
     }
 }

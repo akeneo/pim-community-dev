@@ -41,6 +41,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
 
         $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->setMethods(array('getValue', 'createValue', 'addValue'))
+            ->setMockClassName('product_class')
             ->getMock();
 
         $this->product->expects($this->any())
@@ -53,6 +54,9 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $this->productManager->expects($this->any())
             ->method('createProduct')
             ->will($this->returnValue($this->product));
+        $this->productManager->expects($this->any())
+            ->method('getFlexibleValueName')
+            ->will($this->returnValue('product_value_class'));
 
         $this->attributeCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\AttributeCache')
             ->disableOriginalConstructor()
@@ -83,7 +87,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $this->addColumn('col1');
         $this->addColumn('col2', true, false);
         $product = $this->transformer->transform(
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'product_class',
             array(
                 'identifier' => 'id',
                 'col1' => 'value1',
@@ -94,8 +98,8 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $this->assertEquals('col1_path-value1', $product->col1_path);
         $this->assertEquals('identifier_path-id', $this->values[0]->identifier_path);
         $this->assertEquals('col2_path-value2', $this->values[1]->col2_path);
-        $this->assertEmpty($this->transformer->getErrors('Pim\Bundle\CatalogBundle\Model\Product'));
-        $this->assertCount(3, $this->transformer->getTransformedColumnsInfo('Pim\Bundle\CatalogBundle\Model\Product'));
+        $this->assertEmpty($this->transformer->getErrors('product_class'));
+        $this->assertCount(3, $this->transformer->getTransformedColumnsInfo('product_class'));
     }
 
     protected function addColumn($label, $addTransformer = true, $addField = true)
@@ -136,7 +140,9 @@ class ProductTransformerTest extends EntityTransformerTestCase
 
     public function createValue($name)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
+            ->setMockClassName('product_value_class')
+            ->getMock();
         $this->values[] = $value;
 
         return $value;
