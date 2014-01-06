@@ -12,16 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556"
+                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/6388ad72a88c3c15e2eaee6c56ba046a60b47556",
-                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/7f0f33af0863275791c96b18f7c1d78bf5a290c0",
+                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0",
                 "shasum": ""
             },
             "require": {
-                "symfony/symfony": "2.3.*"
+                "symfony/symfony": ">=2.3"
             },
             "suggest": {
                 "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
@@ -65,7 +65,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2013-11-07 19:20:01"
+            "time": "2013-12-17 18:40:49"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -85,8 +85,7 @@
             "require": {
                 "php": ">=5.3.3",
                 "symfony/form": "~2.1",
-                "symfony/framework-bundle": "~2.1",
-                "willdurand/expose-translation-bundle": ">=0.2.1"
+                "symfony/framework-bundle": "~2.1"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "*",
@@ -3634,12 +3633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "c56bf731d4641ad00bb8070324171a89368b79a8"
+                "reference": "11baf6d239af060c082b9739d918ccee231d2bda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/c56bf731d4641ad00bb8070324171a89368b79a8",
-                "reference": "c56bf731d4641ad00bb8070324171a89368b79a8",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/11baf6d239af060c082b9739d918ccee231d2bda",
+                "reference": "11baf6d239af060c082b9739d918ccee231d2bda",
                 "shasum": ""
             },
             "require": {
@@ -3701,7 +3700,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta5",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-12-10 16:44:56"
+            "time": "2014-01-06 11:09:36"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4723,12 +4722,12 @@
             "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
                 "reference": "86d94edb8960db6d818a9ee370e5892009f0be74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
                 "reference": "86d94edb8960db6d818a9ee370e5892009f0be74",
                 "shasum": ""
             },
