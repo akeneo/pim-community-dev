@@ -63,7 +63,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
 
         $this->associationsReader = $this->getMock('Pim\Bundle\ImportExportBundle\Reader\CachedReader');
 
-        $this->addAttribute('identifier', ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
+        $this->addAttribute('identifier', ProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
         $this->addColumn('identifier', true, false);
 
         $this->transformer = new ProductTransformer(

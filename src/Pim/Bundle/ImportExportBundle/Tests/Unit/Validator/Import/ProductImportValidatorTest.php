@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
 
 /**
@@ -44,7 +44,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->identifierColumn->getAttribute()
             ->expects($this->any())
             ->method('getAttributeType')
-            ->will($this->returnValue(ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
+            ->will($this->returnValue(ProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
     }
 
     public function getValidateData()
