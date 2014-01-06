@@ -15,7 +15,7 @@ class NumberTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_number';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

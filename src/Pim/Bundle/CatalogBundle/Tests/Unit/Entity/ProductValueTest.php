@@ -47,7 +47,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldNotBeRemovableIfTheAttributeBelongsToTheFamily()
     {
         $family    = $this->getFamilyMock();
-        $attribute = $this->getProductAttributeMock();
+        $attribute = $this->getAttributeMock();
         $product   = $this->getProductMock();
 
         $product->expects($this->any())
@@ -75,7 +75,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldBeRemovableIfTheAttributeDoesNotBelongToTheFamily()
     {
         $family    = $this->getFamilyMock();
-        $attribute = $this->getProductAttributeMock();
+        $attribute = $this->getAttributeMock();
         $product   = $this->getProductMock();
 
         $product->expects($this->any())
@@ -102,7 +102,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldBeRemovableIfProductHasNoFamily()
     {
-        $attribute = $this->getProductAttributeMock();
+        $attribute = $this->getAttributeMock();
         $product   = $this->getProductMock();
 
         $product->expects($this->any())
@@ -152,12 +152,12 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    private function getProductAttributeMock()
+    private function getAttributeMock()
     {
         return $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+            ->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
     }
 
     /**

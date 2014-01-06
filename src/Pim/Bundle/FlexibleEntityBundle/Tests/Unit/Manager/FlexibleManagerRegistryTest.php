@@ -48,7 +48,7 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->registry        = new FlexibleManagerRegistry();
         $this->flexibleManager =  $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')

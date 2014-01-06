@@ -57,7 +57,7 @@ class AttributeCache
     public function getAttributes($columnsInfo)
     {
         if (!count($columnsInfo)) {
-            return;
+            return array();
         }
         $codes = array_unique(
             array_map(

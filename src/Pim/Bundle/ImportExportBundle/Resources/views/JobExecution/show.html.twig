@@ -15,12 +15,17 @@
         {% if isRunning %}
             {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
         {% else %}
-            {% if existingDownload %}
-                {{ elements.link(
-                    'Download file',
-                    path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
-                ) }}
-            {% endif %}
+            {% for archiver,files in archives %}
+                {% if files|length == 1 %}
+                    {% for key,file in files %}
+                        {{ elements.link(
+                            ('pim_import_export.download_archive.' ~ archiver),
+                            path(download_file_route, { 'id': execution.id, 'archiver': archiver, 'key': key }), { icon: 'download', class:'no-hash' }
+                        ) }}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
             {% if existingLog %}
                 {{ elements.link(
                     'Download log',

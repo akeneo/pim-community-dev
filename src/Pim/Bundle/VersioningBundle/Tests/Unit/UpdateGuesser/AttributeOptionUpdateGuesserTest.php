@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
@@ -22,7 +22,7 @@ class AttributeOptionUpdateGuesserTest extends AbstractUpdateGuesserTest
     public function testGuessUpdates()
     {
         $option    = new AttributeOption();
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $attribute->addOption($option);
 
         $guesser   = new AttributeOptionUpdateGuesser();

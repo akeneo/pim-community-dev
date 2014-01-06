@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validator for ProductAttrkbute not being translatable and scopable when unique
+ * Validator for attribute not being translatable and scopable when unique
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

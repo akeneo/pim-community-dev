@@ -18,12 +18,14 @@ class CsvProductReaderTest extends CsvReaderTest
      */
     protected function setUp()
     {
+        $this->archiver = $this->getArchiverMock();
         $this->reader = new CsvProductReader(
+            $this->archiver,
             $this->getEntityManagerMock(
                 array('sku', 'name'),
                 array('view', 'manual')
             ),
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute'
+            'Pim\Bundle\CatalogBundle\Entity\Attribute'
         );
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
@@ -117,5 +119,12 @@ class CsvProductReaderTest extends CsvReaderTest
             ->will($this->returnValue($mediaAttributeCodes));
 
         return $repository;
+    }
+
+    protected function getArchiverMock()
+    {
+        return $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

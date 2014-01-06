@@ -15,7 +15,7 @@ class UrlTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_url';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

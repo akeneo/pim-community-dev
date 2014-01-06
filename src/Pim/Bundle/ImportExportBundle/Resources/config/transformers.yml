@@ -38,7 +38,7 @@ services:
         class: %pim_import_export.transformer.attribute.class%
         parent: pim_import_export.transformer.orm
         arguments:
-            - '@pim_catalog.manager.product_attribute'
+            - '@pim_catalog.manager.attribute'
             - '@pim_import_export.entity_cache'
 
     pim_import_export.transformer.family:
@@ -72,7 +72,7 @@ services:
         class: %pim_import_export.transformer.property.default.class%
         public: false
         tags:
-            - name: pim_import_export.transformer.product.attribute
+            - name: pim_import_export.transformer.attribute
               backend_type: default
 
     pim_import_export.transformer.property.entity:
@@ -85,7 +85,7 @@ services:
         class: %pim_import_export.transformer.property.media.class%
         public: false
         tags:
-            - name: pim_import_export.transformer.product.attribute
+            - name: pim_import_export.transformer.attribute
               backend_type: media
 
     pim_import_export.transformer.property.prices:

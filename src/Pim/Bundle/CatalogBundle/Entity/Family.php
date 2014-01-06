@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -49,7 +49,7 @@ class Family implements TranslatableInterface, ReferableInterface
     protected $translations;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface $attributeAsLabel
+     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface $attributeAsLabel
      */
     protected $attributeAsLabel;
 
@@ -69,11 +69,6 @@ class Family implements TranslatableInterface, ReferableInterface
     protected $updated;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $products
-     */
-    protected $products;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -81,7 +76,6 @@ class Family implements TranslatableInterface, ReferableInterface
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
-        $this->products     = new ArrayCollection();
     }
 
     /**
@@ -179,11 +173,11 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Add attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Family
      */
-    public function addAttribute(ProductAttributeInterface $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes->add($attribute);
@@ -195,13 +189,13 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Remove attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Family
      *
      * @throws InvalidArgumentException
      */
-    public function removeAttribute(ProductAttributeInterface $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
@@ -225,7 +219,7 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Get grouped attributes
      *
-     * @return ProductAttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function getGroupedAttributes()
     {
@@ -240,17 +234,17 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Check if family has an attribute
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(ProductAttributeInterface $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }
 
     /**
-     * @param ProductAttributeInterface $attributeAsLabel
+     * @param AttributeInterface $attributeAsLabel
      *
      * @return Family
      */
@@ -262,7 +256,7 @@ class Family implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * @return ProductAttributeInterface
+     * @return AttributeInterface
      */
     public function getAttributeAsLabel()
     {
@@ -450,30 +444,6 @@ class Family implements TranslatableInterface, ReferableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
-    }
-
-    /**
-     * Getter for products
-     *
-     * @return ArrayCollection
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * Set products
-     *
-     * @param array $products
-     *
-     * @return Product
-     */
-    public function setProducts(array $products)
-    {
-        $this->products = new ArrayCollection($products);
-
-        return $this;
     }
 
     /**

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlankValidator;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
@@ -77,7 +77,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderWithRightSimpleData()
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $attribute->setCode('price');
         $attribute->setAttributeType('pim_catalog_price_collection')->setBackendType('prices');
         $price = new ProductPrice();
@@ -133,7 +133,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderWithWrongSimpleData()
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $attribute->setCode('price');
         $attribute->setAttributeType('pim_catalog_price_collection')->setBackendType('prices');
         $price = new ProductPrice();
@@ -184,8 +184,8 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a product value mock
      *
-     * @param mixed            $return
-     * @param ProductAttribute $attribute
+     * @param mixed     $return
+     * @param Attribute $attribute
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */

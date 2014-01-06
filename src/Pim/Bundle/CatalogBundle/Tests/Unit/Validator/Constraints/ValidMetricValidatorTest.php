@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator;
 
@@ -70,16 +70,16 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a product attribute entity
+     * Create an attribute entity
      *
      * @param string $metricFamily
-     * @param string $metricUnit
+     * @param string $defaultMetricUnit
      *
-     * @return ProductAttribute
+     * @return Attribute
      */
-    protected function createProductAttribute($metricFamily, $defaultMetricUnit = '')
+    protected function createAttribute($metricFamily, $defaultMetricUnit = '')
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AttributeInterface');
 
         $this->propertyAccessor->expects($this->any())
             ->method('getValue')
@@ -105,7 +105,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testMetricFamilyInvalid($metricFamily)
     {
-        $attribute = $this->createProductAttribute($metricFamily);
+        $attribute = $this->createAttribute($metricFamily);
 
         $this->context->expects($this->once())
             ->method('addViolationAt')
@@ -140,7 +140,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testMetricUnitInvalid($metricFamily, $metricUnit)
     {
-        $attribute = $this->createProductAttribute($metricFamily, $metricUnit);
+        $attribute = $this->createAttribute($metricFamily, $metricUnit);
 
         $this->context->expects($this->once())
             ->method('addViolationAt')
@@ -175,7 +175,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testMetricFamilyAndUnitValid($metricFamily, $metricUnit)
     {
-        $attribute = $this->createProductAttribute($metricFamily, $metricUnit);
+        $attribute = $this->createAttribute($metricFamily, $metricUnit);
 
         $this->context->expects($this->never())
             ->method('addViolationAt');

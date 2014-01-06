@@ -15,7 +15,7 @@ class BooleanTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_boolean';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

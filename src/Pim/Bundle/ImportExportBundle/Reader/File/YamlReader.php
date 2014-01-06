@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 use Symfony\Component\Yaml\Yaml;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
@@ -13,13 +12,8 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class YamlReader extends FileReader implements ItemReaderInterface
 {
-    /**
-     * @var string
-     */
-    protected $filePath;
-
     /**
      * @var string
      */
@@ -63,9 +57,42 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
-        $this->yaml = null;
+        $this->yaml     = null;
 
         return $this;
+    }
+
+    /**
+     * Get file path
+     * @return string $filePath
+     */
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
+
+    /**
+     * Set the code field
+     *
+     * @param string $codeField
+     *
+     * @return YamlReader
+     */
+    public function setCodeField($codeField)
+    {
+        $this->codeField = $codeField;
+
+        return $this;
+    }
+
+    /**
+     * Get the code field
+     *
+     * @return string
+     */
+    public function getCodeField()
+    {
+        return $this->codeField;
     }
 
     /**
@@ -111,7 +138,8 @@ class YamlReader extends AbstractConfigurableStepElement implements ItemReaderIn
     /**
      * Homogenize the read data
      *
-     * @param  array $data
+     * @param array $data
+     *
      * @return array
      */
     protected function homogenizeData($data)

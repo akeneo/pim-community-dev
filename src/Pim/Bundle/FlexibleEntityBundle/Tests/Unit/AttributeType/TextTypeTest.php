@@ -15,7 +15,7 @@ class TextTypeTest extends AttributeTypeTest
 {
     protected $name = 'pim_flexibleentity_text';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

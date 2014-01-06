@@ -16,11 +16,11 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     protected function getAttributeMock(array $options = array())
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         foreach ($options as $name => $value) {
             $attribute->expects($this->any())

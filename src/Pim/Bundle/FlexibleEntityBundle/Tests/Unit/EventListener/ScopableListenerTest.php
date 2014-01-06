@@ -24,7 +24,7 @@ class ScopableListenerTest extends AbstractFlexibleManagerTest
     /**
      * Set up unit test
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         // create listener

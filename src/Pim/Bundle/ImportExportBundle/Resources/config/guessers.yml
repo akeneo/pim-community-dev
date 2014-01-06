@@ -26,7 +26,7 @@ services:
         public: false
         arguments:
             - '@pim_import_export.transformer.property.translation'
-            - %pim_catalog.entity.product_attribute_option.class%
+            - %pim_catalog.entity.attribute_option.class%
             - ['/^label-/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 40 }
@@ -52,7 +52,7 @@ services:
         public: false
         arguments:
             - '@pim_import_export.transformer.property.nested_translation'
-            - %pim_catalog.entity.product_attribute_option.class%
+            - %pim_catalog.entity.attribute_option.class%
             - ['/^labels$/']
             - { propertyPath: label }
         tags:
@@ -131,7 +131,7 @@ services:
         public: false
         arguments:
             - '@pim_import_export.transformer.property.skip'
-            - %pim_catalog.entity.product_attribute.class%
+            - %pim_catalog.entity.attribute.class%
             - ['/^type$/']
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }

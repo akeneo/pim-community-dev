@@ -38,8 +38,6 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
             array(false),
             array(true),
             array('foo'),
-            array(array('foo')),
-            array(array('foo', 'bar' => 'baz')),
             array(1),
         );
     }
@@ -167,11 +165,15 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $entry1 = array('name' => 'foo', 'code' => 'bar');
         $entry2 = array('name' => 'baz', 'code' => 'buz');
         $entry3 = array('name' => 'foo', 'data' => 'buz');
+        $entry4 = array('foo');
+        $entry5 = array('foo', 'bar' => 'baz');
 
         return array(
             array($entry1,                 "foo;bar\n"),
             array(array($entry1, $entry2), "foo;bar\nbaz;buz\n"),
             array(array($entry2, $entry3), "baz;buz;\nfoo;;buz\n"),
+            array($entry4,                 "foo\n"),
+            array($entry5,                 "foo;baz\n"),
         );
     }
 

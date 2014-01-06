@@ -30,9 +30,6 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->constraintGuesser = $this->getMock(
             'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
-        $this->constraintGuesser->expects($this->any())
-            ->method('supportAttribute')
-            ->will($this->returnValue(true));
         $this->importValidator = new ProductImportValidator(
             $this->validator,
             $this->constraintGuesser
@@ -50,13 +47,22 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->will($this->returnValue(ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE));
     }
 
-    /**
-     * Test related method
-     *
-     * @return null
-     */
-    public function testValidate()
+    public function getValidateData()
     {
+        return array(
+            array(true),
+            array(false)
+        );
+    }
+
+    /**
+     * @dataProvider getValidateData
+     */
+    public function testValidate($supportsAttribute)
+    {
+        $this->constraintGuesser->expects($this->any())
+            ->method('supportAttribute')
+            ->will($this->returnValue($supportsAttribute));
         $columns = array(
             $this->identifierColumn,
             $this->getColumnInfoMock('key1'),
@@ -117,6 +123,9 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
      */
     public function testWithDuplicateIdentifiers()
     {
+        $this->constraintGuesser->expects($this->any())
+            ->method('supportAttribute')
+            ->will($this->returnValue(true));
         $this->validator->expects($this->once())
             ->method('validateValue')
             ->will($this->returnValue($this->getViolationListMock(array())));
@@ -143,7 +152,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->method('getScope')
             ->will($this->returnValue('scope'));
         if ($withAttribute) {
-            $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+            $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
             $attribute->expects($this->any())
                 ->method('getCode')
                 ->will($this->returnValue($label . '_code'));

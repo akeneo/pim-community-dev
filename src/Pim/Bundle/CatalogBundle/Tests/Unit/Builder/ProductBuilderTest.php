@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Builder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -28,7 +28,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count($product->getValues()), 0);
 
         $family = new Family();
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $attribute->setCode('one');
         $family->addAttribute($attribute);
         $product->setFamily($family);
@@ -36,7 +36,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addMissingProductValues($product);
         $this->assertValues($product, array('one'));
 
-        $attributeTwo = new ProductAttribute();
+        $attributeTwo = new Attribute();
         $attributeTwo->setCode('two');
         $attributeTwo->setTranslatable(true);
         $family->addAttribute($attributeTwo);
@@ -44,7 +44,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addMissingProductValues($product);
         $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR'));
 
-        $attributeThree = new ProductAttribute();
+        $attributeThree = new Attribute();
         $attributeThree->setCode('three');
         $attributeThree->setScopable(true);
         $family->addAttribute($attributeThree);
@@ -52,7 +52,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addMissingProductValues($product);
         $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint'));
 
-        $attributeFour = new ProductAttribute();
+        $attributeFour = new Attribute();
         $attributeFour->setCode('four');
         $attributeFour->setTranslatable(true);
         $attributeFour->setScopable(true);

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Type for group form
@@ -118,7 +118,7 @@ class GroupType extends AbstractType
                     'required' => true,
                     'multiple' => true,
                     'class'    => $this->attributeClass,
-                    'query_builder' => function (ProductAttributeRepository $repository) {
+                    'query_builder' => function (AttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },
                     'help'     => 'pim_catalog.group.axis.help',

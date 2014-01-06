@@ -4,11 +4,11 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
- * A normalizer to transform a ProductAttributeInterface entity into array
+ * A normalizer to transform a AttributeInterface entity into array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -86,17 +86,17 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductAttributeInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Get extra data to store in version
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getVersionedData(ProductAttributeInterface $attribute)
+    protected function getVersionedData(AttributeInterface $attribute)
     {
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
@@ -131,7 +131,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize available locales
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
@@ -148,7 +148,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize options
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
@@ -169,11 +169,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize default value
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function normalizeDefaultValue(ProductAttributeInterface $attribute)
+    protected function normalizeDefaultValue(AttributeInterface $attribute)
     {
         $defaultValue = $attribute->getDefaultValue();
 
@@ -189,7 +189,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize default options
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */

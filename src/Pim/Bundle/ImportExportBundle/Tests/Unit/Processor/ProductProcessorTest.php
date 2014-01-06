@@ -13,39 +13,50 @@ use Pim\Bundle\ImportExportBundle\Processor\ProductProcessor;
  */
 class ProductProcessorTest extends TransformerProcessorTestCase
 {
-    public function testProcess()
+    protected $transformer;
+    protected $processor;
+
+    protected function setUp()
     {
-        $productTransformer = $this
+        parent::setUp();
+        $this->transformer = $this
             ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
-        $productTransformer
+        $this->processor = new ProductProcessor(
+            $this->validator,
+            $this->translator,
+            $this->transformer,
+            'product_class'
+        );
+    }
+
+    public function testProcess()
+    {
+        $this->transformer
             ->expects($this->once())
             ->method('getTransformedColumnsInfo')
             ->will($this->returnValue(array()));
-        $productTransformer
+        $this->transformer
             ->expects($this->once())
             ->method('getErrors')
             ->will($this->returnValue(array()));
-
-        $processor = new ProductProcessor(
-            $this->validator,
-            $this->translator,
-            $productTransformer,
-            'product_class'
-        );
 
         $stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $processor->setStepExecution($stepExecution);
+        $this->processor->setStepExecution($stepExecution);
 
-        $processor->setEnabled('enabled');
-        $processor->setFamilyColumn('fml');
-        $processor->setCategoriesColumn('ctg');
-        $processor->setGroupsColumn('grp');
+        $this->processor->setEnabled('enabled');
+        $this->assertEquals('enabled', $this->processor->isEnabled());
+        $this->processor->setFamilyColumn('fml');
+        $this->assertEquals('fml', $this->processor->getFamilyColumn());
+        $this->processor->setCategoriesColumn('ctg');
+        $this->assertEquals('ctg', $this->processor->getCategoriesColumn());
+        $this->processor->setGroupsColumn('grp');
+        $this->assertEquals('grp', $this->processor->getGroupsColumn());
 
         $data = array('key' => 'val1', 'fml' => 'val2', 'ctg' => 'val3', 'grp' => 'val4');
         $mappedData = array(
@@ -55,7 +66,7 @@ class ProductProcessorTest extends TransformerProcessorTestCase
             'groups'        => 'val4'
         );
         $entity = new \stdClass();
-        $productTransformer->expects($this->once())
+        $this->transformer->expects($this->once())
             ->method('transform')
             ->with(
                 $this->equalTo('product_class'),
@@ -68,6 +79,11 @@ class ProductProcessorTest extends TransformerProcessorTestCase
             )
             ->will($this->returnValue($entity));
 
-        $this->assertSame($entity, $processor->process($data));
+        $this->assertSame($entity, $this->processor->process($data));
+    }
+
+    public function testGetConfigurationFields()
+    {
+        $this->assertInternalType('array', $this->processor->getConfigurationFields());
     }
 }

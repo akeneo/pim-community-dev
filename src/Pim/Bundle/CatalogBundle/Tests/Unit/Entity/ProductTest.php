@@ -291,11 +291,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
     protected function getAttributeMock($group = null, $type = 'pim_catalog_text', $code = null)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getVirtualGroup')

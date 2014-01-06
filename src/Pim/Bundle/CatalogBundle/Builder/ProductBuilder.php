@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -122,12 +122,12 @@ class ProductBuilder
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface          $product
-     * @param ProductAttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, ProductAttributeInterface $attribute)
+    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $requiredValues = $this->getExpectedValues($attribute);
 
@@ -139,12 +139,12 @@ class ProductBuilder
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface          $product
-     * @param ProductAttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, ProductAttributeInterface $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $values = $this->objectManager
             ->getRepository($this->getProductValueClass())
@@ -162,7 +162,7 @@ class ProductBuilder
      *
      * @param ProductInterface $product
      *
-     * @return ProductAttributeInterface[]
+     * @return AttributeInterface[]
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
@@ -229,12 +229,12 @@ class ProductBuilder
     /**
      * Returns an array of product values for the passed attribute
      *
-     * @param ProductInterface          $product
-     * @param ProductAttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExistingValues(ProductInterface $product, ProductAttributeInterface $attribute)
+    protected function getExistingValues(ProductInterface $product, AttributeInterface $attribute)
     {
         $existingValues = array();
         foreach ($product->getValues() as $value) {
@@ -250,11 +250,11 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param ProductAttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array:array
      */
-    protected function getExpectedValues(ProductAttributeInterface $attribute)
+    protected function getExpectedValues(AttributeInterface $attribute)
     {
         $requiredValues = array();
         if ($attribute->isScopable() and $attribute->isTranslatable()) {
@@ -276,12 +276,12 @@ class ProductBuilder
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param ProductAttributeInterface $attribute
-     * @param array                     $values
+     * @param AttributeInterface $attribute
+     * @param array              $values
      *
      * @return array
      */
-    protected function filterExpectedValues(ProductAttributeInterface $attribute, array $values)
+    protected function filterExpectedValues(AttributeInterface $attribute, array $values)
     {
         if ($attribute->getAvailableLocales()) {
             $availableLocales = $attribute->getAvailableLocales()->map(

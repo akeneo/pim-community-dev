@@ -49,7 +49,7 @@ class ORMProductTransformer extends ORMTransformer
     protected $attributes;
 
     /**
-     * @var ProductAttributeInterface
+     * @var AttributeInterface
      */
     protected $identifierAttribute;
 
