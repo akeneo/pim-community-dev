@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
-use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -43,7 +43,7 @@ class CategoryProcessor extends TransformerProcessor
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
-        ORMTransformer $transformer,
+        EntityTransformerInterface $transformer,
         EntityCache $entityCache,
         $class
     ) {

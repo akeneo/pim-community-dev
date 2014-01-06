@@ -21,7 +21,7 @@ use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductTransformer extends ORMTransformer
+class ProductTransformer extends EntityTransformer
 {
     /**
      * @staticvar the identifier attribute type
@@ -135,7 +135,7 @@ class ORMProductTransformer extends ORMTransformer
     protected function setProperties($class, $entity, array $data)
     {
         $this->setProductProperties($class, $entity, $data);
-        $this->setProductValues($entity, $data);
+        $this->setProductValues($class, $entity, $data);
         $this->setAssociations($entity, $data);
     }
 
@@ -153,7 +153,7 @@ class ORMProductTransformer extends ORMTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
-                $this->errors[$label] = array($error);
+                $this->errors[$class][$label] = array($error);
             }
         }
     }
@@ -162,10 +162,11 @@ class ORMProductTransformer extends ORMTransformer
     /**
      * Sets the product entitie's properties
      *
-     * @param type  $entity
-     * @param array $data
+     * @param string $class
+     * @param type   $entity
+     * @param array  $data
      */
-    protected function setProductValues($entity, array $data)
+    protected function setProductValues($class, $entity, array $data)
     {
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         $flexibleValueClass = $this->productManager->getFlexibleValueName();
@@ -178,7 +179,7 @@ class ORMProductTransformer extends ORMTransformer
             ) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
-                    $this->errors[$label] = array($error);
+                    $this->errors[$class][$label] = array($error);
                 }
             }
         }

@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Abstract processor for transformer based imports
@@ -33,7 +33,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     protected $translator;
 
     /**
-     * @var ORMTransformer
+     * @var EntityTransformerInterface
      */
     protected $transformer;
 
@@ -60,16 +60,16 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     /**
      * Constructor
      *
-     * @param ImportValidatorInterface $validator
-     * @param TranslatorInterface      $translator
-     * @param ORMTransformer           $transformer
-     * @param string                   $class
-     * @param boolean                  $skipEmpty
+     * @param ImportValidatorInterface   $validator
+     * @param TranslatorInterface        $translator
+     * @param EntityTransformerInterface $transformer
+     * @param string                     $class
+     * @param boolean                    $skipEmpty
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
-        ORMTransformer $transformer,
+        EntityTransformerInterface $transformer,
         $class,
         $skipEmpty = false
     ) {
@@ -217,7 +217,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      */
     protected function getTransformedColumnsInfo()
     {
-        return $this->transformer->getTransformedColumnsInfo();
+        return $this->transformer->getTransformedColumnsInfo($this->class);
     }
 
     /**
@@ -227,7 +227,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      */
     protected function getTransformerErrors()
     {
-        return $this->transformer->getErrors();
+        return $this->transformer->getErrors($this->class);
     }
 
     /**
