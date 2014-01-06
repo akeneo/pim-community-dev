@@ -1,13 +1,13 @@
 services:
 
     pim_catalog.form.handler.attribute:
-        class: %pim_catalog.form.handler.product_attribute.class%
+        class: %pim_catalog.form.handler.attribute.class%
         scope: request
         arguments:
             - '@pim_catalog.form.attribute'
             - '@request'
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.product_attribute'
+            - '@pim_catalog.manager.attribute'
 
     pim_catalog.form.handler.attribute_group:
         class: %pim_catalog.form.handler.attribute_group.class%

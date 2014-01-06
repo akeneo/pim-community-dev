@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
 use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
@@ -21,7 +21,7 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
      */
     public function testGuessUpdates()
     {
-        $attribute = new ProductAttribute();
+        $attribute = new Attribute();
         $group     = new AttributeGroup();
         $attribute->setGroup($group);
         $guesser   = new AttributeGroupUpdateGuesser();

@@ -5,9 +5,9 @@
 {% block content %}
 
     {% if resource_granted('pim_catalog_family_add_attribute') %}
-        {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        {% include 'PimCatalogBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
-            'action': path('pim_catalog_family_addproductattributes', {'id': form.vars.value.id})
+            'action': path('pim_catalog_family_addattributes', {'id': form.vars.value.id})
         } %}
     {% endif %}
 

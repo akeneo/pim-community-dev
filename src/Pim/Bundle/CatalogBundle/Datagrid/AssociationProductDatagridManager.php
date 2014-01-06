@@ -280,7 +280,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin(
-                'PimCatalogBundle:Association',
+                'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
                 'WITH',
                 sprintf(

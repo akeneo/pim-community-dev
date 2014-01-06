@@ -50,11 +50,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $foo = $this->getProductMock();
         $bar = $this->getProductMock();
 
-        $sku         = $this->getProductAttributeMock('sku', 'pim_catalog_identifier');
-        $name        = $this->getProductAttributeMock('name', 'text', false, true);
-        $color       = $this->getProductAttributeMock('color');
-        $description = $this->getProductAttributeMock('description', 'text', true);
-        $price       = $this->getProductAttributeMock('price', 'pim_catalog_price_collection');
+        $sku         = $this->getAttributeMock('sku', 'pim_catalog_identifier');
+        $name        = $this->getAttributeMock('name', 'text', false, true);
+        $color       = $this->getAttributeMock('color');
+        $description = $this->getAttributeMock('description', 'text', true);
+        $price       = $this->getAttributeMock('price', 'pim_catalog_price_collection');
 
         $this->attributeRepository
             ->expects($this->any())
@@ -118,9 +118,9 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $foo = $this->getProductMock();
         $bar = $this->getProductMock();
 
-        $name        = $this->getProductAttributeMock('name', 'text', false, true);
-        $description = $this->getProductAttributeMock('description', 'text', true);
-        $price       = $this->getProductAttributeMock('price', 'pim_catalog_price_collection');
+        $name        = $this->getAttributeMock('name', 'text', false, true);
+        $description = $this->getAttributeMock('description', 'text', true);
+        $price       = $this->getAttributeMock('price', 'pim_catalog_price_collection');
 
         $oldFooNameVal              = $this->getProductValueMock($name, null);
         $oldFooDescriptionMobileVal = $this->getProductValueMock($description, null, 'mobile');
@@ -289,11 +289,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param boolean $scopable
      * @param boolean $translatable
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    protected function getProductAttributeMock($code, $type = 'text', $scopable = false, $translatable = false)
+    protected function getAttributeMock($code, $type = 'text', $scopable = false, $translatable = false)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('getCode')

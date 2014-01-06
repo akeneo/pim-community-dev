@@ -54,7 +54,6 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->processor->setStepExecution($this->stepExecution);
 
         $this->validator->expects($this->any())
             ->method('validate')
@@ -99,6 +98,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     public function testTransform()
     {
+        $this->processor->setStepExecution($this->stepExecution);
         $data = array(
             'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
             'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
@@ -121,6 +121,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     public function testTransformWithPersistedParent()
     {
+        $this->processor->setStepExecution($this->stepExecution);
         $data = array(
             'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
             'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
@@ -149,6 +150,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     public function testTransformWithMissingParent()
     {
+        $this->processor->setStepExecution($this->stepExecution);
         $data = array(
             'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
             'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
@@ -180,6 +182,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     public function testTransformWithCircularReferences()
     {
+        $this->processor->setStepExecution($this->stepExecution);
         $data = array(
             'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => 'leaf'),
             'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
@@ -210,6 +213,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     public function testTransformWithErrors()
     {
+        $this->processor->setStepExecution($this->stepExecution);
         $data = array(
             'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
             'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
@@ -248,6 +252,38 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
         $this->assertCategoriesData($validData, $categories);
         $this->assertSame($categories['root'], $categories['leaf']->parent);
         $this->assertSame($categories['leaf'], $categories['subleaf']->parent);
+    }
+
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage key1: <tr>Error</tr>
+     */
+    public function testTransformWithErrorsWithoutStepExecution()
+    {
+        $data = array(
+            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
+        );
+
+        $iteration = 0;
+        $this->transformer->expects($this->any())
+            ->method('getErrors')
+            ->will(
+                $this->returnCallback(
+                    function () use (&$iteration) {
+                        $iteration++;
+
+                        return ($iteration==2)
+                            ? array('key1' => array(array('Error')))
+                            : array();
+                    }
+                )
+            );
+
+        $categories = $this->processor->process($data);
     }
 
     protected function assertErrors($errorMessages, $data)

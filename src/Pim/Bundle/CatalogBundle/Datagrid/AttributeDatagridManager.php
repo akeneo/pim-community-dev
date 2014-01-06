@@ -13,10 +13,10 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductAttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 
 /**
- * Product attribute grid manager
+ * Attribute grid manager
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -30,7 +30,7 @@ class AttributeDatagridManager extends DatagridManager
     protected $productManager;
 
     /**
-     * @var ProductAttributeManagerInterface
+     * @var AttributeManagerInterface
      */
     protected $attributeManager;
 
@@ -43,9 +43,9 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * @param ProductAttributeManagerInterface $manager
+     * @param AttributeManagerInterface $manager
      */
-    public function setAttributeManager(ProductAttributeManagerInterface $manager)
+    public function setAttributeManager(AttributeManagerInterface $manager)
     {
         $this->attributeManager = $manager;
     }
@@ -56,8 +56,8 @@ class AttributeDatagridManager extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('edit_link', $this->router, 'pim_catalog_productattribute_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_catalog_productattribute_remove', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_attribute_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_attribute_remove', array('id')),
         );
     }
 
@@ -165,7 +165,7 @@ class AttributeDatagridManager extends DatagridManager
                 'field_options' => array('choices' => $this->getAttributeTypeFieldOptions(), 'multiple' => true),
             )
         );
-        $templateProperty = new TwigTemplateProperty($field, 'PimCatalogBundle:ProductAttribute:_field-type.html.twig');
+        $templateProperty = new TwigTemplateProperty($field, 'PimCatalogBundle:Attribute:_field-type.html.twig');
         $field->setProperty($templateProperty);
 
         return $field;

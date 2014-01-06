@@ -14,16 +14,16 @@ pim_catalog_product_edit:
     requirements:
         id: '[0-9a-f]+'
 
-pim_catalog_product_addproductattributes:
+pim_catalog_product_addattributes:
     path: /{id}/attributes
-    defaults: { _controller: pim_catalog.controller.product:addProductAttributesAction }
+    defaults: { _controller: pim_catalog.controller.product:addAttributesAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [POST]
 
-pim_catalog_product_removeproductattribute:
+pim_catalog_product_removeattribute:
     path: /{productId}/attribute/{attributeId}/remove
-    defaults: { _controller: pim_catalog.controller.product:removeProductAttributeAction }
+    defaults: { _controller: pim_catalog.controller.product:removeAttributeAction }
     requirements:
         productId: '[0-9a-f]+'
         attributeId: \d+

@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             orphanRemoval: false
     manyToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductAttributeInterface
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_group_attribute
                 schema: null
@@ -33,9 +33,6 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 inverseJoinColumns:
                     attribute_id:
                         referencedColumnName: id
-#        products:
-#            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
-#            mappedBy: groups
     oneToMany:
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation

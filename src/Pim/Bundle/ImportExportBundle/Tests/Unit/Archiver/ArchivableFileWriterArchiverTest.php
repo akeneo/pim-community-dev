@@ -32,12 +32,17 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testDoNothingIfLessThan2FilesWereWritten()
     {
-        $archivableWriter = $this->getProductWriterMock('/tmp/export.csv', array(
-            __DIR__.'/../../fixtures/export.csv' => 'export.csv',
-        ));
-        $job = $this->getJobMock(array(
-            $this->getItemStepMock($archivableWriter),
-        ));
+        $archivableWriter = $this->getProductWriterMock(
+            '/tmp/export.csv',
+            array(
+                __DIR__.'/../../fixtures/export.csv' => 'export.csv',
+            )
+        );
+        $job = $this->getJobMock(
+            array(
+                $this->getItemStepMock($archivableWriter),
+            )
+        );
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', $job),
@@ -58,13 +63,18 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $archivableWriter = $this->getProductWriterMock('/tmp/export.csv', array(
-            __DIR__.'/../../fixtures/export.csv' => 'export.csv',
-            __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
-        ));
-        $job = $this->getJobMock(array(
-            $this->getItemStepMock($archivableWriter),
-        ));
+        $archivableWriter = $this->getProductWriterMock(
+            '/tmp/export.csv',
+            array(
+                __DIR__.'/../../fixtures/export.csv' => 'export.csv',
+                __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
+            )
+        );
+        $job = $this->getJobMock(
+            array(
+                $this->getItemStepMock($archivableWriter),
+            )
+        );
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', $job),

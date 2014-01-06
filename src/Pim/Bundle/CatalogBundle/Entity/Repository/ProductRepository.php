@@ -109,18 +109,6 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     /**
      * {@inheritdoc}
      */
-    public function getAllIds()
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('p.id')
-            ->from($this->_entityName, 'p', 'p.id');
-
-        return array_keys($qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
     {
         $qb = $this->createQueryBuilder('Product');
@@ -147,11 +135,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Returns a full product with all relations
-     *
-     * @param int $id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * {@inheritdoc}
      */
     public function getFullProduct($id)
     {
@@ -171,11 +155,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Return the number of times the product is present in each tree
-     *
-     * @param ProductInterface $product The product to look for in the trees
-     *
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     * {@inheritdoc}
      */
     public function getProductCountByTree(ProductInterface $product)
     {
@@ -216,15 +196,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Count products linked to a node.
-     * You can define if you just want to get the property of the actual node
-     * or with its children with the direct parameter
-     * The third parameter allow to include the actual node or not
-     *
-     * @param CategoryInterface $category   the requested category node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getProductsCountInCategory(
         CategoryInterface $category,
@@ -246,14 +218,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Get product ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $categoryId the requested node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getProductIdsInCategory(
         CategoryInterface $category,
@@ -271,7 +236,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             $qb->setParameters($categoryQb->getParameters());
         }
 
-        $products = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $products = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
         $productIds = array();
         foreach ($products as $product) {
@@ -340,7 +305,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
-     * Returns the ProductAttribute class
+     * Returns the Attribute class
      *
      * @return string
      */

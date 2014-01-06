@@ -1,8 +1,3 @@
-api:
-    resource: '@PimCatalogBundle/Controller/Api/ProductController.php'
-    type:   rest
-    prefix: api/rest/{scope}/
-
 attributegroup:
     resource: '@PimCatalogBundle/Resources/config/routing/attributegroup.yml'
     prefix: /configuration/attribute-group
@@ -23,8 +18,8 @@ locale:
     resource: '@PimCatalogBundle/Resources/config/routing/locale.yml'
     prefix: /configuration/locale
 
-productattribute:
-    resource: '@PimCatalogBundle/Resources/config/routing/productattribute.yml'
+attribute:
+    resource: '@PimCatalogBundle/Resources/config/routing/attribute.yml'
     prefix: /configuration/attribute
 
 categorytree:

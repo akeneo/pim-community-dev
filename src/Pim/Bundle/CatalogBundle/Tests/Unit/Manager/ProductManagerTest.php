@@ -109,7 +109,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                     'Pim\Bundle\CatalogBundle\Model\Product' => array(
                         'flexible_class' => 'Pim\Bundle\CatalogBundle\Model\Product',
                         'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Model\ProductValue',
-                        'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                        'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
                         'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
                         'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
                         'default_locale' => null,
@@ -249,7 +249,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     protected function getAttributeMock($scopable = false, $translatable = false, $code = null)
     {
         $attribute = $this->getMock(
-            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             array('isTranslatable', 'isScopable', 'getCode')
         );
 

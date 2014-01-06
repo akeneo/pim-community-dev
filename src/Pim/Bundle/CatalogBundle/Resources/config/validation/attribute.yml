@@ -1,0 +1,179 @@
+Pim\Bundle\CatalogBundle\Entity\Attribute:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - attributeType
+                - scopable
+                - localizable
+                - dateType
+                - metricFamily
+                - unique
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric:
+            groups:
+                - pim_catalog_metric
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueMatrix:
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_number
+                - pim_catalog_date
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDateRange:
+            groups:
+                - pim_catalog_date
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidNumberRange:
+            groups:
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_metric
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue:
+            groups:
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_price_collection
+                - pim_catalog_number
+                - pim_catalog_date
+                - pim_catalog_metric
+        - Callback:
+            methods:
+                - [Pim\Bundle\CatalogBundle\Validator\AttributeValidator, areOptionsValid]
+            groups:
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Attribute code may contain only letters, numbers and underscores
+            - Length:
+                max: 255
+            - Regex:
+                pattern: /^(?!(associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|(.)*_(products|groups))$)/
+                message: This code is not available.
+        searchable:
+            - Type: bool
+        translatable:
+            - Type: bool
+        scopable:
+            - NotNull: ~
+        useableAsGridColumn:
+            - Type: bool
+        useableAsGridFilter:
+            - Type: bool
+        wysiwygEnabled:
+            - Type: bool
+        decimalsAllowed:
+            - Type: bool
+        negativeAllowed:
+            - Type: bool
+        maxCharacters:
+            - Type: numeric
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal: {}
+            - GreaterThanOrEqual:
+                value: 0
+            - Range:
+                max: 255
+                groups: [pim_catalog_text, pim_catalog_identifier]
+            - Range:
+                max: 65535
+                groups: [pim_catalog_textarea]
+        sortOrder:
+            - Type: numeric
+            - GreaterThanOrEqual:
+                value: 0
+        unique:
+            - Type: bool
+            - 'False':
+                message: This attribute type can't have unique value
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_image
+                    - pim_catalog_file
+                    - pim_catalog_metric
+                    - pim_catalog_boolean
+        dateType:
+            - Choice:
+                choices: [date, time, datetime]
+                groups: [pim_catalog_date]
+        maxFileSize:
+            - Range:
+                min: 0.01
+                max: 9999.99
+                groups: [pim_catalog_file, pim_catalog_image]
+            - Type:
+                type: numeric
+                groups: [pim_catalog_file, pim_catalog_image]
+        defaultValue:
+            - Blank:
+                message: No default value may be specified for this attribute type
+                groups: [pim_catalog_file, pim_catalog_image, pim_catalog_identifier]
+            - Length:
+                max: 65535
+            - Length:
+                max: 255
+                groups: [pim_catalog_text]
+            - Choice:
+                choices: [0, 1]
+                message: This value should be Yes or No
+                groups: [pim_catalog_boolean]
+            - Email:
+                groups: [email]
+            - Url:
+                groups: [url]
+        dateMin:
+            - DateTime:
+                groups: [pim_catalog_date]
+        dateMax:
+            - DateTime:
+                groups: [pim_catalog_date]
+        validationRule:
+            - Choice:
+                choices: [null, url, email, regexp]
+                groups: [pim_catalog_text]
+        validationRegexp:
+            - Blank:
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_metric
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidRegex:
+                groups:
+                    - pim_catalog_text
+                    - pim_catalog_identifier
+        allowedExtensions:
+            - NotNull:
+                groups: [pim_catalog_file, pim_catalog_image]
+                message: This value should not be blank
+        translations:
+            - Valid: ~
+
+Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+
+Pim\Bundle\CatalogBundle\Entity\AttributeOption:
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Option code may contain only letters, numbers and underscores
+            - Length:
+                max: 255
+        attribute:
+            - Valid: ~

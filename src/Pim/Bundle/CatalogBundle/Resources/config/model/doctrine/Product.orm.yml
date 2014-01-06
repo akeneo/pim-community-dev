@@ -18,7 +18,6 @@ Pim\Bundle\CatalogBundle\Model\Product:
     manyToOne:
         family:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
-            inversedBy: products
             cascade:
                 - persist
                 - refresh
@@ -53,7 +52,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
             mappedBy: owner
             cascade:
                 - persist
