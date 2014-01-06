@@ -69,11 +69,6 @@ class Family implements TranslatableInterface, ReferableInterface
     protected $updated;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $products
-     */
-    protected $products;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -81,7 +76,6 @@ class Family implements TranslatableInterface, ReferableInterface
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
-        $this->products     = new ArrayCollection();
     }
 
     /**
@@ -450,30 +444,6 @@ class Family implements TranslatableInterface, ReferableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
-    }
-
-    /**
-     * Getter for products
-     *
-     * @return ArrayCollection
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * Set products
-     *
-     * @param array $products
-     *
-     * @return Product
-     */
-    public function setProducts(array $products)
-    {
-        $this->products = new ArrayCollection($products);
-
-        return $this;
     }
 
     /**
