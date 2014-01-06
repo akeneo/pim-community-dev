@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\EntityTransformer;
 
 /**
  * Tests related class
@@ -11,14 +11,14 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMTransformerTest extends ORMTransformerTestCase
+class EntityTransformerTest extends EntityTransformerTestCase
 {
     protected $transformer;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = new ORMTransformer(
+        $this->transformer = new EntityTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,
@@ -38,7 +38,7 @@ class ORMTransformerTest extends ORMTransformerTestCase
             array('prop3' => 'val3', 'prop4' => 'val4')
         );
         $this->assertInstanceOf('stdClass', $object);
-        $this->assertEmpty($this->transformer->getErrors());
+        $this->assertEmpty($this->transformer->getErrors('stdClass'));
         $this->assertEquals('val3', $object->prop3);
         $this->assertEquals('val4', $object->prop4);
         $this->assertEquals('code_path-code', $object->code_path);
@@ -61,9 +61,9 @@ class ORMTransformerTest extends ORMTransformerTestCase
         $this->assertEquals('col2_path-val2', $object->col2_path);
         $this->assertEquals(
             array('col1' => array(array('error_message', array('error_parameters')))),
-            $this->transformer->getErrors()
+            $this->transformer->getErrors('stdClass')
         );
-        $this->assertCount(2, $this->transformer->getTransformedColumnsInfo());
+        $this->assertCount(2, $this->transformer->getTransformedColumnsInfo('stdClass'));
     }
 
     /**

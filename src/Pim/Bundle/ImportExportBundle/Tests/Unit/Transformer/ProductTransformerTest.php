@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
 
 /**
  * Tests related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductTransformerTest extends ORMTransformerTestCase
+class ProductTransformerTest extends EntityTransformerTestCase
 {
     protected $productManager;
     protected $attributeCache;
@@ -66,7 +66,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->addAttribute('identifier', ORMProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
         $this->addColumn('identifier', true, false);
 
-        $this->transformer = new ORMProductTransformer(
+        $this->transformer = new ProductTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,
@@ -94,8 +94,8 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->assertEquals('col1_path-value1', $product->col1_path);
         $this->assertEquals('identifier_path-id', $this->values[0]->identifier_path);
         $this->assertEquals('col2_path-value2', $this->values[1]->col2_path);
-        $this->assertEmpty($this->transformer->getErrors());
-        $this->assertCount(3, $this->transformer->getTransformedColumnsInfo());
+        $this->assertEmpty($this->transformer->getErrors('Pim\Bundle\CatalogBundle\Model\Product'));
+        $this->assertCount(3, $this->transformer->getTransformedColumnsInfo('Pim\Bundle\CatalogBundle\Model\Product'));
     }
 
     protected function addColumn($label, $addTransformer = true, $addField = true)

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\AttributeTransformer;
 
 /**
  * Tests related class
@@ -11,13 +11,13 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMAttributeTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmAttributeTransformerTest extends ORMTransformerTestCase
+class mAttributeTransformerTest extends EntityTransformerTestCase
 {
     protected $attribute;
     protected $attributeManager;
     protected $entityCache;
     protected $transformer;
-    protected $optionRepository;
+    protected $transformerRegistry;
 
     protected function setUp()
     {
@@ -37,15 +37,36 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
             ->method('createAttribute')
             ->with($this->equalTo('type'))
             ->will($this->returnValue($this->attribute));
-        $this->transformer = new ORMAttributeTransformer(
+        $this->transformerRegistry = $this
+            ->getMock('Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface');
+        $this->transformer = new AttributeTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,
             $this->columnInfoTransformer,
+            $this->transformerRegistry,
             $this->attributeManager,
             $this->entityCache
         );
         $this->addColumn('code');
+        $this->transformerRegistry
+            ->expects($this->any())
+            ->method('transform')
+            ->will(
+                $this->returnCallback(
+                    function ($class, $data) {
+                        $this->assertEquals('Pim\Bundle\CatalogBundle\Entity\AttributeOption', $class);
+                        $option = $this->getMock($class);
+                        foreach ($data as $key => $value) {
+                            $option->expects($this->any())
+                                ->method('get' . ucfirst($key))
+                                ->will($this->returnValue($value));
+                        }
+
+                        return $option;
+                    }
+                )
+            );
     }
     protected function setupRepositories()
     {
@@ -55,23 +76,11 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
             ->method('getReferenceProperties')
             ->will($this->returnValue(array('code')));
 
-        $this->optionRepository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
-        $this->optionRepository->expects($this->any())
-            ->method('getReferenceProperties')
-            ->will($this->returnValue(array('attribute', 'code')));
-
         $this->doctrine
             ->expects($this->any())
             ->method('getRepository')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array('Pim\Bundle\CatalogBundle\Entity\Attribute', $this->repository),
-                        array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', $this->optionRepository),
-                    )
-                )
-            );
+            ->with($this->equalTo('Pim\Bundle\CatalogBundle\Entity\Attribute'))
+            ->will($this->returnValue($this->repository));
     }
 
     public function testTransform()
@@ -103,7 +112,7 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
             )
         );
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $object);
-        $this->assertEmpty($this->transformer->getErrors());
+        $this->assertEmpty($this->transformer->getErrors('Pim\Bundle\CatalogBundle\Entity\Attribute'));
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
