@@ -15,6 +15,7 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $validator;
     protected $translator;
+    protected $transformer;
 
     protected function setUp()
     {
@@ -33,5 +34,6 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
+        $this->transformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface');
     }
 }

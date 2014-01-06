@@ -24,9 +24,6 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->entity = new \stdClass();
     }
 
