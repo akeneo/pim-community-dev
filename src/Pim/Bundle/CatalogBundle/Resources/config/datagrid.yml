@@ -426,9 +426,9 @@ datagrid:
         columns:
             code:
                 label: Code
-            label:
-                label: Label
-                data_name: c.code
+                type: twig
+                template: PimDataGridBundle:Property:currency_label.html.twig
+                frontend_type: html
             activated:
                 label: Activated
                 type: twig
