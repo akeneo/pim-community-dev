@@ -470,16 +470,6 @@ class JobProfileController extends AbstractDoctrineController
     }
 
     /**
-     * Get the datagrid manager
-     *
-     * @return \Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridManager
-     */
-    protected function getDatagridManager()
-    {
-        return $this->datagridHelper->getDatagridManager($this->getJobType().'_profile', 'pim_import_export');
-    }
-
-    /**
      * Create file upload form
      *
      * @return Form

@@ -1,34 +1,7 @@
 parameters:
-    pim_import_export.entity.job_execution.class:           Oro\Bundle\BatchBundle\Entity\JobExecution
-
-    pim_import_export.datagrid.manager.job_execution.class: Pim\Bundle\ImportExportBundle\Datagrid\JobExecutionDatagridManager
-    pim_import_export.datagrid.provider.job.class:          Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider
+    pim_import_export.datagrid.provider.job.class: Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider
 
 services:
-    pim_import_export.datagrid.manager.export_execution:
-        class: %pim_import_export.datagrid.manager.job_execution.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: export_reports
-              entity_name: %pim_import_export.entity.job_execution.class%
-              query_entity_alias: job_report
-              entity_hint: job_reports
-              route_name: pim_importexport_export_execution_index
-        calls:
-            - [ setJobType, [export] ]
-
-    pim_import_export.datagrid.manager.import_execution:
-        class: %pim_import_export.datagrid.manager.job_execution.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: import_reports
-              entity_name: %pim_import_export.entity.job_execution.class%
-              query_entity_alias: job_report
-              entity_hint: job_reports
-              route_name: pim_importexport_import_execution_index
-        calls:
-            - [ setJobType, [import] ]
-
     pim_import_export.datagrid.provider.job:
         class: %pim_import_export.datagrid.provider.job.class%
         arguments:
