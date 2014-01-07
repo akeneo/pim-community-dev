@@ -98,7 +98,7 @@ datagrid:
     export-profile-grid:
         extend: job-profile-grid
         options:
-            entityHint: exportprofile
+            entityHint: export profile
         source:
             acl_resource: pim_importexport_export_profile_index
             query:
@@ -106,7 +106,6 @@ datagrid:
                     and:
                         - j.type = 'export'
         properties:
-            id: ~
             edit_link:
                 route: pim_importexport_export_profile_edit
             delete_link:
@@ -117,7 +116,7 @@ datagrid:
     import-profile-grid:
         extend: job-profile-grid
         options:
-            entityHint: importprofile
+            entityHint: import profile
         source:
             acl_resource: pim_importexport_import_profile_index
             query:
@@ -125,7 +124,6 @@ datagrid:
                     and:
                         - j.type = 'import'
         properties:
-            id: ~
             edit_link:
                 route: pim_importexport_import_profile_edit
             delete_link:

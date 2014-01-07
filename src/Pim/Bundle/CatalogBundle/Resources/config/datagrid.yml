@@ -56,7 +56,7 @@ datagrid:
 
     group-type-grid:
         options:
-            entityHint: grouptype
+            entityHint: group type
         source:
             acl_resource: pim_catalog_group_type_index
             type: pim_orm
