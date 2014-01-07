@@ -29,8 +29,6 @@ services:
     pim_custom_entity.controller.strategy.datagrid:
         class: %pim_custom_entity.controller.strategy.datagrid.class%
         parent: pim_custom_entity.controller.strategy.crud
-        arguments:
-            - '@pim_grid.datagrid.helper'
 
     pim_custom_entity.manager.orm:
         class: %pim_custom_entity.manager.orm.class%

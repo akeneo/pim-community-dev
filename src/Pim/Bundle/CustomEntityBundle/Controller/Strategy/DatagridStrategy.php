@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CustomEntityBundle\Configuration\ConfigurationInterface;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Worker for custom entities with datagrids
@@ -22,30 +21,21 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 class DatagridStrategy extends CrudStrategy
 {
     /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
-    /**
      * Constructor
      *
      * @param FormFactoryInterface    $formFactory
      * @param EngineInterface         $templating
      * @param RouterInterface         $router
      * @param TranslatorInterface     $translator
-     * @param DatagridHelperInterface $datagridHelper
-     */
+     *
     public function __construct(
         FormFactoryInterface $formFactory,
         EngineInterface $templating,
         RouterInterface $router,
-        TranslatorInterface $translator,
-        DatagridHelperInterface $datagridHelper
+        TranslatorInterface $translator
     ) {
         parent::__construct($formFactory, $templating, $router, $translator);
-
-        $this->datagridHelper = $datagridHelper;
-    }
+    }*/
 
     /**
      * Index action
@@ -57,6 +47,7 @@ class DatagridStrategy extends CrudStrategy
      */
     public function indexAction(ConfigurationInterface $configuration, Request $request)
     {
+        /*
         $datagrid = $this->datagridHelper->getDatagrid(
             $configuration->getName(),
             $this->createQueryBuilder($configuration, $request),
@@ -69,6 +60,14 @@ class DatagridStrategy extends CrudStrategy
             ? 'OroGridBundle:Datagrid:list.json.php' : $configuration->getIndexTemplate();
 
         return $this->render($configuration, $request, $template, array('datagrid' => $datagrid->createView()));
+         */
+        $template = $configuration->getIndexTemplate();
+
+//        return $this->render($configuration, $request, $template, array('customEntityName' => $configuration->getName() ));
+
+        return $this->render($configuration, $request, $template, array());
+
+
     }
 
     /**
