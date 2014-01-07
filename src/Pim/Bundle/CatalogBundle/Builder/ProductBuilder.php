@@ -67,7 +67,8 @@ class ProductBuilder
     /**
      * Constructor
      *
-     * @param string          $productClass    Entity name
+     * @param string          $productClass    Product class name
+     * @param string          $productClass    Product value class name
      * @param ObjectManager   $objectManager   Storage manager
      * @param ChannelManager  $channelManager  Channel Manager
      * @param LocaleManager   $localeManager   Locale Manager
@@ -75,16 +76,18 @@ class ProductBuilder
      */
     public function __construct(
         $productClass,
+        $productValueClass,
         ObjectManager $objectManager,
         ChannelManager $channelManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager
     ) {
-        $this->productClass    = $productClass;
-        $this->objectManager   = $objectManager;
-        $this->channelManager  = $channelManager;
-        $this->localeManager   = $localeManager;
-        $this->currencyManager = $currencyManager;
+        $this->productClass      = $productClass;
+        $this->productValueClass = $productValueClass;
+        $this->objectManager     = $objectManager;
+        $this->channelManager    = $channelManager;
+        $this->localeManager     = $localeManager;
+        $this->currencyManager   = $currencyManager;
     }
 
     /**
@@ -195,12 +198,6 @@ class ProductBuilder
      */
     protected function getProductValueClass()
     {
-        if (!$this->productValueClass) {
-            $meta = $this->objectManager->getClassMetadata($this->productClass);
-            $associations = $meta->getAssociationMappings();
-            $this->productValueClass = $associations['values']['targetEntity'];
-        }
-
         return $this->productValueClass;
     }
 
