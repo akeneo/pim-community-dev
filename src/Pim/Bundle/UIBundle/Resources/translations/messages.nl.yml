@@ -19,9 +19,7 @@ Channel list: Kanalenlijst
 Select file: Selecteer bestand
 Change file: Bestand wijzigen
 Remove file: Bestand verwijderen
-
-# Metrics
-Area: Oppervlak
+Area: Oppervlakte
 ACRE: Acre
 ARE: Are
 ARPENT: Arpent
@@ -31,12 +29,12 @@ SQUARE_CENTIMETER: Vierkante centimeter
 SQUARE_DECIMETER: Vierkante decimeter
 SQUARE_DEKAMETER: Vierkante dekameter
 SQUARE_FOOT: Vierkante voet
-SQUARE_FURLONG: Vierkante furlong
+SQUARE_FURLONG: Square furlong
 SQUARE_HECTOMETER: Vierkante hectometer
-SQUARE_INCH: Vierkante duim
+SQUARE_INCH: Vierkante inch
 SQUARE_KILOMETER: Vierkante kilometer
 SQUARE_METER: Vierkante meter
-SQUARE_MIL: Vierkante mijl
+SQUARE_MIL: Square mil
 SQUARE_MILE: Vierkante mijl
 SQUARE_MILLIMETER: Vierkante millimeter
 SQUARE_YARD: Vierkante yard
@@ -60,52 +58,52 @@ DECIMETER: Decimeter
 DEKAMETER: Dekameter
 FEET: Voet
 FURLONG: Furlong
-INCH: Duim
+INCH: Inch
 HECTOMETER: Hectometer
 KILOMETER: Kilometer
 METER: Meter
-MIL: Mijl
+MIL: Mil
 MILE: Mijl
 MILLIMETER: Millimeter
 YARD: Yard
 Power: Vermogen
-GIGAWATT: GigaWatt
+GIGAWATT: Gigawatt
 KILOWATT: Kilowatt
 MEGAWATT: Megawatt
 TERAWATT: Terawatt
 WATT: Watt
-Speed: Snelheid
-FOOT_PER_SECOND: Voet per seconde
-FOOT_PER_HOUR: Voet per uur
-KILOMETER_PER_HOUR: Kilometer per uur
-METER_PER_HOUR: Meter per uur
-METER_PER_MINUTE: Meter per minuut
-METER_PER_SECOND: Meter per seconde
-MILE_PER_HOUR: Mijl per uur
-YARD_PER_HOUR: Yard per uur
-Temperature: Temperatuur
+Speed: Speed
+FOOT_PER_SECOND: Foot per second
+FOOT_PER_HOUR: Foot per hour
+KILOMETER_PER_HOUR: Kilometer per hour
+METER_PER_HOUR: Meter per hour
+METER_PER_MINUTE: Meter per minute
+METER_PER_SECOND: Meter per second
+MILE_PER_HOUR: Mile per hour
+YARD_PER_HOUR: Yard per hour
+Temperature: Temperature
 CELSIUS: Celsius
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelvin
 RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
-BARREL: Vat
+BARREL: Barrel
 CENTILITER: Centiliter
-CUBIC_CENTIMETER: Kubieke centimeter
-CUBIC_DECIMETER: Kubieke decimeter
-CUBIC_FOOT: Kubieke voet
-CUBIC_INCH: Kubieke duim
-CUBIC_METER: Kubieke meter
-CUBIC_MILLIMETER: Kubieke millimeter
-CUBIC_YARD: Kubieke yard
+CUBIC_CENTIMETER: Cubic centimeter
+CUBIC_DECIMETER: Cubic decimeter
+CUBIC_FOOT: Cubic foot
+CUBIC_INCH: Cubic inch
+CUBIC_METER: Cubic meter
+CUBIC_MILLIMETER: Cubic millimeter
+CUBIC_YARD: Cubic yard
 DECILITER: Deciliter
 GALLON: Gallon
 LITER: Liter
 MILLILITER: Milliliter
 OUNCE: Ounce
 PINT: Pint
-Weight: Gewicht
+Weight: Weight
 DENIER: Denier
 GRAIN: Grain
 GRAM: Gram
@@ -114,5 +112,5 @@ LIVRE: Livre
 MARC: Marc
 MILLIGRAM: Milligram
 ONCE: Once
-POUND: Pond
+POUND: Pound
 TON: Ton

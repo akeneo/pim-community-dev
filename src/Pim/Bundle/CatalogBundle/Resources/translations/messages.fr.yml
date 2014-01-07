@@ -50,10 +50,10 @@ variant group:
   overview: Liste des groupes de variantes
   create: Créer un groupe de variantes
   edit: Modifier un groupe de variantes
-association:
-  overview: Liste des associations
-  create: Créer une association
-  edit: Modifier une association
+association type:
+  overview: "Liste des types d'association"
+  create: "Créer un type d'association"
+  edit: "Modifier le type d'association"
 group type:
   overview: Liste des types de groupe
   create: Créez le type de groupe
@@ -78,10 +78,12 @@ btn:
     product: Créer un produit
     group: Créer un groupe
     variant group: Créer un groupe de variantes
-    association: Créer une association
+    association type: "Créer un type d'association"
     group type: Créez un type de groupe
   edit: Modifier
   save: Enregistrer
+  save and back: Enregistrer et revenir à la grille
+  save and create: Enregistrer et créer un nouveau produit
   remove: Retirer
   delete: Supprimer
   cancel: Annuler
@@ -106,7 +108,7 @@ confirmation:
     channel: Êtes-vous sûr de vouloir supprimer le canal %name% ?
     group: Êtes-vous sûr de que vouloir supprimer le groupe %name% ?
     variant group: Êtes-vous sûr de vouloir supprimer le groupe de variantes %name%?
-    association: "Êtes-vous sûr de que vouloir supprimer l'association %name% ?"
+    association type: "Êtes-vous sûr de que vouloir supprimer le type d'association %name% ?"
     group type: Êtes-vous sûr de que vouloir supprimer le groupe %name%?
 flash:
   entity:
@@ -175,10 +177,10 @@ flash:
     removed: Le type de groupe a bien été supprimé
     cant remove variant: Le type variant ne peut pas être supprimé
     cant remove used: Ce type de groupe est utilisé par certains groupes et ne peut pas être supprimé
-  association:
-    created: Association créée avec succès
-    updated: Association mise à jour avec succès
-    removed: Association supprimée avec succès
+  association type:
+    created: "Le type d'association est créé avec succès"
+    updated: "Le type d'association est mis à jour avec succès"
+    removed: "Le type d'association est supprimé avec succès"
   error ocurred: Opération échouée. Merci de réessayer.
 info:
   updated: "Des modifications n'ont pas encore été sauvegardées."
@@ -201,10 +203,10 @@ info:
       Variation axis: %attributes%
     select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
     selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
-  association:
+  association type:
     show products: Afficher les produits
     show groups: Afficher les groupes
-    remove from products: "La suppression de l'association l'enlèvera de %count% produits."
+    remove from products: "La suppression du type d'association l'enlèvera de %count% produits."
 Options: Options
 Created at: Crée le
 Updated at: Mis à jour le
@@ -251,7 +253,7 @@ Create: Créer
 Cancel: Annuler
 Create a new product: Créer un nouveau produit
 Choose a family: Choisissez une famille
-Create a new association: Créer une nouvelle association
+Create a new association type: "Créer un nouveau type d'association"
 Create a new option: Créer une nouvelle option
 Global: Global
 Channel: Canal
@@ -318,12 +320,12 @@ Groups %group.label% | Edit: Groupes %group.label% | Edit
 Variant groups: Groupes de variantes
 Variant groups | Create: Groupes de variantes | Créer
 Variant groups %group.label% | Edit: Groupe de variantes %group.label% | Editer
-Associations: Associations
-Associations | Create: Associations | Créer
-Associations %association.label% | Edit: Associations %association.label% | Edit
+Association types: "Types d'associations"
+Association types | Create: "Types d'associations | Créer"
+Association types %association type.label% | Edit: "Types d'association %association type.label% | Modifier"
 Group types: Types de groupe
 Group types | Create: Types de groupe | Créer
-Group types %group type.label% | Edit: Type de groupes %group type.label% | Editer
+Group types %group type.label% | Edit: Type de groupes %grouptype.label% | Modifier
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte (TextArea)
@@ -362,6 +364,10 @@ pim_catalog.mass_edit_action:
     label: Changer la famille des produits
     description: La famille des produits sélectionnés sera remplacée par la famille choisie
     success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
+  add-to-groups:
+    label: Ajouter aux groupes
+    description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
+    success_flash: Les produits ont été ajoutés aux groupes sélectionnés
 pim_catalog.completeness:
   progress_bar.title: %ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)
   subtitle: "{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes"
@@ -375,5 +381,75 @@ pim_catalog.group:
     X_SELL: Vente croisée
     ADDITIONAL: Supplémentaire
     RELATED: Associé
+pim_catalog.product:
+  no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
+  no_compared_media: Aucun média disponible pour comparaison
+pim_catalog.channel.pick_conversion_unit: "Choisissez une unité de conversion pour chaque attribut métrique qui sera utilisé lors de l'exportation du produit"
 Group: Groupe
 View group: Afficher le groupe
+pim_catalog:
+  acl:
+    locale.index: Lister les locales
+    currency:
+      index: Liste des devises
+      toggle: Activer/désactiver devises
+    product:
+      index: Lister les produits
+      create: Créer un produit
+      edit: Modifier un produit
+      remove: Supprimer un produit
+      add_attribute: Ajouter un attribut à un produit
+      remove_attribute: "Supprimer un attribut d'un produit"
+      categories_view: "Consulter les catégories d'un produit"
+      associations_view: "Afficher les types d'association d'un produit"
+      change_family: Changer la famille du produit
+      change_state: "Changer l'état du produit"
+      add_to_groups: Ajouter le produit à des groupes
+      mass_edit: Actions de modification des produits en masse
+    category:
+      list: Lister les catégories
+      create: Créer une catégorie
+      edit: Modifier une catégorie
+      remove: Supprimer une catégorie
+      move: Déplacer la catégorie
+      children: Voir les catégories enfants
+      products: Voir les produits de la catégorie
+    channel:
+      index: Lister les canaux
+      create: Créer un canal
+      edit: Modifier un canal
+      remove: Supprimer un canal
+    family:
+      create: Créer une famille
+      edit: Modifier une famille
+      remove: Supprimer une famille
+      add_attribute: "Ajoutez l'attribut à une famille"
+      remove_attribute: "Retirer l'attribut de la famille"
+    attribute_group:
+      create: "Créer un groupe d'attributs"
+      edit: "Modifier un groupe d'attributs"
+      remove: "Supprimer un groupe d'attributs"
+      sort: "Trier les groupes d'attributs"
+      add_attribute: "Ajoutez l'attribut à un groupe"
+      remove_attribute: "Supprimez l'attribut d'un groupe"
+    product_attribute:
+      index: Lister les attributs du produit
+      create: Créer un attribut de produit
+      edit: "Modifier l'attribut de produit"
+      remove: "Supprimez l'attribut de produit"
+      sort: "Trier les attributs du produit à l'intérieur de groupes d'attributs"
+    group:
+      index: Lister les groupes
+      create: Créer un groupe
+      edit: Modifier un groupe
+      remove: Supprimer un groupe
+    group_type:
+      index: Lister les types de groupe
+      create: Créer un type de groupe
+      edit: Modifier un type de groupe
+      remove: Supprimer un type de groupe
+    association_type:
+      index: "Lister les types d'association"
+      create: "Créer un type d'association"
+      edit: "Modifier un type d'association"
+      remove: "Supprimer un type d'association"
