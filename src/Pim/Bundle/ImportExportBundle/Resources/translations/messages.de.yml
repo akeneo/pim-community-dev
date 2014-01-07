@@ -1,61 +1,74 @@
 ---
-pim_import_export.status:
-  - Bereit
 pim_import_export:
+  status:
+    - Bereit
   jobs:
-    product_export:
+    csv_product_export:
       title: Produkt-Export als CSV-Datei
-      export.title: Konfiguration
-    category_export:
+      export.title: Produkt export
+    csv_category_export:
       title: Kategorie-Export als CSV-Datei
-      export.title: Konfiguration
-    attribute_export:
+      export.title: Kategorie export
+    csv_attribute_export:
       title: Attribut-Export als CSV-Datei
-      export.title: Konfiguration
-    attribute_option_export:
-      title: Attribute option export in CSV
-      export.title: Konfiguration
-    association_export:
-      title: Association export in CSV
-      export.title: Konfiguration
-    group_export:
-      title: Group export in CSV
-      export.title: Konfiguration
-    product_import:
-      title: Produkt-Import aus CSV-Datei
-      import.title: Konfiguration
-      import_associations.title: Configuration import association
-    category_import:
+      export.title: Attribut export
+    csv_attribute_option_export:
+      title: Attribut-Option in CSV-Datei exportieren
+      export.title: Attribut-Option export
+    csv_association_type_export:
+      title: Verbindungstyp-Export als CSV-Datei
+      export.title: Verbindungstyp-Export
+    csv_group_export:
+      title: Gruppen-Export in CSV-Datei
+      export.title: Gruppen-Export
+    csv_product_import:
+      title: Produkt-Export als CSV-Datei
+      import.title: Produkt import
+      import_associations.title: Produktverbindungen-Import
+    csv_category_import:
       title: Kategorie-Import aus CSV-Datei
-      import.title: Konfiguration
-    attribute_import:
+      import.title: Kategorie-Import
+    csv_attribute_import:
       title: Attribut-Import aus CSV-Datei
-      import.title: Konfiguration
-    attribute_option_import:
-      title: Attribute option import in CSV
-      import.title: Konfiguration
-    association_import:
-      title: Association import in CSV
-      import.title: Konfiguration
-    group_import:
-      title: Group import in CSV
-      import.title: Konfiguration
-oro_batch:
-  dummy_reader.title: Dummy reader
-  dummy_processor.title: Dummy processor
-  dummy_writer.title: Dummy writer
-  product_reader:
-    title: Gültigkeitsbereich
-    channel:
-      label: Ausgabekanal
-      help: Der Ausgabekanal, den Sie exportieren möchten
-  entity_reader:
-    title: Entity extraction
-  csv_reader:
-    title: CSV-Reader
+      import.title: Attribut-Import
+    csv_attribute_option_import:
+      title: Attribut-Optionen aus CSV-Datei importieren
+      import.title: Attribut-Option import
+    csv_association_type_import:
+      title: Verbindungstyp-Import als CSV-Datei
+      import.title: Verbindungstyp-Import
+    csv_group_import:
+      title: Gruppen-Import aus CSV-Datei
+      import.title: Gruppen-Import
+  steps:
+    dummy_reader.title: Dummy reader
+    dummy_processor.title: Dummy Processor
+    dummy_writer.title: Dummy Writer
+    product_reader.title: Produkt Auszug
+    entity_reader.title: Entitäten Auszug
+    csv_reader.title: CSV-Reader
+    csv_product_reader.title: CSV Produkt Reader
+    csv_category_reader.title: CSV Kategorie Reader
+    product_processor.title: Produktanlage
+    category_processor.title: Kategorieanlage
+    association_processor.title: Zuweisungserstellung
+    group_processor.title: Gruppenerstellung
+    attribute_processor.title: Attributerstellung
+    attribute_option_processor.title: Attribut-Optionserstellung
+    product_association_processor.title: Produkt-Zuweisungserstellung
+    heterogeneous_processor.title: CSV Produkt Serialisierer
+    homogeneous_processor.title: CSV Entitäten Serialisierer
+    file_writer.title: Ausgabe
+    product_writer.title: Produkt-Speicher
+    category_writer.title: Kategorie-Speicher
+    writer.title: Entitäten-Speicher
+  import:
     filePath:
       label: Datei
       help: Die zu importierende CSV-Datei
+    uploadAllowed:
+      label: Datei-Upload erlauben
+      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
     delimiter:
       label: Trennzeichen
       help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
@@ -65,133 +78,91 @@ oro_batch:
     escape:
       label: Escape
       help: Zeichen mit dem das Feld escaped wird
-    uploadAllowed:
-      label: Datei-Upload erlauben
-      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  csv_product_reader:
-    title: CSV-Reader
-    filePath:
-      label: Datei
-      help: Die zu importierende CSV-Datei
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    escape:
-      label: Escape
-      help: Zeichen mit dem das Feld escaped wird
-    uploadAllowed:
-      label: Datei-Upload erlauben
-      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  csv_category_reader:
-    title: CSV-Datei Reader
-    filePath:
-      label: Datei
-      help: Die zu importierende CSV-Datei
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    escape:
-      label: Escape
-      help: Zeichen mit dem das Feld escaped wird
-    uploadAllowed:
-      label: Datei-Upload erlauben
-      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  product_processor:
-    title: Produktanlage
     enabled:
-      label: Produkt aktivieren?
+      label: Produkt aktivieren
       help: Auswahl, ob importierte Produkte aktiviert werden sollen oder nicht
     categoriesColumn:
       label: Kategorie-Spalte
       help: Name der Kategorie-Spalte
-    groupsColumn:
-      label: Groups column
-      help: Name of the groups column
     familyColumn:
       label: Produktfamilien-Spalte
       help: Name der Produktfamilien-Spalte
-    categoriesDelimiter:
-      label: Kategorien-Trennzeichen
-      help: Zeichen zum Trennen der Kategorie-Codes
-    channel:
-      label: Ausgabekanal
-      help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
-    delimiter:
-      label: Delimiter
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    withHeader:
-      label: Mit Kopfzeile
-      help: Whether or not to print the column name
-  category_processor:
-    title: Kategorieanlage
-    labelDelimiter:
-      label: Feldbezeichner-Trennzeichen
-      help: Einzelnes Zeichen, mit dem die Feldbezeichner der einzelnen Gebietsschemata getrennt werden sollen
-    localeDelimiter:
-      label: Gebietsschema-Trennzeichen
-      help: Ein einzelnes Zeichen um den Titel vom Gebietsschema zu trennen
+    groupsColumn:
+      label: Gruppen-Spalte
+      help: Name der Gruppen-Spalte
+    realTimeVersioning:
+      label: Echtzeit Änderungsverfolgung
+      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern kann diese Funktion ausgeschaltet werden.
     circularRefsChecked:
       label: Prüfen Sie auf Zirkelbezüge
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
-  association_processor:
-    title: Association creation
-  group_processor:
-    title: Group creation
-  attribute_processor:
-    title: Create / update attributes
-  attribute_option_processor:
-    title: Create / update attributes
-  association_processor:
-    title: Association creation
-  csv_serializer:
-    help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
-  heterogeneous_processor:
-    title: Einstellungen
+  export:
     delimiter:
       label: Trennzeichen
       help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
     enclosure:
       label: Eingeschlossen von
       help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    withHeader:
-      label: Mit Kopfzeile
-      help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
-  homogeneous_processor:
-    title: Einstellungen
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    withHeader:
-      label: Mit Kopfzeile
-  file_writer:
-    title: Ausgabe
+    channel:
+      label: Ausgabekanal
+      help: Der Ausgabekanal, den Sie exportieren möchten
     filePath:
       label: Datei
       help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
-  product_writer:
-    title: Produkt-Speicher
-    filePath:
-      label: Datei
-      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
-  category_writer:
-    title: Kategorie-Speicher
-  writer:
-    title: Entity storage
+    withHeader:
+      label: Mit Kopfzeile
+      help: Soll die Spaltenüberschrift ausgegeben werden
+oro_batch:
+  dummy_reader.title: Dummy reader
+  dummy_processor.title: Dummy Processor
+  dummy_writer.title: Dummy Writer
+  product_reader.title: Produkt Auszug
+  entity_reader.title: Entitäten Auszug
+  csv_reader.title: CSV-Reader
+  csv_product_reader.title: CSV Produkt Reader
+  csv_category_reader.title: CSV Category Reader
+  product_processor.title: Produktanlage
+  category_processor.title: Kategorieanlage
+  association_processor.title: Zuweisungserstellung
+  group_processor.title: Gruppenerstellung
+  attribute_processor.title: Attributerstellung
+  attribute_option_processor.title: Attribut-Optionserstellung
+  product_association_processor.title: Produkt-Zuweisungserstellung
+  heterogeneous_processor.title: Produkt CSV serialisierung
+  homogeneous_processor.title: CSV Entitäten serialisierung
+  file_writer.title: Ausgabe
+  product_writer.title: Produkt-Speicherung
+  category_writer.title: Kategorie-Speicher
+  writer.title: Entitäten-Speicher
 Import management: Import-Verwaltung
 Import %job.name% | Edit: Import %job.name% | Bearbeiten
 Import %job.name% | Show: Import %job.name% | Anzeigen
 Export management: Export-Verwaltung
 Export %job.name% | Edit: Export %job.name% | Bearbeiten
 Export %job.name% | Show: Export %job.name% | Anzeigen
+pim_importexport:
+  acl:
+    export_profile:
+      index: Auflistung der Exportprofile
+      create: Ein Exportprofil anlegen
+      show: Ein Exportprofil anzeigen
+      edit: Ein Exportprofil bearbeiten
+      remove: Ein Exportprofil löschen
+      launch: Ein Exportprofil ausführen
+    import_profile:
+      index: Auflistung der Importprofile
+      create: Ein Importprofil anlegen
+      show: Ein Importprofil anzeigen
+      edit: Ein Importprofil bearbeiten
+      remove: Ein Importprofil löschen
+      launch: Ein Importprofil ausführen
+    export_execution:
+      index: Auflistung der Exportprofile
+      show: Export-Reportdetails anzeigen
+      dl_log: Export-Report Logdatei herunterladen
+      dl_files: Exportierte Dateien herunterladen
+    import_execution:
+      index: Auflistung der Import-Reports
+      show: Import-Reportdetails anzeigen
+      dl_log: Import-Report Logdatei herunterladen
+      dl_files: Importierte Dateien herunterladen

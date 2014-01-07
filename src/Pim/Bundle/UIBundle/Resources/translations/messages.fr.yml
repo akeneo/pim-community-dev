@@ -19,8 +19,6 @@ Channel list: Liste des canaux
 Select file: Sélectionner un fichier
 Change file: Changer le fichier
 Remove file: Supprimer le fichier
-
-#Metrics
 Area: Surface
 ACRE: Acre
 ARE: Are
@@ -39,11 +37,11 @@ SQUARE_METER: Mètre carré
 SQUARE_MIL: Mil carré
 SQUARE_MILE: Mile carré
 SQUARE_MILLIMETER: Millimètre carré
-SQUARE_YARD: Yard carrée
+SQUARE_YARD: Yard carré
 Binary: Binaire
 BIT: Bit
 BYTE: Octet
-KILOBYTE: Kilo-octet
+KILOBYTE: Kilooctet
 MEGABYTE: Mégaoctet
 GIGABYTE: Gigaoctet
 TERABYTE: Téraoctet
@@ -53,12 +51,12 @@ KILOHERTZ: Kilohertz
 MEGAHERTZ: Mégahertz
 TERAHERTZ: Térahertz
 HERTZ: Hertz
-Length: Distance
+Length: Longueur
 CENTIMETER: Centimètre
 CHAIN: Chaîne
 DECIMETER: Décimètre
 DEKAMETER: Décamètre
-FEET: Pieds
+FEET: Pied
 FURLONG: Furlong
 INCH: Pouce
 HECTOMETER: Hectomètre
@@ -76,9 +74,9 @@ TERAWATT: Térawatt
 WATT: Watt
 Speed: Vitesse
 FOOT_PER_SECOND: Pied par seconde
-FOOT_PER_HOUR: Pied / heure
+FOOT_PER_HOUR: Pied par heure
 KILOMETER_PER_HOUR: Kilomètre par heure
-METER_PER_HOUR: Mètre / heure
+METER_PER_HOUR: Mètre par heure
 METER_PER_MINUTE: Mètre par minute
 METER_PER_SECOND: Mètre par seconde
 MILE_PER_HOUR: Mile par heure

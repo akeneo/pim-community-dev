@@ -3,6 +3,16 @@ pim_import_export:
     status:
         0: Ready
 
+    batch_status:
+        1: COMPLETED
+        2: STARTING
+        3: STARTED
+        4: STOPPING
+        5: STOPPED
+        6: FAILED
+        7: ABANDONED
+        8: UNKNOWN
+
     ## Job titles
     jobs:
         csv_product_export:
