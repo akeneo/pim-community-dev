@@ -4,7 +4,13 @@ datagrid:
             type: orm
             query:
                 select:
-                    - j
+                    - j.id
+                    - j.code
+                    - j.label
+                    - j.alias as jobAlias
+                    - j.status
+                    - j.connector
+                    - CONCAT('pim_import_export.status.', j.status) as jobStatus
                 from:
                     - { table: OroBatchBundle:JobInstance, alias: j }
         columns:
@@ -14,11 +20,13 @@ datagrid:
                 label: Label
             alias:
                 label:     Job
-                data_name: j.alias
+                data_name: jobAlias
             connector:
                 label: Connector
             status:
                 label: Status
+                type: translateable
+                data_name: jobStatus
         properties:
             id: ~
             edit_link:
@@ -57,11 +65,11 @@ datagrid:
                 label:
                     data_name: j.label
                 alias:
-                    data_name: j.alias
+                    data_name: jobAlias
                 connector:
                     data_name: j.connector
                 status:
-                    data_name: j.status
+                    data_name: jobStatus
             default:
                 code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
@@ -74,13 +82,18 @@ datagrid:
                     data_name: j.label
                 alias:
                     type:      string
-                    data_name: j.alias
+                    data_name: jobAlias
                 connector:
                     type:      string
                     data_name: j.connector
                 status:
-                    type:      string
+                    type:      choice
                     data_name: j.status
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:
+                                0: pim_import_export.status.0
 
     export-profile-grid:
         extend: job-profile-grid
