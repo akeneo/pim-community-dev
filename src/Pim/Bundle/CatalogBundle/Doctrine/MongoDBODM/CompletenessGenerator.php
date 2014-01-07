@@ -48,7 +48,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generate(array $criteria, $limit = null)
     {
-
-        throw new \RuntimeException("MongoDB completeness generator not implemented yet");
+        return;
     }
 }

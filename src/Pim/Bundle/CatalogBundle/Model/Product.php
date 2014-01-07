@@ -37,6 +37,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     protected $family;
 
     /**
+     * @var int
+     */
+    protected $familyId;
+
+    /**
      * @var ArrayCollection $categories
      */
     protected $categories;
@@ -93,9 +98,35 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function setFamily($family)
     {
+        $this->familyId = $family->getId();
         $this->family = $family;
 
         return $this;
+    }
+
+    /**
+     * Set family id
+     *
+     * @param int $familyId
+     *
+     * @return Product
+     */
+    public function setFamilyId($familyId)
+    {
+        $this->familyId = $familyId;
+
+        return $this;
+    }
+
+    /**
+     * Get family id
+     *
+     * @return int
+     */
+    public function getFamilyId()
+    {
+        return $this->familyId;
+
     }
 
     /**
