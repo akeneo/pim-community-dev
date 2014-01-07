@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -31,11 +30,6 @@ use Gaufrette\StreamMode;
  */
 class JobExecutionController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    private $datagridHelper;
-
     /**
      * @var BatchLogHandler
      */
@@ -61,7 +55,6 @@ class JobExecutionController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
@@ -75,7 +68,6 @@ class JobExecutionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
         $jobType
@@ -91,7 +83,6 @@ class JobExecutionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper  = $datagridHelper;
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist       = $archivist;
         $this->jobType         = $jobType;
@@ -103,10 +94,9 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $gridManager =
-            $this->datagridHelper->getDatagridManager($this->getJobType().'_execution', 'pim_import_export');
-
-        return $this->renderDatagrid($gridManager);
+        return $this->render(
+            sprintf('PimImportExportBundle:%sExecution:index.html.twig', ucfirst($this->getJobType()))
+        );
     }
 
     /**
@@ -173,26 +163,6 @@ class JobExecutionController extends AbstractDoctrineController
             array('Content-Type' => 'application/octet-stream')
         );
 
-    }
-
-    /**
-     * Render the report datagrid from a datagrid manager
-     *
-     * @param \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager $gridManager
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderDatagrid($gridManager)
-    {
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()).'Execution');
-        }
-
-        return $this->render($view, array('datagrid' => $datagridView));
     }
 
     /**
