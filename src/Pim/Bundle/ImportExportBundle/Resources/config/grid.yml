@@ -1,37 +1,9 @@
 parameters:
-    pim_import_export.entity.job_instance.class:            Oro\Bundle\BatchBundle\Entity\JobInstance
     pim_import_export.entity.job_execution.class:           Oro\Bundle\BatchBundle\Entity\JobExecution
 
-    pim_import_export.datagrid.manager.job_profile.class:   Pim\Bundle\ImportExportBundle\Datagrid\JobProfileDatagridManager
     pim_import_export.datagrid.manager.job_execution.class: Pim\Bundle\ImportExportBundle\Datagrid\JobExecutionDatagridManager
 
 services:
-    pim_import_export.datagrid.manager.export_profile:
-        class: %pim_import_export.datagrid.manager.job_profile.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: exports
-              entity_name: %pim_import_export.entity.job_instance.class%
-              query_entity_alias: job
-              entity_hint: jobs
-              route_name: pim_importexport_export_profile_index
-        calls:
-            - [ setJobType, [export] ]
-            - [ setConnectorRegistry, [@oro_batch.connectors] ]
-
-    pim_import_export.datagrid.manager.import_profile:
-        class: %pim_import_export.datagrid.manager.job_profile.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: imports
-              entity_name: %pim_import_export.entity.job_instance.class%
-              query_entity_alias: job
-              entity_hint: jobs
-              route_name: pim_importexport_import_profile_index
-        calls:
-            - [ setJobType, [import] ]
-            - [ setConnectorRegistry, [@oro_batch.connectors] ]
-
     pim_import_export.datagrid.manager.export_execution:
         class: %pim_import_export.datagrid.manager.job_execution.class%
         tags:
