@@ -1,194 +1,117 @@
 ---
-pim_import_export.status:
-  - Disponible
 pim_import_export:
+  status:
+    - Prêt
   jobs:
     product_export:
       title: Export produits (CSV)
-      export.title: Configuration
+      export.title: Export de produits
     category_export:
       title: Export catégories (CSV)
-      export.title: Configuration
+      export.title: Export de catégories
     attribute_export:
       title: Export attributs (CSV)
-      export.title: Configuration
+      export.title: "Export d'attributs"
     attribute_option_export:
       title: "Export des options d'attributs en CSV"
-      export.title: Configuration
+      export.title: "Export d'options d'attributs"
     association_export:
       title: Export des associations en CSV
-      export.title: Configuration
+      export.title: "Export d'associations"
     group_export:
       title: Export des groupes en CSV
-      export.title: Configuration
+      export.title: Export de groupes
     product_import:
       title: Import produits (CSV)
-      import.title: Configuration
-      import_associations.title: "Configuration de l'import d'associations"
+      import.title: Import de produits
+      import_associations.title: "Import d'associations de produits"
     category_import:
       title: Import catégories (CSV)
-      import.title: Configuration
+      import.title: Import de catégories
     attribute_import:
       title: Import attributs (CSV)
-      import.title: Configuration
+      import.title: "Import d'attributs"
     attribute_option_import:
       title: "Import CSV des options d'attributs"
-      import.title: Configuration
+      import.title: "Import d'options d'attributs"
     association_import:
       title: Import CSV des associations
-      import.title: Configuration
+      import.title: "Import d'associations"
     group_import:
       title: Import CSV des groupes
-      import.title: Configuration
-oro_batch:
-  dummy_reader.title: Lecteur factice
-  dummy_processor.title: Processeur factice
-  dummy_writer.title: Écrivain factice
-  product_reader:
-    title: Portée
-    channel:
-      label: Canal
-      help: Le canal que vous souhaitez exporter
-  entity_reader:
-    title: "Extraction d'entité"
-  csv_reader:
-    title: Reader CSV
+      import.title: Import de groupes
+  import:
     filePath:
       label: Fichier
       help: Fichier CSV à importer
+    uploadAllowed:
+      label: "Autoriser l'envoi de fichier sur le serveur"
+      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
       help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement (enclosure)"
+      label: "Caractère d'encadrement"
       help: Délimiteur de champs
     escape:
       label: Echapper
       help: Le caractère utilisé pour échapper les champs
-    uploadAllowed:
-      label: "Autoriser l'envoi de fichier sur le serveur"
-      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
-  csv_product_reader:
-    title: Lecteur CSV
-    filePath:
-      label: Fichier
-      help: Fichier CSV à importer
-    delimiter:
-      label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
-    enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Caractère utilisé pour délimiter les champs
-    escape:
-      label: Echapper
-      help: Le caractère utilisé pour échapper les champs
-    uploadAllowed:
-      label: "Autoriser l'envoi de fichier sur le serveur"
-      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
-  csv_category_reader:
-    title: Lecteur de fichier CSV
-    filePath:
-      label: Fichier
-      help: Fichier CSV à importer
-    delimiter:
-      label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
-    enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Caractère utilisé pour délimiter les champs
-    escape:
-      label: Echapper
-      help: Le caractère utilisé pour échapper les champs
-    uploadAllowed:
-      label: "Autoriser l'envoi de fichier sur le serveur"
-      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
-  product_processor:
-    title: Transformer un produit
     enabled:
       label: Activer le produit?
       help: Activer automatiquement les produits importés
     categoriesColumn:
       label: Colonne catégories
       help: Nom de la colonne catégories
-    groupsColumn:
-      label: Colonne de groupes
-      help: Nom de la colonne de groupes
     familyColumn:
       label: Colonne Famille
       help: Nom de la colonne famille
-    categoriesDelimiter:
-      label: Délimiteur de catégories
-      help: Caractère utilisé pour séparer les codes de catégories
-    channel:
-      label: Canal
-      help: Canal auxquelles seront affectées les valeurs importées
-    delimiter:
-      label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
-    enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Caractère utilisé pour délimiter les champs
-    withHeader:
-      label: Avec en-tête
-      help: Définit si la première ligne du fichier contient les libellés des colonnes
-  category_processor:
-    title: Création de catégorie
-    labelDelimiter:
-      label: "Séparateur d'en-tête"
-      help: Caractère séparant les libellés de chaque locale
-    localeDelimiter:
-      label: Délimiteur de locales
-      help: Caractère séparant le titre de la locale
+    groupsColumn:
+      label: Colonne de groupes
+      help: Nom de la colonne de groupes
+    realTimeVersioning:
+      label: Versionner en temps réel?
+      help: "L'historique du produit est-il directement mis à jour?"
     circularRefsChecked:
       label: Vérifiez les références circulaires
       help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
-  association_processor:
-    title: "Création d'association"
-  group_processor:
-    title: Création de groupe
-  attribute_processor:
-    title: Créer / mettre à jour les attributs
-  attribute_option_processor:
-    title: Créer / mettre à jour les attributs
-  association_processor:
-    title: "Création de l'association de produit"
-  csv_serializer:
-    help: Définit si la première ligne du fichier contient les libellés des colonnes
-  heterogeneous_processor:
-    title: Paramètres
+  export:
     delimiter:
       label: Délimiteur
       help: Caractère utilisé pour délimiter les valeurs
     enclosure:
       label: "Caractère d'encadrement (enclosure)"
-      help: Caractère utilisé pour délimiter les champs
+      help: Délimiteur de champs
+    channel:
+      label: Canal
+      help: Le canal que vous souhaitez exporter
+    filePath:
+      label: Chemin du fichier
+      help: Emplacement du fichier généré sur le serveur
     withHeader:
       label: Avec en-tête
       help: Définit si la première ligne du fichier contient les libellés des colonnes
-  homogeneous_processor:
-    title: Paramètres
-    delimiter:
-      label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
-    enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Caractère utilisé pour délimiter les champs
-    withHeader:
-      label: Avec en-tête
-  file_writer:
-    title: Sortie
-    filePath:
-      label: Chemin du fichier
-      help: Emplacement du fichier généré sur le serveur
-  product_writer:
-    title: Sauvegarde des produits
-    filePath:
-      label: Chemin du fichier
-      help: Emplacement du fichier généré sur le serveur
-  category_writer:
-    title: Sauvegarde des catégories
-  writer:
-    title: Sauvegarde des entités
+oro_batch:
+  dummy_reader.title: Lecteur factice
+  dummy_processor.title: Processeur factice
+  dummy_writer.title: Écrivain factice
+  product_reader.title: Extraction de produits
+  entity_reader.title: "Extraction d'entités"
+  csv_reader.title: Lecteur de CSV
+  csv_product_reader.title: Lecteur de CSV de produits
+  csv_category_reader.title: Lecteur de CSV de catégories
+  product_processor.title: Création de produit
+  category_processor.title: Création de catégorie
+  association_processor.title: "Création d'association"
+  group_processor.title: Création de groupe
+  attribute_processor.title: "Création d'attribut"
+  attribute_option_processor.title: "Création d'option d'attribut"
+  product_association_processor.title: "Création d'association de produits"
+  heterogeneous_processor.title: Sérialiseur de produit en CSV
+  homogeneous_processor.title: "Sérialiseur d'entité en CSV"
+  file_writer.title: Sortie
+  product_writer.title: Stockage des produits
+  category_writer.title: Stockage des catégories
+  writer.title: Stockage des entités
 Import management: Gestion des imports
 Import %job.name% | Edit: Importer %job.name% | Modifier
 Import %job.name% | Show: Importer %job.name% | Afficher
