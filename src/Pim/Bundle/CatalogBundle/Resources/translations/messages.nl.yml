@@ -323,7 +323,7 @@ Associations | Create: Koppelingen|Aanmaken
 Associations %association.label% | Edit: Koppelingen %association.label%|Bewerken
 Group types: Groepstypen
 Group types | Create: Groepstypen | aanmaken
-Group types %group type.label% | Edit: Groepstypen %group type.label% | Bewerken
+Group types %grouptype.label% | Edit: Groepstypen %grouptype.label% | Bewerken
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstblok

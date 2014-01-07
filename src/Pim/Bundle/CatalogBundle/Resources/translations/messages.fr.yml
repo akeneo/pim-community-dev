@@ -323,7 +323,7 @@ Associations | Create: Associations | Créer
 Associations %association.label% | Edit: Associations %association.label% | Edit
 Group types: Types de groupe
 Group types | Create: Types de groupe | Créer
-Group types %group type.label% | Edit: Type de groupes %group type.label% | Editer
+Group types %grouptype.label% | Edit: Type de groupes %grouptype.label% | Editer
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte (TextArea)
