@@ -358,7 +358,7 @@ class ProductManager extends FlexibleManager
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssocTypes = $this->objectManager
+        $missingAssocTypes = $this->entityManager
             ->getRepository('PimCatalogBundle:AssociationType')
             ->findMissingAssociationTypes($product);
 
