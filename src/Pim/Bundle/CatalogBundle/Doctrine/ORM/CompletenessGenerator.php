@@ -75,7 +75,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $sql .= ' LIMIT ' . $limit;
         }
 
-        return strtr($sql, $this->getReplacements()) . ';';
+        $sql = strtr($sql, $this->getQueryPartReplacements());
+
+        return strtr($sql, $this->getTableReplacements()) .';';
     }
 
     /**
@@ -178,11 +180,25 @@ SQL;
     }
 
     /**
-     * Returns an array of replacements for the query
+     * Returns an array of replacements for some part of the query
+     * Essentially joins
      *
      * @return array
      */
-    protected function getReplacements()
+    protected function getQueryPartReplacements()
+    {
+        return array(
+            '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
+            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
+        );
+    }
+
+    /**
+     * Returns an array of replacements for query tables
+     *
+     * @return array
+     */
+    protected function getTableReplacements()
     {
         return array_map(
             function ($className) {
@@ -192,9 +208,6 @@ SQL;
                 '%product_interface%'       => $this->productClass,
                 '%product_value_interface%' => $this->productValueClass
             )
-        ) + array(
-            '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
-            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
         );
     }
 
@@ -306,7 +319,7 @@ SQL;
     {
         $index = 0;
 
-        $tmpArray = array_reduce(
+        return array_reduce(
             $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
             function ($joins, $mapping) use (&$index) {
                 $index++;
@@ -315,8 +328,6 @@ SQL;
             },
             array()
         );
-
-        return $tmpArray;
     }
 
     /**
@@ -401,7 +412,7 @@ SQL;
                 JOIN pim_catalog_locale l ON l.id = cl.locale_id
                 JOIN pim_catalog_channel_currency ccur ON ccur.channel_id = c.id
                 JOIN pim_catalog_currency cur ON cur.id = ccur.currency_id
-                JOIN pim_catalog_product_value v ON
+                JOIN %product_value_interface% v ON
                     (v.scope_code = c.code OR v.scope_code IS NULL)
                     AND (v.locale_code = l.code OR v.locale_code IS NULL)
                 JOIN pim_catalog_attribute att ON v.attribute_id = att.id AND att.backend_type = "prices"
@@ -412,7 +423,9 @@ SQL;
             AS %prefix% ON %prefix%.VID = v.id AND %prefix%.CID = c.id AND %prefix%.LID = l.id
 SQL;
 
-        return array(str_replace('%prefix%', $prefix, $sql));
+        $sql = str_replace('%prefix%', $prefix, $sql);
+
+        return array($sql);
     }
 
     /**
