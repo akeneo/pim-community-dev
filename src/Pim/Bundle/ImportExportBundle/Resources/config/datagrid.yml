@@ -230,8 +230,11 @@ datagrid:
                     type:      string
                     data_name: jobLabel
                 alias:
-                    type:      string
-                    data_name: jobAlias
+                    type:      choice
+                    data_name: j.alias
+                    options:
+                        field_options:
+                            multiple: true
                 date:
                     type:             datetime
                     data_name:        date
@@ -258,6 +261,12 @@ datagrid:
         properties:
             show_link:
                 route: pim_importexport_export_execution_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
 
     import-execution-grid:
         extend: job-execution-grid
@@ -272,3 +281,9 @@ datagrid:
         properties:
             show_link:
                 route: pim_importexport_import_execution_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices
