@@ -11,21 +11,19 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\FormError;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Symfony\Component\Form\FormError;
-
 /**
  * Mass edit operation controller
  *
@@ -38,8 +36,8 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditActionOperator */
     protected $massEditActionOperator;
 
-    /** @var DatagridHelperInterface */
-    protected $datagridHelper;
+    /** @var Manager */
+    protected $manager;
 
     /** @var MassActionParametersParser */
     protected $parametersParser;
@@ -62,7 +60,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param TranslatorInterface        $translator
      * @param RegistryInterface          $doctrine
      * @param MassEditActionOperator     $massEditActionOperator
-     * @param DatagridHelperInterface    $datagridHelper
+     * @param Manager                    $manager
      * @param MassActionParametersParser $parametersParser
      * @param ProductManager             $productManager
      */
@@ -76,7 +74,7 @@ class MassEditActionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         MassEditActionOperator $massEditActionOperator,
-        DatagridHelperInterface $datagridHelper,
+        Manager $manager,
         MassActionParametersParser $parametersParser,
         ProductManager $productManager
     ) {
@@ -93,7 +91,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $this->validator              = $validator;
         $this->massEditActionOperator = $massEditActionOperator;
-        $this->datagridHelper         = $datagridHelper;
+        $this->manager                = $manager;
         $this->parametersParser       = $parametersParser;
         $this->productManager         = $productManager;
     }
@@ -293,22 +291,23 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getProductIds(Request $request)
     {
-        $inset = $request->query->get('inset');
-        if ($inset === '0') {
-            /** @var $gridManager ProductDatagridManager */
-            $gridManager = $this->datagridHelper->getDatagridManager('product');
-            $parameters = $this->parametersParser->parse($request);
-            $filters = $parameters['filters'];
-            $pager = array('_page' => 1, '_per_page' => 100000);
-            $datagrid = $gridManager->getDatagrid();
-            $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
-            $datagrid->getParameters()->set(ParametersInterface::PAGER_PARAMETERS, $pager);
-            $ids = $datagrid->getAllIds();
+        $parameters = $this->parametersParser->parse($request);
 
-            return $ids;
+        if ($parameters['inset'] === false) {
+            $datagrid = $this->manager->getDatagrid('product-grid');
+            $data     = $datagrid->getData()->offsetGet('data');
 
-        } elseif ($values = $request->query->get('values')) {
-            return explode(',', $values);
+            $ids = array_map(
+                function ($result) {
+                    return $result['id'];
+                },
+                $data
+            );
+
+            return array_unique(array_diff($ids, $parameters['values']));
+
+        } elseif (!empty($parameters['values'])) {
+            return $parameters['values'];
 
         } else {
             return $request->query->get('products');

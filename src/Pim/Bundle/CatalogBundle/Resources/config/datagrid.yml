@@ -318,6 +318,11 @@ datagrid:
                     empty_selection: No products selected
                 launcherOptions:
                     iconClassName: icon-trash
+            mass_edit:
+                type: redirect
+                label: Mass Edit
+                route: pim_catalog_mass_edit_action_choose
+                icon: edit
         sorters:
             columns:
                 family:

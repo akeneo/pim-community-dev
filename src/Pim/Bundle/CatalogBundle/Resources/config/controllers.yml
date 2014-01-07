@@ -119,6 +119,7 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.mass_edit_action.operator'
+            - '@oro_datagrid.datagrid.manager'
             - '@oro_grid.mass_action.parameters_parser'
             - '@pim_catalog.manager.product'
 
