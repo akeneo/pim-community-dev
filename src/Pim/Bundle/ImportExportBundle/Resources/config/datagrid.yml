@@ -81,11 +81,17 @@ datagrid:
                     type:      string
                     data_name: j.label
                 alias:
-                    type:      string
-                    data_name: jobAlias
+                    type:      choice
+                    data_name: j.alias
+                    options:
+                        field_options:
+                            multiple: true
                 connector:
-                    type:      string
+                    type:      choice
                     data_name: j.connector
+                    options:
+                        field_options:
+                            multiple: true
                 status:
                     type:      choice
                     data_name: j.status
@@ -112,6 +118,16 @@ datagrid:
                 route: pim_importexport_export_profile_remove
             launch_link:
                 route: pim_importexport_export_profile_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
+                connector:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportConnectorChoices
 
     import-profile-grid:
         extend: job-profile-grid
@@ -130,6 +146,16 @@ datagrid:
                 route: pim_importexport_import_profile_remove
             launch_link:
                 route: pim_importexport_import_profile_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices
+                connector:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportConnectorChoices
 
     job-execution-grid:
         source:

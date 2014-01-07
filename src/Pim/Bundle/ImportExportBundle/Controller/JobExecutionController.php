@@ -111,7 +111,7 @@ class JobExecutionController extends AbstractDoctrineController
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
 
         return $this->render(
-            sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Execution'),
+            sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
             array(
                 'execution'   => $jobExecution,
                 'existingLog' => file_exists($jobExecution->getLogFile()),
