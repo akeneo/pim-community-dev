@@ -1,4 +1,4 @@
-# 1.0.0-beta-4
+# 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
 ## Features
 - Import product associations (CSV)
@@ -84,7 +84,7 @@
 - Rename ProductAssociation to Association
 - Rename ProductAttribute to Attribute
 
-# 1.0.0-beta-3 - "Hare Conditioned"
+# 1.0.0-beta-3 - "Hare Conditioned" (2013-12-04)
 
 ## Features
 - History of changes for groups and variant groups
