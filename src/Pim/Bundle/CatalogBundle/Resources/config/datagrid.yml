@@ -431,7 +431,9 @@ datagrid:
                 data_name: c.code
             activated:
                 label: Activated
-                frontend_type: boolean
+                type: twig
+                template: PimDataGridBundle:Property:activated.html.twig
+                frontend_type: html
         properties:
             id: ~
             toggle_link:
@@ -477,7 +479,9 @@ datagrid:
                 label: Code
             activated:
                 label: Activated
-                frontend_type: boolean
+                type: twig
+                template: PimDataGridBundle:Property:activated.html.twig
+                frontend_type: html
         properties: ~
         actions: ~
         sorters:
