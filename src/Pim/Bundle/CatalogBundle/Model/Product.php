@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -96,9 +97,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      *
      * @return Product
      */
-    public function setFamily($family)
+    public function setFamily(Family $family = null)
     {
-        $this->familyId = $family->getId();
+        if (null !== $family) {
+            $this->familyId = $family->getId();
+        }
         $this->family = $family;
 
         return $this;
