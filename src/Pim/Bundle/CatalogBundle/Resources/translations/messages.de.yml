@@ -50,10 +50,10 @@ variant group:
   overview: Variantengruppen-Übersicht
   create: Variantengruppe anlegen
   edit: Variantengruppe bearbeiten
-association:
-  overview: Verbindungsübersicht
-  create: Verbindung anlegen
-  edit: Verbindung bearbeiten
+association type:
+  overview: Verbindungstypen-Übersicht
+  create: Verbindungstyp anlegen
+  edit: Verbindungstyp bearbeiten
 group type:
   overview: Gruppentypen-Übersicht
   create: Gruppentyp anlegen
@@ -78,10 +78,12 @@ btn:
     product: Produkt anlegen
     group: Gruppe anlegen
     variant group: Variantengruppe anlegen
-    association: Verbindung anlegen
+    association type: Verbindungstyp anlegen
     group type: Gruppentyp anlegen
   edit: Bearbeiten
   save: Speichern
+  save and back: Speichern und zurück zur Übersicht
+  save and create: Speichern und anlegen
   remove: Entfernen
   delete: Löschen
   cancel: Abbrechen
@@ -106,7 +108,7 @@ confirmation:
     channel: Sind Sie sicher, dass Sie den Ausgabekanal %name% löschen möchten?
     group: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
     variant group: Sind Sie sicher, dass Sie die Variantengruppe %name% löschen möchten?
-    association: Sind Sie sicher, dass Sie die Verbindung %name% löschen möchten?
+    association type: Sind Sie sicher, dass Sie den Verbindungstyp %name% löschen möchten?
     group type: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
 flash:
   entity:
@@ -175,10 +177,10 @@ flash:
     removed: Gruppentyp erfolgreich gelöscht
     cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
-  association:
-    created: Verbindung erfolgreich angelegt
-    updated: Verbindung erfolgreich aktualisiert
-    removed: Verbindung erfolgreich entfernt
+  association type:
+    created: Verbindungstyp erfolgreich angelegt
+    updated: Verbindungstyp erfolgreich aktualisiert
+    removed: Verbindungstyp erfolgreich gelöscht
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
   updated: Es gibt ungesicherte Änderungen.
@@ -201,10 +203,10 @@ info:
       Variation axis: %attributes%
     select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
     selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
-  association:
+  association type:
     show products: Produkte anzeigen
     show groups: Gruppen anzeigen
-    remove from products: Das Löschen dieser Verbindung entfernt sie von %count% Produkten.
+    remove from products: Das Löschen dieses Verbindungstyps entfernt ihn von %count% Produkten.
 Options: Optionen
 Created at: Angelegt am
 Updated at: Aktualisiert am
@@ -251,7 +253,7 @@ Create: Anlegen
 Cancel: Abbrechen
 Create a new product: Neues Produkt anlegen
 Choose a family: Wählen Sie eine Produktfamilie
-Create a new association: Neue Verbindung anlegen
+Create a new association type: Einen neuen Verbindungstyp anlegen
 Create a new option: Neue Option anlegen
 Global: Global
 Channel: Ausgabekanal
@@ -318,9 +320,9 @@ Groups %group.label% | Edit: Gruppen %group.label% | Bearbeiten
 Variant groups: Variantengruppen
 Variant groups | Create: Variantengruppen | Anlegen
 Variant groups %group.label% | Edit: Variantengruppen %group.label% | Bearbeiten
-Associations: Verbindungen
-Associations | Create: Verbindungen | Anlegen
-Associations %association.label% | Edit: Verbindungen %association.label% | Bearbeiten
+Association types: Verbindungstypen
+Association types | Create: Verbindungstypen | Anlegen
+Association types %association type.label% | Edit: Verbindungstypen %association type.label% | Bearbeiten
 Group types: Gruppentypen
 Group types | Create: Gruppentypen | Anlegen
 Group types %group type.label% | Edit: Gruppentypen %group type.label% | Bearbeiten
@@ -362,6 +364,10 @@ pim_catalog.mass_edit_action:
     label: Produktfamilie der Produkte ändern
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
+  add-to-groups:
+    label: Zu Gruppen hinzufügen
+    description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+    success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
 pim_catalog.completeness:
   progress_bar.title: %ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)
   subtitle: "{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte"
@@ -375,5 +381,75 @@ pim_catalog.group:
     X_SELL: Cross-Sell
     ADDITIONAL: Ergänzend
     RELATED: Zugehörig
+pim_catalog.product:
+  no_comparison_locale_available: Es ist kein anderes Gebietsschema für einen Vergleich vorhanden
+  no_compared_media: Keine Medien für einen Vergleich vorhanden
+pim_catalog.channel.pick_conversion_unit: Wählen Sie eine Umrechnungseinheit für jedes metrische Attribut, welche beim Produkt-Export verwendet werden soll
 Group: Gruppe
 View group: Gruppe ansehen
+pim_catalog:
+  acl:
+    locale.index: Gebietsschemata auflisten
+    currency:
+      index: Währungen auflisten
+      toggle: Währungen umschalten
+    product:
+      index: Produkte auflisten
+      create: Ein Produkt anlegen
+      edit: Ein Produkt bearbeiten
+      remove: Ein Produkt löschen
+      add_attribute: Ein Attribut zu einem Produkt hinzufügen
+      remove_attribute: Ein Attribut von einem Produkt entfernen
+      categories_view: Die Kategorien eines Produktes ansehen
+      associations_view: Die Verbindungstypen eines Produktes ansehen
+      change_family: Produktfamilie ändern
+      change_state: Status eines Produktes ändern
+      add_to_groups: Ein Produkt zu Gruppen zuordnen
+      mass_edit: Aktionen zur Massenbearbeitung von Produkten
+    category:
+      list: Kategorien auflisten
+      create: Eine Kategorie anlegen
+      edit: Eine Kategorie bearbeiten
+      remove: Eine Kategorie löschen
+      move: Kategorie verschieben
+      children: Kategorie-Kindelemente sehen
+      products: Produkte von Kategorien sehen
+    channel:
+      index: Ausgabekanäle auflisten
+      create: Einen Ausgabekanal anlegen
+      edit: Einen Ausgabekanal bearbeiten
+      remove: Einen Ausgabekanal löschen
+    family:
+      create: Eine Produktfamilie anlegen
+      edit: Eine Produktfamilie bearbeiten
+      remove: Eine Produktfamilie löschen
+      add_attribute: Ein Attribut zu einer Produktfamilie hinzufügen
+      remove_attribute: Ein Attribut aus einer Produktfamilie löschen
+    attribute_group:
+      create: Eine Attributgruppe anlegen
+      edit: Eine Attributgruppe bearbeiten
+      remove: Eine Attributgruppe löschen
+      sort: Attributgruppen sortieren
+      add_attribute: Attribut zu einer Gruppe hinzufügen
+      remove_attribute: Attribut aus einer Gruppe löschen
+    product_attribute:
+      index: Produkt-Attribute auflisten
+      create: Ein Produkt-Attribut anlegen
+      edit: Ein Produkt-Attribut bearbeiten
+      remove: Produkt-Attribut löschen
+      sort: Produkt-Attribute innerhalb von Attributgruppen sortieren
+    group:
+      index: Gruppen auflisten
+      create: Eine Gruppe anlegen
+      edit: Eine Gruppe bearbeiten
+      remove: Eine Gruppe entfernen
+    group_type:
+      index: Gruppentypen auflisten
+      create: Einen Gruppentyp anlegen
+      edit: Einen Gruppentyp bearbeiten
+      remove: Einen Gruppentyp löschen
+    association_type:
+      index: Verbindungstypen auflisten
+      create: Einen Verbindungstyp anlegen
+      edit: Einen Verbindungstyp bearbeiten
+      remove: Einen Verbindungstyp löschen
