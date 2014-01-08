@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
@@ -42,11 +41,6 @@ class GroupController extends AbstractController
     protected $groupManager;
 
     /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
-    /**
      * @var GroupHandler
      */
     protected $groupHandler;
@@ -67,7 +61,6 @@ class GroupController extends AbstractController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param GroupManager             $groupManager
-     * @param DatagridHelperInterface  $datagridHelper
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
      */
@@ -80,7 +73,6 @@ class GroupController extends AbstractController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         GroupManager $groupManager,
-        DatagridHelperInterface $datagridHelper,
         GroupHandler $groupHandler,
         Form $groupForm
     ) {
@@ -95,7 +87,6 @@ class GroupController extends AbstractController
         );
 
         $this->groupManager   = $groupManager;
-        $this->datagridHelper = $datagridHelper;
         $this->groupHandler   = $groupHandler;
         $this->groupForm      = $groupForm;
     }
@@ -111,15 +102,7 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
-        $datagrid = $this->datagridHelper->getDatagrid('group', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:Group:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array();
     }
 
     /**

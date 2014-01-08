@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
 
 /**
  * Group repository
@@ -12,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends ReferableEntityRepository
+class GroupRepository extends ReferableEntityRepository implements DatagridRepositoryInterface
 {
     /**
      * Get ordered groups associative array id to label
@@ -104,6 +105,36 @@ class GroupRepository extends ReferableEntityRepository
             ->where($alias.'.type = :groupType')
             ->addOrderBy($alias.'.code', 'ASC')
             ->setParameter('groupType', $type);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
+        $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
+
+        $qb
+            ->addSelect(sprintf("%s AS groupLabel", $groupLabelExpr))
+            ->addSelect(sprintf("%s AS typeLabel", $typeLabelExpr))
+            ->addSelect('translation.label');
+
+        $qb
+            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('g.type', 'typ')
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode');
+
+        /*
+        $joinExpr = $proxyQuery->expr()->neq('type.code', ':group');
+        $proxyQuery
+            ->innerJoin($proxyQuery->getRootAlias() .'.type', 'type', 'WITH', $joinExpr)
+            ->setParameter('group', 'VARIANT');
+         */
+
+        return $qb;
     }
 
     /**

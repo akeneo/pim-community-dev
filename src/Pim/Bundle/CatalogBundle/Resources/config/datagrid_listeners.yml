@@ -56,3 +56,12 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
+    pim_catalog.event_listener.group_grid_listener:
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        arguments:
+          - [localeCode]
+          - @oro_datagrid.datagrid.request_params
+          - false
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-grid, method: onBuildAfter }
+
