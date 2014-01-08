@@ -19,7 +19,7 @@
     "require": {
         "php": ">=5.4.4",
         "oro/platform": "dev-maintenance/pim_beta5",
-        "apy/jsfv-bundle": "dev-master#d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
+        "apy/jsfv-bundle": "dev-master#ecd74cfce030aeb1812277250318aacdd5483631",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev"
