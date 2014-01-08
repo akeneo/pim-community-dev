@@ -155,7 +155,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     AND (v.locale_code = l.code OR v.locale_code IS NULL)
                     AND v.attribute_id = att.id
                     AND v.entity_id = p.id
-                LEFT JOIN pim_catalog_product_value_price price ON price.value_id = v.id AND price.currency_code = cur.code
+                LEFT JOIN pim_catalog_product_value_price price
+                    ON price.value_id = v.id
+                    AND price.currency_code = cur.code
                 GROUP BY l.id, c.id, v.id
                 HAVING COUNT(price.data) = COUNT(price.id)
 COMPLETE_PRICES_SQL;
@@ -184,18 +186,14 @@ COMPLETE_PRICES_SQL;
             JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
             JOIN pim_catalog_locale l ON l.id = cl.locale_id
             JOIN pim_catalog_product p ON p.family_id = c.family_id %product_conditions%
-            LEFT JOIN pim_catalog_completeness co ON co.product_id = p.id AND co.channel_id = c.id AND co.locale_id = l.id
+            LEFT JOIN pim_catalog_completeness co
+                ON co.product_id = p.id
+                AND co.channel_id = c.id
+                AND co.locale_id = l.id
             WHERE co.id IS NULL
 MISSING_SQL;
 
     }
-
-    /**
-     * Provide SQL that will use complete_price
-     * and missing_completeness temporary table
-     * to generate the needed completeness
-     *
-     * 
 
     /**
      * Apply criteria to the provided SQL.
@@ -290,7 +288,10 @@ MISSING_SQL;
                     AND (v.scope_code = c.code OR v.scope_code IS NULL)
                     AND (v.locale_code = l.code OR v.locale_code IS NULL)
                     AND v.entity_id = p.id
-                LEFT JOIN complete_price ON complete_price.value_id = v.id AND complete_price.channel_id = c.id AND complete_price.locale_id = l.id
+                LEFT JOIN complete_price
+                    ON complete_price.value_id = v.id
+                    AND complete_price.channel_id = c.id
+                    AND complete_price.locale_id = l.id
                 %product_value_joins%
             WHERE (%product_value_conditions% OR complete_price.value_id IS NOT NULL) AND r.required = true
             GROUP BY p.id, c.id, l.id
