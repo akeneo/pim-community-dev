@@ -158,6 +158,17 @@
             <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
+        <copy file="${basedir}/phpspec.yml.coverage-dist" tofile="${basedir}/phpspec.yml" />
+        <exec executable="bin/phpspec">
+            <arg value="run" />
+            <arg value="--ansi" />
+            <arg value="--no-interaction" />
+        </exec>
+        <exec executable="phpcov">
+            <arg value="merge" />
+            <arg value="--clover=${basedir}/app/build/logs/clover.xml" />
+            <arg value="${basedir}/app/coverage-parts" />
+        </exec>
     </target>
 
     <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
@@ -177,6 +188,7 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec">
+        <copy file="${basedir}/phpspec.yml.dist" tofile="${basedir}/phpspec.yml" />
         <exec executable="bin/phpspec">
             <arg value="run" />
             <arg value="--ansi" />

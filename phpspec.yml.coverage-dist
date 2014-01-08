@@ -1,0 +1,8 @@
+formatter.name: pretty
+
+extensions:
+    - PhpSpec\Extension\CodeCoverageExtension
+
+code_coverage:
+    output: app/build/coverage-parts/phpspec.cov
+    format: php

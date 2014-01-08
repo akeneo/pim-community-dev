@@ -25,3 +25,4 @@ web/uploads_test/*
 web/log
 uploads_test/
 app/uploads/
+phpspec.yml
