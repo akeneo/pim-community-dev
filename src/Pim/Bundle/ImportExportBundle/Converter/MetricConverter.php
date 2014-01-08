@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Converter;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Convert value into channel conversion unit if selected
@@ -31,24 +32,22 @@ class MetricConverter
     /**
      * Convert all the products metric values into the channel configured conversion units
      *
-     * @param array   $products
-     * @param Channel $channel
+     * @param ProductInterface $product
+     * @param Channel          $channel
      */
-    public function convert(array $products, Channel $channel)
+    public function convert(ProductInterface $product, Channel $channel)
     {
         $channelUnits = $channel->getConversionUnits();
-        foreach ($products as $product) {
-            foreach ($product->getValues() as $value) {
-                $data = $value->getData();
-                $attribute = $value->getAttribute();
-                if ($data instanceof Metric && isset($channelUnits[$attribute->getCode()])) {
-                    $channelUnit = $channelUnits[$attribute->getCode()];
-                    $this->converter->setFamily($data->getFamily());
-                    $data->setData(
-                        $this->converter->convert($data->getUnit(), $channelUnit, $data->getData())
-                    );
-                    $data->setUnit($channelUnit);
-                }
+        foreach ($product->getValues() as $value) {
+            $data = $value->getData();
+            $attribute = $value->getAttribute();
+            if ($data instanceof Metric && isset($channelUnits[$attribute->getCode()])) {
+                $channelUnit = $channelUnits[$attribute->getCode()];
+                $this->converter->setFamily($data->getFamily());
+                $data->setData(
+                    $this->converter->convert($data->getUnit(), $channelUnit, $data->getData())
+                );
+                $data->setUnit($channelUnit);
             }
         }
     }

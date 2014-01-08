@@ -3,9 +3,9 @@
     <property environment="env"/>
     <property name="jobName" value="${env.JOB_NAME}" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
@@ -173,6 +173,15 @@
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
+        </exec>
+    </target>
+
+    <target name="phpspec" description="Run specs with PhpSpec">
+        <exec executable="bin/phpspec">
+            <arg value="run" />
+            <arg value="--ansi" />
+            <arg value="-fpretty" />
+            <arg value="--no-interaction" />
         </exec>
     </target>
 
