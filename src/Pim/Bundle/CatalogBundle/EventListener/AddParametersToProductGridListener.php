@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -24,6 +25,11 @@ class AddParametersToProductGridListener
     protected $requestParams;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * @var ProductManager
      */
     protected $productManager;
@@ -32,12 +38,18 @@ class AddParametersToProductGridListener
      * @param array             $paramNames     Parameter name that should be binded to query
      * @param RequestParameters $requestParams  Request params
      * @param ProductManager    $productManager Product manager
+     * @param LocaleManager     $localeManager  Locale manager
      */
-    public function __construct($paramNames, RequestParameters $requestParams, ProductManager $productManager)
+    public function __construct(
+        $paramNames,
+        RequestParameters $requestParams,
+        ProductManager $productManager,
+        LocaleManager $localeManager)
     {
-        $this->paramNames      = $paramNames;
-        $this->requestParams   = $requestParams;
-        $this->productManager  = $productManager;
+        $this->paramNames     = $paramNames;
+        $this->requestParams  = $requestParams;
+        $this->productManager = $productManager;
+        $this->localeManager  = $localeManager;
     }
 
     /**
@@ -57,7 +69,13 @@ class AddParametersToProductGridListener
             }
             // TODO : how to avoid this inject
             if (isset($queryParameters['dataLocale'])) {
-                $this->productManager->setLocale($queryParameters['dataLocale']);
+                $dataLocale = $queryParameters['dataLocale'];
+
+                $this->productManager->setLocale($dataLocale);
+
+                $queryParameters['localeId'] = $this->localeManager->getLocaleByCode($dataLocale)->getId();
+                // TODO : how to get the scope from filter ?
+                $queryParameters['scopeId'] = 1;
             }
 
             $queryBuilder->setParameters($queryParameters);

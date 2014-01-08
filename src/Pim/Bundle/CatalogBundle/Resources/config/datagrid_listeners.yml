@@ -48,6 +48,7 @@ services:
           - [dataLocale]
           - @oro_datagrid.datagrid.request_params
           - @pim_catalog.manager.product
+          - @pim_catalog.manager.locale
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
