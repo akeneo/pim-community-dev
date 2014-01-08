@@ -22,20 +22,13 @@ class VariantGroupController extends GroupController
 {
     /**
      * {@inheritdoc}
-     *
+     * @Template
      * @AclAncestor("pim_catalog_group_index")
+     * @return Response
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
-        $datagrid = $this->datagridHelper->getDatagrid('variant_group', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:VariantGroup:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array();
     }
 
     /**
