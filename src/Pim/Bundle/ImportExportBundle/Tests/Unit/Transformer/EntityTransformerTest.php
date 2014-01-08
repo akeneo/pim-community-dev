@@ -31,10 +31,11 @@ class EntityTransformerTest extends EntityTransformerTestCase
     {
         $this->addColumn('col1');
         $this->addColumn('col2');
+        $this->addColumn('skipped', true, true);
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2'),
+            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2', 'skipped' => 'skipped'),
             array('prop3' => 'val3', 'prop4' => 'val4')
         );
         $this->assertInstanceOf('stdClass', $object);
@@ -44,7 +45,8 @@ class EntityTransformerTest extends EntityTransformerTestCase
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
-        $this->assertCount(3, $this->transformers);
+        $this->assertObjectNotHasAttribute('skipped', $object);
+        $this->assertCount(4, $this->transformers);
     }
 
     public function testFailingTransformer()

@@ -26,7 +26,7 @@ class EntityTransformerRegistryTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'default_transformer' => array(false),
-            'custom_transformer'  => array(false),
+            'custom_transformer'  => array(true),
         );
     }
 

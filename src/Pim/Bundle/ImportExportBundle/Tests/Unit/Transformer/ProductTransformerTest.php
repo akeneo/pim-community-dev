@@ -138,7 +138,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
         return $this->attributes;
     }
 
-    public function createValue($name)
+    public function createValue()
     {
         $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
             ->setMockClassName('product_value_class')
