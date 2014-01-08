@@ -637,7 +637,7 @@ datagrid:
                 attributes:
                     type:      choice
                     label:     Axis
-                    data_name: g.attributes
+                    data_name: attribute
                     options:
                         field_options:
                             multiple: true
