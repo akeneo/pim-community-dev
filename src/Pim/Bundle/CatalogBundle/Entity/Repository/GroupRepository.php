@@ -116,6 +116,7 @@ class GroupRepository extends ReferableEntityRepository implements DatagridRepos
 
         $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
         $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
+        $typeExpr = $qb->expr()->neq('type.code', ':groupType');
 
         $qb
             ->addSelect(sprintf("%s AS groupLabel", $groupLabelExpr))
@@ -125,14 +126,9 @@ class GroupRepository extends ReferableEntityRepository implements DatagridRepos
         $qb
             ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode');
-
-        /*
-        $joinExpr = $proxyQuery->expr()->neq('type.code', ':group');
-        $proxyQuery
-            ->innerJoin($proxyQuery->getRootAlias() .'.type', 'type', 'WITH', $joinExpr)
-            ->setParameter('group', 'VARIANT');
-         */
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
+            ->leftJoin('g.attributes', 'attribute')
+;//            ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
 
         return $qb;
     }
