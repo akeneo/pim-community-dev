@@ -342,6 +342,7 @@ datagrid:
                     data_name: productFamily
                     options:
                         field_options:
+                            multiple: true
                             class: %pim_catalog.entity.family.class%
                             property: label
                 enabled:
