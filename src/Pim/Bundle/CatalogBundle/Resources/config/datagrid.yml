@@ -280,6 +280,11 @@ datagrid:
             family:
                 label: Family
                 data_name: familyLabel
+            enabled:
+                label: Enabled
+                type: twig
+                template: PimDataGridBundle:Property:activated.html.twig
+                frontend_type: html
             completeness:
                 label: Complete
                 data_name: ratio
