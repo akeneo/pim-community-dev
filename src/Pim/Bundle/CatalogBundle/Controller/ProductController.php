@@ -163,8 +163,6 @@ class ProductController extends AbstractDoctrineController
         return array(
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $dataLocale,
-            'localeId'   => $locale->getId(),
-            'scopeId'    => $scope->getId()
         );
 
         /** @var $gridManager ProductDatagridManager *
