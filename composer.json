@@ -22,8 +22,7 @@
         "apy/jsfv-bundle": "dev-master#ecd74cfce030aeb1812277250318aacdd5483631",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
-        "doctrine/mongodb-odm-bundle": "3.0.*@dev",
-        "escapestudios/wsse-authentication-bundle": "dev-master#abe4b7c41d1890d16abda26b285e6e5417952645"
+        "doctrine/mongodb-odm-bundle": "3.0.*@dev"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
