@@ -131,6 +131,7 @@ services:
             - '@pim_catalog.manager.group'
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
+            - '@pim_catalog.manager.locale'
 
     pim_catalog.controller.association_type:
         scope: request
