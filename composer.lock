@@ -1571,12 +1571,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/escapestudios/EscapeWSSEAuthenticationBundle.git",
-                "reference": "fa9f1ee76f68779dc570b88cd8044d842a79ad95"
+                "reference": "abe4b7c41d1890d16abda26b285e6e5417952645"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/fa9f1ee76f68779dc570b88cd8044d842a79ad95",
-                "reference": "fa9f1ee76f68779dc570b88cd8044d842a79ad95",
+                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/abe4b7c41d1890d16abda26b285e6e5417952645",
+                "reference": "abe4b7c41d1890d16abda26b285e6e5417952645",
                 "shasum": ""
             },
             "require": {

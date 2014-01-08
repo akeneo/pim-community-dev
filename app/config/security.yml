@@ -36,6 +36,7 @@ security:
         wsse_secured:
             pattern:                        ^/api/(rest|soap).*
             wsse:
+                nonce_dir:                  null
                 lifetime:                   3600
                 realm:                      "Secured API"
                 profile:                    "UsernameToken"
