@@ -28,7 +28,10 @@ class VariantGroupController extends GroupController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return array(
+            'groupTypes' => array_keys($this->groupManager->getTypeChoices(true)),
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**

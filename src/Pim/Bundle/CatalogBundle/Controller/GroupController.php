@@ -20,6 +20,7 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Group controller
@@ -51,6 +52,11 @@ class GroupController extends AbstractController
     protected $groupForm;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -63,6 +69,7 @@ class GroupController extends AbstractController
      * @param GroupManager             $groupManager
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
+     * @param LocaleManager            $localeManager
      */
     public function __construct(
         Request $request,
@@ -74,7 +81,8 @@ class GroupController extends AbstractController
         TranslatorInterface $translator,
         GroupManager $groupManager,
         GroupHandler $groupHandler,
-        Form $groupForm
+        Form $groupForm,
+        LocaleManager $localeManager
     ) {
         parent::__construct(
             $request,
@@ -86,9 +94,10 @@ class GroupController extends AbstractController
             $translator
         );
 
-        $this->groupManager   = $groupManager;
-        $this->groupHandler   = $groupHandler;
-        $this->groupForm      = $groupForm;
+        $this->groupManager  = $groupManager;
+        $this->groupHandler  = $groupHandler;
+        $this->groupForm     = $groupForm;
+        $this->localeManager = $localeManager;
     }
 
     /**
@@ -102,7 +111,10 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return array(
+            'groupTypes' => array_keys($this->groupManager->getTypeChoices(false)),
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**
