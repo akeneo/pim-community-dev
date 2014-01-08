@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fd16cad2041791aefcaf5697168c9a89",
+    "hash": "1a1db840a4df4656f0373825c852dec5",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1575,7 +1575,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/abe4b7c41d1890d16abda26b285e6e5417952645",
+                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/fa9f1ee76f68779dc570b88cd8044d842a79ad95",
                 "reference": "abe4b7c41d1890d16abda26b285e6e5417952645",
                 "shasum": ""
             },
@@ -1619,7 +1619,7 @@
                 "bundle",
                 "wsse"
             ],
-            "time": "2014-01-03 14:01:12"
+            "time": "2013-11-29 15:39:58"
         },
         {
             "name": "evenement/evenement",
@@ -5757,6 +5757,7 @@
         "apy/jsfv-bundle": 20,
         "knplabs/knp-gaufrette-bundle": 20,
         "doctrine/mongodb-odm-bundle": 20,
+        "escapestudios/wsse-authentication-bundle": 20,
         "behat/behat": 0,
         "behat/mink-extension": 20,
         "sensiolabs/behat-page-object-extension": 20,
