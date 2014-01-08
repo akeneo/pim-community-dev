@@ -280,6 +280,12 @@ datagrid:
             family:
                 label: Family
                 data_name: familyLabel
+            completeness:
+                label: Complete
+                data_name: ratio
+                type: twig
+                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                frontend_type: html
         properties:
             id: ~
             edit_link:
