@@ -324,18 +324,24 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('p');
-        $rootAlias = $qb->getRootAlias();
 
         $qb
-            ->leftJoin($rootAlias .'.family', 'productFamily')
+            ->leftJoin('p.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin($rootAlias .'.groups', 'pGroup')
+            ->leftJoin('p.groups', 'pGroup')
             ->leftJoin('pGroup.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
-            ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('p.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
             ->leftJoin('values.metric', 'valueMetrics')
-            ->leftJoin($rootAlias .'.categories', 'category');
+            ->leftJoin('p.categories', 'category')
+            ->leftJoin(
+                'PimCatalogBundle:Completeness',
+                'completeness',
+                'WITH',
+                'completeness.locale = :localeId AND completeness.channel = :scopeId '.
+                'AND completeness.productId = p.id'
+            );
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $qb
@@ -345,7 +351,9 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->addSelect('valueOptions')
             ->addSelect('valueMetrics')
             ->addSelect('category')
-            ->addSelect('pGroup');
+            ->addSelect('pGroup')
+            ->addSelect('completeness.ratio AS ratio');
+
 
 /*
         $this->prepareQueryForCompleteness($qb, $rootAlias);
