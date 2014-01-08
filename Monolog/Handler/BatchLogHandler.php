@@ -37,20 +37,26 @@ class BatchLogHandler extends StreamHandler
 
     public function setSubDirectory($subDirectory)
     {
-        $this->url = $this->getRealPath($subDirectory, $this->generateLogFilename());
+        $this->url = $this->getRealPath($this->generateLogFilename(), $subDirectory);
     }
 
     /**
      * Get the real path of the log file
      *
-     * @param string $subDirectory
      * @param string $filename
+     * @param string $subDirectory
      *
      * @return string
+     *
+     * @deprecated
      */
-    public function getRealPath($subDirectory, $filename)
+    public function getRealPath($filename, $subDirectory = null)
     {
-        return sprintf('%s/%s/%s', $this->logDir, $subDirectory, $filename);
+        if ($subDirectory) {
+            return sprintf('%s/%s/%s', $this->logDir, $subDirectory, $filename);
+        }
+
+        return sprintf('%s/%s', $this->logDir, $filename);
     }
 
     /**
@@ -58,15 +64,12 @@ class BatchLogHandler extends StreamHandler
      */
     public function write(array $record)
     {
-        if (!is_dir(dirname($this->url))) {
-            mkdir(dirname($this->url), 0755, true);
+        if (!$this->url) {
+            $this->url = $this->getRealPath($this->generateLogFilename());
         }
 
-        if (!$this->url) {
-            throw new \LogicException(
-                'Missing stream url, the stream can not be opened. ' .
-                'This may be caused by a premature call to close() or a missing sub directory configuration.'
-            );
+        if (!is_dir(dirname($this->url))) {
+            mkdir(dirname($this->url), 0755, true);
         }
 
         parent::write($record);
