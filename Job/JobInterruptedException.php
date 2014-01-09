@@ -25,7 +25,7 @@ class JobInterruptedException extends \Exception
     {
         parent::__construct($message, $code, $previous);
 
-        if ($status != null) {
+        if ($status) {
             $this->status = $status;
         } else {
             $this->status = new BatchStatus(BatchStatus::STOPPED);

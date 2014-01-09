@@ -13,7 +13,8 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->logger = $this->getLoggerMock();
-        $this->subscriber = new LoggerSubscriber($this->logger);
+        $this->translator = $this->getTranslatorMock();
+        $this->subscriber = new LoggerSubscriber($this->logger, $this->translator);
     }
 
     public function testIsAnEventSubscriber()
@@ -150,12 +151,45 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testStepExecutionErrored()
     {
+        $this->translator
+            ->expects($this->any())
+            ->method('trans')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('foo is wrong', array('foo' => 'Item1'), 'messages', 'en', 'Item1 is wrong'),
+                        array('bar is wrong', array('bar' => 'Item2'), 'messages', 'en', 'Item2 is wrong'),
+                    )
+                )
+            );
+
         $this->logger
             ->expects($this->once())
             ->method('error')
-            ->with($this->stringStartsWith('Encountered an error executing the step'));
+            ->with('Encountered an error executing the step: Item1 is wrong, Item2 is wrong');
 
         $stepExecution = $this->getStepExecutionMock();
+        $stepExecution->expects($this->any())
+            ->method('getFailureExceptions')
+            ->will(
+                $this->returnValue(
+                    array(
+                        array(
+                            'message'           => 'foo is wrong',
+                            'messageParameters' => array(
+                                'foo' => 'Item1',
+                            ),
+                        ),
+                        array(
+                            'message'           => 'bar is wrong',
+                            'messageParameters' => array(
+                                'bar' => 'Item2',
+                            ),
+                        )
+                    )
+                )
+            );
+
         $event = $this->getStepExecutionEventMock($stepExecution);
         $this->subscriber->stepExecutionErrored($event);
     }
@@ -174,6 +208,12 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidItemExecution()
     {
+        $this->translator
+            ->expects($this->any())
+            ->method('trans')
+            ->with('batch.invalid_item_reason', array('item' => 'foobar'), 'messages', 'en')
+            ->will($this->returnValue('This is a valid reason.'));
+
         $this->logger
             ->expects($this->once())
             ->method('warning')
@@ -182,9 +222,10 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 'to handle the following item: [foo => bar] (REASON: This is a valid reason.)'
             );
 
-        $event = $this->getInvalidItemEvent(
+        $event = $this->getInvalidItemEventMock(
             'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
-            'This is a valid reason.',
+            'batch.invalid_item_reason',
+            array('item' => 'foobar'),
             array('foo' => 'bar')
         );
         $this->subscriber->invalidItem($event);
@@ -242,11 +283,12 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $class
      * @param string $reason
+     * @param array  $reasonParameters
      * @param array  $item
      *
      * @return PHPUnit_Framework_MockObject_MockObjec
      */
-    private function getInvalidItemEvent($class, $reason, $item)
+    private function getInvalidItemEventMock($class, $reason, array $reasonParameters, $item)
     {
         $invalidItem = $this->getMockBuilder('Oro\Bundle\BatchBundle\Event\InvalidItemEvent')
             ->disableOriginalConstructor()
@@ -261,9 +303,18 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($reason));
 
         $invalidItem->expects($this->any())
+            ->method('getReasonParameters')
+            ->will($this->returnValue($reasonParameters));
+
+        $invalidItem->expects($this->any())
             ->method('getItem')
             ->will($this->returnValue($item));
 
         return $invalidItem;
+    }
+
+    private function getTranslatorMock()
+    {
+        return $this->getMock('Symfony\Component\Translation\TranslatorInterface');
     }
 }

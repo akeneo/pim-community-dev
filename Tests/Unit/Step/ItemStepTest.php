@@ -146,6 +146,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+        $stepExecution->expects($this->any())
+            ->method('getExitStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -189,6 +192,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 'stub_reader',
                 'The read item is invalid',
+                array(),
                 array('foo' => 'bar')
             );
 
@@ -204,6 +208,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+        $stepExecution->expects($this->any())
+            ->method('getExitStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -252,6 +259,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 'stub_processor',
                 'The processed item is invalid',
+                array(),
                 array('foo' => 'bar')
             );
 
@@ -267,6 +275,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+        $stepExecution->expects($this->any())
+            ->method('getExitStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -318,6 +329,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 'stub_writer',
                 'The written item is invalid',
+                array(),
                 array('foo' => 'bar')
             );
 

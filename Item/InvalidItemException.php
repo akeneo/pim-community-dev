@@ -14,21 +14,38 @@ class InvalidItemException extends \Exception
     /** @var array */
     protected $item;
 
+    /** @var array */
+    protected $messageParameters;
+
     /**
      * Constructor
      *
      * @param string $message
      * @param array  $item
+     * @param array  $messageParameters
      */
-    public function __construct($message, array $item)
+    public function __construct($message, array $item, array $messageParameters = array())
     {
         parent::__construct($message);
 
-        $this->item = $item;
+        $this->item              = $item;
+        $this->messageParameters = $messageParameters;
+    }
+
+    /**
+     * Get message parameters
+     *
+     * @return array
+     */
+    public function getMessageParameters()
+    {
+        return $this->messageParameters;
     }
 
     /**
      * Get the invalid item
+     *
+     * @return array
      */
     public function getItem()
     {
