@@ -288,7 +288,7 @@ datagrid:
             enabled:
                 label: Status
                 type: twig
-                template: PimDataGridBundle:Property:activated.html.twig
+                template: PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
             completeness:
                 label: Complete
@@ -352,7 +352,7 @@ datagrid:
                 family:
                     data_name: familyLabel
                 enabled:
-                    data_name: enabled
+                    data_name: p.enabled
                 completeness:
                     data_name: ratio
             default:
@@ -376,9 +376,14 @@ datagrid:
                             multiple: true
                             choices: @pim_catalog.manager.group->getChoices
                 enabled:
-                    type:      boolean
+                    type:      choice
                     label:     Status
                     data_name: p.enabled
+                    options:
+                        field_options:
+                            choices:
+                                1: Enabled
+                                0: Disabled
                 scope:
                     type:      scope
                     label:     Scope
