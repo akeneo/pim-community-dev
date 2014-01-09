@@ -328,8 +328,8 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
         $qb
             ->leftJoin('p.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin('p.groups', 'pGroup')
-            ->leftJoin('pGroup.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
+            ->leftJoin('p.groups', 'groups')
+            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
             ->leftJoin('p.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
@@ -363,7 +363,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->addSelect('valueOptions')
             ->addSelect('valueMetrics')
             ->addSelect('category')
-            ->addSelect('pGroup')
+            ->addSelect('groups')
             ->addSelect('completeness.ratio AS ratio');
 
         return $qb;
