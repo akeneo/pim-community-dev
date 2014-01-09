@@ -32,7 +32,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class EventListener
 {
-    const SCOPE_PARAMETER      = '_scope';
     const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
     /** @var  PropertyAccessor */
@@ -89,19 +88,19 @@ class EventListener
                 if ($showColumn) {
                     $config->offsetSetByPath(
                         sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attributeCode),
-                        [
+                        array(
                             FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
                             FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
                             'label'                                 => $attribute->getLabel()
-                        ]
+                        )
                     );
                     if ($sortable) {
                         $config->offsetSetByPath(
                             sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                            [
+                            array(
                                 PropertyInterface::DATA_NAME_KEY => $attributeCode,
                                 'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
-                            ]
+                            )
                         );
                     }
                 }
@@ -120,13 +119,13 @@ class EventListener
 
                     $config->offsetSetByPath(
                         sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                        [
+                        array(
                             FilterUtility::TYPE_KEY        => $filterType,
                             FilterUtility::FEN_KEY         => $flexibleEntity,
                             FilterUtility::DATA_NAME_KEY   => $attributeCode,
                             FilterUtility::PARENT_TYPE_KEY => $parentType,
                             'label'                        => $attribute->getLabel()
-                        ]
+                        )
                     );
                 }
             }
