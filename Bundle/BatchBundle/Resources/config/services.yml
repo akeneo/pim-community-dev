@@ -34,6 +34,7 @@ services:
         class: %oro_batch.logger_subscriber.class%
         arguments:
             - @logger
+            - @translator
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: batch }
