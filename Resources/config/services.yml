@@ -10,7 +10,6 @@ parameters:
     oro_batch.set_job_execution_log_file_subscriber.class: Oro\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
     oro_batch.connectors_config:                           ~
     oro_batch.jobs_config:                                 ~
-    oro_batch.validator.existing_job.class:                Oro\Bundle\BatchBundle\Validator\Constraints\ExistingJobValidator
 
 services:
     # connectors registry
@@ -70,10 +69,3 @@ services:
             - @oro_batch.logger.batch_log_handler
         tags:
             - { name: kernel.event_subscriber }
-
-    oro_batch.validator.existing_job:
-        class: %oro_batch.validator.existing_job.class%
-        arguments:
-            - '@oro_batch.connectors'
-        tags:
-            - { name: validator.constraint_validator, alias: oro_batch_existing_job_validator }

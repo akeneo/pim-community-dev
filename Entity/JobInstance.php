@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\BatchBundle\Job\Job;
-use Oro\Bundle\BatchBundle\Validator\Constraints\ExistingJob;
 
 /**
  * Entity job
@@ -18,7 +17,6 @@ use Oro\Bundle\BatchBundle\Validator\Constraints\ExistingJob;
  * @ORM\Table(name="oro_batch_job_instance")
  * @ORM\Entity()
  * @UniqueEntity(fields="code", message="This code is already taken")
- * @ExistingJob()
  */
 class JobInstance
 {

@@ -14,6 +14,7 @@ use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Batch command
@@ -254,5 +255,6 @@ class BatchCommand extends ContainerAwareCommand
                 }
             }
         }
+ 
     }
 }
