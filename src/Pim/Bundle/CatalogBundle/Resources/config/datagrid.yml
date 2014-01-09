@@ -280,8 +280,13 @@ datagrid:
             family:
                 label: Family
                 data_name: familyLabel
+            groups:
+                label: Groups
+                type: twig
+                template: PimDataGridBundle:Property:options.html.twig
+                frontend_type: html
             enabled:
-                label: Enabled
+                label: Status
                 type: twig
                 template: PimDataGridBundle:Property:activated.html.twig
                 frontend_type: html
@@ -362,9 +367,17 @@ datagrid:
                             multiple: true
                             class: %pim_catalog.entity.family.class%
                             property: label
+                groups:
+                    type:      choice
+                    label:     Groups
+                    data_name: groups
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @pim_catalog.manager.group->getChoices
                 enabled:
                     type:      boolean
-                    label:     Enabled
+                    label:     Status
                     data_name: p.enabled
                 scope:
                     type:      scope
