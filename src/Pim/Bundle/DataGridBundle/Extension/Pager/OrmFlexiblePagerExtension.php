@@ -33,11 +33,13 @@ class OrmFlexiblePagerExtension extends OrmPagerExtension
     {
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
-        // override to reset left join select and fix paging results
+        // override to fix paging results
         $qb = clone $datasource->getQueryBuilder();
-        $qb->select('p');
-        $this->pager->setQueryBuilder($qb);
+        $rootAlias = $qb->getRootAlias();
+        $qb->select($rootAlias);
+        $qb->groupBy($rootAlias.'.id');
 
+        $this->pager->setQueryBuilder($qb);
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
         $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
         $this->pager->init();
