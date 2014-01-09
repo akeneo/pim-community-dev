@@ -338,6 +338,10 @@ datagrid:
             columns:
                 family:
                     data_name: familyLabel
+                enabled:
+                    data_name: enabled
+                completeness:
+                    data_name: ratio
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
@@ -365,6 +369,10 @@ datagrid:
                     type:      category
                     label:     Category
                     data_name: category
+                completeness:
+                    type:      completeness
+                    label:     Complete
+                    data_name: ratio
 
     family-grid:
         options:
