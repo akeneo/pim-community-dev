@@ -33,8 +33,10 @@ class ProductCreateType extends AbstractType
             )
             ->add(
                 'family',
-                null,
+                'entity',
                 array(
+                    'class' => 'Pim\Bundle\CatalogBundle\Entity\Family',
+                    'empty_value' => "",
                     'select2' => true,
                     'attr'    => array(
                         'data-placeholder' => 'Choose a family'
