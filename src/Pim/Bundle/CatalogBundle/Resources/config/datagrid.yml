@@ -425,9 +425,9 @@ datagrid:
                 code:
                     data_name: f.code
                 label:
-                    data_name: label
+                    data_name: familyLabel
                 attributeAsLabel:
-                    data_name: attributeAsLabel
+                    data_name: f.attributeAsLabel
             default:
                 code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
