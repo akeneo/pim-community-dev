@@ -15,19 +15,6 @@ use Doctrine\ORM\QueryBuilder;
 interface DatagridHelperInterface
 {
     /**
-     * Get the log entries datagrid for the given product
-     *
-     * @param mixed  $entity
-     * @param string $route
-     * @param array  $routeParams
-     *
-     * @return Datagrid
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function getDataAuditDatagrid($entity, $route, array $routeParams);
-
-    /**
      * Gets the datagrid for the given type and querybuilder
      *
      * @param string       $name
