@@ -305,11 +305,18 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      navigate
-                label:     Edit
+                type:      tab-redirect
+                label:     Edit attributes of the product
+                tab:       attributes
                 icon:      edit
                 link:      edit_link
                 rowAction: true
+            edit_categories:
+                type:  tab-redirect
+                label: Classify the product
+                tab:   categories
+                icon:  folder-close
+                link:  edit_link
             delete:
                 type:  delete
                 label: Delete

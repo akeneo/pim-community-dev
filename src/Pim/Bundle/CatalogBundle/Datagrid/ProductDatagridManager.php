@@ -430,39 +430,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getRowActions()
     {
         $actions = array();
-        if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
-            $editAction = array(
-                'name'         => 'edit',
-                'type'         => ActionInterface::TYPE_TAB_REDIRECT,
-                'acl_resource' => 'pim_catalog_product_edit',
-                'options'      => array(
-                    'label' => $this->translate('Edit attributes of the product'),
-                    'tab'   => '#attributes',
-                    'icon'  => 'edit',
-                    'link'  => 'edit_link'
-                )
-            );
-
-            $clickAction = $editAction;
-            $clickAction['name'] = 'rowClick';
-            $clickAction['options']['runOnRowClick'] = true;
-            $actions[] = $editAction;
-            $actions[] = $clickAction;
-            if ($this->securityFacade->isGranted('pim_catalog_product_categories_view')) {
-                $actions[] = array(
-                    'name'         => 'edit_categories',
-                    'type'         => ActionInterface::TYPE_TAB_REDIRECT,
-                    'acl_resource' => 'pim_catalog_product_edit',
-                    'options'      => array(
-                        'label'     => $this->translate('Classify the product'),
-                        'tab'       => '#categories',
-                        'icon'      => 'folder-close',
-                        'className' => 'edit-categories-action',
-                        'link'      => 'edit_categories_link'
-                    )
-                );
-            }
-        }
 
         if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = array(

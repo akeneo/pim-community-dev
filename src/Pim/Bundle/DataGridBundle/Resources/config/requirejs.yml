@@ -1,0 +1,3 @@
+config:
+    paths:
+        oro/datagrid/tab-redirect-action: pimdatagrid/js/datagrid/action/tab-redirect-action

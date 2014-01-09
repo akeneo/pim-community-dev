@@ -60,7 +60,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
     'pim/datafilter/currency-filter', 'pim/datafilter/scope-filter', 'pim/datafilter/metric-filter',
 
     //Pim Actions
-    'pim/datagrid/export-action', 'pim/datagrid/tab-redirect-action',
+    'pim/datagrid/export-action',
     'pim/datagrid/product-delete-action'],
 
     function($, _, Backbone, mediator, registry, LoadingMask,
@@ -76,7 +76,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
         CurrencyFilter, ScopeFilter, MetricFilter,
 
         //Pim actions
-        ExportCollectionAction, TabRedirectAction, ProductDeleteAction
+        ExportCollectionAction, ProductDeleteAction
         ) {
         var datagridOptions = {
             grid: {
@@ -138,8 +138,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
                             AjaxAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
                             {# merge additional options to navigateAction to use execute method #}
-                            {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash', tab: action.tab|default("")}}) %}
-                            {{ action.type == constant(actionTypePrefix ~ 'TYPE_TAB_REDIRECT') ? "TabRedirectAction" : "NavigateAction" }}.extend({{ currentOptions|json_encode|raw }})
+                            {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash' }}) %}
+                                NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
                         {% if not loop.last %},{% endif %}
                     {% endfor %}

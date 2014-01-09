@@ -1,5 +1,5 @@
 /* global define */
-define(['oro/grid/navigate-action'],
+define(['oro/datagrid/navigate-action'],
 function(NavigateAction) {
     'use strict';
 
@@ -13,8 +13,9 @@ function(NavigateAction) {
      */
     var parent = NavigateAction.prototype,
         TabRedirectAction = NavigateAction.extend({
+            useDirectLauncherLink: false,
             run: function() {
-                sessionStorage.redirectTab = this.tab;
+                sessionStorage.redirectTab = '#' + this.tab;
                 parent.run.call(this);
             }
         });

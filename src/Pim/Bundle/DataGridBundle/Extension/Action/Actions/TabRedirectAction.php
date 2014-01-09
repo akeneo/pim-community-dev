@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\GridBundle\Action;
+namespace Pim\Bundle\DataGridBundle\Extension\Action\Actions;
 
-use Oro\Bundle\GridBundle\Action\AbstractAction;
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;
 
 /**
  * Grid action for redirection to a specific form tab
@@ -13,11 +13,6 @@ use Oro\Bundle\GridBundle\Action\AbstractAction;
  */
 class TabRedirectAction extends AbstractAction
 {
-    /**
-     * @var string
-     */
-    protected $type = ActionInterface::TYPE_TAB_REDIRECT;
-
     /**
      * @var string[]
      */
