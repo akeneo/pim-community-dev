@@ -82,7 +82,7 @@ class EventListener
 
                 $attributeType = $attribute->getAttributeType();
 
-                if (in_array($attributeType, array('pim_catalog_price_collection', 'pim_catalog_multiselect', 'pim_catalog_simpleselect', 'pim_catalog_file', 'pim_catalog_image', 'pim_catalog_metric'))) {
+                if (in_array($attributeType, array('pim_catalog_file', 'pim_catalog_image'))) {
                     continue;
                 }
 
