@@ -2,7 +2,7 @@
 
 ## Features
 - Import product associations (CSV)
-- Compare and copy values between a product translations
+- New translation mode : Compare and copy values within a product edit form
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
 - Allow to back to the grid or create another product when editing one
@@ -12,7 +12,7 @@
 - Fixtures can be in CSV (all fixtures except users and currencies)
 - Fixture files can be imported through a command (all fixtures except users and currencies)
 - Add quick create popin for jobs
-- Add WYSIWYG editor
+- Add a WYSIWYG editor for TextArea attributes
 
 ## Improvements
 - Improve the user experience for family management
@@ -71,7 +71,7 @@
 - Same thing than above for Category
 - Relation between Family and Product has been removed from Family side
 - Remove PimDataAuditBundle
-- Remode PimDemoBundle
+- Remove PimDemoBundle
 - Move product metric in catalog bundle
 - Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
 - Rename getStorageManager in flexible manager and change related references
