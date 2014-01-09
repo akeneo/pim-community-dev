@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "659224cd55737020d6cb71afee45d1df",
+    "hash": "fd16cad2041791aefcaf5697168c9a89",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3633,12 +3633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "11baf6d239af060c082b9739d918ccee231d2bda"
+                "reference": "f8f6a94c1761f34e4e5cc10c9c4f4d89cdc5eac1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/11baf6d239af060c082b9739d918ccee231d2bda",
-                "reference": "11baf6d239af060c082b9739d918ccee231d2bda",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/f8f6a94c1761f34e4e5cc10c9c4f4d89cdc5eac1",
+                "reference": "f8f6a94c1761f34e4e5cc10c9c4f4d89cdc5eac1",
                 "shasum": ""
             },
             "require": {
@@ -3682,7 +3682,7 @@
                 "symfony/swiftmailer-bundle": "2.3.*",
                 "symfony/symfony": "v2.3.6",
                 "twig/extensions": "1.0.*@dev",
-                "willdurand/expose-translation-bundle": "0.2.*@dev",
+                "willdurand/expose-translation-bundle": "1.1.*",
                 "zendframework/zend-mail": "2.1.*"
             },
             "type": "library",
@@ -4718,17 +4718,17 @@
         },
         {
             "name": "willdurand/expose-translation-bundle",
-            "version": "0.2.1",
+            "version": "1.1.1",
             "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74"
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "a026f52db130f310d542154e9473105fa35c6e86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a026f52db130f310d542154e9473105fa35c6e86",
+                "reference": "a026f52db130f310d542154e9473105fa35c6e86",
                 "shasum": ""
             },
             "require": {
