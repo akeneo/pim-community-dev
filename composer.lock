@@ -4718,16 +4718,16 @@
         },
         {
             "name": "willdurand/expose-translation-bundle",
-            "version": "0.2.1",
+            "version": "1.1.1",
             "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
                 "reference": "a026f52db130f310d542154e9473105fa35c6e86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/a026f52db130f310d542154e9473105fa35c6e86",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a026f52db130f310d542154e9473105fa35c6e86",
                 "reference": "a026f52db130f310d542154e9473105fa35c6e86",
                 "shasum": ""
             },
