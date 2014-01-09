@@ -58,8 +58,10 @@
 
     <div class="row-fluid tab-content">
         <div class="tab-pane active">
-            {% set configuration = _self.configuration(jobInstance.job.configuration, violations, action) %}
-            {{ elements.accordion({ 'Configuration': configuration }, 1, true) }}
+            {% block configuration %}
+                {% set configuration = _self.configuration(jobInstance.job.configuration, violations, action) %}
+                {{ elements.accordion({ 'Configuration': configuration }, 1, true) }}
+            {% endblock configuration %}
         </div>
     </div>
 
