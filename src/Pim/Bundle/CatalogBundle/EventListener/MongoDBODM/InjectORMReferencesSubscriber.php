@@ -98,6 +98,10 @@ class InjectORMReferencesSubscriber implements EventSubscriber
      */
     protected function setFamilyReference(ProductInterface $product, DocumentManager $documentManager)
     {
+        if (null === $product->getFamilyId()) {
+            return;
+        }
+
         $productMetadata = $documentManager->getClassMetadata(get_class($product));
 
         $familyReflProp = $productMetadata->reflClass->getProperty('family');
