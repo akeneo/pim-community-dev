@@ -75,6 +75,19 @@ class GroupManager
     }
 
     /**
+     * Get choices
+     *
+     * @return array
+     */
+    public function getChoices()
+    {
+        $choices = $this->getRepository()->getChoices();
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
      * Get axis as choice list
      *
      * @param boolean $isVariant
