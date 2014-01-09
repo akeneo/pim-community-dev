@@ -148,71 +148,11 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        // TODO : change the query to use only code or id
         $dataLocale = $this->getDataLocale();
-        $locale = $this->productManager
-            ->getEntityManager()
-            ->getRepository('PimCatalogBundle:Locale')
-            ->findOneBy(array('code' => $dataLocale));
-        $dataScope = $this->getDataScope();
-        $scope = $this->productManager
-            ->getEntityManager()
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findOneBy(array('code' => $dataScope));
-
         return array(
             'locales'    => $this->localeManager->getUserLocales(),
-            'dataLocale' => $dataLocale,
-        );
-
-        /** @var $gridManager ProductDatagridManager *
-        $gridManager = $this->datagridHelper->getDatagridManager('product');
-        $datagrid = $gridManager->getDatagrid();
-
-        switch ($request->getRequestFormat()) {
-            case 'json':
-                $view = 'OroGridBundle:Datagrid:list.json.php';
-                break;
-            case 'csv':
-                // Export time execution depends on entities exported
-                ignore_user_abort(false);
-                set_time_limit(0);
-
-                $scope = $this->productManager->getScope();
-
-                $dateTime = new \DateTime();
-                $fileName = sprintf(
-                    'products_export_%s_%s_%s.csv',
-                    $this->getDataLocale(),
-                    $scope,
-                    $dateTime->format('Y-m-d_H:i:s')
-                );
-
-                // prepare response
-                $response = new StreamedResponse();
-                $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-                $response->headers->set('Content-Type', 'text/csv');
-                $response->headers->set('Content-Disposition', $attachment);
-                $response->setCallback($this->quickExportCallback($gridManager, static::BATCH_SIZE));
-
-                return $response->send();
-
-                break;
-            case 'html':
-            default:
-                $view = 'PimCatalogBundle:Product:index.html.twig';
-                break;
-        }
-
-        $params = array(
-            'datagrid'   => $datagrid->createView(),
-            'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-            'dataScope'  => $this->getDataScope()
         );
-
-        return $this->render($view, $params);
-         */
     }
 
     /**
