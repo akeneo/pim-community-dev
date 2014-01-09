@@ -67,9 +67,9 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: pim_grid_orm_scope }
 
-    pim_grid.orm.filter.type.completeness:
-        class: Pim\Bundle\GridBundle\Filter\ORM\CompletenessFilter
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_grid.filter.type, alias: pim_grid_orm_completeness }
+#    pim_grid.orm.filter.type.completeness:
+#        class: Pim\Bundle\GridBundle\Filter\ORM\CompletenessFilter
+#        arguments:
+#            - '@translator'
+#        tags:
+#            - { name: oro_grid.filter.type, alias: pim_grid_orm_completeness }
