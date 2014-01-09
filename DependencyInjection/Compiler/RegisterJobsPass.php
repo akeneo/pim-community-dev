@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * Read the batch_jobs.yml file of the connectors to register the jobs
@@ -47,6 +48,7 @@ class RegisterJobsPass implements CompilerPassInterface
                 continue;
             }
             if (is_file($configFile = $bundleDir.'/Resources/config/batch_jobs.yml')) {
+                $container->addResource(new FileResource($configFile));
                 $this->registerJobs($registry, $configFile);
             }
         }
@@ -74,7 +76,7 @@ class RegisterJobsPass implements CompilerPassInterface
 
                 $parameters = array();
                 foreach ($step['parameters'] as $setter => $value) {
-                    $services[$setter]= $value;
+                    $services[$setter] = $value;
                 }
 
                 $definition->addMethodCall(
@@ -90,6 +92,20 @@ class RegisterJobsPass implements CompilerPassInterface
                         $parameters
                     )
                 );
+
+                if ($job['templates']['show']) {
+                    $definition->addMethodCall(
+                        'setJobShowTemplate',
+                        array($config['name'], $job['type'], $alias, $job['templates']['show'])
+                    );
+                }
+
+                if ($job['templates']['edit']) {
+                    $definition->addMethodCall(
+                        'setJobEditTemplate',
+                        array($config['name'], $job['type'], $alias, $job['templates']['edit'])
+                    );
+                }
             }
         }
     }
@@ -121,6 +137,13 @@ class RegisterJobsPass implements CompilerPassInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
+                            ->arrayNode('templates')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('show')->defaultNull()->end()
+                                    ->scalarNode('edit')->defaultNull()->end()
+                                ->end()
+                            ->end()
                             ->scalarNode('title')->end()
                             ->scalarNode('type')->end()
                             ->arrayNode('steps')
