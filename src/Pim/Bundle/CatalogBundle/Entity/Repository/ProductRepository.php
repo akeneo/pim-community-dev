@@ -336,10 +336,22 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->leftJoin('values.metric', 'valueMetrics')
             ->leftJoin('p.categories', 'category')
             ->leftJoin(
+                'PimCatalogBundle:Locale',
+                'locale',
+                'WITH',
+                'locale.code = :dataLocale'
+            )
+            ->leftJoin(
+                'PimCatalogBundle:Channel',
+                'channel',
+                'WITH',
+                'channel.code = :scopeCode'
+            )
+            ->leftJoin(
                 'PimCatalogBundle:Completeness',
                 'completeness',
                 'WITH',
-                'completeness.locale = :localeId AND completeness.channel = :scopeId '.
+                'completeness.locale = locale.id AND completeness.channel = channel.id '.
                 'AND completeness.productId = p.id'
             );
 
