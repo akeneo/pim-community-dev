@@ -354,47 +354,6 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->addSelect('pGroup')
             ->addSelect('completeness.ratio AS ratio');
 
-
-/*
-        $this->prepareQueryForCompleteness($qb, $rootAlias);
-
-        $localeCode = $this->flexibleManager->getLocale();
-        $channelCode = $this->flexibleManager->getScope();
-
-        $locale = $this->flexibleManager
-            ->getObjectManager()
-            ->getRepository('PimCatalogBundle:Locale')
-            ->findBy(array('code' => $localeCode));
-
-        $channel = $this->flexibleManager
-            ->getObjectManager()
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findBy(array('code' => $channelCode));
-
-        $proxyQuery->setParameter('localeCode', $localeCode);
-        $proxyQuery->setParameter('locale', $locale);
-        $proxyQuery->setParameter('channel', $channel);
- */
-
         return $qb;
-    }
-
-    /**
-     * Prepare query for completeness field
-     *
-     * @param QueryBuilder $qb
-     * @param string       $rootAlias
-     */
-    protected function prepareQueryForCompleteness(QueryBuilder $qb, $rootAlias)
-    {
-        $qb
-            ->addSelect('pCompleteness.ratio AS completenessRatio')
-            ->leftJoin(
-                'PimCatalogBundle:Completeness',
-                'pCompleteness',
-                'WITH',
-                'pCompleteness.locale = :localeId AND pCompleteness.channel = :scopeId '.
-                'AND pCompleteness.productId = '.$rootAlias.'.id'
-            );
     }
 }
