@@ -319,12 +319,13 @@ datagrid:
                 link:  edit_link
             delete:
                 type:  delete
-                label: Delete
+                label: Delete the product
                 icon:  trash
                 link:  delete_link
         mass_actions:
             delete:
                 type: delete
+                label: Delete
                 entity_name: product
                 data_identifier: p
                 messages:
@@ -335,7 +336,7 @@ datagrid:
                     error: Error ocurred when trying to delete selected products, please try again
                     empty_selection: No products selected
                 launcherOptions:
-                    iconClassName: icon-trash
+                    icon: trash
             mass_edit:
                 type: redirect
                 label: Mass Edit
