@@ -86,6 +86,9 @@ for FEATURE in $FEATURES; do
                 # (/proc/PID should not exist)
                 PID_VARNAME=PID_$PROC
                 PID="${!PID_VARNAME}"
+                OLD_TMPDIR=$TMPDIR
+                NEW_TMPDIR=`mktemp -d`
+                export TMPDIR=$NEW_TMPDIR
                 ls /proc/$PID > /dev/null 2>&1
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
@@ -95,6 +98,8 @@ for FEATURE in $FEATURES; do
                     eval PID_$PROC=$RESULT
                     FEATURE_NAME=""
                 fi
+                rm -rf $NEW_TMPDIR
+                export TMPDIR=$OLD_TMPDIR
 
             fi
         done
