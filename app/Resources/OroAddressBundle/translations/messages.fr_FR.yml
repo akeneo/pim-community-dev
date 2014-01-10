@@ -1,0 +1,11 @@
+---
+Address manipulation: Administration des adresses
+View list of addresses: Voir la liste des adresses
+View address: "Voir l'adresse"
+Edit address: "Modifier l'adresse"
+Create address: Créer adresse
+Remove address: Supprimer adresse
+oro.address.form.choose_country: Choisir un pays...
+oro.address.form.choose_state: Choisir un état...
+Primary: Principal
+Add: Ajouter

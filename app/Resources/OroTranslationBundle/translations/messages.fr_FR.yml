@@ -1,0 +1,138 @@
+---
+%contact.name% - Contacts - Customers: "%contact.name%  - Contacts - Clients"
+Create Contact: Créer Contact
+Create Contact - Contacts - Customers: "Créer Contact - Contacts - Clients"
+%contact.name% - Edit: "%contact.name% - modifier"
+%contact.name% - Edit - Contacts - Customers: "%contact.name% - modifier - Contacts - Clients"
+Contacts: Contacts
+Contacts - Customers: "Contacts - Clients"
+Create Contact Group: Créer Groupe de Contact
+Create Contact Group - Contact Groups - Customers: "Créer Groupe de Contacts - Groupes de Contacts - Clients"
+%group.label% - Edit: "%group.label% - modifier"
+%group.label% - Edit - Contact Groups - Customers: "%group.label% - modifier - Groupes de Contacts - Clients"
+Contact Groups: Groupe de contacts
+Contact Groups - Customers: "Groupes de contacts - Clients"
+%account.name%: %account.name%
+%account.name% - Accounts - Customers: "%account.name% - Comptes - Clients"
+Create Account: Créer Compte
+Create Account - Accounts - Customers: "Créer Compte - Comptes - Clients"
+%account.name% - Edit: "%account.name% - modifier"
+%account.name% - Edit - Accounts - Customers: "%account.name% - modifier - Comptes - Clients"
+Accounts: Comptes
+Accounts - Customers: "Comptes - Clients"
+%lead.name%: %lead.name%
+%lead.name% - Leads - Sales: "%lead.name% - Pistes commerciales - Ventes"
+Create Lead: Créer Piste commerciale
+Create Lead - Leads - Sales: "Créer Piste commerciale - Pistes commerciales - Ventes"
+%lead.name% - Edit: "%lead.name% - Modifier"
+%lead.name% - Edit - Leads - Sales: "%lead.name% - Modifier - Pistes commerciales - Ventes"
+Leads: Pistes commerciales
+Leads - Sales: "Pistes commerciales - Ventes"
+%opportunity.name%: %opportunity.name%
+%opportunity.name% - Opportunities - Sales: "%opportunity.name% - Opportunités - Ventes"
+Create Opportunity: Créer Opportunité
+Create Opportunity - Opportunities - Sales: "Créer Opportunité - Opportunités - Ventes"
+%opportunity.name% - Edit: "%opportunity.name% - modifier"
+%opportunity.name% - Edit - Opportunities - Sales: "%opportunity.name% - modifier - Opportunités- Ventes"
+Opportunities: Opportunités
+Opportunities - Sales: "Opportunités - Ventes"
+%reportName% - Reports: "%reportName% - Rapports"
+%reportName% - Reports - Life time - Accounts - Reports: "%reportName% - Rapports - Durée de vie - Comptes- Rapports"
+Dashboard: Tableau de bord
+Dashboard | One Column: Tableau de bord | Une seule colonne
+Dashboard | Menu: Tableau de bord | Menu
+Dashboard | One Column Toolbar: Tableau de bord | Une colonne Toolbar
+Dashboard | Two Columns Toolbar Left: Tableau de bord | Deux colonnes gauche Toolbar
+Dashboard | Two Columns Toolbar Right: Tableau de bord | Deux colonnes droite Toolbar
+Dashboard | Three Columns: Tableau de bord | Trois colonnes
+Forgot Password: Mot de passe oublié
+Login: Login
+Registration: Inscription
+404 Not Found: 404 Non trouvé
+503 Error: Erreur 503
+Form Elements: Éléments de formulaire
+Dashboard | Messages: Tableau de bord | Messages
+Dashboard | Buttons: Tableau de bord | Boutons
+Dashboard | Tables: Tableau de bord | Tables
+Dashboard | Elements: Tableau de bord | Éléments
+Dashboard | Dialog: Tableau de bord | Alerte
+Dashboard | Grid: Tableau de bord | Grille
+Dashboard | Edit: Tableau de bord | Modifier
+Notifications: Notifications
+Notifications - Emails - System: "Notifications - Emails - système"
+Add Notification Rule: Ajouter règle de Notification
+Add Notification Rule - Notifications - Emails - System: "Ajouter règle de Notification -  Notifications - Emails - Système"
+Create Group: Créer groupe
+Create Group - Groups - Users Management - System: "Créer Groupe - Groupes - Gestion des utilisateurs - système"
+%group% - Edit: "%group% - modifier"
+%group% - Edit - Groups - Users Management - System: "%group% - modifier - Groupes - Gestion Utilisateurs - Système"
+Groups: Groupes
+Groups - Users Management - System: "Groupes - gestion des utilisateurs - système"
+Password Reset - Check Email: "Réinitialisation du mot de passe - Email de vérification"
+Password Reset: Réinitialiser le mot de passe
+Create Role: Créer rôle
+Create Role - Roles - Users Management - System: "Créer Rôle - Rôles - Gestion des utilisateurs - système"
+%role% - Edit: "%role% - modifier"
+%role% - Edit - Roles - Users Management - System: "%role% - Modifier- Rôles - Gestion des utilisateurs - Système"
+Roles: Rôles
+Roles - Users Management - System: "Rôles - Gestion des utilisateurs - système"
+User Status: Statut utilisateur
+User Status - Users - Users Management - System: "Statuts Utilisateurs - Utilisateurs - Gestion des Utilisateurs - système"
+Add Status: Ajouter statut
+Add Status - Users - Users Management - System: "Ajouter Statut - Utilisateurs - Gestion Utilisateurs - système"
+%username%: %username%
+%username% - Users - Users Management - System: "%username% - Utilisateurs - Gestion des Utilisateurs - système"
+%username% - Edit: "%username% - modifier"
+%username% - Edit - Users - Users Management - System: "%username% - Modifier - Utilisateurs - Gestion des Utilisateurs - système"
+Create User: Créer Utilisateur
+Create User - Users - Users Management - System: "Créer Utilisateur - Utilisateurs - Gestion des Utilisateurs - système"
+Users: Utilisateurs
+Users - Users Management - System: "Utilisateurs - Gestion des utilisateurs - Système"
+%keyword% - Search Results: "%keyword% - Résultats"
+Shortcut Actions List: Liste des raccourcis
+How To Use Pinbar: Comment utiliser la Pinbar
+Configuration: Configuration
+Configuration - System: "Configuration - système"
+Data Audit: Audit de données
+Data Audit - System: "Audit de données - système"
+Tags: Tags
+Tags - System: "Tags - système"
+Create Tag: Créer Tag
+Create Tag - Tags - System: "Créer Tag - Tags - système"
+%tag.name% Tag - Edit: "%tag.name% Tag - modifier"
+%tag.name% Tag - Edit - Tags - System: "%tag.name% tag - modifier- Tags - système"
+Records tagged as "%tag.name%": 'Enregistrements taggés comme "%tag.name%"'
+Records tagged as "%tag.name%" - Tags - System: 'Enregistrements taggés comme "%tag.name%" - Tags - système'
+%subject% - Email: "%subject% - Email"
+Templates: Modèles
+Templates - Emails - System: "Modèles - Emails - système"
+Template %name% - Edit: "Modèle %name% - modifier"
+Template %name% - Edit - Templates - Emails - System: "Modèle %name% - modifier - Modèles - Emails - système"
+Create Email Template: "Créer modèle d'E-mail"
+Create Email Template - Templates - Emails - System: "Créer modèle d'E-mail - Modèles - Emails - système"
+Clone Email Template: "Cloner Modèle d'Email"
+Clone Email Template - Templates - Emails - System: "Cloner Modèle d'Email - Modèles - Emails - système"
+Create Business Unit: Créer Business Unit
+Create Business Unit - Business Units - Users Management - System: "Créer Business Unit - Business Units - Gestion des utilisateurs - système"
+%business_unit.name%: %business_unit.name%
+%business_unit.name% - Business Units - Users Management - System: "%business_unit.name% - Business Units - Gestion des utilisateurs - système"
+%business_unit.name% - Edit: "%business_unit.name% - modifier"
+%business_unit.name% - Edit - Business Units - Users Management - System: "%business_unit.name% - modifier - Business Units - Gestion des utilisateurs - système"
+Business Units: Business Units
+Business Units - Users Management - System: "Business Units - Gestion des utilisateurs - système"
+%entityName% - Entities - System: "%entityName% - Entités - système"
+%recordName% - %entityName% - Entities - System: "%recordName% - %entityName% - Entités - système"
+Entities: Entités
+Entities - System: "Entités - système"
+%entityName%: %entityName%
+%fieldName% - %entityName%: "%fieldName% - %entityName%"
+%fieldName% - %entityName% - Entities - System: "%fieldName% - %entityName% - Entités - système"
+New Entity: Nouvelle entité
+New Entity - Entities - System: "Nouvelle entité - entités - système"
+New Field - %entityName%: "Nouveau champ - %entityName%"
+New Field - %entityName% - Entities - System: "Nouveau champ - %entityName% - entités - système"
+%fieldName% - New Field - %entityName%: "%fieldName% - Nouveau champ - %entityName%"
+%fieldName% - New Field - %entityName% - Entities - System: "%fieldName% - Nouveau Champ - %entityName% - Entités - système"
+Job Queue: Planificateur
+Job Queue - System: "Planificateur - système"
+%workflow_data% - %entity% - %section%: "%workflow_data% - %entity% - %section%"

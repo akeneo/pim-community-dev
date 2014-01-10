@@ -1,0 +1,12 @@
+---
+oro.age: "{0} newborn|]0,Inf[age %count%"
+Get help: "Obtenir de l'aide"
+Add: Ajouter
+Owner: Propriétaire
+Created: Créé
+Updated: Mis à jour
+Call: Appel
+Loading ...: Chargement ...
+Loading...: Chargement...
+should have min 3 symbols: doit avoir min 3 caractères
+some msgs span two lines <br/> use mm/dd/yy format: "certains messages s'étendent sur deux lignes <br/> Utilisez le format mm/jj/aa"
