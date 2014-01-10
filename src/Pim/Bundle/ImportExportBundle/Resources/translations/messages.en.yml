@@ -135,6 +135,7 @@ Export %job.name% | Show: Export %job.name% | Show
 Export profiles:                       Export profiles
 Export profiles | Create:              Export profiles | Create
 Export profiles %export.label% | Edit: Export profiles %export.label% | Edit
+Exports history: Exports history
 
 Import management:        Import management
 Import %job.name% | Edit: Import %job.name% | Edit
@@ -142,6 +143,7 @@ Import %job.name% | Show: Import %job.name% | Show
 Import profiles:                       Import profiles
 Import profiles | Create:              Import profiles | Create
 Import profiles %import.label% | Edit: Import profiles %import.label% | Edit
+Imports history: Imports history
 
 # Page header titles
 export profile:
