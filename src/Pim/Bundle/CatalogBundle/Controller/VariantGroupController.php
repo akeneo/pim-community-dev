@@ -87,10 +87,10 @@ class VariantGroupController extends GroupController
         $datagridView = $datagridManager->getDatagrid()->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->render(
-                'OroGridBundle:Datagrid:list.json.php',
-                array('datagrid' => $datagridView)
-            );
+            // return $this->render(
+            //     'OroGridBundle:Datagrid:list.json.php',
+            //     array('datagrid' => $datagridView)
+            // );
         }
 
         return array(
