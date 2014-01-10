@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
-use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
@@ -17,7 +17,7 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexiblePriceFilter extends NumberFilter
+class PriceFilter extends OroNumberFilter
 {
     /**
      * {@inheritdoc}

@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
-use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
-class FlexibleNumberFilter extends NumberFilter
+class StringFilter extends OroStringFilter
 {
     /**
      * {@inheritdoc}

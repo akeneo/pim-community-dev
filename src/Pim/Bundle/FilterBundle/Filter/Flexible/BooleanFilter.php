@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
-use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
-class FlexibleBooleanFilter extends BooleanFilter
+class BooleanFilter extends OroBooleanFilter
 {
     /**
      * {@inheritdoc}

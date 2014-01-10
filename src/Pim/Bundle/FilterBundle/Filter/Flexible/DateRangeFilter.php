@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
-class FlexibleDateRangeFilter extends AbstractFlexibleDateFilter
+class DateRangeFilter extends AbstractFlexibleDateFilter
 {
     /**
      * {@inheritdoc}

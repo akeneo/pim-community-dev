@@ -1,14 +1,14 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FilterBundle\Filter\EntityFilter;
+use Oro\Bundle\FilterBundle\Filter\EntityFilter as OroEntityFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-class FlexibleEntityFilter extends EntityFilter
+class EntityFilter extends OroEntityFilter
 {
     const BACKEND_TYPE_KEY = 'backend_type';
 

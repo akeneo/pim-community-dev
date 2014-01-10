@@ -3,6 +3,18 @@ parameters:
     pim_filter.category_filter.class:     Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.completeness_filter.class: Pim\Bundle\FilterBundle\Filter\CompletenessFilter
 
+    pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
+
+    pim_filter.flexible_string.class:     Pim\Bundle\FilterBundle\Filter\Flexible\StringFilter
+    pim_filter.flexible_choice.class:     Pim\Bundle\FilterBundle\Filter\Flexible\ChoiceFilter
+    pim_filter.flexible_number.class:     Pim\Bundle\FilterBundle\Filter\Flexible\NumberFilter
+    pim_filter.flexible_entity.class:     Pim\Bundle\FilterBundle\Filter\Flexible\EntityFilter
+    pim_filter.flexible_date.class:       Pim\Bundle\FilterBundle\Filter\Flexible\DateRangeFilter
+    pim_filter.flexible_datetime.class:   Pim\Bundle\FilterBundle\Filter\Flexible\DateTimeRangeFilter
+    pim_filter.flexible_boolean.class:    Pim\Bundle\FilterBundle\Filter\Flexible\BooleanFilter
+    pim_filter.flexible_metric.class:     Pim\Bundle\FilterBundle\Filter\Flexible\MetricFilter
+    pim_filter.flexible_price.class:      Pim\Bundle\FilterBundle\Filter\Flexible\PriceFilter
+
 services:
     pim_filter.scope_filter:
         class: %pim_filter.scope_filter.class%
@@ -31,3 +43,83 @@ services:
             - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: completeness }
+
+    pim_filter.flexible_utility:
+        class: %pim_filter.flexible_utility.class%
+        arguments:
+            - @pim_flexibleentity.registry
+
+    pim_filter.flexible_string:
+        class: %pim_filter.flexible_string.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_string }
+
+    pim_filter.flexible_choice:
+        class: %pim_filter.flexible_choice.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
+
+    pim_filter.flexible_number:
+        class: %pim_filter.flexible_number.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }
+
+    pim_filter.flexible_entity:
+        class: %pim_filter.flexible_entity.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_entity }
+
+    pim_filter.flexible_date:
+        class: %pim_filter.flexible_date.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
+
+    pim_filter.flexible_datetime:
+        class: %pim_filter.flexible_datetime.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }
+
+    pim_filter.flexible_boolean:
+        class: %pim_filter.flexible_boolean.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_boolean }
+
+    pim_filter.flexible_metric:
+        class: %pim_filter.flexible_metric.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+            - @translator
+            - @oro_measure.manager
+            - @oro_measure.measure_converter
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
+
+    pim_filter.flexible_price:
+        class: %pim_filter.flexible_price.class%
+        arguments:
+            - @form.factory
+            - @pim_filter.flexible_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
