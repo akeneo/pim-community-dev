@@ -1,4 +1,5 @@
 parameters:
-    pim_datagrid.event_listener.add_parameters_to_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
+    pim_datagrid.event_listener.add_parameters_to_grid.class:         Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
+    pim_datagrid.event_listener.add_parameters_to_product_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
 
 services: ~

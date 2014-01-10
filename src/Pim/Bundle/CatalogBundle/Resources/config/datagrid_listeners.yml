@@ -1,5 +1,4 @@
-parameters:
-    pim_catalog.event_listener.add_parameters_to_product_grid.class: Pim\Bundle\CatalogBundle\EventListener\AddParametersToProductGridListener
+parameters: ~
 
 services:
     pim_catalog.event_listener.association_grid_listener:
@@ -43,7 +42,7 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-grid, method: onBuildAfter }
 
     pim_catalog.event_listener.product_grid_listener:
-        class: %pim_catalog.event_listener.add_parameters_to_product_grid.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
         arguments:
           - [dataLocale]
           - @oro_datagrid.datagrid.request_params
