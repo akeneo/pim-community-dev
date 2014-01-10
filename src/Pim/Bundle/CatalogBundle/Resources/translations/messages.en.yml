@@ -500,3 +500,25 @@ pim_catalog:
             create: 'Create an association type'
             edit: 'Edit an association type'
             remove: 'Remove an association type'
+
+# Menu entries
+pim_menu:
+    tab:
+        collect: Collect
+        enrich: Enrich
+        settings: Settings
+        spread: Spread
+        system: System
+    item:
+        association_type: Association types
+        attribute: Attributes
+        attribute_group: Attribute groups
+        category: Categories
+        channel: Channels
+        currency: Currencies
+        family: Families
+        group: Groups
+        group_type: Group types
+        locale: Locales
+        product: Products
+        variant_group: Variant groups

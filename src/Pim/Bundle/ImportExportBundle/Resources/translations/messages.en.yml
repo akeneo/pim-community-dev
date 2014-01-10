@@ -205,3 +205,11 @@ flash:
         removed: The export has been removed
     import:
         removed: The import has been removed
+
+# Menu entries
+pim_menu:
+    item:
+        history_export: Exports history
+        export_profile: Export profiles
+        history_import: Imports history
+        import_profile: Import profiles
