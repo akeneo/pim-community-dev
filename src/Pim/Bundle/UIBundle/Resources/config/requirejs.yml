@@ -52,7 +52,7 @@ config:
         pim/dialogform:                     pimui/js/pim-dialogform
         pim/scopable:                       pimui/js/pim-scopable
         pim/datafilter/currency-filter:     pimfilter/js/datafilter/filter/currency-filter
-        pim/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
+        oro/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
         oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
         oro/datafilter/category-filter:     pimfilter/js/datafilter/filter/category-filter
         oro/datafilter/completeness-filter: pimfilter/js/datafilter/filter/completeness-filter

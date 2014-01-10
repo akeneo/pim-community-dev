@@ -10,8 +10,8 @@ define(
          * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
          * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
          *
-         * @export  pim/datafilter/metric-filter
-         * @class   pim.datafilter.MetricFilter
+         * @export  oro/datafilter/metric-filter
+         * @class   oro.datafilter.MetricFilter
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({

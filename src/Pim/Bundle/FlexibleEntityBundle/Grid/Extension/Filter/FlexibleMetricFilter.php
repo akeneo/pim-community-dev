@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\GridBundle\Filter\ORM;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
@@ -14,24 +14,40 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
 /**
  * Metric filter related to flexible entities
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricFilter extends NumberFilter
+class FlexibleMetricFilter extends NumberFilter
 {
-    /** @var MeasureConverter $converter */
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    /**
+     * @var MeasureConverter $converter
+     */
     protected $converter;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param MeasureConverter    $converter
+     * Constructor
+     *
+     * @param FormFactoryInterface $factory
+     * @param FilterUtility        $util
+     * @param TranslatorInterface  $translator
+     * @param MeasureConverter     $converter
      */
-    public function __construct(TranslatorInterface $translator, MeasureConverter $converter)
-    {
-        parent::__construct($translator);
+    public function __construct(
+        FormFactoryInterface $factory,
+        FilterUtility $util,
+        TranslatorInterface $translator,
+        MeasureConverter $converter
+    ) {
+        parent::__construct($factory, $util);
 
-        $this->converter = $converter;
+        $this->converter  = $converter;
+        $this->translator = $translator;
     }
 
     /**

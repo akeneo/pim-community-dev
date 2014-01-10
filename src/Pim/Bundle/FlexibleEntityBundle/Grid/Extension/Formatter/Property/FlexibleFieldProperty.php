@@ -63,8 +63,8 @@ class FlexibleFieldProperty extends FieldProperty
         ),
         AbstractAttributeType::BACKEND_TYPE_METRIC   => array(
             'field'         => FieldProperty::TYPE_STRING,
-            'filter'        => 'flexible_string',
-            'parent_filter' => 'string'
+            'filter'        => 'flexible_metric',
+            'parent_filter' => 'number'
        )
     );
 
