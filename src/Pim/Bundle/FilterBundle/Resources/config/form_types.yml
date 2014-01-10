@@ -1,19 +1,12 @@
 parameters:
-    pim_filter.form.type.filter.currency_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
     pim_filter.form.type.filter.scope_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
     pim_filter.form.type.filter.category_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType
     pim_filter.form.type.filter.metric_class:   Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType
+    pim_filter.form.type.filter.price_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType
 
     pim_filter.form.type.category_class:        Pim\Bundle\FilterBundle\Form\Type\CategoryType
 
 services:
-    pim_filter.form.type.filter.currency:
-        class: %pim_filter.form.type.filter.currency_class%
-        arguments:
-            - '@translator'
-            - '@pim_catalog.manager.currency'
-        tags:
-            - { name: form.type, alias: pim_type_currency_filter }
 
     pim_filter.form.type.filter.scope:
         class: %pim_filter.form.type.filter.scope_class%
@@ -37,6 +30,14 @@ services:
             - '@oro_measure.manager'
         tags:
             - { name: form.type, alias: pim_type_metric_filter }
+
+    pim_filter.form.type.filter.price:
+        class: %pim_filter.form.type.filter.price_class%
+        arguments:
+            - '@translator'
+            - '@pim_catalog.manager.currency'
+        tags:
+            - { name: form.type, alias: pim_type_price_filter }
 
     pim_filter.form.type.category:
         class: %pim_filter.form.type.category_class%

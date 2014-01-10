@@ -4,14 +4,14 @@ define(
         'use strict';
 
         /**
-         * Currency filter
+         * Price filter
          *
          * @author    Romain Monceau <romain@akeneo.com>
          * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
          * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
          *
-         * @export  pim/datafilter/currency-filter
-         * @class   pim.datafilter.CurrencyFilter
+         * @export  pim/datafilter/price-filter
+         * @class   pim.datafilter.PriceFilter
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({

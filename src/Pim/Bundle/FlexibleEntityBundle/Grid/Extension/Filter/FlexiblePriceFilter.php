@@ -1,21 +1,23 @@
 <?php
 
-namespace Pim\Bundle\GridBundle\Filter\ORM;
+namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType;
+
+use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 
 /**
- * Currency filter related to flexible entities
+ * Price filter related to flexible entities
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyFilter extends NumberFilter
+class FlexiblePriceFilter extends NumberFilter
 {
     /**
      * {@inheritdoc}
@@ -23,7 +25,7 @@ class CurrencyFilter extends NumberFilter
     public function getDefaultOptions()
     {
         return array(
-            'form_type' => CurrencyFilterType::NAME
+            'form_type' => PriceFilterType::NAME
         );
     }
 

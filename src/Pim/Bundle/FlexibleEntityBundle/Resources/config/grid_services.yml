@@ -12,6 +12,7 @@ parameters:
     pim_flexibleentity.grid.extension.filter.datetime.class:          Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleDateTimeRangeFilter
     pim_flexibleentity.grid.extension.filter.boolean.class:           Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleBooleanFilter
     pim_flexibleentity.grid.extension.filter.metric.class:            Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleMetricFilter
+    pim_flexibleentity.grid.extension.filter.price.class:             Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexiblePriceFilter
 
 services:
     pim_flexibleentity.grid.listener:
@@ -100,3 +101,11 @@ services:
             - @oro_measure.measure_converter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
+
+    pim_flexibleentity.grid.extension.filter.price:
+        class: %pim_flexibleentity.grid.extension.filter.price.class%
+        arguments:
+            - @form.factory
+            - @pim_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
