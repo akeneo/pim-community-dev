@@ -6,7 +6,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
@@ -31,66 +32,81 @@ class FlexibleMetricFilter extends NumberFilter
     protected $converter;
 
     /**
+     * @var MeasureManager $measureManager
+     */
+    protected $measureManager;
+
+    /**
+     * @var string $family
+     */
+    protected $family;
+
+    /**
      * Constructor
      *
      * @param FormFactoryInterface $factory
      * @param FilterUtility        $util
      * @param TranslatorInterface  $translator
+     * @param MeasureManager       $measureManager
      * @param MeasureConverter     $converter
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         TranslatorInterface $translator,
+        MeasureManager $measureManager,
         MeasureConverter $converter
     ) {
         parent::__construct($factory, $util);
 
-        $this->converter  = $converter;
-        $this->translator = $translator;
+        $this->translator     = $translator;
+        $this->measureManager = $measureManager;
+        $this->converter      = $converter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize($name, array $options = array())
+    public function init($name, array $params)
     {
-        $this->name = $name;
-        $this->setOptions($options);
-        $this->family = $options['field_options']['family'];
+        parent::init($name, $params);
+
+        $this->family = $params['family'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    protected function getFormType()
     {
-        return array(
-            'form_type' => MetricFilterType::NAME
-        );
+        return MetricFilterType::NAME;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
-            return;
+            return false;
         }
 
         $operator = $this->getOperator($data['type']);
+        $parameterName = $ds->generateParameterName($this->getName());
 
         // Convert value to base unit
         $this->converter->setFamily($this->family);
         $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
 
-        // Apply clause
-        $paramValue = $this->getNewParameterName($proxyQuery);
-        $exprCmp = $this->createCompareFieldExpression('baseData', 'valueMetrics', $operator, $paramValue);
-        $this->applyFilterToClause($proxyQuery, $exprCmp);
-        $proxyQuery->setParameter($paramValue, $baseValue);
+        $this->applyFilterToClause(
+            $ds,
+            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName, true)
+        );
+
+        $ds->setParameter($parameterName, $baseValue);
+
+        return true;
     }
 
     /**
@@ -112,11 +128,12 @@ class FlexibleMetricFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getRenderSettings()
+    public function getMetadata()
     {
-        list($formType, $formOptions) = parent::getRenderSettings();
-        $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
+        $metadata = parent::getMetadata();
 
-        return array($formType, $formOptions);
+        $metadata['units'] = $this->measureManager->getUnitSymbolsForFamily($this->family);
+
+        return $metadata;
     }
 }

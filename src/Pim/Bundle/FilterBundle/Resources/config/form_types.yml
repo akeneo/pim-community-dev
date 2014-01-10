@@ -25,9 +25,6 @@ services:
 
     pim_filter.form.type.filter.metric:
         class: %pim_filter.form.type.filter.metric_class%
-        arguments:
-            - '@translator'
-            - '@oro_measure.manager'
         tags:
             - { name: form.type, alias: pim_type_metric_filter }
 

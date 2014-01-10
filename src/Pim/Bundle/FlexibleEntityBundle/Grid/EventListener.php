@@ -131,6 +131,9 @@ class EventListener
                         );
                     }
 
+                    if ($backendType === 'metric') {
+                        $filterConfig['family'] = $attribute->getMetricFamily();
+                    }
 
                     $config->offsetSetByPath(
                         sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),

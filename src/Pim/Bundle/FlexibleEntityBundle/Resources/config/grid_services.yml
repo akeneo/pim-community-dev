@@ -98,6 +98,7 @@ services:
             - @form.factory
             - @pim_flexibleentity.grid.extension.flexible_filter_utility
             - @translator
+            - @oro_measure.manager
             - @oro_measure.measure_converter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
