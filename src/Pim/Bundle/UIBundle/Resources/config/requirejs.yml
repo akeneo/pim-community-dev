@@ -51,11 +51,6 @@ config:
         pim/popinform:                      pimui/js/pim-popinform
         pim/dialogform:                     pimui/js/pim-dialogform
         pim/scopable:                       pimui/js/pim-scopable
-        oro/datafilter/price-filter:        pimfilter/js/datafilter/filter/price-filter
-        oro/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
-        oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
-        oro/datafilter/category-filter:     pimfilter/js/datafilter/filter/category-filter
-        oro/datafilter/completeness-filter: pimfilter/js/datafilter/filter/completeness-filter
         pim/tree/view:                      pimcatalog/js/tree-view.jstree
         pim/tree/associate:                 pimcatalog/js/tree-associate.jstree
         pim/tree/mass-associate:            pimcatalog/js/tree-mass-associate.jstree
