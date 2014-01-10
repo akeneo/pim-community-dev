@@ -5,9 +5,7 @@ category:         category
 tree:             tree
 channel:          channel
 currency:         currency
-export profile:   export profile
 family:           family
-import profile:   import profile
 locale:           locale
 product:          product
 group:            group
@@ -39,22 +37,10 @@ currency:
     overview: currency overview
     create:   create currency
     edit:     edit currency
-export profile:
-    overview: export profile overview
-    create:   create export profile
-    edit:     edit export profile
-export report:
-    overview: export reports
 family:
     overview: family overview
     create:   create family
     edit:     edit family
-import profile:
-    overview: import profile overview
-    create:   create import profile
-    edit:     edit import profile
-import report:
-    overview: import reports
 locale:
     overview: locale overview
     create:   create locale
@@ -92,9 +78,7 @@ btn:
         tree:             create tree
         channel:          create channel
         currency:         create currency
-        export profile:   create export profile
         family:           create family
-        import profile:   create import profile
         locale:           create locale
         product:          create product
         group:            create group
@@ -126,8 +110,6 @@ confirmation:
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
         product:          Are you sure you want to delete the product %name%?
-        export profile:   Are you sure you want to delete the export profile %name%?
-        import profile:   Are you sure you want to delete the import profile %name%?
         channel:          Are you sure you want to delete the channel %name%?
         group:            Are you sure you want to delete the group %name%?
         variant group:    Are you sure you want to delete the variant group %name%?
@@ -137,7 +119,7 @@ confirmation:
 # Flash messages
 flash:
     entity:
-        removed:          Item was deleted
+        removed: Item was deleted
         removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
@@ -185,10 +167,6 @@ flash:
         attributes added:         Attributes successfully added to the product
         attribute removed:        Attribute successfully removed from the product
         attribute not removable:  The attribute can not be removed from this product
-    import:
-        removed:                  The import has been removed
-    export:
-        removed:                  The export has been removed
     group:
         created: Group successfully created
         updated: Group successfully updated
@@ -343,12 +321,6 @@ Category trees | Manage:                     Category trees | Manage
 Category trees | View:                       Category trees | View
 Category trees | Create:                     Category trees | Create
 Category trees | Edit:                       Category trees | Edit
-Export profiles:                             Export profiles
-Export profiles | Create:                    Export profiles | Create
-Export profiles %export.label% | Edit:       Export profiles %export.label% | Edit
-Import profiles:                             Import profiles
-Import profiles | Create:                    Import profiles | Create
-Import profiles %import.label% | Edit:       Import profiles %import.label% | Edit
 Attributes:                                  Attributes
 Attributes | Create:                         Attributes | Create
 Attributes %attribute.label% | Edit:         Attributes %attribute.label% | Edit

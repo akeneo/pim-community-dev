@@ -1,3 +1,7 @@
+# Entities
+export profile: export profile
+import profile: import profile
+
 pim_import_export:
     ## Job status
     status:
@@ -125,12 +129,33 @@ pim_import_export:
         invalid: download invalid data
 
 # Page titles:
-Import management:        Import management
-Import %job.name% | Edit: Import %job.name% | Edit
-Import %job.name% | Show: Import %job.name% | Show
 Export management:        Export management
 Export %job.name% | Edit: Export %job.name% | Edit
 Export %job.name% | Show: Export %job.name% | Show
+Export profiles:                       Export profiles
+Export profiles | Create:              Export profiles | Create
+Export profiles %export.label% | Edit: Export profiles %export.label% | Edit
+
+Import management:        Import management
+Import %job.name% | Edit: Import %job.name% | Edit
+Import %job.name% | Show: Import %job.name% | Show
+Import profiles:                       Import profiles
+Import profiles | Create:              Import profiles | Create
+Import profiles %import.label% | Edit: Import profiles %import.label% | Edit
+
+# Page header titles
+export profile:
+    overview: export profile overview
+    create:   create export profile
+    edit:     edit export profile
+export report:
+    overview: export reports
+import profile:
+    overview: import profile overview
+    create:   create import profile
+    edit:     edit import profile
+import report:
+    overview: import reports
 
 # ACLs
 pim_importexport:
@@ -159,3 +184,22 @@ pim_importexport:
             show: View import report details
             dl_log: Download import report log
             dl_files: Download imported files
+
+# Buttons
+btn:
+    create:
+        export profile: create export profile
+        import profile: create import profile
+
+# Confirmation messages
+confirmation:
+    remove:
+        export profile:   Are you sure you want to delete the export profile %name%?
+        import profile:   Are you sure you want to delete the import profile %name%?
+
+# Flash messages
+flash:
+    export:
+        removed: The export has been removed
+    import:
+        removed: The import has been removed
