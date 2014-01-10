@@ -24,10 +24,12 @@ Feature: Execute a job
     Given the following product:
       | sku       | family | categories        | name-en_US | price          | size | color |
       | boots-001 | boots  | winter_collection | Boots 1    | 20 EUR, 25 USD | 40   | black |
+    Given the following job "footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
     And I launched the completeness calculator
     And I am on the "footwear_product_export" export job page
     When I launch the "footwear_product_export" export job
     And I wait for the job to finish
     Then I should see "Execution details"
-    And file "/tmp/product_export/product_export.csv" should exist
+    And file "%tmp%/product_export/product_export.csv" should exist
     And an email to "admin@example.com" should have been sent

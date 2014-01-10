@@ -6,6 +6,8 @@ Feature: Export attributes
   @javascript
   Scenario: Successfully export attributes
     Given a "footwear" catalog configuration
+    And the following job "footwear_attribute_export" configuration:
+      | filePath | %tmp%/attribute_export/attribute_export.csv |
     And I am logged in as "Julia"
     And I am on the "footwear_attribute_export" export job page
     When I launch the export job

@@ -210,13 +210,12 @@ class AssertionContext extends RawMinkContext
      *
      * @Given /^file "([^"]*)" should exist$/
      */
-    public function fileShouldExist($file)
+    public function fileShouldExist($fileName)
     {
-        if (!file_exists($file)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $file));
+        $fileName = $this->replacePlaceholders($fileName);
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
-
-        unlink($file);
     }
 
     /**
@@ -227,6 +226,7 @@ class AssertionContext extends RawMinkContext
      */
     public function fileShouldContainRows($fileName, $rows)
     {
+        $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
@@ -295,5 +295,10 @@ class AssertionContext extends RawMinkContext
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
+    }
+
+    private function replacePlaceholders($value)
+    {
+        return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
 }
