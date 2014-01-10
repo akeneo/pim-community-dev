@@ -65,7 +65,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     public function createJobExecution(JobInstance $jobInstance)
     {
         $jobExecution = new JobExecution();
-        $jobInstance->addJobExecution($jobExecution);
+        $jobExecution->setJobInstance($jobInstance);
 
         $this->updateJobExecution($jobExecution);
 
