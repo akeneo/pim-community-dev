@@ -39,12 +39,14 @@ class FlexibleFieldProperty extends FieldProperty
         AbstractAttributeType::BACKEND_TYPE_OPTION   => array(
             'field'         => FieldProperty::TYPE_STRING,
             'filter'        => 'flexible_choice',
-            'parent_filter' => 'choice'
+            'parent_filter' => 'choice',
+            'field_options' => array('multiple' => true)
         ),
         AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array(
             'field'         => FieldProperty::TYPE_STRING,
             'filter'        => 'flexible_choice',
-            'parent_filter' => 'choice'
+            'parent_filter' => 'choice',
+            'field_options' => array('multiple' => true)
         ),
         AbstractAttributeType::BACKEND_TYPE_TEXT     => array(
             'field'         => FieldProperty::TYPE_STRING,

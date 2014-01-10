@@ -117,15 +117,24 @@ class EventListener
                         ? $map[$backendType]['parent_filter']
                         : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
 
+                    $filterConfig = array(
+                        FilterUtility::TYPE_KEY        => $filterType,
+                        FilterUtility::FEN_KEY         => $flexibleEntity,
+                        FilterUtility::DATA_NAME_KEY   => $attributeCode,
+                        FilterUtility::PARENT_TYPE_KEY => $parentType,
+                        'label'                        => $attribute->getLabel()
+                    );
+
+                    if (isset($map[$backendType]['field_options'])) {
+                        $filterConfig[FilterUtility::FORM_OPTIONS_KEY] = array(
+                            'field_options' => $map[$backendType]['field_options']
+                        );
+                    }
+
+
                     $config->offsetSetByPath(
                         sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                        array(
-                            FilterUtility::TYPE_KEY        => $filterType,
-                            FilterUtility::FEN_KEY         => $flexibleEntity,
-                            FilterUtility::DATA_NAME_KEY   => $attributeCode,
-                            FilterUtility::PARENT_TYPE_KEY => $parentType,
-                            'label'                        => $attribute->getLabel()
-                        )
+                        $filterConfig
                     );
                 }
             }
