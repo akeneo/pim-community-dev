@@ -9,8 +9,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
-use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -18,6 +16,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
@@ -76,6 +75,10 @@ class ConfigureFlexibleGridListener
             $configurator = new ColumnsConfigurator($config, $attributes);
             $configurator->configure();
 
+            $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
+            $configurator = new SortersConfigurator($config, $attributes, $sorterCallback);
+            $configurator->configure();
+
             // TODO nidup refactoring of following in progress ...
             foreach ($attributes as $attributeCode => $attribute) {
                 $showFilter = $attribute->isUseableAsGridFilter();
@@ -91,17 +94,6 @@ class ConfigureFlexibleGridListener
                     continue;
                 }
 
-                if ($showColumn) {
-                    if ($sortable) {
-                        $config->offsetSetByPath(
-                            sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                            array(
-                                PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                                'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
-                            )
-                        );
-                    }
-                }
 
                 if ($showFilter) {
                     $map         = FlexibleFieldProperty::$typeMatches;

@@ -15,7 +15,6 @@ use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty
  */
 class ColumnsConfigurator
 {
-
     /**
      * @param DatagridConfiguration
      */
