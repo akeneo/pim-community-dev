@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;

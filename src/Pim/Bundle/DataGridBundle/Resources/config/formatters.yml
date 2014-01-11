@@ -1,0 +1,10 @@
+parameters:
+    pim_datagrid.extension.formatter.property.flexible_field_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty
+
+services:
+    pim_datagrid.extension.formatter.property.flexible_field_property:
+        class: %pim_datagrid.extension.formatter.property.flexible_field_property.class%
+        arguments:
+            - @translator
+        tags:
+            - { name:  oro_datagrid.extension.formatter.property, type: flexible_field }

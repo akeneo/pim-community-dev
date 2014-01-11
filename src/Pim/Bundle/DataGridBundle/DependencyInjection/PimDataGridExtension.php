@@ -21,6 +21,7 @@ class PimDataGridExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('data_sources.yml');
+        $loader->load('formatters.yml');
         $loader->load('grid_extensions.yml');
         $loader->load('grid_actions.yml');
         $loader->load('grid_listeners.yml');
