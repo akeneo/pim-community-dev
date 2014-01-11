@@ -277,6 +277,7 @@ datagrid:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
         columns:
+            # TODO : add created / updated at
             family:
                 label: Family
                 data_name: familyLabel

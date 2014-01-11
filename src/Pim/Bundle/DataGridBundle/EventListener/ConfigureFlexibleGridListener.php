@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
@@ -16,6 +17,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
@@ -71,6 +73,10 @@ class ConfigureFlexibleGridListener
         if ($flexibleEntity) {
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
 
+            $configurator = new ColumnsConfigurator($config, $attributes);
+            $configurator->configure();
+
+            // TODO nidup refactoring of following in progress ...
             foreach ($attributes as $attributeCode => $attribute) {
                 $showFilter = $attribute->isUseableAsGridFilter();
                 $showColumn = $attribute->isUseableAsGridColumn();
@@ -86,14 +92,6 @@ class ConfigureFlexibleGridListener
                 }
 
                 if ($showColumn) {
-                    $config->offsetSetByPath(
-                        sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attributeCode),
-                        array(
-                            FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
-                            FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
-                            'label'                                 => $attribute->getLabel()
-                        )
-                    );
                     if ($sortable) {
                         $config->offsetSetByPath(
                             sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
