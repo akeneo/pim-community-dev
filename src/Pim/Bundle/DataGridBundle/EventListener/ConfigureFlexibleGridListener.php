@@ -2,27 +2,22 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Grid listener for flexible attributes
@@ -79,58 +74,8 @@ class ConfigureFlexibleGridListener
             $configurator = new SortersConfigurator($config, $attributes, $sorterCallback);
             $configurator->configure();
 
-            // TODO nidup refactoring of following in progress ...
-            foreach ($attributes as $attributeCode => $attribute) {
-                $showFilter = $attribute->isUseableAsGridFilter();
-                $showColumn = $attribute->isUseableAsGridColumn();
-                if (!$showFilter && !$showColumn) {
-                    continue;
-                }
-                $sortable = $showColumn;
-
-                $attributeType = $attribute->getAttributeType();
-
-                if (in_array($attributeType, array('pim_catalog_file', 'pim_catalog_image'))) {
-                    continue;
-                }
-
-
-                if ($showFilter) {
-                    $map         = FlexibleFieldProperty::$typeMatches;
-                    $backendType = $attribute->getBackendType();
-
-                    $filterType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
-                        ? $map[$backendType]['filter']
-                        : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['filter'];
-
-                    $parentType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
-                        ? $map[$backendType]['parent_filter']
-                        : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
-
-                    $filterConfig = array(
-                        FilterUtility::TYPE_KEY        => $filterType,
-                        FilterUtility::FEN_KEY         => $flexibleEntity,
-                        FilterUtility::DATA_NAME_KEY   => $attributeCode,
-                        FilterUtility::PARENT_TYPE_KEY => $parentType,
-                        'label'                        => $attribute->getLabel()
-                    );
-
-                    if (isset($map[$backendType]['field_options'])) {
-                        $filterConfig[FilterUtility::FORM_OPTIONS_KEY] = array(
-                            'field_options' => $map[$backendType]['field_options']
-                        );
-                    }
-
-                    if ($backendType === 'metric') {
-                        $filterConfig['family'] = $attribute->getMetricFamily();
-                    }
-
-                    $config->offsetSetByPath(
-                        sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                        $filterConfig
-                    );
-                }
-            }
+            $configurator = new FiltersConfigurator($config, $attributes, $flexibleEntity);
+            $configurator->configure();
         }
     }
 

@@ -7,13 +7,13 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 
 /**
- * Column configurator for flexible grid, first column is identifier, then properties then ordered attributes
+ * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ColumnsConfigurator
+class ColumnsConfigurator implements ConfiguratorInterface
 {
     /**
      * @param DatagridConfiguration
