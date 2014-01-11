@@ -1,5 +1,15 @@
 parameters:
-    pim_datagrid.event_listener.add_parameters_to_grid.class:         Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
-    pim_datagrid.event_listener.add_parameters_to_product_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
+    pim_datagrid.event_listener.add_parameters_to_grid.class:           Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
+    pim_datagrid.event_listener.add_parameters_to_product_grid.class:   Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
+    pim_datagrid.event_listener.configure_flexible_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureFlexibleGridListener
 
-services: ~
+services:
+
+    pim_datagrid.event_listener.configure_flexible_grid_listener:
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        arguments:
+            - @pim_flexibleentity.registry
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: buildBefore}
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after,  method: buildAfter}

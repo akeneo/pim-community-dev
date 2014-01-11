@@ -1,17 +1,8 @@
 parameters:
-    pim_flexibleentity.grid.listener.class:                           Pim\Bundle\FlexibleEntityBundle\Grid\EventListener
     pim_flexibleentity.grid.extension.formatter.property.class:       Pim\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty
 
 
 services:
-    pim_flexibleentity.grid.listener:
-        class: %pim_flexibleentity.grid.listener.class%
-        arguments:
-            - @pim_flexibleentity.registry
-            - @oro_datagrid.datagrid.request_params
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: buildBefore}
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after,  method: buildAfter}
 
     pim_flexibleentity.grid.extension.formatter.property:
         class: %pim_flexibleentity.grid.extension.formatter.property.class%

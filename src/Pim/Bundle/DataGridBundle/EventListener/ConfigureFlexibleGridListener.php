@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\FlexibleEntityBundle\Grid;
+namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -30,7 +30,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EventListener
+class ConfigureFlexibleGridListener
 {
     const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
