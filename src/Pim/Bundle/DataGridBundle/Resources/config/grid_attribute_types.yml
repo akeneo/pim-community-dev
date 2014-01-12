@@ -51,6 +51,7 @@ parameters:
     pim_datagrid.flexible.attribute_type.pim_catalog_date:
         column:
             type: flexible_field
+            frontend_type: date
         filter:
             type:        flexible_date
             parent_type: date

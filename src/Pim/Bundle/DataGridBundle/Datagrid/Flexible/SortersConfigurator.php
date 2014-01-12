@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 
 /**
  * Sorters configurator for flexible grid

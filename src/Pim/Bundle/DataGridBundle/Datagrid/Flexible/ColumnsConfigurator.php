@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
@@ -61,7 +60,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
                     'label'                                 => $attribute->getLabel(),
                 );
 
