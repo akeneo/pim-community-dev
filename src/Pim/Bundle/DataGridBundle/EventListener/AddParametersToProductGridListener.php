@@ -76,23 +76,45 @@ class AddParametersToProductGridListener
             foreach ($this->paramNames as $paramName) {
                 $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
             }
-            if (isset($queryParameters['dataLocale'])) {
 
-                $dataLocale = $queryParameters['dataLocale'];
-                if ($dataLocale == null) {
-                    $dataLocale = $this->localeManager->getUserLocale()->getCode();
-                }
-                $this->productManager->setLocale($dataLocale);
+            $dataLocale = $this->getLocale($queryParameters);
+            $this->productManager->setLocale($dataLocale);
 
-                $filterValues = $this->requestParams->get('_filter');
-                if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] != null) {
-                    $queryParameters['scopeCode'] = $filterValues['scope']['value'];
-                } else {
-                    $queryParameters['scopeCode'] = $this->channelManager->getUserChannelCode();
-                }
-            }
+            $dataScope = $this->getScope();
+            $queryParameters['scopeCode'] = $dataScope;
 
             $queryBuilder->setParameters($queryParameters);
+        }
+    }
+
+    /**
+     * @param array $queryParameters
+     *
+     * @return string
+     */
+    protected function getLocale($queryParameters)
+    {
+        $dataLocale = null;
+        if (isset($queryParameters['dataLocale'])) {
+            $dataLocale = $queryParameters['dataLocale'];
+        }
+        if ($dataLocale == null) {
+            $dataLocale = $this->localeManager->getUserLocale()->getCode();
+        }
+
+        return $dataLocale;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getScope()
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] != null) {
+            return $filterValues['scope']['value'];
+        } else {
+            return $this->channelManager->getUserChannelCode();
         }
     }
 }
