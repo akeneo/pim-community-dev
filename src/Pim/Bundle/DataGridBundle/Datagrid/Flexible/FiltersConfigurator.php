@@ -4,10 +4,11 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
-use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
  * Filters configurator for flexible grid
@@ -24,6 +25,11 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $configuration;
 
     /**
+     * @param ConfigurationRegistry
+     */
+    protected $registry;
+
+    /**
      * @param array
      */
     protected $attributes;
@@ -35,12 +41,18 @@ class FiltersConfigurator implements ConfiguratorInterface
 
     /**
      * @param DatagridConfiguration $configuration  the grid config
+     * @param ConfigurationRegistry $registry       the conf registry
      * @param array                 $attributes     the attributes
      * @param string                $flexibleEntity the flexible entity FQCN
      */
-    public function __construct(DatagridConfiguration $configuration, $attributes, $flexibleEntity)
-    {
+    public function __construct(
+        DatagridConfiguration $configuration,
+        ConfigurationRegistry $registry,
+        $attributes,
+        $flexibleEntity
+    ) {
         $this->configuration  = $configuration;
+        $this->registry       = $registry;
         $this->attributes     = $attributes;
         $this->flexibleEntity = $flexibleEntity;
     }
@@ -51,40 +63,21 @@ class FiltersConfigurator implements ConfiguratorInterface
     public function configure()
     {
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showFilter    = $attribute->isUseableAsGridFilter();
-            $attributeType = $attribute->getAttributeType();
-            // TODO: to fix
-            if (in_array($attributeType, array('pim_catalog_file', 'pim_catalog_image'))) {
-                continue;
-            }
-            if ($showFilter) {
-                $map         = FlexibleFieldProperty::$typeMatches;
-                $backendType = $attribute->getBackendType();
+            $showFilter        = $attribute->isUseableAsGridFilter();
+            $attributeType     = $attribute->getAttributeType();
+            $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
-                $filterType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
-                    ? $map[$backendType]['filter']
-                    : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['filter'];
+            if ($showFilter && $attributeTypeConf && $attributeTypeConf['filter']) {
 
-                $parentType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
-                    ? $map[$backendType]['parent_filter']
-                    : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
-
-                $filterConfig = array(
-                    FilterUtility::TYPE_KEY        => $filterType,
+                $filterConfig = $attributeTypeConf['filter'];
+                $filterConfig = $filterConfig + array(
                     FilterUtility::FEN_KEY         => $this->flexibleEntity,
                     FilterUtility::DATA_NAME_KEY   => $attributeCode,
-                    FilterUtility::PARENT_TYPE_KEY => $parentType,
                     'label'                        => $attribute->getLabel(),
                     'enabled'                      => ($attributeType === 'pim_catalog_identifier')
                 );
 
-                if (isset($map[$backendType]['field_options'])) {
-                    $filterConfig[FilterUtility::FORM_OPTIONS_KEY] = array(
-                        'field_options' => $map[$backendType]['field_options']
-                    );
-                }
-
-                if ($backendType === 'metric') {
+                if ($attributeType === 'pim_catalog_metric') {
                     $filterConfig['family'] = $attribute->getMetricFamily();
                 }
 

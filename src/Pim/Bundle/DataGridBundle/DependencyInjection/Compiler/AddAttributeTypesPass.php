@@ -44,6 +44,9 @@ class AddAttributeTypesPass implements CompilerPassInterface
             foreach ($parameters as $key => $configuration) {
                 $configurations[str_replace(self::PARAM_PREFIX, '', $key)]= $configuration;
             }
+
+            // TODO process configuration to add default values
+
             $registry->addMethodCall('setConfigurations', array($configurations));
         }
     }

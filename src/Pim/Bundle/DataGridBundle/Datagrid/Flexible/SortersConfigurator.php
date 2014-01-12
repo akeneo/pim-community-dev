@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
 
 /**
@@ -22,6 +23,11 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $configuration;
 
     /**
+     * @param ConfigurationRegistry
+     */
+    protected $registry;
+
+    /**
      * @param array
      */
     protected $attributes;
@@ -33,12 +39,18 @@ class SortersConfigurator implements ConfiguratorInterface
 
     /**
      * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
      * @param array                 $attributes    the attributes
      * @param Closure               $callback      the callback function
      */
-    public function __construct(DatagridConfiguration $configuration, $attributes, \Closure $callback)
+    public function __construct(
+        DatagridConfiguration $configuration,
+        ConfigurationRegistry $registry,
+        $attributes,
+        \Closure $callback)
     {
         $this->configuration = $configuration;
+        $this->registry      = $registry;
         $this->attributes    = $attributes;
         $this->callback      = $callback;
     }
@@ -49,15 +61,11 @@ class SortersConfigurator implements ConfiguratorInterface
     public function configure()
     {
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showColumn    = $attribute->isUseableAsGridColumn();
-            $attributeType = $attribute->getAttributeType();
+            $showColumn        = $attribute->isUseableAsGridColumn();
+            $attributeType     = $attribute->getAttributeType();
+            $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
-            // TODO : to fix
-            if (in_array($attributeType, array('pim_catalog_file', 'pim_catalog_image'))) {
-                continue;
-            }
-
-            if ($showColumn) {
+            if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
                 $this->configuration->offsetSetByPath(
                     sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
                     array(

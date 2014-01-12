@@ -37,16 +37,11 @@ class ConfigurationRegistry
      * Check if registry has a configuration for this attribute type
      *
      * @param string $attributeType the type
-     * @param string $section       the section, can be column, filter, sorter
      *
      * @return boolean
      */
-    public function hasConfiguration($attributeType, $section = null)
+    public function hasConfiguration($attributeType)
     {
-        if ($section) {
-            return isset($this->configurations[$attributeType][$section]);
-        }
-
         return isset($this->configurations[$attributeType]);
     }
 
@@ -54,15 +49,12 @@ class ConfigurationRegistry
      * Get the configuration related to this attribute type
      *
      * @param string $attributeType the type
-     * @param string $section       the section, can be column, filter, sorter
      *
      * @return array
      */
-    public function getConfiguration($attributeType, $section = null)
+    public function getConfiguration($attributeType)
     {
-        if ($this->hasConfiguration($attributeType, $section)) {
-            return $this->configurations[$attributeType][$section];
-        } elseif ($this->hasConfiguration($attributeType)) {
+        if ($this->hasConfiguration($attributeType)) {
             return $this->configurations[$attributeType];
         }
 

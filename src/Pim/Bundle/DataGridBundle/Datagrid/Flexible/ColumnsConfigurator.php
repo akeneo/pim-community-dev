@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
@@ -21,17 +22,24 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $configuration;
 
     /**
+     * @param ConfigurationRegistry
+     */
+    protected $registry;
+
+    /**
      * @param array
      */
     protected $attributes;
 
     /**
      * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
      * @param array                 $attributes    the attributes
      */
-    public function __construct(DatagridConfiguration $configuration, $attributes)
+    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry, $attributes)
     {
         $this->configuration = $configuration;
+        $this->registry      = $registry;
         $this->attributes    = $attributes;
     }
 
@@ -45,16 +53,13 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $attributesColumns = array();
 
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showColumn = $attribute->isUseableAsGridColumn();
-            $attributeType = $attribute->getAttributeType();
-            // TODO: to fix
-            if (in_array($attributeType, array('pim_catalog_file', 'pim_catalog_image'))) {
-                continue;
-            }
-            if ($showColumn) {
+            $showColumn        = $attribute->isUseableAsGridColumn();
+            $attributeType     = $attribute->getAttributeType();
+            $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
+            if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = array(
-                    FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
+                    FlexibleFieldProperty::TYPE_KEY         => $attributeTypeConf['column']['type'],
                     FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
                     'label'                                 => $attribute->getLabel(),
                 );

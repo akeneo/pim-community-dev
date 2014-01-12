@@ -12,6 +12,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
@@ -34,7 +35,10 @@ class ConfigureFlexibleGridListener
     protected $accessor;
 
     /** @var FlexibleManagerRegistry */
-    protected $registry;
+    protected $flexRegistry;
+
+    /** @var ConfigurationRegistry */
+    protected $confRegistry;
 
     /** @var RequestParameters */
     protected $requestParams;
@@ -42,12 +46,17 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManagerRegistry $registry
-     * @param RequestParameters       $requestParams
+     * @param FlexibleManagerRegistry $flexRegistry  flexible manager registry
+     * @param ConfigurationRegistry   $confRegistry  attribute type configuration registry
+     * @param RequestParameters       $requestParams request parameters
      */
-    public function __construct(FlexibleManagerRegistry $registry, RequestParameters $requestParams)
-    {
-        $this->registry      = $registry;
+    public function __construct(
+        FlexibleManagerRegistry $flexRegistry,
+        ConfigurationRegistry $confRegistry,
+        RequestParameters $requestParams
+    ) {
+        $this->flexRegistry  = $flexRegistry;
+        $this->confRegistry  = $confRegistry;
         $this->requestParams = $requestParams;
         $this->accessor      = PropertyAccess::createPropertyAccessor();
     }
@@ -61,20 +70,20 @@ class ConfigureFlexibleGridListener
      */
     public function buildBefore(BuildBefore $event)
     {
-        $config = $event->getConfig();
-        $flexibleEntity = $config->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $datagridConfig = $event->getConfig();
+        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
 
         if ($flexibleEntity) {
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
 
-            $configurator = new ColumnsConfigurator($config, $attributes);
+            $configurator = new ColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
             $configurator->configure();
 
             $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
-            $configurator = new SortersConfigurator($config, $attributes, $sorterCallback);
+            $configurator = new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
             $configurator->configure();
 
-            $configurator = new FiltersConfigurator($config, $attributes, $flexibleEntity);
+            $configurator = new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
             $configurator->configure();
         }
     }
@@ -141,7 +150,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getFlexibleManager($entityFQCN)
     {
-        $flexManager = $this->registry->getManager($entityFQCN);
+        $flexManager = $this->flexRegistry->getManager($entityFQCN);
 
         $flexManager->setLocale($this->requestParams->getLocale());
 

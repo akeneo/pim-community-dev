@@ -9,6 +9,7 @@ services:
         class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
         arguments:
             - @pim_flexibleentity.registry
+            - @pim_datagrid.datagrid.flexible.configuration_registry
             - @oro_datagrid.datagrid.request_params
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: buildBefore}
