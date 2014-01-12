@@ -55,8 +55,15 @@ parameters:
         filter:
             type:        flexible_date
             parent_type: date
-    pim_datagrid.flexible.attribute_type.pim_catalog_file: ~
-    pim_datagrid.flexible.attribute_type.pim_catalog_image: ~
+    pim_datagrid.flexible.attribute_type.pim_catalog_file:
+        column:
+            type: flexible_field
+            frontend_type: string
+    pim_datagrid.flexible.attribute_type.pim_catalog_image:
+        column:
+            type: flexible_image
+            frontend_type: html
+            template: PimDataGridBundle:Property:pim_catalog_image.html.twig
     pim_datagrid.flexible.attribute_type.pim_catalog_price_collection:
         column:
             type: flexible_field
