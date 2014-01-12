@@ -74,7 +74,8 @@ class FiltersConfigurator implements ConfiguratorInterface
                     FilterUtility::FEN_KEY         => $this->flexibleEntity,
                     FilterUtility::DATA_NAME_KEY   => $attributeCode,
                     FilterUtility::PARENT_TYPE_KEY => $parentType,
-                    'label'                        => $attribute->getLabel()
+                    'label'                        => $attribute->getLabel(),
+                    'enabled'                      => ($attributeType === 'pim_catalog_identifier')
                 );
 
                 if (isset($map[$backendType]['field_options'])) {
