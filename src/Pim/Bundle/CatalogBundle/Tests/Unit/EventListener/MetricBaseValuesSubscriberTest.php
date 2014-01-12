@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
