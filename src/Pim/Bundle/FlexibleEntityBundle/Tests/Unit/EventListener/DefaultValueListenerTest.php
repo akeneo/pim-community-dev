@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;

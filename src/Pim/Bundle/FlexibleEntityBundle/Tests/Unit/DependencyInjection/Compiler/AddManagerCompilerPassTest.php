@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

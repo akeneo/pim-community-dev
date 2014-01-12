@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\PhoneCollectionType;
