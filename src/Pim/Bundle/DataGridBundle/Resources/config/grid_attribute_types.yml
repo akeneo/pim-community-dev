@@ -1,0 +1,76 @@
+parameters:
+    pim_datagrid.datagrid.flexible.configuration_registry.class: Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry
+    pim_datagrid.flexible.attribute_type.pim_catalog_identifier:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_string 
+            parent_type: string
+    pim_datagrid.flexible.attribute_type.pim_catalog_text:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_string 
+            parent_type: string
+    pim_datagrid.flexible.attribute_type.pim_catalog_textarea:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_string 
+            parent_type: string
+    pim_datagrid.flexible.attribute_type.pim_catalog_simpleselect:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_choice 
+            parent_type: choice
+            options:
+                field_options:
+                    multiple: true
+    pim_datagrid.flexible.attribute_type.pim_catalog_multiselect:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_choice 
+            parent_type: choice
+            options:
+                field_options:
+                    multiple: true
+    pim_datagrid.flexible.attribute_type.pim_catalog_number:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_number
+            parent_type: number
+    pim_datagrid.flexible.attribute_type.pim_catalog_boolean:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_boolean
+            parent_type: boolean
+    pim_datagrid.flexible.attribute_type.pim_catalog_date:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_date
+            parent_type: date
+    pim_datagrid.flexible.attribute_type.pim_catalog_file: ~
+    pim_datagrid.flexible.attribute_type.pim_catalog_image: ~
+    pim_datagrid.flexible.attribute_type.pim_catalog_price_collection:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_price
+            parent_type: string
+
+    pim_datagrid.flexible.attribute_type.pim_catalog_metric:
+        column:
+            type: flexible_field
+        filter:
+            type:        flexible_metric
+            parent_type: metric
+
+services:
+    pim_datagrid.datagrid.flexible.configuration_registry:
+        class: %pim_datagrid.datagrid.flexible.configuration_registry.class%
+

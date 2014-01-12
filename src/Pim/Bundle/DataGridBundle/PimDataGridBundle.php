@@ -23,6 +23,7 @@ class PimDataGridBundle extends Bundle
         parent::build($container);
 
         $container
-            ->addCompilerPass(new Compiler\AddFilterTypesPass());
+            ->addCompilerPass(new Compiler\AddFilterTypesPass())
+            ->addCompilerPass(new Compiler\AddAttributeTypesPass());
     }
 }

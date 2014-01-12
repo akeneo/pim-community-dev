@@ -25,5 +25,6 @@ class PimDataGridExtension extends Extension
         $loader->load('grid_extensions.yml');
         $loader->load('grid_actions.yml');
         $loader->load('grid_listeners.yml');
+        $loader->load('grid_attribute_types.yml');
     }
 }
