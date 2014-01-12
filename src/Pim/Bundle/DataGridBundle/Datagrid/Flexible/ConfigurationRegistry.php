@@ -28,7 +28,7 @@ class ConfigurationRegistry
     /**
      * @param array $configurations
      */
-    public function setConfiguration($configurations)
+    public function setConfigurations($configurations)
     {
         $this->configurations = $configurations;
     }
