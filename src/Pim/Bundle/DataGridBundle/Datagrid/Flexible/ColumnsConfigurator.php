@@ -58,8 +58,9 @@ class ColumnsConfigurator implements ConfiguratorInterface
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
-                $columnConfig = array(
-                    FlexibleFieldProperty::TYPE_KEY         => $attributeTypeConf['column']['type'],
+
+                $columnConfig = $attributeTypeConf['column'];
+                $columnConfig = $columnConfig + array(
                     FlexibleFieldProperty::BACKEND_TYPE_KEY => $attribute->getBackendType(),
                     'label'                                 => $attribute->getLabel(),
                 );
