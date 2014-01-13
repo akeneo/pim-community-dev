@@ -69,10 +69,12 @@ class FamilyTransformer extends NestedEntityTransformer
         if (isset($data['requirements'])) {
             $requirementsData = $data['requirements'];
             unset($data['requirements']);
-            parent::setProperties($class, $entity, $data);
+        }
+
+        parent::setProperties($class, $entity, $data);
+
+        if (isset($requirementsData)) {
             $this->setRequirements($class, $entity, $requirementsData);
-        } else {
-            parent::setProperties($class, $entity, $data);
         }
     }
 
@@ -106,7 +108,7 @@ class FamilyTransformer extends NestedEntityTransformer
                 'channel'   => $channelCode,
                 'required'  => true
             );
-            $requirement = $this->transformNestedEntity($class, $channelCode, $this->requirementClass, $data);
+            $requirement = $this->transformNestedEntity($class, 'requirements', $this->requirementClass, $data);
 
             $family->addAttributeRequirement($requirement);
         }
