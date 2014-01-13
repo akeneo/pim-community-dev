@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
@@ -60,7 +59,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    'label'                                 => $attribute->getLabel(),
+                    'label' => $attribute->getLabel(),
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {
@@ -73,7 +72,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
         uasort(
             $attributesColumns,
-            function($col1, $col2) {
+            function ($col1, $col2) {
                 return strcmp($col1['label'], $col2['label']);
             }
         );

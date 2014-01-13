@@ -59,17 +59,20 @@ parameters:
         column:
             type: flexible_field
             frontend_type: string
+        sorter: ~
     pim_datagrid.flexible.attribute_type.pim_catalog_image:
         column:
             type: flexible_image
             frontend_type: html
             template: PimDataGridBundle:Property:pim_catalog_image.html.twig
+        sorter: ~
     pim_datagrid.flexible.attribute_type.pim_catalog_price_collection:
         column:
             type: flexible_field
         filter:
             type:        flexible_price
             parent_type: price
+        sorter: ~
 
     pim_datagrid.flexible.attribute_type.pim_catalog_metric:
         column:

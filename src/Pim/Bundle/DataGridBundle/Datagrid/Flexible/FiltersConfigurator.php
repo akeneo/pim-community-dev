@@ -3,11 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
  * Filters configurator for flexible grid
@@ -66,14 +63,14 @@ class FiltersConfigurator implements ConfiguratorInterface
             $attributeType     = $attribute->getAttributeType();
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
-            if ($showFilter && $attributeTypeConf && $attributeTypeConf['filter']) {
+            if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
 
                 $filterConfig = $attributeTypeConf['filter'];
                 $filterConfig = $filterConfig + array(
-                    FilterUtility::FEN_KEY         => $this->flexibleEntity,
-                    FilterUtility::DATA_NAME_KEY   => $attributeCode,
-                    'label'                        => $attribute->getLabel(),
-                    'enabled'                      => ($attributeType === 'pim_catalog_identifier')
+                    FilterUtility::FEN_KEY       => $this->flexibleEntity,
+                    FilterUtility::DATA_NAME_KEY => $attributeCode,
+                    'label'                      => $attribute->getLabel(),
+                    'enabled'                    => ($attributeType === 'pim_catalog_identifier')
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {
@@ -88,4 +85,3 @@ class FiltersConfigurator implements ConfiguratorInterface
         }
     }
 }
-

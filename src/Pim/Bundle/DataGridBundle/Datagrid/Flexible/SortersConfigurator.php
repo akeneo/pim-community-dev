@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 
 /**
  * Sorters configurator for flexible grid
@@ -65,13 +64,15 @@ class SortersConfigurator implements ConfiguratorInterface
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
-                $this->configuration->offsetSetByPath(
-                    sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                    array(
-                        PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                        'apply_callback'                 => $this->callback
-                    )
-                );
+                if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
+                    $this->configuration->offsetSetByPath(
+                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
+                        array(
+                            PropertyInterface::DATA_NAME_KEY => $attributeCode,
+                            'apply_callback'                 => $this->callback
+                        )
+                    );
+                }
             }
         }
     }
