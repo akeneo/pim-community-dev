@@ -266,18 +266,14 @@ Add attributes:                Add attributes
 Translate from:                Translate from
 Yes: Oui
 No: Non
+Close: Close
 
 Create:               Create
 Cancel:               Cancel
-Create a new product: Create a new product
 Choose a family:      Choose a family
 Choose a unit:        Choose a unit
 No matches found:     No matches found
 Create:                   Create
-Cancel:                   Cancel
-Create a new product:     Create a new product
-Create a new association type: Create a new association type
-Create a new option:      Create a new option
 
 Category tree: Category tree
 Completeness: Complétude
@@ -418,6 +414,14 @@ pim_catalog.mass_edit_action:
         label:         Add to groups
         description:   Select the groups in which to add the selected products
         success_flash: Products were successfully added to the selected groups
+Choose products: Choose products
+Choose operation: Choose operation
+Configure: Configure
+Confirm: Confirm
+To enable: To enable
+Select attributes: Select attributes
+Select: Select
+Remove this attribute: Remove this attribute
 
 # Product completeness
 pim_catalog.completeness:
@@ -440,6 +444,9 @@ pim_catalog.group:
 pim_catalog.product:
     no_comparison_locale_available: 'No other locale is available for comparison'
     no_compared_media: 'No media available for comparison'
+Copy: Copy
+Translate from: Translate from
+Current tab: Current tab
 
 # Channel form
 pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attribute that will be used during product export'
@@ -552,11 +559,12 @@ pane.accordion:
 
 # Popin titles
 popin.create:
-    variant_group.title: Create a new variant group
-    group.title: Create a new group
-    product.title: Create a new product
     association_type.title: Create a new association type
     family.title: Create a new family
+    group.title: Create a new group
+    group_type.title: Create a new group type
+    product.title: Create a new product
+    variant_group.title: Create a new variant group
 
 # Datagrid contents
 Has product: Has product
