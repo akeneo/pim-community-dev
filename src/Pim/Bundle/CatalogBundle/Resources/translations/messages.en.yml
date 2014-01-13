@@ -314,6 +314,8 @@ None:                    None
 E-mail:                  E-mail
 URL:                     URL
 Regular expression:      Regular expression
+Minimum input length:    Minimum input length
+Default:                 Default
 
 # Family
 Attributes: Attributes
