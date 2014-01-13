@@ -230,8 +230,9 @@ Type:                          Type
 Scope:                         Scope
 Required:                      Required
 Unique:                        Unique
-translatable:                  Translatable
+Translatable:                  Translatable
 Scopable:                      Scopable
+Localizable:                   Localizable
 Unique value:                  Unique value
 Attribute group:               Attribute group
 Variants behavior when edited: Variants behavior when edited
@@ -246,7 +247,8 @@ Label:                         Label
 Default label:                 Default label
 Default value:                 Default value
 Attributetype:                 Attribute type
-searchable:                    Searchable
+Attribute type:                Attribute type
+Searchable:                    Searchable
 Defaultvalue:                  Default value
 Variant:                       Variant
 Smart:                         Smart
@@ -260,11 +262,15 @@ default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
 Translate from:                Translate from
+Yes: Oui
+No: Non
 
 Create:               Create
 Cancel:               Cancel
 Create a new product: Create a new product
 Choose a family:      Choose a family
+Choose a unit:        Choose a unit
+No matches found:     No matches found
 Create:                   Create
 Cancel:                   Cancel
 Create a new product:     Create a new product
@@ -303,7 +309,11 @@ Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
 Max file size:           Max file size (MB)
-Allowed file extensions: Allowed file extensions
+Allowed extensions:      Allowed extensions
+None:                    None
+E-mail:                  E-mail
+URL:                     URL
+Regular expression:      Regular expression
 
 # Family
 Attributes: Attributes
@@ -347,7 +357,6 @@ Association types | Create:                        Association types | Create
 Association types %association type.label% | Edit: Association types %association type.label% | Edit
 Group types:                                       Group types
 Group types %group type.label% | Edit:             Group types %group type.label% | Edit
-
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
@@ -523,15 +532,19 @@ pim_menu:
 
 # Tabs
 Properties: Properties
+History: History
 pane.accordion:
     node_values: Node values
     general_properties: General properties
+    locale_values: Locale values
 
 # Popin titles
 popin.create:
     variant_group.title: Create a new variant group
     group.title: Create a new group
     product.title: Create a new product
+    association_type.title: Create a new association type
 
 # Datagrid contents
 Has product: Has product
+Attribute as label: Attribute as label
