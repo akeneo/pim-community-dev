@@ -111,7 +111,7 @@ class ConfigureFlexibleGridListener
         );
 
         if ($flexibleCount && $datagrid->getDatasource() instanceof OrmDatasource) {
-            /** @var QueryBUilder $qb */
+            /** @var QueryBuilder $qb */
             $qb = $datagrid->getDatasource()->getQueryBuilder();
 
             $aliases = $qb->getRootAliases();

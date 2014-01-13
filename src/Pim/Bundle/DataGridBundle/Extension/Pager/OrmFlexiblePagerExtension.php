@@ -34,14 +34,36 @@ class OrmFlexiblePagerExtension extends OrmPagerExtension
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
         // override to fix paging results
-        $qb = clone $datasource->getQueryBuilder();
-        $rootAlias = $qb->getRootAlias();
-        $qb->select($rootAlias);
-        $qb->groupBy($rootAlias.'.id');
+        $cloneQb = clone $datasource->getQueryBuilder();
 
-        $this->pager->setQueryBuilder($qb);
+        // prepare query to get entity ids
+        $rootEntity = current($cloneQb->getRootEntities());
+        $rootAlias = $cloneQb->getRootAlias();
+        $rootField = $rootAlias.'.id';
+        $cloneQb->select($rootAlias);
+        $cloneQb->add(
+            'from',
+            new \Doctrine\ORM\Query\Expr\From($rootEntity, $rootAlias, $rootField),
+            false
+        );
+        $cloneQb->groupBy($rootField);
+
+        // configure pager
+        $this->pager->setQueryBuilder($cloneQb);
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
         $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
         $this->pager->init();
+
+        // get entity ids
+        $results = $cloneQb->getQuery()
+            ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $ids = array_keys($results);
+
+        // update query selection
+        if (count($ids) > 0) {
+            $datasource->getQueryBuilder()
+                ->andWhere($rootField.' IN (:entityIds)')
+                ->setParameter('entityIds', $ids);
+        }
     }
 }
