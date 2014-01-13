@@ -1,6 +1,8 @@
 # Entities
 export profile: export profile
 import profile: import profile
+Job: Job
+Connector: Connector
 
 pim_import_export:
     ## Job status
@@ -193,6 +195,8 @@ btn:
         export profile: create export profile
         import profile: create import profile
 
+Upload and import: Upload and import
+
 # Confirmation messages
 confirmation:
     remove:
@@ -213,3 +217,10 @@ pim_menu:
         export_profile: Export profiles
         history_import: Imports history
         import_profile: Import profiles
+
+# Tabs
+General properties: General properties
+History: History
+pane.accordion:
+    properties: Properties
+    global_settings: Global settings

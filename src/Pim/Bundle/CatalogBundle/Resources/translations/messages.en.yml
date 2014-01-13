@@ -508,7 +508,6 @@ pim_menu:
         enrich: Enrich
         settings: Settings
         spread: Spread
-        system: System
     item:
         association_type: Association types
         attribute: Attributes
