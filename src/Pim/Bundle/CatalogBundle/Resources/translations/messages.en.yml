@@ -258,6 +258,8 @@ Locale specific:               Locale specific
 Label translations:            Label translations
 default:                       Default
 Axis:                          Axis
+Add attributes:                Add attributes
+Translate from:                Translate from
 
 Create:               Create
 Cancel:               Cancel
@@ -267,7 +269,6 @@ Create:                   Create
 Cancel:                   Cancel
 Create a new product:     Create a new product
 Create a new association type: Create a new association type
-Choose a family:          Choose a family
 Create a new option:      Create a new option
 
 # Scopes
@@ -529,7 +530,8 @@ pane.accordion:
 # Popin titles
 popin.create:
     variant_group.title: Create a new variant group
-    group: Create a new group
+    group.title: Create a new group
+    product.title: Create a new product
 
 # Datagrid contents
 Has product: Has product
