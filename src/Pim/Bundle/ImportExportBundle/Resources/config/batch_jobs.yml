@@ -52,7 +52,7 @@ connector:
                         processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_group_export:
-            title: pim_import_export.jobs.group_export.title
+            title: pim_import_export.jobs.csv_group_export.title
             type:  export
             steps:
                 export:

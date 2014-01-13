@@ -138,6 +138,7 @@ Export profiles:                       Export profiles
 Export profiles | Create:              Export profiles | Create
 Export profiles %export.label% | Edit: Export profiles %export.label% | Edit
 Exports history: Exports history
+Create a new export profile: Create a new export profile
 
 Import management:        Import management
 Import %job.name% | Edit: Import %job.name% | Edit
@@ -146,6 +147,7 @@ Import profiles:                       Import profiles
 Import profiles | Create:              Import profiles | Create
 Import profiles %import.label% | Edit: Import profiles %import.label% | Edit
 Imports history: Imports history
+Create a new import profile: Create a new import profile
 
 # Page header titles
 export profile:
