@@ -159,6 +159,7 @@ class FlexibleQueryBuilder
             AbstractAttributeType::BACKEND_TYPE_DATETIME => array('=', '<', '<=', '>', '>='),
             AbstractAttributeType::BACKEND_TYPE_DECIMAL  => array('=', '<', '<=', '>', '>='),
             AbstractAttributeType::BACKEND_TYPE_INTEGER  => array('=', '<', '<=', '>', '>='),
+            AbstractAttributeType::BACKEND_TYPE_METRIC   => array('=', '<', '<=', '>', '>='),
             AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => array('='),
             AbstractAttributeType::BACKEND_TYPE_OPTION   => array('IN', 'NOT IN'),
             AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array('IN', 'NOT IN'),
@@ -298,7 +299,8 @@ class FlexibleQueryBuilder
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 
         if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            or $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTION) {
+            || $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTION
+            || $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_METRIC) {
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -311,7 +313,11 @@ class FlexibleQueryBuilder
 
             // then join to option with filter on option id
             $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-            $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+            if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_METRIC) {
+                $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+            } else {
+                $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+            }
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
 

@@ -99,12 +99,13 @@ class MetricFilter extends OroNumberFilter
         $this->converter->setFamily($this->family);
         $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
 
-        $this->applyFilterToClause(
+        $this->util->applyFlexibleFilter(
             $ds,
-            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName, true)
+            $this->get(FilterUtility::FEN_KEY),
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $baseValue,
+            $operator
         );
-
-        $ds->setParameter($parameterName, $baseValue);
 
         return true;
     }
