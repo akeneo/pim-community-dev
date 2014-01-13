@@ -2,16 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Association controller
@@ -33,9 +34,9 @@ class AssociationController
     protected $templating;
 
     /**
-     * @var DatagridHelperInterface
+     * @var Manager
      */
-    protected $datagridHelper;
+    protected $datagridManager;
 
     /**
      * @var ProductManager
@@ -43,23 +44,31 @@ class AssociationController
     protected $productManager;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
-     * @param RegistryInterface       $doctrine
-     * @param EngineInterface         $templating
-     * @param DatagridHelperInterface $datagridHelper
-     * @param ProductManager          $productManager
+     * @param RegistryInterface $doctrine
+     * @param EngineInterface   $templating
+     * @param Manager           $datagridManager
+     * @param ProductManager    $productManager
+     * @param LocaleManager     $localeManager
      */
     public function __construct(
         RegistryInterface $doctrine,
         EngineInterface $templating,
-        DatagridHelperInterface $datagridHelper,
-        ProductManager $productManager
+        Manager $datagridManager,
+        ProductManager $productManager,
+        LocaleManager $localeManager
     ) {
-        $this->doctrine = $doctrine;
-        $this->templating = $templating;
-        $this->datagridHelper = $datagridHelper;
-        $this->productManager = $productManager;
+        $this->doctrine        = $doctrine;
+        $this->templating      = $templating;
+        $this->datagridManager = $datagridManager;
+        $this->productManager  = $productManager;
+        $this->localeManager   = $localeManager;
     }
 
     /**
@@ -79,10 +88,12 @@ class AssociationController
 
         $associationTypes = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
 
-        $productGrid = $this->datagridHelper->getDatagridManager('association_product');
+        /*
+
+        $productGrid = $this->datagridManager->getDatagridManager('association_product');
         $productGrid->setProduct($product);
 
-        $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
+        $groupGrid = $this->datagridManager->getDatagridManager('association_group');
         $groupGrid->setProduct($product);
 
         $associationType = null;
@@ -98,14 +109,17 @@ class AssociationController
 
         $productGridView = $productGrid->getDatagrid()->createView();
         $groupGridView   = $groupGrid->getDatagrid()->createView();
+         */
 
         return $this->templating->renderResponse(
             'PimCatalogBundle:Association:_associations.html.twig',
             array(
                 'product'                => $product,
                 'associationTypes'       => $associationTypes,
-                'associationProductGrid' => $productGridView,
-                'associationGroupGrid'   => $groupGridView,
+                'dataLocale'             => $this->localeManager->getDataLocale(),
+
+                // 'associationProductGrid' => $productGridView,
+                // 'associationGroupGrid'   => $groupGridView,
             )
         );
     }
@@ -124,12 +138,12 @@ class AssociationController
     {
         $product = $this->findProductOr404($id);
 
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_product');
+        $datagridManager = $this->datagridManager->getDatagridManager('association_product');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
+        return $this->datagridManager->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -146,12 +160,12 @@ class AssociationController
     {
         $product = $this->findProductOr404($id);
 
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_group');
+        $datagridManager = $this->datagridManager->getDatagridManager('association_group');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
+        return $this->datagridManager->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**

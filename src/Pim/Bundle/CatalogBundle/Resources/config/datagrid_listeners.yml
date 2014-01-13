@@ -67,3 +67,14 @@ services:
           - @oro_datagrid.datagrid.request_params
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.variant-group-grid, method: onBuildAfter }
+
+    pim_catalog.event_listener.association_target_grid_listener:
+        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
+        arguments:
+          - [dataLocale]
+          - @oro_datagrid.datagrid.request_params
+          - @pim_catalog.manager.product
+          - @pim_catalog.manager.locale
+          - @pim_catalog.manager.channel
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-targets-grid, method: onBuildAfter }

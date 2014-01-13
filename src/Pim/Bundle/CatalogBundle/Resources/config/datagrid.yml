@@ -688,3 +688,54 @@ datagrid:
                             multiple: true
                             choices: @pim_catalog.manager.group->getAvailableAxisChoices
 
+    association-targets-grid:
+        flexible_entity: %pim_catalog.entity.product.class%
+        options:
+            entityHint: product
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_association
+                selectors:
+                    included: '#appendTargets'
+                    excluded: '#removeTargets'
+        source:
+            type: pim_orm
+            entity: %pim_catalog.entity.product.class%
+        columns:
+            has_association:
+                frontend_type: boolean
+                label: Has association
+                editable: true
+            family:
+                label: Family
+                data_name: familyLabel
+        properties:
+            id: ~
+        actions: ~
+        mass_actions: ~
+        sorters:
+            columns:
+                family:
+                    data_name: familyLabel
+                has_association:
+                    data_name: has_association
+            default:
+                has_association: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                family:
+                    type:      entity
+                    data_name: productFamily
+                    options:
+                        field_options:
+                            multiple: true
+                            class: %pim_catalog.entity.family.class%
+                            property: label
+
+    association-product-grid:
+        extend: association-targets-grid
+
+    association-group-grid:
+        extend: association-targets-grid

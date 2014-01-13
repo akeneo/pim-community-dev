@@ -1,6 +1,9 @@
 {% if associationTypes is empty %}
-    <div>{% trans %}No association types{% endtrans %}</div>
+    <div>{{ 'No association types'|trans }}</div>
 {% else %}
+    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+    {#
     {% set productListenerParameters = {
         'columnName': 'has_association',
         'selectors': {
@@ -20,7 +23,9 @@
     } %}
 
     {% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
+    #}
 
+    {#
     <script type="text/javascript">
         require(
             ['jquery', 'underscore', 'pim/datagrid/parameter-setter', 'oro/mediator'],
@@ -31,15 +36,14 @@
                         var associationId = $(this).attr('id').replace(/^\D+/g, '');
                         changeAssociation(associationId);
                     });
-
                     var dataGrids = {
                         'product': {
-                            'name': '{{ associationProductGrid.datagrid.name }}',
+                            'name': 'association-product-grid',
                             'appendField': 'appendProducts',
                             'removeField': 'removeProducts'
                         },
                         'group': {
-                            'name': '{{ associationGroupGrid.datagrid.name }}',
+                            'name': 'association-group-grid',
                             'appendField': 'appendGroups',
                             'removeField': 'removeGroups'
                         }
@@ -77,6 +81,7 @@
             }
         );
     </script>
+    #}
 
     <div id="association-list" class="tab-groups">
         <ul class="nav nav-list">
@@ -115,7 +120,17 @@
                 </h3>
             </div>
         {% endfor %}
+
+        <div id="product-grid">
+            {{ dataGrid.renderGrid('association-targets-grid') }}
+        </div>
+
+        {#
+        {{ dataGrid.renderGrid('product-grid', { dataLocale: dataLocale }) }}
+        {{ dataGrid.renderGrid('association-product-grid', { dataLocale: dataLocale }) }}
+        {{ dataGrid.renderGrid('association-group-grid', { dataLocale: dataLocale }) }}
         <div id="association-product-grid"></div>
         <div id="association-group-grid" class="hide"></div>
+        #}
     </div>
 {% endif %}
