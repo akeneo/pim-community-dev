@@ -3,15 +3,21 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Product repository
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository
+class ProductRepository extends DocumentRepository implements ProductRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -30,6 +36,78 @@ class ProductRepository extends DocumentRepository
      * @var string
      */
     protected $scope;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildByScope($scope)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildByChannelAndCompleteness(Channel $channel)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByExistingFamily()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $ids)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProduct($id)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductCountByTree(ProductInterface $product)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    {
+        return;
+    }
 
     /**
      * Get flexible entity config

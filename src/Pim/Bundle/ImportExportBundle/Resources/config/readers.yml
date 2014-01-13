@@ -1,5 +1,6 @@
 parameters:
     pim_import_export.reader.orm.product.class:       Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
+    pim_import_export.reader.orm.bulk_product.class:  Pim\Bundle\ImportExportBundle\Reader\ORM\BulkProductReader
     pim_import_export.reader.orm.entity.class:        Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
 
     pim_import_export.reader.file.csv.class:          Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
@@ -19,6 +20,10 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_import_export.converter.metric'
+
+    pim_import_export.reader.orm.bulk_product:
+        parent: pim_import_export.reader.orm.product
+        class: %pim_import_export.reader.orm.bulk_product.class%
 
     pim_import_export.reader.orm.category:
         class: %pim_import_export.reader.orm.entity.class%

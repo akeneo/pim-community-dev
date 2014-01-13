@@ -6,6 +6,8 @@ Feature: Export products with media
 
   Scenario: Successfully export products with media
     Given a "footwear" catalog configuration
+    And the following job "footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
     And the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |
       | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |

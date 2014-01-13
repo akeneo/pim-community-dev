@@ -22,8 +22,8 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     /** @var CsvEncoder */
     protected $encoder;
 
-    /** @var string */
-    protected $header = '';
+    /** @var array */
+    protected $header = array();
 
     /**
      * @param InvalidItemsCollector $collector

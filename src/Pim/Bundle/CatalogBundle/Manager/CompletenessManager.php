@@ -60,6 +60,15 @@ class CompletenessManager
         $this->validator = $validator;
         $this->class     = $class;
     }
+    /**
+     * Insert missing completenesses for a given product
+     *
+     * @param ProductInterface $product
+     */
+    public function generateProductCompletenesses(ProductInterface $product)
+    {
+        $this->generator->generate(array('productId' => $product->getId()));
+    }
 
     /**
      * Insert missing completenesses for a given channel
@@ -68,27 +77,18 @@ class CompletenessManager
      */
     public function generateChannelCompletenesses(Channel $channel)
     {
-        $this->generator->generate(array('channel' => $channel->getId()));
+        $this->generator->generate(array('channelId' => $channel->getId()));
     }
 
-    /**
-     * Insert missing completenesses for a given product
-     *
-     * @param ProductInterface $product
-     */
-    public function generateProductCompletenesses(ProductInterface $product)
-    {
-        $this->generator->generate(array('product' => $product->getId()));
-    }
 
     /**
      * Insert n missing completenesses
      *
      * @param int $limit
      */
-    public function generateAllCompletenesses($limit = 100)
+    public function generateMissingCompletenesses()
     {
-        $this->generator->generate(array(), $limit);
+        $this->generator->generate();
     }
 
     /**
