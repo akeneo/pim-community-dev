@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\AttributeTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class mAttributeTransformerTest extends EntityTransformerTestCase
+class AttributeTransformerTest extends EntityTransformerTestCase
 {
     protected $attribute;
     protected $attributeManager;
@@ -83,13 +83,38 @@ class mAttributeTransformerTest extends EntityTransformerTestCase
             ->will($this->returnValue($this->repository));
     }
 
-    public function testTransform()
+    public function getTransformData()
+    {
+        return array(
+            'no_errors'     => array(false),
+            'nested_errors' => array(true)
+        );
+    }
+
+    /**
+     * @dataProvider getTransformData
+     */
+    public function testTransform($nestedErrors)
     {
         $this->addColumn('type');
         $this->addColumn('col1');
         $this->addColumn('col2');
         $this->addColumn('options');
         $this->addColumn('attribute');
+
+        if ($nestedErrors) {
+            $errors = array(
+                'co1' => array(
+                    array('error')
+                )
+            );
+        } else {
+            $errors = array();
+        }
+        $this->transformerRegistry->expects($this->any())
+            ->method('getErrors')
+            ->with($this->equalTo('Pim\Bundle\CatalogBundle\Entity\AttributeOption'))
+            ->will($this->returnValue($errors));
 
         $object = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
@@ -111,8 +136,21 @@ class mAttributeTransformerTest extends EntityTransformerTestCase
                 )
             )
         );
+
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $object);
-        $this->assertEmpty($this->transformer->getErrors('Pim\Bundle\CatalogBundle\Entity\Attribute'));
+        if ($nestedErrors) {
+            $this->assertEquals(
+                array(
+                    'options' => array(
+                        array('error'),
+                        array('error')
+                    )
+                ),
+                $this->transformer->getErrors('Pim\Bundle\CatalogBundle\Entity\Attribute')
+            );
+        } else {
+            $this->assertEmpty($this->transformer->getErrors('Pim\Bundle\CatalogBundle\Entity\Attribute'));
+        }
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
