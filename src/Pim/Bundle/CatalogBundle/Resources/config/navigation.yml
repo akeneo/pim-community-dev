@@ -12,7 +12,6 @@ oro_menu_config:
             uri: '#'
             extras:
                 position: 20
-            aclResourceId: pim_navigation_enrich
             showNonAuthorized: false
         pim_enrich_product:
             label: pim_menu.item.product
@@ -39,27 +38,22 @@ oro_menu_config:
             uri: '#'
             extras:
                 position: 10
-            aclResourceId: pim_navigation_collect
             showNonAuthorized: false
         pim_export_tab:
             label: pim_menu.tab.spread
             uri: '#'
             extras:
                 position: 30
-            aclResourceId: pim_navigation_spread
             showNonAuthorized: false
         pim_configuration_tab:
             label: pim_menu.tab.settings
             uri: '#'
             extras:
                 position: 50
-            aclResourceId: pim_navigation_setting
             showNonAuthorized: false
         system_tab:
-            label: System
             extras:
                 position: 60
-            aclResourceId: pim_navigation_system
             showNonAuthorized: false
         pim_catalog_locale:
             label: pim_menu.item.locale
