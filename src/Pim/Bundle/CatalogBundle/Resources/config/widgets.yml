@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog.widget.registry.class:     Pim\Bundle\CatalogBundle\Widget\Registry
+    pim_catalog.widget.completeness.class: Pim\Bundle\CatalogBundle\Widget\CompletenessWidget
+
+services:
+    pim_catalog.widget.registry:
+        class: %pim_catalog.widget.registry.class%
+
+    pim_catalog.widget.completeness:
+        class: %pim_catalog.widget.completeness.class%
+        tags:
+            - { name: pim_catalog.widget, alias: completeness }

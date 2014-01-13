@@ -15,6 +15,7 @@ parameters:
     pim_catalog.controller.variant_group.class:        Pim\Bundle\CatalogBundle\Controller\VariantGroupController
     pim_catalog.controller.group_type.class:           Pim\Bundle\CatalogBundle\Controller\GroupTypeController
     pim_catalog.controller.completeness.class:         Pim\Bundle\CatalogBundle\Controller\CompletenessController
+    pim_catalog.controller.widget.class:               Pim\Bundle\CatalogBundle\Controller\WidgetController
 
 services:
     pim_catalog.controller.abstract:
@@ -182,3 +183,10 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.locale'
             - '@templating'
+
+    pim_catalog.controller.widget:
+        scope: request
+        class: %pim_catalog.controller.widget.class%
+        parent: pim_catalog.controller.abstract
+        arguments:
+            - '@pim_catalog.widget.registry'
