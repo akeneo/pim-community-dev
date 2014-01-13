@@ -149,7 +149,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             : $this->columnInfos[$label];
     }
 
-    protected function addColumn($label, $addTransformer = true, $skipped = false, $withUpdater = false)
+    protected function addColumn($label, $addTransformer = true, $skipped = false, $withUpdater = false, $suffixes = array())
     {
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
@@ -157,7 +157,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($label));
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue($suffixes));
         $columnInfo->expects($this->any())
             ->method('getPropertyPath')
             ->will($this->returnValue($label . '_path'));
