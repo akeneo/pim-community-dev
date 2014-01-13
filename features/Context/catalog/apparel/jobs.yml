@@ -5,7 +5,6 @@ jobs:
         label:     Product import
         type:      import
         configuration:
-            filePath:          /tmp/import/products.csv
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
@@ -25,7 +24,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/products_ecommerce.csv
     tablet_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -36,7 +34,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/products_tablet.csv
     print_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -47,14 +44,12 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/products_print.csv
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
         label:     Category import
         type:      import
         configuration:
-            filePath:            /tmp/import/categories.csv
             uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
@@ -69,14 +64,12 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/categories.csv
     association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
         label:     Association type import
         type:      import
         configuration:
-            filePath:      /tmp/import/association_types.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -90,14 +83,12 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/association_types.csv
     group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
         label:     Group import
         type:      import
         configuration:
-            filePath:      /tmp/import/groups.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -111,14 +102,12 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:  /tmp/export/groups.csv
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
         label:     Attribute import
         type:      import
         configuration:
-            filePath:      /tmp/import/attributes.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -132,14 +121,12 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/attributes.csv
     option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
         label:     Option import
         type:      import
         configuration:
-            filePath:      /tmp/import/options.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -153,4 +140,3 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/export/options.csv

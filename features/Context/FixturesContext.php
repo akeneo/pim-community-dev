@@ -79,7 +79,18 @@ class FixturesContext extends RawMinkContext
      */
     public function resetPlaceholderValues()
     {
-        $this->placeholderValues = array();
+        $this->placeholderValues = array(
+            '%tmp%' => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat' ,
+        );
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function removeTmpDir()
+    {
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->remove($this->placeholderValues['%tmp%']);
     }
 
     /**
@@ -904,8 +915,12 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingFileToImport(PyStringNode $string)
     {
-        $this->placeholderValues['file to import'] = $filename =
-            sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        $this->placeholderValues['%file to import%'] = $filename =
+            sprintf(
+                '%s/pim-import/behat-import-%s.csv',
+                $this->placeholderValues['%tmp%'],
+                substr(md5(rand()), 0, 7)
+            );
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
 
@@ -1131,14 +1146,7 @@ class FixturesContext extends RawMinkContext
      */
     public function replacePlaceholders($value)
     {
-        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
-            $key = trim(str_replace(array('{{', '}}'), '', $value));
-            if (array_key_exists($key, $this->placeholderValues)) {
-                return $this->placeholderValues[$key];
-            }
-        }
-
-        return $value;
+        return strtr($value, $this->placeholderValues);
     }
 
     /**

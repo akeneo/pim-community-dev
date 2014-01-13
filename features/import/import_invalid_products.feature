@@ -22,7 +22,7 @@ Feature: Import invalid products
     honda-civic;15EUR
     """
     And the following job "acme_product_import" configuration:
-      | filePath          | {{ file to import }} |
+      | filePath          | %file to import% |
       | uploadAllowed     | no                   |
       | delimiter         | ;                    |
       | enclosure         | "                    |

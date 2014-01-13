@@ -1092,6 +1092,7 @@ class WebUser extends RawMinkContext
      */
     public function theCategoryOrderInTheFileShouldBeFollowing($fileName, TableNode $table)
     {
+        $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }

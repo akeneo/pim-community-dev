@@ -6,6 +6,8 @@ Feature: Convert metric values during export
 
   Background:
     Given an "apparel" catalog configuration
+    And the following job "ecommerce_product_export" configuration:
+      | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And I am logged in as "Julia"
 
   Scenario: Succesfully display metric conversion configuration for a channel
