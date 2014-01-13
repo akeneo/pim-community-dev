@@ -3,10 +3,9 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 /**
- * Flexible image field property, able to render image attribute type 
+ * Flexible image field property, able to render image attribute type
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -36,7 +35,12 @@ class FlexibleImageProperty extends FieldProperty
     protected function convertValue($value)
     {
         if ($value->getMedia() && $fileName = $value->getMedia()->getFileName()) {
-            return $this->getTemplate()->render(array('value' => $fileName));
+            return $this->getTemplate()->render(
+                array(
+                    'value' => $fileName,
+                    'title' => $value->getMedia()->getOriginalFilename()
+                )
+            );
         }
 
         return null;
