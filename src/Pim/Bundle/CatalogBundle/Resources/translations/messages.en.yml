@@ -257,6 +257,7 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 Label translations:            Label translations
 default:                       Default
+Axis:                          Axis
 
 Create:               Create
 Cancel:               Cancel
@@ -337,16 +338,13 @@ Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Groups:                                      Groups
-Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
 Variant groups:                              Variant groups
-Variant groups | Create:                     Variant groups | Create
 Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
 Association types:                                 Association types
 Association types | Create:                        Association types | Create
 Association types %association type.label% | Edit: Association types %association type.label% | Edit
 Group types:                                       Group types
-Group types | Create:                              Group types | Create
 Group types %group type.label% | Edit:             Group types %group type.label% | Edit
 
 
@@ -521,3 +519,17 @@ pim_menu:
         locale: Locales
         product: Products
         variant_group: Variant groups
+
+# Tabs
+Properties: Properties
+pane.accordion:
+    node_values: Node values
+    general_properties: General properties
+
+# Popin titles
+popin.create:
+    variant_group.title: Create a new variant group
+    group: Create a new group
+
+# Datagrid contents
+Has product: Has product
