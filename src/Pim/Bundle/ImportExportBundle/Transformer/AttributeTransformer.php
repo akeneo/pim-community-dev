@@ -62,10 +62,12 @@ class AttributeTransformer extends NestedEntityTransformer
         if (isset($data['options'])) {
             $optionsData = $data['options'];
             unset($data['options']);
-            parent::setProperties($class, $entity, $data);
+        }
+
+        parent::setProperties($class, $entity, $data);
+
+        if (isset($optionsData)) {
             $this->setOptions($class, $entity, $optionsData);
-        } else {
-            parent::setProperties($class, $entity, $data);
         }
     }
 

@@ -27,10 +27,22 @@ class EntityTransformerTest extends EntityTransformerTestCase
         $this->addColumn('code');
     }
 
-    public function testTransform()
+    public function getTransformData()
     {
+        return array(
+            'referable'     => array(true),
+            'non_referable' => array(false)
+        );
+    }
+
+    /**
+     * @dataProvider getTransformData
+     */
+    public function testTransform($referableRepository)
+    {
+        $this->setupRepositories($referableRepository);
         $this->addColumn('col1');
-        $this->addColumn('col2');
+        $this->addColumn('col2', true, false, true);
         $this->addColumn('skipped', true, true);
 
         $object = $this->transformer->transform(
@@ -44,13 +56,14 @@ class EntityTransformerTest extends EntityTransformerTestCase
         $this->assertEquals('val4', $object->prop4);
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);
-        $this->assertEquals('col2_path-val2', $object->col2_path);
+        $this->assertEquals('col2_path-val2_entityupdater', $object->col2_path);
         $this->assertObjectNotHasAttribute('skipped', $object);
         $this->assertCount(4, $this->transformers);
     }
 
     public function testFailingTransformer()
     {
+        $this->setupRepositories();
         $this->addColumn('col1', false);
         $this->addColumn('col2');
         $this->addTransformer('col1_path', true);
@@ -74,12 +87,27 @@ class EntityTransformerTest extends EntityTransformerTestCase
      */
     public function testMissingTransformer()
     {
+        $this->setupRepositories();
         $this->addColumn('col1', false);
         $this->addColumn('col2');
 
         $this->transformer->transform(
             'stdClass',
             array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
+        );
+    }
+
+    /**
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException
+     */
+    public function testMissingIdentifier()
+    {
+        $this->setupRepositories();
+        $this->addColumn('col1');
+
+        $this->transformer->transform(
+            'stdClass',
+            array('col1' => 'val1')
         );
     }
 }

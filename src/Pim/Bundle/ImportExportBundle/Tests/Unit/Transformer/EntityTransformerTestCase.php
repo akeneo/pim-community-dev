@@ -60,16 +60,21 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(array($this, 'getColumnInfo')));
         $this->transformers = array();
         $this->columnInfos = array();
-        $this->setupRepositories();
     }
 
-    protected function setupRepositories()
+    protected function setupRepositories($referable = true)
     {
-        $this->repository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
-        $this->repository->expects($this->any())
-            ->method('getReferenceProperties')
-            ->will($this->returnValue(array('code')));
+        if ($referable) {
+            $this->repository = $this
+                ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
+            $this->repository->expects($this->any())
+                ->method('getReferenceProperties')
+                ->will($this->returnValue(array('code')));
+        } else {
+            $this->repository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\EntityRepository')
+                ->disableOriginalConstructor()
+                ->getMock();
+        }
 
         $this->doctrine
             ->expects($this->any())
@@ -78,18 +83,22 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->repository));
     }
 
-    protected function addTransformer($propertyPath, $failing = false, $skipped = false)
+    protected function addTransformer($propertyPath, $failing = false, $skipped = false, $withUpdater = false)
     {
-        $this->transformers[$propertyPath] = $this->getPropertyTransformerMock($propertyPath, $failing, $skipped);
+        $this->transformers[$propertyPath] = $this
+            ->getPropertyTransformerMock($propertyPath, $failing, $skipped, $withUpdater);
     }
 
-    protected function getPropertyTransformerMock($prefix, $failing = false, $skipped = false)
+    protected function getPropertyTransformerMock($prefix, $failing = false, $skipped = false, $withUpdater = false)
     {
-        $transformer = $this->getMock(
-            $skipped
-            ? 'Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer'
-            : 'Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface'
-        );
+        if ($skipped) {
+            $transformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer');
+        } elseif ($withUpdater) {
+            $transformer = $this
+                ->getMock('Pim\Bundle\ImportExportBundle\Tests\Stub\EntityUpdaterPropertyTransformerInterface');
+        } else {
+            $transformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface');
+        }
         if ($failing) {
             $transformer->expects($this->any())
                 ->method('transform')
@@ -105,6 +114,19 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
                     $this->returnCallback(
                         function ($value) use ($prefix) {
                             return "$prefix-$value";
+                        }
+                    )
+                );
+        }
+
+        if ($withUpdater) {
+            $transformer->expects($this->any())
+                ->method('setValue')
+                ->will(
+                    $this->returnCallback(
+                        function ($entity, $columnInfo, $data) {
+                            $property = $columnInfo->getPropertyPath();
+                            $entity->$property = $data . '_entityupdater';
                         }
                     )
                 );
@@ -127,7 +149,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             : $this->columnInfos[$label];
     }
 
-    protected function addColumn($label, $addTransformer = true, $skipped = false)
+    protected function addColumn($label, $addTransformer = true, $skipped = false, $withUpdater = false)
     {
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
@@ -142,7 +164,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->columnInfos[$label] = $columnInfo;
 
         if ($addTransformer) {
-            $this->addTransformer($label . '_path', false, $skipped);
+            $this->addTransformer($label . '_path', false, $skipped, $withUpdater);
         }
 
         return $columnInfo;
