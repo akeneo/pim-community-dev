@@ -2,11 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 
@@ -22,40 +19,30 @@ class PriceFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    protected function getFormType()
     {
-        return array(
-            'form_type' => PriceFilterType::NAME
-        );
+        return PriceFilterType::NAME;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
             return;
         }
 
-        $operator = $this->getOperator($data['type']);
-        $currency = $data['currency'];
+        $this->util->applyFlexibleFilter(
+            $ds,
+            $this->get(FilterUtility::FEN_KEY),
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            sprintf('%s %s', $data['value'], $data['currency']),
+            $this->getOperator($data['type'])
+        );
 
-        $newAlias = 'valuePrices';
-
-        // Apply clause on currency code
-        $paramCurrency = $this->getNewParameterName($proxyQuery);
-        $exprEq = $this->createCompareFieldExpression('currency', $newAlias, '=', $paramCurrency);
-        $proxyQuery->setParameter($paramCurrency, $currency);
-
-        // Apply clause on operator and value
-        $paramValue = $this->getNewParameterName($proxyQuery);
-        $exprCmp = $this->createCompareFieldExpression('data', $newAlias, $operator, $paramValue);
-        $proxyQuery->setParameter($paramValue, $data['value']);
-
-        $expression = $this->getExpressionFactory()->andX($exprEq, $exprCmp);
-        $this->applyFilterToClause($proxyQuery, $expression);
+        return true;
     }
 
     /**
@@ -77,23 +64,13 @@ class PriceFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getRenderSettings()
+    public function getMetadata()
     {
-        $dataType = $this->getOption('data_type');
+        $metadata = parent::getMetadata();
 
-        list($formType, $formOptions) = parent::getRenderSettings();
+        $formView = $this->getForm()->createView();
+        $metadata['currencies'] = $formView->vars['currency_choices'];
 
-        switch ($dataType) {
-            case FieldDescriptionInterface::TYPE_INTEGER:
-                $formOptions['data_type'] = NumberFilterType::DATA_INTEGER;
-                break;
-            case FieldDescriptionInterface::TYPE_DECIMAL:
-            case FieldDescriptionInterface::TYPE_PERCENT:
-            default:
-                $formOptions['data_type'] = NumberFilterType::DATA_DECIMAL;
-                break;
-        }
-
-        return array($formType, $formOptions);
+        return $metadata;
     }
 }

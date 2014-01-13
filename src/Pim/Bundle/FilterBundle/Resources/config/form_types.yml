@@ -31,7 +31,6 @@ services:
     pim_filter.form.type.filter.price:
         class: %pim_filter.form.type.filter.price_class%
         arguments:
-            - '@translator'
             - '@pim_catalog.manager.currency'
         tags:
             - { name: form.type, alias: pim_type_price_filter }

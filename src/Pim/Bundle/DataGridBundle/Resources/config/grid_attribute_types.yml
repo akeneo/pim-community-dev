@@ -4,25 +4,25 @@ parameters:
         column:
             type: flexible_field
         filter:
-            type:        flexible_string 
+            type:        flexible_string
             parent_type: string
     pim_datagrid.flexible.attribute_type.pim_catalog_text:
         column:
             type: flexible_field
         filter:
-            type:        flexible_string 
+            type:        flexible_string
             parent_type: string
     pim_datagrid.flexible.attribute_type.pim_catalog_textarea:
         column:
             type: flexible_field
         filter:
-            type:        flexible_string 
+            type:        flexible_string
             parent_type: string
     pim_datagrid.flexible.attribute_type.pim_catalog_simpleselect:
         column:
             type: flexible_field
         filter:
-            type:        flexible_choice 
+            type:        flexible_choice
             parent_type: choice
             options:
                 field_options:
@@ -31,7 +31,7 @@ parameters:
         column:
             type: flexible_field
         filter:
-            type:        flexible_choice 
+            type:        flexible_choice
             parent_type: choice
             options:
                 field_options:
@@ -69,7 +69,7 @@ parameters:
             type: flexible_field
         filter:
             type:        flexible_price
-            parent_type: string
+            parent_type: price
 
     pim_datagrid.flexible.attribute_type.pim_catalog_metric:
         column:

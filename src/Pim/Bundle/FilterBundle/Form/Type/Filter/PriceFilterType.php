@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -15,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceFilterType extends NumberFilterType
+class PriceFilterType extends AbstractType
 {
     /**
      * @staticvar string
@@ -28,13 +30,10 @@ class PriceFilterType extends NumberFilterType
     protected $currencyManager;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param CurrencyManager     $currencyManager
+     * @param CurrencyManager $currencyManager
      */
-    public function __construct(TranslatorInterface $translator, CurrencyManager $currencyManager)
+    public function __construct(CurrencyManager $currencyManager)
     {
-        parent::__construct($translator);
-
         $this->currencyManager = $currencyManager;
     }
 
@@ -91,13 +90,22 @@ class PriceFilterType extends NumberFilterType
 
         $currencyChoices = $this->currencyManager->getActiveCodeChoices();
 
-        $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
+        $resolver->replaceDefaults(array('data_type' => NumberFilterType::DATA_DECIMAL));
         $resolver->setDefaults(
             array(
                 'currency_choices' => $currencyChoices,
-                'currency_type' => 'choice',
                 'currency_options' => array()
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+
+        $view->vars['currency_choices'] = $options['currency_choices'];
     }
 }

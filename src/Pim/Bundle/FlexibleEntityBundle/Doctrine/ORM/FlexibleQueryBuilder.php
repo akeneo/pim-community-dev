@@ -165,6 +165,7 @@ class FlexibleQueryBuilder
             AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array('IN', 'NOT IN'),
             AbstractAttributeType::BACKEND_TYPE_TEXT     => array('=', 'NOT LIKE', 'LIKE'),
             AbstractAttributeType::BACKEND_TYPE_VARCHAR  => array('=', 'NOT LIKE', 'LIKE'),
+            'prices'                                     => array('=', '<', '<=', '>', '>='),
         );
 
         if (!isset($typeToOperator[$backendType])) {
@@ -285,22 +286,24 @@ class FlexibleQueryBuilder
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $allowed = $this->getAllowedOperators($attribute->getBackendType());
+        $backendType = $attribute->getBackendType();
+        $allowed = $this->getAllowedOperators($backendType);
 
         $operators = is_array($operator) ? $operator : array($operator);
         foreach ($operators as $key) {
             if (!in_array($key, $allowed)) {
                 throw new FlexibleQueryException(
-                    $key.' is not allowed for type '.$attribute->getBackendType().', use '.implode(', ', $allowed)
+                    sprintf('%s is not allowed for type %s, use %s'), $key, $backendType, implode(', ', $allowed)
                 );
             }
         }
 
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 
-        if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            || $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTION
-            || $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_METRIC) {
+        if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
+            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION
+            || $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC
+            || $backendType === 'prices') {
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -311,17 +314,33 @@ class FlexibleQueryBuilder
                 $condition
             );
 
-            // then join to option with filter on option id
-            $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-            if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_METRIC) {
-                $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-            } else {
-                $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-            }
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
+            if ($backendType === 'prices') {
+                $joinAliasOpt = 'filterP'.$attribute->getCode().$this->aliasCounter;
 
-        } elseif ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_ENTITY) {
+                list($value, $currency) = explode(' ', $value);
+
+                $currencyField = sprintf('%s.%s', $joinAliasOpt, 'currency');
+                $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $currency);
+
+                $valueField = sprintf('%s.%s', $joinAliasOpt, 'data');
+                $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value);
+
+                $condition = sprintf('(%s AND %s)', $currencyCondition, $valueCondition);
+
+            } else {
+                if ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+                    $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
+                    $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+                } else {
+                    $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
+                    $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+                }
+                $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+            }
+
+            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+
+        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_ENTITY) {
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -332,12 +351,12 @@ class FlexibleQueryBuilder
             $joinAliasOpt = 'filterentity'.$attribute->getCode().$this->aliasCounter;
             $backendField = sprintf('%s.id', $joinAliasEntity);
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasEntity, 'WITH', $condition);
+            $this->qb->innerJoin($joinAlias .'.'. $backendType, $joinAliasEntity, 'WITH', $condition);
 
         } else {
 
             // inner join with condition on backend value
-            $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
+            $backendField = sprintf('%s.%s', $joinAlias, $backendType);
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
@@ -361,9 +380,10 @@ class FlexibleQueryBuilder
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
+        $backendType = $attribute->getBackendType();
 
-        if ($attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            or $attribute->getBackendType() == AbstractAttributeType::BACKEND_TYPE_OPTION) {
+        if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
+            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
 
             // join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -377,7 +397,7 @@ class FlexibleQueryBuilder
             // then to option and option value to sort on
             $joinAliasOpt = $aliasPrefix.'O'.$attribute->getCode().$this->aliasCounter;
             $condition    = $joinAliasOpt.".attribute = ".$attribute->getId();
-            $this->qb->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt, 'WITH', $condition);
+            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
             $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode().$this->aliasCounter;
             $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->getLocale());
@@ -386,7 +406,7 @@ class FlexibleQueryBuilder
             $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
             $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
-        } elseif ($attribute->getBackendType() === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
 
             // join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -398,7 +418,7 @@ class FlexibleQueryBuilder
             );
 
             $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode().$this->aliasCounter;
-            $this->qb->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasMetric);
+            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
 
             $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
 
@@ -417,7 +437,7 @@ class FlexibleQueryBuilder
                 'WITH',
                 $condition
             );
-            $this->qb->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
+            $this->qb->addOrderBy($joinAlias.'.'.$backendType, $direction);
 
             // Reapply previous join after the orderBy related join
             $this->applyJoins($joinsSet);

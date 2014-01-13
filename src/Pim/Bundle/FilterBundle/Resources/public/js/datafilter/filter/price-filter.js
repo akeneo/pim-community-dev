@@ -104,7 +104,7 @@ define(
                             '</button>' +
                             '<ul class="dropdown-menu">' +
                                 '<% _.each(currencies, function (currency) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= currency.value %>"><%= currency.label %></a></li>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
                             '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
