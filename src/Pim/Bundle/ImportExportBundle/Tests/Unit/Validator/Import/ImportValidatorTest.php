@@ -33,9 +33,6 @@ class ImportValidatorTest extends ImportValidatorTestCase
         parent::setUp();
         $this->importValidator = new ImportValidator($this->validator);
         $this->entity = $this->getMock('Pim\Bundle\CatalogBundle\Model\ReferableInterface');
-        $this->entity->expects($this->any())
-            ->method('getReference')
-            ->will($this->returnValue('id'));
     }
 
     /**
@@ -43,6 +40,9 @@ class ImportValidatorTest extends ImportValidatorTestCase
      */
     public function testWithFullValidate()
     {
+        $this->entity->expects($this->any())
+            ->method('getReference')
+            ->will($this->returnValue('id'));
         $this->validator->expects($this->any())
             ->method('validate')
             ->with($this->identicalTo($this->entity))
@@ -66,6 +66,9 @@ class ImportValidatorTest extends ImportValidatorTestCase
         $expectedErrors = $this->errors + $otherErrors;
         unset($expectedErrors['key2']);
         $columns = array('key1_path' => $this->getColumnInfoMock('key1'));
+        $this->entity->expects($this->any())
+            ->method('getReference')
+            ->will($this->returnValue('id'));
         $this->validator->expects($this->any())
             ->method('validateProperty')
             ->will(
@@ -87,6 +90,19 @@ class ImportValidatorTest extends ImportValidatorTestCase
      * @expectedExceptionMessage The unique code "id" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
+    {
+        $this->entity->expects($this->any())
+            ->method('getReference')
+            ->will($this->returnValue('id'));
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->with($this->identicalTo($this->entity))
+            ->will($this->returnValue($this->getViolationListMock(array())));
+        $this->importValidator->validate($this->entity, array(), $this->data);
+        $this->importValidator->validate($this->entity, array(), $this->data);
+    }
+
+    public function testWithoutIdentifier()
     {
         $this->validator->expects($this->once())
             ->method('validate')
