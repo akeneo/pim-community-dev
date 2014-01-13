@@ -1,7 +1,7 @@
 <div class="tab-content container-fluid">
     <table id="progress-table" class="table table-bordered groups">
         <thead>
-            <th width="8%">{{ 'Locales'|upper }}</th>
+            <th width="8%">{{ 'Locales'|trans|upper }}</th>
             {% for channel in channels %}
                 <th class="channel" width="150">{{ channel.label|upper }}</th>
             {% endfor %}

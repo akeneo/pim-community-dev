@@ -220,6 +220,8 @@ Created at:                    Created at
 Updated at:                    Updated at
 Created:                       Created
 Updated:                       Updated
+Last update:                   Last update
+by:                            By
 N/A:                           N/A
 Add an option:                 Add an option
 Manage products:               Manage products
@@ -230,6 +232,7 @@ Type:                          Type
 Scope:                         Scope
 Required:                      Required
 Unique:                        Unique
+Not required:                  Not required
 Translatable:                  Translatable
 Scopable:                      Scopable
 Localizable:                   Localizable
@@ -257,7 +260,6 @@ Useable as grid filter:        Usable as grid filter
 Family:                        Family
 Available locales:             Available locales
 Locale specific:               Locale specific
-Label translations:            Label translations
 default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
@@ -276,6 +278,10 @@ Cancel:                   Cancel
 Create a new product:     Create a new product
 Create a new association type: Create a new association type
 Create a new option:      Create a new option
+
+Category tree: Category tree
+Completeness: Complétude
+Attribute used as label: Attribute used as label
 
 # Scopes
 Global:  Global
@@ -539,6 +545,10 @@ pane.accordion:
     node_values: Node values
     general_properties: General properties
     locale_values: Locale values
+    backend_parameters: Backend parameters
+    label_translations: Label translations
+    options: Options
+    group_values: Valeurs du groupe
 
 # Popin titles
 popin.create:
@@ -546,6 +556,7 @@ popin.create:
     group.title: Create a new group
     product.title: Create a new product
     association_type.title: Create a new association type
+    family.title: Create a new family
 
 # Datagrid contents
 Has product: Has product
