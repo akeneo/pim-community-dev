@@ -1,7 +1,6 @@
 {% extends bap.layout %}
 
 {% macro renderWidget(widget) %}
-    {% if resource_granted(widget.acl) %}
     <div class="quick-launchpad-widget span6">
         <div class="clearfix">
             <div class="image-wrap pull-left">
@@ -23,7 +22,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 {% endmacro %}
 {% import _self as __ %}
 
@@ -39,8 +37,7 @@
                         { url: path('pim_importexport_import_profile_index'), label: 'pim_dashboard.link.label.import_profile' },
                         { url: path('pim_importexport_import_execution_index'), label: 'pim_dashboard.link.label.import_report' }
                     ],
-                    image: 'collect-image',
-                    acl: 'pim_navigation_collect'
+                    image: 'collect-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.enrich',
@@ -50,8 +47,7 @@
                         { url: path('pim_catalog_variant_group_index'), label: 'pim_dashboard.link.label.variant' },
                         { url: path('pim_catalog_group_index'), label: 'pim_dashboard.link.label.group' }
                     ],
-                    image: 'enrich-image',
-                    acl: 'pim_navigation_enrich'
+                    image: 'enrich-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.spread',
@@ -60,8 +56,7 @@
                         { url: path('pim_importexport_export_profile_index'), label: 'pim_dashboard.link.label.export_profile' },
                         { url: path('pim_importexport_export_execution_index'), label: 'pim_dashboard.link.label.export_report' }
                     ],
-                    image: 'spread-image',
-                    acl: 'pim_navigation_spread'
+                    image: 'spread-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.settings',
@@ -69,8 +64,7 @@
                         { url: path('pim_catalog_attribute_index'), label: 'pim_dashboard.link.label.attribute' },
                         { url: path('pim_catalog_family_create'), label: 'pim_dashboard.link.label.family' }
                     ],
-                    image: 'configure-image',
-                    acl: 'pim_navigation_settings'
+                    image: 'configure-image'
                 },
             ] %}
 

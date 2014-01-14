@@ -215,9 +215,9 @@ flash:
 # Menu entries
 pim_menu:
     item:
-        history_export: Exports history
+        export_history: Exports history
         export_profile: Export profiles
-        history_import: Imports history
+        import_history: Imports history
         import_profile: Import profiles
 
 # Tabs
