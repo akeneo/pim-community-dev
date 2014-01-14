@@ -166,9 +166,8 @@ class GroupController extends AbstractController
         }
 
         return array(
-            'form'     => $this->groupForm->createView(),
-            // TODO 
-            'dataLocale' => 'en_US',
+            'form'         => $this->groupForm->createView(),
+            'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
             'currentGroup' => $group->getId()
         );
     }
