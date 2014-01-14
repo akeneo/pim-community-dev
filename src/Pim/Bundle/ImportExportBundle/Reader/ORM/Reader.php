@@ -22,20 +22,17 @@ class Reader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @var AbstractQuery
-     */
+    /** @var AbstractQuery */
     protected $query;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $executed = false;
+
+    /** @var array */
+    protected $results = array();
 
     /**
      * Set query used by the reader
@@ -54,11 +51,14 @@ class Reader extends AbstractConfigurableStepElement implements
         if (!$this->executed) {
             $this->executed = true;
 
-            $result = $this->getQuery()->execute();
-            $this->stepExecution->addSummaryInfo('read', count($result));
-
-            return empty($result) ? null : $result;
+            $this->results = $this->getQuery()->execute();
         }
+
+        if ($result = array_shift($this->results)) {
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $result;
     }
 
     /**

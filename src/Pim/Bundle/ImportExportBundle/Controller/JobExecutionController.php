@@ -119,13 +119,12 @@ class JobExecutionController extends AbstractDoctrineController
     public function showAction($id)
     {
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
-        $view = sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Execution');
 
         return $this->render(
-            $view,
+            sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Execution'),
             array(
                 'execution'   => $jobExecution,
-                'existingLog' => file_exists($this->batchLogHandler->getRealPath($jobExecution->getLogFile())),
+                'existingLog' => file_exists($jobExecution->getLogFile()),
                 'archives'    => $this->archivist->getArchives($jobExecution),
             )
         );
@@ -142,7 +141,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
 
-        $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
+        $response = new BinaryFileResponse($jobExecution->getLogFile());
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;

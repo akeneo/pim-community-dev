@@ -11,12 +11,12 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
- * Product reader
-  *
-  * @author    Gildas Quemener <gildas@akeneo.com>
-  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-  */
+ * Reads products one by one
+ *
+ * @author    Gildas Quemener <gildas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductReader extends Reader
 {
     /**
@@ -63,27 +63,28 @@ class ProductReader extends Reader
     public function read()
     {
         if (!$this->query) {
-            $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
-            if (!$channel) {
+            $code = $this->channel;
+            $this->channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
+            if (!$this->channel) {
                 throw new \InvalidArgumentException(
-                    sprintf('Could not find the channel %s', $this->channel)
+                    sprintf('Could not find the channel "%s"', $code)
                 );
             }
 
-            $this->completenessManager->generateChannelCompletenesses($channel);
+            $this->completenessManager->generateChannelCompletenesses($this->channel);
 
             $this->query = $this->getProductRepository()
-                ->buildByChannelAndCompleteness($channel)
+                ->buildByChannelAndCompleteness($this->channel)
                 ->getQuery();
         }
 
-        $products = parent::read();
+        $product = parent::read();
 
-        if (is_array($products)) {
-            $this->metricConverter->convert($products, $channel);
+        if ($product) {
+            $this->metricConverter->convert($product, $this->channel);
         }
 
-        return $products;
+        return $product;
     }
 
     /**

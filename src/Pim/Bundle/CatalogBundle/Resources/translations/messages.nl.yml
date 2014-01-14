@@ -50,10 +50,10 @@ variant group:
   overview: Variantgroepen overzicht
   create: Variantgroep aanmaken
   edit: Variantgroep bewerken
-association:
-  overview: Koppelingsoverzicht
-  create: Koppeling aanmaken
-  edit: Koppeling bewerken
+association type:
+  overview: associatietype overzicht
+  create: aanmaken associatietype
+  edit: wijzigen associatietype
 group type:
   overview: Groepstype overzicht
   create: Groepstype aanmaken
@@ -78,10 +78,12 @@ btn:
     product: Product aanmaken
     group: Groep aanmaken
     variant group: Variantgroep aanmaken
-    association: Koppeling aanmaken
+    association type: aanmaken associatietype
     group type: Groepstype aanmaken
   edit: Bewerken
   save: Opslaan
+  save and back: opslaan en terug naar raster
+  save and create: opslaan en aanmaken
   remove: Verwijderen
   delete: Verwijderen
   cancel: Annuleren
@@ -106,7 +108,7 @@ confirmation:
     channel: Weet u zeker dat u het kanaal %name% wilt verwijderen?
     group: Weet u zeker dat u de groep %name% wilt verwijderen?
     variant group: Weet u zeker dat u de variantgroep %name% wilt verwijderen?
-    association: Weet u zeker dat u de koppeling %name% wilt verwijderen?
+    association type: Weet u zeker dat u het associatietype %name% wilt verwijderen?
     group type: Weet u zeker dat u het groepstype %name% wilt verwijderen?
 flash:
   entity:
@@ -175,10 +177,10 @@ flash:
     removed: Groepstype succesvol verwijderd
     cant remove variant: Groeptype variant kan niet worden verwijderd
     cant remove used: Groepstype wordt gebruikt door sommige groepen en kan niet worden verwijderd
-  association:
-    created: Koppeling succesvol aangemaakt
-    updated: Koppeling succesvol bijgewerkt
-    removed: Koppeling succesvol verwijderd
+  association type:
+    created: Associatietype met succes aangemaakt
+    updated: Associatietype met succes gewijzigd
+    removed: Associatietype met succes verwijderd
   error ocurred: Actie mislukt. Probeer alstublieft opnieuw.
 info:
   updated: Er zijn niet-opgeslagen wijzigingen.
@@ -201,10 +203,10 @@ info:
       Variation axis: %attributes%
     select products: Selecteer alstublieft de producten die behoren tot deze groep.
     selectable products: De volgende selecteerbare producten hebben een gedefinieerde waarde voor elke as.
-  association:
+  association type:
     show products: Toon producten
     show groups: Toon groepen
-    remove from products: Verwijderen van de koppeling zal het verwijderen van %count% producten.
+    remove from products: Verwijderen van het associatietype zal het verwijderen van %count% producten.
 Options: Opties
 Created at: Aangemaakt op
 Updated at: Bijgewerkt op
@@ -251,7 +253,7 @@ Create: Aanmaken
 Cancel: Annuleren
 Create a new product: Een nieuw product aanmaken
 Choose a family: Kies een familie
-Create a new association: Een nieuwe koppeling aanmaken
+Create a new association type: Maak een nieuw associatietype aan
 Create a new option: Nieuwe optie aanmaken
 Global: Globaal
 Channel: Kanaal
@@ -318,12 +320,12 @@ Groups %group.label% | Edit: Groepen %group.label% | Bewerken
 Variant groups: Variantgroepen
 Variant groups | Create: Variantgroepen|Aanmaken
 Variant groups %group.label% | Edit: Variantgroepen %group.label%|Bewerken
-Associations: Koppelingen
-Associations | Create: Koppelingen|Aanmaken
-Associations %association.label% | Edit: Koppelingen %association.label%|Bewerken
+Association types: Associatietypes
+Association types | Create: Associatietypes | Aanmaken
+Association types %association type.label% | Edit: Associatietypes %association type.label% | Bewerken
 Group types: Groepstypen
 Group types | Create: Groepstypen | aanmaken
-Group types %group type.label% | Edit: Groepstypen %group type.label% | Bewerken
+Group types %group type.label% | Edit: Groupstypen %group type.label% | Bewerken
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstblok
@@ -362,6 +364,10 @@ pim_catalog.mass_edit_action:
     label: Wijzigen van de productfamilie
     description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
     success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
+  add-to-groups:
+    label: Toevoegen aan groepen
+    description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
+    success_flash: Producten werden met succes toegevoegd aan de geselecteerde groepen
 pim_catalog.completeness:
   progress_bar.title: %ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)
   subtitle: "{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden"
@@ -375,5 +381,75 @@ pim_catalog.group:
     X_SELL: Cross-Sell
     ADDITIONAL: Extra
     RELATED: Gerelateerd
+pim_catalog.product:
+  no_comparison_locale_available: Geen andere locale is beschikbaar voor vergelijking
+  no_compared_media: Geen media beschikbaar voor vergelijking
+pim_catalog.channel.pick_conversion_unit: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
 Group: Groep
 View group: Bekijk groep
+pim_catalog:
+  acl:
+    locale.index: Locales weergeven
+    currency:
+      index: "Valuta's weergeven"
+      toggle: "Valuta's aanzetten"
+    product:
+      index: Producten weergeven
+      create: Product aanmaken
+      edit: Product wijzigen
+      remove: Product verwijderen
+      add_attribute: Voeg een attribuut toe aan een product
+      remove_attribute: Verwijder een attribuut van een product
+      categories_view: Raadpleeg de categorieën van een product
+      associations_view: De associatietypes van een product weergeven
+      change_family: Productfamilie wijzigen
+      change_state: Status van product wijzigen
+      add_to_groups: Product toevoegen aan groepen
+      mass_edit: Product massabewerken acties
+    category:
+      list: Categorieën weergeven
+      create: Categorie aanmaken
+      edit: Categorie wijzigen
+      remove: Categorie verwijderen
+      move: Categorie verplaatsen
+      children: Categorie kinderen weergeven
+      products: Categorie producten weergeven
+    channel:
+      index: Kanalen weergeven
+      create: Kanaal aanmaken
+      edit: Kanaal wijzigen
+      remove: Kanaal verwijderen
+    family:
+      create: Familie aanmaken
+      edit: Familie wijzigen
+      remove: Familie verwijderen
+      add_attribute: Voeg attributen toe aan een familie
+      remove_attribute: Verwijder attributen van een familie
+    attribute_group:
+      create: Attribuutgroep aanmaken
+      edit: Attribuutgroep wijzigen
+      remove: Attribuutgroep verwijderen
+      sort: Attribuutgroepen sorteren
+      add_attribute: Attribuut toevoegen aan een groep
+      remove_attribute: Attribuut verwijderen van een groep
+    product_attribute:
+      index: Productattributen weergeven
+      create: Productattribuut aanmaken
+      edit: Productattribuut wijzigen
+      remove: Productattribuut verwijderen
+      sort: Sorteer productattributen binnen attribuutgroepen
+    group:
+      index: Groepen weergeven
+      create: Groep aanmaken
+      edit: Groep wijzigen
+      remove: Groep verwijderen
+    group_type:
+      index: Groepstypes weergeven
+      create: Groepstype aanmaken
+      edit: Groepstype wijzigen
+      remove: Groepstype verwijderen
+    association_type:
+      index: Associatietypes weergeven
+      create: Associatietype aanmaken
+      edit: Associatietype wijzigen
+      remove: Associatietype verwijderen

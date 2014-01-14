@@ -14,7 +14,7 @@ Feature: Import partial product information
     caterpillar-boots;"Caterpillar boots"
     """
     And the following job "footwear_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     And I am logged in as "Julia"
     When I am on the "footwear_product_import" import job page
     And I launch the import job

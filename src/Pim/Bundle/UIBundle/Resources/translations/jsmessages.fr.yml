@@ -3,6 +3,9 @@ Close: Fermer
 Update: Mettre à jour
 Selected Rows: Lignes sélectionnées
 Localized value: Valeur localisée
+Action: Action
+Unit: Unité
+Currency: Devise
 jstree:
   all: Tous les produits
   unclassified: Produits non classifiés

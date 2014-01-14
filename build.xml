@@ -3,9 +3,9 @@
     <property environment="env"/>
     <property name="jobName" value="${env.JOB_NAME}" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
@@ -176,6 +176,15 @@
         </exec>
     </target>
 
+    <target name="phpspec" description="Run specs with PhpSpec">
+        <exec executable="bin/phpspec">
+            <arg value="run" />
+            <arg value="--ansi" />
+            <arg value="-fpretty" />
+            <arg value="--no-interaction" />
+        </exec>
+    </target>
+
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <!-- Concurrency -->
@@ -204,8 +213,14 @@
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="1" />
             <arg value="xdebug" />
-            <arg value="${basedir}/app/Resources/jenkins/behat-coverage --profile=jenkins-coverage --ansi" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_pr_behat_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-coverage-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 

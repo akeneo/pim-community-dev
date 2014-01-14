@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "bf8467f34c1885e2a40243e14f8b4a2b",
+    "hash": "1d2aa600a85e680ea1e92535fab494ab",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -12,16 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556"
+                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/6388ad72a88c3c15e2eaee6c56ba046a60b47556",
-                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/7f0f33af0863275791c96b18f7c1d78bf5a290c0",
+                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0",
                 "shasum": ""
             },
             "require": {
-                "symfony/symfony": "2.3.*"
+                "symfony/symfony": ">=2.3"
             },
             "suggest": {
                 "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
@@ -65,7 +65,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2013-11-07 19:20:01"
+            "time": "2013-12-17 18:40:49"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -85,8 +85,7 @@
             "require": {
                 "php": ">=5.3.3",
                 "symfony/form": "~2.1",
-                "symfony/framework-bundle": "~2.1",
-                "willdurand/expose-translation-bundle": ">=0.2.1"
+                "symfony/framework-bundle": "~2.1"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "*",
@@ -3634,12 +3633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "c56bf731d4641ad00bb8070324171a89368b79a8"
+                "reference": "021636d58ee24d2b51797094fe4d2c7e4e210a33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/c56bf731d4641ad00bb8070324171a89368b79a8",
-                "reference": "c56bf731d4641ad00bb8070324171a89368b79a8",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/021636d58ee24d2b51797094fe4d2c7e4e210a33",
+                "reference": "021636d58ee24d2b51797094fe4d2c7e4e210a33",
                 "shasum": ""
             },
             "require": {
@@ -3683,7 +3682,7 @@
                 "symfony/swiftmailer-bundle": "2.3.*",
                 "symfony/symfony": "v2.3.6",
                 "twig/extensions": "1.0.*@dev",
-                "willdurand/expose-translation-bundle": "0.2.*@dev",
+                "willdurand/expose-translation-bundle": "1.1.*",
                 "zendframework/zend-mail": "2.1.*"
             },
             "type": "library",
@@ -3701,7 +3700,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta5",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-12-10 16:44:56"
+            "time": "2014-01-06 15:26:48"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4719,17 +4718,17 @@
         },
         {
             "name": "willdurand/expose-translation-bundle",
-            "version": "0.2.1",
+            "version": "1.1.1",
             "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74"
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "a026f52db130f310d542154e9473105fa35c6e86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a026f52db130f310d542154e9473105fa35c6e86",
+                "reference": "a026f52db130f310d542154e9473105fa35c6e86",
                 "shasum": ""
             },
             "require": {
@@ -5528,6 +5527,166 @@
             "time": "2013-09-12 13:09:33"
         },
         {
+            "name": "phpspec/php-diff",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpspec/php-diff.git",
+                "reference": "30e103d19519fe678ae64a60d77884ef3d71b28a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpspec/php-diff/zipball/30e103d19519fe678ae64a60d77884ef3d71b28a",
+                "reference": "30e103d19519fe678ae64a60d77884ef3d71b28a",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Diff": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Boulton",
+                    "homepage": "http://github.com/chrisboulton"
+                }
+            ],
+            "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
+            "time": "2013-11-01 13:02:21"
+        },
+        {
+            "name": "phpspec/phpspec",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpspec/phpspec.git",
+                "reference": "c1cff1c0dac5c9936e2419d69af57978e2a6d043"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/c1cff1c0dac5c9936e2419d69af57978e2a6d043",
+                "reference": "c1cff1c0dac5c9936e2419d69af57978e2a6d043",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "phpspec/php-diff": "~1.0.0",
+                "phpspec/prophecy": "~1.1",
+                "symfony/console": "~2.1",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/finder": "~2.1",
+                "symfony/yaml": "~2.1"
+            },
+            "require-dev": {
+                "behat/behat": "~2.5",
+                "bossa/phpspec2-expect": "dev-master"
+            },
+            "suggest": {
+                "phpspec/nyan-formatters": "~1.0 – Adds Nyan formatters"
+            },
+            "bin": [
+                "bin/phpspec"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpSpec": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                },
+                {
+                    "name": "Marcello Duarte",
+                    "homepage": "http://marcelloduarte.net/"
+                }
+            ],
+            "description": "Specification-oriented BDD framework for PHP 5.3+",
+            "homepage": "http://phpspec.net/",
+            "keywords": [
+                "BDD",
+                "SpecBDD",
+                "TDD",
+                "spec",
+                "specification",
+                "testing",
+                "tests"
+            ],
+            "time": "2014-01-05 12:17:59"
+        },
+        {
+            "name": "phpspec/prophecy",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpspec/prophecy.git",
+                "reference": "b056f536fff5c4491c58f5101260b5bb21bba516"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b056f536fff5c4491c58f5101260b5bb21bba516",
+                "reference": "b056f536fff5c4491c58f5101260b5bb21bba516",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpspec/phpspec": "2.0.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Prophecy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                },
+                {
+                    "name": "Marcello Duarte",
+                    "email": "marcello.duarte@gmail.com"
+                }
+            ],
+            "description": "Highly opinionated mocking framework for PHP 5.3+",
+            "homepage": "http://phpspec.org",
+            "keywords": [
+                "Double",
+                "Dummy",
+                "fake",
+                "mock",
+                "spy",
+                "stub"
+            ],
+            "time": "2014-01-02 08:39:53"
+        },
+        {
             "name": "sensiolabs/behat-page-object-extension",
             "version": "dev-master",
             "source": {
@@ -5598,7 +5757,8 @@
         "doctrine/mongodb-odm-bundle": 20,
         "behat/behat": 0,
         "behat/mink-extension": 20,
-        "sensiolabs/behat-page-object-extension": 20
+        "sensiolabs/behat-page-object-extension": 20,
+        "phpspec/phpspec": 20
     },
     "platform": {
         "php": ">=5.4.4"
