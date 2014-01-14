@@ -56,7 +56,9 @@ pim_import_export:
         dummy_writer.title:                  Dummy writer
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
-        csv_reader.title:                    CSV reader
+        csv_reader:
+            title:                      CSV reader
+            invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
         product_processor.title:             Product creation

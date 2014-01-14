@@ -42,8 +42,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider with missing option
      *
-     * @static
-     *
      * @return array
      */
     public static function missingOptionDataProvider()
@@ -110,8 +108,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for incorrect translation class
      *
-     * @static
-     *
      * @return array
      */
     public static function incorrectClassNameDataProvider()
@@ -148,8 +144,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for getSubsbriberEvents method
-     *
-     * @static
      *
      * @return multitype:mixed
      */
@@ -205,8 +199,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for preSet data
-     *
-     * @static
      *
      * @return array
      */
@@ -271,8 +263,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for data binding
      *
-     * @static
-     *
      * @return array
      */
     public static function bindDataProvider()
@@ -314,8 +304,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider post data binding
      * It should add translation after binding
-     *
-     * @static
      *
      * @return array
      */

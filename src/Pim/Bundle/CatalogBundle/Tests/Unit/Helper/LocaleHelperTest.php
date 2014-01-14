@@ -28,8 +28,6 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      * Data provider for the localeLabel method
      * Can only test for a user locale because locale helper use static property
      *
-     * @static
-     *
      * @return array
      */
     public static function dataProviderForLocaleLabel()

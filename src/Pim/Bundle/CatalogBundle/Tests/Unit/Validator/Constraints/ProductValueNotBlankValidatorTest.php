@@ -72,7 +72,6 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for right simple data
      *
-     * @static
      * @return array
      */
     public static function dataProviderWithRightSimpleData()
@@ -128,7 +127,6 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for wrong simple data
      *
-     * @static
      * @return array
      */
     public static function dataProviderWithWrongSimpleData()

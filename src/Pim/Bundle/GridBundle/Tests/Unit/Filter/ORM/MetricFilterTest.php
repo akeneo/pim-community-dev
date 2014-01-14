@@ -69,8 +69,6 @@ class MetricFilterTest extends FilterTestCase
      * Data provider for operator
      *
      * @return array
-     *
-     * @static
      */
     public static function getOperatorDataProvider()
     {

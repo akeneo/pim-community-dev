@@ -65,8 +65,6 @@ class AttributeValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Provider for attribute option code constraint violation
      * @return array
-     *
-     * @static
      */
     public static function providerAttributeOptionsInvalid()
     {

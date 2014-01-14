@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type;
 use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
-use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 
 /**
  * Test related class

@@ -179,8 +179,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * Data provider for options
      *
-     * @static
-     *
      * @return multitype:multitype:string
      */
     public static function dataOptionsProvider()

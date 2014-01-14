@@ -12,7 +12,6 @@ use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
-use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
 
 /**
  * Csv reader
@@ -289,14 +288,14 @@ class CsvReader extends FileReader implements
 
             if (count($this->fieldNames) !== count($data)) {
                 throw new InvalidItemException(
-                    sprintf(
-                        'Expecting to have %d columns, actually have %d in %s:%d.',
-                        count($this->fieldNames),
-                        count($data),
-                        $this->csv->getRealPath(),
-                        $this->csv->key()
-                    ),
-                    $data
+                    'pim_import_export.steps.csv_reader.invalid_item_columns_count',
+                    $data,
+                    array(
+                        '%totalColumnsCount%' => count($this->fieldNames),
+                        '%itemColumnsCount%'  => count($data),
+                        '%csvPath%'           => $this->csv->getRealPath(),
+                        '%lineno%'            => $this->csv->key()
+                    )
                 );
             }
 
@@ -359,7 +358,7 @@ class CsvReader extends FileReader implements
     /**
      * Extract the zip archive to be imported
      * @throws \RuntimeException When archive cannot be opened or extracted
-     * or does not contain exactly one csv file
+     *                           or does not contain exactly one csv file
      */
     protected function extractZipArchive()
     {

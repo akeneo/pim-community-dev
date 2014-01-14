@@ -109,8 +109,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      * Data provider for listTrees method
      *
      * @return array
-     *
-     * @static
      */
     public static function dataProviderListTrees()
     {
