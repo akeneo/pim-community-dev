@@ -236,21 +236,6 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * @return mixed
-     */
-    protected function read()
-    {
-        try {
-            return $this->reader->read();
-
-        } catch (InvalidItemException $e) {
-            $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
-
-            return null;
-        }
-    }
-
-    /**
      * @param mixed $readItem
      *
      * @return mixed processed item
@@ -294,7 +279,18 @@ class ItemStep extends AbstractStep
         AbstractConfigurableStepElement $element,
         InvalidItemException $e
     ) {
-        $stepExecution->addWarning($element->getName(), $e->getMessage(), $e->getItem());
-        $this->dispatchInvalidItemEvent(get_class($element), $e->getMessage(), $e->getItem());
+        if ($element instanceof AbstractConfigurableStepElement) {
+            $warningName = $element->getName();
+        } else {
+            $warningName = get_class($element);
+        }
+
+        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getMessageParameters(), $e->getItem());
+        $this->dispatchInvalidItemEvent(
+            get_class($element),
+            $e->getMessage(),
+            $e->getMessageParameters(),
+            $e->getItem()
+        );
     }
 }

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Oro\Bundle\BatchBundle\Job\RuntimeErrorException;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -446,10 +447,11 @@ class StepExecution
     public function addFailureException(\Exception $e)
     {
         $this->failureExceptions[] = array(
-            'class'   => get_class($e),
-            'message' => $e->getMessage(),
-            'code'    => $e->getCode(),
-            'trace'   => $e->getTraceAsString()
+            'class'             => get_class($e),
+            'message'           => $e->getMessage(),
+            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : array(),
+            'code'              => $e->getCode(),
+            'trace'             => $e->getTraceAsString()
         );
 
         return $this;
@@ -485,18 +487,20 @@ class StepExecution
      *
      * @param string $class
      * @param string $reason
+     * @param array  $reasonParameters
      * @param mixed  $item
      */
-    public function addWarning($name, $reason, $item)
+    public function addWarning($name, $reason, array $reasonParameters, $item)
     {
         $element = $this->stepName;
         if (strpos($element, '.')) {
             $element = substr($element, 0, strpos($element, '.'));
         }
         $this->warnings[] = array(
-            'name'   => sprintf('%s.steps.%s.title', $element, $name),
-            'reason' => $reason,
-            'item'   => $item,
+            'name'             => sprintf('%s.steps.%s.title', $element, $name),
+            'reason'           => $reason,
+            'reasonParameters' => $reasonParameters,
+            'item'             => $item,
         );
     }
 
