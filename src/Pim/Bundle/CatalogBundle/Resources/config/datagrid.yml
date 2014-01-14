@@ -6,6 +6,7 @@ datagrid:
             acl_resource: pim_catalog_association_type_index
             type: pim_orm
             entity: %pim_catalog.entity.association_type.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -61,6 +62,7 @@ datagrid:
             acl_resource: pim_catalog_group_type_index
             type: pim_orm
             entity: %pim_catalog.entity.group_type.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -116,6 +118,7 @@ datagrid:
             acl_resource: pim_catalog_attribute_index
             type: pim_orm
             entity: %pim_catalog.entity.attribute.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -207,6 +210,7 @@ datagrid:
             acl_resource: pim_catalog_channel_index
             type: pim_orm
             entity: %pim_catalog.entity.channel.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -276,6 +280,7 @@ datagrid:
             acl_resource: pim_catalog_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             # TODO : add created / updated at
             family:
@@ -408,6 +413,7 @@ datagrid:
             acl_resource: pim_catalog_family_index
             type: pim_orm
             entity: %pim_catalog.entity.family.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -475,6 +481,7 @@ datagrid:
             acl_resource: pim_catalog_currency_index
             type: pim_orm
             entity: %pim_catalog.entity.currency.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -526,6 +533,7 @@ datagrid:
             acl_resource: pim_catalog_locale_index
             type: pim_orm
             entity: %pim_catalog.entity.locale.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -561,6 +569,7 @@ datagrid:
             acl_resource: pim_catalog_group_index
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -627,6 +636,7 @@ datagrid:
             acl_resource: pim_catalog_group_index
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code

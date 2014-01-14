@@ -31,8 +31,9 @@ class OrmDatasource extends OroOrmDatasource
 
         $entity = $config['entity'];
         $repository = $this->em->getRepository($entity);
-        if ($repository instanceof DatagridRepositoryInterface) {
-            $this->qb = $repository->createDatagridQueryBuilder();
+
+        if (isset($config['repository_method']) && $method = $config['repository_method']) {
+            $this->qb = $repository->$method();
         } else {
             $this->qb = $repository->createQueryBuilder('o');
         }
