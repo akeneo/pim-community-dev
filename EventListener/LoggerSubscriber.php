@@ -9,6 +9,7 @@ use Oro\Bundle\BatchBundle\Event\EventInterface;
 use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\InvalidItemEvent;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Subscriber to log job execution result
@@ -16,17 +17,26 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  */
 class LoggerSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var LoggerInterface $logger
-     */
+    /** @var LoggerInterface */
     protected $logger;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var string */
+    protected $translationLocale = 'en';
+
+    /** @var string */
+    protected $translationDomain = 'messages';
+
     /**
-     * @param LoggerInterface $logger
+     * @param LoggerInterface     $logger
+     * @param TranslatorInterface $translator
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
-        $this->logger = $logger;
+        $this->logger     = $logger;
+        $this->translator = $translator;
     }
 
     /**
@@ -47,6 +57,26 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
             EventInterface::INVALID_ITEM               => 'invalidItem',
         );
+    }
+
+    /**
+     * Set the translation locale
+     *
+     * @param string $translationLocale
+     */
+    public function setTranslationLocale($translationLocale)
+    {
+        $this->translationLocale = $translationLocale;
+    }
+
+    /**
+     * Set the translation domain
+     *
+     * @param string $translationDomain
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -162,7 +192,23 @@ class LoggerSubscriber implements EventSubscriberInterface
         $stepExecution = $event->getStepExecution();
 
         $this->logger->error(
-            sprintf('Encountered an error executing the step: %s', $stepExecution->getFailureExceptionMessages())
+            sprintf(
+                'Encountered an error executing the step: %s',
+                implode(
+                    ', ',
+                    array_map(
+                        function ($exception) {
+                            return $this->translator->trans(
+                                $exception['message'],
+                                $exception['messageParameters'],
+                                $this->translationDomain,
+                                $this->translationLocale
+                            );
+                        },
+                        $stepExecution->getFailureExceptions()
+                    )
+                )
+            )
         );
     }
 
@@ -190,7 +236,12 @@ class LoggerSubscriber implements EventSubscriberInterface
                 'The %s was unable to handle the following item: %s (REASON: %s)',
                 $event->getClass(),
                 $this->formatAsString($event->getItem()),
-                $event->getReason()
+                $this->translator->trans(
+                    $event->getReason(),
+                    $event->getReasonParameters(),
+                    $this->translationDomain,
+                    $this->translationLocale
+                )
             )
         );
     }

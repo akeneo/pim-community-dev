@@ -20,6 +20,9 @@ class InvalidItemEvent extends Event implements EventInterface
     protected $reason;
 
     /** @var array */
+    protected $reasonParameters;
+
+    /** @var array */
     protected $item;
 
     /**
@@ -29,11 +32,12 @@ class InvalidItemEvent extends Event implements EventInterface
      * @param string $reason
      * @param array  $item
      */
-    public function __construct($class, $reason, array $item)
+    public function __construct($class, $reason, array $reasonParameters, array $item)
     {
-        $this->class  = $class;
-        $this->reason = $reason;
-        $this->item   = $item;
+        $this->class            = $class;
+        $this->reason           = $reason;
+        $this->reasonParameters = $reasonParameters;
+        $this->item             = $item;
     }
 
     /**
@@ -54,6 +58,16 @@ class InvalidItemEvent extends Event implements EventInterface
     public function getReason()
     {
         return $this->reason;
+    }
+
+    /**
+     * Get the reason parameters
+     *
+     * @return array
+     */
+    public function getReasonParameters()
+    {
+        return $this->reasonParameters;
     }
 
     /**
