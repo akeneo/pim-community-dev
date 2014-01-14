@@ -32,7 +32,6 @@ class TranslationFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException Exception
-     *
      */
     public function itShouldThrowAnExceptionIfTheTranslationIsNotAnAbstractTranslationClass()
     {

@@ -121,8 +121,6 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
      * Data provider
      *
      * @return multitype:multitype:number string
-     *
-     * @static
      */
     public static function criteriaProvider()
     {

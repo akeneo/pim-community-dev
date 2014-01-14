@@ -80,7 +80,6 @@ class CompletenessManager
         $this->generator->generate(array('channelId' => $channel->getId()));
     }
 
-
     /**
      * Insert n missing completenesses
      *

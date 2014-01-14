@@ -45,8 +45,6 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Provider for no default value violations
      * @return array
-     *
-     * @static
      */
     public static function providerDefaultValueValid()
     {
@@ -143,8 +141,6 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Provider for inivalid default value
      * @return array
-     *
-     * @static
      */
     public static function providerDefaultValueInvalid()
     {
