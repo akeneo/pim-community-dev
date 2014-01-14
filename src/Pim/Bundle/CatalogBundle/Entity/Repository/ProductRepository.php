@@ -366,4 +366,30 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         return $qb;
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createGroupDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->leftJoin('p.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->leftJoin('p.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin('values.metric', 'valueMetrics');
+
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $qb
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect('values')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('valueMetrics');
+
+        return $qb;
+    }
 }

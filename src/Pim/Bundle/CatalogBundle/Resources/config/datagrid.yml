@@ -415,27 +415,16 @@ datagrid:
             acl_resource: pim_catalog_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
-            repository_method: createDatagridQueryBuilder
+            repository_method: createGroupDatagridQueryBuilder
         columns:
             # TODO : add created / updated at
             family:
                 label: Family
                 data_name: familyLabel
-            groups:
-                label: Groups
-                type: twig
-                template: PimDataGridBundle:Property:options.html.twig
-                frontend_type: html
             enabled:
                 label: Status
                 type: twig
                 template: PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
-            completeness:
-                label: Complete
-                data_name: ratio
-                type: twig
-                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
         properties:
             id: ~
@@ -449,53 +438,12 @@ datagrid:
                 route: pim_catalog_product_remove
                 params:
                     - id
-        actions:
-            edit:
-                type:      tab-redirect
-                label:     Edit attributes of the product
-                tab:       attributes
-                icon:      edit
-                link:      edit_link
-                rowAction: true
-            edit_categories:
-                type:  tab-redirect
-                label: Classify the product
-                tab:   categories
-                icon:  folder-close
-                link:  edit_link
-            delete:
-                type:  delete
-                label: Delete the product
-                icon:  trash
-                link:  delete_link
-        mass_actions:
-            delete:
-                type: delete
-                label: Delete
-                entity_name: product
-                data_identifier: p
-                messages:
-                    confirm_title: Delete confirmation
-                    confirm_content: Are you sure you want to delete selected products?
-                    confirm_ok: OK
-                    success: Selected products successfully deleted
-                    error: Error ocurred when trying to delete selected products, please try again
-                    empty_selection: No products selected
-                launcherOptions:
-                    icon: trash
-            mass_edit:
-                type: redirect
-                label: Mass Edit
-                route: pim_catalog_mass_edit_action_choose
-                icon: edit
         sorters:
             columns:
                 family:
                     data_name: familyLabel
                 enabled:
                     data_name: p.enabled
-                completeness:
-                    data_name: ratio
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
@@ -508,14 +456,6 @@ datagrid:
                             multiple: true
                             class: %pim_catalog.entity.family.class%
                             property: label
-                groups:
-                    type:      choice
-                    label:     Groups
-                    data_name: groups
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: @pim_catalog.manager.group->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -525,21 +465,6 @@ datagrid:
                             choices:
                                 1: Enabled
                                 0: Disabled
-                scope:
-                    type:      scope
-                    label:     Scope
-                    data_name: values.scope
-                    options:
-                        field_options:
-                            choices: @pim_catalog.manager.channel->getChannelChoices
-                category:
-                    type:      category
-                    label:     Category
-                    data_name: category
-                completeness:
-                    type:      completeness
-                    label:     Complete
-                    data_name: ratio
 
     family-grid:
         options:
