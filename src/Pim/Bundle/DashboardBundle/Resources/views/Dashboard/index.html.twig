@@ -14,9 +14,11 @@
             <div class="list-wrap pull-left">
                 <ul class="nav nav-list">
                     {% for link in widget.links %}
+                        {% if resource_granted(link.url) %}
                         <li class="{{ loop.last ? 'last' : '' }}">
-                            <a href="{{ link.url|raw }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
+                            <a href="{{ path(link.url)|raw }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
                         </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -34,35 +36,35 @@
                 {
                     label: 'pim_dashboard.menu.label.collect',
                     links: [
-                        { url: path('pim_importexport_import_profile_index'), label: 'pim_dashboard.link.label.import_profile' },
-                        { url: path('pim_importexport_import_execution_index'), label: 'pim_dashboard.link.label.import_report' }
+                        { url: 'pim_importexport_import_profile_index', label: 'pim_dashboard.link.label.import_profile' },
+                        { url: 'pim_importexport_import_execution_index', label: 'pim_dashboard.link.label.import_report' }
                     ],
                     image: 'collect-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.enrich',
                     links: [
-                        { url: path('pim_catalog_product_index'), label: 'pim_dashboard.link.label.product' },
-                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category' },
-                        { url: path('pim_catalog_variant_group_index'), label: 'pim_dashboard.link.label.variant' },
-                        { url: path('pim_catalog_group_index'), label: 'pim_dashboard.link.label.group' }
+                        { url: 'pim_catalog_product_index', label: 'pim_dashboard.link.label.product' },
+                        { url: 'pim_catalog_categorytree_create', label: 'pim_dashboard.link.label.category' },
+                        { url: 'pim_catalog_variant_group_index', label: 'pim_dashboard.link.label.variant' },
+                        { url: 'pim_catalog_group_index', label: 'pim_dashboard.link.label.group' }
                     ],
                     image: 'enrich-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.spread',
                     links: [
-                        { url: path('pim_catalog_channel_index'), label: 'pim_dashboard.link.label.channel' },
-                        { url: path('pim_importexport_export_profile_index'), label: 'pim_dashboard.link.label.export_profile' },
-                        { url: path('pim_importexport_export_execution_index'), label: 'pim_dashboard.link.label.export_report' }
+                        { url: 'pim_catalog_channel_index', label: 'pim_dashboard.link.label.channel' },
+                        { url: 'pim_importexport_export_profile_index', label: 'pim_dashboard.link.label.export_profile' },
+                        { url: 'pim_importexport_export_execution_index', label: 'pim_dashboard.link.label.export_report' }
                     ],
                     image: 'spread-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.settings',
                     links: [
-                        { url: path('pim_catalog_attribute_index'), label: 'pim_dashboard.link.label.attribute' },
-                        { url: path('pim_catalog_family_create'), label: 'pim_dashboard.link.label.family' }
+                        { url: 'pim_catalog_attribute_index', label: 'pim_dashboard.link.label.attribute' },
+                        { url: 'pim_catalog_family_create', label: 'pim_dashboard.link.label.family' }
                     ],
                     image: 'configure-image'
                 },
