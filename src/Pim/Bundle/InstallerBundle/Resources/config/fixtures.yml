@@ -70,20 +70,20 @@ families:
     yml:
         processor:         pim_import_export.processor.family
 
-products:
+groups:
     order: 70
+    csv:
+        processor:         pim_import_export.processor.group
+    yml:
+        processor:         pim_import_export.processor.group
+
+products:
+    order: 80
     csv:
         processor:         pim_import_export.processor.product
     yml:
         reader:            pim_import_export.reader.file.yaml_product
         processor:         pim_import_export.processor.product
-
-groups:
-    order: 80
-    csv:
-        processor:         pim_import_export.processor.group
-    yml:
-        processor:         pim_import_export.processor.group
 
 associations:
     order: 90
