@@ -18,8 +18,6 @@ class SortHelper
      * @param string $property The property on which sorts (must be public)
      *
      * @return array The sorted array
-     *
-     * @static
      */
     public static function sortByProperty(array $values, $property)
     {
@@ -43,8 +41,6 @@ class SortHelper
      * @param array $values Array of values to sort
      *
      * @return array The sorted array
-     *
-     * @static
      */
     public static function sort(array $values)
     {

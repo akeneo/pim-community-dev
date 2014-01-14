@@ -35,7 +35,6 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Create attribute type to test
      *
-     * @abstract
      * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
     abstract protected function createAttributeType();

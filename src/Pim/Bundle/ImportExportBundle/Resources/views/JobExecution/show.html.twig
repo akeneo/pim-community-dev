@@ -77,7 +77,7 @@
                     <tr class="warning">
                         <td colspan="7">
                             <span class="title">{{ warning.name|trans|upper }}</span>&nbsp;
-                            {{ warning.reason }}<br />
+                            {{ warning.reason|trans(warning.reasonParameters) }}<br />
                             <a class="data" href="#"
                                 data-display-label="{{ 'Display item'|trans }}"
                                 data-hide-label="{{ 'Hide item'|trans }}">
@@ -99,7 +99,7 @@
                     {% for error in step.failureExceptions %}
                     <tr class="error">
                         <td colspan="7">
-                            <span class="title">{{ step.stepName|trans|upper }}</span>&nbsp;{{ error.message }}
+                            <span class="title">{{ step.stepName|trans|upper }}</span>&nbsp;{{ error.message|trans(error.messageParameters) }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -108,7 +108,7 @@
                 {# Job errors #}
                 {% for error in execution.failureExceptions %}
                 <tr class="error">
-                    <span class="title">{{ execution.jobInstance.label|upper }}</span>&nbsp;{{ error.message }}
+                    <span class="title">{{ execution.jobInstance.label|upper }}</span>&nbsp;{{ error.message|trans(error.messageParameters) }}
                 </tr>
                 {% endfor %}
             </tbody>

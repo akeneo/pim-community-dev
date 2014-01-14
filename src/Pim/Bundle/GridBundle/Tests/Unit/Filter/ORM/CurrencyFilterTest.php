@@ -33,8 +33,6 @@ class CurrencyFilterTest extends FilterTestCase
      * Data provider for operator
      *
      * @return multitype:multitype:boolean string  multitype:string number
-     *
-     * @static
      */
     public static function getOperatorDataProvider()
     {
@@ -114,7 +112,6 @@ class CurrencyFilterTest extends FilterTestCase
      * Data provider for render settings
      *
      * @return array
-     * @static
      */
     public static function getRenderSettingsDataProvider()
     {

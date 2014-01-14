@@ -8,8 +8,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @abstract
  */
 abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -27,8 +25,6 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for testing supportsNormalization method
      * @return array
-     * @abstract
-     * @static
      */
     abstract public static function getSupportNormalizationData();
 
@@ -50,8 +46,6 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for testing normalize method
      * @return array
-     * @abstract
-     * @static
      */
     abstract public static function getNormalizeData();
 
@@ -73,7 +67,6 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
      * @param array $data
      *
      * @return object
-     * @abstract
      */
     abstract protected function createEntity(array $data);
 }
