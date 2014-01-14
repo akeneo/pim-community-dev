@@ -155,7 +155,7 @@ jenkins-pr-4:
     filters:
         tags: ~skip
 
-jenkins-coverage:
+jenkins-coverage-1:
     context:
         parameters:
             base_url: http://pim-behat-coverage.ci:90/
