@@ -417,19 +417,19 @@ datagrid:
                 dataField: id
                 columnName: has_product
                 selectors:
-                    included: '#appendTargets'
-                    excluded: '#removeTargets'
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
         source:
             acl_resource: pim_catalog_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
         columns:
-            has_products:
+            has_product:
                 frontend_type: boolean
                 label: Contains
                 editable: true
-                data_name: hasProducts
+                data_name: has_product
             # TODO : add created / updated at
             family:
                 label: Family
@@ -453,8 +453,8 @@ datagrid:
                     - id
         sorters:
             columns:
-                has_products:
-                    data_name: hasProducts
+                has_product:
+                    data_name: has_product
                 family:
                     data_name: familyLabel
                 enabled:

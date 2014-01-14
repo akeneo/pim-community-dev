@@ -396,7 +396,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         $qb
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect($hasProductExpr.' AS hasProducts')
+            ->addSelect($hasProductExpr.' AS has_product')
             ->addSelect('values')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
