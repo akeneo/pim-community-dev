@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UIBundle\Form\Type;
+namespace Pim\Bundle\UIBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

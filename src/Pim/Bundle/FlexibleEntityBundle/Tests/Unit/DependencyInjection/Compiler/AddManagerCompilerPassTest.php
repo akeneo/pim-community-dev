@@ -1,5 +1,6 @@
 <?php
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
+
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler\AddManagerCompilerPass;
