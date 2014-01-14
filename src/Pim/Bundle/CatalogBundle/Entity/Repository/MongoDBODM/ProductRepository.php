@@ -90,6 +90,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getProductCountByTree(ProductInterface $product)
     {
+        return array();
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
