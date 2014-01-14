@@ -20,7 +20,7 @@ Feature: Import categories
     pc;computers;PC
     """
     And the following job "acme_category_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_category_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -50,7 +50,7 @@ Feature: Import categories
     pc;computers;PC
     """
     And the following job "acme_category_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_category_import" import job page
     And I launch the import job
     And I wait for the job to finish
