@@ -242,7 +242,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
     protected function convertFlexibleTypeToFieldType($flexibleFieldType)
     {
         if (!isset(static::$typeMatches[$flexibleFieldType]['field'])) {
-            throw new \LogicException('Unknown flexible backend field type.');
+            throw new \LogicException("Unknown flexible backend field type $flexibleFieldType.");
         }
 
         return static::$typeMatches[$flexibleFieldType]['field'];
