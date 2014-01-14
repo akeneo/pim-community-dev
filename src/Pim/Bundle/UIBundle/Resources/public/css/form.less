@@ -1249,7 +1249,7 @@ div#legend {
   }
 }
 
-table#progress-table {
+table#progress-table, #completeness-widget {
   .progress {
     height: 10px;
     margin-bottom: 5px;
@@ -1259,6 +1259,7 @@ table#progress-table {
   .progress-cell {
     margin-right: 15px;
     margin-left: 15px;
+    padding: 10px 10px 0 10px;
     div.center {
       text-align: center;
     }
@@ -1267,7 +1268,19 @@ table#progress-table {
       color: #5e8dcb;
       cursor: default;
     }
+    small {
+      display: block;
+      text-align: right;
+    }
   }
+  td {
+    vertical-align: top;
+  }
+}
+
+#completeness-widget td {
+  padding: 5px;
+  font-size: 13px;
 }
 
 .table-bordered.groups {

@@ -80,7 +80,16 @@
                 {% if loop.index is even %}</div>{% endif %}
             {% endfor %}
 
+            <div class="row">
+                <div class="quick-launchpad-widget span6">
+                    <div class="clearfix">
+                        {{ render(controller('pim_catalog.controller.widget:showAction', {'name': 'completeness'})) }}
+                    </div>
+                </div>
+            </div>
+
         </div>
+
         <div class="version-container">
             <strong>Version:</strong> 1.0.0-beta4 "The Abominable Snow Rabbit"
         </div>

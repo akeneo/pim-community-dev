@@ -8,5 +8,7 @@ services:
 
     pim_catalog.widget.completeness:
         class: %pim_catalog.widget.completeness.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: pim_catalog.widget, alias: completeness }
