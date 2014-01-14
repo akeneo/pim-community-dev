@@ -264,8 +264,8 @@ default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
 Translate from:                Translate from
-Yes: Oui
-No: Non
+Yes: Yes
+No: No
 Close: Close
 
 Create:               Create
@@ -276,7 +276,7 @@ No matches found:     No matches found
 Create:                   Create
 
 Category tree: Category tree
-Completeness: Complétude
+Completeness: Completeness
 Attribute used as label: Attribute used as label
 
 # Scopes
@@ -555,7 +555,7 @@ pane.accordion:
     backend_parameters: Backend parameters
     label_translations: Label translations
     options: Options
-    group_values: Valeurs du groupe
+    group_values: Group values
 
 # Popin titles
 popin.create:

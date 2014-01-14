@@ -2,4 +2,4 @@ Properties: Properties
 
 # tabs and accordions
 pane.accordion:
-    general_properties.title: General properties
+    general_properties: General properties
