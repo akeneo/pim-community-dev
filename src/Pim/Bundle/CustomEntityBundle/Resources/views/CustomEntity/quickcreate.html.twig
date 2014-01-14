@@ -1,15 +1,23 @@
-<form method="POST" id="pim_icecatdemo_{{ customEntityName }}_quickcreate" class="form-horizontal" data-title="{{ ( customEntityName ~ '.create')|trans }}" data-button-submit="{{ 'Create'|trans }}" data-button-cancel="{{ 'Cancel'|trans }}" action="{{ path(createRoute, {customEntityName: customEntityName}) }}" {{ form_enctype(form) }}>
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
 
+{{ form_start(form, {
+    'action': path(createRoute, {customEntityName: customEntityName}),
+    'class': 'form-inline',
+    'attr': {
+        'data-title': (customEntityName ~ '.create')|trans,
+        'data-button-submit': 'Create'|trans,
+        'data-button-cancel': 'Cancel'|trans
+    }
+}) }}
     {{ JSFV(form) }}
 
-    {% if form.vars.errors|length %}
-        <div class="alert alert-error">
-            {{ form_errors(form) }}
-        </div>
-    {% endif %}
+    {{ elements.form_errors(form) }}
 
     <div class="row-fluid">
         {{ form_widget(form) }}
     </div>
-
-</form>
+{{ form_end(form) }}

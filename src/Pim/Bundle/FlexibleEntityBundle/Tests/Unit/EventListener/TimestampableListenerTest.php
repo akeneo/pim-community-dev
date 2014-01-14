@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Doctrine\Tests\OrmTestCase;

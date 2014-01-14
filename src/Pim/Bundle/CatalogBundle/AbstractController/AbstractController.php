@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\ORM;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
 
 use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
 

@@ -213,8 +213,14 @@
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="1" />
             <arg value="xdebug" />
-            <arg value="${basedir}/app/Resources/jenkins/behat-coverage --profile=jenkins-coverage --ansi" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_pr_behat_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-coverage-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 

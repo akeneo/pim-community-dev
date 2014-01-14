@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

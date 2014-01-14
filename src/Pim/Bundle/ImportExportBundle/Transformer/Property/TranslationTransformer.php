@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
