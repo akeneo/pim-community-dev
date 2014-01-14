@@ -55,7 +55,7 @@ services:
     pim_catalog.event_listener.product_group_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-          - [dataLocale]
+          - [dataLocale, currentGroup]
           - @oro_datagrid.datagrid.request_params
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }

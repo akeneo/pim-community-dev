@@ -411,12 +411,25 @@ datagrid:
         flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_product
+                selectors:
+                    included: '#appendTargets'
+                    excluded: '#removeTargets'
         source:
             acl_resource: pim_catalog_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
         columns:
+            has_products:
+                frontend_type: boolean
+                label: Contains
+                editable: true
+                data_name: hasProducts
             # TODO : add created / updated at
             family:
                 label: Family
@@ -440,6 +453,8 @@ datagrid:
                     - id
         sorters:
             columns:
+                has_products:
+                    data_name: hasProducts
                 family:
                     data_name: familyLabel
                 enabled:
