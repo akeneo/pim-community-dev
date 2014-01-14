@@ -1,3 +1,4 @@
 config:
     paths:
         oro/datagrid/tab-redirect-action: pimdatagrid/js/datagrid/action/tab-redirect-action
+        pim/datagrid/export-action:       pimdatagrid/js/datagrid/action/export-action

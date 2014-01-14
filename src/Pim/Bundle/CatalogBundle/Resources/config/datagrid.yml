@@ -276,6 +276,11 @@ datagrid:
         flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
+            requireJSModules:
+                - pim/datagrid/export-action
+            exportAction:
+                label: Export CSV
+                icon: download
         source:
             acl_resource: pim_catalog_product_index
             type: pim_orm
@@ -358,6 +363,12 @@ datagrid:
                 label: Mass Edit
                 route: pim_catalog_mass_edit_action_choose
                 icon: edit
+        export_actions:
+            export:
+                type: export
+                label: Export CSV
+                icon: download
+                data_identifier: p
         sorters:
             columns:
                 family:

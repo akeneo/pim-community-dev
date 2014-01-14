@@ -38,8 +38,8 @@ function(AbstractAction) {
          */
         execute: function() {
             this.collection.initialState.filters = {};
-            this.collection.initialState.treeId = this.collection.state.treeId;
-            this.collection.initialState.categoryId = this.collection.state.categoryId;
+            // this.collection.initialState.treeId = this.collection.state.treeId;
+            // this.collection.initialState.categoryId = this.collection.state.categoryId;
             this.collection.updateState(this.collection.initialState);
             this.collection.fetch();
         }
