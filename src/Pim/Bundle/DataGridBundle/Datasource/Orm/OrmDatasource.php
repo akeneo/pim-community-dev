@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource As OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository

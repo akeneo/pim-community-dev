@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
-
 /**
  * Locale repository
  * Define a default sort order by code
@@ -12,7 +10,7 @@ use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleRepository extends ReferableEntityRepository implements DatagridRepositoryInterface
+class LocaleRepository extends ReferableEntityRepository
 {
     /**
      * {@inheritdoc}
