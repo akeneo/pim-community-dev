@@ -12,7 +12,6 @@ use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
-use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
 
 /**
  * Csv reader
@@ -359,7 +358,7 @@ class CsvReader extends FileReader implements
     /**
      * Extract the zip archive to be imported
      * @throws \RuntimeException When archive cannot be opened or extracted
-     * or does not contain exactly one csv file
+     *                           or does not contain exactly one csv file
      */
     protected function extractZipArchive()
     {

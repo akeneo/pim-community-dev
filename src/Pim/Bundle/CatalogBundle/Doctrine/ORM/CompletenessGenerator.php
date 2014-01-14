@@ -133,7 +133,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * The price is complete when all  for
      * all currency are present for the channel and locale.
-     * 
+     *
      * This allow to link with only complete prices
      *
      * @param $criteria
@@ -178,7 +178,7 @@ COMPLETE_PRICES_SQL;
     {
         return <<<MISSING_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
-            FROM 
+            FROM
                 (SELECT c.id, r.family_id
                 FROM pim_catalog_attribute_requirement r
                 JOIN pim_catalog_channel c ON c.id = r.channel_id %channel_conditions%
@@ -222,18 +222,17 @@ MISSING_SQL;
         return $sql;
     }
 
-
     /**
      * Get the sql query to insert completeness
      *
-     * @param array   $criteria
+     * @param array $criteria
      *
      * @return string
      */
     protected function getInsertCompletenessSQL(array $criteria)
     {
         $sql = $this->getMainSqlPart();
-        
+
         $sql = strtr($sql, $this->getQueryPartReplacements());
 
         return strtr($sql, $this->getTableReplacements()) .';';
