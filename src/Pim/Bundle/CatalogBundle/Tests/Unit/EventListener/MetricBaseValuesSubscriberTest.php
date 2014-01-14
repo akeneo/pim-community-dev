@@ -88,8 +88,6 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      * Data provider for metrics
      *
      * @return array
-     *
-     * @static
      */
     public static function dataProviderForMetrics()
     {

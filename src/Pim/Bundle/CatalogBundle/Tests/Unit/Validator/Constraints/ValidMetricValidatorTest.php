@@ -118,8 +118,6 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * Provider for metric type violation
      *
      * @return array
-     *
-     * @static
      */
     public static function providerMetricFamilyInvalid()
     {
@@ -153,8 +151,6 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * Provider for metric unit violation
      *
      * @return array
-     *
-     * @static
      */
     public static function providerMetricUnitInvalid()
     {
@@ -187,8 +183,6 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * Provider for metric unit violation
      *
      * @return array
-     *
-     * @static
      */
     public static function providerMetricFamilyAndUnitValid()
     {

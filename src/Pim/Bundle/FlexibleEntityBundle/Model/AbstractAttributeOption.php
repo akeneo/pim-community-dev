@@ -20,7 +20,6 @@ abstract class AbstractAttributeOption implements TranslatableInterface
 
     /**
      * @var AbstractAttribute $attribute
-     *
      */
     protected $attribute;
 
