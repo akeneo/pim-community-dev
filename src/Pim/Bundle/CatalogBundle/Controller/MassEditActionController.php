@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormError;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\DataGridBundle\Action\MassAction\MassActionParametersParser;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Action\MassAction\MassActionResponse;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 
