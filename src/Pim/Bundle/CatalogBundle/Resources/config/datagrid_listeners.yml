@@ -57,6 +57,7 @@ services:
         arguments:
           - [dataLocale, currentGroup]
           - @oro_datagrid.datagrid.request_params
+          - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
 

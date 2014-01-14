@@ -385,14 +385,9 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $hasProductExpr =
             "CASE WHEN " .
-            "(:currentGroup MEMBER OF p.groups) ".
-
-//            ."OR p.id IN (:data_in)) AND ". "p.id NOT IN (:data_not_in) ".
+            "(:currentGroup MEMBER OF p.groups ".
+            "OR p.id IN (:data_in)) AND ". "p.id NOT IN (:data_not_in)".
             "THEN true ELSE false END";
-
-/*        $qb->setParameter('data_in', array(1, 2, 3));
-        $qb->setParameter('data_not_in', array(0));
-        $qb->setParameter('group', 4);*/
 
         $qb
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
@@ -401,9 +396,6 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
             ->addSelect('valueMetrics');
-
-
-//echo $qb->getQuery()->getDQL(); exit();
 
         return $qb;
     }
