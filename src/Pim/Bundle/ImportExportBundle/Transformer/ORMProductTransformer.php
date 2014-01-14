@@ -114,9 +114,7 @@ class ORMProductTransformer extends ORMTransformer
      */
     protected function findEntity($class, array $data)
     {
-        return $this->productManager->getImportProduct(
-            $this->attributes,
-            $this->identifierAttribute,
+        return $this->productManager->getFlexibleRepository()->findByReference(
             $data[$this->identifierAttribute->getCode()]
         );
     }
