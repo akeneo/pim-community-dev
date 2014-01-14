@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
+namespace Pim\Bundle\GridBundle\Tests\Unit\Filter\ORM;
 
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;

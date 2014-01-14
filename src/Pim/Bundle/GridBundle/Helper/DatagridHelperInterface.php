@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Helper;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;

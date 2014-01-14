@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\EventListener;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
+namespace Pim\Bundle\TranslationBundle\Tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 
