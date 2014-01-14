@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource As OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
 
 /**
@@ -35,6 +36,13 @@ class OrmDatasource extends OroOrmDatasource
             $this->qb = $repository->createDatagridQueryBuilder();
         } else {
             $this->qb = $repository->createQueryBuilder('o');
+        }
+
+        $queryConfig = array_intersect_key($config, array_flip(['query']));
+
+        if (!empty($queryConfig)) {
+            $converter = new YamlConverter();
+            $this->qb  = $converter->parse($queryConfig, $this->qb);
         }
 
         $grid->setDatasource(clone $this);

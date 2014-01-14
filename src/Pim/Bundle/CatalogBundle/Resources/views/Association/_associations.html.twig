@@ -121,8 +121,16 @@
             </div>
         {% endfor %}
 
+        {% set gridName = 'association-targets-grid' %}
+
+        {% set gridParams = {
+            'association': associationTypes|first,
+            'product': product
+        } %}
+
+
         <div id="product-grid">
-            {{ dataGrid.renderGrid('association-targets-grid') }}
+            {{ dataGrid.renderGrid(gridName, gridParams) }}
         </div>
 
         {#
