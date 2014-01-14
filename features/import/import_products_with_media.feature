@@ -37,7 +37,7 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;sport
     """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     And import directory of "acme_product_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
@@ -62,7 +62,7 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;;"Fanatic Freewave 76";;sport
     """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     And import directory of "acme_product_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
@@ -84,7 +84,7 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;fanatic-freewave-76.jpg;"Fanatic Freewave 76";fanatic-freewave-76.pdf;sport
     """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job

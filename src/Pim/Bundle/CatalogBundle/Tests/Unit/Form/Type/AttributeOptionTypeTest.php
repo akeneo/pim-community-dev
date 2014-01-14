@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Form\Type;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionType;

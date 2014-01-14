@@ -59,7 +59,7 @@ Feature: Execute a job
       SKU-010;Bag;CROSS;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -79,7 +79,7 @@ Feature: Execute a job
       SKU-001;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -99,7 +99,7 @@ Feature: Execute a job
       SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -126,7 +126,7 @@ Feature: Execute a job
     And the following job "acme_product_import" configuration:
       | uploadAllowed | yes |
     When I am on the "acme_product_import" import job page
-    And I upload and import the file "{{ file to import }}"
+    And I upload and import the file "%file to import%"
     And I wait for the job to finish
     Then there should be 10 products
 
@@ -138,7 +138,7 @@ Feature: Execute a job
       SKU-002;50 EUR
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -158,7 +158,7 @@ Feature: Execute a job
       SKU-001;"100 EUR, 90 USD"
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -173,7 +173,7 @@ Feature: Execute a job
       SKU-001;4000 GRAM
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -188,7 +188,7 @@ Feature: Execute a job
       SKU-001;4000;GRAM
       """
     And the following job "acme_product_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish

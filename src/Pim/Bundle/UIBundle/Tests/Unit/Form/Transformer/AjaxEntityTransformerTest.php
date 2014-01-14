@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UIBundle\Form\Tests\Transformer;
+namespace Pim\Bundle\UIBundle\Tests\Unit\Form\Transformer;
 
 use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 

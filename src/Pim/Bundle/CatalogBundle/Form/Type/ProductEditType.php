@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\IgnoreMissingFieldDataSubscriber;
 
 /**
  * Product edit form type
@@ -91,7 +92,8 @@ class ProductEditType extends AbstractType
                     'mapped'   => true,
                     'multiple' => true,
                 )
-            );
+            )
+            ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
     }
 
     /**

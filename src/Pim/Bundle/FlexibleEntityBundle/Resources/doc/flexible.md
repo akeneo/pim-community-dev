@@ -65,6 +65,7 @@ Then we have to define customer attribute value entity, extends basic one which 
 We define mapping to basic entity attribute and to our customer entity.
 ```php
 <?php
+
 namespace Acme\Bundle\DemoFlexibleEntityBundle\Entity;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;

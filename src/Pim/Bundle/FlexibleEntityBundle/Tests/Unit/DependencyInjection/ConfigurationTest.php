@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
 
 use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration;
