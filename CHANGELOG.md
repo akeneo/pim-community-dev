@@ -5,7 +5,7 @@
 - New translation mode : Compare and copy values within a product edit form
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
-- Allow to back to the grid or create another product when editing one
+- Allow to go back to the grid or create another product after saving one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
 - Product associations fixture
