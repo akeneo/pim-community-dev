@@ -3,20 +3,6 @@
 
 {% oro_title_set({ params: { "%group.label%": form.vars.data.label } }) %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    {% set listenerParameters = {
-        'columnName': 'has_product',
-        'selectors': {
-            'included': '#appendProducts',
-            'excluded': '#removeProducts'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#group-products-grid', 'parameters': listenerParameters } %}
-{% endblock %}
-
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
@@ -83,9 +69,9 @@
                     {% endif %}
                     </div>
                 {% endif %}
-                <div id="group-products-grid"></div>
-                {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
-                {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
+
+                {{ dataGrid.renderGrid('product-group-grid', { dataLocale: dataLocale }) }}
+
             </div>
 
             <div class="tab-pane" id="properties">
