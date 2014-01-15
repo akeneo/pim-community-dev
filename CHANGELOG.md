@@ -1,3 +1,13 @@
+# 1.0.0-rc-1 -
+
+## Features
+
+## Improvements
+
+## Bug fixes
+
+## BC breaks
+
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
 ## Features
