@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 /**
@@ -58,12 +59,16 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $columns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
+        );
         foreach ($this->attributes as $attributeCode => $attribute) {
             $showColumn        = $attribute->isUseableAsGridColumn();
             $attributeType     = $attribute->getAttributeType();
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
+            $columnExists      = isset($columns[$attributeCode]);
 
-            if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
+            if ($columnExists && $showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
                 if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
