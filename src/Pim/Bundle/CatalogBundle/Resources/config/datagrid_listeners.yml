@@ -41,7 +41,16 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-grid, method: onBuildAfter }
 
-    pim_catalog.event_listener.product_grid_listener:
+    pim_catalog.event_listener.product_grid_before_listener:
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        arguments:
+            - @pim_flexibleentity.registry
+            - @pim_datagrid.datagrid.flexible.configuration_registry
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore}
+
+    pim_catalog.event_listener.product_grid_after_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
         arguments:
           - [dataLocale]
@@ -52,7 +61,16 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
-    pim_catalog.event_listener.product_group_grid_listener:
+    pim_catalog.event_listener.product_group_grid_before_listener:
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        arguments:
+            - @pim_flexibleentity.registry
+            - @pim_datagrid.datagrid.flexible.configuration_registry
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore}
+
+    pim_catalog.event_listener.product_group_grid_after_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
           - [dataLocale, currentGroup]

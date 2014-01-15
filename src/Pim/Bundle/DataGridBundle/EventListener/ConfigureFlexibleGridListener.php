@@ -83,39 +83,6 @@ class ConfigureFlexibleGridListener
     }
 
     /**
-     * Adds entity object to datasource query builder
-     *
-     * @param BuildAfter $event
-     *
-     * @return null
-     */
-    public function buildAfter(BuildAfter $event)
-    {
-        $datagrid = $event->getDatagrid();
-        $config   = $datagrid->getAcceptor()->getConfig();
-        $fields   = $config->offsetGetOr(FormatterConfiguration::COLUMNS_KEY, array());
-
-        $flexibleCount = count(
-            array_filter(
-                $fields,
-                function ($value) {
-                    return $value['type'] === 'flexible_field';
-                }
-            )
-        );
-
-        if ($flexibleCount && $datagrid->getDatasource() instanceof OrmDatasource) {
-            /** @var QueryBuilder $qb */
-            $qb = $datagrid->getDatasource()->getQueryBuilder();
-
-            $aliases = $qb->getRootAliases();
-            $alias   = reset($aliases);
-
-            $qb->addSelect($alias);
-        }
-    }
-
-    /**
      * Prepares attributes array for given entity
      *
      * @param string $entityFQCN
