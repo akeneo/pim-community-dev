@@ -13,15 +13,15 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
  */
 class CompletenessWidget implements WidgetInterface
 {
-    /** @var EntityManager */
-    protected $repositorysitory;
+    /** @var ProductRepositoryInterface */
+    protected $repository;
 
     /**
-     * @param ProductRepositoryInterface $repositorysitory
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductRepositoryInterface $repositorysitory)
+    public function __construct(ProductRepositoryInterface $repository)
     {
-        $this->repository = $repositorysitory;
+        $this->repository = $repository;
     }
 
     /**

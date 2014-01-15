@@ -6,6 +6,13 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 
+/**
+ * Register widget into registry compiler pass
+ *
+ * @author    Gildas Quemener <gildas@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class RegisterWidgetsPass implements CompilerPassInterface
 {
     /** @var ReferenceFactory */

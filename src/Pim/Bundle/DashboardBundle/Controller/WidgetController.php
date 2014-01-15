@@ -34,7 +34,7 @@ class WidgetController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param Registry                 $registry
+     * @param Registry                 $widgetRegistry
      */
     public function __construct(
         Request $request,
@@ -51,6 +51,13 @@ class WidgetController extends AbstractController
         $this->widgetRegistry = $widgetRegistry;
     }
 
+    /**
+     * Returned a rendered widget
+     *
+     * @param string $alias
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function showAction($alias)
     {
         if (null === $widget = $this->widgetRegistry->get($alias)) {
