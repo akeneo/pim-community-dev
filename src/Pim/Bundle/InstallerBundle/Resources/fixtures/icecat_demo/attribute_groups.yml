@@ -1,0 +1,12 @@
+attribute_groups:
+    marketing:
+        labels:
+            en_US: Marketing
+            fr_FR: Marketing
+            de_DE: Marketing
+
+    technical:
+        labels:
+            en_US: Technical
+            fr_FR: Technique
+            de_DE: Technische
