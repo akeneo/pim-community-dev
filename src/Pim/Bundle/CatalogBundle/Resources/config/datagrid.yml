@@ -1,129 +1,103 @@
 datagrid:
+    translatable-entity-grid:
+        options:
+            locale_parameter: localeCode
+        source:
+            type:              pim_orm
+            repository_method: createDatagridQueryBuilder
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                params:
+                    - id
+            delete_link:
+                type: url
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                label:
+                    data_name: label
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:  string
+                    label: Code
+                label:
+                    type: string
+                    label: Label
+                    data_name: translation.label
+
     association-type-grid:
+        extend: translatable-entity-grid
         options:
             entityHint: association
         source:
             acl_resource: pim_catalog_association_type_index
-            type: pim_orm
             entity: %pim_catalog.entity.association_type.class%
-            repository_method: createDatagridQueryBuilder
-        columns:
-            code:
-                label: Code
-            label:
-                label: Label
         properties:
-            id: ~
             edit_link:
-                type: url
                 route: pim_catalog_association_type_edit
-                params:
-                    - id
             delete_link:
-                type: url
                 route: pim_catalog_association_type_remove
-                params:
-                    - id
-        actions:
-            edit:
-                type:      navigate
-                label:     Edit
-                icon:      edit
-                link:      edit_link
-                rowAction: true
-            delete:
-                type:  delete
-                label: Delete
-                icon:  trash
-                link:  delete_link
         sorters:
             columns:
                 code:
                     data_name: a.code
-                label:
-                    data_name: label
-            default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
                 code:
-                    type:      string
-                    label:     Code
                     data_name: a.code
-                label:
-                    type: string
-                    label: Label
-                    data_name: translation.label
 
     group-type-grid:
+        extend: translatable-entity-grid
         options:
             entityHint: group type
         source:
             acl_resource: pim_catalog_group_type_index
-            type: pim_orm
             entity: %pim_catalog.entity.group_type.class%
-            repository_method: createDatagridQueryBuilder
-        columns:
-            code:
-                label: Code
-            label:
-                label: Label
         properties:
-            id: ~
             edit_link:
-                type: url
                 route: pim_catalog_group_type_edit
-                params:
-                    - id
             delete_link:
-                type: url
                 route: pim_catalog_group_type_remove
-                params:
-                    - id
-        actions:
-            edit:
-                type:      navigate
-                label:     Edit
-                icon:      edit
-                link:      edit_link
-                rowAction: true
-            delete:
-                type:  delete
-                label: Delete
-                icon:  trash
-                link:  delete_link
         sorters:
             columns:
                 code:
                     data_name: g.code
-                label:
-                    data_name: label
-            default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
                 code:
-                    type:      string
-                    label:     Code
                     data_name: g.code
-                label:
-                    type: string
-                    label: Label
-                    data_name: translation.label
 
     attribute-grid:
+        extend: translatable-entity-grid
         options:
             entityHint: attribute
         source:
             acl_resource: pim_catalog_attribute_index
-            type: pim_orm
             entity: %pim_catalog.entity.attribute.class%
-            repository_method: createDatagridQueryBuilder
         columns:
-            code:
-                label: Code
-            label:
-                label: Label
             attributeType:
                 label: Type
                 type: translateable
@@ -137,53 +111,24 @@ datagrid:
                 label:     Group
                 data_name: groupLabel
         properties:
-            id: ~
             edit_link:
-                type: url
                 route: pim_catalog_attribute_edit
-                params:
-                    - id
             delete_link:
-                type: url
                 route: pim_catalog_attribute_remove
-                params:
-                    - id
-        actions:
-            edit:
-                type:      navigate
-                label:     Edit
-                icon:      edit
-                link:      edit_link
-                rowAction: true
-            delete:
-                type:  delete
-                label: Delete
-                icon:  trash
-                link:  delete_link
         sorters:
             columns:
                 code:
                     data_name: a.code
-                label:
-                    data_name: label
                 scopable:
                     data_name: a.scopable
                 translatable:
                     data_name: a.translatable
                 group:
                     data_name: groupLabel
-            default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
                 code:
-                    type:      string
-                    label:     Code
                     data_name: a.code
-                label:
-                    type:      string
-                    label:     Label
-                    data_name: translation.label
                 attributeType:
                     type:      choice
                     data_name: a.attributeType
@@ -206,6 +151,7 @@ datagrid:
     channel-grid:
         options:
             entityHint: channel
+            locale_parameter: localeCode
         source:
             acl_resource: pim_catalog_channel_index
             type: pim_orm
@@ -531,6 +477,7 @@ datagrid:
     family-grid:
         options:
             entityHint: family
+            locale_parameter: localeCode
         source:
             acl_resource: pim_catalog_family_index
             type: pim_orm

@@ -37,7 +37,7 @@ class AddParametersToGridListener
     /**
      * @param array             $paramNames    Parameter name that should be binded to query
      * @param RequestParameters $requestParams Request params
-     * @param bool              $isEditMode     whether or not to add data_in, data_not_in params to query
+     * @param bool              $isEditMode    whether or not to add data_in, data_not_in params to query
      */
     public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false)
     {
