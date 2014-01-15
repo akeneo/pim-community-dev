@@ -9,8 +9,10 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
@@ -19,7 +21,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 /**
- * Grid listener for flexible attributes
+ * Grid listener to configure column, filter and sorter based on attributes and business rules
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,15 +29,24 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
  */
 class ConfigureFlexibleGridListener
 {
+    /**
+     * @var string
+     */
     const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
-    /** @var FlexibleManagerRegistry */
+    /**
+     * @var FlexibleManagerRegistry
+     */
     protected $flexRegistry;
 
-    /** @var ConfigurationRegistry */
+    /**
+     * @var ConfigurationRegistry
+     */
     protected $confRegistry;
 
-    /** @var RequestParameters */
+    /**
+     * @var RequestParameters
+     */
     protected $requestParams;
 
     /**
@@ -69,17 +80,48 @@ class ConfigureFlexibleGridListener
 
         if ($flexibleEntity) {
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
-
-            $configurator = new ColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
-            $configurator->configure();
-
-            $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
-            $configurator = new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
-            $configurator->configure();
-
-            $configurator = new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
-            $configurator->configure();
+            $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
+            $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
+            $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
         }
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     * @param AbstractAttribute[]   $attributes
+     *
+     * @return ConfiguratorInterface
+     */
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    {
+        return new ColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     * @param AbstractAttribute[]   $attributes
+     *
+     * @return ConfiguratorInterface
+     */
+    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    {
+        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
+
+        return new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     * @param AbstractAttribute[]   $attributes
+     *
+     * @return ConfiguratorInterface
+     */
+    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    {
+        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+
+        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
     }
 
     /**
