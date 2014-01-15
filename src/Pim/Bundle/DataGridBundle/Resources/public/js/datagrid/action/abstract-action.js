@@ -11,7 +11,7 @@ define(
                 if (action.frontend_type == 'export') {
                     this._handleExport(action);
                 } else {
-                    AbstractAction.prototype.executeConfiguredAction.call(this, arguments);
+                    AbstractAction.prototype.executeConfiguredAction.apply(this, arguments);
                 }
             },
 

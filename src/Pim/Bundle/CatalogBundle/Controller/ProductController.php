@@ -216,8 +216,6 @@ class ProductController extends AbstractDoctrineController
             return;
             flush();
 
-            $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
-
             // get attribute lists
             $fieldsList = $gridManager->getAvailableAttributeCodes($proxyQuery);
             $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;

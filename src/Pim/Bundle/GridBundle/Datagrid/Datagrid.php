@@ -81,18 +81,6 @@ class Datagrid extends OroDatagrid
     }
 
     /**
-     * Returns the query with parameters applied
-     *
-     * @return \Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface
-     */
-    public function getQueryWithParametersApplied()
-    {
-        $this->applyParameters();
-
-        return $this->query;
-    }
-
-    /**
      * Serialize datagrid results in a specific format and with a specific context
      * Offset and limit allow to batch the export result and streamed the response if needed
      *
