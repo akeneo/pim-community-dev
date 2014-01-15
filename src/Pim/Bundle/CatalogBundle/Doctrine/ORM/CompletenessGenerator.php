@@ -136,7 +136,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * This allow to link with only complete prices
      *
-     * @param $criteria
+     * @param array $criteria
+     *
+     * @return string
      */
     protected function getCompletePricesSQL($criteria = array())
     {
@@ -172,7 +174,9 @@ COMPLETE_PRICES_SQL;
      * the process comparing to joining with all attributes from the requirements
      * table
      *
-     * @param $criteria
+     * @param array $criteria
+     *
+     * @return string
      */
     protected function getMissingCompletenessesSQL($criteria = array())
     {
@@ -241,7 +245,7 @@ MISSING_SQL;
     /**
      * Provides the main SQL part
      *
-     * return string $selectPart
+     * @return string
      */
     protected function getMainSqlPart()
     {
