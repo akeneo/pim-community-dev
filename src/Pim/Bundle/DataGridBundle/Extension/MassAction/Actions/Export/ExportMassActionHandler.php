@@ -4,16 +4,15 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 /**
  * Export action handler
  *
  * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ExportMassActionHandler implements MassActionHandlerInterface
@@ -21,7 +20,7 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     /**
      * @staticvar int
      */
-    const BATCH_SIZE = 2500;
+    const BATCH_SIZE = 250;
 
     /**
      * @var EntityManager
@@ -48,13 +47,8 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
-        $results = $mediator->getResults();
-
         $qb = $mediator->getDatagrid()->getAcceptedDatasource()->getQueryBuilder();
-
-        // $qb->orWhere($qb->getRootAlias().'.id NOT IN (:entityIds)');
-        $qb->setFirstResult(null);
-        $qb->setMaxResults(null);
+        $qb = $this->prepareQueryBuilder($qb);
 
         $results = $qb->getQuery()->execute();
 
@@ -68,19 +62,31 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     }
 
     /**
-     * @param IterableResultInterface $result
+     * Remove 'entityIds' part from querybuilder (added by flexible pager)
      *
-     * @return ConstantPagerIterableResult
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
      */
-    protected function prepareIterableResult(IterableResultInterface $result)
+    protected function prepareQueryBuilder(QueryBuilder $qb)
     {
-        $results =  new ConstantPagerIterableResult($result->getSource());
-        $params = [];
-        foreach ($result->getSource()->getParameters() as $param) {
-            $params[$param->getName()] = $param->getValue();
-        }
-        $results->setParameters($params);
+        $whereParts = $qb->getDQLPart('where')->getParts();
+        $qb->resetDQLPart('where');
 
-        return $results;
+        foreach ($whereParts as $part) {
+            if (!is_string($part) || !strpos($part, 'entityIds')) {
+                $qb->andWhere($part);
+            }
+        }
+
+        $parameters = $qb->getParameters()->filter(
+            function ($parameter) {
+                return $parameter->getName() !== 'entityIds';
+            }
+        );
+
+        $qb->setParameters($parameters);
+
+        return $qb;
     }
 }

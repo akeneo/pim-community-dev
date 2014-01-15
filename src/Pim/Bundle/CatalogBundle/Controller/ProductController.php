@@ -189,11 +189,7 @@ class ProductController extends AbstractDoctrineController
             $response->headers->set('Content-Type', 'text/csv');
             $response->headers->set('Content-Disposition', $attachment);
             $response->setCallback($this->quickExportCallback($result));
-            // $response->setCallback(
-            //     function () use ($result) {
-            //         echo $result;
-            //     }
-            // );
+
             return $response->send();
         }
 
