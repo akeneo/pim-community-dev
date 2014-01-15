@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\ExportAction;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -12,6 +12,8 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * Export action handler
@@ -20,7 +22,7 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExportActionHandler implements MassActionHandlerInterface
+class ExportMassActionHandler implements MassActionHandlerInterface
 {
     /**
      * @var EntityManager
@@ -47,6 +49,36 @@ class ExportActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
+
+        ignore_user_abort(false);
+        set_time_limit(0);
+
+        // $scope = $this->productManager->getScope();
+
+        // $dateTime = new \DateTime();
+        // $fileName = sprintf(
+        //     'products_export_%s_%s_%s.csv',
+        //     $this->getDataLocale(),
+        //     $scope,
+        //     $dateTime->format('Y-m-d_H:i:s')
+        // );
+
+        $fileName = 'test.csv';
+
+        // prepare response
+        $response = new StreamedResponse();
+        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', $attachment);
+        $response->setCallback(function () {
+            for ($i = 0; $i < 3; $i++) {
+                echo $i;
+                sleep(1);
+            }
+        });
+
+        return $response->send();
+
         var_dump('got here'); die;
         $iteration             = 0;
         $entityName            = null;

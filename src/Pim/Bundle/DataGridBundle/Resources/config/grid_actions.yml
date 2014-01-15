@@ -1,7 +1,7 @@
 parameters:
-    pim_datagrid.extension.action.type.tab_redirect.class:     Pim\Bundle\DataGridBundle\Extension\Action\Actions\TabRedirectAction
-    pim_datagrid.extension.export_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\ExportAction\ExportActionHandler
-    pim_datagrid.extension.export_action.type.export.class:    Pim\Bundle\DataGridBundle\Extension\ExportAction\Actions\ExportAction
+    pim_datagrid.extension.action.type.tab_redirect.class:   Pim\Bundle\DataGridBundle\Extension\Action\Actions\TabRedirectAction
+    pim_datagrid.extension.mass_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionHandler
+    pim_datagrid.extension.mass_action.type.export.class:    Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
 
 services:
     pim_datagrid.extension.action.type.tab_redirect:
@@ -10,14 +10,14 @@ services:
         tags:
             - { name: oro_datagrid.extension.action.type, type: tab-redirect }
 
-    pim_datagrid.extension.export_action.handler.export:
-        class: %pim_datagrid.extension.export_action.handler.export.class%
+    pim_datagrid.extension.mass_action.handler.export:
+        class: %pim_datagrid.extension.mass_action.handler.export.class%
         arguments:
             - @doctrine.orm.entity_manager
             - @pim_serializer
 
-    pim_datagrid.extension.export_action.type.export:
-        class: %pim_datagrid.extension.export_action.type.export.class%
+    pim_datagrid.extension.mass_action.type.export:
+        class: %pim_datagrid.extension.mass_action.type.export.class%
         scope: prototype
         tags:
-            - { name: pim_datagrid.extension.export_action.type, type: export }
+            - { name: oro_datagrid.extension.mass_action.type, type: export }
