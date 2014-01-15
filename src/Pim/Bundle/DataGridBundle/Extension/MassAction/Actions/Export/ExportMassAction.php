@@ -26,7 +26,13 @@ class ExportMassAction extends WidgetMassAction
         $options['frontend_type'] = 'export';
 
         if (empty($options['route'])) {
-            $options['route'] = 'oro_datagrid_mass_action';
+            $options['route'] = 'pim_catalog_product_index';
+        }
+
+        if (empty($options['route_parameters'])) {
+            $options['route_parameters'] = array(
+                '_format' => 'csv'
+            );
         }
 
         return parent::setOptions($options);

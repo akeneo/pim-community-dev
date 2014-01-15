@@ -21,9 +21,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -69,9 +70,14 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
-     * @staticvar int
+     * @var MassActionParametersParser
      */
-    const BATCH_SIZE = 250;
+    protected $parametersParser;
+
+    /**
+     * @var MassActionDispatcher
+     */
+    protected $massActionDispatcher;
 
     /**
      * Constant used to redirect to the datagrid when save edit form
@@ -88,19 +94,21 @@ class ProductController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param ProductManager           $productManager
-     * @param CategoryManager          $categoryManager
-     * @param LocaleManager            $localeManager
-     * @param AuditManager             $auditManager
-     * @param SecurityFacade           $securityFacade
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param RegistryInterface          $doctrine
+     * @param ProductManager             $productManager
+     * @param CategoryManager            $categoryManager
+     * @param LocaleManager              $localeManager
+     * @param AuditManager               $auditManager
+     * @param SecurityFacade             $securityFacade
+     * @param MassActionParametersParser $parametersParser
+     * @param MassActionDispatcher       $massActionDispatcher
      */
     public function __construct(
         Request $request,
@@ -115,7 +123,9 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        MassActionParametersParser $parametersParser,
+        MassActionDispatcher $massActionDispatcher
     ) {
         parent::__construct(
             $request,
@@ -133,6 +143,8 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
+        $this->parametersParser     = $parametersParser;
+        $this->massActionDispatcher = $massActionDispatcher;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -148,7 +160,43 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $dataLocale = $this->getDataLocale();
+        if ('csv' === $request->getRequestFormat()) {
+            // Export time execution depends on entities exported
+            ignore_user_abort(false);
+            set_time_limit(0);
+
+            $parameters  = $this->parametersParser->parse($request);
+            $requestData = array_merge($request->query->all(), $request->request->all());
+
+            $result = $this->massActionDispatcher->dispatch(
+                $requestData['gridName'],
+                $requestData['actionName'],
+                $parameters,
+                $requestData
+            );
+
+            $dateTime = new \DateTime();
+            $fileName = sprintf(
+                'products_export_%s_%s_%s.csv',
+                $this->getDataLocale(),
+                $this->productManager->getScope(),
+                $dateTime->format('Y-m-d_H:i:s')
+            );
+
+            // prepare response
+            $response = new StreamedResponse();
+            $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set('Content-Disposition', $attachment);
+            $response->setCallback($this->quickExportCallback($result));
+            // $response->setCallback(
+            //     function () use ($result) {
+            //         echo $result;
+            //     }
+            // );
+            return $response->send();
+        }
+
         return array(
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
@@ -158,14 +206,18 @@ class ProductController extends AbstractDoctrineController
     /**
      * Quick export callback
      *
-     * @param ProductDatagridManager $gridManager
-     * @param integer                $limit
+     * @param string $result
      *
      * @return \Closure
      */
-    protected function quickExportCallback(ProductDatagridManager $gridManager, $limit)
+    protected function quickExportCallback($result)
     {
-        return function () use ($gridManager, $limit) {
+        return function () use ($result) {
+            foreach ($result as $item) {
+                echo $item;
+            }
+
+            return;
             flush();
 
             $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();

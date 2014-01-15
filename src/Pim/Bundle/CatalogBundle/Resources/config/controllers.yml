@@ -105,6 +105,8 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@oro_datagrid.mass_action.dispatcher'
 
     pim_catalog.controller.association:
         class: %pim_catalog.controller.association.class%

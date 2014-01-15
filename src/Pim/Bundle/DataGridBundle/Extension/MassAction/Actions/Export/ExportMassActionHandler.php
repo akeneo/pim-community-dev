@@ -3,17 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
 use Symfony\Component\Serializer\SerializerInterface;
-
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Parameter;
-
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * Export action handler
@@ -24,6 +18,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 class ExportMassActionHandler implements MassActionHandlerInterface
 {
+    /**
+     * @staticvar int
+     */
+    const BATCH_SIZE = 2500;
+
     /**
      * @var EntityManager
      */
@@ -49,84 +48,23 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
+        $results = $mediator->getResults();
 
-        ignore_user_abort(false);
-        set_time_limit(0);
+        $qb = $mediator->getDatagrid()->getAcceptedDatasource()->getQueryBuilder();
 
-        // $scope = $this->productManager->getScope();
+        // $qb->orWhere($qb->getRootAlias().'.id NOT IN (:entityIds)');
+        $qb->setFirstResult(null);
+        $qb->setMaxResults(null);
 
-        // $dateTime = new \DateTime();
-        // $fileName = sprintf(
-        //     'products_export_%s_%s_%s.csv',
-        //     $this->getDataLocale(),
-        //     $scope,
-        //     $dateTime->format('Y-m-d_H:i:s')
-        // );
+        $results = $qb->getQuery()->execute();
 
-        $fileName = 'test.csv';
-
-        // prepare response
-        $response = new StreamedResponse();
-        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', $attachment);
-        $response->setCallback(function () {
-            for ($i = 0; $i < 3; $i++) {
-                echo $i;
-                sleep(1);
-            }
-        });
-
-        return $response->send();
-
-        var_dump('got here'); die;
-        $iteration             = 0;
-        $entityName            = null;
-        $entityIdentifiedField = null;
-
-        $results = $this->prepareIterableResult($mediator->getResults());
-        $results->setBufferSize(100);
-
-        // batch remove should be processed in transaction
-        $this->entityManager->beginTransaction();
-        try {
-            foreach ($results as $result) {
-                /** @var $result ResultRecordInterface */
-                $entity = $result->getRootEntity();
-                if (!$entity) {
-                    // no entity in result record, it should be extracted from DB
-                    if (!$entityName) {
-                        $entityName = $this->getEntityName($mediator);
-                    }
-                    if (!$entityIdentifiedField) {
-                        $entityIdentifiedField = $this->getEntityIdentifierField($mediator);
-                    }
-                    $entity = $this->getEntity($entityName, $result->getValue($entityIdentifiedField));
-                }
-
-                if ($entity) {
-                    $this->entityManager->remove($entity);
-
-                    $iteration++;
-                    if ($iteration % 100 == 0) {
-                        $this->entityManager->flush();
-                        $this->entityManager->clear();
-                    }
-                }
-            }
-
-            if ($iteration % 100 > 0) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
-            }
-
-            $this->entityManager->commit();
-        } catch (\Exception $e) {
-            $this->entityManager->rollback();
-            throw $e;
+        $data = array();
+        foreach ($results as $result) {
+            $entity = $result[0];
+            $data[] = $this->serializer->serialize($entity, 'csv');
         }
 
-        return $this->getResponse($mediator, $iteration);
+        return $data;
     }
 
     /**
@@ -138,87 +76,11 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     {
         $results =  new ConstantPagerIterableResult($result->getSource());
         $params = [];
-        /** @var Parameter $param */
         foreach ($result->getSource()->getParameters() as $param) {
             $params[$param->getName()] = $param->getValue();
         }
         $results->setParameters($params);
 
         return $results;
-    }
-
-    /**
-     * @param MassActionMediatorInterface $mediator
-     * @param int                         $entitiesCount
-     *
-     * @return MassActionResponse
-     */
-    protected function getResponse(MassActionMediatorInterface $mediator, $entitiesCount = 0)
-    {
-        $massAction      = $mediator->getMassAction();
-        $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', '$this->responseMessage');
-
-        $successful = $entitiesCount > 0;
-        $options    = ['count' => $entitiesCount];
-
-        return new MassActionResponse(
-            $successful,
-            $responseMessage,
-            $entitiesCount,
-            ['%count%' => $entitiesCount],
-            $options
-        );
-    }
-
-    /**
-     * @param MassActionMediatorInterface $mediator
-     *
-     * @return string
-     * @throws \LogicException
-     */
-    protected function getEntityName(MassActionMediatorInterface $mediator)
-    {
-        $massAction = $mediator->getMassAction();
-        $entityName = $massAction->getOptions()->offsetGet('entity_name');
-        if (!$entityName) {
-            throw new \LogicException(sprintf('Mass action "%s" must define entity name', $massAction->getName()));
-        }
-
-        return $entityName;
-    }
-
-    /**
-     * @param MassActionMediatorInterface $mediator
-     *
-     * @throws \LogicException
-     * @return string
-     */
-    protected function getEntityIdentifierField(MassActionMediatorInterface $mediator)
-    {
-        $massAction = $mediator->getMassAction();
-        $identifier = $massAction->getOptions()->offsetGet('data_identifier');
-        if (!$identifier) {
-            throw new \LogicException(sprintf('Mass action "%s" must define identifier name', $massAction->getName()));
-        }
-
-        // if we ask identifier that's means that we have plain data in array
-        // so we will just use column name without entity alias
-        if (strpos('.', $identifier) !== -1) {
-            $parts      = explode('.', $identifier);
-            $identifier = end($parts);
-        }
-
-        return $identifier;
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $identifierValue
-     *
-     * @return object
-     */
-    protected function getEntity($entityName, $identifierValue)
-    {
-        return $this->entityManager->getReference($entityName, $identifierValue);
     }
 }
