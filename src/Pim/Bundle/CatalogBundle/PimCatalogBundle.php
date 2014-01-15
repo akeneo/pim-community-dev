@@ -26,14 +26,10 @@ class PimCatalogBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        parent::build($container);
-
         $container
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new Compiler\RegisterMassEditActionsPass())
-            ->addCompilerPass(new Compiler\RegisterWidgetsPass());
-
+            ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'

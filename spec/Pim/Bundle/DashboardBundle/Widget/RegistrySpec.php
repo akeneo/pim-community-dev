@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Widget;
+namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Widget\WidgetInterface;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 class RegistrySpec extends ObjectBehavior
 {

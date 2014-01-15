@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\DashboardBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
-use Pim\Bundle\CatalogBundle\Widget\Registry;
+use Pim\Bundle\DashboardBundle\Widget\Registry;
 
 /**
  * Widget controller

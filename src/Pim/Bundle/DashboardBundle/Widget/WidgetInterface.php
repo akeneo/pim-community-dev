@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Widget;
+namespace Pim\Bundle\DashboardBundle\Widget;
 
 /**
  * 

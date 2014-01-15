@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Widget;
+namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Doctrine\ORM\EntityManager;
 
@@ -16,7 +16,7 @@ class CompletenessWidget implements WidgetInterface
 
     public function getTemplate()
     {
-        return 'PimCatalogBundle:Widget:completeness.html.twig';
+        return 'PimDashboardBundle:Widget:completeness.html.twig';
     }
 
     public function getParameters()

@@ -18,3 +18,5 @@ pim_dashboard:
             export_report:  'Exports History'
             attribute:      'Manage Attributes'
             family:         'Manage Families'
+    widget:
+        completeness: Completeness Over Channels and Locales

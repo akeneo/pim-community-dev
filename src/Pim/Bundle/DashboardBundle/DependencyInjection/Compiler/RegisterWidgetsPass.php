@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,12 +24,12 @@ class RegisterWidgetsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_catalog.widget.registry')) {
+        if (!$container->hasDefinition('pim_dashboard.widget.registry')) {
             return;
         }
-        $definition = $container->getDefinition('pim_catalog.widget.registry');
+        $definition = $container->getDefinition('pim_dashboard.widget.registry');
 
-        foreach ($container->findTaggedServiceIds('pim_catalog.widget') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('pim_dashboard.widget') as $serviceId => $tag) {
             $alias = isset($tag[0]['alias']) ? $tag[0]['alias'] : $serviceId;
             $definition->addMethodCall('add', array($alias, $this->factory->createReference($serviceId)));
         }
