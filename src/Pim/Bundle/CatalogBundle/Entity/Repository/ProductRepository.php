@@ -355,6 +355,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $qb
+            ->addSelect('p')
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
             ->addSelect('values')
             ->addSelect('valuePrices')

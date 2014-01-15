@@ -282,7 +282,6 @@ datagrid:
             entity: %pim_catalog.entity.product.class%
             repository_method: createDatagridQueryBuilder
         columns:
-            # TODO : add created / updated at
             family:
                 label: Family
                 data_name: familyLabel
@@ -302,6 +301,12 @@ datagrid:
                 type: twig
                 template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
+            created:
+                label: Created
+                frontend_type: datetime
+            updated:
+                label: Updated
+                frontend_type: datetime
         properties:
             id: ~
             edit_link:
@@ -361,6 +366,10 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
+                created:
+                    data_name: p.created
+                updated:
+                    data_name: p.updated
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
@@ -405,6 +414,14 @@ datagrid:
                     type:      completeness
                     label:     Complete
                     data_name: ratio
+                created:
+                    type:             datetime
+                    data_name:        p.created
+                    filter_by_having: true
+                updated:
+                    type:             datetime
+                    data_name:        p.updated
+                    filter_by_having: true
 
     product-group-grid:
         # TODO: useless config ?
