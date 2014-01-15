@@ -367,11 +367,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         $qb
             ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin('p.values', 'values')
-            ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('values.prices', 'valuePrices')
-            ->leftJoin('values.metric', 'valueMetrics');
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $hasProductExpr =
@@ -382,11 +378,7 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         $qb
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect($hasProductExpr.' AS has_product')
-            ->addSelect('values')
-            ->addSelect('valuePrices')
-            ->addSelect('valueOptions')
-            ->addSelect('valueMetrics');
+            ->addSelect($hasProductExpr.' AS has_product');
 
         return $qb;
     }
