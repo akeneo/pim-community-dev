@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -31,9 +29,6 @@ class ConfigureFlexibleGridListener
 {
     const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
-    /** @var  PropertyAccessor */
-    protected $accessor;
-
     /** @var FlexibleManagerRegistry */
     protected $flexRegistry;
 
@@ -58,7 +53,6 @@ class ConfigureFlexibleGridListener
         $this->flexRegistry  = $flexRegistry;
         $this->confRegistry  = $confRegistry;
         $this->requestParams = $requestParams;
-        $this->accessor      = PropertyAccess::createPropertyAccessor();
     }
 
     /**
