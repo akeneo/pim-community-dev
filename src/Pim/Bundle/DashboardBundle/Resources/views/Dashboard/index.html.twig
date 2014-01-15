@@ -1,43 +1,14 @@
 {% extends bap.layout %}
 
 {% macro renderWidget(widget) %}
-        {% if widget.alias is defined %}
-
-            {% if resource_granted(widget.acl) %}
-                <div class="quick-launchpad-widget span6">
-                    <div class="clearfix">
-                        {{ render(controller('pim_dashboard.controller.widget:showAction', {'alias': widget.alias})) }}
-                    </div>
-                </div>
-            {% endif %}
-
-        {% else %}
-
-            <div class="quick-launchpad-widget span6">
-                <div class="clearfix">
-                    <div class="image-wrap pull-left">
-                        <p class="text-center">
-                            {{ widget.label|trans }}
-                        </p>
-                        {% if widget.image is defined and widget.image %}
-                        <a href="javascript:void(0);" class="widget-image {{ widget.image }}"></a>
-                        {% endif %}
-                    </div>
-                    <div class="list-wrap pull-left">
-                        <ul class="nav nav-list">
-                            {% for link in widget.links %}
-                            {% if resource_granted(link.acl) %}
-                            <li class="{{ loop.last ? 'last' : '' }}">
-                                <a href="{{ link.url|raw }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
-                            </li>
-                            {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+    {% if widget.acl is defined and not resource_granted(widget.acl) %}
+    {% else %}
+        <div class="quick-launchpad-widget span6">
+            <div class="clearfix">
+                {{ render(controller('pim_dashboard.controller.widget:showAction', {'alias': widget.alias})) }}
             </div>
-
-        {% endif %}
+        </div>
+    {% endif %}
 {% endmacro %}
 {% import _self as __ %}
 
@@ -47,22 +18,8 @@
             <h3>{{ 'Quick Launchpad'|trans }}</h3>
 
             {% set widgetsArray = [
-                {
-                    alias: 'completeness',
-                    acl: 'pim_navigation_enrich'
-                },
-                {
-                    label: 'pim_dashboard.menu.label.enrich',
-                    links: [
-                        { url: path('pim_catalog_product_index'),       label: 'pim_dashboard.link.label.product',   acl: 'pim_navigation_enrich' },
-                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category',  acl: 'pim_navigation_enrich' },
-                        { url: path('pim_catalog_variant_group_index'), label: 'pim_dashboard.link.label.variant',   acl: 'pim_navigation_enrich' },
-                        { url: path('pim_catalog_group_index'),         label: 'pim_dashboard.link.label.group',     acl: 'pim_navigation_enrich' },
-                        { url: path('pim_catalog_attribute_index'),     label: 'pim_dashboard.link.label.attribute', acl: 'pim_navigation_settings' },
-                        { url: path('pim_catalog_family_create'),       label: 'pim_dashboard.link.label.family',    acl: 'pim_navigation_settings' }
-                    ],
-                    image: 'enrich-image'
-                }
+                { alias: 'completeness', acl: 'pim_navigation_enrich' },
+                { alias: 'links' },
             ] %}
 
             {% for widget in widgetsArray %}
