@@ -208,9 +208,13 @@ confirmation:
 # Flash messages
 flash:
     export:
+        created: The export has been successfully created
         removed: The export has been removed
+        updated: The export has been successfully updated
     import:
+        created: The import has been successfully created
         removed: The import has been removed
+        updated: The import has been successfully updated
 
 # Menu entries
 pim_menu:
