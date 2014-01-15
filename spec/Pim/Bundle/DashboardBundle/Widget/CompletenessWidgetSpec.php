@@ -4,16 +4,13 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, ChannelRepository $repository)
+    function let(ProductRepositoryInterface $repository)
     {
-        $entityManager->getRepository('PimCatalogBundle:Channel')->willReturn($repository);
-
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($repository);
     }
 
     function it_is_a_widget()
@@ -28,7 +25,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_completeness_template_parameters($repository)
     {
-        $repository->countProducts()->willReturn(array(
+        $repository->countProductsPerChannels()->willReturn(array(
             array(
                 'label' => 'Mobile',
                 'total' => 40,
@@ -38,7 +35,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
                 'total' => 25,
             ),
         ));
-        $repository->countCompleteProducts()->willReturn(array(
+        $repository->countCompleteProductsPerChannels()->willReturn(array(
             array(
                 'label'  => 'Mobile',
                 'locale' => 'en_US',

@@ -198,4 +198,20 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         // than the parent
         return $this->find($id);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }

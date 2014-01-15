@@ -26,6 +26,6 @@ services:
     pim_dashboard.widget.completeness:
         class: %pim_dashboard.widget.completeness.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.orm.product'
         tags:
             - { name: pim_dashboard.widget, alias: completeness }

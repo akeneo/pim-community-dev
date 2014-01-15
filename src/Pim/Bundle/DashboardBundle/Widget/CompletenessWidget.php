@@ -2,26 +2,26 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CompletenessWidget implements WidgetInterface
 {
     /** @var EntityManager */
-    protected $entityManager;
+    protected $repositorysitory;
 
     /**
-     * @param EntityManager $entityManager
+     * @param ProductRepositoryInterface $repositorysitory
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ProductRepositoryInterface $repositorysitory)
     {
-        $this->entityManager = $entityManager;
+        $this->repository = $repositorysitory;
     }
 
     /**
@@ -37,9 +37,8 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $repo = $this->entityManager->getRepository('PimCatalogBundle:Channel');
-        $channels = $repo->countProducts();
-        $completeProducts = $repo->countCompleteProducts();
+        $channels = $this->repository->countProductsPerChannels();
+        $completeProducts = $this->repository->countCompleteProductsPerChannels();
 
         $params = array();
         foreach ($channels as $channel) {

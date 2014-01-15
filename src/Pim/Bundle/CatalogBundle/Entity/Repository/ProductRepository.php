@@ -295,6 +295,49 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countProductsPerChannels()
+    {
+        $sql = <<<SQL
+SELECT ch.label, count(p.id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_category ca ON ca.root = ch.category_id
+    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN pim_catalog_product p ON p.id = cp.product_id
+    WHERE p.is_enabled = 1
+    GROUP BY ch.id
+SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteProductsPerChannels()
+    {
+        $sql = <<<SQL
+SELECT ch.label, lo.code as locale, count(co.product_id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_category ca ON ca.root = ch.category_id
+    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN pim_catalog_product p ON p.id = cp.product_id
+    JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
+    JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
+    LEFT JOIN pim_catalog_completeness co ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
+    WHERE p.is_enabled = 1
+    GROUP BY ch.id, lo.id
+SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
      * Returns the ProductValue class
      *
      * @return string
