@@ -8,8 +8,6 @@ namespace Pim\Bundle\GridBundle\Tests\Unit\Action\Export;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @abstract
  */
 abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +17,6 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
      * @param array $options
      *
      * @return Pim\Bundle\GridBundle\Action\Export\ExportActionInterface
-     * @abstract
      */
     abstract protected function createExportAction(array $options);
 
@@ -27,8 +24,6 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
      * Data provider for export action constructor
      *
      * @return array
-     * @abstract
-     * @static
      */
     abstract public static function constructDataProvider();
 
@@ -49,8 +44,6 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
      * Data provider for throwing of InvalidArgumentException
      *
      * @return array
-     * @abstract
-     * @static
      */
     abstract public static function invalidArgumentExceptionDataProvider();
 
@@ -70,8 +63,6 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
      * Data provider for getters
      *
      * @return array
-     * @abstract
-     * @static
      */
     abstract public static function dataProviderGetters();
 

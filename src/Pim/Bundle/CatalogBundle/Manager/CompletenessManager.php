@@ -81,9 +81,7 @@ class CompletenessManager
     }
 
     /**
-     * Insert n missing completenesses
-     *
-     * @param int $limit
+     * Insert missing completenesses
      */
     public function generateMissingCompletenesses()
     {
