@@ -51,19 +51,12 @@ class WidgetController extends AbstractController
         $this->widgetRegistry = $widgetRegistry;
     }
 
-    public function showAction($name)
+    public function showAction($alias)
     {
-        $widget = $this->findWidgetOr404($name);
-
-        return $this->render($widget->getTemplate(), array('widget' => $widget->getParameters()));
-    }
-
-    protected function findWidgetOr404($name)
-    {
-        if (null === $widget = $this->widgetRegistry->get($name)) {
-            throw $this->createNotFoundException(sprintf('Widget "%s" could not be found.', $name));
+        if (null === $widget = $this->widgetRegistry->get($alias)) {
+            return $this->render('PimDashboardBundle:Widget:error.html.twig', array('alias' => $alias));
         }
 
-        return $widget;
+        return $this->render($widget->getTemplate(), array('widget' => $widget->getParameters()));
     }
 }
