@@ -7,7 +7,7 @@ function(NavigateAction) {
      * Redirects to a specific tab
      *
      * @author  Antoine Guigan <antoine@akeneo.com>
-     * @class   Pim.Datagrid.Action.ExportCollectionAction
+     * @class   Pim.Datagrid.Action.TabRedirectAction
      * @export  pim/datagrid/tab-redirect-action
      * @extends oro.datagrid.AbstractAction
      */

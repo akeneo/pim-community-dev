@@ -5,19 +5,6 @@
 
 {% block head_script %}
     {{ parent() }}
-    {#
-    {% embed 'PimGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
-        {% block javascript_grid_type "pim/datagrid/grid" %}
-        {% block javascript_grid_options %}
-            exportActions: {
-                {% for action in datagrid.exportActions %}
-                    {{ action.name|json_encode|raw }}: ExportCollectionAction.extend({{ action.options|json_encode|raw }})
-                    {% if not loop.last %},{% endif %}
-                {% endfor %}
-            },
-        {% endblock %}
-    {% endembed %}
-    #}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'jquery.sidebarize'],
