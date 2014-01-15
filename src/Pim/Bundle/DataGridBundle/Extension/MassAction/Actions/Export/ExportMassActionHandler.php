@@ -52,13 +52,19 @@ class ExportMassActionHandler implements MassActionHandlerInterface
 
         $results = $qb->getQuery()->execute();
 
-        $data = array();
-        foreach ($results as $result) {
-            $entity = $result[0];
-            $data[] = $this->serializer->serialize($entity, 'csv');
-        }
+        $context = array(
+            'withHeader'    => true,
+            'heterogeneous' => true
+        );
 
-        return $data;
+        $entities = array_map(
+            function ($result) {
+                return $result[0];
+            },
+            $results
+        );
+
+        return $this->serializer->serialize($entities, 'csv', $context);
     }
 
     /**

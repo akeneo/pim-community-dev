@@ -25,7 +25,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 use Pim\Bundle\GridBundle\Property\FlexibleTwigTemplateProperty;
 
 /**

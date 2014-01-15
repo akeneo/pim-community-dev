@@ -32,7 +32,6 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
@@ -209,36 +208,8 @@ class ProductController extends AbstractDoctrineController
     protected function quickExportCallback($result)
     {
         return function () use ($result) {
-            foreach ($result as $item) {
-                echo $item;
-            }
-
-            return;
+            echo $result;
             flush();
-
-            // get attribute lists
-            $fieldsList = $gridManager->getAvailableAttributeCodes($proxyQuery);
-            $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
-            $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
-
-            // prepare serializer context
-            $context = array(
-                'withHeader' => true,
-                'heterogeneous' => false,
-                'fields' => $fieldsList
-            );
-
-            // prepare serializer batching
-            $count = $gridManager->getDatagrid()->countResults();
-            $iterations = ceil($count/$limit);
-
-            $gridManager->prepareQueryForExport($proxyQuery, $fieldsList);
-
-            for ($i=0; $i<$iterations; $i++) {
-                $data = $gridManager->getDatagrid()->exportData($proxyQuery, 'csv', $context, $i*$limit, $limit);
-                echo $data;
-                flush();
-            }
         };
     }
 
