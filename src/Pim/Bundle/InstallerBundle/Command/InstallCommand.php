@@ -53,6 +53,20 @@ class InstallCommand extends OroInstallCommand
     /**
      * {@inheritdoc}
      */
+    protected function checkStep(InputInterface $input, OutputInterface $output)
+    {
+        $task = $input->getOption('task');
+
+        if ($task === self::TASK_CHECK || $task === self::TASK_ALL) {
+            parent::checkStep($input, $output);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setupStep(InputInterface $input, OutputInterface $output)
     {
         $task = $input->getOption('task');
