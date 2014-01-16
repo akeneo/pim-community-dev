@@ -2,14 +2,9 @@ parameters:
     pim_grid.datagrid.class:                     Pim\Bundle\GridBundle\Datagrid\Datagrid
     pim_grid.builder.datagrid.class:             Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
     pim_grid.action.product_delete.class:        Pim\Bundle\GridBundle\Action\ProductDeleteAction
-    pim_grid.routes_registry.class:              Pim\Bundle\GridBundle\Route\DatagridRouteRegistry
-    pim_grid.routes_registry.builder.class:      Pim\Bundle\GridBundle\Route\DatagridRouteRegistryBuilder
-    pim_grid.routes_registry.cache_warmer.class: Pim\Bundle\GridBundle\CacheWarmer\DatagridRouteCacheWarmer
-    pim_grid.twig_extension.class:               Pim\Bundle\GridBundle\Twig\DatagridExtension
     pim_grid.datagrid.helper.class:              Pim\Bundle\GridBundle\Helper\DatagridHelper
 
     # overriden classes
-    oro_grid.mass_action.dispatcher.class:       Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
     oro_grid.sorter.factory.class:               Pim\Bundle\GridBundle\Sorter\SorterFactory
 
 services:
@@ -23,35 +18,6 @@ services:
             - '@oro_grid.sorter.factory'
             - '@oro_grid.action.factory'
             - %pim_grid.datagrid.class%
-
-    pim_grid.routes_registry.builder:
-        class: %pim_grid.routes_registry.builder.class%
-        private: true
-        lazy: true
-        arguments:
-            - '@router'
-
-    pim_grid.routes_registry.cache_warmer:
-        class: %pim_grid.routes_registry.cache_warmer.class%
-        private: true
-        arguments:
-            - '@pim_grid.routes_registry.builder'
-        tags:
-            - { name: kernel.cache_warmer }
-
-    pim_grid.routes_registry:
-        class: %pim_grid.routes_registry.class%
-        arguments:
-            - '@router'
-            - '@pim_grid.routes_registry.builder'
-            - %kernel.cache_dir%
-
-    pim_grid.twig_extension:
-        class: %pim_grid.twig_extension.class%
-        arguments:
-            - '@pim_grid.routes_registry'
-        tags:
-            - { name: twig.extension }
 
     pim_grid.action.product_delete:
         class: %pim_grid.action.product_delete.class%

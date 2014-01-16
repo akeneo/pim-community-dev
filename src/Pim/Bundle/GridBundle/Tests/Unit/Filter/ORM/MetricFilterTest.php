@@ -66,36 +66,6 @@ class MetricFilterTest extends FilterTestCase
     }
 
     /**
-     * Data provider for operator
-     *
-     * @return array
-     */
-    public static function getOperatorDataProvider()
-    {
-        return array(
-            'operator_greater_equals' => array(MetricFilterType::TYPE_GREATER_EQUAL, '>='),
-            'operator_greater_than'   => array(MetricFilterType::TYPE_GREATER_THAN, '>'),
-            'operator_equal'          => array(MetricFilterType::TYPE_EQUAL, '='),
-            'operator_less_equal'     => array(MetricFilterType::TYPE_LESS_EQUAL, '<='),
-            'operator_less_than'      => array(MetricFilterType::TYPE_LESS_THAN, '<'),
-            'operator_false'          => array(false, '=')
-        );
-    }
-
-    /**
-     * Test related method
-     *
-     * @param mixed  $type     operator
-     * @param string $expected result expected
-     *
-     * @dataProvider getOperatorDataProvider
-     */
-    public function testGetOperator($type, $expected)
-    {
-        $this->assertEquals($expected, $this->model->getOperator($type));
-    }
-
-    /**
      * Test related method
      */
     public function testGetDefaultOptions()
@@ -156,39 +126,5 @@ class MetricFilterTest extends FilterTestCase
                 array('field_options' => array('family' => 'Weight'))
             )
         );
-    }
-
-    /**
-     * Data provider for getRenderSettings method
-     * @return array
-     */
-    public function getRenderSettingsDataProvider()
-    {
-        return array(
-            'default' => array(
-                array('field_options' => array('family' => 'Weight')),
-                array(
-                    MetricFilterType::NAME,
-                    array(
-                        'show_filter'   => false,
-                        'data_type'     => MetricFilterType::DATA_DECIMAL,
-                        'field_options' => array('family' => 'Weight')
-                    )
-                )
-            )
-        );
-    }
-
-    /**
-     * Test related method
-     * @param array $options
-     * @param array $expectedRenderSettings
-     *
-     * @dataProvider getRenderSettingsDataProvider
-     */
-    public function testGetRenderSettings($options, $expectedRenderSettings)
-    {
-        $this->model->initialize(self::TEST_NAME, $options);
-        $this->assertEquals($expectedRenderSettings, $this->model->getRenderSettings());
     }
 }
