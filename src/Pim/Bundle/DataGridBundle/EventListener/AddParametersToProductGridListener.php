@@ -17,14 +17,8 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddParametersToProductGridListener
+class AddParametersToProductGridListener extends AddParametersToGridListener
 {
-    /** @var array */
-    protected $paramNames;
-
-    /** @var RequestParameters */
-    protected $requestParams;
-
     /**
      * @var LocaleManager
      */
@@ -46,45 +40,36 @@ class AddParametersToProductGridListener
      * @param ProductManager    $productManager Product manager
      * @param LocaleManager     $localeManager  Locale manager
      * @param ChannelManager    $channelManager Channel manager
-     */
+     * @param bool              $isEditMode     Whether or not to add data_in, data_not_in params to query
+    */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
         ProductManager $productManager,
         LocaleManager $localeManager,
-        ChannelManager $channelManager
-    ) {
-        $this->paramNames     = $paramNames;
-        $this->requestParams  = $requestParams;
+        ChannelManager $channelManager,
+        $isEditMode = false
+   ) {
+        parent::__construct($paramNames, $requestParams, $isEditMode);
         $this->productManager = $productManager;
         $this->localeManager  = $localeManager;
         $this->channelManager = $channelManager;
     }
 
     /**
-     * Bound parameters in query builder
-    *
-     * @param BuildAfter $event
+     * @return array
      */
-    public function onBuildAfter(BuildAfter $event)
+    protected function prepareParameters()
     {
-        $datasource = $event->getDatagrid()->getDatasource();
-        if ($datasource instanceof OrmDatasource) {
-            /** @var QueryBuilder $query */
-            $queryBuilder = $datasource->getQueryBuilder();
-            $queryParameters = array();
-            foreach ($this->paramNames as $paramName) {
-                $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
-            }
+        $queryParameters = parent::prepareParameters();
 
-            $dataLocale = $this->getLocale($queryParameters);
-            $this->productManager->setLocale($dataLocale);
+        $dataLocale = $this->getLocale($queryParameters);
+        $this->productManager->setLocale($dataLocale);
 
-            $dataScope = $this->getScope();
-            $queryParameters['scopeCode'] = $dataScope;
+        $dataScope = $this->getScope();
+        $queryParameters['scopeCode'] = $dataScope;
 
-            $queryBuilder->setParameters($queryParameters);
-        }
+        return $queryParameters;
     }
 
     /**
