@@ -34,6 +34,8 @@ services:
             - @pim_flexibleentity.registry
             - @pim_datagrid.datagrid.flexible.configuration_registry
             - @oro_datagrid.datagrid.request_params
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore}
 
