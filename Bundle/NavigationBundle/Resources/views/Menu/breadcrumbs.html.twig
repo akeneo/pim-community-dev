@@ -1,7 +1,7 @@
 <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
         <li>
-            {{ breadcrumb.label|raw }}{% if not loop.last %}<span class="divider">/</span>{% endif %}
+            {{ breadcrumb.label|trans|raw }}{% if not loop.last %}<span class="divider">/</span>{% endif %}
         </li>
     {% endfor %}
 </ul>
