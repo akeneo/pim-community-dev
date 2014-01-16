@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\GridBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;

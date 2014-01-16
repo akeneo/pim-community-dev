@@ -165,17 +165,10 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        $datagridManager = $this->datagridHelper->getDatagridManager('group_product');
-        $datagridManager->setGroup($group);
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'form'     => $this->groupForm->createView(),
-            'datagrid' => $datagridView
+            'form'         => $this->groupForm->createView(),
+            'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
+            'currentGroup' => $group->getId()
         );
     }
 

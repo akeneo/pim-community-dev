@@ -37,7 +37,6 @@ class OrmFlexiblePagerExtension extends OrmPagerExtension
         $rootEntity = current($cloneQb->getRootEntities());
         $rootAlias = $cloneQb->getRootAlias();
         $rootField = $rootAlias.'.id';
-        $cloneQb->select($rootAlias);
         $cloneQb->add(
             'from',
             new \Doctrine\ORM\Query\Expr\From($rootEntity, $rootAlias, $rootField),

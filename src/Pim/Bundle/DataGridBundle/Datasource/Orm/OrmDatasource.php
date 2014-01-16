@@ -4,8 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource As OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
-use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -32,17 +30,11 @@ class OrmDatasource extends OroOrmDatasource
 
         $entity = $config['entity'];
         $repository = $this->em->getRepository($entity);
-        if ($repository instanceof DatagridRepositoryInterface) {
-            $this->qb = $repository->createDatagridQueryBuilder();
+
+        if (isset($config['repository_method']) && $method = $config['repository_method']) {
+            $this->qb = $repository->$method();
         } else {
             $this->qb = $repository->createQueryBuilder('o');
-        }
-
-        $queryConfig = array_intersect_key($config, array_flip(['query']));
-
-        if (!empty($queryConfig)) {
-            $converter = new YamlConverter();
-            $this->qb  = $converter->parse($queryConfig, $this->qb);
         }
 
         $grid->setDatasource(clone $this);

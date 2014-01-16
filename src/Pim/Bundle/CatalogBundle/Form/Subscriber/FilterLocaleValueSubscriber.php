@@ -33,7 +33,6 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
     /**
      * @return array
-     * @static
      */
     public static function getSubscribedEvents()
     {

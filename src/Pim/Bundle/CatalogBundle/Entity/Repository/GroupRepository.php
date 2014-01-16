@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
 
 /**
  * Group repository
@@ -13,7 +12,7 @@ use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends ReferableEntityRepository implements DatagridRepositoryInterface
+class GroupRepository extends ReferableEntityRepository
 {
     /**
      * Get ordered groups associative array id to label

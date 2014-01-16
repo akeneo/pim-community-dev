@@ -12,8 +12,6 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @abstract
  */
 abstract class AbstractEntitySelectType extends AbstractAttributeType
 {
@@ -45,8 +43,6 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Is multiselect
      *
      * @return boolean
-     *
-     * @abstract
      */
     abstract protected function isMultiselect();
 
@@ -54,8 +50,6 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Is translatable
      *
      * @return boolean
-     *
-     * @abstract
      */
     abstract protected function isTranslatable();
 
@@ -63,8 +57,6 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Get entity field to order
      *
      * @return string
-     *
-     * @abstract
      */
     abstract protected function getEntityFieldToOrder();
 
@@ -72,8 +64,6 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
      * Get joined entity alias
      *
      * @return string
-     *
-     * @abstract
      */
     abstract protected function getEntityAlias();
 }

@@ -7,7 +7,7 @@ function(DeleteAction, Navigation, $, _, __) {
      * Deletes a product and refreshes category tree
      *
      * @author  Antoine Guigan <antoine@akeneo.com>
-     * @class   Pim.Datagrid.Action.ExportCollectionAction
+     * @class   Pim.Datagrid.Action.ProductDeleteAction
      * @export  pim/datagrid/tab-redirect-action
      * @extends oro.datagrid.AbstractAction
      */

@@ -5,7 +5,6 @@ parameters:
     pim_datagrid.extension.pager.orm_flexible_pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\OrmFlexiblePagerExtension
 
 services:
-
     pim_datagrid.extension.filter.orm_filter:
         class: %pim_datagrid.extension.filter.orm_filter.class%
         arguments:
@@ -36,4 +35,3 @@ services:
             - @oro_datagrid.datagrid.request_params
         tags:
             - { name: oro_datagrid.extension }
-

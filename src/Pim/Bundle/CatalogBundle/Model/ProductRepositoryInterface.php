@@ -6,8 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Product repository interface
@@ -98,4 +96,55 @@ interface ProductRepositoryInterface
      * @return integer
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
+
+    /**
+     * Count products per channel
+     * It returns the same set of products to export, but doesn't consider the completeness ratio,
+     * and group them by channel
+     * Example:
+     *    array(
+     *        array(
+     *            'label' => 'Mobile',
+     *            'total' => 100,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'total' => 85,
+     *        ),
+     *    )
+     *
+     * @return array
+     */
+    public function countProductsPerChannels();
+
+    /**
+     * Count complete products per channel and locales
+     * It returns the same set of products to export and group them by channel and locale
+     * Example:
+     *    array(
+     *        array(
+     *            'label' => 'Mobile',
+     *            'code' => 'en_US',
+     *            'total' => 10,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'code' => 'en_US',
+     *            'total' => 85,
+     *        ),
+     *        array(
+     *            'label' => 'Mobile',
+     *            'code' => 'fr_FR',
+     *            'total' => 5,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'code' => 'fr_FR',
+     *            'total' => 63,
+     *        ),
+     *    )
+     *
+     * @return array
+     */
+    public function countCompleteProductsPerChannels();
 }

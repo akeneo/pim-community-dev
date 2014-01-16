@@ -19,4 +19,3 @@ Pim\Bundle\CatalogBundle\Model\Association:
     referenceMany:
         products:
             targetDocument: Pim\Bundle\CatalogBundle\Model\Product
-

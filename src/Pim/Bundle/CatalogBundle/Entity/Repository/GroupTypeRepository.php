@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
-
 /**
  * Group type repository
  *
@@ -11,7 +9,7 @@ use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeRepository extends ReferableEntityRepository implements DataGridRepositoryInterface
+class GroupTypeRepository extends ReferableEntityRepository
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder

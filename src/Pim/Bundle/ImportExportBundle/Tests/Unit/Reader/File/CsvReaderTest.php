@@ -69,18 +69,38 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->reader->read());
     }
 
-    /**
-     * Test related method
-     *
-     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
-     * @expectedExceptionMessage Expecting to have 3 columns, actually have 4
-     */
     public function testInvalidCsvRead()
     {
         $this->reader->setFilePath(__DIR__ . '/../../../fixtures/invalid_import.csv');
 
-        $this->reader->read();
-        $this->assertNull($this->reader->read());
+        try {
+            $this->reader->read();
+        } catch (\Oro\Bundle\BatchBundle\Item\InvalidItemException $e) {
+            $this->assertSame('pim_import_export.steps.csv_reader.invalid_item_columns_count', $e->getMessage());
+            $parameters = $e->getMessageParameters();
+            $this->assertEquals(
+                array(
+                    '%totalColumnsCount%',
+                    '%itemColumnsCount%',
+                    '%csvPath%',
+                    '%lineno%',
+                ),
+                array_keys($parameters)
+            );
+
+            $this->assertEquals(3, $parameters['%totalColumnsCount%']);
+            $this->assertEquals(4, $parameters['%itemColumnsCount%']);
+            $this->assertStringEndsWith(
+                'src/Pim/Bundle/ImportExportBundle/Tests/fixtures/invalid_import.csv',
+                $parameters['%csvPath%']
+            );
+            $this->assertEquals(1, $parameters['%lineno%']);
+            $this->assertNull($this->reader->read());
+
+            return;
+        }
+
+        $this->fail('InvalidItemException was not raised');
     }
 
     /**

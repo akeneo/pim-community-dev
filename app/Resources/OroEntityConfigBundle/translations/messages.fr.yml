@@ -1,0 +1,13 @@
+---
+oro.entity_config.controller.config_entity.message.saved: Entité enregistrée
+oro.entity_config.controller.config_field.message.saved: Champ enregistré
+New Field: Nouveau champ
+Created: Créé
+Updated: Mis à jour
+Number of records: "Nombre d'Enregistrements"
+%fieldName% - %entityName%: "%fieldName% - %entityName%"
+%fieldName% - %entityName% - Entities - System: "%fieldName% - %entityName% - Entités - système"
+Entities: Entités
+Entities - System: "Entités - système"
+%entityName%: %entityName%
+%entityName% - Entities - System: "%entityName% - Entités - système"

@@ -8,6 +8,7 @@ Create flexible entity form
 
 ```php
 <?php
+
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;

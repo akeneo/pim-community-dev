@@ -64,6 +64,17 @@ Due to some limitations of Oro Platform, you **MUST** create your database befor
 Note that using the "--prefer-dist" option can speed up
 the installation by looking into your local Composer cache.
 
+### Add translation packs
+
+You can download translation packs from crowdin:
+- http://crowdin.net/project/akeneo
+- http://crowdin.net/project/oro-platform
+
+The Akeneo PIM archive contains the following directories tree: <locale>/<version>/<translation_directories>
+You just have to paste the <translation_directories> in your app/Resources/ directory.
+
+For Oro Platform, the archive contains the same directories tree except the version directory which is removed.
+
 ### Initialize data and assets
 
     $ ./install.sh all prod
@@ -170,6 +181,8 @@ $ ./install.sh db prod
 
 Known issues
 ------------
+ - when cleaning up the cache by hand (rm -rf app/cache/*), error about `Oro\\Bundle\\UserBundle\\Entity\\User::$field_catalogLocale` can occur. In this case, a proper cache:clear command is required, as it will warm a non-corrupted cache:
+`php app/console cache:clear`
  - with XDebug on, the default value of max_nesting_level (100) is too low and can make the ACL loading fail (which causes 403 HTTP response code on every application screen, even the login screen). A working value is 500:
 `xdebug.max_nesting_level=500`
 

@@ -229,7 +229,7 @@ products:
     sku-011:
         sku: sku-011
         family: shirt
-        groups: ''
+        groups: 'oro_tshirt'
         categories: ''
         color-en_US: 'Purple,Orange'
         manufacturer-en_US: ''

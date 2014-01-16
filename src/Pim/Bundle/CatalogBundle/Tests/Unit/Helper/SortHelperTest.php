@@ -16,8 +16,6 @@ class SortHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider with data sorted and not sorted
      *
-     * @static
-     *
      * @return array
      */
     public static function dataProviderSort()

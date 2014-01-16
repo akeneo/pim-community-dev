@@ -60,7 +60,6 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
     'pim/datafilter/currency-filter', 'pim/datafilter/scope-filter', 'pim/datafilter/metric-filter',
 
     //Pim Actions
-    'pim/datagrid/export-action',
     'pim/datagrid/product-delete-action'],
 
     function($, _, Backbone, mediator, registry, LoadingMask,
@@ -76,7 +75,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry'
         CurrencyFilter, ScopeFilter, MetricFilter,
 
         //Pim actions
-        ExportCollectionAction, ProductDeleteAction
+        ProductDeleteAction
         ) {
         var datagridOptions = {
             grid: {

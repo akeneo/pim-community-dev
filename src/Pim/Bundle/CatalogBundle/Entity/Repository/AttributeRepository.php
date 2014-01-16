@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface as RefEntityRepositoryInt;
-use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface as DatagridRepositoryInt;
 
 /**
  * Repository for attribute entity
@@ -13,7 +12,7 @@ use Pim\Bundle\DataGridBundle\Model\DatagridRepositoryInterface as DatagridRepos
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends FlexibleAttributeRepository implements RefEntityRepositoryInt, DatagridRepositoryInt
+class AttributeRepository extends FlexibleAttributeRepository implements RefEntityRepositoryInt
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection

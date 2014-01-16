@@ -55,8 +55,5 @@ config:
         pim/tree/associate:                 pimcatalog/js/tree-associate.jstree
         pim/tree/mass-associate:            pimcatalog/js/tree-mass-associate.jstree
         pim/tree/manage:                    pimcatalog/js/tree-manage.jstree
-        pim/datagrid/grid:                  pimgrid/js/datagrid/pim-grid
-        pim/datagrid/export-action:         pimgrid/js/datagrid/action/export-collection-action
         pim/datagrid/product-delete-action: pimgrid/js/datagrid/action/product-delete-action
         pim/datagrid/parameter-setter:      pimgrid/js/datagrid/parameter-setter
-        pim/datagrid/toolbar:               pimgrid/js/datagrid/pim-toolbar

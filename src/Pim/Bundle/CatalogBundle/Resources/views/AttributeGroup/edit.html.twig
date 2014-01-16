@@ -40,7 +40,7 @@
         {{ elements.form_errors(form) }}
 
         <div class="tab-pane active" id="properties">
-            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.label) }) }}
+            {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
         </div>
         {{ form_row(form.sort_order) }}
 

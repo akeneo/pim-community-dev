@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
 
 /**
  * Product repository
@@ -20,8 +19,7 @@ use Pim\Bundle\DataGridBundle\Model\DataGridRepositoryInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductRepository extends FlexibleEntityRepository implements ProductRepositoryInterface,
-    ReferableEntityRepositoryInterface,
-    DatagridRepositoryInterface
+    ReferableEntityRepositoryInterface
 {
     /**
      * @var string
@@ -297,6 +295,58 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countProductsPerChannels()
+    {
+        $sql = <<<SQL
+SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_category ca ON ca.root = ch.category_id
+    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN pim_catalog_product p ON p.id = cp.product_id
+    WHERE p.is_enabled = 1
+    GROUP BY ch.id, ch.label
+SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteProductsPerChannels()
+    {
+        $sql = <<<SQL
+SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_category ca ON ca.root = ch.category_id
+    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN %product_table% p ON p.id = cp.product_id
+    JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
+    JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
+    LEFT JOIN pim_catalog_completeness co ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
+    WHERE p.is_enabled = 1
+    GROUP BY ch.id, lo.id, ch.label, lo.code
+SQL;
+        $sql = strtr(
+            $sql,
+            array(
+                '%product_table%' => $this
+                    ->getEntityManager()
+                    ->getClassMetadata($this->flexibleConfig['flexible_class'])
+                    ->getTableName()
+            )
+        );
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
      * Returns the ProductValue class
      *
      * @return string
@@ -330,11 +380,6 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin('p.groups', 'groups')
             ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
-            ->leftJoin('p.values', 'values')
-            ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('values.prices', 'valuePrices')
-            ->leftJoin('values.metric', 'valueMetrics')
-            ->leftJoin('p.categories', 'category')
             ->leftJoin(
                 'PimCatalogBundle:Locale',
                 'locale',
@@ -357,14 +402,35 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $qb
+            ->addSelect('p')
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect('values')
-            ->addSelect('valuePrices')
-            ->addSelect('valueOptions')
-            ->addSelect('valueMetrics')
-            ->addSelect('category')
             ->addSelect('groups')
             ->addSelect('completeness.ratio AS ratio');
+
+        return $qb;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createGroupDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->leftJoin('p.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $hasProductExpr =
+            "CASE WHEN " .
+            "(:currentGroup MEMBER OF p.groups ".
+            "OR p.id IN (:data_in)) AND ". "p.id NOT IN (:data_not_in)".
+            "THEN true ELSE false END";
+
+        $qb
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect($hasProductExpr.' AS has_product');
 
         return $qb;
     }

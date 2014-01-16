@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Datagrid;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -25,7 +24,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 use Pim\Bundle\GridBundle\Property\FlexibleTwigTemplateProperty;
 
 /**
@@ -478,42 +476,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Get list of export actions
-     *
-     * @return \Pim\Bundle\GridBundle\Action\Export\ExportActionInterface[]
-     */
-    protected function getExportActions()
-    {
-        $exportCsv = new ExportCollectionAction(
-            array(
-                'acl_resource'   => 'pim_catalog_product_index',
-                'baseUrl'        => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
-                'name'           =>  'exportCsv',
-                'label'          => $this->translate('CSV export'),
-                'icon'           => 'icon-download',
-                'keepParameters' => true
-            )
-        );
-
-        return array($exportCsv);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Add export actions
-     */
-    protected function configureDatagrid(DatagridInterface $datagrid)
-    {
-        parent::configureDatagrid($datagrid);
-
-        $exportActions = $this->getExportActions();
-        foreach ($exportActions as $exportAction) {
-            $this->datagridBuilder->addExportAction($datagrid, $exportAction);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDatagrid()
@@ -617,101 +579,5 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataScope;
-    }
-
-    /**
-     * Get the product availables from the selected products (clause in proxy query)
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     *
-     * @return array
-     */
-    protected function getAvailableAttributes(ProxyQueryInterface $proxyQuery)
-    {
-        $qb = clone $proxyQuery;
-        $qb
-            ->leftJoin('values.attribute', 'attribute')
-            ->groupBy('attribute.id')
-            ->select('attribute.id, attribute.code, attribute.translatable, attribute.attributeType');
-
-        return $qb
-            ->getQuery()
-            ->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-    }
-
-    /**
-     * Get the available attribute codes
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     *
-     * @return string[]
-     */
-    public function getAvailableAttributeCodes(ProxyQueryInterface $proxyQuery)
-    {
-        $results = $this->getAvailableAttributes($proxyQuery);
-
-        $attributesList = array();
-        foreach ($results as $attribute) {
-            if ($attribute['translatable'] == 1) {
-                foreach ($this->localeManager->getActiveCodes() as $code) {
-                    $attributesList[] = sprintf('%s-%s', $attribute['code'], $code);
-                }
-                // @todo : Use constant for pim_catalog_identifier
-            } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
-                array_unshift($attributesList, $attribute['code']);
-            } else {
-                $attributesList[] = $attribute['code'];
-            }
-        }
-
-        return $attributesList;
-    }
-
-    /**
-     * Get the available attribute ids
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     *
-     * @return int[]
-     */
-    protected function getAvailableAttributeIds(ProxyQueryInterface $proxyQuery)
-    {
-        $results = $this->getAvailableAttributes($proxyQuery);
-
-        $attributeIds = array();
-        foreach ($results as $attribute) {
-            $attributeIds[] = $attribute['id'];
-        }
-
-        return $attributeIds;
-    }
-
-    /**
-     * Optimize the query for the export
-     *
-     * @param ProxyQueryInterface $proxyQuery
-     */
-    public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
-    {
-        $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
-
-        $proxyQuery
-            ->resetDQLPart('groupBy')
-            ->resetDQLPart('orderBy');
-
-        // select datas
-        $proxyQuery
-            ->select($proxyQuery->getRootAlias())
-            ->addSelect('values')
-            ->addSelect('productFamily')
-            ->addSelect('valuePrices')
-            ->addSelect('valueOptions')
-            ->addSelect('category');
-
-        // where clause on attributes
-        $exprIn = $proxyQuery->expr()->in('attribute', $attributeIds);
-        $proxyQuery
-            ->leftJoin('values.attribute', 'attribute')
-            ->andWhere($exprIn);
     }
 }

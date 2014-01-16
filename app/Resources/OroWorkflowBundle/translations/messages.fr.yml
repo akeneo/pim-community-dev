@@ -1,0 +1,18 @@
+---
+No workflow items are available: "Aucun élément de workflows n'est disponible"
+Disabled: Désactivé
+Closed: Fermé
+Active: Actif
+Current Step: Étape en cours
+Status: Statut
+Workflow Name: Nom du workflow
+Start Date: Date de début
+Are you sure you want to delete this workflow item?: Êtes-vous sûr de vouloir supprimer cet élément de workflow?
+Delete workflow item: "Supprimer l'élément de workflow"
+Delete: Supprimer
+Actions: Actions
+Step information saved: "Etape d'information enregistrée"
+Save: Enregistrer
+Saving: Sauver
+Workflows: Workflows
+%workflow_data% - %entity% - %section%: "%workflow_data% - %entity% - %section%"

@@ -1,19 +1,19 @@
 oro_menu_config:
     items:
         pim_ie_import:
-            label: Import profiles
+            label: pim_menu.item.import_profile
             route: pim_importexport_import_profile_index
             aclResourceId: pim_importexport_import_profile_index
         pim_ie_export:
-            label: Export profiles
+            label: pim_menu.item.export_profile
             route: pim_importexport_export_profile_index
             aclResourceId: pim_importexport_export_profile_index
         pim_report_import:
-            label: Imports history
+            label: pim_menu.item.import_history
             route: pim_importexport_import_execution_index
             aclResourceId: pim_importexport_import_execution_index
         pim_report_export:
-            label: Exports history
+            label: pim_menu.item.export_history
             route: pim_importexport_export_execution_index
             aclResourceId: pim_importexport_export_execution_index
 

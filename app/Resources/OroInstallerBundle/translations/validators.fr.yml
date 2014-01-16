@@ -1,0 +1,4 @@
+---
+Unable to connect to database "%name%". Please check database connection parameters and user permissions.: |-
+  Impossible de se connecter à la base de données "%name%". Veuillez vérifier les paramètres de connexion de base de données et les autorisations de l'utilisateur.
+The password fields must match.: Les champs mots de passe doivent correspondre.

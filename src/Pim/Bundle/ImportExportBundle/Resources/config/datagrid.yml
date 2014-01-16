@@ -1,5 +1,8 @@
 datagrid:
     job-profile-grid:
+        options:
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             type: orm
             query:

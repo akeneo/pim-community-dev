@@ -29,6 +29,5 @@ class PimGridBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddFlexibleManagerCompilerPass());
-        $container->addCompilerPass(new DependencyInjection\Compiler\DatagridRoutesPass);
     }
 }

@@ -50,9 +50,18 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->productManager->expects($this->any())
             ->method('createProduct')
             ->will($this->returnValue($this->product));
+
+        $this->productRepository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->productManager->expects($this->any())
+            ->method('getFlexibleRepository')
+            ->will($this->returnValue($this->productRepository));
 
         $this->attributeCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\AttributeCache')
             ->disableOriginalConstructor()

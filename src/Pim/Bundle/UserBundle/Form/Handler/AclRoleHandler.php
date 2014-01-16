@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Oro\Bundle\UserBundle\Entity\Role;

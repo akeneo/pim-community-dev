@@ -40,9 +40,6 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
      *     Boolean to know if supported or not
      * )
      *
-     *
-     * @static
-     *
      * @return array[]
      */
     public static function dataProviderForSupportedAttributes()
