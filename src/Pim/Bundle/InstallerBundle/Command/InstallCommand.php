@@ -2,6 +2,14 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Symfony\Component\Console\Input\ArrayInput;
+
+use Symfony\Component\Process\ProcessBuilder;
+
+use Symfony\Component\Process\PhpExecutableFinder;
+
+use Symfony\Component\Console\Input\InputOption;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,6 +24,12 @@ use Oro\Bundle\InstallerBundle\Command\InstallCommand as OroInstallCommand;
  */
 class InstallCommand extends OroInstallCommand
 {
+    const APP_NAME    = 'Akeneo PIM';
+
+    const TASK_ALL    = 'all';
+    const TASK_ASSETS = 'assets';
+    const TASK_DB     = 'db';
+
     /**
      * {@inheritDoc}
      */
@@ -25,25 +39,48 @@ class InstallCommand extends OroInstallCommand
 
         $this
             ->setName('pim:install')
-            ->setDescription('Akeneo PIM Application Installer.');
+            ->setDescription(static::APP_NAME .' Application Installer.')
+            ->addOption(
+                'task',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Determines tasks called for installation (can be all, db or assets)',
+                self::TASK_ALL
+            );
     }
 
     /**
-     * Override to add custom commands
-     *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setupStep(InputInterface $input, OutputInterface $output)
     {
-        parent::setupStep($input, $output);
+        $task = $input->getOption('task');
+        if ($task === self::TASK_DB || $task === self::TASK_ALL) {
 
-        $this
-            ->runCommand('pim:search:reindex', $input, $output, array('locale' => 'en_US'))
-            ->runCommand('pim:versioning:refresh', $input, $output)
-            ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_product_value"'))
-            ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_icecatdemo_product_value"'))
-            ->runCommand('pim:completeness:calculate', $input, $output);
+            $this
+                ->runCommand('doctrine:database:drop', $input, $output, array('--force' => true, '--full-database'))
+                ->runCommand('doctrine:database:create', $input, $output);
 
-        return $this;
+            parent::setupStep($input, $output);
+
+            $this
+                // @TODO: Replace en_US by locale parameter
+                ->runCommand('pim:search:reindex', $input, $output, array('locale' => 'en_US'))
+                ->runCommand('pim:versioning:refresh', $input, $output)
+                ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_product_value;"'))
+                ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_icecatdemo_product_value;"'))
+                ->runCommand('pim:completeness:calculate', $input, $output);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function finalStep(InputInterface $input, OutputInterface $output)
+    {
+        $task = $input->getArgument('task');
+        if ($task === self::TASK_ASSETS || $task === self::TASK_ALL) {
+            parent::finalStep($input, $output);
+        }
     }
 }
