@@ -19,3 +19,4 @@ pim_dashboard:
       export_report: Historique des exports
       attribute: Gérer les attributs
       family: Gérer des familles
+  quick_launchpad: "Panneau d'accès rapide"

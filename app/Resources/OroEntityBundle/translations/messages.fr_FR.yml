@@ -1,0 +1,5 @@
+---
+oro.entity.controller.message.saved: Entité enregistrée
+oro.form.choose_value: oro.form.choose_value
+%entityName% - Entities - System: "%entityName% - Entités - système"
+%recordName% - %entityName% - Entities - System: "%recordName% - %entityName% - Entités - système"

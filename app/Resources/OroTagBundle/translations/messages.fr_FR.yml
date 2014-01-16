@@ -1,0 +1,18 @@
+---
+oro.tag.controller.tag.saved.message: Tag enregistré
+oro.tag.form.choose_tag: Choisir un tag
+oro.tag.form.choose_or_create_tag: Choisissez ou créez un tag
+Records tagged as "%name%": 'Enregistrements taggés comme "%name%"'
+No results were found.: Aucun résultat trouvé.
+Try modifying your search criteria: Essayez de modifier vos critères de recherche
+New Tag: Nouveau Tag
+All tags: Tous les tags
+My tags: Mes tags
+Create Tag: Créer Tag
+Create Tag - Tags - System: "Créer Tag - Tags - système"
+Tags: Tags
+Tags - System: "Tags - système"
+Records tagged as "%tag.name%": 'Enregistrements taggés comme "%tag.name%"'
+Records tagged as "%tag.name%" - Tags - System: 'Enregistrements taggés comme "%tag.name%" - Tags - système'
+%tag.name% Tag - Edit: "%tag.name% Tag - modifier"
+%tag.name% Tag - Edit - Tags - System: "%tag.name% tag - modifier- Tags - système"
