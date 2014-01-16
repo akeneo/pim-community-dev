@@ -3,10 +3,12 @@
 ## Features
 
 ## Improvements
+- Add some missing translations
 
 ## Bug fixes
 
 ## BC breaks
+- Change some translation message keys
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

@@ -1,0 +1,3 @@
+---
+entity.tag.name: Tag
+entity.tag.description: Afficher les enregistrements possédant ce tag

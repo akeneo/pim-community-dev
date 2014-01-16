@@ -1,0 +1,19 @@
+oro.notification.controller.emailnotification.saved.message: Règle de notification email enregistrée
+oro.notification.event.entity_post_update: "Mise à jour de l'entité"
+oro.notification.event.entity_post_persist: Créer Entité
+oro.notification.event.entity_post_remove: "Suppression de l'entité"
+oro.notification.datagrid.action.update: Modifier
+oro.notification.datagrid.action.delete: Supprimer
+oro.notification.datagrid.template: Modèle
+oro.notification.datagrid.event_name: "Nom de l'événement"
+oro.notification.datagrid.entity_name: "Nom de l'entité"
+oro.notification.datagrid.recipient.user: Destinataires internes
+oro.notification.datagrid.recipient.group: Groupes de destinataires
+oro.notification.datagrid.recipient.custom_email: E-mail destinataire
+oro.notification.datagrid.recipient.owner: "Propriétaire de l'entité de destination"
+New Notification Rule: Nouvelle règle de Notification
+oro.notification.validators.recipient_list.empty.message: oro.notification.validators.recipient_list.empty.message
+Add Notification Rule: Ajouter règle de Notification
+Add Notification Rule - Notifications - Emails - System: "Ajouter Notification règle - système de Notifications - courriels-"
+Notifications: Notifications
+Notifications - Emails - System: "Notifications - Emails - système"

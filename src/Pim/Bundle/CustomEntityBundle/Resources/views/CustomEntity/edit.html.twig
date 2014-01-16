@@ -39,7 +39,7 @@
 
                 <div class="tab-pane active" id="properties">
                     {% block custom_entity_form_properties %}
-                        {{ elements.accordion({ 'General Properties': form_widget(form) }) }}
+                        {{ elements.accordion({ 'pane.accordion.general_properties': form_widget(form) }) }}
                         {{ form_widget(form) }}
                     {% endblock %}
                 </div>
