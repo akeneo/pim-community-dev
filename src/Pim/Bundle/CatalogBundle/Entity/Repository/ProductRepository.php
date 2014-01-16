@@ -323,6 +323,8 @@ class ProductRepository extends FlexibleEntityRepository implements ProductRepos
     {
         $qb = $this->createQueryBuilder('p');
 
+        // TODO : idealy, we add a join only if a filter is applied, the filter should contains that query part
+
         $qb
             ->leftJoin('p.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
