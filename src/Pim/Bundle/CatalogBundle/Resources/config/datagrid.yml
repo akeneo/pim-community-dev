@@ -445,9 +445,14 @@ datagrid:
                 updated:
                     data_name: p.updated
             default:
-                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_product: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
+                has_product:
+                    type:      boolean
+                    label:     Has product
+                    data_name: has_product
+                    filter_by_having: true
                 family:
                     type:      entity
                     data_name: productFamily
