@@ -37,7 +37,7 @@ define(
                     var state = sessionStorage.getItem(this.gridName);
 
                     if (state) {
-                        collection.state = _.extend(collection.state, collection.decodeStateData(state));
+                        collection.updateState(collection.decodeStateData(state));
                         collection.fetch();
                     }
                 }
