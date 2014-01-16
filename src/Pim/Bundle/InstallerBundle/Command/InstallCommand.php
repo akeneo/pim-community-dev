@@ -28,6 +28,7 @@ class InstallCommand extends OroInstallCommand
 
     const TASK_ALL    = 'all';
     const TASK_ASSETS = 'assets';
+    const TASK_CHECK  = 'check';
     const TASK_DB     = 'db';
 
     /**
@@ -44,7 +45,7 @@ class InstallCommand extends OroInstallCommand
                 'task',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Determines tasks called for installation (can be all, db or assets)',
+                'Determines tasks called for installation (can be all, check, db or assets)',
                 self::TASK_ALL
             );
     }
@@ -71,6 +72,8 @@ class InstallCommand extends OroInstallCommand
                 ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_icecatdemo_product_value;"'))
                 ->runCommand('pim:completeness:calculate', $input, $output);
         }
+
+        return $this;
     }
 
     /**
@@ -78,9 +81,11 @@ class InstallCommand extends OroInstallCommand
      */
     protected function finalStep(InputInterface $input, OutputInterface $output)
     {
-        $task = $input->getArgument('task');
+        $task = $input->getOption('task');
         if ($task === self::TASK_ASSETS || $task === self::TASK_ALL) {
             parent::finalStep($input, $output);
         }
+
+        return $this;
     }
 }
