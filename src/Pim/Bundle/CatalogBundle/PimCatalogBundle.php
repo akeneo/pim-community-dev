@@ -26,8 +26,6 @@ class PimCatalogBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        parent::build($container);
-
         $container
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())

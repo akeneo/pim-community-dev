@@ -1,0 +1,31 @@
+parameters:
+    pim_dashboard.controller.widget.class:   Pim\Bundle\DashboardBundle\Controller\WidgetController
+    pim_dashboard.widget.registry.class:     Pim\Bundle\DashboardBundle\Widget\Registry
+    pim_dashboard.widget.completeness.class: Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
+    pim_dashboard.widget.links.class:        Pim\Bundle\DashboardBundle\Widget\LinksWidget
+
+services:
+    pim_dashboard.controller.widget:
+        scope: request
+        class: %pim_dashboard.controller.widget.class%
+        parent: pim_catalog.controller.abstract
+        arguments:
+            - '@pim_dashboard.widget.registry'
+
+    pim_dashboard.widget.registry:
+        class: %pim_dashboard.widget.registry.class%
+
+    ##
+    # Widgets
+    ##
+    pim_dashboard.widget.links:
+        class: %pim_dashboard.widget.links.class%
+        tags:
+            - { name: pim_dashboard.widget, alias: links }
+
+    pim_dashboard.widget.completeness:
+        class: %pim_dashboard.widget.completeness.class%
+        arguments:
+            - '@pim_catalog.repository.orm.product'
+        tags:
+            - { name: pim_dashboard.widget, alias: completeness }
