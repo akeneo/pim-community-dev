@@ -295,13 +295,32 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($parameters['inset'] === false) {
             $datagrid = $this->manager->getDatagrid('product-grid');
-            $data     = $datagrid->getData()->offsetGet('data');
+            $qb       = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+
+            $whereParts = $qb->getDQLPart('where')->getParts();
+            $qb->resetDQLPart('where');
+
+            // Remove 'entityIds' from the querybuilder to be able to get all results
+            foreach ($whereParts as $part) {
+                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                    $qb->andWhere($part);
+                }
+            }
+            $qb->setParameters(
+                $qb->getParameters()->filter(
+                    function ($parameter) {
+                        return $parameter->getName() !== 'entityIds';
+                    }
+                )
+            );
+
+            $results = $qb->getQuery()->execute();
 
             $ids = array_map(
                 function ($result) {
-                    return $result['id'];
+                    return $result[0]->getId();
                 },
-                $data
+                $results
             );
 
             return array_unique(array_diff($ids, $parameters['values']));
