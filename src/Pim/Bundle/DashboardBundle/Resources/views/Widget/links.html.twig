@@ -10,7 +10,7 @@
 <div class="list-wrap pull-left">
     <ul class="nav nav-list">
         {% for link in widget.links %}
-            {% if resource_granted(link.acl) %}
+            {% if resource_granted(link.route) %}
             <li class="{{ loop.last ? 'last' : '' }}">
                 <a href="{{ path(link.route) }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
             </li>
