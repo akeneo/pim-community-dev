@@ -1,6 +1,7 @@
 # 1.0.0-rc-1 -
 
 ## Features
+- Created the completenesses over channels and locales widget
 
 ## Improvements
 - Add some missing translations

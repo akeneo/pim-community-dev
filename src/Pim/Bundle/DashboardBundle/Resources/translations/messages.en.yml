@@ -19,3 +19,8 @@ pim_dashboard:
             attribute:      'Manage Attributes'
             family:         'Manage Families'
     quick_launchpad: Quick Launchpad
+    widget:
+        error:
+            title:   'Error while loading widget'
+            message: 'Widget "%alias%" does not exist'
+        completeness: 'Completeness Over Channels and Locales'
