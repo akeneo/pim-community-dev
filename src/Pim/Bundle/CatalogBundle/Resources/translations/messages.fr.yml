@@ -22,18 +22,10 @@ currency:
   overview: Liste des devises
   create: Créer une monnaie
   edit: Editer une monnaie
-export profile:
-  overview: "Liste des profils d'export"
-  create: "Créer un profil d'export"
-  edit: "Modifier un profil d'export"
 family:
   overview: Liste des familles
   create: Créer une famille
   edit: Editer une famille
-import profile:
-  overview: "Liste des profils d'import"
-  create: "Créer un profil d'import"
-  edit: "Modifier un profil d'import"
 locale:
   overview: Liste des locales
   create: Créer une locale
@@ -56,12 +48,8 @@ association type:
   edit: "Modifier le type d'association"
 group type:
   overview: Liste des types de groupe
-  create: Créez le type de groupe
+  create: Créer le type de groupe
   edit: modifier le type de groupe
-export report:
-  overview: "Rapports d'exportations"
-import report:
-  overview: "Rapports d'importations"
 products: Produits
 btn:
   create:
@@ -71,15 +59,13 @@ btn:
     tree: Créer un arbre
     channel: Créer un canal
     currency: Créer une devise
-    export profile: "Créer un profil d'export"
     family: Créer une famille
-    import profile: "Créer un profil d'import"
     locale: Créer une locale
     product: Créer un produit
     group: Créer un groupe
     variant group: Créer un groupe de variantes
     association type: "Créer un type d'association"
-    group type: Créez un type de groupe
+    group type: Créer un type de groupe
   edit: Modifier
   save: Enregistrer
   save and back: Enregistrer et revenir à la grille
@@ -103,8 +89,6 @@ confirmation:
     category: Êtes-vous sûr de vouloir supprimer la catégorie %name% ?
     family: Êtes-vous sûr de vouloir supprimer la famille %name% ?
     product: Êtes-vous sûr de vouloir supprimer le produit %name% ?
-    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
-    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name%?"
     channel: Êtes-vous sûr de vouloir supprimer le canal %name% ?
     group: Êtes-vous sûr de que vouloir supprimer le groupe %name% ?
     variant group: Êtes-vous sûr de vouloir supprimer le groupe de variantes %name%?
@@ -152,27 +136,23 @@ flash:
     attributes added: Attributs ajoutés avec succès à la famille
     attribute removed: Attributs retirés avec succès de la famille
   product:
-    created: Produit crée avec succès
+    created: Produit créé avec succès
     updated: Produit mis à jour avec succès
     removed: Produit supprimé avec succès
     invalid: Merci de vérifier votre saisie et essayer à nouveau
     attributes added: Attributs ajoutés avec succès au produit
     attribute removed: Attribut retirés avec succès du produit
     attribute not removable: Cet attribut ne peut pas être retiré de ce produit
-  import:
-    removed: "Le profil d'import a été supprimé"
-  export:
-    removed: "L'export a été supprimé"
   group:
     created: Groupe créé avec succès
     updated: Groupe mis à jour avec succès
     removed: Groupe supprimé avec succès
   variant group:
-    created: Le groupe de variantes a bien été crée
+    created: Le groupe de variantes a bien été créé
     updated: Le groupe de variantes a bien été mis à jour
     removed: Le groupe de variantes a bien été supprimé
   group type:
-    created: Le type de groupe a bien été crée
+    created: Le type de groupe a bien été créé
     updated: Le type de groupe a bien été mis à jour
     removed: Le type de groupe a bien été supprimé
     cant remove variant: Le type variant ne peut pas être supprimé
@@ -212,6 +192,8 @@ Created at: Crée le
 Updated at: Mis à jour le
 Created: Créé
 Updated: Mis à jour
+Last update: Dernière mise à jour
+by: par
 N/A: N/A
 Add an option: Ajouter une option
 Manage products: Gérer les produits
@@ -222,8 +204,10 @@ Type: Type
 Scope: Portée
 Required: Obligatoire
 Unique: Unique
-translatable: Localisable
+Not required: Non requis
+Translatable: Traduisible
 Scopable: Décliné par canal
+Localizable: Localisable
 Unique value: Valeur unique
 Attribute group: "Groupe d'attributs"
 Variants behavior when edited: "Comportement des variantes lors de l'édition"
@@ -238,7 +222,8 @@ Label: Libellé
 Default label: Libellé par défaut
 Default value: Valeur par défaut
 Attributetype: "Type d'attribut"
-searchable: Recherchable
+Attribute type: "Type d'attribut"
+Searchable: Recherchable
 Defaultvalue: Valeur par défaut
 Variant: Variante
 Smart: Smart
@@ -247,14 +232,21 @@ Useable as grid filter: Utilisable en tant que filtre de la grille
 Family: Famille
 Available locales: Locales disponibles
 Locale specific: Spécifique à une locale
-Label translations: Traductions du libellé
 default: Défaut
+Axis: Axes
+Add attributes: Ajouter des attributs
+Translate from: Traduire depuis
+Yes: "1"
+No: ""
+Close: Fermer
 Create: Créer
 Cancel: Annuler
-Create a new product: Créer un nouveau produit
 Choose a family: Choisissez une famille
-Create a new association type: "Créer un nouveau type d'association"
-Create a new option: Créer une nouvelle option
+Choose a unit: Choisissez une unité
+No matches found: Aucune correspondance trouvée
+Category tree: Arborescence
+Completeness: Complétude
+Attribute used as label: Attribut utilisé comme étiquette
 Global: Global
 Channel: Canal
 Always override: Toujours écraser
@@ -279,7 +271,13 @@ Default currency: Devise par défaut
 Metric family: Type de mesure
 Default metric unit: Unité de mesure par défaut
 Max file size: Taille de fichier maximale (MB)
-Allowed file extensions: Extensions autorisées
+Allowed extensions: Extensions autorisées
+None: Aucun
+E-mail: E-mail
+URL: URL
+Regular expression: Expression régulière
+Minimum input length: "Longueur d'entrée minimale"
+Default: Défaut
 Attributes: Attributs
 Title: Titre
 Dashboard: Tableau de bord
@@ -293,15 +291,8 @@ Category trees | Manage: Arborescences | Gérer
 Category trees | View: Arborescences | Vue
 Category trees | Create: Arborescences | Créer
 Category trees | Edit: Arborescences | Modification
-Export profiles: "Profils d'export"
-Export profiles | Create: "Profils d'export | Créer"
-Export profiles %export.label% | Edit: "Profil d'export %export.label% | Modifier"
-Import profiles: "Profils d'import"
-Import profiles | Create: "Profils d'import | Créer"
-Import profiles %import.label% | Edit: "Profil d'import %import.label% | Modifier "
-Product attributes: Attributs produit
-Product attributes | Create: Attributs produit | Créer
-Product attributes %attribute.label% | Edit: Attributs produit %attribute.label% | Modifier
+Attributes | Create: Attributs | Créer
+Attributes %attribute.label% | Edit: Attributs %attribute.label% | Modifier
 Products: Produits
 Products | Create: Produits | Créer
 Products %product.sku% | Edit: Produit %product.sku% | Modifier
@@ -315,16 +306,13 @@ Currencies: Devises
 Locales: Locales
 Locales %locale.code% | Edit: Locale %locale.code% | Modifier
 Groups: Groupes
-Groups | Create: Groupes | Créer
 Groups %group.label% | Edit: Groupes %group.label% | Edit
 Variant groups: Groupes de variantes
-Variant groups | Create: Groupes de variantes | Créer
 Variant groups %group.label% | Edit: Groupe de variantes %group.label% | Editer
 Association types: "Types d'associations"
 Association types | Create: "Types d'associations | Créer"
 Association types %association type.label% | Edit: "Types d'association %association type.label% | Modifier"
 Group types: Types de groupe
-Group types | Create: Types de groupe | Créer
 Group types %group type.label% | Edit: Type de groupes %grouptype.label% | Modifier
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
@@ -368,6 +356,14 @@ pim_catalog.mass_edit_action:
     label: Ajouter aux groupes
     description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
     success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+Choose products: Choisissez des produits
+Choose operation: Choisissez une opération
+Configure: Configurer
+Confirm: Confirmer
+To enable: Pour activer
+Select attributes: Sélectionnez les attributs
+Select: Sélectionner
+Remove this attribute: Supprimer cet attribut
 pim_catalog.completeness:
   progress_bar.title: %ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)
   subtitle: "{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes"
@@ -384,6 +380,8 @@ pim_catalog.group:
 pim_catalog.product:
   no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
   no_compared_media: Aucun média disponible pour comparaison
+Copy: Copier
+Current tab: Onglet actif
 pim_catalog.channel.pick_conversion_unit: "Choisissez une unité de conversion pour chaque attribut métrique qui sera utilisé lors de l'exportation du produit"
 Group: Groupe
 View group: Afficher le groupe
@@ -423,21 +421,21 @@ pim_catalog:
       create: Créer une famille
       edit: Modifier une famille
       remove: Supprimer une famille
-      add_attribute: "Ajoutez l'attribut à une famille"
+      add_attribute: "Ajouter l'attribut à une famille"
       remove_attribute: "Retirer l'attribut de la famille"
     attribute_group:
       create: "Créer un groupe d'attributs"
       edit: "Modifier un groupe d'attributs"
       remove: "Supprimer un groupe d'attributs"
       sort: "Trier les groupes d'attributs"
-      add_attribute: "Ajoutez l'attribut à un groupe"
-      remove_attribute: "Supprimez l'attribut d'un groupe"
-    product_attribute:
-      index: Lister les attributs du produit
-      create: Créer un attribut de produit
-      edit: "Modifier l'attribut de produit"
-      remove: "Supprimez l'attribut de produit"
-      sort: "Trier les attributs du produit à l'intérieur de groupes d'attributs"
+      add_attribute: "Ajouter l'attribut à un groupe"
+      remove_attribute: "Supprimer l'attribut d'un groupe"
+    attribute:
+      index: Liste des attributs
+      create: Créer un attribut
+      edit: Modifier un attribut
+      remove: Supprimer un attribut
+      sort: "Trier les attributs au sein d'un groupe d'attributs"
     group:
       index: Lister les groupes
       create: Créer un groupe
@@ -453,3 +451,41 @@ pim_catalog:
       create: "Créer un type d'association"
       edit: "Modifier un type d'association"
       remove: "Supprimer un type d'association"
+pim_menu:
+  tab:
+    collect: Extraire
+    enrich: Enrichir
+    settings: Paramètres
+    spread: Diffuser
+  item:
+    association_type: "Types d'association"
+    attribute: Attributs
+    attribute_group: "Groupes d'attributs"
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    locale: Locales
+    product: Produits
+    variant_group: Groupes de variantes
+Properties: Propriétés
+History: Historique
+pane.accordion:
+  node_values: Valeurs du nœud
+  general_properties: Propriétés générales
+  locale_values: Valeurs de locale
+  backend_parameters: Paramètres de stockage
+  label_translations: Traduction des libellés
+  options: Options
+  group_values: Valeurs du groupe
+popin.create:
+  association_type.title: "Créer un nouveau type d'association"
+  family.title: Créer une nouvelle famille
+  group.title: Créer un nouveau groupe
+  group_type.title: Créer un nouveau type de groupe
+  product.title: Créer un nouveau produit
+  variant_group.title: Créer un nouveau groupe de variants
+Has product: Lié au produit
+Attribute as label: Attribut en tant que libellé

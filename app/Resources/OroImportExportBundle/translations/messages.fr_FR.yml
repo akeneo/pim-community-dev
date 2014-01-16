@@ -1,0 +1,28 @@
+---
+oro.importexport.import_error %number%: "Erreur sur la ligne #%number%."
+oro_importexport.import.import_success: Le fichier a été importé correctement.
+oro_importexport.import.import_error: "Des erreurs se sont produites au cours de l'import de fichiers."
+Import validation results: Importer les résultats valides
+Number of items: "Nombre d'éléments"
+Records to add: Enregistrements à ajouter
+Records to replace: Enregistrements à remplacer
+Records to update: Enregistrements à mettre à jour
+Records to delete: Enregistrements à supprimer
+Records with errors: Enregistrements en erreurs
+Total number of records: "Nombre total d'enregistrements"
+Errors found %errors%: %errors% erreurs trouvées
+Hide: Cacher
+Download log: Télécharger le journal
+Back: Retour
+Import: Import
+Import started, please wait...: "L'import a commencé, veuillez patienter..."
+Download error log: Télécharger le journal des erreurs
+Import process failed: "L'import a échoué"
+Cancel: Annuler
+Submit: Envoyer
+Import validation started, please wait...: "Validation de l'import commencée, veuillez attendre..."
+Export: Exporter
+Export started, please wait...: "L'import a commencé, veuillez patienter..."
+Download result file: Télécharger le fichier de résultat
+No entities found for export.: "Aucune entité identifiée pour l'export."
+oro.importexport.import.%s: oro.importexport.import.%s

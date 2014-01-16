@@ -94,9 +94,11 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
     protected function getProductBuilder()
     {
         $productClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
 
         return new ProductBuilder(
             $productClass,
+            $productValueClass,
             $this->getObjectManagerMock(),
             $this->getChannelManagerMock(),
             $this->getLocaleManagerMock(),

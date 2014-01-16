@@ -5,9 +5,7 @@ category:         category
 tree:             tree
 channel:          channel
 currency:         currency
-export profile:   export profile
 family:           family
-import profile:   import profile
 locale:           locale
 product:          product
 group:            group
@@ -39,22 +37,10 @@ currency:
     overview: currency overview
     create:   create currency
     edit:     edit currency
-export profile:
-    overview: export profile overview
-    create:   create export profile
-    edit:     edit export profile
-export report:
-    overview: export reports
 family:
     overview: family overview
     create:   create family
     edit:     edit family
-import profile:
-    overview: import profile overview
-    create:   create import profile
-    edit:     edit import profile
-import report:
-    overview: import reports
 locale:
     overview: locale overview
     create:   create locale
@@ -92,9 +78,7 @@ btn:
         tree:             create tree
         channel:          create channel
         currency:         create currency
-        export profile:   create export profile
         family:           create family
-        import profile:   create import profile
         locale:           create locale
         product:          create product
         group:            create group
@@ -126,8 +110,6 @@ confirmation:
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
         product:          Are you sure you want to delete the product %name%?
-        export profile:   Are you sure you want to delete the export profile %name%?
-        import profile:   Are you sure you want to delete the import profile %name%?
         channel:          Are you sure you want to delete the channel %name%?
         group:            Are you sure you want to delete the group %name%?
         variant group:    Are you sure you want to delete the variant group %name%?
@@ -137,7 +119,7 @@ confirmation:
 # Flash messages
 flash:
     entity:
-        removed:          Item was deleted
+        removed: Item was deleted
         removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
@@ -185,10 +167,6 @@ flash:
         attributes added:         Attributes successfully added to the product
         attribute removed:        Attribute successfully removed from the product
         attribute not removable:  The attribute can not be removed from this product
-    import:
-        removed:                  The import has been removed
-    export:
-        removed:                  The export has been removed
     group:
         created: Group successfully created
         updated: Group successfully updated
@@ -242,6 +220,8 @@ Created at:                    Created at
 Updated at:                    Updated at
 Created:                       Created
 Updated:                       Updated
+Last update:                   Last update
+by:                            By
 N/A:                           N/A
 Add an option:                 Add an option
 Manage products:               Manage products
@@ -252,8 +232,10 @@ Type:                          Type
 Scope:                         Scope
 Required:                      Required
 Unique:                        Unique
-translatable:                  Translatable
+Not required:                  Not required
+Translatable:                  Translatable
 Scopable:                      Scopable
+Localizable:                   Localizable
 Unique value:                  Unique value
 Attribute group:               Attribute group
 Variants behavior when edited: Variants behavior when edited
@@ -268,7 +250,8 @@ Label:                         Label
 Default label:                 Default label
 Default value:                 Default value
 Attributetype:                 Attribute type
-searchable:                    Searchable
+Attribute type:                Attribute type
+Searchable:                    Searchable
 Defaultvalue:                  Default value
 Variant:                       Variant
 Smart:                         Smart
@@ -277,19 +260,24 @@ Useable as grid filter:        Usable as grid filter
 Family:                        Family
 Available locales:             Available locales
 Locale specific:               Locale specific
-Label translations:            Label translations
 default:                       Default
+Axis:                          Axis
+Add attributes:                Add attributes
+Translate from:                Translate from
+Yes: Yes
+No: No
+Close: Close
 
 Create:               Create
 Cancel:               Cancel
-Create a new product: Create a new product
 Choose a family:      Choose a family
+Choose a unit:        Choose a unit
+No matches found:     No matches found
 Create:                   Create
-Cancel:                   Cancel
-Create a new product:     Create a new product
-Create a new association type: Create a new association type
-Choose a family:          Choose a family
-Create a new option:      Create a new option
+
+Category tree: Category tree
+Completeness: Completeness
+Attribute used as label: Attribute used as label
 
 # Scopes
 Global:  Global
@@ -323,7 +311,13 @@ Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
 Max file size:           Max file size (MB)
-Allowed file extensions: Allowed file extensions
+Allowed extensions:      Allowed extensions
+None:                    None
+E-mail:                  E-mail
+URL:                     URL
+Regular expression:      Regular expression
+Minimum input length:    Minimum input length
+Default:                 Default
 
 # Family
 Attributes: Attributes
@@ -343,12 +337,6 @@ Category trees | Manage:                     Category trees | Manage
 Category trees | View:                       Category trees | View
 Category trees | Create:                     Category trees | Create
 Category trees | Edit:                       Category trees | Edit
-Export profiles:                             Export profiles
-Export profiles | Create:                    Export profiles | Create
-Export profiles %export.label% | Edit:       Export profiles %export.label% | Edit
-Import profiles:                             Import profiles
-Import profiles | Create:                    Import profiles | Create
-Import profiles %import.label% | Edit:       Import profiles %import.label% | Edit
 Attributes:                                  Attributes
 Attributes | Create:                         Attributes | Create
 Attributes %attribute.label% | Edit:         Attributes %attribute.label% | Edit
@@ -365,18 +353,14 @@ Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Groups:                                      Groups
-Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
 Variant groups:                              Variant groups
-Variant groups | Create:                     Variant groups | Create
 Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
 Association types:                                 Association types
 Association types | Create:                        Association types | Create
 Association types %association type.label% | Edit: Association types %association type.label% | Edit
 Group types:                                       Group types
-Group types | Create:                              Group types | Create
 Group types %group type.label% | Edit:             Group types %group type.label% | Edit
-
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
@@ -430,6 +414,14 @@ pim_catalog.mass_edit_action:
         label:         Add to groups
         description:   Select the groups in which to add the selected products
         success_flash: Products were successfully added to the selected groups
+Choose products: Choose products
+Choose operation: Choose operation
+Configure: Configure
+Confirm: Confirm
+To enable: To enable
+Select attributes: Select attributes
+Select: Select
+Remove this attribute: Remove this attribute
 
 # Product completeness
 pim_catalog.completeness:
@@ -452,6 +444,9 @@ pim_catalog.group:
 pim_catalog.product:
     no_comparison_locale_available: 'No other locale is available for comparison'
     no_compared_media: 'No media available for comparison'
+Copy: Copy
+Translate from: Translate from
+Current tab: Current tab
 
 # Channel form
 pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attribute that will be used during product export'
@@ -528,3 +523,49 @@ pim_catalog:
             create: 'Create an association type'
             edit: 'Edit an association type'
             remove: 'Remove an association type'
+
+# Menu entries
+pim_menu:
+    tab:
+        collect: Collect
+        enrich: Enrich
+        settings: Settings
+        spread: Spread
+    item:
+        association_type: Association types
+        attribute: Attributes
+        attribute_group: Attribute groups
+        category: Categories
+        channel: Channels
+        currency: Currencies
+        family: Families
+        group: Groups
+        group_type: Group types
+        locale: Locales
+        product: Products
+        variant_group: Variant groups
+
+# Tabs
+Properties: Properties
+History: History
+pane.accordion:
+    node_values: Node values
+    general_properties: General properties
+    locale_values: Locale values
+    backend_parameters: Backend parameters
+    label_translations: Label translations
+    options: Options
+    group_values: Group values
+
+# Popin titles
+popin.create:
+    association_type.title: Create a new association type
+    family.title: Create a new family
+    group.title: Create a new group
+    group_type.title: Create a new group type
+    product.title: Create a new product
+    variant_group.title: Create a new variant group
+
+# Datagrid contents
+Has product: Has product
+Attribute as label: Attribute as label

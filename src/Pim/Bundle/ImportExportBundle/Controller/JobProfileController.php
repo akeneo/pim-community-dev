@@ -129,7 +129,7 @@ class JobProfileController extends AbstractDoctrineController
                 $this->getManager()->persist($jobInstance);
                 $this->getManager()->flush();
 
-                $this->addFlash('success', sprintf('The %s has been successfully created.', $this->getJobType()));
+                $this->addFlash('success', sprintf('flash.%s.created.', $this->getJobType()));
 
                 $url = $this->generateUrl(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
@@ -220,7 +220,7 @@ class JobProfileController extends AbstractDoctrineController
 
                 $this->addFlash(
                     'success',
-                    sprintf('The %s has been successfully updated.', $this->getJobType())
+                    sprintf('flash.%s.updated.', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($jobInstance->getId());
