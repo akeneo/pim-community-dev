@@ -791,6 +791,7 @@ datagrid:
         flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
+            locale_parameter: localeCode
             requireJSModules:
               - oro/datagrid/column-form-listener
             columnListener:
@@ -802,22 +803,7 @@ datagrid:
         source:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
-            query:
-                select:
-                    - >
-                        CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)
-                        THEN
-                            true
-                        ELSE
-                            false
-                        END AS has_association
-                join:
-                    left:
-                        pa:
-                            join: Pim\Bundle\CatalogBundle\Model\Association
-                            alias: pa
-                            conditionType: WITH
-                            condition: pa.associationType = :association AND pa.owner = :product AND p MEMBER OF pa.products
+            repository_method: createAssociationProductDatagridQueryBuilder
         columns:
             has_association:
                 frontend_type: boolean

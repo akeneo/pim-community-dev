@@ -434,4 +434,37 @@ SQL;
 
         return $qb;
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createAssociationProductDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->leftJoin('p.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+            // ->leftJoin(
+            //     'Pim\Bundle\CatalogBundle\Model\Association',
+            //     'pa',
+            //     'WITH',
+            //     'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
+            // );
+
+        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
+
+        // $hasAssociationExpr =
+        //     'CASE WHEN ' .
+        //     '(p MEMBER OF p.groups '.
+        //     'OR p.id IN (:data_in)) AND '. 'p.id NOT IN (:data_not_in)'.
+        //     'THEN true ELSE false END';
+
+        $qb->andWhere($qb->expr()->neq('p', ':product'));
+
+        $qb
+            ->addSelect(sprintf('%s AS familyLabel', $familyExpr));
+            // ->addSelect($hasAssociationExpr . ' AS has_product');
+        return $qb;
+    }
 }

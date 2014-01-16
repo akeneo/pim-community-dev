@@ -124,8 +124,9 @@
         {% set gridName = 'association-targets-grid' %}
 
         {% set gridParams = {
-            'association': associationTypes|first,
-            'product': product
+            'associationType': associationTypes|first,
+            'product': product,
+            'localeCode': 'en_US'
         } %}
 
 
