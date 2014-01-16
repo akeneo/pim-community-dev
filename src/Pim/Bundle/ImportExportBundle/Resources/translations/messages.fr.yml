@@ -1,4 +1,14 @@
 ---
+export profile:
+  overview: "Liste des profils d'export"
+  create: "Créer un profil d'export"
+  edit: "Modifier un profil d'export"
+import profile:
+  overview: "Liste des profils d'import"
+  create: "Créer un profil d'import"
+  edit: "Modifier un profil d'import"
+Job: Job
+Connector: Connecteur
 pim_import_export:
   status:
     - Prêt
@@ -55,7 +65,6 @@ pim_import_export:
     group_processor.title: Création de groupe
     attribute_processor.title: "Création d'attribut"
     attribute_option_processor.title: "Création d'option d'attribut"
-    product_association_processor.title: "Création de l'association de produit"
     heterogeneous_processor.title: Sérialiseur de produits en CSV
     homogeneous_processor.title: "Sérialiseur d'entité en CSV"
     file_writer.title: Sortie
@@ -112,34 +121,29 @@ pim_import_export:
     withHeader:
       label: Avec en-tête
       help: Définit si la première ligne du fichier contient les libellés des colonnes
-oro_batch:
-  dummy_reader.title: Lecteur factice
-  dummy_processor.title: Processeur factice
-  dummy_writer.title: Écrivain factice
-  product_reader.title: Extraction de produits
-  entity_reader.title: "Extraction d'entités"
-  csv_reader.title: Lecteur de CSV
-  csv_product_reader.title: Lecteur de CSV de produits
-  csv_category_reader.title: Lecteur de CSV de catégories
-  product_processor.title: Création de produit
-  category_processor.title: Création de catégorie
-  association_processor.title: "Création d'association"
-  group_processor.title: Création de groupe
-  attribute_processor.title: "Création d'attribut"
-  attribute_option_processor.title: "Création d'option d'attribut"
-  product_association_processor.title: "Création d'association de produits"
-  heterogeneous_processor.title: Sérialiseur de produit en CSV
-  homogeneous_processor.title: "Sérialiseur d'entité en CSV"
-  file_writer.title: Sortie
-  product_writer.title: Stockage des produits
-  category_writer.title: Stockage des catégories
-  writer.title: Stockage des entités
-Import management: Gestion des imports
-Import %job.name% | Edit: Importer %job.name% | Modifier
-Import %job.name% | Show: Importer %job.name% | Afficher
+  download_archive:
+    archive: Télécharger fichier généré
+    output: Télécharger fichier généré
+    input: Télécharger fichier lu
+    invalid: Télécharger données invalides
 Export management: Gestion des exports
 Export %job.name% | Edit: Exporter %job.name% | Modifier
 Export %job.name% | Show: Exporter %job.name% | Afficher
+Export profiles: "Profils d'export"
+Export profiles | Create: "Profils d'export | Créer"
+Export profiles %export.label% | Edit: "Profil d'export %export.label% | Modifier"
+Exports history: Historique des exports
+Import management: Gestion des imports
+Import %job.name% | Edit: Importer %job.name% | Modifier
+Import %job.name% | Show: Importer %job.name% | Afficher
+Import profiles: "Profils d'import"
+Import profiles | Create: "Profils d'import | Créer"
+Import profiles %import.label% | Edit: "Profil d'import %import.label% | Modifier"
+Imports history: Historique des imports
+export report:
+  overview: "Rapports d'exportations"
+import report:
+  overview: "Rapports d'importations"
 pim_importexport:
   acl:
     export_profile:
@@ -166,3 +170,31 @@ pim_importexport:
       show: "Visualiser les détails du rapport d'import"
       dl_log: "Télécharger le rapport d'import"
       dl_files: Télécharger les fichiers importés
+btn:
+  create:
+    export profile: "Créer un profil d'export"
+    import profile: "Créer un profil d'import"
+Upload and import: Upload et importation
+confirmation:
+  remove:
+    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
+    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
+flash:
+  export:
+    removed: "Le profil d'export a été supprimé"
+  import:
+    removed: "Le profil d'import a été supprimé"
+pim_menu:
+  item:
+    export_history: Historique des exports
+    export_profile: "Profils d'export"
+    import_history: Historique des imports
+    import_profile: "Profils d'import"
+General properties: Propriétés générales
+History: Historique
+pane.accordion:
+  properties: Propriétés
+  global_settings: Paramètres généraux
+popin.create:
+  export_profile.title: "Créer un nouveau profil d'export"
+  import_profile.title: "Créer un nouveau profil d'import"

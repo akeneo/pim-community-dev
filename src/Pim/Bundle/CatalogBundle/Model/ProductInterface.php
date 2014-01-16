@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -30,7 +31,7 @@ interface ProductInterface
      *
      * @return Product
      */
-    public function setFamily($family);
+    public function setFamily(Family $family = null);
 
     /**
      * Get the identifier of the product

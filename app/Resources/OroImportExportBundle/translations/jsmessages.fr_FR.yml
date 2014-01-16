@@ -1,0 +1,3 @@
+---
+Export performed successfully, {{ count }} entities were exported.: "Export effectué avec succès,  {{ count }} lignes ont été exportées."
+Export operation fails, {{ count }} error(s) found.: "Opération d'export échouée, {{ count }} erreur (s) trouvés."

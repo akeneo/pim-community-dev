@@ -18,6 +18,7 @@ pim_dashboard:
             export_report:  'Exports History'
             attribute:      'Manage Attributes'
             family:         'Manage Families'
+    quick_launchpad: Quick Launchpad
     widget:
         error:
             title:   'Error while loading widget'
