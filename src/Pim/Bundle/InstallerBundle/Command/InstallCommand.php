@@ -32,7 +32,7 @@ class InstallCommand extends OroInstallCommand
     const TASK_DB     = 'db';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -83,8 +83,59 @@ class InstallCommand extends OroInstallCommand
     {
         $task = $input->getOption('task');
         if ($task === self::TASK_ASSETS || $task === self::TASK_ALL) {
-            parent::finalStep($input, $output);
+            $this->oroFinalStep($input, $output);
         }
+
+        return $this;
+    }
+
+    /**
+     * Override parent class finalStep method
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return \Pim\Bundle\InstallerBundle\Command\InstallCommand
+     */
+    private function oroFinalStep(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Preparing application.</info>');
+
+        $input->setInteractive(false);
+
+        $this
+            ->runCommand('fos:js-routing:dump', $input, $output, array('--target' => 'web/js/routes.js'))
+            ->runCommand('oro:navigation:init', $input, $output)
+            ->runCommand('assets:install', $input, $output)
+            ->runCommand('assetic:dump', $input, $output)
+            ->runCommand('oro:assetic:dump', $input, $output)
+            ->runCommand('oro:translation:dump', $input, $output)
+            ->runCommand('oro:localization:dump', $input, $output);
+
+        $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Update installed flag in parameters.yml and clear it from DI container
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Updating installed flag</info>');
+
+        $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
+        $params = $dumper->parse();
+        $params['system']['installed'] = date('c');
+        $dumper->dump($params);
+
+        $this->runCommand('cache:clear', $input, $output);
+        $output->writeln('');
 
         return $this;
     }
