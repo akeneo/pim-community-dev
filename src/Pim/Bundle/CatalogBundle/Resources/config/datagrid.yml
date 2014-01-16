@@ -2,6 +2,8 @@ datagrid:
     translatable-entity-grid:
         options:
             locale_parameter: localeCode
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             type:              pim_orm
             repository_method: createDatagridQueryBuilder
@@ -152,6 +154,8 @@ datagrid:
         options:
             entityHint: channel
             locale_parameter: localeCode
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_channel_index
             type: pim_orm
@@ -389,7 +393,7 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-              - oro/datagrid/column-form-listener
+                - oro/datagrid/column-form-listener
             columnListener:
                 dataField: id
                 columnName: has_product
@@ -484,6 +488,8 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_family_index
             type: pim_orm
@@ -552,6 +558,8 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_currency_index
             type: pim_orm
@@ -604,6 +612,8 @@ datagrid:
     locale-grid:
         options:
             entityHint: locale
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_locale_index
             type: pim_orm
@@ -640,6 +650,8 @@ datagrid:
     group-grid:
         options:
             entityHint: group
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_group_index
             type: pim_orm
@@ -707,6 +719,8 @@ datagrid:
     variant-group-grid:
         options:
             entityHint: group
+            requireJSModules:
+                - pim/datagrid/state-listener
         source:
             acl_resource: pim_catalog_group_index
             type: pim_orm
