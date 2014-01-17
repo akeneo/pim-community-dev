@@ -433,16 +433,6 @@ datagrid:
                 frontend_type: datetime
         properties:
             id: ~
-            edit_link:
-                type: url
-                route: pim_catalog_product_edit
-                params:
-                    - id
-            delete_link:
-                type: url
-                route: pim_catalog_product_remove
-                params:
-                    - id
         sorters:
             columns:
                 has_product:
