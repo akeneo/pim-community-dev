@@ -238,7 +238,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $attributes = $qb->getQuery()->getResult();
         $codeToAttribute = array();
         foreach ($attributes as $attribute) {
-            $codeToAttribute[$attribute->getCode()]= $attribute;
+            $codeToAttribute[$attribute->getCode()] = $attribute;
         }
 
         // raise exception

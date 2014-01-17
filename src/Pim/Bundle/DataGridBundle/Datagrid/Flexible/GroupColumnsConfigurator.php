@@ -42,7 +42,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $editableColumn = array();
         foreach ($propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
-                $editableColumn[$columnCode]= $columnData;
+                $editableColumn[$columnCode] = $columnData;
                 unset($propertiesColumns[$columnCode]);
             }
         }
@@ -65,13 +65,13 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
                     $columnConfig = $columnConfig + array(
                         'label' => $attribute->getLabel(),
                     );
-                    $identifierColumn[$attributeCode]= $columnConfig;
+                    $identifierColumn[$attributeCode] = $columnConfig;
                 } elseif (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
                         'label' => $attribute->getLabel(),
                     );
-                    $axisColumns[$attributeCode]= $columnConfig;
+                    $axisColumns[$attributeCode] = $columnConfig;
                 }
             }
         }

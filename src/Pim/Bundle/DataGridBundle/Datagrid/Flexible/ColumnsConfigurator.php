@@ -63,9 +63,9 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {
-                    $identifierColumn[$attributeCode]= $columnConfig;
+                    $identifierColumn[$attributeCode] = $columnConfig;
                 } else {
-                    $attributesColumns[$attributeCode]= $columnConfig;
+                    $attributesColumns[$attributeCode] = $columnConfig;
                 }
             }
         }

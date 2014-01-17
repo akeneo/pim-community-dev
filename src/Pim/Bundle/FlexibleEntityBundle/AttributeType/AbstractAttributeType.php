@@ -203,7 +203,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             if (!isset($options['required'])) {
                 $options['required'] = false;
             }
-            $options['auto_initialize']= false;
+            $options['auto_initialize'] = false;
 
             $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
         }

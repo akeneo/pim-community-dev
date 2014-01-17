@@ -37,7 +37,7 @@ class AddParametersToGridListener
     /**
      * @param array             $paramNames    Parameter name that should be binded to query
      * @param RequestParameters $requestParams Request params
-     * @param bool              $isEditMode    Whether or not to add data_in, data_not_in params to query
+     * @param boolean           $isEditMode    Whether or not to add data_in, data_not_in params to query
      */
     public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false)
     {
@@ -69,7 +69,7 @@ class AddParametersToGridListener
     {
         $queryParameters = array();
         foreach ($this->paramNames as $paramName) {
-            $queryParameters[$paramName]= $this->requestParams->get($paramName, null);
+            $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
         }
 
         if ($this->isEditMode) {
@@ -86,8 +86,8 @@ class AddParametersToGridListener
                 $dataOut = [0];
             }
 
-            $queryParameters['data_in']= $dataIn;
-            $queryParameters['data_not_in']= $dataOut;
+            $queryParameters['data_in'] = $dataIn;
+            $queryParameters['data_not_in'] = $dataOut;
         }
 
         return $queryParameters;

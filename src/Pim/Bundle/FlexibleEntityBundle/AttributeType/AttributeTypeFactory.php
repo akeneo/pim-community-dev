@@ -46,9 +46,9 @@ class AttributeTypeFactory
             foreach ($this->types as $alias => $properties) {
                 $entity = $properties['entity'];
                 if (!isset($this->entityToAliases[$entity])) {
-                    $this->entityToAliases[$entity]= array();
+                    $this->entityToAliases[$entity] = array();
                 }
-                $this->entityToAliases[$entity][]= $alias;
+                $this->entityToAliases[$entity][] = $alias;
             }
         }
 

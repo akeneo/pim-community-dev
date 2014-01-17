@@ -37,7 +37,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param ProductManager    $productManager Product manager
      * @param LocaleManager     $localeManager  Locale manager
      * @param ChannelManager    $channelManager Channel manager
-     * @param bool              $isEditMode     Whether or not to add data_in, data_not_in params to query
+     * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
     */
     public function __construct(
         $paramNames,
