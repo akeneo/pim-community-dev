@@ -1,6 +1,12 @@
 Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
     type: entity
     table: pim_catalog_attribute_requirement
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - channel_id
+                - family_id
+                - attribute_id
     fields:
         id:
             type: integer

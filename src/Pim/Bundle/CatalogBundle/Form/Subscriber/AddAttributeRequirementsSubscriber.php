@@ -64,10 +64,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             foreach ($this->channels as $channel) {
                 $requirement = $this->createAttributeRequirement($channel, $attribute, $family);
 
-                $key = $family->getAttributeRequirementKeyFor(
-                    $attribute->getCode(),
-                    $channel->getCode()
-                );
+                $key = $family->getAttributeRequirementKey($requirement);
                 $requirements[$key] = $requirement;
             }
         }

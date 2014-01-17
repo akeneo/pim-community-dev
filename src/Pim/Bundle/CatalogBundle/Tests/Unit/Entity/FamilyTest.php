@@ -197,9 +197,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testGetAttributeRequirementKeyFor()
+    public function testGetAttributeRequirementKey()
     {
-        $this->assertEquals('foo_bar', $this->family->getAttributeRequirementKeyFor('foo', 'bar'));
+        $requirement = $this->getAttributeRequirementMock('bar', 'foo');
+        $this->assertEquals('foo_bar', $this->family->getAttributeRequirementKey($requirement));
     }
 
     /**
