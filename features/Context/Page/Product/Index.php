@@ -102,7 +102,7 @@ class Index extends Grid
      */
     public function massEdit()
     {
-        $this->pressButton('Mass Edition');
+        $this->pressButton('Mass Edit');
     }
 
     /**
