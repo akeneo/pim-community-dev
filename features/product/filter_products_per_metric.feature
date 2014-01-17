@@ -12,7 +12,7 @@ Feature: Filter products per metric
       | library   |
     And the following attributes:
       | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
-      | weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
+      | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce |
       | postit | furniture | yes     | 120 GRAM         |
