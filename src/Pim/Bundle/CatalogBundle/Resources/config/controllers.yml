@@ -113,7 +113,6 @@ services:
         arguments:
             - '@doctrine'
             - '@templating'
-            - '@oro_datagrid.datagrid.manager'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.locale'
 
