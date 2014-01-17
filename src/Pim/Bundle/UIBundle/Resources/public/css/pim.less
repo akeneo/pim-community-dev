@@ -143,13 +143,13 @@ a.back-link {
 /** Dashboard ********************************************************************************************************/
 .dashboard {
   .fullHeight() {
-    height: 100%;
+    min-height: 190px;
   }
   .quick-launchpad #container > .container {
     padding-top: 30px;
   }
   .quick-launchpad-widget > div {
-    height: @widgetHeight;
+    min-height: @widgetHeight;
     overflow: hidden;
     border: 1px solid #b6b6b6;
     .border-radius(5px);
@@ -219,6 +219,72 @@ a.back-link {
         }
       }
     }
+  }
+}
+
+/** widgets **********************************************************************************************************/
+.widget-header {
+  border-bottom: 1px solid #ccc;
+  padding: 2px 10px;
+  font-weight: bold;
+  background: linear-gradient(@backgroundColor-white, @color-light_grey);
+}
+
+a[data-toggle-channel] {
+  padding: 5px;
+  color: #444444;
+}
+
+table#completeness-widget {
+  .progress {
+    height: 10px;
+    margin-bottom: 5px;
+    background-image: linear-gradient(to bottom, #e4e4e4, #eee);
+    border-radius: 6px;
+  }
+  .progress-cell {
+    margin-right: 15px;
+    margin-left: 15px;
+    padding: 10px 10px 0 10px;
+    div.center {
+      text-align: center;
+    }
+    span.progress-info {
+      padding: 5px;
+      color: #5e8dcb;
+      cursor: default;
+    }
+    small {
+      display: block;
+      text-align: right;
+    }
+  }
+  td {
+    vertical-align: top;
+    padding: 5px;
+    font-size: 13px;
+  }
+  td:nth-child(1) {
+    width: 5%;
+  }
+  td:nth-child(2) {
+    width: 30%;
+  }
+  td:nth-child(3) {
+    width: 5%;
+  }
+  td:nth-child(4) {
+    width: 60%;
+  }
+}
+
+.error-widget {
+  [class^="icon-"] {
+    font-size: 6em;
+    color: darken(@color-grey_tab, 25%);
+  }
+  p {
+    text-align: center;
   }
 }
 

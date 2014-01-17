@@ -1,0 +1,23 @@
+---
+pim_flexibleentity_boolean: Oui/Non
+pim_flexibleentity_text: Champ texte
+pim_flexibleentity_textarea: Zone de texte
+pim_flexibleentity_date: Date
+pim_flexibleentity_datetime: Date/Heure
+pim_flexibleentity_integer: Entier
+pim_flexibleentity_money: Argent
+pim_flexibleentity_number: Nombre
+pim_flexibleentity_multiselect: Liste à choix multiple
+pim_flexibleentity_simpleselect: Liste à choix unique
+pim_flexibleentity_metric: Métrique
+pim_flexibleentity_file: Fichier téléchargé
+pim_flexibleentity_image: Image téléchargée
+pim_flexibleentity_fileurl: Url du fichier
+pim_flexibleentity_imageurl: "Url de l'image"
+pim_flexibleentity_email: E-mail
+pim_flexibleentity_url: Url
+pim_flexibleentity_multicheckbox: Cases à cocher
+pim_flexibleentity_simpleradio: Radio
+pim_flexibleentity_price: Prix
+pim_flexibleentity_phone_collection: Collection de numéros de téléphone
+pim_flexibleentity_email_collection: "Collection d'E-mails"

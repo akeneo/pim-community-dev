@@ -1,0 +1,3 @@
+---
+sync.connection.lost: "]-Inf, 0] Synchronizer ne peut se connecter au serveur, <a href='#' data-action='sync-connect'> essayer de se reconnecter</a> |{1}Synchronizer a perdu la connexion au serveur, reconnexion régulier... |[2, Inf Synchronizer a perdu la connexion au serveur,  <b>{{ retries }}</b> tentative de reconnexion régulier..."
+sync.connection.established: Synchronizer a établi la connexion

@@ -1,45 +1,12 @@
 parameters: ~
 
 services:
-    pim_catalog.event_listener.association_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+    pim_catalog.event_listener.add_locale_code_to_grid:
+        class: %pim_datagrid.event_listener.add_locale_code_to_grid.class%
         arguments:
-          - [localeCode]
           - @oro_datagrid.datagrid.request_params
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-type-grid, method: onBuildAfter }
-
-    pim_catalog.event_listener.group_type_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
-        arguments:
-          - [localeCode]
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-type-grid, method: onBuildAfter }
-
-    pim_catalog.event_listener.attribute_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
-        arguments:
-          - [localeCode]
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.attribute-grid, method: onBuildAfter }
-
-    pim_catalog.event_listener.channel_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
-        arguments:
-          - [localeCode]
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.channel-grid, method: onBuildAfter }
-
-    pim_catalog.event_listener.family_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
-        arguments:
-          - [localeCode]
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after, method: onBuildAfter }
 
     pim_catalog.event_listener.product_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
@@ -67,14 +34,19 @@ services:
             - @pim_flexibleentity.registry
             - @pim_datagrid.datagrid.flexible.configuration_registry
             - @oro_datagrid.datagrid.request_params
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore}
 
     pim_catalog.event_listener.product_group_grid_after_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
         arguments:
           - [dataLocale, currentGroup]
           - @oro_datagrid.datagrid.request_params
+          - @pim_catalog.manager.product
+          - @pim_catalog.manager.locale
+          - @pim_catalog.manager.channel
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
@@ -112,3 +84,24 @@ services:
           - @oro_datagrid.datagrid.request_params
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.variant-group-grid, method: onBuildAfter }
+
+    pim_catalog.event_listener.association_product_grid_before_listener:
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        arguments:
+            - @pim_flexibleentity.registry
+            - @pim_datagrid.datagrid.flexible.configuration_registry
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-grid, method: buildBefore}
+
+    pim_catalog.event_listener.association_product_grid_after_listener:
+        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
+        arguments:
+            - [dataLocale, product, associationType]
+            - @oro_datagrid.datagrid.request_params
+            - @pim_catalog.manager.product
+            - @pim_catalog.manager.locale
+            - @pim_catalog.manager.channel
+            - true
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }

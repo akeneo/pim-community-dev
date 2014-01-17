@@ -1,0 +1,9 @@
+parameters:
+    pim_catalog.repository.orm.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+
+services:
+    pim_catalog.repository.orm.product:
+        class: %pim_catalog.repository.orm.product.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.product.class%]

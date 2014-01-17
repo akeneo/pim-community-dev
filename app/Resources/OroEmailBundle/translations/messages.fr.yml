@@ -1,0 +1,45 @@
+---
+%subject% - Email: "%subject% - Email"
+Emails: Emails
+Email: Email
+Subject: Objet
+Sent: Envoyé
+From: De
+To: À
+Cc: Cc
+Bcc: BCC
+Attachments: Pièces jointes
+oro.email.controller.emailtemplate.saved.message: Modèle enregistré
+oro.email.form.choose_template: Choisir un modèle...
+oro.email.datagrid.emailtemplate.action.update: Modifier
+oro.email.datagrid.emailtemplate.action.clone: Cloner
+oro.email.datagrid.emailtemplate.action.delete: Supprimer
+oro.email.datagrid.emailtemplate.column.entity_name: "Nom de l'entité"
+oro.email.datagrid.emailtemplate.column.name: Nom du modèle
+oro.email.datagrid.emailtemplate.column.isSystem: Est système
+oro.email.datagrid.emailtemplate.column.type: Type
+oro.email.datagrid.emailtemplate.filter.type.html: HTML
+oro.email.datagrid.emailtemplate.filter.type.txt: Texte Brut
+oro.email.datagrid.emailtemplate.filter.isSystem.yes: "1"
+oro.email.datagrid.emailtemplate.page_size.all: Tous
+oro.email.datagrid.emailtemplate.view.system_templates: Système uniquement
+oro.email.datagrid.email.from_name: De
+oro.email.datagrid.email.sentAt: Envoyé
+oro.email.datagrid.email.subject: Objet
+oro.email.datagrid.email.recipients: Destinataires
+oro.email.handler.attempt_save_system_template: La surcharge des modèles du système est interdite, il faut plutôt cloner celui-ci.
+Edit email template "%name%": |-
+  Modifier le modèle d'e-mail "%name%"
+Clone Email Template: "Cloner Modèle d'Email"
+New Email Template: "Nouveau modèle d'E-mail"
+Available variables: Variables disponibles
+"Logged in user:": "Utilisateur connecté :"
+"Related entity:": "Entité associée :"
+Created: Créé
+Templates: Modèles
+Templates - Emails - System: "Modèles - Emails - système"
+Template %name% - Edit: "Modèle %name% - modifier"
+Template %name% - Edit - Templates - Emails - System: "Modèle %name% - modifier - Modèles - Emails - système"
+Create Email Template: "Créer modèle d'E-mail"
+Create Email Template - Templates - Emails - System: "Créer modèle d'E-mail - Modèles - Emails - système"
+Clone Email Template - Templates - Emails - System: "Cloner Modèle d'Email - Modèles - Emails - système"

@@ -63,12 +63,12 @@ class SortersConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showColumn        = $attribute->isUseableAsGridColumn();
             $attributeType     = $attribute->getAttributeType();
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
             $columnExists      = isset($columns[$attributeCode]);
 
-            if ($columnExists && $showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
+            if ($columnExists && $attributeTypeConf && $attributeTypeConf['column']) {
+
                 if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),

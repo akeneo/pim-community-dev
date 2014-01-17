@@ -23,7 +23,7 @@ class AddFilterTypesPass implements CompilerPassInterface
     /**
      * @®ar string
      */
-    const TAG_NAME            = 'oro_filter.extension.orm_filter.filter';
+    const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
     /**
      * {@inheritDoc}

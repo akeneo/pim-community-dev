@@ -37,7 +37,7 @@ class AddAttributeTypeCompilerPass implements CompilerPassInterface
             $alias = $attributes['alias'];
             $entity = $attributes['entity'];
             $attributeType = $container->getDefinition($id);
-            $types[$alias]= array('type' => $attributeType, 'entity' => $entity);
+            $types[$alias] = array('type' => $attributeType, 'entity' => $entity);
         }
 
         $factory->replaceArgument(0, $types);

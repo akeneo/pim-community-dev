@@ -114,6 +114,7 @@ services:
             - '@doctrine'
             - '@templating'
             - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.locale'
 
     pim_catalog.controller.mass_edit_action:
         scope: request

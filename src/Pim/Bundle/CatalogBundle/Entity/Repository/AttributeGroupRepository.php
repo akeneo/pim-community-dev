@@ -37,7 +37,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
         $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
         $orderedGroups = array();
         foreach ($groups as $group) {
-            $orderedGroups[$group->getId()]= $group->getLabel();
+            $orderedGroups[$group->getId()] = $group->getLabel();
         }
 
         return $orderedGroups;

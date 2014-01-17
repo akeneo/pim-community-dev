@@ -31,7 +31,7 @@ class FilterAttributesExtension extends \Twig_Extension
      *
      * @param AbstractEntityFlexible $entity
      * @param string|array           $attributes
-     * @param bool                   $skip
+     * @param boolean                $skip
      *
      * @return ArrayCollection
      */

@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Common\Object;
+use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
@@ -50,6 +47,11 @@ class ConfigureFlexibleGridListener
     protected $requestParams;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * Constructor
      *
      * @param FlexibleManagerRegistry $flexRegistry  flexible manager registry
@@ -64,6 +66,14 @@ class ConfigureFlexibleGridListener
         $this->flexRegistry  = $flexRegistry;
         $this->confRegistry  = $confRegistry;
         $this->requestParams = $requestParams;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     /**

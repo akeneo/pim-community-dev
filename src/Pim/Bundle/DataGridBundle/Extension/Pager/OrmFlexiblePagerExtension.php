@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Extension\Pager\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Orm flexible entity pager extension
@@ -64,5 +61,15 @@ class OrmFlexiblePagerExtension extends OrmPagerExtension
                 ->andWhere($rootField.' IN (:entityIds)')
                 ->setParameter('entityIds', $ids);
         }
+    }
+
+    /**
+     * Should pass at the very end (after filters and sorters)
+     *
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return -300;
     }
 }

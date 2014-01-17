@@ -31,7 +31,7 @@ class FamilyRepository extends ReferableEntityRepository
         $families = $this->buildAllWithTranslations()->getQuery()->execute();
         $orderedFamilies = array();
         foreach ($families as $family) {
-            $orderedFamilies[$family->getId()]= $family->getLabel();
+            $orderedFamilies[$family->getId()] = $family->getLabel();
         }
         uasort(
             $orderedFamilies,

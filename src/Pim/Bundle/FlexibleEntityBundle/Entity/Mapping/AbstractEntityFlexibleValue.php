@@ -482,7 +482,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @param AbstractEntityFlexibleValue $value
      *
-     * @return $this
+     * @return AbstractEntityFlexibleValue
      */
     public function setCollections(AbstractEntityFlexibleValue $value = null)
     {
@@ -496,7 +496,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @param Collection[] $collection
      *
-     * @return $this
+     * @return AbstractEntityFlexibleValue
      */
     public function setCollection($collection)
     {

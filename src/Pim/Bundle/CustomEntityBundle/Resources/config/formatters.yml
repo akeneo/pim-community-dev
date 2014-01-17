@@ -8,7 +8,4 @@ services:
         arguments:
             - @router
         tags:
-            - { name:  oro_datagrid.extension.formatter.property, type: custom_entity_url }
-
-
-
+            - { name: oro_datagrid.extension.formatter.property, type: custom_entity_url }

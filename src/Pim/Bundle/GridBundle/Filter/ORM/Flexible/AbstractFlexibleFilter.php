@@ -21,7 +21,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 abstract class AbstractFlexibleFilter implements FilterInterface
 {
     /**
-     * @var bool
+     * @var boolean
      */
     protected $active = false;
 

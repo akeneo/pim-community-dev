@@ -3,3 +3,4 @@ config:
         oro/datagrid/tab-redirect-action: pimdatagrid/js/datagrid/action/tab-redirect-action
         pim/datagrid/export-action:       pimdatagrid/js/datagrid/action/export-action
         oro/export-widget:                pimdatagrid/js/datagrid/widget/export-widget
+        pim/datagrid/state-listener:      pimdatagrid/js/datagrid/state-listener

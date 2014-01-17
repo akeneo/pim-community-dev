@@ -70,7 +70,7 @@ class CustomEntityFilterType extends AbstractType
                             ->findBy(array(), isset($options['sort']) ? $options['sort'] : null);
                     $choices = array();
                     foreach ($entities as $entity) {
-                        $choices[$entity->getId()]= (string) $entity;
+                        $choices[$entity->getId()] = (string) $entity;
                     }
 
                     return array(

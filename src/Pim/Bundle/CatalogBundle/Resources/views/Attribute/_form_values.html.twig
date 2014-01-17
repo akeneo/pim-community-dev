@@ -3,7 +3,7 @@
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
 {% endspaceless %}
-{% set accordionContent = { 'Label translations': form_row(form.label) } %}
+{% set accordionContent = { 'pane.accordion.label_translations': form_row(form.label) } %}
 
 {% if form.options is defined %}
     {% set optionsContent %}
@@ -62,7 +62,7 @@
             </tbody>
         </table>
     {% endset %}
-    {% set accordionContent = accordionContent|merge({ 'Options': optionsContent }) %}
+    {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': optionsContent }) %}
 {% endif %}
 
 {{ elements.accordion(accordionContent, 2) }}

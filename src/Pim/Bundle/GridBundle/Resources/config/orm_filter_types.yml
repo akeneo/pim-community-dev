@@ -1,5 +1,4 @@
-parameters:
-    oro_grid.route.default_generator.class: Pim\Bundle\GridBundle\Route\SetterRouteGenerator
+parameters: ~
 
 services:
 
