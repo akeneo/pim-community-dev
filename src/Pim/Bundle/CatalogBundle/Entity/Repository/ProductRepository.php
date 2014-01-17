@@ -464,27 +464,45 @@ SQL;
 
         $qb
             ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
-            // ->leftJoin(
-            //     'Pim\Bundle\CatalogBundle\Model\Association',
-            //     'pa',
-            //     'WITH',
-            //     'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
-            // );
-
-        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
-
-        // $hasAssociationExpr =
-        //     'CASE WHEN ' .
-        //     '(p MEMBER OF p.groups '.
-        //     'OR p.id IN (:data_in)) AND '. 'p.id NOT IN (:data_not_in)'.
-        //     'THEN true ELSE false END';
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->leftJoin(
+                'PimCatalogBundle:Locale',
+                'locale',
+                'WITH',
+                'locale.code = :dataLocale'
+            )
+            ->leftJoin(
+                'PimCatalogBundle:Channel',
+                'channel',
+                'WITH',
+                'channel.code = :scopeCode'
+            )
+            ->leftJoin(
+                'PimCatalogBundle:Completeness',
+                'completeness',
+                'WITH',
+                'completeness.locale = locale.id AND completeness.channel = channel.id '.
+                'AND completeness.productId = p.id'
+            )
+            ->leftJoin(
+                'Pim\Bundle\CatalogBundle\Model\Association',
+                'pa',
+                'WITH',
+                'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
+            );
 
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
+        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
+        $hasProductExpr =
+            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
+            'THEN true ELSE false END';
+
         $qb
-            ->addSelect(sprintf('%s AS familyLabel', $familyExpr));
-            // ->addSelect($hasAssociationExpr . ' AS has_product');
+            ->addSelect(sprintf('%s AS familyLabel', $familyExpr))
+            ->addSelect($hasProductExpr.' AS has_association')
+            ->addSelect('completeness.ratio AS ratio');
+
         return $qb;
     }
 }

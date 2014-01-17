@@ -10,11 +10,11 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 /**
  * Get parameters from request and bind them to query builder
  *
- * @see Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @see       Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
  */
 class AddParametersToGridListener
 {

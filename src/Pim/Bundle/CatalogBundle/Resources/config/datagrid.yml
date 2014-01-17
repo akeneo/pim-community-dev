@@ -799,13 +799,12 @@ datagrid:
                             multiple: true
                             choices: @pim_catalog.manager.group->getAvailableAxisChoices
 
-    association-targets-grid:
+    association-product-grid:
         flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
-            locale_parameter: localeCode
             requireJSModules:
-              - oro/datagrid/column-form-listener
+                - oro/datagrid/column-form-listener
             columnListener:
                 dataField: id
                 columnName: has_association
@@ -819,35 +818,80 @@ datagrid:
         columns:
             has_association:
                 frontend_type: boolean
-                label: Has association
-                editable: true
+                label:         Has association
+                data_name:     has_association
+                editable:      true
             family:
-                label: Family
+                label:     Family
                 data_name: familyLabel
+            enabled:
+                label:         Status
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
+                frontend_type: html
+            completeness:
+                label:         Complete
+                data_name:     ratio
+                type:          twig
+                template:      PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                frontend_type: html
+            created:
+                label:         Created
+                frontend_type: datetime
+            updated:
+                label:         Updated
+                frontend_type: datetime
         properties:
             id: ~
-        actions: ~
         sorters:
             columns:
-                family:
-                    data_name: familyLabel
                 has_association:
                     data_name: has_association
+                family:
+                    data_name: familyLabel
+                enabled:
+                    data_name: p.enabled
+                completeness:
+                    data_name: ratio
+                created:
+                    data_name: p.created
+                updated:
+                    data_name: p.updated
             default:
                 has_association: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
+                has_association:
+                    type:             boolean
+                    label:            Has association
+                    data_name:        has_association
+                    filter_by_having: true
                 family:
                     type:      entity
                     data_name: productFamily
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
+                            class:    %pim_catalog.entity.family.class%
                             property: label
-
-    association-product-grid:
-        extend: association-targets-grid
-
-    association-group-grid:
-        extend: association-targets-grid
+                enabled:
+                    type:      choice
+                    label:     Status
+                    data_name: p.enabled
+                    options:
+                        field_options:
+                            choices:
+                                1: Enabled
+                                0: Disabled
+                completeness:
+                    type:      completeness
+                    label:     Complete
+                    data_name: ratio
+                created:
+                    type:             datetime
+                    data_name:        p.created
+                    filter_by_having: true
+                updated:
+                    type:             datetime
+                    data_name:        p.updated
+                    filter_by_having: true

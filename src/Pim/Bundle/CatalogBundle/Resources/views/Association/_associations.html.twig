@@ -121,25 +121,14 @@
             </div>
         {% endfor %}
 
-        {% set gridName = 'association-targets-grid' %}
-
-        {% set gridParams = {
-            'associationType': associationTypes|first,
-            'product': product,
-            'localeCode': 'en_US'
-        } %}
-
-
-        <div id="product-grid">
-            {{ dataGrid.renderGrid(gridName, gridParams) }}
+        <div id="association-product-grid">
+            {{ dataGrid.renderGrid('association-product-grid', { product: product.id, associationType: associationTypes|first.id }) }}
         </div>
 
-        {#
-        {{ dataGrid.renderGrid('product-grid', { dataLocale: dataLocale }) }}
-        {{ dataGrid.renderGrid('association-product-grid', { dataLocale: dataLocale }) }}
-        {{ dataGrid.renderGrid('association-group-grid', { dataLocale: dataLocale }) }}
-        <div id="association-product-grid"></div>
-        <div id="association-group-grid" class="hide"></div>
-        #}
+        <div id="association-group-grid" class="hide">
+            {#
+            {{ dataGrid.renderGrid('association-group-grid', { product: product.id, associationType: associationTypes|first.id }) }}
+            #}
+        </div>
     </div>
 {% endif %}
