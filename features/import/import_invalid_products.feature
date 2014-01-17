@@ -23,14 +23,14 @@ Feature: Import invalid products
     """
     And the following job "acme_product_import" configuration:
       | filePath          | %file to import% |
-      | uploadAllowed     | no                   |
-      | delimiter         | ;                    |
-      | enclosure         | "                    |
-      | escape            | \                    |
-      | enabled           | yes                  |
-      | categories column | categories           |
-      | family column     | families             |
-      | groups column     | groups               |
+      | uploadAllowed     | no               |
+      | delimiter         | ;                |
+      | enclosure         | "                |
+      | escape            | \                |
+      | enabled           | yes              |
+      | categories column | categories       |
+      | family column     | families         |
+      | groups column     | groups           |
     And I am logged in as "Julia"
 
 Scenario: Fail to import malformed prices
