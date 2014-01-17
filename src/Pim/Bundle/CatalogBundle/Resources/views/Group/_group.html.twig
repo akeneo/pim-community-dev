@@ -70,7 +70,7 @@
                     </div>
                 {% endif %}
 
-                {{ dataGrid.renderGrid('product-group-grid', { dataLocale: dataLocale, currentGroup: currentGroup }) }}
+                {{ dataGrid.renderGrid(gridName, { dataLocale: dataLocale, currentGroup: currentGroup }) }}
 
                 {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
                 {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
