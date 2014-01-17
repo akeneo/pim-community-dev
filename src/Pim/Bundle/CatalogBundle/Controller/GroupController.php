@@ -32,7 +32,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 class GroupController extends AbstractController
 {
     /**
-     * @staticvar int The maximum number of group products to be displayed
+     * @staticvar integer The maximum number of group products to be displayed
      */
     const MAX_PRODUCTS = 5;
 

@@ -25,7 +25,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     protected $attribute;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $attributeId;
 
@@ -41,7 +41,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     protected $varchar;
 
     /**
-     * Store int value
+     * Store integer value
      * @var integer $integer
      */
     protected $integer;
@@ -124,7 +124,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set Attribute id
      *
-     * @param int $attributeId
+     * @param integer $attributeId
      *
      * @return ProductValue
      */

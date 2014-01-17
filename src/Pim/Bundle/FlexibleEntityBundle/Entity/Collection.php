@@ -52,7 +52,7 @@ class Collection
     /**
      * Set id
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return Collection
      */

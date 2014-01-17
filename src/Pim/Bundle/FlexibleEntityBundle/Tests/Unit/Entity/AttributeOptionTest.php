@@ -15,7 +15,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @staticvar string
      */

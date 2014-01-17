@@ -63,7 +63,7 @@ class AssociationController
     /**
      * Display association grids
      *
-     * @param int $id
+     * @param integer $id
      *
      * @AclAncestor("pim_catalog_associations_view")
      *

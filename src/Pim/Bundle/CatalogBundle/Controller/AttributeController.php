@@ -172,7 +172,7 @@ class AttributeController extends AbstractDoctrineController
      * Edit attribute form
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      *
      * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
@@ -278,7 +278,7 @@ class AttributeController extends AbstractDoctrineController
      * Create a new option for a simple/multi-select attribute
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      * @param string  $dataLocale
      *
      * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
@@ -331,7 +331,7 @@ class AttributeController extends AbstractDoctrineController
      * Remove attribute
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      *
      * @AclAncestor("pim_catalog_attribute_remove")
      *
@@ -355,7 +355,7 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Find an attribute
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException

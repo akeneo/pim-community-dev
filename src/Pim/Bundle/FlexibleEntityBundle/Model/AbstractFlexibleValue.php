@@ -16,7 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
  */
 abstract class AbstractFlexibleValue implements FlexibleValueInterface, TranslatableInterface, ScopableInterface
 {
-
     /**
      * @var integer $id
      */

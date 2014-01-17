@@ -15,7 +15,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  */
 class MediaTypeTest extends TypeTestCase
 {
-
     /**
      * {@inheritdoc}
      */

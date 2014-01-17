@@ -73,21 +73,13 @@ class AddParametersToGridListener
         }
 
         if ($this->isEditMode) {
-            $additionalParams = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-            if (isset($additionalParams[self::GRID_PARAM_DATA_IN])) {
-                $dataIn = $additionalParams[self::GRID_PARAM_DATA_IN];
-            } else {
-                $dataIn = [0];
-            }
+            $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
 
-            if (isset($additionalParams[self::GRID_PARAM_DATA_NOT_IN])) {
-                $dataOut = $additionalParams[self::GRID_PARAM_DATA_NOT_IN];
-            } else {
-                $dataOut = [0];
-            }
+            $queryParameters[self::GRID_PARAM_DATA_IN] = isset($params[self::GRID_PARAM_DATA_IN]) ?
+                     $params[self::GRID_PARAM_DATA_IN] : array(0);
 
-            $queryParameters['data_in'] = $dataIn;
-            $queryParameters['data_not_in'] = $dataOut;
+            $queryParameters[self::GRID_PARAM_DATA_NOT_IN] = isset($params[self::GRID_PARAM_DATA_NOT_IN]) ?
+                     $params[self::GRID_PARAM_DATA_NOT_IN] : array(0);
         }
 
         return $queryParameters;
