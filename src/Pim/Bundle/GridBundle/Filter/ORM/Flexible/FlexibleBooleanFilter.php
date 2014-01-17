@@ -35,7 +35,7 @@ class FlexibleBooleanFilter extends AbstractFlexibleFilter
             return;
         }
 
-        $value = ($data['value'] == BooleanFilterType::TYPE_YES) ? 1 : 0;
+        $value = ($data['value'] === BooleanFilterType::TYPE_YES) ? 1 : 0;
 
         $this->applyFlexibleFilter($proxyQuery, $field, $value, '=');
     }

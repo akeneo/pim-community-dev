@@ -36,7 +36,7 @@ class FlexibleStringFilter extends AbstractFlexibleFilter
 
         $operator = $this->parentFilter->getOperator($data['type']);
 
-        if ('=' == $operator) {
+        if ('=' === $operator) {
             $value = $data['value'];
         } else {
             $value = sprintf($this->parentFilter->getFormatByComparisonType($data['type']), $data['value']);

@@ -177,7 +177,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
         if (!isset($result['filter_type'])) {
             $result['filter_type'] = $this->convertFlexibleTypeToFilterType($backendType);
         }
-        if (!isset($result['multiple']) && $result['type'] == FieldDescriptionInterface::TYPE_OPTIONS) {
+        if (!isset($result['multiple']) && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['multiple'] = true;
         }
 
