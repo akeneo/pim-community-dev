@@ -92,7 +92,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        return array();
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
@@ -216,5 +215,21 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function getReferenceProperties()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

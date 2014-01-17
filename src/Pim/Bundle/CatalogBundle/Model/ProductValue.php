@@ -124,9 +124,9 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set Attribute id
      *
-     * @param int attributeId
+     * @param int $attributeId
      *
-     * @return $this
+     * @return ProductValue
      */
     public function setAttributeId($attributeId)
     {
@@ -138,7 +138,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Get attribute id
      *
-     * @param int attributeId
+     * @return int
      */
     public function getAttributeId()
     {
@@ -149,6 +149,8 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Set attribute
      *
      * @param AbstractAttribute $attribute
+     *
+     * @return ProductValue
      */
     public function setAttribute(AbstractAttribute $attribute = null)
     {

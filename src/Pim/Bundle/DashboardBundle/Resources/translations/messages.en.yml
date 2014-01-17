@@ -1,21 +1,26 @@
 pim_dashboard:
     menu:
         label:
-            collect:  'Collect'
-            enrich:   'Enrich'
-            spread:   'Spread'
-            settings: 'Settings'
+            collect:  Collect
+            enrich:   Enrich
+            spread:   Spread
+            settings: Settings
     link:
         label:
-            import_profile: 'Manage Import Profiles'
-            import_report:  'Imports History'
-            product:        'Manage Products'
-            category:       'Manage Categories'
-            variant:        'Manage Variant Groups'
-            group:          'Manage Groups'
-            channel:        'Manage Channels'
-            export_profile: 'Manage Export Profiles'
-            export_report:  'Exports History'
-            attribute:      'Manage Attributes'
-            family:         'Manage Families'
+            import_profile: Manage Import Profiles
+            import_report:  Imports History
+            product:        Manage Products
+            category:       Manage Categories
+            variant:        Manage Variant Groups
+            group:          Manage Groups
+            channel:        Manage Channels
+            export_profile: Manage Export Profiles
+            export_report:  Exports History
+            attribute:      Manage Attributes
+            family:         Manage Families
     quick_launchpad: Quick Launchpad
+    widget:
+        error:
+            title:   Error while loading widget
+            message: Widget "%alias%" does not exist
+        completeness: Completeness Over Channels and Locales

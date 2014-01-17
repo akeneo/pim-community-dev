@@ -1253,6 +1253,43 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^completeness of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function completenessOfShouldBe($channel, $ratio)
+    {
+        $actual = $this->getCurrentPage()->getChannelCompleteness($channel);
+        assertEquals(
+            $ratio,
+            $actual,
+            sprintf(
+                'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
+                $channel,
+                $ratio,
+                $actual
+            )
+        );
+    }
+
+    /**
+     * @Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function localizedCompletenessOfShouldBe($lang, $channel, $ratio)
+    {
+        $actual = $this->getCurrentPage()->getLocalizedChannelCompleteness($channel, $lang);
+        assertEquals(
+            $ratio,
+            $actual,
+            sprintf(
+                'Expecting "%s" completeness ratio of channel "%s" to be "%s", actually was "%s"',
+                $lang,
+                $channel,
+                $ratio,
+                $actual
+            )
+        );
+    }
+
+    /**
      * @param string $email
      *
      * @Given /^an email to "([^"]*)" should have been sent$/
