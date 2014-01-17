@@ -15,7 +15,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class DefaultValueListener implements EventSubscriber
 {
-
     /**
      * Specifies the list of events to listen
      *

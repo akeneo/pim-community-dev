@@ -144,8 +144,8 @@ class GroupManager
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
-     * @param Group $group
-     * @param int   $maxResults
+     * @param Group   $group
+     * @param integer $maxResults
      *
      * @return array
      */

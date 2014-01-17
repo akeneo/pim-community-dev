@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class FlexibleValue extends AbstractEntityFlexibleValue
 {
-
     /**
      * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *

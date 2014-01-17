@@ -57,7 +57,7 @@ interface ProductRepositoryInterface
     /**
      * Returns a full product with all relations
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */

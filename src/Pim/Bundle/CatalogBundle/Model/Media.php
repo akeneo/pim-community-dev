@@ -256,7 +256,7 @@ class Media
     /**
      * Set the media id to copy from
      *
-     * @param int $copyFrom
+     * @param integer $copyFrom
      *
      * @return Media
      */

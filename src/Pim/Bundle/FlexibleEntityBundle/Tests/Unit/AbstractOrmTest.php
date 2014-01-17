@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Container;
  */
 abstract class AbstractOrmTest extends OrmTestCase
 {
-
     /**
      * @var string
      */

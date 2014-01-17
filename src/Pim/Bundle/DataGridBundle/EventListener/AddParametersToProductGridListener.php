@@ -93,7 +93,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     protected function getScope()
     {
         $filterValues = $this->requestParams->get('_filter');
-        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] != null) {
+        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {
             return $this->channelManager->getUserChannelCode();
