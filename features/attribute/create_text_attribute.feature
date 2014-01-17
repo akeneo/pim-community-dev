@@ -20,21 +20,21 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
     And the following attribute codes should not be available:
-      | code                |
-      | associations        |
-      | categories          |
-      | categoryId          |
-      | completeness        |
-      | enabled             |
-      | family              |
-      | groups              |
+      | code         |
       | associations |
-      | products            |
-      | scope               |
-      | treeId              |
-      | values              |
-      | my_groups           |
-      | my_products         |
+      | categories   |
+      | categoryId   |
+      | completeness |
+      | enabled      |
+      | family       |
+      | groups       |
+      | associations |
+      | products     |
+      | scope        |
+      | treeId       |
+      | values       |
+      | my_groups    |
+      | my_products  |
 
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:

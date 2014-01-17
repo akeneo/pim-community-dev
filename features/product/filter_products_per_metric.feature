@@ -26,7 +26,7 @@ Feature: Filter products per metric
     And the grid should contain 2 elements
     And I should see products postit and book
     And I should be able to use the following filters:
-      | filter | value      | result          |
+      | filter | value            | result          |
       | Weight | >= 200 Gram      | book            |
       | Weight | > 120 Gram       | book            |
       | Weight | = 120 Gram       | postit          |

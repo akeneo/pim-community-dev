@@ -326,7 +326,8 @@ SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM 
     JOIN %product_table% p ON p.id = cp.product_id
     JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
     JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
-    LEFT JOIN pim_catalog_completeness co ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
+    LEFT JOIN pim_catalog_completeness co
+        ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
     WHERE p.is_enabled = 1
     GROUP BY ch.id, lo.id, ch.label, lo.code
 SQL;
