@@ -22,7 +22,7 @@ class PimRequirements extends OroRequirements
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(array $directoriesToCheck = array())
     {
         parent::__construct();
 
@@ -41,6 +41,15 @@ class PimRequirements extends OroRequirements
                     self::REQUIRED_MYSQL_VERSION,
                     mysql_get_client_info()
                 )
+            );
+        }
+
+        // Check directories
+        foreach ($directoriesToCheck as $directoryToCheck) {
+            $this->addPimRequirement(
+                is_writable($directoryToCheck),
+                sprintf('%s directory must be writable', $directoryToCheck),
+                sprintf('Change the permissions of the "<strong>%s</strong>" directory', $directoryToCheck)
             );
         }
     }

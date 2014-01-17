@@ -65,7 +65,7 @@ class InstallCommand extends OroInstallCommand
                     . 'PimRequirements.php';
             }
 
-            $collection = new \PimRequirements();
+            $collection = new \PimRequirements($this->getDirectoriesToCheck());
 
             $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
             $this->renderTable($collection->getPhpIniRequirements(), 'PHP settings', $output);
@@ -83,6 +83,20 @@ class InstallCommand extends OroInstallCommand
         }
 
         return $this;
+    }
+
+    /**
+     * Get list of directories to check for PimRequirements
+     *
+     * @return array
+     */
+    protected function getDirectoriesToCheck()
+    {
+        $directories = array();
+        $directories[] = $this->getContainer()->getParameter('upload_dir');
+        $directories[] = $this->getContainer()->getParameter('archive_dir');
+
+        return $directories;
     }
 
     /**
