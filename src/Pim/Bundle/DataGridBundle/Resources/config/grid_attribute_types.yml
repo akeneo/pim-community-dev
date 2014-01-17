@@ -84,4 +84,3 @@ parameters:
 services:
     pim_datagrid.datagrid.flexible.configuration_registry:
         class: %pim_datagrid.datagrid.flexible.configuration_registry.class%
-

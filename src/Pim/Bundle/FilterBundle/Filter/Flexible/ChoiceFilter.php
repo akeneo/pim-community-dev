@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;

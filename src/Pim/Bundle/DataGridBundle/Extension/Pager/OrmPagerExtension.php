@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension as OroOrmPagerExtension;
-use Oro\Bundle\DataGridBundle\Extension\Pager\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;

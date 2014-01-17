@@ -17,6 +17,9 @@ class FilterUtility extends BaseFilterUtility
     /** @var FlexibleManagerRegistry */
     protected $fmr;
 
+    /**
+     * @param FlexibleManagerRegistry $fmr
+     */
     public function __construct(FlexibleManagerRegistry $fmr)
     {
         $this->fmr = $fmr;
@@ -51,13 +54,18 @@ class FilterUtility extends BaseFilterUtility
      * Applies filter to query by flexible attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
-     * @param string       $flexibleEntityName
-     * @param string       $field
-     * @param mixed        $value
-     * @param string       $operator
+     * @param string                           $flexibleEntityName
+     * @param string                           $field
+     * @param mixed                            $value
+     * @param string                           $operator
      */
-    public function applyFlexibleFilter($ds, $flexibleEntityName, $field, $value, $operator)
-    {
+    public function applyFlexibleFilter(
+        FilterDatasourceAdapterInterface $ds,
+        $flexibleEntityName,
+        $field,
+        $value,
+        $operator
+    ) {
         /** @var $entityRepository FlexibleEntityRepository */
         $entityRepository = $this->getFlexibleManager($flexibleEntityName)
             ->getFlexibleRepository();

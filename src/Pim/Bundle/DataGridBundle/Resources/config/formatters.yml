@@ -8,12 +8,11 @@ services:
         arguments:
             - @translator
         tags:
-            - { name:  oro_datagrid.extension.formatter.property, type: flexible_field }
+            - { name: oro_datagrid.extension.formatter.property, type: flexible_field }
 
     pim_datagrid.extension.formatter.property.flexible_image_property:
         class: %pim_datagrid.extension.formatter.property.flexible_image_property.class%
         arguments:
             - @twig
         tags:
-            - { name:  oro_datagrid.extension.formatter.property, type: flexible_image }
-
+            - { name: oro_datagrid.extension.formatter.property, type: flexible_image }
