@@ -419,6 +419,12 @@ datagrid:
                 type: twig
                 template: PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
+            completeness:
+                label: Complete
+                data_name: ratio
+                type: twig
+                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                frontend_type: html
             created:
                 label: Created
                 frontend_type: datetime
@@ -445,6 +451,8 @@ datagrid:
                     data_name: familyLabel
                 enabled:
                     data_name: p.enabled
+                completeness:
+                    data_name: ratio
                 created:
                     data_name: p.created
                 updated:
@@ -475,6 +483,10 @@ datagrid:
                             choices:
                                 1: Enabled
                                 0: Disabled
+                completeness:
+                    type:      completeness
+                    label:     Complete
+                    data_name: ratio
                 created:
                     type:             datetime
                     data_name:        p.created

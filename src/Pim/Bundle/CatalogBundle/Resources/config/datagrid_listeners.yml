@@ -41,10 +41,13 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore}
 
     pim_catalog.event_listener.product_group_grid_after_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
         arguments:
           - [dataLocale, currentGroup]
           - @oro_datagrid.datagrid.request_params
+          - @pim_catalog.manager.product
+          - @pim_catalog.manager.locale
+          - @pim_catalog.manager.channel
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }

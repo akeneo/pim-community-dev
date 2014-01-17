@@ -45,7 +45,9 @@ class CompletenessWidget extends Element
     {
         $cell = $this->find('css', sprintf('tr:contains("%s")[data-channel="%s"] td:nth-child(3)', $locale, $channel));
         if (!$cell) {
-            throw new \InvalidArgumentException(sprintf('Could not find locale "%s" for channel "%s"', $locale, $channel));
+            throw new \InvalidArgumentException(
+                sprintf('Could not find locale "%s" for channel "%s"', $locale, $channel)
+            );
         }
 
         return $cell->getText();

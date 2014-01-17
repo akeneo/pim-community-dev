@@ -62,4 +62,14 @@ class OrmFlexiblePagerExtension extends OrmPagerExtension
                 ->setParameter('entityIds', $ids);
         }
     }
+
+    /**
+     * Should pass at the very end (after filters and sorters)
+     *
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return -300;
+    }
 }
