@@ -58,7 +58,28 @@ class InstallCommand extends OroInstallCommand
         $task = $input->getOption('task');
 
         if ($task === self::TASK_CHECK || $task === self::TASK_ALL) {
-            parent::checkStep($input, $output);
+            $output->writeln('<info>Akeneo PIM requirements check:</info>');
+            if (!class_exists('PimRequirements')) {
+                require_once $this->getContainer()->getParameter('kernel.root_dir')
+                    . DIRECTORY_SEPARATOR
+                    . 'PimRequirements.php';
+            }
+
+            $collection = new \PimRequirements();
+
+            $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
+            $this->renderTable($collection->getPhpIniRequirements(), 'PHP settings', $output);
+            $this->renderTable($collection->getOroRequirements(), 'Oro specific requirements', $output);
+            $this->renderTable($collection->getPimRequirements(), 'Pim specific requirements', $output);
+            $this->renderTable($collection->getRecommendations(), 'Optional recommendations', $output);
+
+            if (count($collection->getFailedRequirements())) {
+                throw new \RuntimeException(
+                    'Some system requirements are not fulfilled. Please check output messages and fix them.'
+                );
+            }
+
+            $output->writeln('');
         }
 
         return $this;

@@ -15,11 +15,34 @@ require_once __DIR__ .'/OroRequirements.php';
 class PimRequirements extends OroRequirements
 {
     /**
+     * @staticvar string
+     */
+    const REQUIRED_MYSQL_VERSION = '5.1';
+
+    /**
      * {@inheritdoc}
      */
     public function __construct()
     {
         parent::__construct();
+
+        $this->addPimRequirement(
+            !extension_loaded('php5-mysql'),
+            'Extension php5-mysql should be installed',
+            'Install and enable <strong>php5-mysql</strong>'
+        );
+
+        if (extension_loaded('php5-mysql')) {
+            $this->addPimRequirement(
+                version_compare(mysql_get_client_info(), self::REQUIRED_MYSQL_VERSION, '>='),
+                sprintf('MySQL version must be at least %s', self::REQUIRED_MYSQL_VERSION),
+                sprintf(
+                    'Install MySQL %s or newer (installed version is %s)',
+                    self::REQUIRED_MYSQL_VERSION,
+                    mysql_get_client_info()
+                )
+            );
+        }
     }
 
     /**
@@ -33,7 +56,7 @@ class PimRequirements extends OroRequirements
      */
     public function addPimRequirement($fulFilled, $testMessage, $helpHtml, $helpText = null)
     {
-        $this->add(new PimRequirement($fulfilled, $testMessage, $helpHtml, $helpText, false));
+        $this->add(new PimRequirement($fulFilled, $testMessage, $helpHtml, $helpText, false));
     }
 
     /**
@@ -47,8 +70,25 @@ class PimRequirements extends OroRequirements
             return $requirement instanceof PimRequirement;
         });
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMandatoryRequirements()
+    {
+        return array_filter(parent::getMandatoryRequirements(), function ($requirement) {
+            return !$requirement instanceof PimRequirement;
+        });
+    }
 }
 
+/**
+ * PimRequirement class
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class PimRequirement extends Requirement
 {
 }
