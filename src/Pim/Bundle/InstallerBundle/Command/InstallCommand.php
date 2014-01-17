@@ -50,6 +50,152 @@ class InstallCommand extends OroInstallCommand
             );
     }
 
+    protected function setupStep(InputInterface $input, OutputInterface $output)
+    {
+        $task = $input->getOption('task');
+
+        if ($task === self::TASK_DB || $task === self::TASK_ALL) {
+            $this->oroSetupStep($input, $output);
+
+            $this
+                ->runCommand('oro:search:create-index', $input, $output)
+                ->runCommand(
+                    'pim:search:reindex',
+                    $input,
+                    $output,
+                    array('locale' => $this->getContainer()->getParameter('locale'))
+                )
+                ->runCommand('pim:versioning:refresh', $input, $output)
+                // @TODO: Get pim_catalog_product_value table from ProductValue metadata
+                ->runCommand(
+                    'doctrine:query:sql',
+                    $input,
+                    $output,
+                    array('sql' => 'ANALYZE TABLE pim_catalog_product_value')
+                )
+                ->runCommand(
+                    'pim:completeness:calculate',
+                    $input,
+                    $output
+                );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Override of parent class setupStep method
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @throws \Exception
+     * @return \Pim\Bundle\InstallerBundle\Command\InstallCommand
+     */
+    private function oroSetupStep(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Setting up database.</info>');
+
+        $dialog    = $this->getHelperSet()->get('dialog');
+        $container = $this->getContainer();
+        $options   = $input->getOptions();
+
+        $input->setInteractive(false);
+
+        $this
+//         ->runCommand('oro:entity-extend:clear', $input, $output)
+//         ->runCommand('doctrine:schema:drop', $input, $output, array('--force' => true, '--full-database' => true))
+        ->runCommand('doctrine:schema:create', $input, $output)
+        ->runCommand('oro:entity-config:init', $input, $output)
+        ->runCommand('oro:entity-extend:init', $input, $output)
+        ->runCommand(
+            'oro:entity-extend:update-config',
+            $input,
+            $output,
+            array('--process-isolation' => true)
+        )
+        ->runCommand(
+            'doctrine:schema:update',
+            $input,
+            $output,
+            array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
+        )
+        ->runCommand(
+            'doctrine:fixtures:load',
+            $input,
+            $output,
+            array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
+        );
+
+        $output->writeln('');
+        $output->writeln('<info>Administration setup.</info>');
+
+        $user = $container->get('oro_user.manager')->createUser();
+        $role = $container
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('OroUserBundle:Role')
+            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
+
+        $businessUnit = $container
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
+        $passValidator = function ($value) {
+            if (strlen(trim($value)) < 2) {
+                throw new \Exception('The password must be at least 2 characters long');
+            }
+
+            return $value;
+        };
+
+        $userName = isset($options['user-name'])
+            ? $options['user-name']
+            : $dialog->ask($output, '<question>Username:</question> ');
+        $userEmail = isset($options['user-email'])
+            ? $options['user-email']
+            : $dialog->ask($output, '<question>Email:</question> ');
+        $userFirstName = isset($options['user-firstname'])
+            ? $options['user-firstname']
+            : $dialog->ask($output, '<question>First name:</question> ');
+        $userLastName = isset($options['user-lastname'])
+            ? $options['user-lastname']
+            : $dialog->ask($output, '<question>Last name:</question> ');
+        $userPassword = isset($options['user-password'])
+            ? $options['user-password']
+            : $dialog->askHiddenResponseAndValidate($output, '<question>Password:</question> ', $passValidator);
+        $user
+            ->setUsername($userName)
+            ->setEmail($userEmail)
+            ->setFirstName($userFirstName)
+            ->setLastName($userLastName)
+            ->setPlainPassword($userPassword)
+            ->setEnabled(true)
+            ->addRole($role)
+            ->setOwner($businessUnit)
+            ->addBusinessUnit($businessUnit);
+
+        $container->get('oro_user.manager')->updateUser($user);
+
+        $demo = isset($options['sample-data'])
+            ? strtolower($options['sample-data']) == 'y'
+            : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
+
+        // load demo fixtures
+        if ($demo) {
+            $this->runCommand(
+                'oro:demo:fixtures:load',
+                $input,
+                $output,
+                array('--process-isolation' => true, '--process-timeout' => 300)
+            );
+        }
+
+        $output->writeln('');
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -97,32 +243,6 @@ class InstallCommand extends OroInstallCommand
         $directories[] = $this->getContainer()->getParameter('archive_dir');
 
         return $directories;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setupStep(InputInterface $input, OutputInterface $output)
-    {
-        $task = $input->getOption('task');
-        if ($task === self::TASK_DB || $task === self::TASK_ALL) {
-
-            $this
-                ->runCommand('doctrine:database:drop', $input, $output, array('--force' => true, '--full-database'))
-                ->runCommand('doctrine:database:create', $input, $output);
-
-            parent::setupStep($input, $output);
-
-            $this
-                // @TODO: Replace en_US by locale parameter
-                ->runCommand('pim:search:reindex', $input, $output, array('locale' => 'en_US'))
-                ->runCommand('pim:versioning:refresh', $input, $output)
-                ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_product_value;"'))
-                ->runCommand('doctrine:query:sql', $input, $output, array('sql' => '"ANALYZE TABLE pim_icecatdemo_product_value;"'))
-                ->runCommand('pim:completeness:calculate', $input, $output);
-        }
-
-        return $this;
     }
 
     /**
