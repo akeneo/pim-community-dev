@@ -431,18 +431,18 @@ datagrid:
             updated:
                 label: Updated
                 frontend_type: datetime
-            properties:
-                id: ~
-                edit_link:
-                    type: url
-                    route: pim_catalog_product_edit
-                    params:
-                        - id
-                delete_link:
-                    type: url
-                    route: pim_catalog_product_remove
-                    params:
-                        - id
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_catalog_product_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_catalog_product_remove
+                params:
+                    - id
         sorters:
             columns:
                 has_product:
@@ -496,8 +496,8 @@ datagrid:
                     data_name:        p.updated
                     filter_by_having: true
 
-#    product-variant-group-grid:
-#        extend: product-group-grid
+    product-variant-group-grid:
+        extend: product-group-grid
 
     family-grid:
         options:
