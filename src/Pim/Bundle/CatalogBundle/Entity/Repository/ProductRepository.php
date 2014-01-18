@@ -382,33 +382,15 @@ SQL;
             ->leftJoin('p.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin('p.groups', 'groups')
-            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'locale',
-                'WITH',
-                'locale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'channel',
-                'WITH',
-                'channel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Completeness',
-                'completeness',
-                'WITH',
-                'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.productId = p.id'
-            );
+            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
+
+        $this->addCompleteness($qb);
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $qb
             ->addSelect('p')
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect('groups')
-            ->addSelect('completeness.ratio AS ratio');
+            ->addSelect('groups');
 
         return $qb;
     }
@@ -422,26 +404,9 @@ SQL;
 
         $qb
             ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'locale',
-                'WITH',
-                'locale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'channel',
-                'WITH',
-                'channel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Completeness',
-                'completeness',
-                'WITH',
-                'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.productId = p.id'
-            );
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+
+        $this->addCompleteness($qb);
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $hasProductExpr =
@@ -452,8 +417,7 @@ SQL;
 
         $qb
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect($hasProductExpr.' AS has_product')
-            ->addSelect('completeness.ratio AS ratio');
+            ->addSelect($hasProductExpr.' AS has_product');
 
         return $qb;
     }
@@ -467,26 +431,9 @@ SQL;
 
         $qb
             ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'locale',
-                'WITH',
-                'locale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'channel',
-                'WITH',
-                'channel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Completeness',
-                'completeness',
-                'WITH',
-                'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.productId = p.id'
-            );
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+
+        $this->addCompleteness($qb);
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $hasProductExpr =
@@ -497,8 +444,7 @@ SQL;
 
         $qb
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
-            ->addSelect($hasProductExpr.' AS has_product')
-            ->addSelect('completeness.ratio AS ratio');
+            ->addSelect($hasProductExpr.' AS has_product');
 
         $qb->andWhere($qb->expr()->in('p.id', ':productIds'));
 
@@ -516,6 +462,35 @@ SQL;
             ->leftJoin('p.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin(
+                'Pim\Bundle\CatalogBundle\Model\Association',
+                'pa',
+                'WITH',
+                'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
+            );
+
+        $this->addCompleteness($qb);
+
+        $qb->andWhere($qb->expr()->neq('p', ':product'));
+
+        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
+        $hasProductExpr =
+            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
+            'THEN true ELSE false END';
+
+        $qb
+            ->addSelect(sprintf('%s AS familyLabel', $familyExpr))
+            ->addSelect($hasProductExpr.' AS has_association');
+
+        return $qb;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     */
+    protected function addCompleteness(QueryBuilder $qb)
+    {
+        $qb
+            ->leftJoin(
                 'PimCatalogBundle:Locale',
                 'locale',
                 'WITH',
@@ -533,26 +508,8 @@ SQL;
                 'WITH',
                 'completeness.locale = locale.id AND completeness.channel = channel.id '.
                 'AND completeness.productId = p.id'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Association',
-                'pa',
-                'WITH',
-                'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
             );
-
-        $qb->andWhere($qb->expr()->neq('p', ':product'));
-
-        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
-        $hasProductExpr =
-            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
-            'THEN true ELSE false END';
-
         $qb
-            ->addSelect(sprintf('%s AS familyLabel', $familyExpr))
-            ->addSelect($hasProductExpr.' AS has_association')
             ->addSelect('completeness.ratio AS ratio');
-
-        return $qb;
     }
 }
