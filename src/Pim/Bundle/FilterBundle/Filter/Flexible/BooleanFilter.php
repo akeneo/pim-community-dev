@@ -19,7 +19,7 @@ class BooleanFilter extends OroBooleanFilter
         }
 
         $field = $this->get(FilterUtility::DATA_NAME_KEY);
-        $value = ($data['value'] == BooleanFilterType::TYPE_YES) ? 1 : 0;
+        $value = ($data['value'] === BooleanFilterType::TYPE_YES) ? 1 : 0;
 
         $this->util->applyFlexibleFilter($ds, $this->get(FilterUtility::FEN_KEY), $field, $value, '=');
 
