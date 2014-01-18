@@ -109,6 +109,39 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
+    {
+        $properties = $this->defineCustomAttributeProperties($attribute);
+
+        $types = array();
+
+        foreach ($properties as $property) {
+            $fieldType = 'text';
+            if (isset($property['fieldType'])) {
+                $fieldType = $property['fieldType'];
+            }
+            $data = null;
+            if (isset($property['data'])) {
+                $data = $property['data'];
+            }
+            $options = array();
+            if (isset($property['options'])) {
+                $options = $property['options'];
+            }
+            if (!isset($options['required'])) {
+                $options['required'] = false;
+            }
+            $options['auto_initialize']= false;
+
+            $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
+        }
+
+        return $types;
+    }
+
+    /**
      * Get the value form type name to use to ensure binding
      *
      * @param FlexibleValueInterface $value
@@ -176,39 +209,6 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     protected function prepareValueFormData(FlexibleValueInterface $value)
     {
         return is_null($value->getData()) ? $value->getAttribute()->getDefaultValue() : $value->getData();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
-    {
-        $properties = $this->defineCustomAttributeProperties($attribute);
-
-        $types = array();
-
-        foreach ($properties as $property) {
-            $fieldType = 'text';
-            if (isset($property['fieldType'])) {
-                $fieldType = $property['fieldType'];
-            }
-            $data = null;
-            if (isset($property['data'])) {
-                $data = $property['data'];
-            }
-            $options = array();
-            if (isset($property['options'])) {
-                $options = $property['options'];
-            }
-            if (!isset($options['required'])) {
-                $options['required'] = false;
-            }
-            $options['auto_initialize']= false;
-
-            $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
-        }
-
-        return $types;
     }
 
     /**

@@ -336,63 +336,6 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        foreach ($value->getPrices() as $price) {
-            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
-                // Add a new product price to the value if it wasn't defined before
-                $productPrice = $this->createProductPrice($price->getCurrency());
-                $productValue->addPrice($productPrice);
-            }
-            $productPrice->setData($price->getData());
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        $productValue->getOptions()->clear();
-        $this->productManager->getObjectManager()->flush();
-        foreach ($value->getOptions() as $option) {
-            $productValue->addOption($option);
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        if (null === $media = $productValue->getMedia()) {
-            $media = new Media();
-            $productValue->setMedia($media);
-        }
-        $media->setFile($value->getMedia()->getFile());
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        if (null === $metric = $productValue->getMetric()) {
-            $metric = new Metric();
-            $metric->setFamily($value->getAttribute()->getMetricFamily());
-            $productValue->setMetric($metric);
-        }
-        $metric->setUnit($value->getMetric()->getUnit());
-        $metric->setData($value->getMetric()->getData());
-    }
-
-    /**
      * Add all the values required by the given attribute
      *
      * @param AttributeInterface $attribute
@@ -451,5 +394,62 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function createProductPrice($currency)
     {
         return new ProductPrice(null, $currency);
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
+    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+                // Add a new product price to the value if it wasn't defined before
+                $productPrice = $this->createProductPrice($price->getCurrency());
+                $productValue->addPrice($productPrice);
+            }
+            $productPrice->setData($price->getData());
+        }
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
+    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        $productValue->getOptions()->clear();
+        $this->productManager->getObjectManager()->flush();
+        foreach ($value->getOptions() as $option) {
+            $productValue->addOption($option);
+        }
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
+    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $media = $productValue->getMedia()) {
+            $media = new Media();
+            $productValue->setMedia($media);
+        }
+        $media->setFile($value->getMedia()->getFile());
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
+    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $metric = $productValue->getMetric()) {
+            $metric = new Metric();
+            $metric->setFamily($value->getAttribute()->getMetricFamily());
+            $productValue->setMetric($metric);
+        }
+        $metric->setUnit($value->getMetric()->getUnit());
+        $metric->setData($value->getMetric()->getData());
     }
 }
