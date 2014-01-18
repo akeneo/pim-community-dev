@@ -241,11 +241,6 @@ datagrid:
             family:
                 label: Family
                 data_name: familyLabel
-            groups:
-                label: Groups
-                type: twig
-                template: PimDataGridBundle:Property:options.html.twig
-                frontend_type: html
             enabled:
                 label: Status
                 type: twig
@@ -263,6 +258,11 @@ datagrid:
             updated:
                 label: Updated
                 frontend_type: datetime
+            groups:
+                label: Groups
+                type: twig
+                template: PimDataGridBundle:Property:options.html.twig
+                frontend_type: html
         properties:
             id: ~
             edit_link:
