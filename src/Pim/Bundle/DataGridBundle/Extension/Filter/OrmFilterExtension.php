@@ -28,6 +28,6 @@ class OrmFilterExtension extends OroOrmFilterExtension
             return false;
         }
 
-        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE;
     }
 }
