@@ -487,7 +487,103 @@ datagrid:
                     filter_by_having: true
 
     product-variant-group-grid:
-        extend: product-group-grid
+        # TODO: useless config ?
+        flexible_entity: %pim_catalog.entity.product.class%
+        options:
+            entityHint: product
+            requireJSModules:
+                - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_product
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
+        source:
+            acl_resource: pim_catalog_product_index
+            type: pim_orm
+            entity: %pim_catalog.entity.product.class%
+            repository_method: createVariantGroupDatagridQueryBuilder
+        columns:
+            has_product:
+                frontend_type: boolean
+                label: Contains
+                editable: true
+                data_name: has_product
+            family:
+                label: Family
+                data_name: familyLabel
+            enabled:
+                label: Status
+                type: twig
+                template: PimDataGridBundle:Property:enabled.html.twig
+                frontend_type: html
+            completeness:
+                label: Complete
+                data_name: ratio
+                type: twig
+                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                frontend_type: html
+            created:
+                label: Created
+                frontend_type: datetime
+            updated:
+                label: Updated
+                frontend_type: datetime
+        properties:
+            id: ~
+        sorters:
+            columns:
+                has_product:
+                    data_name: has_product
+                family:
+                    data_name: familyLabel
+                enabled:
+                    data_name: p.enabled
+                completeness:
+                    data_name: ratio
+                created:
+                    data_name: p.created
+                updated:
+                    data_name: p.updated
+            default:
+                has_product: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                has_product:
+                    type:      boolean
+                    label:     Has product
+                    data_name: has_product
+                    filter_by_having: true
+                family:
+                    type:      entity
+                    data_name: productFamily
+                    options:
+                        field_options:
+                            multiple: true
+                            class: %pim_catalog.entity.family.class%
+                            property: label
+                enabled:
+                    type:      choice
+                    label:     Status
+                    data_name: p.enabled
+                    options:
+                        field_options:
+                            choices:
+                                1: Enabled
+                                0: Disabled
+                completeness:
+                    type:      completeness
+                    label:     Complete
+                    data_name: ratio
+                created:
+                    type:             datetime
+                    data_name:        p.created
+                    filter_by_having: true
+                updated:
+                    type:             datetime
+                    data_name:        p.updated
+                    filter_by_having: true
 
     family-grid:
         options:

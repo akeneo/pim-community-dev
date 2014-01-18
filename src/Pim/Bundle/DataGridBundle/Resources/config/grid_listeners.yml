@@ -1,8 +1,10 @@
 parameters:
-    pim_datagrid.event_listener.add_locale_code_to_grid.class:               Pim\Bundle\DataGridBundle\EventListener\AddLocaleCodeToGridListener
-    pim_datagrid.event_listener.add_parameters_to_grid.class:                Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
-    pim_datagrid.event_listener.add_parameters_to_product_grid.class:        Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
-    pim_datagrid.event_listener.configure_flexible_grid_listener.class:      Pim\Bundle\DataGridBundle\EventListener\ConfigureFlexibleGridListener
-    pim_datagrid.event_listener.configure_product_group_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureGroupProductGridListener
+    pim_datagrid.event_listener.add_locale_code_to_grid.class:                Pim\Bundle\DataGridBundle\EventListener\AddLocaleCodeToGridListener
+    pim_datagrid.event_listener.add_parameters_to_grid.class:                 Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
+    pim_datagrid.event_listener.add_parameters_to_product_grid.class:         Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
+    pim_datagrid.event_listener.add_parameters_to_variant_product_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToVariantProductGridListener
+
+    pim_datagrid.event_listener.configure_flexible_grid_listener.class:       Pim\Bundle\DataGridBundle\EventListener\ConfigureFlexibleGridListener
+    pim_datagrid.event_listener.configure_product_group_grid_listener.class:  Pim\Bundle\DataGridBundle\EventListener\ConfigureGroupProductGridListener
 
 services: ~
