@@ -18,6 +18,7 @@ families:
         attributeAsLabel: name
         requirements:
             tablet:
+                - sku
                 - name
                 - description
                 - weather_conditions
@@ -27,6 +28,7 @@ families:
                 - size
                 - color
             mobile:
+                - sku
                 - name
                 - price
                 - size
@@ -50,6 +52,7 @@ families:
         attributeAsLabel: name
         requirements:
             tablet:
+                - sku
                 - name
                 - description
                 - weather_conditions
@@ -59,6 +62,7 @@ families:
                 - size
                 - color
             mobile:
+                - sku
                 - name
                 - price
                 - size
@@ -79,6 +83,7 @@ families:
         attributeAsLabel: name
         requirements:
             tablet:
+                - sku
                 - name
                 - description
                 - price
@@ -87,6 +92,7 @@ families:
                 - size
                 - color
             mobile:
+                - sku
                 - name
                 - price
                 - size

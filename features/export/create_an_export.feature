@@ -24,7 +24,7 @@ Feature: Create an export
   Scenario: Fail to create a job export
     Given I create a new export
     When I fill in the following information in the popin:
-      | Code  | PRODUCT_EXPORT  |
+      | Code  | PRODUCT_EXPORT  |
       | Label | Products export |
     And I press the "Save" button
     Then I should see "Failed to create an \"export\" with an unknown job definition"

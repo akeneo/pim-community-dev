@@ -12,9 +12,9 @@ Feature: Filter products
       | library   |
     And the following attributes:
       | label  | translatable | scopable | useable as grid filter |
-      | Name   | yes          | no       | yes                    |
-      | Image  | no           | yes      | yes                    |
-      | Info   | yes          | yes      | yes                    |
+      | name   | yes          | no       | yes                    |
+      | image  | no           | yes      | yes                    |
+      | info   | yes          | yes      | yes                    |
     And the following products:
       | sku    | family    | enabled | name-en_US | name-fr_FR | info-en_US-ecommerce    | info-en_US-mobile    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it    | Etiquette  | My ecommerce info       | My mobile info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |

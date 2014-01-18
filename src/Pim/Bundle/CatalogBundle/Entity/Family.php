@@ -388,7 +388,10 @@ class Family implements TranslatableInterface, ReferableInterface
      */
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
-        if (!$this->requirements->contains($requirement)) {
+        $requirementKey = $this->getAttributeRequirementKey($requirement);
+        $requirements = $this->getAttributeRequirements();
+
+        if (!isset($requirements[$requirementKey])) {
             $requirement->setFamily($this);
             $this->requirements->add($requirement);
         }
@@ -423,10 +426,7 @@ class Family implements TranslatableInterface, ReferableInterface
         $result = array();
 
         foreach ($this->requirements as $requirement) {
-            $key = $this->getAttributeRequirementKeyFor(
-                $requirement->getAttribute()->getCode(),
-                $requirement->getChannel()->getCode()
-            );
+            $key = $this->getAttributeRequirementKey($requirement);
             $result[$key] = $requirement;
         }
 
@@ -436,14 +436,17 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Get attribute requirement key
      *
-     * @param string $attributeCode
-     * @param string $channelCode
+     * @param AttributeRequirement $requirement
      *
      * @return string
      */
-    public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
+    public function getAttributeRequirementKey(AttributeRequirement $requirement)
     {
-        return sprintf('%s_%s', $attributeCode, $channelCode);
+        return sprintf(
+            '%s_%s',
+            $requirement->getAttribute()->getCode(),
+            $requirement->getChannel()->getCode()
+        );
     }
 
     /**
