@@ -76,7 +76,9 @@ parameters:
 
     pim_datagrid.flexible.attribute_type.pim_catalog_metric:
         column:
-            type: flexible_field
+            type: flexible_twig
+            frontend_type: html
+            template: PimDataGridBundle:Property:pim_catalog_metric.html.twig
         filter:
             type:        flexible_metric
             parent_type: metric
