@@ -75,28 +75,6 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Create attribute requirement entity
-     *
-     * @param Channel            $channel
-     * @param AttributeInterface $attribute
-     * @param Family             $family
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
-     */
-    protected function createAttributeRequirement(
-        Channel $channel,
-        AttributeInterface $attribute,
-        Family $family
-    ) {
-        $requirement = new AttributeRequirement();
-        $requirement->setChannel($channel);
-        $requirement->setAttribute($attribute);
-        $requirement->setFamily($family);
-
-        return $requirement;
-    }
-
-    /**
      * Remove identifier attributes from form fields and make sure they are always required
      *
      * @param FormEvent $event
@@ -117,5 +95,27 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
                 $form->get('attributeRequirements')->remove($key);
             }
         }
+    }
+
+    /**
+     * Create attribute requirement entity
+     *
+     * @param Channel            $channel
+     * @param AttributeInterface $attribute
+     * @param Family             $family
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     */
+    protected function createAttributeRequirement(
+        Channel $channel,
+        AttributeInterface $attribute,
+        Family $family
+    ) {
+        $requirement = new AttributeRequirement();
+        $requirement->setChannel($channel);
+        $requirement->setAttribute($attribute);
+        $requirement->setFamily($family);
+
+        return $requirement;
     }
 }

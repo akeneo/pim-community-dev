@@ -55,6 +55,42 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        $prependConfig = array(
+            'TwigBundle'                     => 'twig',
+            'AsseticBundle'                  => 'assetic',
+            'DoctrineBundle'                 => 'doctrine',
+            'KnpPaginatorBundle'             => 'knp_paginator',
+            'FOSRestBundle'                  => 'fos_rest',
+            'FOSJsRoutingBundle'             => 'fos_js_routing',
+            'BeSimpleSoapBundle'             => 'be_simple_soap',
+            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
+            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
+            'LiipImagineBundle'              => 'liip_imagine',
+            'GenemuFormBundle'               => 'genemu_form',
+            'OroSearchBundle'                => 'oro_search',
+            'OroUIBundle'                    => 'oro_ui',
+            'OroTranslationBundle'           => 'oro_translation',
+            'JMSDiExtraBundle'               => 'jms_di_extra',
+            'OroEntityExtendBundle'          => 'oro_entity_extend',
+            'OroFilterBundle'                => 'oro_filter',
+            'OroBatchBundle'                 => 'oro_batch',
+            'KnpGaufretteBundle'             => 'knp_gaufrette',
+        );
+
+        foreach ($prependConfig as $bundle => $alias) {
+            if (isset($bundles[$bundle])) {
+                $this->prependExtensionConfig($container, $alias);
+            }
+        }
+    }
+
+    /**
      * Loads the validation files
      *
      * @param ContainerBuilder $container
@@ -112,42 +148,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $container->setParameter($this->getAlias().'.storage_driver', $storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
         $container->setParameter($this->getAlias().'.storage_driver.'.$storageDriver, true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        $prependConfig = array(
-            'TwigBundle'                     => 'twig',
-            'AsseticBundle'                  => 'assetic',
-            'DoctrineBundle'                 => 'doctrine',
-            'KnpPaginatorBundle'             => 'knp_paginator',
-            'FOSRestBundle'                  => 'fos_rest',
-            'FOSJsRoutingBundle'             => 'fos_js_routing',
-            'BeSimpleSoapBundle'             => 'be_simple_soap',
-            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
-            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
-            'LiipImagineBundle'              => 'liip_imagine',
-            'GenemuFormBundle'               => 'genemu_form',
-            'OroSearchBundle'                => 'oro_search',
-            'OroUIBundle'                    => 'oro_ui',
-            'OroTranslationBundle'           => 'oro_translation',
-            'JMSDiExtraBundle'               => 'jms_di_extra',
-            'OroEntityExtendBundle'          => 'oro_entity_extend',
-            // 'OroFilterBundle'                => 'oro_filter',
-            'OroBatchBundle'                 => 'oro_batch',
-            'KnpGaufretteBundle'             => 'knp_gaufrette',
-        );
-
-        foreach ($prependConfig as $bundle => $alias) {
-            if (isset($bundles[$bundle])) {
-                $this->prependExtensionConfig($container, $alias);
-            }
-        }
     }
 
     /**
