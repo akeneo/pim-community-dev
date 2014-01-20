@@ -177,11 +177,12 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec">
-        <exec executable="bin/phpspec">
+        <exec executable="bin/phpspec" failonerror="true">
             <arg value="run" />
             <arg value="--ansi" />
             <arg value="-fpretty" />
             <arg value="--no-interaction" />
+            <arg value="--verbose" />
         </exec>
     </target>
 

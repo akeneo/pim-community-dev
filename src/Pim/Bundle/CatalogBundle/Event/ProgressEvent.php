@@ -47,7 +47,7 @@ class ProgressEvent extends Event
      *
      * @return string
      */
-    public function getsection()
+    public function getSection()
     {
         return $this->section;
     }

@@ -13,9 +13,6 @@ app/config/*_local.yml
 build/
 vendor
 composer.phar
-.settings
-.buildpath
-.project
 /cov
 /bin
 behat.yml
