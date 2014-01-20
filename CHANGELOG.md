@@ -10,6 +10,7 @@
 
 ## BC breaks
 - Change some translation message keys
+- Remove GridBundle, add a new DataGridBundle (based on OroPlatform changes)
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
