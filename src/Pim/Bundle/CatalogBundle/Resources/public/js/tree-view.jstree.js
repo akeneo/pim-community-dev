@@ -198,6 +198,10 @@ define(
                     selectedTree: activeNode === 0 ? 0 : selectedTree,
                     includeSub:   includeSub
                 };
+            },
+
+            refresh: function() {
+                initTree();
             }
         };
     }

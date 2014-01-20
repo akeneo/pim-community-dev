@@ -15,6 +15,8 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
+            gridName: null,
+
             /**
              * Filter container selector
              *
@@ -63,7 +65,8 @@ define(
              *
              * @param {Object} options
              */
-            _init: function() {
+            _init: function(collection) {
+                this.gridName = collection.inputName;
                 this.$el.remove();
                 this.$el = $(this.container);
 
@@ -73,6 +76,10 @@ define(
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
                 TreeView.init(this.$el, this._getInitialState());
+
+                mediator.on('grid_action_execute:' + this.gridName + ':delete', function() {
+                    TreeView.refresh();
+                });
             },
 
             /**
