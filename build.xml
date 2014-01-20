@@ -177,7 +177,7 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec">
-        <exec executable="bin/phpspec">
+        <exec executable="bin/phpspec" failonerror="true">
             <arg value="run" />
             <arg value="--ansi" />
             <arg value="-fpretty" />
