@@ -80,6 +80,12 @@ class AddParametersToGridListener
 
             $queryParameters[self::GRID_PARAM_DATA_NOT_IN] = isset($params[self::GRID_PARAM_DATA_NOT_IN]) ?
                      $params[self::GRID_PARAM_DATA_NOT_IN] : array(0);
+
+            foreach ($this->paramNames as $paramName) {
+                if (isset($params[$paramName])) {
+                    $queryParameters[$paramName] = $params[$paramName];
+                }
+            }
         }
 
         return $queryParameters;

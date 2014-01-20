@@ -893,13 +893,10 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - oro/datagrid/column-form-listener
+                - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
                 columnName: has_association
-                selectors:
-                    included: '#appendTargets'
-                    excluded: '#removeTargets'
         source:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
