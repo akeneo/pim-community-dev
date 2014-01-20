@@ -7,12 +7,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
-
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 class InstallCommand extends ContainerAwareCommand
 {
+    /**
+     * @staticvar string
+     */
+    const APP_NAME = 'Oro';
+
     /**
      * {@inheritdoc}
      */
@@ -20,7 +24,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $this
             ->setName('oro:install')
-            ->setDescription('Oro Application Installer.')
+            ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
             ->addOption('user-name', null, InputOption::VALUE_OPTIONAL, 'User name')
             ->addOption('user-email', null, InputOption::VALUE_OPTIONAL, 'User email')
             ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
@@ -46,13 +50,13 @@ class InstallCommand extends ContainerAwareCommand
         if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
             && !$forceInstall
         ) {
-            throw new \RuntimeException('Oro Application already installed.');
+            throw new \RuntimeException(sprintf('%s Application already installed.', static::APP_NAME));
         } elseif ($forceInstall) {
             // if --force option we have to clear cache
             $this->clearCache($input, $output);
         }
 
-        $output->writeln('<info>Installing Oro Application.</info>');
+        $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
         $this
@@ -62,7 +66,7 @@ class InstallCommand extends ContainerAwareCommand
             ->updateInstalledFlag($input, $output);
 
         $output->writeln('');
-        $output->writeln('<info>Oro Application has been successfully installed.</info>');
+        $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
     }
 
     /**
@@ -77,7 +81,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Oro requirements check:</info>');
+        $output->writeln(sprintf('<info>%s requirements check:</info>', static::APP_NAME));
 
         if (!class_exists('OroRequirements')) {
             require_once $this->getContainer()->getParameter('kernel.root_dir')
