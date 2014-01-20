@@ -13,6 +13,9 @@ use Symfony\Component\Process\ProcessBuilder;
 
 class InstallCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -32,6 +35,9 @@ class InstallCommand extends ContainerAwareCommand
             );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $forceInstall = $input->getOption('force');
@@ -43,7 +49,7 @@ class InstallCommand extends ContainerAwareCommand
             throw new \RuntimeException('Oro Application already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache
-            $this->runCommand('cache:clear', $input, $output);
+            $this->clearCache($input, $output);
         }
 
         $output->writeln('<info>Installing Oro Application.</info>');
@@ -51,13 +57,24 @@ class InstallCommand extends ContainerAwareCommand
 
         $this
             ->checkStep($input, $output)
-            ->setupStep($input, $output)
-            ->finalStep($input, $output);
+            ->databaseStep($input, $output)
+            ->assetsStep($input, $output)
+            ->updateInstalledFlag($input, $output);
 
         $output->writeln('');
         $output->writeln('<info>Oro Application has been successfully installed.</info>');
     }
 
+    /**
+     * Step where configuration is checked
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @throws \RuntimeException
+     *
+     * @return \Oro\Bundle\InstallerBundle\Command\InstallCommand
+     */
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Oro requirements check:</info>');
@@ -87,21 +104,18 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * Step where the database is built, the fixtures loaded and some command scripts launched
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
      */
-    protected function setupStep(InputInterface $input, OutputInterface $output)
+    protected function databaseStep(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Setting up database.</info>');
-
-        $dialog    = $this->getHelperSet()->get('dialog');
-        $container = $this->getContainer();
-        $options   = $input->getOptions();
-
-        $input->setInteractive(false);
+        $output->writeln('<info>Prepare database schema</info>');
 
         $this
-            ->runCommand('oro:entity-extend:clear', $input, $output)
             ->runCommand('doctrine:schema:drop', $input, $output, array('--force' => true, '--full-database' => true))
             ->runCommand('doctrine:schema:create', $input, $output)
             ->runCommand('oro:entity-config:init', $input, $output)
@@ -118,27 +132,97 @@ class InstallCommand extends ContainerAwareCommand
                 $output,
                 array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
             )
-            ->runCommand(
-                'doctrine:fixtures:load',
-                $input,
-                $output,
-                array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
-            );
+            ->loadFixturesStep($input, $output)
+            ->launchCommands($input, $output);
+
+        return $this;
+    }
+
+    /**
+     * Step where fixtures are loaded
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Load fixtures step.</info>');
+
+        $this
+            ->loadFixtures($input, $output)
+            ->setUp($input, $output)
+            ->loadSampleData($input, $output);
 
         $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Load default data fixtures
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function loadFixtures(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Load fixtures.</info>');
+
+        $this->runCommand(
+            'doctrine:fixtures:load',
+            $input,
+            $output,
+            array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
+        );
+
+        $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Extension point to override if installation interactivity is needed
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function setUp(InputInterface $input, OutputInterface $output)
+    {
+        $this->userSetup($input, $output);
+
+        return $this;
+    }
+
+    /**
+     * Set up the user information
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function userSetup(InputInterface $input, OutputInterface $output)
+    {
         $output->writeln('<info>Administration setup.</info>');
 
-        $user = $container->get('oro_user.manager')->createUser();
-        $role = $container
+        $user = $this->getContainer()->get('oro_user.manager')->createUser();
+        $role = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('OroUserBundle:Role')
             ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
-        $businessUnit = $container
+        $businessUnit = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('OroOrganizationBundle:BusinessUnit')
             ->findOneBy(array('name' => 'Main'));
 
+        // @TODO: Must be a validator !!
         $passValidator = function ($value) {
             if (strlen(trim($value)) < 2) {
                 throw new \Exception('The password must be at least 2 characters long');
@@ -147,6 +231,8 @@ class InstallCommand extends ContainerAwareCommand
             return $value;
         };
 
+        $dialog = $this->getHelperSet()->get('dialog');
+        $options = $input->getOptions();
         $userName = isset($options['user-name'])
             ? $options['user-name']
             : $dialog->ask($output, '<question>Username:</question> ');
@@ -162,6 +248,7 @@ class InstallCommand extends ContainerAwareCommand
         $userPassword = isset($options['user-password'])
             ? $options['user-password']
             : $dialog->askHiddenResponseAndValidate($output, '<question>Password:</question> ', $passValidator);
+
         $user
             ->setUsername($userName)
             ->setEmail($userEmail)
@@ -173,13 +260,29 @@ class InstallCommand extends ContainerAwareCommand
             ->setOwner($businessUnit)
             ->addBusinessUnit($businessUnit);
 
-        $container->get('oro_user.manager')->updateUser($user);
+        $this->getContainer()->get('oro_user.manager')->updateUser($user);
 
-        $demo = isset($options['sample-data'])
-            ? strtolower($options['sample-data']) == 'y'
+        $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Load sample datas if needed
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function loadSampleData(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Load sample data.</info>');
+
+        $demo = $input->hasOption('sample-data')
+            ? strtolower($input->getOption('sample-data')) === 'y'
             : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
 
-        // load demo fixtures
         if ($demo) {
             $this->runCommand(
                 'oro:demo:fixtures:load',
@@ -194,14 +297,38 @@ class InstallCommand extends ContainerAwareCommand
         return $this;
     }
 
-    protected function finalStep(InputInterface $input, OutputInterface $output)
+    /**
+     * Launchs all commands needed after fixtures loading
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function launchCommands(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Launch commands.</info>');
+
+        $this->runCommand('oro:search:create-index', $input, $output);
+
+        $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Load only assets
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function assetsStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Preparing application.</info>');
 
-        $input->setInteractive(false);
-
         $this
-            ->runCommand('oro:search:create-index', $input, $output)
             ->runCommand('oro:navigation:init', $input, $output)
             ->runCommand('fos:js-routing:dump', $input, $output, array('--target' => 'web/js/routes.js'))
             ->runCommand('oro:localization:dump', $input, $output)
@@ -210,18 +337,47 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:assetic:dump', $input, $output)
             ->runCommand('oro:translation:dump', $input, $output)
             ->runCommand('oro:requirejs:build', $input, $output);
+        ;
 
-        // update installed flag in parameters.yml
+        $output->writeln('');
+
+        return $this;
+    }
+
+    /**
+     * Update installed flag
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Updating installed flag.</info>');
+
         $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
         $params = $dumper->parse();
         $params['system']['installed'] = date('c');
         $dumper->dump($params);
 
-        // clear the cache set installed flag in DI container
-        $this->runCommand('cache:clear', $input, $output);
- 
+        $this->clearCache($input, $output);
         $output->writeln('');
+
         return $this;
+    }
+
+    /**
+     * Run clear cache command
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return InstallCommand
+     */
+    protected function clearCache(InputInterface $input, OutputInterface $output)
+    {
+        return $this->runCommand('cache:clear', $input, $output);
     }
 
     /**
