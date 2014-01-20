@@ -182,6 +182,7 @@
             <arg value="--ansi" />
             <arg value="-fpretty" />
             <arg value="--no-interaction" />
+            <arg value="--verbose" />
         </exec>
     </target>
 
