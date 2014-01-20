@@ -454,7 +454,7 @@ SQL;
     /**
      * @return QueryBuilder
      */
-    public function createAssociationProductDatagridQueryBuilder()
+    public function createAssociationDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('p');
 
