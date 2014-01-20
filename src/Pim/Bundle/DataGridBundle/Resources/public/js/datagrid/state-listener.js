@@ -45,6 +45,11 @@ define(
 
             saveGridState: function (collection) {
                 if (collection.inputName === this.gridName) {
+                    var $filterBox = $('#' + this.gridName).find('.filter-box');
+                    if ($filterBox.length && !$filterBox.is(':visible')) {
+                        $filterBox.show();
+                    }
+
                     var encodedStateData = collection.encodeStateData(collection.state);
                     sessionStorage.setItem(this.gridName, encodedStateData);
                 }
