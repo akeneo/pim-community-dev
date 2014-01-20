@@ -13,6 +13,17 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
     {
+        $attributes = array('sku' => $sku, 'name' => $name);
+        $this->beConstructedWith($configuration, $registry, $attributes);
+    }
+
+    function it_is_a_configurator()
+    {
+        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
+    }
+
+    function it_configures_datagrid_columns(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
+    {
         $sku->isUseableAsGridColumn()->willReturn(true);
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $sku->getLabel()->willReturn('Sku');
@@ -23,17 +34,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
 
-        $attributes = array('sku' => $sku, 'name' => $name);
-        $this->beConstructedWith($configuration, $registry, $attributes);
-    }
-
-    function it_is_a_configurator()
-    {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
-    }
-
-    function it_configures_datagrid_columns( $configuration)
-    {
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
         $columns = [
             'sku' => [
