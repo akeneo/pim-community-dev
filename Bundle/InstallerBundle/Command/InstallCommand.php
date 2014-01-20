@@ -16,6 +16,10 @@ class InstallCommand extends ContainerAwareCommand
      * @staticvar string
      */
     const APP_NAME = 'Oro';
+    const TASK_ALL    = 'all';
+    const TASK_ASSETS = 'assets';
+    const TASK_CHECK  = 'check';
+    const TASK_DB     = 'db';
 
     /**
      * {@inheritdoc}
@@ -36,6 +40,13 @@ class InstallCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Determines whether sample data need to be loaded or not'
+            )
+            ->addOption(
+                'task',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Determines tasks called for installation (can be all, check, db or assets)',
+                self::TASK_ALL
             );
     }
 
@@ -59,11 +70,25 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
-        $this
-            ->checkStep($input, $output)
-            ->databaseStep($input, $output)
-            ->assetsStep($input, $output)
-            ->updateInstalledFlag($input, $output);
+        switch($input->getOption('task')) {
+            case self::TASK_CHECK:
+                $this->checkStep($input, $output);
+                break;
+            case self::TASK_DB:
+                $this->databaseStep($input, $output);
+                break;
+            case self::TASK_ASSETS:
+                $this->assetsStep($input, $output);
+                break;
+            default:
+                $this
+                    ->checkStep($input, $output)
+                    ->databaseStep($input, $output)
+                    ->assetsStep($input, $output);
+                break;
+        }
+
+        $this->updateInstalledFlag($input, $output);
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
