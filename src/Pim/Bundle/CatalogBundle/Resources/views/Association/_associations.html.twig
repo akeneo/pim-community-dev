@@ -3,33 +3,10 @@
 {% else %}
     {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-    {#
-    {% set productListenerParameters = {
-        'columnName': 'has_association',
-        'selectors': {
-            'included': '#pim_product_edit_associations_0_appendProducts',
-            'excluded': '#pim_product_edit_associations_0_removeProducts'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
-
-    {% set groupListenerParameters = {
-        'columnName': 'has_association',
-        'selectors': {
-            'included': '#pim_product_edit_associations_0_appendGroups',
-            'excluded': '#pim_product_edit_associations_0_removeGroups'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
-    #}
-
-    {#
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/datagrid/parameter-setter', 'oro/mediator'],
-            function($, _, Setter, mediator) {
+            ['jquery', 'underscore', 'oro/mediator'],
+            function($, _, mediator) {
                 'use strict';
                 $(function() {
                     $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
@@ -49,16 +26,18 @@
                         }
                     };
 
-                    function changeAssociation(associationId) {
+                    var changeAssociation = function (associationId) {
                         var $idField = $('#pim_product_edit_associations').find('input[type="hidden"][value="' + associationId + '"]');
 
                         _.each(dataGrids, function(datagrid) {
                             var appendFieldId = '#' + $idField.siblings('[id$="' + datagrid.appendField + '"]').attr('id'),
                                 removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
-                                mediator.trigger('column_form_listener:set_selectors', datagrid.name, { included: appendFieldId, excluded: removeFieldId });
-                                Setter.setParameter(datagrid.name, 'associationId', associationId, true);
+                                mediator
+                                    .trigger('column_form_listener:set_selectors:' + datagrid.name, { included: appendFieldId, excluded: removeFieldId })
+                                    .trigger('datagrid:setParam:' + datagrid.name, 'associationType', associationId)
+                                    .trigger('datagrid:doRefresh:' + datagrid.name);
                         });
-                    }
+                    };
 
                     $('#association-buttons').on('click', 'button[data-target-association]', function() {
                         var targetAssociation = $(this).attr('data-target-association');
@@ -76,12 +55,13 @@
                     });
 
                     // Trigger the shown event on the tab activated by restoring the form state
-                    $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+                    mediator.once('datagrid_collection_set_after', function() {
+                        $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+                    });
                 });
             }
         );
     </script>
-    #}
 
     <div id="association-list" class="tab-groups">
         <ul class="nav nav-list">

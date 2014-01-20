@@ -45,7 +45,7 @@ define(
 
             saveGridState: function (collection) {
                 if (collection.inputName === this.gridName) {
-                    var $filterBox = $('#' + this.gridName).find('.filter-box');
+                    var $filterBox = $('#grid-' + this.gridName).find('.filter-box');
                     if ($filterBox.length && !$filterBox.is(':visible')) {
                         $filterBox.show();
                     }
