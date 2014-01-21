@@ -204,4 +204,21 @@ class GroupController extends AbstractController
     {
         return $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
     }
+
+    /**
+     * History of a group
+     *
+     * @param Group $group
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Group $group)
+    {
+        return $this->render(
+            'PimCatalogBundle:Group:_history.html.twig',
+            array(
+                'id' => $group->getId()
+            )
+        );
+    }
 }

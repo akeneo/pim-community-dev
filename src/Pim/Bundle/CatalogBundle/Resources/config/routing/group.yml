@@ -26,3 +26,10 @@ pim_catalog_group_productlist:
     defaults: { _controller: pim_catalog.controller.group:productListAction }
     requirements:
         id: \d+
+
+pim_catalog_group_history:
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_catalog.controller.group:historyAction, _format: html }
+    requirements:
+        id: \d+
+        _format: html|json
