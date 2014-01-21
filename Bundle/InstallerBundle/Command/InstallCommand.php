@@ -69,14 +69,13 @@ class InstallCommand extends ContainerAwareCommand
     {
         $forceInstall = $input->getOption('force');
 
-        // if there is application is not installed or no --force option
-        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
-            && !$forceInstall
-        ) {
+        if ($forceInstall) {
+            $this->updateInstalledFlag($input, $output);
+        }
+
+        // if there is application is not installed
+        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')) {
             throw new \RuntimeException(sprintf('%s Application already installed.', static::APP_NAME));
-        } elseif ($forceInstall) {
-            // if --force option we have to clear cache
-            $this->clearCache($input, $output);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -100,7 +99,7 @@ class InstallCommand extends ContainerAwareCommand
                 break;
         }
 
-        $this->updateInstalledFlag($input, $output);
+        $this->updateInstalledFlag($input, $output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -420,13 +419,13 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return InstallCommand
      */
-    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output)
+    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output, $flagValue = null)
     {
         $output->writeln('<info>Updating installed flag.</info>');
 
         $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
         $params = $dumper->parse();
-        $params['system']['installed'] = date('c');
+        $params['system']['installed'] = $flagValue;
         $dumper->dump($params);
 
         $this->clearCache($input, $output);
