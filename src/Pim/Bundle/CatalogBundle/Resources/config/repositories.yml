@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.repository.orm.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+    pim_catalog.repository.orm.product.class:    Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+    pim_catalog.repository.orm.attribute.class:  Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
 
 services:
     pim_catalog.repository.orm.product:
@@ -7,3 +8,9 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
+
+    pim_catalog.repository.orm.attribute:
+        class: %pim_catalog.repository.orm.attribute.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.attribute.class%]

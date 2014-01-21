@@ -648,13 +648,13 @@ datagrid:
                     label: Label
                     data_name: translation.label
                 attributeAsLabel:
-                    type:      entity
+                    type:      choice
                     label:     Attribute as label
                     data_name: f.attributeAsLabel
                     options:
                         field_options:
-                            class: %pim_catalog.entity.attribute.class%
-                            property: label
+                            multiple: true
+                            choices: @pim_catalog.repository.orm.attribute->getAvailableAttributesAsLabelChoice
 
     currency-grid:
         options:
