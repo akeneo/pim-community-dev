@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 
 /**
  * Locale manager
@@ -16,51 +17,37 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  */
 class LocaleManager
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
+    /** @var LocaleRepository */
+    protected $repository;
 
-    /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $defaultLocale;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $userLocales;
 
     /**
-     * Constructor
-     *
      * @param ObjectManager            $objectManager   the storage manager
      * @param SecurityContextInterface $securityContext the security context
      * @param SecurityFacade           $securityFacade  the Security Facade
      * @param string                   $defaultLocale   the default locale for the UI
      */
     public function __construct(
-        ObjectManager $objectManager,
+        LocaleRepository $repository,
         SecurityContextInterface $securityContext,
         SecurityFacade $securityFacade,
         $defaultLocale
     ) {
-        $this->objectManager = $objectManager;
+        $this->repository = $repository;
         $this->securityContext = $securityContext;
         $this->securityFacade = $securityFacade;
         $this->defaultLocale = $defaultLocale;
@@ -87,23 +74,13 @@ class LocaleManager
     }
 
     /**
-     * Get locale repository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
-     */
-    protected function getObjectRepository()
-    {
-        return $this->objectManager->getRepository('PimCatalogBundle:Locale');
-    }
-
-    /**
      * Get active locales
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
     public function getActiveLocales()
     {
-        return $this->getObjectRepository()->getActivatedLocales();
+        return $this->repository->getActivatedLocales();
     }
 
     /**
@@ -127,7 +104,7 @@ class LocaleManager
      */
     public function getLocales($criterias = array())
     {
-        return $this->getObjectRepository()->findBy($criterias);
+        return $this->repository->findBy($criterias);
     }
 
     /**
@@ -139,7 +116,7 @@ class LocaleManager
      */
     public function getLocaleByCode($code)
     {
-        return $this->getObjectRepository()->findOneBy(array('code' => $code));
+        return $this->repository->findOneBy(array('code' => $code));
     }
 
     /**
@@ -198,7 +175,7 @@ class LocaleManager
      */
     public function getFallbackCodes()
     {
-        $locales = $this->getObjectRepository()->getAvailableFallbacks();
+        $locales = $this->repository->getAvailableFallbacks();
 
         $codes = array();
         foreach ($locales as $locale) {
