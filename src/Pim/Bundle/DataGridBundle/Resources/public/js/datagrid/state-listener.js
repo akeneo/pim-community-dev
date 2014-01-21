@@ -8,12 +8,18 @@ define(
          */
         var StateListener = AbstractListener.extend({
             gridName: null,
+            $gridContainer: null,
 
             initialize: function (options) {
                 if (!_.has(options, 'gridName')) {
                     throw new Error('Grid name not specified');
                 }
-                this.gridName = options.gridName;
+                if (!_.has(options, '$gridContainer')) {
+                    throw new Error('Grid container not specified');
+                }
+
+                this.gridName       = options.gridName;
+                this.$gridContainer = options.$gridContainer;
 
                 if (typeof Storage !== 'undefined' && sessionStorage) {
                     this.subscribe();
@@ -23,6 +29,8 @@ define(
             subscribe: function () {
                 mediator.on('datagrid_collection_set_after', this.restoreGridState, this)
                 mediator.on('grid_load:complete', this.saveGridState, this);
+
+                this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
 
                 mediator.once('hash_navigation_request:start', this.unsubscribe, this);
             },
@@ -53,11 +61,15 @@ define(
                     var encodedStateData = collection.encodeStateData(collection.state);
                     sessionStorage.setItem(this.gridName, encodedStateData);
                 }
+            },
+
+            onGridReset: function (e, action) {
+                action.collection.initialState.filters = {};
             }
         });
 
         StateListener.init = function ($gridContainer, gridName) {
-            new StateListener(_.extend({ gridName: gridName }));
+            new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
         };
 
         return StateListener;
