@@ -33,6 +33,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
      * @param array                 $attributes    the attributes
+     *
+     * @throws \LogicException
      */
     public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry, $attributes)
     {
@@ -54,6 +56,12 @@ class ColumnsConfigurator implements ConfiguratorInterface
             $showColumn        = $attribute->isUseableAsGridColumn();
             $attributeType     = $attribute->getAttributeType();
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
+
+            if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {
+                throw new \LogicException(
+                    sprintf('Attribute %s must be configured to be useable in grid', $attributeCode)
+                );
+            }
 
             if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
 

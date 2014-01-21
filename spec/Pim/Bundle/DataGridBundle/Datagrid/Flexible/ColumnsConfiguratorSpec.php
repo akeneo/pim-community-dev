@@ -54,4 +54,22 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
         $this->configure();
     }
+
+    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
+    {
+        $sku->isUseableAsGridColumn()->willReturn(true);
+        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getLabel()->willReturn('Sku');
+        $name->isUseableAsGridColumn()->willReturn(true);
+        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getLabel()->willReturn('Name');
+
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
+        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+
+        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+
+        $this->shouldThrow('\LogicException')->duringConfigure();
+    }
 }
