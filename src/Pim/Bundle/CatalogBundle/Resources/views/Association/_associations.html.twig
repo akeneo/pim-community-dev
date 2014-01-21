@@ -42,8 +42,8 @@
                     $('#association-buttons').on('click', 'button[data-target-association]', function() {
                         var targetAssociation = $(this).attr('data-target-association');
 
-                        _.each(_.keys(dataGrids), function(gridType) {
-                            var $grid = $('#association-' + gridType + '-grid');
+                        _.each(dataGrids, function(datagrid, gridType) {
+                            var $grid = $('#' + datagrid.name);
                             if (gridType === targetAssociation) {
                                 $grid.removeClass('hide');
                             } else {
@@ -54,9 +54,22 @@
                         $(this).addClass('hide').siblings('[data-target-association]').removeClass('hide');
                     });
 
-                    // Trigger the shown event on the tab activated by restoring the form state
-                    mediator.once('datagrid_collection_set_after', function() {
-                        $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+                    // Execute a callback when the column listeners have been instantiated
+                    var onColumnListenersReady = function(callback) {
+                        var gridNames = _.pluck(dataGrids, 'name');
+
+                        mediator.on('column_form_listener:initialized', function onColumnListenerReady (gridName) {
+                            gridNames = _.without(gridNames, gridName);
+                            if (!gridNames.length) {
+                                mediator.off('column_form_listener:initialized', onColumnListenerReady);
+                                callback();
+                            }
+                        });
+                    };
+
+                    // Trigger the shown event on the active tab to set the column listener selectors
+                    onColumnListenersReady(function() {
+                        $('#association-list').find('li.active').find('a').trigger('shown');
                     });
                 });
             }

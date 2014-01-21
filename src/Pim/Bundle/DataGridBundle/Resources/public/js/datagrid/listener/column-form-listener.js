@@ -17,6 +17,8 @@ define(
                     this._restoreState();
                     this._synchronizeState();
                 }, this);
+
+                mediator.trigger('column_form_listener:initialized', this.gridName);
             }
         });
 
