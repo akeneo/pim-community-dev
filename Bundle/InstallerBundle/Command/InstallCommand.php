@@ -4,9 +4,10 @@ namespace Oro\Bundle\InstallerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -16,10 +17,14 @@ class InstallCommand extends ContainerAwareCommand
      * @staticvar string
      */
     const APP_NAME = 'Oro';
+
     const TASK_ALL    = 'all';
     const TASK_ASSETS = 'assets';
     const TASK_CHECK  = 'check';
     const TASK_DB     = 'db';
+
+    const LOAD_ALL    = 'all';
+    const LOAD_ORO    = 'OroPlatform';
 
     /**
      * {@inheritdoc}
@@ -47,6 +52,13 @@ class InstallCommand extends ContainerAwareCommand
                 InputOption::VALUE_REQUIRED,
                 'Determines tasks called for installation (can be all, check, db or assets)',
                 self::TASK_ALL
+            )
+            ->addOption(
+                'fixtures',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Determines fixtures to load (can be just OroPlatform or all)',
+                self::LOAD_ALL
             );
     }
 
@@ -201,16 +213,43 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Load fixtures.</info>');
 
-        $this->runCommand(
-            'doctrine:fixtures:load',
-            $input,
-            $output,
+        $params =
             array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
-        );
+            + $this->getFixturesList($input->getOption('fixtures'));
+
+        $this->runCommand('doctrine:fixtures:load', $input, $output, $params);
 
         $output->writeln('');
 
         return $this;
+    }
+
+    /**
+     * Get fixtures to load list
+     *
+     * @param string $fixtureOpt
+     *
+     * @return array
+     */
+    protected function getFixturesList($fixtureOpt)
+    {
+        if ($fixtureOpt === self::LOAD_ORO) {
+            $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
+            $phpFinder = new Finder();
+            $directories = $phpFinder
+                ->in($basePath)
+                ->path('/Oro\/Bundle\/.*Bundle\/DataFixtures$/')
+                ->directories();
+
+            $oroFixtures = array();
+            foreach ($directories as $directory) {
+                $oroFixtures[] = $directory->getPathName();
+            }
+
+            return array('--fixtures' => $oroFixtures);
+        }
+
+        return array();
     }
 
     /**
@@ -483,6 +522,10 @@ class InstallCommand extends ContainerAwareCommand
                 if ($param && '-' === $param[0]) {
                     if ($val === true) {
                         $pb->add($param);
+                    } elseif (is_array($val)) {
+                        foreach ($val as $value) {
+                            $pb->add($param . '=' . $value);
+                        }
                     } else {
                         $pb->add($param . '=' . $val);
                     }
