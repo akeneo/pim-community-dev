@@ -413,6 +413,9 @@ datagrid:
                 label: Has product
                 editable: true
                 data_name: has_product
+            label:
+                label: Label
+                data_name: label
             family:
                 label: Family
                 data_name: familyLabel
@@ -514,6 +517,9 @@ datagrid:
                 label: Has product
                 editable: true
                 data_name: has_product
+            label:
+                label: Label
+                data_name: label
             family:
                 label: Family
                 data_name: familyLabel

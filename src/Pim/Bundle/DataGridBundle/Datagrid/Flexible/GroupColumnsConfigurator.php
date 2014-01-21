@@ -40,9 +40,13 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $propertiesColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
 
         $editableColumn = array();
+        $labelColumn = array();
         foreach ($propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
                 $editableColumn[$columnCode] = $columnData;
+                unset($propertiesColumns[$columnCode]);
+            } elseif ($columnCode === 'label') {
+                $labelColumn[$columnCode] = $columnData;
                 unset($propertiesColumns[$columnCode]);
             }
         }
@@ -76,7 +80,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             }
         }
 
-        $columns = $editableColumn + $identifierColumn + $axisColumns + $propertiesColumns;
+        $columns = $editableColumn + $identifierColumn + $labelColumn + $axisColumns + $propertiesColumns;
         $this->configuration->offsetSetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY), $columns);
     }
 }
