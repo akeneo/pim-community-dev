@@ -29,4 +29,3 @@ Feature: Filter available products for a variant group
       | Name        | bl       | black_boots and blue_boots              |
       | Description | great    | white_boots                             |
       | Price       | < 47 EUR | black_boots and blue_boots              |
-    And I should not see the filters Created at and Updated at
