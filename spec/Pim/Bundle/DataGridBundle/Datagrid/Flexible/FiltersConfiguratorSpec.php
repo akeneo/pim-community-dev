@@ -56,4 +56,19 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 
         $this->configure();
     }
+
+    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
+    {
+        $sku->isUseableAsGridFilter()->willReturn(true);
+        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getLabel()->willReturn('Sku');
+        $name->isUseableAsGridFilter()->willReturn(true);
+        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getLabel()->willReturn('Name');
+
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
+        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+
+        $this->shouldThrow('\LogicException')->duringConfigure();
+    }
 }

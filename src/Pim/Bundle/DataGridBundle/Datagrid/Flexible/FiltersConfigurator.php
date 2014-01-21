@@ -63,6 +63,16 @@ class FiltersConfigurator implements ConfiguratorInterface
             $attributeType     = $attribute->getAttributeType();
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
+            if (!$attributeTypeConf || !isset($attributeTypeConf['filter'])) {
+                throw new \LogicException(
+                    sprintf(
+                        'Attribute type %s must be configured to allow grid filter on attribute %s',
+                        $attributeType,
+                        $attributeCode
+                    )
+                );
+            }
+
             if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
 
                 $filterConfig = $attributeTypeConf['filter'];

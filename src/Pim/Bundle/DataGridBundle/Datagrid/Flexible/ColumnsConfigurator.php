@@ -59,7 +59,13 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {
                 throw new \LogicException(
-                    sprintf('Attribute %s must be configured to be useable in grid', $attributeCode)
+                    sprintf(
+                        'Attribute type %s must be configured to display attribute %s as grid column',
+
+                        'Attribute type %s must be configured to make attribute %s useable in grid',
+                        $attributeType,
+                        $attributeCode
+                    )
                 );
             }
 
