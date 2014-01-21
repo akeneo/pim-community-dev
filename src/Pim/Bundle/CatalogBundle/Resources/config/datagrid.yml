@@ -253,10 +253,10 @@ datagrid:
                 template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
-                label: Created
+                label: Created At
                 frontend_type: datetime
             updated:
-                label: Updated
+                label: Updated At
                 frontend_type: datetime
             groups:
                 label: Groups
@@ -381,10 +381,12 @@ datagrid:
                 created:
                     type:             datetime
                     data_name:        p.created
+                    label: Created At
                     filter_by_having: true
                 updated:
                     type:             datetime
                     data_name:        p.updated
+                    label: Updated At
                     filter_by_having: true
 
     product-group-grid:
@@ -408,7 +410,7 @@ datagrid:
         columns:
             has_product:
                 frontend_type: boolean
-                label: Contains
+                label: Has product
                 editable: true
                 data_name: has_product
             family:
@@ -426,10 +428,10 @@ datagrid:
                 template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
-                label: Created
+                label: Created At
                 frontend_type: datetime
             updated:
-                label: Updated
+                label: Updated At
                 frontend_type: datetime
         properties:
             id: ~
@@ -480,10 +482,12 @@ datagrid:
                 created:
                     type:             datetime
                     data_name:        p.created
+                    label: Created At
                     filter_by_having: true
                 updated:
                     type:             datetime
                     data_name:        p.updated
+                    label: Updated At
                     filter_by_having: true
 
     product-variant-group-grid:
@@ -507,7 +511,7 @@ datagrid:
         columns:
             has_product:
                 frontend_type: boolean
-                label: Contains
+                label: Has product
                 editable: true
                 data_name: has_product
             family:
@@ -525,10 +529,10 @@ datagrid:
                 template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
-                label: Created
+                label: Created At
                 frontend_type: datetime
             updated:
-                label: Updated
+                label: Updated At
                 frontend_type: datetime
         properties:
             id: ~
@@ -579,10 +583,12 @@ datagrid:
                 created:
                     type:             datetime
                     data_name:        p.created
+                    label: Created At
                     filter_by_having: true
                 updated:
                     type:             datetime
                     data_name:        p.updated
+                    label: Updated At
                     filter_by_having: true
 
     family-grid:
