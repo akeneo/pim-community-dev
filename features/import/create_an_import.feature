@@ -8,7 +8,7 @@ Feature: Create an import
     Given the "default" catalog configuration
     And I am logged in as "admin"
     And I am on the imports page
-    
+
   Scenario: Successfully create an import
     Given I create a new import
     And I should see the Code, Label and Job fields
@@ -24,7 +24,7 @@ Feature: Create an import
   Scenario: Fail to create a job import
     Given I create a new import
     When I fill in the following information in the popin:
-      | Code  | PRODUCT_IMPORT  |
+      | Code  | PRODUCT_IMPORT  |
       | Label | Products import |
     And I press the "Save" button
     Then I should see "Failed to create an \"import\" with an unknown job definition"

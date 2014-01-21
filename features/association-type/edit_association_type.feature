@@ -24,5 +24,5 @@ Feature: Edit an association type
     Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                        |
+      | title   | Are you sure you want to leave this page?                             |
       | content | You will lose changes to the association type if you leave this page. |
