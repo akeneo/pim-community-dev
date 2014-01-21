@@ -59,7 +59,7 @@
 
             {% if form.vars.value.id %}
                 <div class="tab-pane" id="history">
-                    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
                     {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Attribute', object_id: form.vars.value.id }) }}
                 </div>
             {% endif %}

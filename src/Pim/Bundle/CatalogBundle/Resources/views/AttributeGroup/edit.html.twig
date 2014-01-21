@@ -2,7 +2,7 @@
 {% if elements is not defined %}
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({ params: { "%group.label%": form.vars.value.label } }) %}
 

@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener'],
-    function(_, mediator, AbstractListener) {
+    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'oro/pageable-collection'],
+    function(_, mediator, AbstractListener, PageableCollection) {
         'use strict';
 
         /**
@@ -27,7 +27,7 @@ define(
             },
 
             subscribe: function () {
-                mediator.on('datagrid_collection_set_after', this.restoreGridState, this)
+                mediator.once('datagrid_collection_set_after', this.afterCollectionSet, this)
                 mediator.on('grid_load:complete', this.saveGridState, this);
 
                 this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
@@ -36,19 +36,20 @@ define(
             },
 
             unsubscribe: function () {
-                mediator.off('datagrid_collection_set_after', this.restoreGridState, this);
                 mediator.off('grid_load:complete', this.saveGridState, this);
             },
 
-            restoreGridState: function (collection) {
-                if (collection.inputName === this.gridName) {
-                    var state = sessionStorage.getItem(this.gridName);
-
-                    if (state) {
-                        collection.updateState(collection.decodeStateData(state));
-                        collection.fetch();
+            afterCollectionSet: function (collection) {
+                mediator.once(
+                    'datagrid_filters:rendered',
+                    function (collection) {
+                        collection.trigger('updateState', collection);
                     }
-                }
+                );
+
+                this.$gridContainer.find('.no-data').hide();
+
+                collection.fetch();
             },
 
             saveGridState: function (collection) {
@@ -70,6 +71,19 @@ define(
 
         StateListener.init = function ($gridContainer, gridName) {
             new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
+        };
+
+        StateListener.prepareGrid = function (gridName) {
+            if (typeof Storage !== 'undefined' && sessionStorage) {
+                var state = sessionStorage.getItem(gridName);
+
+                if (state) {
+                    var $gridContainer = $('#grid-' + gridName);
+                    var storedState    = new PageableCollection().decodeStateData(state);
+
+                    $gridContainer.data('metadata').state = storedState;
+                }
+            }
         };
 
         return StateListener;
