@@ -5,7 +5,6 @@ namespace Pim\Bundle\InstallerBundle\Command;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 use Symfony\Component\Console\Input\ArrayInput;
-
 use Symfony\Component\Process\ProcessBuilder;
 
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -48,19 +47,13 @@ class InstallCommand extends OroInstallCommand
     {
         parent::launchCommands($input, $output);
 
-        $this
+        $this->commandExecutor
             ->runCommand(
                 'pim:search:reindex',
-                $input,
-                $output,
                 array('locale' => $this->getContainer()->getParameter('locale'))
             )
-            ->runCommand('pim:versioning:refresh', $input, $output)
-            ->runCommand(
-                'pim:completeness:calculate',
-                $input,
-                $output
-            );
+            ->runCommand('pim:versioning:refresh')
+            ->runCommand('pim:completeness:calculate');
 
         return $this;
     }
@@ -80,45 +73,72 @@ class InstallCommand extends OroInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function checkStep(InputInterface $input, OutputInterface $output)
+    protected function getRequirements()
     {
-        $output->writeln('<info>Akeneo PIM requirements check:</info>');
         if (!class_exists('PimRequirements')) {
             require_once $this->getContainer()->getParameter('kernel.root_dir')
-                . DIRECTORY_SEPARATOR
-                . 'PimRequirements.php';
+                . DIRECTORY_SEPARATOR . 'PimRequirements.php';
         }
 
-        $collection = new \PimRequirements($this->getDirectoriesToCheck());
-
-        $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getPhpIniRequirements(), 'PHP settings', $output);
-        $this->renderTable($collection->getOroRequirements(), 'Oro specific requirements', $output);
-        $this->renderTable($collection->getPimRequirements(), 'Pim specific requirements', $output);
-        $this->renderTable($collection->getRecommendations(), 'Optional recommendations', $output);
-
-        if (count($collection->getFailedRequirements())) {
-            throw new \RuntimeException(
-                'Some system requirements are not fulfilled. Please check output messages and fix them.'
-            );
-        }
-
-        $output->writeln('');
-
-        return $this;
-    }
-
-    /**
-     * Get list of directories to check for PimRequirements
-     *
-     * @return array
-     */
-    protected function getDirectoriesToCheck()
-    {
         $directories = array();
         $directories[] = $this->getContainer()->getParameter('upload_dir');
         $directories[] = $this->getContainer()->getParameter('archive_dir');
 
-        return $directories;
+        return new \PimRequirements($directories);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createUser(InputInterface $input, OutputInterface $output)
+    {
+        $user = parent::createUser($input, $output);
+
+        // Define catalog locale
+        $localeCode = $this->getContainer()->getParameter('locale');
+        $localeManager = $this->getContainer()->get('pim_catalog.manager.locale');
+        $locale = $localeManager->getLocaleByCode($localeCode);
+        $user->setCatalogLocale($locale);
+
+        // Define catalog scope
+        $channelManager = $this->getContainer()->get('pim_catalog.manager.channel');
+        $channel = $channelManager->getChannels()[0];
+        $user->setCatalogScope($channel);
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function renderRequirements(
+        InputInterface $input,
+        OutputInterface $output,
+        \RequirementCollection $collection
+    ) {
+        parent::renderRequirements($input, $output, $collection);
+
+        $this->renderTable($collection->getPimRequirements(), 'Pim specific requirements', $output);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function assetsStep(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('<info>Preparing application.</info>');
+
+        $this->commandExecutor
+            ->runCommand('oro:navigation:init')
+            ->runCommand('fos:js-routing:dump', array('--target' => 'web/js/routes.js'))
+            ->runCommand('oro:localization:dump')
+            ->runCommand('assets:install')
+            ->runCommand('assetic:dump')
+            ->runCommand('oro:assetic:dump')
+            ->runCommand('oro:translation:dump');
+
+        $output->writeln('');
+
+        return $this;
     }
 }
