@@ -216,10 +216,10 @@ datagrid:
                 category:
                     type:      choice
                     label:     Category tree
-                    data_name: ct.label
+                    data_name: category.id
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.category->getTrees
+                            choices: @pim_catalog.manager.category->getTreeChoices
 
     product-grid:
         # TODO: useless config ?
