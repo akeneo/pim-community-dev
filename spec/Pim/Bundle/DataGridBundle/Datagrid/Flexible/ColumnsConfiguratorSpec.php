@@ -55,6 +55,29 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $this->configure();
     }
 
+    function it_doesnt_add_column_for_not_useable_as_column_attribute(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
+    {
+        $sku->isUseableAsGridColumn()->willReturn(false);
+        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $name->isUseableAsGridColumn()->willReturn(false);
+        $name->getAttributeType()->willReturn('pim_catalog_text');
+
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
+        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
+
+        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
+        $columns = [
+            'family' => [
+                'family_config',
+            ],
+        ];
+
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+
+        $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+        $this->configure();
+    }
+
     function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
     {
         $sku->isUseableAsGridColumn()->willReturn(true);
