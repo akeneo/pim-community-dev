@@ -1,5 +1,4 @@
 <?php
-a<?php
 
 namespace Oro\Bundle\InstallerBundle;
 
