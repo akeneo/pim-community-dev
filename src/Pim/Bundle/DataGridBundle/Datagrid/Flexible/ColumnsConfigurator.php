@@ -61,8 +61,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 throw new \LogicException(
                     sprintf(
                         'Attribute type %s must be configured to display attribute %s as grid column',
-
-                        'Attribute type %s must be configured to make attribute %s useable in grid',
                         $attributeType,
                         $attributeCode
                     )

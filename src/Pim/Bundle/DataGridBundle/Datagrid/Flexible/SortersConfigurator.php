@@ -67,6 +67,16 @@ class SortersConfigurator implements ConfiguratorInterface
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
             $columnExists      = isset($columns[$attributeCode]);
 
+            if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {
+                throw new \LogicException(
+                    sprintf(
+                        'Attribute type %s must be configured to display sorter for attribute %s',
+                        $attributeType,
+                        $attributeCode
+                    )
+                );
+            }
+
             if ($columnExists && $attributeTypeConf && $attributeTypeConf['column']) {
 
                 if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
