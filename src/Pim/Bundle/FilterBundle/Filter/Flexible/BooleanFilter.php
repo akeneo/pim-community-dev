@@ -13,15 +13,17 @@ class BooleanFilter extends OroBooleanFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $data = $this->parseData($data);
-        if (!$data) {
+        if (!$data = $this->parseData($data)) {
             return false;
         }
 
-        $field = $this->get(FilterUtility::DATA_NAME_KEY);
-        $value = ($data['value'] === BooleanFilterType::TYPE_YES) ? 1 : 0;
-
-        $this->util->applyFlexibleFilter($ds, $this->get(FilterUtility::FEN_KEY), $field, $value, '=');
+        $this->util->applyFlexibleFilter(
+            $ds,
+            $this->get(FilterUtility::FEN_KEY),
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $data['value'],
+            '='
+        );
 
         return true;
     }
