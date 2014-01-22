@@ -39,7 +39,16 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $this->stepFactory
             ->expects($this->once())
             ->method('createStep')
-            ->with('Export', $reader, $processor, $writer)
+            ->with(
+                'Export',
+                'Oro\Bundle\BatchBundle\Step\ItemStep',
+                array(
+                    'reader'    => $reader,
+                    'processor' => $processor,
+                    'writer'    => $writer,
+                ),
+                array()
+            )
             ->will($this->returnValue($step));
 
         $job->expects($this->once())
@@ -52,9 +61,13 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export',
-            $reader,
-            $processor,
-            $writer
+            'Oro\Bundle\BatchBundle\Step\ItemStep',
+            array(
+                'reader'    => $reader,
+                'processor' => $processor,
+                'writer'    => $writer,
+            ),
+            array()
         );
 
         $this->assertEquals(
@@ -107,9 +120,13 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export',
-            $reader,
-            $processor,
-            $writer
+            'Oro\Bundle\BatchBundle\Step\ItemStep',
+            array(
+                'reader'    => $reader,
+                'processor' => $processor,
+                'writer'    => $writer,
+            ),
+            array()
         );
 
         $this->registry->addStepToJob(
@@ -118,9 +135,13 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export2',
-            $reader,
-            $processor,
-            $writer
+            'Oro\Bundle\BatchBundle\Step\ItemStep',
+            array(
+                'reader'    => $reader,
+                'processor' => $processor,
+                'writer'    => $writer,
+            ),
+            array()
         );
 
         $this->assertEquals(
