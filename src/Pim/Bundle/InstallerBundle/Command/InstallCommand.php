@@ -3,7 +3,6 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,7 +99,7 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
-        switch($input->getOption('task')) {
+        switch ($input->getOption('task')) {
             case self::TASK_CHECK:
                 $this->checkStep($input, $output);
                 break;
@@ -350,7 +349,7 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Create user
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @throws \Exception
@@ -462,6 +461,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
+     * @param boolean         $installed
      *
      * @return InstallCommand
      */

@@ -39,11 +39,11 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $loader->load('form_types.yml');
         $loader->load('handlers.yml');
         $loader->load('managers.yml');
-        $loader->load('grid.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
         $loader->load('factory.yml');
         $loader->load('entities.yml');
+        $loader->load('datagrid_listeners.yml');
         $loader->load('repositories.yml');
 
         if ($config['record_mails']) {

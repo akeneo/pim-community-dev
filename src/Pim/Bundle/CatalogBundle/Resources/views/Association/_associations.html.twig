@@ -1,66 +1,49 @@
 {% if associationTypes is empty %}
-    <div>{% trans %}No association types{% endtrans %}</div>
+    <div>{{ 'No association types'|trans }}</div>
 {% else %}
-    {% set productListenerParameters = {
-        'columnName': 'has_association',
-        'selectors': {
-            'included': '#pim_product_edit_associations_0_appendProducts',
-            'excluded': '#pim_product_edit_associations_0_removeProducts'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
-
-    {% set groupListenerParameters = {
-        'columnName': 'has_association',
-        'selectors': {
-            'included': '#pim_product_edit_associations_0_appendGroups',
-            'excluded': '#pim_product_edit_associations_0_removeGroups'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
+    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/datagrid/parameter-setter', 'oro/mediator'],
-            function($, _, Setter, mediator) {
+            ['jquery', 'underscore', 'oro/mediator'],
+            function($, _, mediator) {
                 'use strict';
                 $(function() {
                     $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
                         var associationId = $(this).attr('id').replace(/^\D+/g, '');
                         changeAssociation(associationId);
                     });
-
                     var dataGrids = {
                         'product': {
-                            'name': '{{ associationProductGrid.datagrid.name }}',
+                            'name': 'association-product-grid',
                             'appendField': 'appendProducts',
                             'removeField': 'removeProducts'
                         },
                         'group': {
-                            'name': '{{ associationGroupGrid.datagrid.name }}',
+                            'name': 'association-group-grid',
                             'appendField': 'appendGroups',
                             'removeField': 'removeGroups'
                         }
                     };
 
-                    function changeAssociation(associationId) {
+                    var changeAssociation = function (associationId) {
                         var $idField = $('#pim_product_edit_associations').find('input[type="hidden"][value="' + associationId + '"]');
 
                         _.each(dataGrids, function(datagrid) {
                             var appendFieldId = '#' + $idField.siblings('[id$="' + datagrid.appendField + '"]').attr('id'),
                                 removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
-                                mediator.trigger('column_form_listener:set_selectors', datagrid.name, { included: appendFieldId, excluded: removeFieldId });
-                                Setter.setParameter(datagrid.name, 'associationId', associationId, true);
+                                mediator
+                                    .trigger('column_form_listener:set_selectors:' + datagrid.name, { included: appendFieldId, excluded: removeFieldId })
+                                    .trigger('datagrid:setParam:' + datagrid.name, 'associationType', associationId)
+                                    .trigger('datagrid:doRefresh:' + datagrid.name);
                         });
-                    }
+                    };
 
                     $('#association-buttons').on('click', 'button[data-target-association]', function() {
                         var targetAssociation = $(this).attr('data-target-association');
 
-                        _.each(_.keys(dataGrids), function(gridType) {
-                            var $grid = $('#association-' + gridType + '-grid');
+                        _.each(dataGrids, function(datagrid, gridType) {
+                            var $grid = $('#' + datagrid.name);
                             if (gridType === targetAssociation) {
                                 $grid.removeClass('hide');
                             } else {
@@ -71,8 +54,23 @@
                         $(this).addClass('hide').siblings('[data-target-association]').removeClass('hide');
                     });
 
-                    // Trigger the shown event on the tab activated by restoring the form state
-                    $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+                    // Execute a callback when the column listeners have been instantiated
+                    var onColumnListenersReady = function(callback) {
+                        var gridNames = _.pluck(dataGrids, 'name');
+
+                        mediator.on('column_form_listener:initialized', function onColumnListenerReady (gridName) {
+                            gridNames = _.without(gridNames, gridName);
+                            if (!gridNames.length) {
+                                mediator.off('column_form_listener:initialized', onColumnListenerReady);
+                                callback();
+                            }
+                        });
+                    };
+
+                    // Trigger the shown event on the active tab to set the column listener selectors
+                    onColumnListenersReady(function() {
+                        $('#association-list').find('li.active').find('a').trigger('shown');
+                    });
                 });
             }
         );
@@ -115,7 +113,13 @@
                 </h3>
             </div>
         {% endfor %}
-        <div id="association-product-grid"></div>
-        <div id="association-group-grid" class="hide"></div>
+
+        <div id="association-product-grid">
+            {{ dataGrid.renderGrid('association-product-grid', { product: product.id, associationType: associationTypes|first.id }) }}
+        </div>
+
+        <div id="association-group-grid" class="hide">
+            {{ dataGrid.renderGrid('association-group-grid', { product: product.id, associationType: associationTypes|first.id }) }}
+        </div>
     </div>
 {% endif %}

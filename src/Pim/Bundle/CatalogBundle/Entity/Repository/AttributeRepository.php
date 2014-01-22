@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface as RefEntityRepositoryInt;
 
 /**
  * Repository for attribute entity
@@ -11,7 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as Fle
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends FlexibleAttributeRepository implements ReferableEntityRepositoryInterface
+class AttributeRepository extends FlexibleAttributeRepository implements RefEntityRepositoryInt
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -198,5 +199,34 @@ class AttributeRepository extends FlexibleAttributeRepository implements Referab
     public function getReferenceProperties()
     {
         return array('code');
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $rootAlias = $qb->getRootAlias();
+
+        $labelExpr = sprintf(
+            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
+            $rootAlias
+        );
+        $groupExpr = '(CASE WHEN gt.label IS NULL THEN attributeGroup.code ELSE gt.label END)';
+
+        $qb
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS label", $labelExpr))
+            ->addSelect(sprintf("%s AS groupLabel", $groupExpr))
+            ->addSelect('translation.label')
+            ->addSelect('attributeGroup.code');
+
+        $qb
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin($rootAlias .'.group', 'attributeGroup')
+            ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode');
+
+        return $qb;
     }
 }

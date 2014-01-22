@@ -20,7 +20,6 @@ class PimCustomEntityBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new DependencyInjection\Compiler\ConfigurationRegistryPass)
-            ->addCompilerPass(new DependencyInjection\Compiler\DatagridManagerPass);
+            ->addCompilerPass(new DependencyInjection\Compiler\ConfigurationRegistryPass);
     }
 }

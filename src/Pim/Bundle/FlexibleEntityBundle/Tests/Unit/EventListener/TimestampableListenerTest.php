@@ -18,7 +18,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class TimestampableListenerTest extends OrmTestCase
 {
-
     /**
      * @var EntityManager
      */

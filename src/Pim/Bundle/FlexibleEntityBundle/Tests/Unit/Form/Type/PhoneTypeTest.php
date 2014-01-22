@@ -14,7 +14,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  */
 class PhoneTypeTest extends TypeTestCase
 {
-
     /**
      * {@inheritdoc}
      */

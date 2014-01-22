@@ -59,7 +59,8 @@
 
             {% if form.vars.value.id %}
                 <div class="tab-pane" id="history">
-                    <div id="history-grid"></div>
+                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
                 </div>
             {% endif %}
 
@@ -71,7 +72,4 @@
 {% block head_script_component %}
     {{ parent() }}
     {% include 'PimCatalogBundle:Attribute:_js-handler.html.twig' with measures %}
-    {% if form.vars.value.id %}
-        {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
-    {% endif %}
 {% endblock %}

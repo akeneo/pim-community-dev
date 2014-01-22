@@ -1,0 +1,7 @@
+config:
+    paths:
+        oro/datafilter/price-filter:        pimfilter/js/datafilter/filter/price-filter
+        oro/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
+        oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
+        oro/datafilter/category-filter:     pimfilter/js/datafilter/filter/category-filter
+        oro/datafilter/completeness-filter: pimfilter/js/datafilter/filter/completeness-filter

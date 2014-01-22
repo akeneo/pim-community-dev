@@ -529,7 +529,7 @@ MAIN_SQL;
     /**
      * Returns the alias for an association
      *
-     * @param int $index
+     * @param integer $index
      *
      * @return string
      */

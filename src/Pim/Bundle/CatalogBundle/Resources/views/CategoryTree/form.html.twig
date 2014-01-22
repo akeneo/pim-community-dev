@@ -14,10 +14,6 @@
 {% endif %}
 {% endspaceless %}
 
-{% if form.vars.value.id %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
-{% endif %}
-
 {{ JSFV(form) }}
 {{ form_start(form, {
     'action': form.vars.value.id ?

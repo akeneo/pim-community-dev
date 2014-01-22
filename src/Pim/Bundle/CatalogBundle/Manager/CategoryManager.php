@@ -50,6 +50,20 @@ class CategoryManager extends SegmentManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTreeChoices()
+    {
+        $trees = $this->getTrees();
+        $choices = array();
+        foreach ($trees as $tree) {
+            $choices[$tree->getId()]= $tree;
+        }
+
+        return $choices;
+    }
+
+    /**
      * Get a collection of categories based on the array of id provided
      *
      * @param array $categoriesIds

@@ -17,10 +17,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Group controller
@@ -32,7 +32,7 @@ use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 class GroupController extends AbstractController
 {
     /**
-     * @staticvar int The maximum number of group products to be displayed
+     * @staticvar integer The maximum number of group products to be displayed
      */
     const MAX_PRODUCTS = 5;
 
@@ -40,11 +40,6 @@ class GroupController extends AbstractController
      * @var GroupManager
      */
     protected $groupManager;
-
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
 
     /**
      * @var GroupHandler
@@ -57,6 +52,11 @@ class GroupController extends AbstractController
     protected $groupForm;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -67,9 +67,9 @@ class GroupController extends AbstractController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param GroupManager             $groupManager
-     * @param DatagridHelperInterface  $datagridHelper
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
+     * @param LocaleManager            $localeManager
      */
     public function __construct(
         Request $request,
@@ -80,9 +80,9 @@ class GroupController extends AbstractController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         GroupManager $groupManager,
-        DatagridHelperInterface $datagridHelper,
         GroupHandler $groupHandler,
-        Form $groupForm
+        Form $groupForm,
+        LocaleManager $localeManager
     ) {
         parent::__construct(
             $request,
@@ -94,10 +94,10 @@ class GroupController extends AbstractController
             $translator
         );
 
-        $this->groupManager   = $groupManager;
-        $this->datagridHelper = $datagridHelper;
-        $this->groupHandler   = $groupHandler;
-        $this->groupForm      = $groupForm;
+        $this->groupManager  = $groupManager;
+        $this->groupHandler  = $groupHandler;
+        $this->groupForm     = $groupForm;
+        $this->localeManager = $localeManager;
     }
 
     /**
@@ -111,15 +111,10 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
-        $datagrid = $this->datagridHelper->getDatagrid('group', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:Group:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'groupTypes' => array_keys($this->groupManager->getTypeChoices(false)),
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**
@@ -170,36 +165,11 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        $datagridManager = $this->datagridHelper->getDatagridManager('group_product');
-        $datagridManager->setGroup($group);
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'form'            => $this->groupForm->createView(),
-            'datagrid'        => $datagridView,
-            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
+            'form'         => $this->groupForm->createView(),
+            'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
+            'currentGroup' => $group->getId()
         );
-    }
-
-    /**
-     * History of a group
-     *
-     * @param Request $request
-     * @param Group   $group
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, Group $group)
-    {
-        $historyGridView = $this->getHistoryGrid($group)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -236,18 +206,19 @@ class GroupController extends AbstractController
     }
 
     /**
+     * History of a group
+     *
      * @param Group $group
      *
-     * @return Datagrid
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    protected function getHistoryGrid(Group $group)
+    public function historyAction(Group $group)
     {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_group_history',
-            array('id' => $group->getId())
+        return $this->render(
+            'PimCatalogBundle:Group:_history.html.twig',
+            array(
+                'group' => $group
+            )
         );
-
-        return $historyGrid;
     }
 }

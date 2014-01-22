@@ -103,4 +103,17 @@ class LocaleRepository extends ReferableEntityRepository
     {
         return $this->getAvailableFallbacksQB()->getQuery()->getResult();
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('l');
+        $rootAlias = $qb->getRootAlias();
+
+        $qb->addSelect($rootAlias);
+
+        return $qb;
+    }
 }

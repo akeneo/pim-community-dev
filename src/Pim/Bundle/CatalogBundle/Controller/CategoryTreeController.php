@@ -19,7 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -33,11 +32,6 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  */
 class CategoryTreeController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var CategoryManager
      */
@@ -54,7 +48,6 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param CategoryManager          $categoryManager
      */
     public function __construct(
@@ -66,7 +59,6 @@ class CategoryTreeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         CategoryManager $categoryManager
     ) {
         parent::__construct(
@@ -80,7 +72,6 @@ class CategoryTreeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper  = $datagridHelper;
         $this->categoryManager = $categoryManager;
     }
 
@@ -263,27 +254,9 @@ class CategoryTreeController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             array(
-                'form'            => $form->createView(),
-                'historyDatagrid' => $this->getHistoryGrid($category)->createView()
+                'form' => $form->createView(),
             )
         );
-    }
-
-    /**
-     * History of a category
-     *
-     * @param Request  $request
-     * @param Category $category
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, Category $category)
-    {
-        $historyGridView = $this->getHistoryGrid($category)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -358,21 +331,5 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(Category $category)
     {
         return array();
-    }
-
-    /**
-     * @param Category $category
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(Category $category)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $category,
-            'pim_catalog_categorytree_history',
-            array('id' => $category->getId())
-        );
-
-        return $historyGrid;
     }
 }
