@@ -1,7 +1,6 @@
 families:
     pc_monitors:
         labels:
-            default: 'PC Monitors'
             en_US: 'PC Monitors'
             fr_FR: Moniteurs
             de_DE: 'PC Monitoren'
@@ -40,7 +39,6 @@ families:
                 - display_diagonal
     led_tvs:
         labels:
-            default: 'LED TVs'
             en_US: 'LED TVs'
             fr_FR: 'TVs LED'
             de_DE: 'TVs LED'
@@ -76,7 +74,6 @@ families:
                 - display_diagonal
     camcorders:
         labels:
-            default: Camcorders
             en_US: Camcorders
             fr_FR: 'Caméscopes numériques'
             de_DE: 'Digitale Videokameras'
@@ -118,7 +115,6 @@ families:
                 - total_megapixels
     digital_cameras:
         labels:
-            default: 'Digital cameras'
             en_US: 'Digital cameras'
             fr_FR: 'Caméras digitales'
             de_DE: 'Digitale Kameras'
@@ -163,7 +159,6 @@ families:
                 - total_megapixels
     webcams:
         labels:
-            default: Webcams
             en_US: Webcams
             fr_FR: Webcams
             de_DE: Webcams
@@ -204,7 +199,6 @@ families:
                 - maximum_video_resolution
     headphones:
         labels:
-            default: Headphones
             en_US: Headphones
             fr_FR: 'Casques audio'
             de_DE: Kopfhörer
@@ -245,7 +239,6 @@ families:
                 - snr
     mp3_players:
         labels:
-            default: 'MP3 players'
             en_US: 'MP3 players'
             fr_FR: 'Lecteurs et enregistreurs MP3'
             de_DE: 'MP3/MP4 Player'
@@ -277,7 +270,6 @@ families:
                 - price
     loudspeakers:
         labels:
-            default: Loudspeakers
             en_US: Loudspeakers
             fr_FR: Hauts-parleurs
             de_DE: Lautsprecher
@@ -309,7 +301,6 @@ families:
                 - price
     multifunctionals:
         labels:
-            default: Multifunctionals
             en_US: Multifunctionals
             fr_FR: Multifunctions
             de_DE: Multifunktionsgeräte
@@ -350,7 +341,6 @@ families:
                 - multifunctional_functions
     laser_led_printers:
         labels:
-            default: 'Laser and LED printers'
             en_US: 'Laser and LED printers'
             fr_FR: 'Imprimantes laser et LED'
             de_DE: Laserdrucker
@@ -386,7 +376,6 @@ families:
             - power_requirements
     scanners:
         labels:
-            default: Scanners
             en_US: Scanners
             fr_FR: Scanners
             de_DE: Scanners
@@ -423,7 +412,6 @@ families:
             - power_requirements
     tablets:
         labels:
-            default: Tablets
             en_US: Tablets
             fr_FR: Tablettes
             de_DE: Tablets

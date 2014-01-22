@@ -10,20 +10,24 @@ parameters:
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
 
 services:
-    pim_import_export.processor.csv_serializer.homogeneous:
-        class: %pim_import_export.processor.csv_serializer.homogeneous.class%
+    pim_import_export.processor.csv_serializer:
+        abstract: true
         arguments:
             - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
+
+    pim_import_export.processor.csv_serializer.homogeneous:
+        class: %pim_import_export.processor.csv_serializer.homogeneous.class%
+        parent: pim_import_export.processor.csv_serializer
 
     pim_import_export.processor.csv_serializer.heterogeneous:
         class: %pim_import_export.processor.csv_serializer.heterogeneous.class%
-        arguments:
-            - '@pim_serializer'
+        parent: pim_import_export.processor.csv_serializer
 
     pim_import_export.processor.csv_serializer.product:
         class: %pim_import_export.processor.csv_serializer.product.class%
+        parent: pim_import_export.processor.csv_serializer
         arguments:
-            - '@pim_serializer'
             - '@pim_catalog.manager.channel'
 
     pim_import_export.processor.dummy:

@@ -1,7 +1,6 @@
 attributes:
     sku:
         labels:
-            default: SKU
             en_US: SKU
             fr_FR: SKU
             de_DE: SKU
@@ -14,7 +13,6 @@ attributes:
         sortOrder: 1
     name:
         labels:
-            default: Name
             en_US: Name
             fr_FR: Nom
             de_DE: Name
@@ -25,7 +23,6 @@ attributes:
         sortOrder: 2
     description:
         labels:
-            default: Description
             en_US: Description
             fr_FR: Description
             de_DE: Beschreibung
@@ -36,7 +33,6 @@ attributes:
         sortOrder: 3
     weight:
         labels:
-            default: Weight
             en_US: Weight
             fr_FR: Poids
             de_DE: Gewicht
@@ -48,7 +44,6 @@ attributes:
         decimalsAllowed: true
     maximum_scan_size:
         labels:
-            default: 'Maximum scan size'
             en_US: 'Maximum scan size'
             fr_FR: 'Surface maximal de numérisation'
             de_DE: 'Maximale Scan-Abmessung'
