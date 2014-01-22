@@ -4,8 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Translation normalizer
