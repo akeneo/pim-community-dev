@@ -20,6 +20,11 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->init('foo', [FilterUtility::FEN_KEY => 'baz', FilterUtility::DATA_NAME_KEY => 'bar']);
     }
 
+    function it_is_an_oro_boolean_filter()
+    {
+        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\BooleanFilter');
+    }
+
     function it_initializes_filter_with_name()
     {
         $this->getName()->shouldReturn('foo');
