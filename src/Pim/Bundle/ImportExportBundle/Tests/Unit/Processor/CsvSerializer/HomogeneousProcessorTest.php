@@ -23,7 +23,17 @@ class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->processor = new HomogeneousProcessor($this->serializer);
+        $this->manager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->manager
+            ->expects($this->any())
+            ->method('getActiveCodes')
+            ->will($this->returnValue(['fr', 'de', 'it']));
+
+        $this->processor = new HomogeneousProcessor($this->serializer, $this->manager);
     }
 
     /**
@@ -53,6 +63,7 @@ class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
                     'enclosure'     => '"',
                     'withHeader'    => true,
                     'heterogeneous' => false,
+                    'locales'       => ['fr', 'de', 'it'],
                 )
             )
             ->will($this->returnValue('serialized'));

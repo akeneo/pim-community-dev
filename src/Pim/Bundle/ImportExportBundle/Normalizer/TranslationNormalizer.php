@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Translation normalizer
@@ -14,9 +14,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  */
 class TranslationNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = array('json', 'xml');
 
     /**
@@ -24,17 +22,24 @@ class TranslationNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        if (!isset($context['property'])) {
-            $property = 'label';
-        }
-        $method = 'get'. ucfirst($property);
+        $context = array_merge(
+            [
+                'property' => 'label',
+                'locales'  => [],
+            ],
+            $context
+        );
 
-        $translations = array();
+        $translations = array_fill_keys($context['locales'], '');
+        $method = sprintf('get%s', ucfirst($context['property']));
+
         foreach ($object->getTranslations() as $translation) {
-            $translations[$translation->getLocale()] = $translation->$method();
+            if (method_exists($translation, $method)) {
+                $translations[$translation->getLocale()] = $translation->$method();
+            }
         }
 
-        return array($property => $translations);
+        return array($context['property'] => $translations);
     }
 
     /**
@@ -42,6 +47,6 @@ class TranslationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractTranslation && in_array($format, $this->supportedFormats);
+        return $data instanceof TranslatableInterface && in_array($format, $this->supportedFormats);
     }
 }

@@ -7,3 +7,9 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
+
+    pim_catalog.repository.orm.locale:
+        class: %pim_catalog.repository.orm.product.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.locale.class%]
