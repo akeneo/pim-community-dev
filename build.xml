@@ -253,7 +253,7 @@
     </target>
 
     <target name="setupdb" description="Setup db">
-        <exec executable="app/console">
+        <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
           <arg value="--task=db" />
           <arg value="--force" />
@@ -261,7 +261,7 @@
     </target>
 
     <target name="setupdb-test" description="Setup db for test env">
-        <exec executable="app/console">
+        <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
           <arg value="--task=db" />
           <arg value="--env=test" />
@@ -270,7 +270,7 @@
     </target>
 
     <target name="install-all-behat" description="Setup db and install assets for Behat">
-        <exec executable="app/console">
+        <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
           <arg value="--env=behat" />
           <arg value="--force" />
