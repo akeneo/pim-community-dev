@@ -62,11 +62,21 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
      */
     protected function applyFlexibleFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
+        $values    = array();
+        $operators = array();
+
         if ($dateStartValue) {
-            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateStartValue, '>=');
+            $values['from']    = $dateStartValue;
+            $operators['from'] = '<';
         }
+
         if ($dateEndValue) {
-            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateEndValue, '<=');
+            $values['to']    = $dateEndValue;
+            $operators['to'] = '>';
+        }
+
+        if ($values && $operators) {
+            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $values, $operators);
         }
     }
 
