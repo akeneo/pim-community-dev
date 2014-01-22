@@ -264,6 +264,7 @@
           <arg value="pim:install" />
           <arg value="--task=db" />
           <arg value="--env=test" />
+          <arg value="--force" />
         </exec>
     </target>
 
