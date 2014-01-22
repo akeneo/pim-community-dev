@@ -2,6 +2,7 @@
 
 ## Features
 - Created the completenesses over channels and locales widget
+- Create command to install the PIM
 
 ## Improvements
 - Add some missing translations
