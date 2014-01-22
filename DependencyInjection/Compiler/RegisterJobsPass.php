@@ -76,7 +76,7 @@ class RegisterJobsPass implements CompilerPassInterface
 
                 $parameters = array();
                 foreach ($step['parameters'] as $setter => $value) {
-                    $services[$setter] = $value;
+                    $parameters[$setter] = $value;
                 }
 
                 $definition->addMethodCall(
