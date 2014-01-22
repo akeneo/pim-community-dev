@@ -106,9 +106,12 @@ class FixturesContext extends RawMinkContext
      */
     public function clearPimFilesystem()
     {
+        // FIXME: Remove gitkeep?
         $fs = $this->getPimFilesystem();
         foreach ($fs->keys() as $key) {
-            $fs->delete($key);
+            if (strpos($key, '.') !== 0) {
+                $fs->delete($key);
+            }
         }
     }
 
