@@ -164,8 +164,11 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         $directories = array();
-        $directories[] = $this->getContainer()->getParameter('upload_dir');
-        $directories[] = $this->getContainer()->getParameter('archive_dir');
+
+        if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
+            $directories[] = $this->getContainer()->getParameter('upload_dir');
+            $directories[] = $this->getContainer()->getParameter('archive_dir');
+        }
 
         return new \PimRequirements($directories);
     }
