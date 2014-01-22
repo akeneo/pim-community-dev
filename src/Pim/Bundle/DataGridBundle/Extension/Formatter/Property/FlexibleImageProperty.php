@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-
 /**
  * Flexible image field property, able to render image attribute type
  *

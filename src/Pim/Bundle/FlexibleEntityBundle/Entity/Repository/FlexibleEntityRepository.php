@@ -270,7 +270,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         if ($this->getLocale() !== $this->flexibleQB->getLocale()) {
             $this->flexibleQB->setLocale($this->getLocale());
         }
-        if ($this->getScope() !== $this->flexibleQB->getScope()){
+        if ($this->getScope() !== $this->flexibleQB->getScope()) {
             $this->flexibleQB->setScope($this->getScope());
         }
 

@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -38,5 +39,21 @@ class OrmDatasource extends OroOrmDatasource
         }
 
         $grid->setDatasource(clone $this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getResults()
+    {
+        $query = $this->qb->getQuery();
+
+        $results = $query->execute();
+        $rows    = [];
+        foreach ($results as $result) {
+            $rows[] = new ResultRecord($result);
+        }
+
+        return $rows;
     }
 }

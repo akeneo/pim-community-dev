@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.repository.orm.product.class:   Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
     pim_catalog.repository.orm.attribute.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+
 services:
     pim_catalog.repository.orm.product:
         class: %pim_catalog.repository.orm.product.class%

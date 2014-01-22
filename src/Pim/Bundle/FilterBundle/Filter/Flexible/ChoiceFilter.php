@@ -9,6 +9,13 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
+/**
+ * Flexible filter
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ChoiceFilter extends OroChoiceFilter
 {
     /** @var array */

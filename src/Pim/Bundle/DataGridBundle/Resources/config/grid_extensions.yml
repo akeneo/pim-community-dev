@@ -2,6 +2,7 @@ parameters:
     pim_datagrid.extension.filter.orm_filter.class: Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension
     pim_datagrid.extension.sorter.orm_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
     pim_datagrid.extension.pager.orm_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    pim_datagrid.extension.pager.orm.pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
 
 services:
     pim_datagrid.extension.filter.orm_filter:
@@ -22,7 +23,12 @@ services:
     pim_datagrid.extension.pager.orm_pager:
         class: "%pim_datagrid.extension.pager.orm_pager.class%"
         arguments:
-            - @oro_datagrid.extension.pager.orm.pager
+            - @pim_datagrid.extension.pager.orm.pager
             - @oro_datagrid.datagrid.request_params
         tags:
             - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.pager.orm.pager:
+        arguments:
+            - @oro_security.acl_helper
+        class: %pim_datagrid.extension.pager.orm.pager.class%
