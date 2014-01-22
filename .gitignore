@@ -9,7 +9,6 @@ app/logs/*
 app/import/*
 app/export/*
 app/emails/*
-app/uploads/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/
