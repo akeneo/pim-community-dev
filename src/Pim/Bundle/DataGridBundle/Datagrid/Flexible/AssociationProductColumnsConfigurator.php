@@ -20,7 +20,9 @@ class AssociationProductColumnsConfigurator extends ColumnsConfigurator
     {
         parent::configure();
 
-        $propertiesColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
+        $propertiesColumns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
+        );
 
         $editableColumns = array();
         foreach ($propertiesColumns as $columnCode => $columnData) {

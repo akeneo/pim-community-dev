@@ -46,7 +46,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         $isEditMode = false
-   ) {
+    ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
         $this->productManager = $productManager;
         $this->localeManager  = $localeManager;

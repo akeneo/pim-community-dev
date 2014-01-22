@@ -26,9 +26,14 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      * @param array                 $attributes    the attributes
      * @param Group                 $group         the current group
      */
-    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry, $attributes, Group $group)
-    {
+    public function __construct(
+        DatagridConfiguration $configuration,
+        ConfigurationRegistry $registry,
+        $attributes,
+        Group $group
+    ) {
         parent::__construct($configuration, $registry, $attributes);
+
         $this->group = $group;
     }
 
@@ -37,7 +42,9 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     public function configure()
     {
-        $propertiesColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
+        $propertiesColumns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
+        );
 
         $editableColumn = array();
         $labelColumn = array();

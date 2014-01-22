@@ -48,7 +48,9 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
-        $propertiesColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
+        $propertiesColumns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
+        );
         $identifierColumn  = array();
         $attributesColumns = array();
 

@@ -147,7 +147,7 @@ class ConfigureFlexibleGridListener
 
         $attributeRepository = $flexManager->getAttributeRepository();
         $attributeEntities   = $attributeRepository->findBy(['entityType' => $flexManager->getFlexibleName()]);
-        $attributes          = array();
+        $attributes          = [];
 
         foreach ($attributeEntities as $attribute) {
             $attributes[$attribute->getCode()] = $attribute;

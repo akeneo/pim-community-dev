@@ -46,8 +46,8 @@ class SortersConfigurator implements ConfiguratorInterface
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
         $attributes,
-        \Closure $callback)
-    {
+        \Closure $callback
+    ) {
         $this->configuration = $configuration;
         $this->registry      = $registry;
         $this->attributes    = $attributes;
