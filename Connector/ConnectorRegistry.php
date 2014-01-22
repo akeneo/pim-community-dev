@@ -87,8 +87,8 @@ class ConnectorRegistry
         $jobTitle,
         $stepTitle,
         $stepClass,
-        $services,
-        $parameters
+        array $services,
+        array $parameters
     ) {
         if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
             $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
@@ -99,6 +99,56 @@ class ConnectorRegistry
 
         $step = $this->stepFactory->createStep($stepTitle, $stepClass, $services, $parameters);
         $job->addStep($stepTitle, $step);
+    }
+
+    /**
+     * Set job show template
+     *
+     * @param string $jobConnector
+     * @param string $jobType
+     * @param string $jobAlias
+     * @param string $template reference to the template (format: bundle:section:template.format.engine)
+     */
+    public function setJobShowTemplate($jobConnector, $jobType, $jobAlias, $template)
+    {
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Job %s - %s - %s is not defined',
+                    $jobConnector,
+                    $jobType,
+                    $jobAlias
+                )
+            );
+        }
+
+        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job->setShowTemplate($template);
+    }
+
+    /**
+     * Set job edit template
+     *
+     * @param string $jobConnector
+     * @param string $jobType
+     * @param string $jobAlias
+     * @param string $template reference to the template (format: bundle:section:template.format.engine)
+     */
+    public function setJobEditTemplate($jobConnector, $jobType, $jobAlias, $template)
+    {
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Job %s - %s - %s is not defined',
+                    $jobConnector,
+                    $jobType,
+                    $jobAlias
+                )
+            );
+        }
+
+        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job->setEditTemplate($template);
     }
 
     /**

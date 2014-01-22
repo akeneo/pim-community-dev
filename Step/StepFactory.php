@@ -39,7 +39,7 @@ class StepFactory
      *
      * @return ItemStep
      */
-    public function createStep($title, $class, $services, $parameters)
+    public function createStep($title, $class, array $services, array $parameters)
     {
         $step = new $class($title);
         $step->setEventDispatcher($this->eventDispatcher);

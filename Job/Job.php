@@ -33,6 +33,12 @@ class Job implements JobInterface
      */
     protected $steps;
 
+    /** @var string */
+    protected $showTemplate;
+
+    /** @var string */
+    protected $editTemplate;
+
     /**
      * Convenience constructor to immediately add name (which is mandatory)
      *
@@ -177,6 +183,95 @@ class Job implements JobInterface
     }
 
     /**
+     * Get the steps configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $result = array();
+        foreach ($this->steps as $step) {
+            foreach ($step->getConfiguration() as $key => $value) {
+                if (!isset($result[$key]) || $value) {
+                    $result[$key] = $value;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Set the steps configuration
+     *
+     * @param array $config
+     */
+    public function setConfiguration(array $config)
+    {
+        foreach ($this->steps as $step) {
+            $step->setConfiguration($config);
+        }
+    }
+
+    /**
+     * Set the show template
+     *
+     * @param string $showTemplate
+     *
+     * @return Job
+     */
+    public function setShowTemplate($showTemplate)
+    {
+        $this->showTemplate = $showTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Return the show template
+     *
+     * @return string
+     */
+    public function getShowTemplate()
+    {
+        return $this->showTemplate;
+    }
+
+    /**
+     * Set the edit template
+     *
+     * @param string $editTemplate
+     *
+     * @return Job
+     */
+    public function setEditTemplate($editTemplate)
+    {
+        $this->editTemplate = $editTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Return the edit template
+     *
+     * @return string
+     */
+    public function getEditTemplate()
+    {
+        return $this->editTemplate;
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return get_class($this) . ': [name=' . $this->name . ']';
+    }
+
+    /**
      * Run the specified job, handling all listener and repository calls, and
      * delegating the actual processing to {@link #doExecute(JobExecution)}.
      * @param JobExecution $jobExecution
@@ -241,84 +336,6 @@ class Job implements JobInterface
         $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
-    }
-
-    /**
-     * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
-     * {@link StepExecutionListener}.
-     *
-     * @param Exception $e the cause of the failure
-     *
-     * @return an {@link ExitStatus}
-     */
-    private function getDefaultExitStatusForFailure(\Exception $e)
-    {
-        $exitStatus = new ExitStatus();
-
-        if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
-            $exitStatus = new ExitStatus(ExitStatus::STOPPED);
-            $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-        } else {
-            $exitStatus = new ExitStatus(ExitStatus::FAILED);
-            $exitStatus->addExitDescription($e);
-        }
-
-        return $exitStatus;
-    }
-
-    /**
-     * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
-     * {@link StepExecutionListener}.
-     *
-     * @param JobExecution $jobExecution Execution of the job
-     * @param string       $status       Status of the execution
-     *
-     * @return an {@link ExitStatus}
-     */
-    private function updateStatus(JobExecution $jobExecution, $status)
-    {
-        $jobExecution->setStatus(new BatchStatus($status));
-    }
-
-    /**
-     * To string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return get_class($this) . ': [name=' . $this->name . ']';
-    }
-
-    /**
-     * Get the steps configuration
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            foreach ($step->getConfiguration() as $key => $value) {
-                if (!isset($result[$key]) || $value) {
-                    $result[$key] = $value;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set the steps configuration
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->steps as $step) {
-            $step->setConfiguration($config);
-        }
     }
 
     /**
@@ -417,4 +434,42 @@ class Job implements JobInterface
     {
         $this->eventDispatcher->dispatch($eventName, $event);
     }
+
+    /**
+     * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
+     * {@link StepExecutionListener}.
+     *
+     * @param Exception $e the cause of the failure
+     *
+     * @return an {@link ExitStatus}
+     */
+    private function getDefaultExitStatusForFailure(\Exception $e)
+    {
+        $exitStatus = new ExitStatus();
+
+        if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
+            $exitStatus = new ExitStatus(ExitStatus::STOPPED);
+            $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
+        } else {
+            $exitStatus = new ExitStatus(ExitStatus::FAILED);
+            $exitStatus->addExitDescription($e);
+        }
+
+        return $exitStatus;
+    }
+
+    /**
+     * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
+     * {@link StepExecutionListener}.
+     *
+     * @param JobExecution $jobExecution Execution of the job
+     * @param string       $status       Status of the execution
+     *
+     * @return an {@link ExitStatus}
+     */
+    private function updateStatus(JobExecution $jobExecution, $status)
+    {
+        $jobExecution->setStatus(new BatchStatus($status));
+    }
+
 }
