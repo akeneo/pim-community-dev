@@ -35,3 +35,10 @@
         });
     </script>
 {% endmacro %}
+
+{#
+    Datagrid macro to render entity history grid
+#}
+{% macro renderHistoryGrid(entity) %}
+    {{ _self.renderGrid('history-grid', { object_class: entity|class, object_id: entity.id }) }}
+{% endmacro %}

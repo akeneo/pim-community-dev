@@ -208,7 +208,7 @@ class FamilyController extends AbstractDoctrineController
         return $this->render(
             'PimCatalogBundle:Family:_history.html.twig',
             array(
-                'id' => $family->getId()
+                'family' => $family
             )
         );
     }

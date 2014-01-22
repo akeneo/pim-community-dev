@@ -99,7 +99,7 @@
         </div>
 
         <div class="tab-pane" id="history">
-            {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_AttributeGroup', object_id: form.vars.value.id }) }}
+            {{ dataGrid.renderHistoryGrid(form.vars.value) }}
         </div>
     </div>
 {{ form_end(form) }}

@@ -361,7 +361,7 @@ class ProductController extends AbstractDoctrineController
         return $this->render(
             'PimCatalogBundle:Product:_history.html.twig',
             array(
-                'id' => $id,
+                'product' => $this->findProductOr404($id),
             )
         );
     }

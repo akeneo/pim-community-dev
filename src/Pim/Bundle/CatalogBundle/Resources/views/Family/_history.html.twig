@@ -1,2 +1,2 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-{{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Family', object_id: id }) }}
+{{ dataGrid.renderHistoryGrid(family) }}

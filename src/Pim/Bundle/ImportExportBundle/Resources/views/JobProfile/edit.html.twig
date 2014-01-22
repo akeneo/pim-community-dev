@@ -53,7 +53,7 @@
             </div>
 
             <div class="tab-pane" id="history">
-                {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Oro_Bundle_BatchBundle_Entity_JobInstance', object_id: form.vars.value.id }) }}
+                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
             </div>
         </div>
 

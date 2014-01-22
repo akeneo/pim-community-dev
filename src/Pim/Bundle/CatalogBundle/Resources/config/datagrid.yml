@@ -1055,3 +1055,19 @@ datagrid:
                     options:
                         field_options:
                             choices: @pim_catalog.manager.group->getTypeChoices
+
+    history-grid:
+        extend: audit-history-grid
+        source:
+            query:
+                select:
+                    - a.version
+        columns:
+            version:
+                label: Version
+                type: field
+                frontend_type: string
+        sorters:
+            columns:
+                version:
+                    data_name: a.version

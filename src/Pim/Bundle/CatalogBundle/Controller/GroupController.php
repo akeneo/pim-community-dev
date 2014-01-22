@@ -217,7 +217,7 @@ class GroupController extends AbstractController
         return $this->render(
             'PimCatalogBundle:Group:_history.html.twig',
             array(
-                'id' => $group->getId()
+                'group' => $group
             )
         );
     }

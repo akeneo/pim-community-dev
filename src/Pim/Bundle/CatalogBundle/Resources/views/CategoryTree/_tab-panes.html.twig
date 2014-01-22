@@ -12,8 +12,8 @@
 </div>
 
 {% if form.vars.value.id %}
-    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
     <div class="tab-pane" id="history">
-        {{ dataGrid.renderGrid('audit-history-grid', { object_class: 'Pim_Bundle_CatalogBundle_Entity_Category', object_id: form.vars.value.id }) }}
+        {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+        {{ dataGrid.renderHistoryGrid(form.vars.value) }}
     </div>
 {% endif %}
