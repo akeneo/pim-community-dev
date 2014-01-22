@@ -1066,7 +1066,7 @@ datagrid:
             version:
                 label: Version
                 type: field
-                frontend_type: string
+                frontend_type: integer
         sorters:
             columns:
                 version:
