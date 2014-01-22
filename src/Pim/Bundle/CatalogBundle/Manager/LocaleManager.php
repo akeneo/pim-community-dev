@@ -216,20 +216,15 @@ class LocaleManager
      */
     public function getDataLocale()
     {
-        $dataLocaleCode = $this->request->get('dataLocale');
-        if ($dataLocaleCode) {
+        if ($dataLocaleCode = $this->request->get('dataLocale')) {
             foreach ($this->getUserLocales() as $locale) {
-                if ($dataLocaleCode == $locale->getCode()) {
-                    $dataLocale = $locale;
-                    break;
+                if ($dataLocaleCode === $locale->getCode()) {
+                    return $locale;
                 }
             }
-            if (!isset($dataLocale)) {
-                throw new \Exception('Data locale must be activated, and accessible through ACLs');
-            }
+            throw new \Exception('Data locale must be activated, and accessible through ACLs');
         } else {
-            $dataLocale = $this->getUserLocale();
-            if (!$dataLocale) {
+            if (null === $dataLocale = $this->getUserLocale()) {
                 throw new \Exception('User must have a catalog locale defined and access to this locale in the ACLs');
             }
         }
