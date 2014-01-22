@@ -79,7 +79,17 @@ class ScopeFilter extends ChoiceFilter
     public function getMetadata()
     {
         $metadata = parent::getMetadata();
-        $metadata['populateDefault'] = false;
+
+        $defaultScope = $this->channelManager->getUserChannel();
+
+        $metadata['populateDefault'] = true;
+        $metadata['placeholder']     = $defaultScope->getLabel();
+        $metadata['choices']         = array_filter(
+            $metadata['choices'],
+            function ($choice) use ($defaultScope) {
+                return $choice['value'] !== $defaultScope->getCode();
+            }
+        );
 
         return $metadata;
     }

@@ -247,6 +247,7 @@ class FixturesContext extends RawMinkContext
      * @param array|string $data
      *
      * @return Product
+     *
      * @Given /^a "([^"]*)" product$/
      */
     public function createProduct($data)
@@ -287,6 +288,7 @@ class FixturesContext extends RawMinkContext
      * @param string $sku
      *
      * @return Product
+     *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
     public function anEnabledOrDisabledProduct($status, $sku)
@@ -856,6 +858,7 @@ class FixturesContext extends RawMinkContext
      * @param TableNode $table
      *
      * @return null
+     *
      * @Given /^the options "([^"]*)" of products (.*) should be:$/
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
@@ -931,6 +934,7 @@ class FixturesContext extends RawMinkContext
      * @param TableNode $table
      *
      * @return null
+     *
      * @Given /^the following CSV to import:$/
      */
     public function theFollowingCSVToImport(TableNode $table)
@@ -1038,6 +1042,7 @@ class FixturesContext extends RawMinkContext
      * @param string $categoryCodes
      *
      * @return null
+     *
      * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
@@ -1114,6 +1119,7 @@ class FixturesContext extends RawMinkContext
      * @param string $username
      *
      * @return User
+     *
      * @Then /^there should be a "([^"]*)" user$/
      */
     public function getUser($username)

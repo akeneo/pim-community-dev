@@ -124,13 +124,13 @@ class ChannelManager
     }
 
     /**
-     * Get user channel code
+     * Get user channel
      *
-     * @return string
+     * @return Channel
      *
      * @throws \Exception
      */
-    public function getUserChannelCode()
+    public function getUserChannel()
     {
         $user = $this->securityContext->getToken()->getUser();
 
@@ -140,6 +140,16 @@ class ChannelManager
             throw new \Exception('User must have a catalog scope defined');
         }
 
-        return $catalogScope->getCode();
+        return $catalogScope;
+    }
+
+    /**
+     * Get user channel code
+     *
+     * @return string
+     */
+    public function getUserChannelCode()
+    {
+        return $this->getUserChannel()->getCode();
     }
 }
