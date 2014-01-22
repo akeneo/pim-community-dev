@@ -180,33 +180,52 @@ class AssertionContext extends RawMinkContext
         $updates = array();
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
-            $action  = $row->find('css', 'td.string-cell')->getHtml();
-            $version = $row->find('css', 'td.number-cell')->getHtml();
+            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
+            $data = $row->findAll('css', 'td>ul');
+            $data = end($data);
+            $data = preg_replace('/\s+|\n+|\r+/m', ' ', $data->getHtml());
 
-            $items = $row->find('css', 'td.string-cell ul')->findAll('css', 'li');
-
-            foreach ($items as $item) {
-                $property = trim($item->find('css', 'b')->getHtml());
-                $property = str_replace(':', '', $property);
-                $value = $item->getHtml();
-                $value = trim(preg_replace('/(<b>.*<\/b>)|(<s>.*<\/s>)/', '', $value));
-                $updates[] = sprintf('%s-%s-%s-%s', $action, $version, $property, $value);
-            }
+            $updates[] = array(
+                'version' => $version,
+                'data'    => $data
+            );
         }
 
+        $valuePattern = '/(.)*<b>%s:<\/b>\s*%s\s*(.)*/';
+
         $expectedUpdates = $table->getHash();
-        foreach ($expectedUpdates as $row) {
-            $expectedUpdate = sprintf('%s-%s-%s-%s', $row['action'], $row['version'], $row['property'], $row['value']);
-            if (!in_array($expectedUpdate, $updates)) {
+        foreach ($expectedUpdates as $data) {
+            $expectedPattern = sprintf(
+                $valuePattern,
+                $data['property'],
+                $data['value']
+            );
+
+            $found = false;
+            foreach ($updates as $update) {
+                if ((int) $data['version'] === $update['version']) {
+                    if (preg_match($expectedPattern, $update['data'])) {
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$found) {
                 throw $this->createExpectationException(
-                    sprintf('Expecting to see history row %s, not found', implode(', ', $row))
+                    sprintf(
+                        'Expecting to see history update %d - %s - %s, not found',
+                        $data['version'],
+                        $data['property'],
+                        $data['value']
+                    )
                 );
             }
         }
     }
 
     /**
-     * @param string $file
+     * @param string $fileName
      *
      * @Given /^file "([^"]*)" should exist$/
      */
@@ -246,6 +265,7 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @return Then[]
+     *
      * @Then /^the following (.*) codes should not be available:$/
      */
     public function theFollowingCodesShouldNotBeAvailable($entity, TableNode $table)
@@ -265,6 +285,7 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @return Then[]
+     *
      * @Then /^the following pages should have the following titles:$/
      */
     public function theFollowingPagesShouldHaveTheFollowingTitles($table)
@@ -297,6 +318,11 @@ class AssertionContext extends RawMinkContext
         return $this->getMainContext()->createExpectationException($message);
     }
 
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
     private function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);

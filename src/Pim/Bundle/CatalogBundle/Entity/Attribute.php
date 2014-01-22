@@ -135,7 +135,7 @@ class Attribute extends AbstractEntityAttribute implements
     protected $allowedExtensions;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $minimumInputLength = 0;
 
@@ -802,7 +802,7 @@ class Attribute extends AbstractEntityAttribute implements
     /**
      * Sets the minimum input length for singlechoice and multichoice types
      *
-     * @param int $minimumInputLength
+     * @param integer $minimumInputLength
      *
      * @return AttributeInterface
      */

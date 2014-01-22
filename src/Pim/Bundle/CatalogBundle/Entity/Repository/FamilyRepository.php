@@ -31,7 +31,7 @@ class FamilyRepository extends ReferableEntityRepository
         $families = $this->buildAllWithTranslations()->getQuery()->execute();
         $orderedFamilies = array();
         foreach ($families as $family) {
-            $orderedFamilies[$family->getId()]= $family->getLabel();
+            $orderedFamilies[$family->getId()] = $family->getLabel();
         }
         uasort(
             $orderedFamilies,
@@ -78,5 +78,30 @@ class FamilyRepository extends ReferableEntityRepository
             ->where('r.family=:family')
             ->setParameter('family', $family)
             ->setParameter('localeCode', $localeCode);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('f');
+        $rootAlias = $qb->getRootAlias();
+
+        $labelExpr = sprintf(
+            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
+            $rootAlias
+        );
+
+        $qb
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
+            ->addSelect('translation.label');
+
+        $qb
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('f.attributeAsLabel', 'a');
+
+        return $qb;
     }
 }

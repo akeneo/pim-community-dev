@@ -14,7 +14,6 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
  */
 class MetricTypeTest extends AbstractFormTypeTest
 {
-
     /**
      * {@inheritdoc}
      */

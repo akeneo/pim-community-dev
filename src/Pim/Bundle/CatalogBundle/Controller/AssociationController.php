@@ -2,16 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Association controller
@@ -33,39 +31,39 @@ class AssociationController
     protected $templating;
 
     /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
-    /**
      * @var ProductManager
      */
     protected $productManager;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
-     * @param RegistryInterface       $doctrine
-     * @param EngineInterface         $templating
-     * @param DatagridHelperInterface $datagridHelper
-     * @param ProductManager          $productManager
+     * @param RegistryInterface $doctrine
+     * @param EngineInterface   $templating
+     * @param ProductManager    $productManager
+     * @param LocaleManager     $localeManager
      */
     public function __construct(
         RegistryInterface $doctrine,
         EngineInterface $templating,
-        DatagridHelperInterface $datagridHelper,
-        ProductManager $productManager
+        ProductManager $productManager,
+        LocaleManager $localeManager
     ) {
-        $this->doctrine = $doctrine;
-        $this->templating = $templating;
-        $this->datagridHelper = $datagridHelper;
-        $this->productManager = $productManager;
+        $this->doctrine        = $doctrine;
+        $this->templating      = $templating;
+        $this->productManager  = $productManager;
+        $this->localeManager   = $localeManager;
     }
 
     /**
      * Display association grids
      *
-     * @param int $id
+     * @param integer $id
      *
      * @AclAncestor("pim_catalog_associations_view")
      *
@@ -79,79 +77,14 @@ class AssociationController
 
         $associationTypes = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
 
-        $productGrid = $this->datagridHelper->getDatagridManager('association_product');
-        $productGrid->setProduct($product);
-
-        $groupGrid = $this->datagridHelper->getDatagridManager('association_group');
-        $groupGrid->setProduct($product);
-
-        $associationType = null;
-        if (!empty($associationTypes)) {
-            $associationType = reset($associationTypes);
-            $productGrid->setAssociationId($associationType->getId());
-            $groupGrid->setAssociationId($associationType->getId());
-        }
-
-        $routeParameters = array('id' => $product->getId());
-        $productGrid->getRouteGenerator()->setRouteParameters($routeParameters);
-        $groupGrid->getRouteGenerator()->setRouteParameters($routeParameters);
-
-        $productGridView = $productGrid->getDatagrid()->createView();
-        $groupGridView   = $groupGrid->getDatagrid()->createView();
-
         return $this->templating->renderResponse(
             'PimCatalogBundle:Association:_associations.html.twig',
             array(
-                'product'                => $product,
-                'associationTypes'       => $associationTypes,
-                'associationProductGrid' => $productGridView,
-                'associationGroupGrid'   => $groupGridView,
+                'product'          => $product,
+                'associationTypes' => $associationTypes,
+                'dataLocale'       => $this->localeManager->getDataLocale(),
             )
         );
-    }
-
-    /**
-     * List product associations for the provided product
-     *
-     * @param Request $request The request object
-     * @param integer $id      Product id
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_associations_view")
-     * @return Response
-     */
-    public function listAssociationsAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_product');
-        $datagridManager->setProduct($product);
-
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-    }
-
-    /**
-     * List group associations for the provided product
-     *
-     * @param Request $request The request object
-     * @param integer $id      Product id
-     *
-     * @Template
-     * @AclAncestor("pim_catalog_associations_view")
-     * @return Response
-     */
-    public function listGroupAssociationsAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-
-        $datagridManager = $this->datagridHelper->getDatagridManager('association_group');
-        $datagridManager->setProduct($product);
-
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**

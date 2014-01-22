@@ -18,7 +18,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  */
 class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
 {
-
     /**
      * @var FlexibleEntityRepository
      */

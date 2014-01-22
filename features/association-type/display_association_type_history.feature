@@ -18,5 +18,5 @@ Feature: Display the association type history
     And I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | property | value       |
-      | create | 1       | code     | REPLACEMENT |
+      | version | property | value       |
+      | 1       | code     | REPLACEMENT |

@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler;
 
@@ -32,9 +32,9 @@ use Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler;
 class AssociationTypeController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridHelperInterface
+     * @var LocaleManager
      */
-    protected $datagridHelper;
+    private $localeManager;
 
     /**
      * @var AssociationTypeHandler
@@ -57,7 +57,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $dataGridHelper
+     * @param LocaleManager            $localeManager
      * @param AssociationTypeHandler   $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
@@ -70,7 +70,7 @@ class AssociationTypeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $dataGridHelper,
+        LocaleManager $localeManager,
         AssociationTypeHandler $assocTypeHandler,
         Form $assocTypeForm
     ) {
@@ -85,7 +85,7 @@ class AssociationTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper   = $dataGridHelper;
+        $this->localeManager    = $localeManager;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
     }
@@ -101,14 +101,8 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagridView = $this->datagridHelper->getDatagrid('association_type')->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'datagrid' => $datagridView
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
         );
     }
 
@@ -171,27 +165,9 @@ class AssociationTypeController extends AbstractDoctrineController
             ->countForAssociationType($associationType);
 
         return array(
-            'form'            => $this->assocTypeForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($associationType)->createView(),
-            'usageCount'      => $usageCount
+            'form'       => $this->assocTypeForm->createView(),
+            'usageCount' => $usageCount
         );
-    }
-
-    /**
-     * History of an association type
-     *
-     * @param Request         $request
-     * @param AssociationType $associationType
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, AssociationType $associationType)
-    {
-        $historyGridView = $this->getHistoryGrid($associationType)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -212,21 +188,5 @@ class AssociationTypeController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_association_type_index');
         }
-    }
-
-    /**
-     * @param AssociationType $associationType
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(AssociationType $associationType)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $associationType,
-            'pim_catalog_association_type_history',
-            array('id' => $associationType->getId())
-        );
-
-        return $historyGrid;
     }
 }

@@ -30,9 +30,3 @@ pim_catalog_categorytree_remove:
     requirements:
         id: \d+
     methods: [DELETE]
-
-pim_catalog_categorytree_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.category_tree:historyAction }
-    requirements:
-        id: \d+

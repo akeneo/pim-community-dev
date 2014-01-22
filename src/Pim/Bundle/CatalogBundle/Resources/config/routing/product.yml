@@ -50,21 +50,6 @@ pim_catalog_associations:
     requirements:
         id: '[0-9a-f]+'
 
-
-pim_catalog_product_list_associations:
-    path: /{id}/list-product-associations.{_format}
-    defaults: { _controller: pim_catalog.controller.association:listAssociationsAction, _format: json }
-    requirements:
-        id: \d+
-        _format: json
-
-pim_catalog_product_list_group_associations:
-    path: /{id}/list-group-associations.{_format}
-    defaults: { _controller: pim_catalog.controller.association:listGroupAssociationsAction, _format: json }
-    requirements:
-        id: \d+
-        _format: json
-
 pim_catalog_product_completeness:
     path: /{id}/completeness
     defaults: { _controller: pim_catalog.controller.completeness:completenessAction }

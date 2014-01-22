@@ -39,7 +39,6 @@ services:
         class: %pim_catalog.controller.attribute_group.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
             - %pim_catalog.entity.attribute.class%
@@ -49,7 +48,6 @@ services:
         class: %pim_catalog.controller.category_tree.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.category'
 
     pim_catalog.controller.channel:
@@ -57,7 +55,7 @@ services:
         class: %pim_catalog.controller.channel.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.form.handler.channel'
             - '@pim_catalog.form.channel'
 
@@ -65,16 +63,14 @@ services:
         scope: request
         class: %pim_catalog.controller.currency.class%
         parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_grid.datagrid.helper'
 
     pim_catalog.controller.family:
         scope: request
         class: %pim_catalog.controller.family.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.form.handler.family'
@@ -85,15 +81,12 @@ services:
         scope: request
         class: %pim_catalog.controller.locale.class%
         parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_grid.datagrid.helper'
 
     pim_catalog.controller.attribute:
         scope: request
         class: %pim_catalog.controller.attribute.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute'
             - '@pim_catalog.form.attribute'
             - '@pim_catalog.manager.attribute'
@@ -107,20 +100,21 @@ services:
         class: %pim_catalog.controller.product.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@oro_datagrid.mass_action.dispatcher'
 
     pim_catalog.controller.association:
         class: %pim_catalog.controller.association.class%
         arguments:
             - '@doctrine'
             - '@templating'
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.locale'
 
     pim_catalog.controller.mass_edit_action:
         scope: request
@@ -128,8 +122,8 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.mass_edit_action.operator'
-            - '@pim_grid.datagrid.helper'
-            - '@oro_grid.mass_action.parameters_parser'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_catalog.manager.product'
 
     pim_catalog.controller.group:
@@ -138,16 +132,16 @@ services:
         parent: pim_catalog.controller.abstract
         arguments:
             - '@pim_catalog.manager.group'
-            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
+            - '@pim_catalog.manager.locale'
 
     pim_catalog.controller.association_type:
         scope: request
         class: %pim_catalog.controller.association_type.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.form.handler.association_type'
             - '@pim_catalog.form.association_type'
 
@@ -170,7 +164,7 @@ services:
         class: %pim_catalog.controller.group_type.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_grid.datagrid.helper'
+            - '@pim_catalog.manager.locale'
             - '@pim_catalog.form.handler.group_type'
             - '@pim_catalog.form.group_type'
 

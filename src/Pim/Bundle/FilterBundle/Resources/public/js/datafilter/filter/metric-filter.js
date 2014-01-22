@@ -10,8 +10,8 @@ define(
          * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
          * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
          *
-         * @export  pim/datafilter/metric-filter
-         * @class   pim.datafilter.MetricFilter
+         * @export  oro/datafilter/metric-filter
+         * @class   oro.datafilter.MetricFilter
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
@@ -110,8 +110,8 @@ define(
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(units, function (code, label) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= code %>"><%= _.__(label) %></a></li>' +
+                                '<% _.each(units, function (symbol, code) { %>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= code %>"><%= _.__(code) %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
                             '<input class="name_input" type="hidden" name="metric_unit" value=""/>' +

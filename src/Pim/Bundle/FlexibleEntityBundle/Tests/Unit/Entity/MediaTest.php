@@ -13,7 +13,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
  */
 class MediaTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Media
      */

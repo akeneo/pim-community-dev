@@ -84,16 +84,14 @@ class ChannelManager
     }
 
     /**
-     * Get channel choices with criterias
+     * Get channel choices
      * Allow to list channels in an array like array[<code>] = <label>
-     *
-     * @param array $criterias
      *
      * @return string[]
      */
-    public function getChannelChoices($criterias = array())
+    public function getChannelChoices()
     {
-        $channels = $this->getChannels($criterias);
+        $channels = $this->getChannels();
 
         $choices = array();
         foreach ($channels as $channel) {
@@ -126,13 +124,13 @@ class ChannelManager
     }
 
     /**
-     * Get user channel code
+     * Get user channel
      *
-     * @return string
+     * @return Channel
      *
      * @throws \Exception
      */
-    public function getUserChannelCode()
+    public function getUserChannel()
     {
         $user = $this->securityContext->getToken()->getUser();
 
@@ -142,6 +140,16 @@ class ChannelManager
             throw new \Exception('User must have a catalog scope defined');
         }
 
-        return $catalogScope->getCode();
+        return $catalogScope;
+    }
+
+    /**
+     * Get user channel code
+     *
+     * @return string
+     */
+    public function getUserChannelCode()
+    {
+        return $this->getUserChannel()->getCode();
     }
 }

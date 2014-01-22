@@ -34,7 +34,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     protected $family;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $familyId;
 
@@ -106,7 +106,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Set family id
      *
-     * @param int $familyId
+     * @param integer $familyId
      *
      * @return Product
      */

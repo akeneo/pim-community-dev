@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RequiredValueListener implements EventSubscriber
 {
-
     /**
      * @var ContainerInterface $container
      */

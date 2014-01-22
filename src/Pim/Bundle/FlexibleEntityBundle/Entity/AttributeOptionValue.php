@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AttributeOptionValue extends AbstractEntityAttributeOptionValue
 {
-
     /**
      * Overrided to change target option name
      *

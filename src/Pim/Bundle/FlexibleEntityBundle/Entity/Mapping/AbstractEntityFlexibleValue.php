@@ -67,7 +67,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     protected $varchar;
 
     /**
-     * Store int value
+     * Store integer value
      * @var integer $integer
      *
      * @ORM\Column(name="value_integer", type="integer", nullable=true)

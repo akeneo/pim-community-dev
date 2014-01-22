@@ -22,20 +22,16 @@ class VariantGroupController extends GroupController
 {
     /**
      * {@inheritdoc}
-     *
+     * @Template
      * @AclAncestor("pim_catalog_group_index")
+     * @return Response
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->groupManager->getRepository()->createQueryBuilder('g');
-        $datagrid = $this->datagridHelper->getDatagrid('variant_group', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:VariantGroup:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'groupTypes' => array_keys($this->groupManager->getTypeChoices(true)),
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**
@@ -86,21 +82,10 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.updated');
         }
 
-        $datagridManager = $this->datagridHelper->getDatagridManager('group_product');
-        $datagridManager->setGroup($group);
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->render(
-                'OroGridBundle:Datagrid:list.json.php',
-                array('datagrid' => $datagridView)
-            );
-        }
-
         return array(
-            'form' => $this->groupForm->createView(),
-            'datagrid' => $datagridView,
-            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
+            'form'         => $this->groupForm->createView(),
+            'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
+            'currentGroup' => $group->getId()
         );
     }
 }

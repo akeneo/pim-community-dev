@@ -18,10 +18,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Group type controller
@@ -33,9 +33,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class GroupTypeController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridHelperInterface
+     * @var LocaleManager
      */
-    protected $datagridHelper;
+    protected $localeManager;
 
     /**
      * @var GroupTypeHandler
@@ -58,7 +58,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
+     * @param LocaleManager            $localeManager
      * @param GroupTypeHandler         $groupTypeHandler
      * @param Form                     $groupTypeForm
      */
@@ -71,7 +71,7 @@ class GroupTypeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
+        LocaleManager $localeManager,
         GroupTypeHandler $groupTypeHandler,
         Form $groupTypeForm
     ) {
@@ -86,7 +86,7 @@ class GroupTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper   = $datagridHelper;
+        $this->localeManager    = $localeManager;
         $this->groupTypeHandler = $groupTypeHandler;
         $this->groupTypeForm        = $groupTypeForm;
     }
@@ -102,15 +102,9 @@ class GroupTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridHelper->getDatagrid('group_type', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:GroupType:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**

@@ -1,11 +1,7 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({ params: { '%association type.label%': form.vars.value.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
-{% endblock %}
 
 {% block content %}
     {{ JSFV(form) }}
@@ -48,7 +44,7 @@
             </div>
 
             <div class="tab-pane" id="history">
-                <div id="history-grid"></div>
+                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
             </div>
         </div>
     {{ form_end(form) }}
