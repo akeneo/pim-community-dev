@@ -27,6 +27,7 @@ class HomogeneousProcessor extends Processor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => false,
+                'locales'       => $this->localeManager->getActiveCodes(),
             )
         );
     }

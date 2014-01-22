@@ -19,9 +19,10 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->serializer   = $this->getSerializerMock();
+        $this->serializer     = $this->getSerializerMock();
         $this->channelManager = $this->getChannelManagerMock();
-        $this->processor    = new ProductProcessor($this->serializer, $this->channelManager);
+        $this->localeManager  = $this->getLocaleManagerMock();
+        $this->processor      = new ProductProcessor($this->serializer, $this->localeManager, $this->channelManager);
     }
 
     /**
@@ -111,6 +112,13 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($channel));
 
         return $mock;
+    }
+
+    public function getLocaleManagerMock()
+    {
+        return $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**

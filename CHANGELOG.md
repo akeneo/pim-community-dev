@@ -8,6 +8,7 @@
 - Add some missing translations
 
 ## Bug fixes
+- Bug #658: Export all activated translations even if no value has been set
 
 ## BC breaks
 - Change some translation message keys
