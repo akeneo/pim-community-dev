@@ -293,7 +293,7 @@ class FlexibleQueryBuilder
         foreach ($operators as $key) {
             if (!in_array($key, $allowed)) {
                 throw new FlexibleQueryException(
-                    sprintf('%s is not allowed for type %s, use %s'), $key, $backendType, implode(', ', $allowed)
+                    sprintf('%s is not allowed for type %s, use %s', $key, $backendType, implode(', ', $allowed))
                 );
             }
         }
