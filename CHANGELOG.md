@@ -1,18 +1,33 @@
+# 1.0.0-rc-1 -
+
+## Features
+- Created the completenesses over channels and locales widget
+- Create command to install the PIM
+
+## Improvements
+- Add some missing translations
+
+## Bug fixes
+- Bug #658: Export all activated translations even if no value has been set
+
+## BC breaks
+- Change some translation message keys
+
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
 ## Features
 - Import product associations (CSV)
-- Compare and copy values between a product translations
+- New translation mode : Compare and copy values within a product edit form
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
-- Allow to back to the grid or create another product when editing one
+- Allow to go back to the grid or create another product after saving one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
 - Product associations fixture
 - Fixtures can be in CSV (all fixtures except users and currencies)
 - Fixture files can be imported through a command (all fixtures except users and currencies)
 - Add quick create popin for jobs
-- Add WYSIWYG editor
+- Add a WYSIWYG editor for TextArea attributes
 
 ## Improvements
 - Improve the user experience for family management
@@ -61,6 +76,7 @@
 - Oro mapping issue with search item on beta-1
 - Locale selector in the product header is sometimes too short
 - Allow to remove a translation setting it to empty
+- Completeness doesn't take into account currencies of channels
 
 ## BC breaks
 - Change AbstractAttribute getters that return a boolean value to use the 'is' prefix instead of 'get'. The affected getters are 'getScopable', 'getTranslatable', 'getRequired', 'getUnique'.
@@ -70,7 +86,7 @@
 - Same thing than above for Category
 - Relation between Family and Product has been removed from Family side
 - Remove PimDataAuditBundle
-- Remode PimDemoBundle
+- Remove PimDemoBundle
 - Move product metric in catalog bundle
 - Change jobs.yml to batch_jobs.yml and change expected format to add services and parameters
 - Rename getStorageManager in flexible manager and change related references

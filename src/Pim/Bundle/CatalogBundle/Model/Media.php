@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**

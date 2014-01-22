@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Filter\ORM;
+namespace Pim\Bundle\GridBundle\Tests\Unit\Filter\ORM;
 
 use Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\FilterTestCase;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
@@ -69,8 +69,6 @@ class MetricFilterTest extends FilterTestCase
      * Data provider for operator
      *
      * @return array
-     *
-     * @static
      */
     public static function getOperatorDataProvider()
     {

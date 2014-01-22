@@ -49,7 +49,7 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
      * @param array $appendProducts
      * @param array $removeProducts
      */
-    private function bindProducts(Group $group, array $appendProducts, array $removeProducts)
+    protected function bindProducts(Group $group, array $appendProducts, array $removeProducts)
     {
         foreach ($appendProducts as $product) {
             $group->addProduct($product);

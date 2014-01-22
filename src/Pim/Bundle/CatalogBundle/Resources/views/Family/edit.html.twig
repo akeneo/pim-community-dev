@@ -50,7 +50,7 @@
                     {{ form_row(form.attributeAsLabel) }}
                 {% endset %}
 
-                {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
+                {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.locale_values': form_row(form.label) }) }}
             </div>
 
             <div class="tab-pane" id="attributes">

@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Entity;
 
-use Pim\Bundle\CatalogBundle\Tests\Entity\ObjectTestEntity;
-
 /**
  * Atribute Group Test entity
  *

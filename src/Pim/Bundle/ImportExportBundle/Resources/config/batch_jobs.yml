@@ -19,7 +19,7 @@ connector:
                     title:     pim_import_export.jobs.csv_category_export.export.title
                     services:
                         reader:    pim_import_export.reader.orm.category
-                        processor: pim_import_export.processor.csv_serializer.heterogeneous
+                        processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_attribute_export:
             title: pim_import_export.jobs.csv_attribute_export.title
@@ -29,7 +29,7 @@ connector:
                     title:     pim_import_export.jobs.csv_attribute_export.export.title
                     services:
                         reader:    pim_import_export.reader.orm.attribute
-                        processor: pim_import_export.processor.csv_serializer.heterogeneous
+                        processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_attribute_option_export:
             title: pim_import_export.jobs.csv_attribute_option_export.title
@@ -39,7 +39,7 @@ connector:
                     title:     pim_import_export.jobs.csv_attribute_option_export.export.title
                     services:
                         reader:    pim_import_export.reader.orm.attribute_option
-                        processor: pim_import_export.processor.csv_serializer.heterogeneous
+                        processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_association_type_export:
             title: pim_import_export.jobs.csv_association_type_export.title
@@ -52,7 +52,7 @@ connector:
                         processor: pim_import_export.processor.csv_serializer.homogeneous
                         writer:    pim_import_export.writer.file
         csv_group_export:
-            title: pim_import_export.jobs.group_export.title
+            title: pim_import_export.jobs.csv_group_export.title
             type:  export
             steps:
                 export:
@@ -119,7 +119,7 @@ connector:
                         processor: pim_import_export.processor.association_type
                         writer:    pim_import_export.writer.orm.association_type
         csv_group_import:
-            title: pim_import_export.jobs.group_import.title
+            title: pim_import_export.jobs.csv_group_import.title
             type: import
             steps:
                 import:

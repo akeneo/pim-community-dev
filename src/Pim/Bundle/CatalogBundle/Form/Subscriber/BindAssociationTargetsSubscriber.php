@@ -66,7 +66,7 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
      * @param Group[]            $appendGroups
      * @param Group[]            $removeGroups
      */
-    private function bindTargets(
+    protected function bindTargets(
         Association $association,
         array $appendProducts,
         array $removeProducts,

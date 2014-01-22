@@ -18,7 +18,7 @@ Feature: Import association types
     UPSELL;Upsell;Vente incitative
     """
     And the following job "acme_association_type_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_association_type_import" import job page
     And I launch the import job
     And I wait for the job to finish

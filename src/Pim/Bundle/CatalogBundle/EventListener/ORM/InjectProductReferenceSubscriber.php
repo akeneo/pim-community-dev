@@ -112,6 +112,7 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         $assoc['inversedBy'] = '';
         $assoc['isOwningSide'] = false;
         $assoc['sourceEntity'] = get_class($entity);
+        $assoc['orphanRemoval'] = false;
 
         $productsCollection->setOwner($entity, $assoc);
         $productsCollection->setInitialized(false);

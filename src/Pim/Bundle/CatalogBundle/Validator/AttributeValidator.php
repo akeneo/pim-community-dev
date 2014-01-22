@@ -31,8 +31,6 @@ class AttributeValidator
      *
      * @param AttributeInterface $attribute
      * @param ExecutionContext   $context
-     *
-     * @static
      */
     public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {

@@ -33,7 +33,6 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
     /**
      * @return array
-     * @static
      */
     public static function getSubscribedEvents()
     {
@@ -85,7 +84,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    private function isTranslatable($attribute)
+    protected function isTranslatable($attribute)
     {
         return $attribute && $attribute->isTranslatable();
     }
@@ -95,7 +94,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    private function isInCurrentLocale($value)
+    protected function isInCurrentLocale($value)
     {
         return $value->getLocale() && $value->getLocale() === $this->currentLocale;
     }
@@ -105,7 +104,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    private function isInComparisonLocale($value)
+    protected function isInComparisonLocale($value)
     {
         return $value->getLocale() && $value->getLocale() === $this->comparisonLocale;
     }

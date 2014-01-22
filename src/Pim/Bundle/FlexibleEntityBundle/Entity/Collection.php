@@ -54,7 +54,7 @@ class Collection
      *
      * @param int $id
      *
-     * @return $this
+     * @return Collection
      */
     public function setId($id)
     {

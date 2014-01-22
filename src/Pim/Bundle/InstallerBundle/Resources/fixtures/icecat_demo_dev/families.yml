@@ -1,0 +1,443 @@
+families:
+    pc_monitors:
+        labels:
+            en_US: 'PC Monitors'
+            fr_FR: Moniteurs
+            de_DE: 'PC Monitoren'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - display_diagonal
+            - response_time
+            - display_srgb
+            - display_color
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+    led_tvs:
+        labels:
+            en_US: 'LED TVs'
+            fr_FR: 'TVs LED'
+            de_DE: 'TVs LED'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - display_diagonal
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+    camcorders:
+        labels:
+            en_US: Camcorders
+            fr_FR: 'Caméscopes numériques'
+            de_DE: 'Digitale Videokameras'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - sensor_type
+            - total_megapixels
+            - optical_zoom
+            - image_stabilizer
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+    digital_cameras:
+        labels:
+            en_US: 'Digital cameras'
+            fr_FR: 'Caméras digitales'
+            de_DE: 'Digitale Kameras'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - camera_type
+            - sensor_type
+            - total_megapixels
+            - optical_zoom
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+    webcams:
+        labels:
+            en_US: Webcams
+            fr_FR: Webcams
+            de_DE: Webcams
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - total_megapixels
+            - maximum_video_resolution
+            - maximum_frame_rate
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+    headphones:
+        labels:
+            en_US: Headphones
+            fr_FR: 'Casques audio'
+            de_DE: Kopfhörer
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - thd
+            - snr
+            - headphone_connectivity
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+    mp3_players:
+        labels:
+            en_US: 'MP3 players'
+            fr_FR: 'Lecteurs et enregistreurs MP3'
+            de_DE: 'MP3/MP4 Player'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+    loudspeakers:
+        labels:
+            en_US: Loudspeakers
+            fr_FR: Hauts-parleurs
+            de_DE: Lautsprecher
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+    multifunctionals:
+        labels:
+            en_US: Multifunctionals
+            fr_FR: Multifunctions
+            de_DE: Multifunktionsgeräte
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - color_scanning
+            - multifunctional_functions
+            - maximum_print_size
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+    laser_led_printers:
+        labels:
+            en_US: 'Laser and LED printers'
+            fr_FR: 'Imprimantes laser et LED'
+            de_DE: Laserdrucker
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - maximum_print_size
+            - weight
+            - power_requirements
+    scanners:
+        labels:
+            en_US: Scanners
+            fr_FR: Scanners
+            de_DE: Scanners
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - color_scanning
+            - maximum_scan_size
+            - weight
+            - power_requirements
+    tablets:
+        labels:
+            en_US: Tablets
+            fr_FR: Tablettes
+            de_DE: Tablets
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements

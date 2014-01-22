@@ -21,15 +21,31 @@ class FlatTranslationNormalizer extends TranslationNormalizer
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        if (!isset($context['property'])) {
-            $property = 'label';
-        }
-        $method = 'get'. ucfirst($property);
+        $context = array_merge(
+            [
+                'property' => 'label',
+                'locales'  => [],
+            ],
+            $context
+        );
 
-        $translations = array();
+        $property = $context['property'];
+        $translations = array_fill_keys(
+            array_map(
+                function ($locale) use ($property) {
+                    return sprintf('%s-%s', $property, $locale);
+                },
+                $context['locales']
+            ),
+            ''
+        );
+
+        $method = sprintf('get%s', ucfirst($property));
         foreach ($object->getTranslations() as $translation) {
-            $key = sprintf('%s-%s', $property, $translation->getLocale());
-            $translations[$key] = $translation->$method();
+            if (method_exists($translation, $method)) {
+                $key = sprintf('%s-%s', $property, $translation->getLocale());
+                $translations[$key] = $translation->$method();
+            }
         }
 
         return $translations;

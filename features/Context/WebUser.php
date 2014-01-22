@@ -1092,6 +1092,7 @@ class WebUser extends RawMinkContext
      */
     public function theCategoryOrderInTheFileShouldBeFollowing($fileName, TableNode $table)
     {
+        $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
@@ -1249,6 +1250,43 @@ class WebUser extends RawMinkContext
                 throw $this->createExpectationException($e->getMessage());
             }
         }
+    }
+
+    /**
+     * @Given /^completeness of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function completenessOfShouldBe($channel, $ratio)
+    {
+        $actual = $this->getCurrentPage()->getChannelCompleteness($channel);
+        assertEquals(
+            $ratio,
+            $actual,
+            sprintf(
+                'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
+                $channel,
+                $ratio,
+                $actual
+            )
+        );
+    }
+
+    /**
+     * @Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function localizedCompletenessOfShouldBe($lang, $channel, $ratio)
+    {
+        $actual = $this->getCurrentPage()->getLocalizedChannelCompleteness($channel, $lang);
+        assertEquals(
+            $ratio,
+            $actual,
+            sprintf(
+                'Expecting "%s" completeness ratio of channel "%s" to be "%s", actually was "%s"',
+                $lang,
+                $channel,
+                $ratio,
+                $actual
+            )
+        );
     }
 
     /**

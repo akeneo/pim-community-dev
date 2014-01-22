@@ -64,10 +64,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             foreach ($this->channels as $channel) {
                 $requirement = $this->createAttributeRequirement($channel, $attribute, $family);
 
-                $key = $family->getAttributeRequirementKeyFor(
-                    $attribute->getCode(),
-                    $channel->getCode()
-                );
+                $key = $family->getAttributeRequirementKey($requirement);
                 $requirements[$key] = $requirement;
             }
         }
@@ -75,28 +72,6 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
         $requirements = array_merge($requirements, $family->getAttributeRequirements());
 
         $family->setAttributeRequirements($requirements);
-    }
-
-    /**
-     * Create attribute requirement entity
-     *
-     * @param Channel            $channel
-     * @param AttributeInterface $attribute
-     * @param Family             $family
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
-     */
-    protected function createAttributeRequirement(
-        Channel $channel,
-        AttributeInterface $attribute,
-        Family $family
-    ) {
-        $requirement = new AttributeRequirement();
-        $requirement->setChannel($channel);
-        $requirement->setAttribute($attribute);
-        $requirement->setFamily($family);
-
-        return $requirement;
     }
 
     /**
@@ -120,5 +95,27 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
                 $form->get('attributeRequirements')->remove($key);
             }
         }
+    }
+
+    /**
+     * Create attribute requirement entity
+     *
+     * @param Channel            $channel
+     * @param AttributeInterface $attribute
+     * @param Family             $family
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     */
+    protected function createAttributeRequirement(
+        Channel $channel,
+        AttributeInterface $attribute,
+        Family $family
+    ) {
+        $requirement = new AttributeRequirement();
+        $requirement->setChannel($channel);
+        $requirement->setAttribute($attribute);
+        $requirement->setFamily($family);
+
+        return $requirement;
     }
 }

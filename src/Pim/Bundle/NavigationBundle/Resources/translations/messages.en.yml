@@ -1,7 +1,0 @@
-pim_navigation:
-    acl:
-        collect: Collect menu entry
-        enrich: Enrich menu entry
-        spread: Spread menu entry
-        settings: Settings menu entry
-        system: System menu entry

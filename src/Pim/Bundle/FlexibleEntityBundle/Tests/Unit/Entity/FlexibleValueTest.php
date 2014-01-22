@@ -115,8 +115,6 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      * Data provider
      *
      * @return multitype:multitype:number string
-     *
-     * @static
      */
     public static function valueProvider()
     {
@@ -187,8 +185,6 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      * Data provider
      *
      * @return multitype:multitype:number string
-     *
-     * @static
      */
     public static function valueMatchingProvider()
     {

@@ -35,7 +35,7 @@ Feature: Import attributes
 
     """
     And the following job "acme_attribute_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "acme_attribute_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -70,7 +70,7 @@ Feature: Import attributes
       | default_metric_unit    |                  | METER              |
       | allowed_extensions     |                  |                    |
     And the following job "attribute_import" configuration:
-      | filePath | {{ file to import }} |
+      | filePath | %file to import% |
     When I am on the "attribute_import" import job page
     And I launch the import job
     And I wait for the job to finish

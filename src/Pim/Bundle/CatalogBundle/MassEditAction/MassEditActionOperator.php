@@ -180,7 +180,7 @@ class MassEditActionOperator
      *
      * @throws InvalidArgumentException
      */
-    private function getProducts(array $productIds)
+    protected function getProducts(array $productIds)
     {
         $products = $this->manager->findByIds($productIds);
         if (!$products) {

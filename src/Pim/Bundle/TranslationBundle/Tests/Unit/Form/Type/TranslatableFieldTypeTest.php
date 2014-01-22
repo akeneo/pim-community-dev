@@ -89,24 +89,16 @@ class TranslatableFieldTypeTest extends TypeTestCase
      */
     protected function getLocaleManagerMock()
     {
-        $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
-        $securityContext = $this->getSecurityContextMock();
-        $securityFacade = $this->getSecurityFacadeMock();
+        $manager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        // create mock builder for locale manager and redefine constructor to set object manager
-        $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager, $securityContext, $securityFacade, 'fr_FR'));
+        $manager->expects($this->any())
+            ->method('getActiveCodes')
+            ->will($this->returnValue(array('en_US', 'fr_FR')));
 
-        // create locale manager mock from mock builder previously create and redefine getActiveCodes method
-        $localeManager = $mockBuilder->getMock(
-            'Pim\Bundle\CatalogBundle\Manager\LocaleManager',
-            array('getActiveCodes')
-        );
-        $localeManager->expects($this->any())
-                      ->method('getActiveCodes')
-                      ->will($this->returnValue(array('en_US', 'fr_FR')));
-
-        return $localeManager;
+        return $manager;
     }
 
     /**
@@ -178,8 +170,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
     /**
      * Data provider for options
-     *
-     * @static
      *
      * @return multitype:multitype:string
      */

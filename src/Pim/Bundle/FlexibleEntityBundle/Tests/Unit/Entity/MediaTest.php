@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Media;

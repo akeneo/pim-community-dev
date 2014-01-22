@@ -37,8 +37,6 @@ class ScopeFilterTest extends FilterTestCase
      * Data provider for operator
      *
      * @return multitype:multitype:boolean string  multitype:string number
-     *
-     * @static
      */
     public static function getOperatorDataProvider()
     {

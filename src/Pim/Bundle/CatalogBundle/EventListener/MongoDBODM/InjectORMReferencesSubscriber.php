@@ -79,8 +79,7 @@ class InjectORMReferencesSubscriber implements EventSubscriber
      */
     protected function setAttributeReference(ProductValueInterface $value, DocumentManager $documentManager)
     {
-        // FIXME_MONGO: get the productValue classname from ProductManager (can be something else)
-        $valueMetadata = $documentManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $valueMetadata = $documentManager->getClassMetadata(get_class($value));
 
         $attributeReflProp = $valueMetadata->reflClass->getProperty('attribute');
         $attributeReflProp->setAccessible(true);
@@ -99,8 +98,11 @@ class InjectORMReferencesSubscriber implements EventSubscriber
      */
     protected function setFamilyReference(ProductInterface $product, DocumentManager $documentManager)
     {
-        // FIXME_MONGO: get the productValue classname from ProductManager (can be something else)
-        $productMetadata = $documentManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\Product');
+        if (null === $product->getFamilyId()) {
+            return;
+        }
+
+        $productMetadata = $documentManager->getClassMetadata(get_class($product));
 
         $familyReflProp = $productMetadata->reflClass->getProperty('family');
         $familyReflProp->setAccessible(true);

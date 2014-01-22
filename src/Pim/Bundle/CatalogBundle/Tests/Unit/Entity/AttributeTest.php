@@ -456,8 +456,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for set parameters method
      *
-     * @static
-     *
      * @return array
      */
     public static function setParametersDataProvider()

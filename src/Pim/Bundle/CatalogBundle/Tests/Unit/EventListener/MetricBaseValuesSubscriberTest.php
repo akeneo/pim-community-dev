@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
@@ -88,8 +88,6 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      * Data provider for metrics
      *
      * @return array
-     *
-     * @static
      */
     public static function dataProviderForMetrics()
     {
