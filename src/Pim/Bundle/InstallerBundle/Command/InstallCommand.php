@@ -332,12 +332,14 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function userSetup(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Administration setup.</info>');
+        if ($input->getOption('env') !== 'behat') {
+            $output->writeln('<info>Administration setup.</info>');
 
-        $user = $this->createUser($input, $output);
-        $this->getContainer()->get('oro_user.manager')->updateUser($user);
+            $user = $this->createUser($input, $output);
+            $this->getContainer()->get('oro_user.manager')->updateUser($user);
 
-        $output->writeln('');
+            $output->writeln('');
+        }
 
         return $this;
     }
@@ -477,7 +479,9 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function clearCache()
     {
-        return $this->commandExecutor->runCommand('cache:clear');
+        return $this->commandExecutor
+            ->runCommand('oro:entity-extend:clear')
+            ->runCommand('cache:clear');
     }
 
     /**
