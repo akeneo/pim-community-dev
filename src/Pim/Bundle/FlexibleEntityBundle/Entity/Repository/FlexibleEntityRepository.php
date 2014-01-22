@@ -26,12 +26,6 @@ class FlexibleEntityRepository extends EntityRepository implements
     FlexibleEntityRepositoryInterface
 {
     /**
-     * Flexible entity config
-     * @var array
-     */
-    protected $flexibleConfig;
-
-    /**
      * Locale code
      * @var string
      */
@@ -264,17 +258,7 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     protected function getFlexibleQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
-            $this->flexibleQB = new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
-        }
-        if ($this->getLocale() !== $this->flexibleQB->getLocale()) {
-            $this->flexibleQB->setLocale($this->getLocale());
-        }
-        if ($this->getScope() !== $this->flexibleQB->getScope()) {
-            $this->flexibleQB->setScope($this->getScope());
-        }
-
-        return $this->flexibleQB;
+        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
     }
 
     /**
