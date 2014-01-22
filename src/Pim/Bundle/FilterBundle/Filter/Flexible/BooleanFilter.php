@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
