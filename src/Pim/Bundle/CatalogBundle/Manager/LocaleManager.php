@@ -186,22 +186,6 @@ class LocaleManager
     }
 
     /**
-     * Get active codes with user locale code in first
-     *
-     * @return string[]
-     */
-    public function getActiveCodesWithUserLocale()
-    {
-        $localeCodes = $this->getActiveCodes();
-        $userLocaleCode = $this->getUserLocale()->getCode();
-
-        unset($localeCodes[array_find($userLocaleCode, $localeCodes)]);
-        array_unshift($localeCodes, $userLocaleCode);
-
-        return $localeCodes;
-    }
-
-    /**
      * Get user locale code
      *
      * @return Locale|null
