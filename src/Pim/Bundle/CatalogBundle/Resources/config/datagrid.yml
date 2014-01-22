@@ -1057,17 +1057,64 @@ datagrid:
                             choices: @pim_catalog.manager.group->getTypeChoices
 
     history-grid:
-        extend: audit-history-grid
         source:
+            type: orm
             query:
                 select:
+                    - a.id
+                    - a.data as data
+                    - a.loggedAt
                     - a.version
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroDataAuditBundle:Audit, alias: a }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
+                where:
+                    and:
+                        - a.objectClass = :objectClass AND a.objectId = :objectId
         columns:
             version:
                 label: Version
                 type: field
                 frontend_type: integer
+            author:
+                label: Author
+                type: field
+                frontend_type: string
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: datetime
+            old:
+                label: Old values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                frontend_type: html
+                data_name: data
+            new:
+                label: New values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                frontend_type: html
+                data_name: data
         sorters:
             columns:
                 version:
                     data_name: a.version
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
