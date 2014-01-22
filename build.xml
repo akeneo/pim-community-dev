@@ -254,56 +254,26 @@
 
     <target name="setupdb" description="Setup db">
         <exec executable="app/console">
-          <arg value="oro:entity-extend:clear" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:database:drop" />
-          <arg value="-n" />
-          <arg value="--force" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:database:create" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:schema:create" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:entity-config:init" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:entity-extend:init" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:entity-extend:update-config" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="cache:clear" />
-          <arg value="-n" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="doctrine:schema:update" />
-          <arg value="-n" />
-          <arg value="--complete" />
+          <arg value="pim:install" />
+          <arg value="--task=db" />
           <arg value="--force" />
         </exec>
     </target>
 
     <target name="setupdb-test" description="Setup db for test env">
-        <exec executable="./install.sh">
-          <arg value="db" />
-          <arg value="test" />
+        <exec executable="app/console">
+          <arg value="pim:install" />
+          <arg value="--task=db" />
+          <arg value="--env=test" />
+          <arg value="--force" />
         </exec>
     </target>
 
     <target name="install-all-behat" description="Setup db and install assets for Behat">
-        <exec executable="./install.sh">
-          <arg value="all" />
-          <arg value="behat" />
+        <exec executable="app/console">
+          <arg value="pim:install" />
+          <arg value="--env=behat" />
+          <arg value="--force" />
         </exec>
     </target>
 

@@ -77,9 +77,10 @@ For Oro Platform, the archive contains the same directories tree except the vers
 
 ### Initialize data and assets
 
-    $ ./install.sh all prod
+    $ php app/console pim:install --env=prod
 
 Note: This script can be executed several times if you need to reinit your db or redeploy your assets.
+You just have to use the `--force` option.
 By default, this script initializes the dev environment.
 
 Create the Apache Virtual host
@@ -148,7 +149,7 @@ configured for a Symfony application.
 
 Execute the `check.php` script from the command line:
 
-    php app/check.php
+    php app/console pim:install --force --task=check
 
 If you get any warnings or recommendations, fix them before moving on.
 
@@ -177,7 +178,7 @@ just change the following config line in app/config/parameters.yml:
 
 Then relaunch the install.sh script with the db option:
 
-$ ./install.sh db prod
+$ php app/console pim:install --force --env=prod --task=db
 
 Known issues
 ------------
