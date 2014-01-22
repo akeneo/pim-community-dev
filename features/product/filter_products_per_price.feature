@@ -32,5 +32,5 @@ Feature: Filter products per price
       | Price  | = 12.5 EUR | postit          |
       | Price  | < 20 EUR   | postit          |
       | Price  | <= 13 EUR  | postit          |
-      | Price  | <= 20 EUR  | postit and book |
+      | Price  | <= 23 EUR  | postit and book |
       | Price  | > 40.5 EUR |                 |
