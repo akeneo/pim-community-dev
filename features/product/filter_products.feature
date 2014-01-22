@@ -32,8 +32,8 @@ Feature: Filter products
       | SKU     | book                  | book, ebook and book2   |
       | Name    | post                  | postit                  |
       | Info    | book                  | book, ebook and book2   |
-      | Enabled | yes                   | postit, ebook and book2 |
-      | Enabled | no                    | book                    |
+      | Status  | Enabled               | postit, ebook and book2 |
+      | Status  | Disabled              | book                    |
       | SKU     | contains book         | book, book2 and ebook   |
       | SKU     | does not contain book | postit                  |
       | SKU     | starts with boo       | book and book2          |
@@ -42,24 +42,24 @@ Feature: Filter products
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
-    Then I should see the filters SKU, Family and Enabled
+    Then I should see the filters SKU, Family and Status
     Then I should not see the filters Name, Image and Info
     When I show the filter "Name"
     And I show the filter "Info"
     And I hide the filter "SKU"
-    Then I should see the filters Name, Info, Family and Enabled
+    Then I should see the filters Name, Info, Family and Status
     And I should not see the filters Image, SKU
 
   Scenario: Successfully reset the filters
     Given I am on the products page
-    Then I filter by "Enabled" with value "yes"
+    Then I filter by "Status" with value "Enabled"
     And the grid should contain 3 elements
     When I reset the grid
     Then the grid should contain 4 elements
 
   Scenario: Successfully refresh the grid
     Given I am on the products page
-    Then I filter by "Enabled" with value "yes"
+    Then I filter by "Status" with value "Enabled"
     And the grid should contain 3 elements
     When I refresh the grid
     Then the grid should contain 3 elements
