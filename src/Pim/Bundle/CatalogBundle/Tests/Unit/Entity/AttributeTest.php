@@ -46,7 +46,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->attribute->isUnique());
         $this->assertNull($this->attribute->getDefaultValue());
         $this->assertFalse($this->attribute->isSearchable());
-        $this->assertFalse($this->attribute->isTranslatable());
+        $this->assertFalse($this->attribute->isLocalizable());
         $this->assertFalse($this->attribute->isScopable());
         $this->assertFalse($this->attribute->isUseableAsGridColumn());
         $this->assertFalse($this->attribute->isUseableAsGridFilter());

@@ -84,7 +84,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
         $condition = $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
         $this->assertEquals($condition, 'alias.attribute = 12');
 
-        $attribute->setTranslatable(true);
+        $attribute->setLocalizable(true);
         $condition = $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
         $this->assertEquals($condition, "alias.attribute = 12 AND alias.locale = 'fr'");
 
@@ -100,7 +100,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     public function testPrepareAttributeJoinConditionExceptionLocale()
     {
         $attribute = new Attribute();
-        $attribute->setTranslatable(true);
+        $attribute->setLocalizable(true);
         $this->queryBuilder->setLocale(null);
         $this->queryBuilder->prepareAttributeJoinCondition($attribute, 'alias');
     }

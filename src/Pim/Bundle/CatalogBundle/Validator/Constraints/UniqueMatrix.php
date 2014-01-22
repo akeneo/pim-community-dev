@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueMatrix extends Constraint
 {
-    public $translatableMessage = 'An unique attribute can not be localizable.';
+    public $localizableMessage = 'An unique attribute can not be localizable.';
     public $scopableMessage     = 'An unique attribute can not be sccopable.';
 
     /**

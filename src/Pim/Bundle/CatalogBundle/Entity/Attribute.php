@@ -160,7 +160,7 @@ class Attribute extends AbstractEntityAttribute implements
 
     protected $searchable;
 
-    protected $translatable;
+    protected $localizable;
 
     protected $scopable;
 
@@ -174,7 +174,7 @@ class Attribute extends AbstractEntityAttribute implements
         $this->unique              = false;
         $this->defaultValue        = null;
         $this->searchable          = false;
-        $this->translatable        = false;
+        $this->localizable         = false;
         $this->scopable            = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;

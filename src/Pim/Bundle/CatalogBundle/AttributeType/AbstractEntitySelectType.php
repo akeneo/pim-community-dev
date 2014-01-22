@@ -47,11 +47,11 @@ abstract class AbstractEntitySelectType extends AbstractAttributeType
     abstract protected function isMultiselect();
 
     /**
-     * Is translatable
+     * Is localizable
      *
      * @return boolean
      */
-    abstract protected function isTranslatable();
+    abstract protected function isLocalizable();
 
     /**
      * Get entity field to order

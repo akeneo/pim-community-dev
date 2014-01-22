@@ -89,9 +89,9 @@ abstract class AbstractAttribute implements TimestampableInterface
     protected $searchable;
 
     /**
-    * @var boolean $translatable
+    * @var boolean $localizable
     */
-    protected $translatable;
+    protected $localizable;
 
     /**
      * @var boolean $scopable
@@ -411,27 +411,27 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Set translatable
+     * Set localizable
      *
-     * @param boolean $translatable
+     * @param boolean $localizable
      *
      * @return AbstractAttribute
      */
-    public function setTranslatable($translatable)
+    public function setLocalizable($localizable)
     {
-        $this->translatable = $translatable;
+        $this->localizable = $localizable;
 
         return $this;
     }
 
     /**
-     * Is translatable
+     * Is localizable
      *
-     * @return boolean $translatable
+     * @return boolean $localizable
      */
-    public function isTranslatable()
+    public function isLocalizable()
     {
-        return $this->translatable;
+        return $this->localizable;
     }
 
     /**

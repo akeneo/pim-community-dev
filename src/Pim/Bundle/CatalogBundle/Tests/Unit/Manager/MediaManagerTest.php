@@ -292,12 +292,12 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string  $code
-     * @param boolean $localisable
+     * @param boolean $localizable
      * @param boolean $scopable
      *
      * @return Attribute
      */
-    protected function getAttributeMock($code, $localisable = false, $scopable = false)
+    protected function getAttributeMock($code, $localizable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -306,8 +306,8 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($localisable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         $attribute->expects($this->any())
             ->method('isScopable')
