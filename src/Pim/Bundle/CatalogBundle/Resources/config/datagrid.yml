@@ -254,10 +254,10 @@ datagrid:
                 frontend_type: html
             created:
                 label: Created At
-                frontend_type: datetime
+                frontend_type: date
             updated:
                 label: Updated At
-                frontend_type: datetime
+                frontend_type: date
             groups:
                 label: Groups
                 type: twig
@@ -379,12 +379,12 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             datetime
+                    type:             date
                     data_name:        p.created
                     label: Created At
                     filter_by_having: true
                 updated:
-                    type:             datetime
+                    type:             date
                     data_name:        p.updated
                     label: Updated At
                     filter_by_having: true
@@ -432,10 +432,10 @@ datagrid:
                 frontend_type: html
             created:
                 label: Created At
-                frontend_type: datetime
+                frontend_type: date
             updated:
                 label: Updated At
-                frontend_type: datetime
+                frontend_type: date
         properties:
             id: ~
         sorters:
@@ -483,12 +483,12 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             datetime
+                    type:             date
                     data_name:        p.created
                     label: Created At
                     filter_by_having: true
                 updated:
-                    type:             datetime
+                    type:             date
                     data_name:        p.updated
                     label: Updated At
                     filter_by_having: true
@@ -536,10 +536,10 @@ datagrid:
                 frontend_type: html
             created:
                 label: Created At
-                frontend_type: datetime
+                frontend_type: date
             updated:
                 label: Updated At
-                frontend_type: datetime
+                frontend_type: date
         properties:
             id: ~
         sorters:
@@ -587,12 +587,12 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             datetime
+                    type:             date
                     data_name:        p.created
                     label: Created At
                     filter_by_having: true
                 updated:
-                    type:             datetime
+                    type:             date
                     data_name:        p.updated
                     label: Updated At
                     filter_by_having: true
@@ -936,10 +936,10 @@ datagrid:
                 frontend_type: html
             created:
                 label:         Created
-                frontend_type: datetime
+                frontend_type: date
             updated:
                 label:         Updated
-                frontend_type: datetime
+                frontend_type: date
         properties:
             id: ~
         sorters:
@@ -987,11 +987,11 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             datetime
+                    type:             date
                     data_name:        p.created
                     filter_by_having: true
                 updated:
-                    type:             datetime
+                    type:             date
                     data_name:        p.updated
                     filter_by_having: true
 
