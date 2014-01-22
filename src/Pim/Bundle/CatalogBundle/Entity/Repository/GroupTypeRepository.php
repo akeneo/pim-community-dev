@@ -39,6 +39,6 @@ class GroupTypeRepository extends ReferableEntityRepository
         $qb
             ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
-       return $qb;
+        return $qb;
     }
 }

@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+
 /**
  * Mass edit operation controller
  *
