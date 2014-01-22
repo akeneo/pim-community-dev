@@ -272,6 +272,7 @@
         <exec executable="app/console">
           <arg value="pim:install" />
           <arg value="--env=behat" />
+          <arg value="--force" />
         </exec>
     </target>
 
