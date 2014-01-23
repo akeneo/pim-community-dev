@@ -197,7 +197,7 @@ class CompletenessManager
     protected function getValueCode(AttributeInterface $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             $valueCode .= '_' .$locale;
         }
         if ($attribute->isScopable()) {

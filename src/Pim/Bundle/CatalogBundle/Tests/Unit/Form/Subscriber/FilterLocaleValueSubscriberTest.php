@@ -174,7 +174,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
+            ->method('isLocalizable')
             ->will($this->returnValue($translatable));
 
         return $attribute;

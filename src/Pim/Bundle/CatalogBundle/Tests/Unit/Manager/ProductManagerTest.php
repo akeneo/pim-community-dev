@@ -18,7 +18,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function noValueAddedIfAttributeIsNotScopableNorTranslatable()
+    public function noValueAddedIfAttributeIsNotScopableNorLocalizable()
     {
         $target  = $this->getProductManager();
         $value   = $this->getValueMock();
@@ -216,17 +216,17 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $scopable = $scope ? true : false;
-        $translatable = $locale ? true : false;
+        $localizable = $locale ? true : false;
         $locale = $locale ?: 'en_US';
 
         $value->expects($this->any())
               ->method('getAttribute')
-              ->will($this->returnValue($this->getAttributeMock($scopable, $translatable, $code)));
+              ->will($this->returnValue($this->getAttributeMock($scopable, $localizable, $code)));
 
         if ($scopable) {
             $value->setScope($scope);
         }
-        if ($translatable) {
+        if ($localizable) {
             $value->setLocale($locale);
         }
 
@@ -241,21 +241,21 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      * Get a mock of Attribute entity
      *
      * @param boolean $scopable
-     * @param boolean $translatable
+     * @param boolean $localizable
      * @param string  $code
      *
      * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Attribute
      */
-    protected function getAttributeMock($scopable = false, $translatable = false, $code = null)
+    protected function getAttributeMock($scopable = false, $localizable = false, $code = null)
     {
         $attribute = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            array('isTranslatable', 'isScopable', 'getCode')
+            array('isLocalizable', 'isScopable', 'getCode')
         );
 
         $attribute->expects($this->any())
-                  ->method('isTranslatable')
-                  ->will($this->returnValue($translatable));
+                  ->method('isLocalizable')
+                  ->will($this->returnValue($localizable));
 
         $attribute->expects($this->any())
                   ->method('isScopable')

@@ -99,7 +99,7 @@ class ProductFormView
             $classes['scopable'] = true;
         }
 
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             $classes['translatable'] = true;
         }
 

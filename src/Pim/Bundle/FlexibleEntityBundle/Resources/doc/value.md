@@ -10,7 +10,7 @@ $pm = $this->container->get('product_manager');
 $attributeCode = 'name';
 $attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
-$attribute->setTranslatable(true);
+$attribute->setLocalizable(true);
 ```
 
 You can choose value locale as following and use any locale code you want (fr, fr_FR, other, no checks, depends on application, list of locales is available in Locale Component) :
@@ -50,7 +50,7 @@ $pm = $this->container->get('product_manager');
 $attributeCode = 'description';
 $attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
-$attribute->setTranslatable(true);
+$attribute->setLocalizable(true);
 $attribute->setScopable(true);
 ```
 

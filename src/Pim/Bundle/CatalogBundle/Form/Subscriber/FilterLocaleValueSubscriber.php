@@ -86,7 +86,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     protected function isTranslatable($attribute)
     {
-        return $attribute && $attribute->isTranslatable();
+        return $attribute && $attribute->isLocalizable();
     }
 
     /**

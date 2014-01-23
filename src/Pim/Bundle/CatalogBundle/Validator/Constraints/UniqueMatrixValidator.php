@@ -23,8 +23,8 @@ class UniqueMatrixValidator extends ConstraintValidator
             if ($entity->isScopable()) {
                 $this->context->addViolationAt('scopable', $constraint->scopableMessage);
             }
-            if ($entity->isTranslatable()) {
-                $this->context->addViolationAt('translatable', $constraint->translatableMessage);
+            if ($entity->isLocalizable()) {
+                $this->context->addViolationAt('translatable', $constraint->localizableMessage);
             }
         }
     }

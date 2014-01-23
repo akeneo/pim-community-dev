@@ -16,6 +16,7 @@
 - Remove GridBundle, add a new DataGridBundle (based on OroPlatform changes)
 - Change filters implementations in FilterBundle
 - Update all PIM grids to use the new implementation
+- Rename translatable attribute property by localizable
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

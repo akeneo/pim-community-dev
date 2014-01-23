@@ -88,7 +88,7 @@ class ColumnInfo implements ColumnInfoInterface
         } else {
             $this->propertyPath = $attribute->getBackendType();
             $suffixes = $this->rawSuffixes;
-            if ($attribute->isTranslatable()) {
+            if ($attribute->isLocalizable()) {
                 if (count($suffixes)) {
                     $this->locale = array_shift($suffixes);
                 } else {

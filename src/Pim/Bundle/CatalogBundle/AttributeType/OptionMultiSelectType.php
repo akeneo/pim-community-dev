@@ -63,7 +63,7 @@ class OptionMultiSelectType extends AbstractAttributeType
                 'fieldType' => 'pim_catalog_options'
             ),
             array(
-                'name'      => 'translatable',
+                'name'      => 'localizable',
                 'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),

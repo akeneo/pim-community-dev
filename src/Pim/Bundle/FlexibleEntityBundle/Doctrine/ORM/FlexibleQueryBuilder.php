@@ -127,7 +127,7 @@ class FlexibleQueryBuilder
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             if ($this->getLocale() === null) {
                 throw new FlexibleQueryException('Locale must be configured');
             }
