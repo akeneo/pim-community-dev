@@ -18,7 +18,6 @@ attributes:
             de_DE: Name
         type: pim_catalog_text
         group: marketing
-        scopable: true
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder: 2
