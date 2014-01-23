@@ -18,6 +18,8 @@ attributes:
             de_DE: Name
         type: pim_catalog_text
         group: marketing
+        translatable: true
+        scopable: true
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder: 2
@@ -343,6 +345,7 @@ attributes:
             de_DE: Erscheinungstermin
         type: pim_catalog_date
         group: marketing
+        scopable: true
         useableAsGridFilter: true
         sortOrder: 25
     viewing_area:
