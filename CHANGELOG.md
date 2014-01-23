@@ -6,6 +6,7 @@
 
 ## Improvements
 - Add some missing translations
+- Quick export of selected products in the grid
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
