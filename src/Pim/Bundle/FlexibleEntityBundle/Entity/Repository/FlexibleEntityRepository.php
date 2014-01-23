@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
@@ -21,7 +21,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FlexibleEntityRepository extends EntityRepository implements
-    TranslatableInterface,
+    LocalizableInterface,
     ScopableInterface,
     FlexibleEntityRepositoryInterface
 {

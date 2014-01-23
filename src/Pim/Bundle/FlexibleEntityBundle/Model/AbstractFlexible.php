@@ -3,7 +3,7 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractFlexible implements FlexibleInterface, TimestampableInterface,
-TranslatableInterface, ScopableInterface
+LocalizableInterface, ScopableInterface
 {
     /**
      * @var integer $id
@@ -129,7 +129,7 @@ TranslatableInterface, ScopableInterface
      *
      * @param string $locale
      *
-     * @return TranslatableInterface
+     * @return LocalizableInterface
      */
     public function setLocale($locale)
     {

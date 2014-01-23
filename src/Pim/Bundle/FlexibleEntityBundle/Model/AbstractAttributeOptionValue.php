@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 
 /**
  * Abstract entity attribute option value, independent of storage
@@ -11,7 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractAttributeOptionValue implements TranslatableInterface
+abstract class AbstractAttributeOptionValue implements LocalizableInterface
 {
     /**
      * @var integer $id
