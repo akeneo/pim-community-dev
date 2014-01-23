@@ -32,6 +32,8 @@ class InstallCommand extends ContainerAwareCommand
     const LOAD_ALL    = 'all';
     const LOAD_ORO    = 'OroPlatform';
 
+    const LOAD_FIXTURES_TIMEOUT = 360;
+
     /**
      * @var CommandExecutor $commandExecutor
      */
@@ -271,7 +273,12 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('<info>Load fixtures.</info>');
 
         $params =
-            array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
+            array(
+                '--process-isolation' => true,
+                '--no-interaction' => true,
+                '--append' => true,
+                '--process-timeout' => static::LOAD_FIXTURES_TIMEOUT
+            )
             + $this->getFixturesList($input->getOption('fixtures'));
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
