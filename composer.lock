@@ -3412,12 +3412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "8b35c3d5a87017d74136635f58736b329a65cb25"
+                "reference": "2bf6cd27fed0ee2f4f7c47ade25892494623828f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/8b35c3d5a87017d74136635f58736b329a65cb25",
-                "reference": "8b35c3d5a87017d74136635f58736b329a65cb25",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/2bf6cd27fed0ee2f4f7c47ade25892494623828f",
+                "reference": "2bf6cd27fed0ee2f4f7c47ade25892494623828f",
                 "shasum": ""
             },
             "require": {
@@ -3479,7 +3479,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta5",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2014-01-06 15:26:48"
+            "time": "2014-01-22 14:54:45"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -5344,12 +5344,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "c1cff1c0dac5c9936e2419d69af57978e2a6d043"
+                "reference": "35e16bf0b8fd055e7d4e8c72cc27f5bf7a505e13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/c1cff1c0dac5c9936e2419d69af57978e2a6d043",
-                "reference": "c1cff1c0dac5c9936e2419d69af57978e2a6d043",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/35e16bf0b8fd055e7d4e8c72cc27f5bf7a505e13",
+                "reference": "35e16bf0b8fd055e7d4e8c72cc27f5bf7a505e13",
                 "shasum": ""
             },
             "require": {
@@ -5408,7 +5408,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2014-01-05 12:17:59"
+            "time": "2014-01-23 15:59:17"
         },
         {
             "name": "phpspec/prophecy",
