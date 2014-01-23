@@ -96,8 +96,8 @@ class PriceCollectionType extends AbstractAttributeType
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
                 'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(

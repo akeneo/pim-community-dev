@@ -4,11 +4,11 @@
         function ($, _, Scopable, Dialog, DialogForm) {
             'use strict';
             $(function () {
-                _.each($('form div.scopable'), function (field) {
+                _.each($('form div.scopable:not(".currency")'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
-                $('form div.currency').currencyField();
+                $('form div.currency:not(".scopable")').currencyField();
 
                 {% if resource_granted('pim_catalog_product_change_family') %}
                     {% set familyWidget %}
