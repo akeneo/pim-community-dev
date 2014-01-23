@@ -13,6 +13,7 @@
 
 {% if form.vars.value.id %}
     <div class="tab-pane" id="history">
-        <div id="history-grid"></div>
+        {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+        {{ dataGrid.renderHistoryGrid(form.vars.value) }}
     </div>
 {% endif %}

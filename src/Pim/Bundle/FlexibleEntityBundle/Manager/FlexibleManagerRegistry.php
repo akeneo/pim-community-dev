@@ -46,7 +46,7 @@ class FlexibleManagerRegistry
     public function addManager($managerId, FlexibleManager $manager, $entityFQCN)
     {
         $this->managers[$managerId]        = $manager;
-        $this->entityToManager[$entityFQCN]= $manager;
+        $this->entityToManager[$entityFQCN] = $manager;
 
         return $this;
     }

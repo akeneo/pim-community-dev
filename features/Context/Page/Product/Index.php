@@ -88,7 +88,7 @@ class Index extends Grid
     {
         $elt = $this
             ->getElement('Categories tree')
-            ->find('css', sprintf('#node_0 a'));
+            ->find('css', sprintf('#node_-1 a'));
 
         if (!$elt) {
             throw new \Exception(sprintf('Could not find unclassified category filter.'));
@@ -102,7 +102,7 @@ class Index extends Grid
      */
     public function massEdit()
     {
-        $this->pressButton('Mass Edition');
+        $this->pressButton('Mass Edit');
     }
 
     /**

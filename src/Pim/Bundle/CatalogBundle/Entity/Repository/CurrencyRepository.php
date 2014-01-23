@@ -24,4 +24,17 @@ class CurrencyRepository extends ReferableEntityRepository
 
         return $qb;
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $rootAlias = $qb->getRootAlias();
+
+        $qb->addSelect($rootAlias);
+
+        return $qb;
+    }
 }

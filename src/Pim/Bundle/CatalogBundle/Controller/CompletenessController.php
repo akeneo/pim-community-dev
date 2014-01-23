@@ -69,7 +69,7 @@ class CompletenessController
     /**
      * Displays completeness for a product
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return Response
      */

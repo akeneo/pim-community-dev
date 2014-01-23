@@ -18,7 +18,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class InjectORMReferencesSubscriber implements EventSubscriber
 {
-
     /**
      * @var EntityManager
      */

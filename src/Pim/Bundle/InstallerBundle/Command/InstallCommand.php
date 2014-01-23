@@ -3,7 +3,6 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,7 +99,7 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
-        switch($input->getOption('task')) {
+        switch ($input->getOption('task')) {
             case self::TASK_CHECK:
                 $this->checkStep($input, $output);
                 break;
@@ -164,8 +163,11 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         $directories = array();
-        $directories[] = $this->getContainer()->getParameter('upload_dir');
-        $directories[] = $this->getContainer()->getParameter('archive_dir');
+
+        if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
+            $directories[] = $this->getContainer()->getParameter('upload_dir');
+            $directories[] = $this->getContainer()->getParameter('archive_dir');
+        }
 
         return new \PimRequirements($directories);
     }
@@ -332,12 +334,14 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function userSetup(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Administration setup.</info>');
+        if ($input->getOption('env') !== 'behat') {
+            $output->writeln('<info>Administration setup.</info>');
 
-        $user = $this->createUser($input, $output);
-        $this->getContainer()->get('oro_user.manager')->updateUser($user);
+            $user = $this->createUser($input, $output);
+            $this->getContainer()->get('oro_user.manager')->updateUser($user);
 
-        $output->writeln('');
+            $output->writeln('');
+        }
 
         return $this;
     }
@@ -345,7 +349,7 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Create user
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @throws \Exception
@@ -457,6 +461,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
+     * @param boolean         $installed
      *
      * @return InstallCommand
      */
@@ -477,7 +482,9 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function clearCache()
     {
-        return $this->commandExecutor->runCommand('cache:clear');
+        return $this->commandExecutor
+            ->runCommand('oro:entity-extend:clear')
+            ->runCommand('cache:clear');
     }
 
     /**

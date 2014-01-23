@@ -1,22 +1,7 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({ params: { "%group.label%": form.vars.data.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-
-    {% set listenerParameters = {
-        'columnName': 'has_product',
-        'selectors': {
-            'included': '#appendProducts',
-            'excluded': '#removeProducts'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#group-products-grid', 'parameters': listenerParameters } %}
-
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
-{% endblock %}
 
 {% block content %}
     {{ JSFV(form) }}
@@ -84,7 +69,9 @@
                     {% endif %}
                     </div>
                 {% endif %}
-                <div id="group-products-grid"></div>
+
+                {{ dataGrid.renderGrid(gridName, { dataLocale: dataLocale, currentGroup: currentGroup }) }}
+
                 {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
                 {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
             </div>
@@ -103,8 +90,7 @@
                 }) }}
             </div>
 
-            <div class="tab-pane" id="history">
-                <div id="history-grid"></div>
+            <div class="tab-pane" id="history" data-url="{{ path('pim_catalog_group_history', {id: form.vars.value.id}) }}">
             </div>
 
         </div>

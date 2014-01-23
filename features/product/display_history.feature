@@ -16,5 +16,5 @@ Feature: Display the product history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-    | action | version | property | value       |
-    | create | 1       | sku      | sandals-001 |
+      | version | property | value       |
+      | 1       | sku      | sandals-001 |

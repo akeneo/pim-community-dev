@@ -24,8 +24,8 @@ Feature: Display the family history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | property | value |
-      | create | 1       | code     | Flyer |
+      | version | property | value |
+      | 1       | code     | Flyer |
 
     When I visit the "Properties" tab
     And I fill in the following information:
@@ -34,6 +34,6 @@ Feature: Display the family history
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | property    | value |
-      | create | 1       | code        | Flyer |
-      | update | 2       | label-en_US | Fly   |
+      | version | property    | value |
+      | 1       | code        | Flyer |
+      | 2       | label-en_US | Fly   |

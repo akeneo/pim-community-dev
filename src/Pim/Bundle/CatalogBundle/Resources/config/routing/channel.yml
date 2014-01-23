@@ -20,9 +20,3 @@ pim_catalog_channel_remove:
     requirements:
         id: \d+
     methods: [DELETE]
-
-pim_catalog_channel_history:
-    path: /{id}/history
-    defaults: { _controller: pim_catalog.controller.channel:historyAction }
-    requirements:
-        id: \d+

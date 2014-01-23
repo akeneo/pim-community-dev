@@ -20,7 +20,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 class AttributeTranslation extends AbstractTranslation
 {
     /**
-     * @var int $foreignKey
+     * @var integer $foreignKey
      *
      * @ORM\Column(name="foreign_key", type="integer")
      */

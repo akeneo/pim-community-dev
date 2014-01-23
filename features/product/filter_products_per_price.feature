@@ -12,7 +12,7 @@ Feature: Filter products per price
       | library   |
     And the following attributes:
       | label | scopable | type   | useable as grid filter | decimals_allowed |
-      | price | yes      | prices | yes                    | yes              |
+      | Price | yes      | prices | yes                    | yes              |
     And the following products:
       | sku    | family    | enabled | price-mobile | price-ecommerce |
       | postit | furniture | yes     | 10.5 EUR     | 12.5 EUR        |
@@ -32,5 +32,5 @@ Feature: Filter products per price
       | Price  | = 12.5 EUR | postit          |
       | Price  | < 20 EUR   | postit          |
       | Price  | <= 13 EUR  | postit          |
-      | Price  | <= 20 EUR  | postit and book |
+      | Price  | <= 23 EUR  | postit and book |
       | Price  | > 40.5 EUR |                 |

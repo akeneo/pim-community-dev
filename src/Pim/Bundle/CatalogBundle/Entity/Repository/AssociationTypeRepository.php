@@ -40,4 +40,28 @@ class AssociationTypeRepository extends ReferableEntityRepository
 
         return $qb;
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $rootAlias = $qb->getRootAlias();
+
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
+
+        $qb
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS label", $labelExpr))
+            ->addSelect('translation.label');
+
+        $qb
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        return $qb;
+    }
 }

@@ -18,8 +18,8 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | property | value     |
-      | create | 1       | code     | Technical |
+      | version | property | value     |
+      | 1       | code     | Technical |
 
     When I visit the "Properties" tab
     And I fill in the following information:
@@ -28,9 +28,9 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | property    | value              |
-      | create | 1       | code        | Technical          |
-      | update | 2       | label-en_US | My technical group |
+      | version | property    | value              |
+      | 1       | code        | Technical          |
+      | 2       | label-en_US | My technical group |
 
     When I visit the "Attributes" tab
     And I add available attributes Description
@@ -38,10 +38,10 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | action | version | property    | value              |
-      | create | 1       | code        | Technical          |
-      | update | 2       | label-en_US | My technical group |
-      | update | 3       | attributes  | description        |
+      | version | property    | value              |
+      | 1       | code        | Technical          |
+      | 2       | label-en_US | My technical group |
+      | 3       | attributes  | description        |
 
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
@@ -49,8 +49,8 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | action | version | property    | value              |
-      | create | 1       | code        | Technical          |
-      | update | 2       | label-en_US | My technical group |
-      | update | 3       | attributes  | description        |
-      | update | 4       | attributes  |                    |
+      | version | property    | value              |
+      | 1       | code        | Technical          |
+      | 2       | label-en_US | My technical group |
+      | 3       | attributes  | description        |
+      | 4       | attributes  |                    |

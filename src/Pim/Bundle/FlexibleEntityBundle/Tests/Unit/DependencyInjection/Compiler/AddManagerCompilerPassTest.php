@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ConnectorCompilerPass
      */

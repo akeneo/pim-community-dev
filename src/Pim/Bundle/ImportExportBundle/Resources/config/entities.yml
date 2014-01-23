@@ -1,2 +1,4 @@
 parameters:
+    oro_batch.entity.job_instance.class:   Oro\Bundle\BatchBundle\Entity\JobInstance
+    oro_batch.job.batch_status.class:      Oro\Bundle\BatchBundle\Job\BatchStatus
     pim_import_export.entity.export.class: Pim\Bundle\ImportExportBundle\Entity\Export

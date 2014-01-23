@@ -29,12 +29,17 @@ Feature: Edit an identifier attribute
     And I visit the "Parameters" tab
     Then I should see validation error "An identifier attribute already exists."
 
+  @javascript
   Scenario: Successfully edit an identifier attribute
     Given I am on the "SKU" attribute page
     When I fill in the following information:
       | Max characters | 199 |
     And I press the "Save" button
-    Then I should see "199"
+    When I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+      | version | property       | value |
+      | 1       | max_characters | 199   |
 
   @javascript
   Scenario: Successfully display a message when there are unsaved changes

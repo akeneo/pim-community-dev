@@ -1,0 +1,292 @@
+datagrid:
+    job-profile-grid:
+        options:
+            requireJSModules:
+                - pim/datagrid/state-listener
+        source:
+            type: orm
+            query:
+                select:
+                    - j.id
+                    - j.code
+                    - j.label
+                    - j.alias as jobAlias
+                    - j.status
+                    - j.connector
+                    - CONCAT('pim_import_export.status.', j.status) as statusLabel
+                from:
+                    - { table: OroBatchBundle:JobInstance, alias: j }
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            alias:
+                label:     Job
+                data_name: jobAlias
+            connector:
+                label: Connector
+            status:
+                label: Status
+                type: translateable
+                data_name: statusLabel
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                params:
+                    - id
+            delete_link:
+                type: url
+                params:
+                    - id
+            launch_link:
+                type: url
+                params:
+                    - id
+        actions:
+            edit:
+                type:  navigate
+                label: Edit
+                icon:  edit
+                link:  edit_link
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+            launch:
+                type:      navigate
+                label:     Launch
+                icon:      play
+                link:      launch_link
+                rowAction: true
+        sorters:
+            columns:
+                code:
+                    data_name: j.code
+                label:
+                    data_name: j.label
+                alias:
+                    data_name: jobAlias
+                connector:
+                    data_name: j.connector
+                status:
+                    data_name: statusLabel
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: j.code
+                label:
+                    type:      string
+                    data_name: j.label
+                alias:
+                    type:      choice
+                    data_name: j.alias
+                    options:
+                        field_options:
+                            multiple: true
+                connector:
+                    type:      choice
+                    data_name: j.connector
+                    options:
+                        field_options:
+                            multiple: true
+                status:
+                    type:      choice
+                    data_name: j.status
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:
+                                0: pim_import_export.status.0
+
+    export-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: export profile
+        source:
+            acl_resource: pim_importexport_export_profile_index
+            query:
+                where:
+                    and:
+                        - j.type = 'export'
+        properties:
+            edit_link:
+                route: pim_importexport_export_profile_edit
+            delete_link:
+                route: pim_importexport_export_profile_remove
+            launch_link:
+                route: pim_importexport_export_profile_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
+                connector:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportConnectorChoices
+
+    import-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: import profile
+        source:
+            acl_resource: pim_importexport_import_profile_index
+            query:
+                where:
+                    and:
+                        - j.type = 'import'
+        properties:
+            edit_link:
+                route: pim_importexport_import_profile_edit
+            delete_link:
+                route: pim_importexport_import_profile_remove
+            launch_link:
+                route: pim_importexport_import_profile_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices
+                connector:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportConnectorChoices
+
+    job-execution-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - e.id
+                    - e.status as status
+                    - CONCAT('pim_import_export.batch_status.', e.status) as statusLabel
+                    - e.startTime as date
+                    - j.code as jobCode
+                    - j.label as jobLabel
+                    - j.alias as jobAlias
+                from:
+                    - { table: OroBatchBundle:JobExecution, alias: e }
+                join:
+                    inner:
+                        jobInstance:
+                            join: e.jobInstance
+                            alias: j
+        columns:
+            code:
+                label: Code
+                data_name: jobCode
+            label:
+                label: Label
+                data_name: jobLabel
+            alias:
+                label:     Job
+                data_name: jobAlias
+            date:
+                label: Date
+                data_name: date
+                frontend_type: datetime
+            status:
+                label: Status
+                type: translateable
+                data_name: statusLabel
+        properties:
+            id: ~
+            show_link:
+                type: url
+                params:
+                    - id
+        actions:
+            show:
+                type:      navigate
+                label:     Show
+                icon:      list-alt
+                link:      show_link
+                rowAction: true
+        sorters:
+            columns:
+                code:
+                    data_name: jobCode
+                label:
+                    data_name: jobLabel
+                alias:
+                    data_name: jobAlias
+                date:
+                    data_name: date
+                status:
+                    data_name: statusLabel
+            default:
+                date: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: jobCode
+                label:
+                    type:      string
+                    data_name: jobLabel
+                alias:
+                    type:      choice
+                    data_name: j.alias
+                    options:
+                        field_options:
+                            multiple: true
+                date:
+                    type:             datetime
+                    data_name:        date
+                    filter_by_having: true
+                status:
+                    type:             choice
+                    data_name:        status
+                    filter_by_having: true
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: %oro_batch.job.batch_status.class%::getAllLabels()
+
+    export-execution-grid:
+        extend: job-execution-grid
+        options:
+            entityHint: export report
+        source:
+            acl_resource: pim_importexport_export_execution_index
+            query:
+                where:
+                    and:
+                        - j.type = 'export'
+        properties:
+            show_link:
+                route: pim_importexport_export_execution_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
+
+    import-execution-grid:
+        extend: job-execution-grid
+        options:
+            entityHint: import report
+        source:
+            acl_resource: pim_importexport_import_execution_index
+            query:
+                where:
+                    and:
+                        - j.type = 'import'
+        properties:
+            show_link:
+                route: pim_importexport_import_execution_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices

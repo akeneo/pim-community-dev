@@ -16,7 +16,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class ScopableListenerTest extends AbstractFlexibleManagerTest
 {
-
     /**
      * @var Flexible
      */

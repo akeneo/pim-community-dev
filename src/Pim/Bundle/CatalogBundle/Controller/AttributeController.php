@@ -19,7 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -39,11 +38,6 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
  */
 class AttributeController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var AttributeHandler
      */
@@ -93,7 +87,6 @@ class AttributeController extends AbstractDoctrineController
      * @param ValidatorInterface        $validator
      * @param TranslatorInterface       $translator
      * @param RegistryInterface         $doctrine
-     * @param DatagridHelperInterface   $datagridHelper
      * @param AttributeHandler          $attributeHandler
      * @param Form                      $attributeForm
      * @param AttributeManagerInterface $attributeManager
@@ -110,7 +103,6 @@ class AttributeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         AttributeHandler $attributeHandler,
         Form $attributeForm,
         AttributeManagerInterface $attributeManager,
@@ -129,7 +121,6 @@ class AttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper   = $datagridHelper;
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
@@ -141,20 +132,15 @@ class AttributeController extends AbstractDoctrineController
      * List attributes
      * @param Request $request
      *
+     * @Template
      * @AclAncestor("pim_catalog_attribute_index")
      * @return template
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->datagridHelper->getDatagrid('attribute');
-
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimCatalogBundle:Attribute:index.html.twig';
-        }
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+        );
     }
 
     /**
@@ -186,7 +172,7 @@ class AttributeController extends AbstractDoctrineController
      * Edit attribute form
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      *
      * @Template("PimCatalogBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
@@ -206,28 +192,9 @@ class AttributeController extends AbstractDoctrineController
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
-            'historyDatagrid' => $this->getHistoryGrid($attribute)->createView(),
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
-    }
-
-    /**
-     * History of a attribute
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, $id)
-    {
-        $attribute = $this->findAttributeOr404($id);
-        $historyGridView = $this->getHistoryGrid($attribute)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -311,7 +278,7 @@ class AttributeController extends AbstractDoctrineController
      * Create a new option for a simple/multi-select attribute
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      * @param string  $dataLocale
      *
      * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
@@ -364,7 +331,7 @@ class AttributeController extends AbstractDoctrineController
      * Remove attribute
      *
      * @param Request $request
-     * @param int     $id
+     * @param integer $id
      *
      * @AclAncestor("pim_catalog_attribute_remove")
      *
@@ -388,7 +355,7 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Find an attribute
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -429,21 +396,5 @@ class AttributeController extends AbstractDoctrineController
                 return $this->redirectToRoute('pim_catalog_attribute_index');
             }
         }
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(AttributeInterface $attribute)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $attribute,
-            'pim_catalog_attribute_history',
-            array('id' => $attribute->getId())
-        );
-
-        return $historyGrid;
     }
 }

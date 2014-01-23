@@ -39,12 +39,12 @@ class AppKernel extends OroKernel
             // BAP overriden bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\GridBundle\PimGridBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
+            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),

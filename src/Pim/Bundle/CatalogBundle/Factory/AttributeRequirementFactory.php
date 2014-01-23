@@ -20,7 +20,7 @@ class AttributeRequirementFactory
      *
      * @param AttributeInterface $attribute
      * @param Channel            $channel
-     * @param bool               $required
+     * @param boolean            $required
      *
      * @return AttributeRequirement
      */

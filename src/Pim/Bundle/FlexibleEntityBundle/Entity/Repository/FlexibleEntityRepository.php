@@ -26,12 +26,6 @@ class FlexibleEntityRepository extends EntityRepository implements
     FlexibleEntityRepositoryInterface
 {
     /**
-     * Flexible entity config
-     * @var array
-     */
-    protected $flexibleConfig;
-
-    /**
      * Locale code
      * @var string
      */
@@ -42,6 +36,11 @@ class FlexibleEntityRepository extends EntityRepository implements
      * @var string
      */
     protected $scope;
+
+    /**
+     * @param FlexibleQueryBuilder
+     */
+    protected $flexibleQB;
 
     /**
      * Get flexible entity config
@@ -238,7 +237,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $attributes = $qb->getQuery()->getResult();
         $codeToAttribute = array();
         foreach ($attributes as $attribute) {
-            $codeToAttribute[$attribute->getCode()]= $attribute;
+            $codeToAttribute[$attribute->getCode()] = $attribute;
         }
 
         // raise exception

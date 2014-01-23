@@ -3,7 +3,6 @@ assetic:
         - OroAsseticBundle
         - OroUIBundle
         - OroUserBundle
-        - OroGridBundle
         - OroFilterBundle
         - OroNavigationBundle
         - OroWindowsBundle
