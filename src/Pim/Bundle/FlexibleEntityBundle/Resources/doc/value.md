@@ -36,7 +36,7 @@ If you don't choose locale of value, it's created with locale code (high to low 
 
 Base flexible entity repository is designed to deal with translated values in queries, it knows the asked locale and gets relevant value if attribute is translatable.
 
-Base flexible entity is designed to gets relevant values too, it knows the asked locale (injected with TranslatableListener).
+Base flexible entity is designed to gets relevant values too, it knows the asked locale (injected with LocalizableListener).
 
 Scopable value
 ==============

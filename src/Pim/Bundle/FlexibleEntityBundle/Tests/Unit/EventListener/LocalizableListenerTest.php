@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
-use Pim\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener;
+use Pim\Bundle\FlexibleEntityBundle\EventListener\LocalizableListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
@@ -14,7 +14,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatableListenerTest extends AbstractFlexibleManagerTest
+class LocalizableListenerTest extends AbstractFlexibleManagerTest
 {
     /**
      * @var Flexible
@@ -28,7 +28,7 @@ class TranslatableListenerTest extends AbstractFlexibleManagerTest
     {
         parent::setUp();
         // create listener
-        $this->listener = new TranslatableListener();
+        $this->listener = new LocalizableListener();
         $this->listener->setContainer($this->container);
         // create flexible entity
         $this->flexible = new Flexible();

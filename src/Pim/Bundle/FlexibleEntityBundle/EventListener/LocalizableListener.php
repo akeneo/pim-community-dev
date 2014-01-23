@@ -7,17 +7,17 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 
 /**
- * Aims to inject selected locale into loaded translatable container, ie, not store locale code but contains some
- * translated "children" (values for flexible, option value for option) and allow to select relevant child
+ * Aims to inject selected locale into loaded localizable container, ie, not store locale code but contains some
+ * localized "children" (values for flexible, option value for option) and allow to select relevant child
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatableListener implements EventSubscriber
+class LocalizableListener implements EventSubscriber
 {
     /**
      * @var ContainerInterface $container
@@ -29,7 +29,7 @@ class TranslatableListener implements EventSubscriber
      *
      * @param ContainerInterface $container
      *
-     * @return TranslatableListener
+     * @return LocalizableListener
      */
     public function setContainer($container)
     {
@@ -58,8 +58,8 @@ class TranslatableListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        // inject selected locale only for translatable "containers"
-        if ($entity instanceof TranslatableInterface) {
+        // inject selected locale only for localizable "containers"
+        if ($entity instanceof LocalizableInterface) {
 
             // get flexible entity class
             $flexibleEntityClass = false;
