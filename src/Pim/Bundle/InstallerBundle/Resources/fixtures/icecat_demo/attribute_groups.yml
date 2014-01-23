@@ -1,11 +1,13 @@
 attribute_groups:
     marketing:
+        sort_order: 1
         labels:
             en_US: Marketing
             fr_FR: Marketing
             de_DE: Marketing
 
     technical:
+        sort_order: 2
         labels:
             en_US: Technical
             fr_FR: Technique
