@@ -93,7 +93,7 @@ class MetricFilter extends OroNumberFilter
         }
 
         $operator = $this->getOperator($data['type']);
-        $parameterName = $ds->generateParameterName($this->getName());
+        $ds->generateParameterName($this->getName());
 
         // Convert value to base unit
         $this->converter->setFamily($this->family);
