@@ -23,14 +23,14 @@ class MediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'file', array('required' => false))
+            ->add('file', 'file', ['required' => false])
             ->add(
                 'removed',
                 'checkbox',
-                array(
+                [
                     'required' => false,
                     'label'    => 'Remove media',
-                )
+                ]
             )
             ->add('id', 'hidden')
             ->add('copyFrom', 'hidden');
@@ -42,9 +42,9 @@ class MediaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\FlexibleEntityBundle\Entity\Media'
-            )
+            ]
         );
     }
 

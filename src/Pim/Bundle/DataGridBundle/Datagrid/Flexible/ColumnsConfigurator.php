@@ -51,8 +51,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
-        $identifierColumn  = array();
-        $attributesColumns = array();
+        $identifierColumn  = [];
+        $attributesColumns = [];
 
         foreach ($this->attributes as $attributeCode => $attribute) {
             $showColumn        = $attribute->isUseableAsGridColumn();
@@ -72,9 +72,9 @@ class ColumnsConfigurator implements ConfiguratorInterface
             if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
 
                 $columnConfig = $attributeTypeConf['column'];
-                $columnConfig = $columnConfig + array(
+                $columnConfig = $columnConfig + [
                     'label' => $attribute->getLabel(),
-                );
+                ];
 
                 if ($attributeType === 'pim_catalog_identifier') {
                     $identifierColumn[$attributeCode] = $columnConfig;

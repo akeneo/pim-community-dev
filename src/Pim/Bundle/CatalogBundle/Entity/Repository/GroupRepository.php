@@ -24,7 +24,7 @@ class GroupRepository extends ReferableEntityRepository
     {
         $groups = $this->getGroupsByType($type);
 
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getCode();
         }
@@ -45,7 +45,7 @@ class GroupRepository extends ReferableEntityRepository
             ->getQuery()
             ->getResult();
 
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getLabel();
         }

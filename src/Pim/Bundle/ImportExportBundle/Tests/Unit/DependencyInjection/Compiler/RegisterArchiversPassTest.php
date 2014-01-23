@@ -47,7 +47,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
         $definition = $this->getDefinitionMock();
         $container  = $this->getContainerBuilderMock(
             $definition,
-            array('pim.archiver.foo', 'pim.archiver.bar')
+            ['pim.archiver.foo', 'pim.archiver.bar']
         );
 
         $definition->expects($this->exactly(2))
@@ -63,7 +63,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    private function getContainerBuilderMock($definition = null, array $taggedServices = array())
+    private function getContainerBuilderMock($definition = null, array $taggedServices = [])
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 

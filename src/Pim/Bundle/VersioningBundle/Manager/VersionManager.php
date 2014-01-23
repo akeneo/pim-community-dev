@@ -45,8 +45,8 @@ class VersionManager
         /** @var Version $version */
         $previous = $this->em->getRepository('PimVersioningBundle:Version')
             ->findOneBy(
-                array('resourceId' => $version->getResourceId(), 'resourceName' => $version->getResourceName()),
-                array('loggedAt' => 'desc')
+                ['resourceId' => $version->getResourceId(), 'resourceName' => $version->getResourceName()],
+                ['loggedAt' => 'desc']
             );
 
         return $previous;

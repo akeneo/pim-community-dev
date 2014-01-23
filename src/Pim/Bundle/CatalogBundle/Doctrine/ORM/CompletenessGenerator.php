@@ -49,7 +49,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(array $criteria = array(), $limit = null)
+    public function generate(array $criteria = [], $limit = null)
     {
         $this->prepareCompletePrices($criteria);
         $this->prepareMissingCompletenesses($criteria);
@@ -73,7 +73,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareCompletePrices($criteria = array())
+    protected function prepareCompletePrices($criteria = [])
     {
         $cleanupSql = "DROP TABLE IF EXISTS ".self::COMPLETE_PRICES_TABLE."\n";
         $cleanupStmt = $this->doctrine->getConnection()->prepare($cleanupSql);
@@ -103,7 +103,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareMissingCompletenesses(array $criteria = array())
+    protected function prepareMissingCompletenesses(array $criteria = [])
     {
         $cleanupSql = "DROP TABLE IF EXISTS ".self::MISSING_TABLE."\n";
         $cleanupStmt = $this->doctrine->getConnection()->prepare($cleanupSql);
@@ -140,7 +140,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @return string
      */
-    protected function getCompletePricesSQL($criteria = array())
+    protected function getCompletePricesSQL($criteria = [])
     {
         return <<<COMPLETE_PRICES_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
@@ -178,7 +178,7 @@ COMPLETE_PRICES_SQL;
      *
      * @return string
      */
-    protected function getMissingCompletenessesSQL($criteria = array())
+    protected function getMissingCompletenessesSQL($criteria = [])
     {
         return <<<MISSING_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
@@ -309,10 +309,10 @@ MAIN_SQL;
      */
     protected function getQueryPartReplacements()
     {
-        return array(
+        return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
-        );
+        ];
     }
 
     /**
@@ -326,10 +326,10 @@ MAIN_SQL;
             function ($className) {
                 return $this->getClassMetadata($className)->getTableName();
             },
-            array(
+            [
                 '%product_interface%'       => $this->productClass,
                 '%product_value_interface%' => $this->productValueClass
-            )
+            ]
         );
     }
 
@@ -358,7 +358,7 @@ MAIN_SQL;
                             $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
                         );
                     },
-                    array()
+                    []
                 )
             )
         );
@@ -375,28 +375,28 @@ MAIN_SQL;
     protected function getAssociationFields($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return array();
+            return [];
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return array(
+                return [
                     sprintf(
                         '%s.%s',
                         $prefix,
                         $mapping['joinTable']['inverseJoinColumns'][0]['name']
                     )
-                );
+                ];
 
             case ClassMetadataInfo::MANY_TO_ONE:
-                return array(sprintf('v.%s', $mapping['joinColumns'][0]['name']));
+                return [sprintf('v.%s', $mapping['joinColumns'][0]['name'])];
 
             case ClassMetadataInfo::ONE_TO_MANY:
             case ClassMetadataInfo::ONE_TO_ONE:
                 return $this->getClassContentFields($mapping['targetEntity'], $prefix);
 
             default:
-                return array();
+                return [];
         }
     }
 
@@ -414,11 +414,11 @@ MAIN_SQL;
     {
         switch ($className) {
             case 'Pim\Bundle\CatalogBundle\Model\Metric':
-                return array(sprintf('%s.%s', $prefix, 'data'));
+                return [sprintf('%s.%s', $prefix, 'data')];
             case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
-                return array();
+                return [];
             case 'Pim\Bundle\CatalogBundle\Model\Media':
-                return array(sprintf('%s.%s', $prefix, 'filename'));
+                return [sprintf('%s.%s', $prefix, 'filename')];
             default:
                 return array_map(
                     function ($name) use ($prefix) {
@@ -426,7 +426,7 @@ MAIN_SQL;
                     },
                     array_diff(
                         $this->getClassMetadata($className)->getColumnNames(),
-                        array('id', 'locale_code', 'scope_code')
+                        ['id', 'locale_code', 'scope_code']
                     )
                 );
         }
@@ -448,7 +448,7 @@ MAIN_SQL;
 
                 return array_merge($joins, $this->getAssociationJoins($mapping, $this->getAssociationAlias($index)));
             },
-            array()
+            []
         );
     }
 
@@ -463,16 +463,16 @@ MAIN_SQL;
     protected function getAssociationJoins($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return array();
+            return [];
         }
 
         if ($mapping['targetEntity'] === 'Pim\Bundle\CatalogBundle\Model\ProductPrice') {
-            return array();
+            return [];
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return array(
+                return [
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id ',
                         $mapping['joinTable']['name'],
@@ -480,13 +480,13 @@ MAIN_SQL;
                         $prefix,
                         $mapping['joinTable']['joinColumns'][0]['name']
                     )
-                );
+                ];
 
             case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
                 $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
-                return array(
+                return [
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id',
                         $relatedMetadata->getTableName(),
@@ -494,14 +494,14 @@ MAIN_SQL;
                         $prefix,
                         $relatedMapping['joinColumns'][0]['name']
                     )
-                );
+                ];
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
                 $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
                 $joinColumn = $mapping['joinColumns'][0]['name'];
 
-                return array(
+                return [
                     sprintf(
                         $joinPattern,
                         $relatedMetadata->getTableName(),
@@ -509,10 +509,10 @@ MAIN_SQL;
                         $prefix,
                         $joinColumn
                     )
-                );
+                ];
 
             default:
-                return array();
+                return [];
         }
     }
 
@@ -523,7 +523,7 @@ MAIN_SQL;
      */
     protected function getSkippedMappings()
     {
-        return array('attribute', 'entity');
+        return ['attribute', 'entity'];
     }
 
     /**

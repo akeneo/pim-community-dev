@@ -26,7 +26,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @var TranslationNormalizer
@@ -46,16 +46,16 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $results = array(
+        $results = [
             'type' => $object->getAttributeType(),
             'code' => $object->getCode()
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ] + $this->translationNormalizer->normalize($object, $format, $context);
 
         $results = array_merge(
             $results,
-            array(
+            [
                 'group'                   => $object->getVirtualGroup()->getCode(),
                 'unique'                  => (int) $object->isUnique(),
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
@@ -64,17 +64,17 @@ class AttributeNormalizer implements NormalizerInterface
                 'date_type'               => $object->getDateType(),
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit()
-            )
+            ]
         );
         if (isset($context['versioning'])) {
             $results = array_merge($results, $this->getVersionedData($object));
         } else {
             $results = array_merge(
                 $results,
-                array(
+                [
                     'translatable' => (int) $object->isTranslatable(),
                     'scopable'     => (int) $object->isScopable(),
-                )
+                ]
             );
         }
 
@@ -101,7 +101,7 @@ class AttributeNormalizer implements NormalizerInterface
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
 
-        return array(
+        return [
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
             'searchable'          => $attribute->isSearchable(),
             'localizable'         => $attribute->isTranslatable(),
@@ -125,7 +125,7 @@ class AttributeNormalizer implements NormalizerInterface
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
-        );
+        ];
     }
 
     /**
@@ -137,7 +137,7 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeAvailableLocales($attribute)
     {
-        $locales = array();
+        $locales = [];
         foreach ($attribute->getAvailableLocales() as $locale) {
             $locales[] = $locale->getCode();
         }
@@ -154,10 +154,10 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeOptions($attribute)
     {
-        $data = array();
+        $data = [];
         $options = $attribute->getOptions();
         foreach ($options as $option) {
-            $data[$option->getCode()] = array();
+            $data[$option->getCode()] = [];
             foreach ($option->getOptionValues() as $value) {
                 $data[$option->getCode()][$value->getLocale()] = $value->getValue();
             }
@@ -195,10 +195,10 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeDefaultOptions($attribute)
     {
-        $data = array();
+        $data = [];
         $options = $attribute->getDefaultOptions();
         foreach ($options as $option) {
-            $data[$option->getCode()] = array();
+            $data[$option->getCode()] = [];
             foreach ($option->getOptionValues() as $value) {
                 $data[$option->getCode()][$value->getLocale()] = $value->getValue();
             }

@@ -17,18 +17,18 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($entity, $format = null, array $context = array())
+    public function normalize($entity, $format = null, array $context = [])
     {
-        return array(
+        return [
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),
             'default'    => ($entity->isDefault()) ? 1 : 0,
-        ) + $this->normalizeLabel($entity);
+        ] + $this->normalizeLabel($entity);
     }
 
     /**
@@ -48,11 +48,11 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     protected function normalizeLabel(AttributeOption $entity)
     {
-        $labels = array();
+        $labels = [];
         foreach ($entity->getOptionValues() as $translation) {
             $labels[$translation->getLocale()] = $translation->getValue();
         }
 
-        return array('label' => $labels);
+        return ['label' => $labels];
     }
 }

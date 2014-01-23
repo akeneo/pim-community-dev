@@ -33,12 +33,12 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'locale_label' => new \Twig_Function_Method($this, 'localeLabel'),
             'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
             'locale_currency' => new \Twig_Function_Method($this, 'localeCurrency'),
             'currency_label'  => new \Twig_Function_Method($this, 'currencyLabel')
-        );
+        ];
     }
 
     /**
@@ -46,9 +46,9 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
-        );
+        return [
+            'flag' => new \Twig_Filter_Method($this, 'flag', ['is_safe' => ['html']]),
+        ];
     }
 
     /**

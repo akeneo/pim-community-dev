@@ -21,25 +21,25 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
     protected $locale;
     protected $type;
 
-    protected $options = array(
+    protected $options = [
         'class'                 => 'class',
         'multiple'              => 'multiple',
         'locale'                => 'locale',
         'collection_id'         => 'collection_id',
-        'transformer_options'   => array(
+        'transformer_options'   => [
             'option1' => 'value1',
             'option2' => 'option2'
-        )
-    );
+        ]
+    ];
 
-    protected $transformerOptions = array(
+    protected $transformerOptions = [
         'class'                 => 'class',
         'multiple'              => 'multiple',
         'locale'                => 'locale',
         'collection_id'         => 'collection_id',
         'option1' => 'value1',
         'option2' => 'option2'
-    );
+    ];
 
     protected function setUp()
     {
@@ -103,44 +103,44 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
 
     public function getSetDefaultOptionsData()
     {
-        return array(
-            'defaults'      => array(array()),
-            'with_locale'   => array(
-                array('locale' => 'other_locale'),
-                array('url' => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=')
-            ),
-            'with_url'      => array(array('url' => 'url')),
-            'with_params'   => array(
-                array(
+        return [
+            'defaults'      => [[]],
+            'with_locale'   => [
+                ['locale' => 'other_locale'],
+                ['url' => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=']
+            ],
+            'with_url'      => [['url' => 'url']],
+            'with_params'   => [
+                [
                     'multiple'              => true,
-                    'transformer_options'   => array('key1' => 'val1'),
+                    'transformer_options'   => ['key1' => 'val1'],
                     'collection_id'         => 'collection_id',
                     'route'                 => 'route',
-                    'route_parameters'      => array('param1' => 'val1'),
+                    'route_parameters'      => ['param1' => 'val1'],
                     'minimum_input_length'  => 5,
-                ),
-                array('url' => 'route?&param1=val1&class=class&dataLocale=locale&collectionId=collection_id')
-            )
-        );
+                ],
+                ['url' => 'route?&param1=val1&class=class&dataLocale=locale&collectionId=collection_id']
+            ]
+        ];
     }
 
     /**
      * @dataProvider getSetDefaultOptionsData
      */
-    public function testSetDefaultOptions($options, $expected = array())
+    public function testSetDefaultOptions($options, $expected = [])
     {
-        $options = $options + array('class' => 'class');
-        $expected = $expected + $options + array(
+        $options = $options + ['class' => 'class'];
+        $expected = $expected + $options + [
             'multiple'              => false,
-            'transformer_options'   => array(),
+            'transformer_options'   => [],
             'collection_id'         => null,
             'route'                 => 'pim_ui_ajaxentity_list',
-            'route_parameters'      => array(),
+            'route_parameters'      => [],
             'data_class'            => null,
             'minimum_input_length'  => 0,
             'locale'                => 'locale',
             'url'                   => 'pim_ui_ajaxentity_list?&class=class&dataLocale=locale&collectionId='
-        );
+        ];
         $resolver = new OptionsResolver();
         $this->type->setDefaultOptions($resolver);
         $this->assertEquals($expected, $resolver->resolve($options));

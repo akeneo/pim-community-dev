@@ -26,7 +26,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->constraint = new ProductValueNotBlank(array('channel' => new Channel()));
+        $this->constraint = new ProductValueNotBlank(['channel' => new Channel()]);
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     public function testGetChannel()
     {
         $channel1 = new Channel();
-        $constraint = new ProductValueNotBlank(array('channel' => $channel1));
+        $constraint = new ProductValueNotBlank(['channel' => $channel1]);
         $this->assertEquals($channel1, $constraint->getChannel());
     }
 }

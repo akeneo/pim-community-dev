@@ -28,7 +28,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvents()
     {
         $listener = $this->getListener();
-        $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
+        $this->assertEquals($listener->getSubscribedEvents(), ['onFlush', 'postFlush']);
     }
 
     /**
@@ -57,8 +57,8 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
       */
     protected function getListener()
     {
-        $encoders    = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
+        $encoders    = [new CsvEncoder()];
+        $normalizers = [new GetSetMethodNormalizer()];
         $serializer  = new Serializer($normalizers, $encoders);
         $versionBuilder = new VersionBuilder($serializer);
         $auditBuilder   = new AuditBuilder();
@@ -105,10 +105,10 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $repos = array(
-            array('OroUserBundle:User', $this->getUserRepositoryMock()),
-            array('PimVersioningBundle:Version', $this->getVersionRepositoryMock()),
-        );
+        $repos = [
+            ['OroUserBundle:User', $this->getUserRepositoryMock()],
+            ['PimVersioningBundle:Version', $this->getVersionRepositoryMock()],
+        ];
         $emMock->expects($this->any())
             ->method('getRepository')
             ->will($this->returnValueMap($repos));

@@ -27,7 +27,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->guesser->expects($this->any())
             ->method('guessConstraints')
-            ->will($this->returnValue(array('constraints')));
+            ->will($this->returnValue(['constraints']));
 
         $this->target = $this->createAttributeType();
     }
@@ -102,18 +102,18 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     protected function getFlexibleValueMock(array $options)
     {
         $options = array_merge(
-            array(
+            [
                 'data'         => null,
                 'defaultValue' => null,
                 'backendType'  => null,
-                'attribute_options' => array()
-            ),
+                'attribute_options' => []
+            ],
             $options
         );
 
         $value = $this->getMock(
             'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
-            array('getAttribute', 'getData')
+            ['getAttribute', 'getData']
         );
 
         $attributeMock = $this->getAttributeMock(
@@ -140,7 +140,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
-    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = [])
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 

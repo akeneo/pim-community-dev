@@ -29,7 +29,7 @@ class AvailableLocalesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'required' => false,
                 'multiple' => true,
                 'select2' => true,
@@ -37,7 +37,7 @@ class AvailableLocalesType extends AbstractType
                 'query_builder' => function (LocaleRepository $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
-            )
+            ]
         );
     }
 

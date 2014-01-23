@@ -22,9 +22,9 @@ class TimeGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_date',
-            )
+            ]
         );
     }
 
@@ -33,7 +33,7 @@ class TimeGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ($attribute->getDateType() === 'time') {
             $constraints[] = new Time();

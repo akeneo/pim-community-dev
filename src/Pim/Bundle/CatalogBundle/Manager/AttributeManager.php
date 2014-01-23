@@ -158,25 +158,25 @@ class AttributeManager implements AttributeManagerInterface
      */
     public function prepareFormData($data)
     {
-        $optionTypes = array(
+        $optionTypes = [
             'pim_catalog_multiselect',
             'pim_catalog_simpleselect'
-        );
+        ];
 
         // If the attribute type can have options but no options have been created,
         // create an empty option to render the corresponding form fields
         if (in_array($data['attributeType'], $optionTypes) && !isset($data['options'])) {
-            $option = array(
-                'optionValues' => array()
-            );
+            $option = [
+                'optionValues' => []
+            ];
 
             foreach ($this->localeManager->getActiveLocales() as $locale) {
-                $option['optionValues'][] = array(
+                $option['optionValues'][] = [
                     'locale' => $locale->getCode()
-                );
+                ];
             }
 
-            $data['options'] = array($option);
+            $data['options'] = [$option];
         }
 
         return $data;
@@ -188,7 +188,7 @@ class AttributeManager implements AttributeManagerInterface
     public function getAttributeTypes()
     {
         $types = $this->factory->getAttributeTypes($this->productClass);
-        $choices = array();
+        $choices = [];
         foreach ($types as $type) {
             $choices[$type] = $type;
         }
@@ -205,7 +205,7 @@ class AttributeManager implements AttributeManagerInterface
     public function getAttributeGroupChoices()
     {
         $groups = $this->objectManager->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getCode()] = $group->getLabel();
         }

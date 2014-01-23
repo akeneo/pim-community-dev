@@ -68,7 +68,7 @@ class DefaultValueListenerTest extends AbstractOrmTest
      */
     public function testGetSubscribedEvents()
     {
-        $events = array('prePersist', 'preUpdate');
+        $events = ['prePersist', 'preUpdate'];
         $this->assertEquals($this->listener->getSubscribedEvents(), $events);
     }
 

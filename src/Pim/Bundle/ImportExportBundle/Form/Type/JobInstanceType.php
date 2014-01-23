@@ -120,11 +120,11 @@ class JobInstanceType extends AbstractType
             ->add(
                 'connector',
                 'hidden',
-                array(
+                [
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false
-                )
+                ]
             );
 
         return $this;
@@ -146,7 +146,7 @@ class JobInstanceType extends AbstractType
             ->add(
                 'alias',
                 'choice',
-                array(
+                [
                     'choices'      => $choices,
                     'required'     => true,
                     'by_reference' => false,
@@ -154,7 +154,7 @@ class JobInstanceType extends AbstractType
                     'empty_value'  => 'Select a job',
                     'empty_data'   => null,
                     'label'        => 'Job'
-                )
+                ]
             );
 
         return $this;
@@ -173,10 +173,10 @@ class JobInstanceType extends AbstractType
             ->add(
                 'job',
                 'pim_import_export_job_configuration',
-                array(
+                [
                     'required'     => false,
                     'by_reference' => false,
-                )
+                ]
             )
             ->get('job')
             ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());

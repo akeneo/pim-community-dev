@@ -42,13 +42,13 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
         $serializerDef = $this->getDefinitionMock();
         $container = $this->getContainerBuilderMock(
             $serializerDef,
-            array(
-                'pim_serializer.normalizer.foo' => array(),
-                'pim_serializer.normalizer.bar' => array(),
-            ),
-            array(
-                'pim_serializer.encoder.baz' => array(),
-            )
+            [
+                'pim_serializer.normalizer.foo' => [],
+                'pim_serializer.normalizer.bar' => [],
+            ],
+            [
+                'pim_serializer.encoder.baz' => [],
+            ]
         );
 
         $this->factory
@@ -71,7 +71,7 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
 
         $serializerDef->expects($this->once())
             ->method('setArguments')
-            ->with(array(array($foo, $bar), array($baz)));
+            ->with([[$foo, $bar], [$baz]]);
 
         $this->pass->process($container);
     }
@@ -95,8 +95,8 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
      */
     private function getContainerBuilderMock(
         $definition = null,
-        array $normalizers = array(),
-        array $encoders = array()
+        array $normalizers = [],
+        array $encoders = []
     ) {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 

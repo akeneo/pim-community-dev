@@ -40,9 +40,9 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
             if ($reader instanceof FileReader) {
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
-                    array(
+                    [
                         '%filename%' => basename($reader->getFilePath()),
-                    )
+                    ]
                 );
                 $this->filesystem->write($key, file_get_contents($reader->getFilePath()), true);
             }

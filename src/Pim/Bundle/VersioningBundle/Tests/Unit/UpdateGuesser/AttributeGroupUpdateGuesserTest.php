@@ -65,7 +65,7 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
         $mock
             ->expects($this->any())
             ->method('getEntityChangeSet')
-            ->will($this->returnValue(array('group' => array($group))));
+            ->will($this->returnValue(['group' => [$group]]));
 
         return $mock;
     }

@@ -27,7 +27,7 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(Entitymanager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
         if ($entity instanceof AttributeInterface) {
             $pendings[] = $entity;
             $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);

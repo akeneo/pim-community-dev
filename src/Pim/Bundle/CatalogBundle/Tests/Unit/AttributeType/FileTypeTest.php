@@ -28,14 +28,14 @@ class FileTypeTest extends AttributeTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = [])
     {
         $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
 
         $attribute
             ->expects($this->any())
             ->method('getAllowedExtensions')
-            ->will($this->returnValue(array('pdf', 'odt', 'doc', 'xls')));
+            ->will($this->returnValue(['pdf', 'odt', 'doc', 'xls']));
 
         return $attribute;
     }

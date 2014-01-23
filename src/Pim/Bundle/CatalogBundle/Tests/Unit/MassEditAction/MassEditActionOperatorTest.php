@@ -32,7 +32,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
         $operation = $this->getMassEditActionMock();
         $this->operator->registerMassEditAction('foo', $operation);
 
-        $this->assertAttributeEquals(array('foo' => $operation), 'operations', $this->operator);
+        $this->assertAttributeEquals(['foo' => $operation], 'operations', $this->operator);
     }
 
     /**
@@ -54,10 +54,10 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
         $this->operator->registerMassEditAction('bar', $this->getMassEditActionMock());
 
         $this->assertEquals(
-            array(
+            [
                 'foo' => 'pim_catalog.mass_edit_action.foo.label',
                 'bar' => 'pim_catalog.mass_edit_action.bar.label',
-            ),
+            ],
             $this->operator->getOperationChoices()
         );
     }
@@ -96,9 +96,9 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
 
         $operation->expects($this->once())
             ->method('perform')
-            ->with(array(1, 2, 3));
+            ->with([1, 2, 3]);
 
-        $this->operator->performOperation(array(1, 2, 3));
+        $this->operator->performOperation([1, 2, 3]);
     }
 
     /**
@@ -112,9 +112,9 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
 
         $operation->expects($this->once())
             ->method('initialize')
-            ->with(array(1, 2, 3));
+            ->with([1, 2, 3]);
 
-        $this->operator->initializeOperation(array(1, 2, 3));
+        $this->operator->initializeOperation([1, 2, 3]);
     }
 
     /**

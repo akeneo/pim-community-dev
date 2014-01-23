@@ -28,10 +28,10 @@ class VariantGroupController extends GroupController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(true)),
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -48,7 +48,7 @@ class VariantGroupController extends GroupController
 
         $groupType = $this->groupManager
             ->getGroupTypeRepository()
-            ->findOneBy(array('code' => 'VARIANT'));
+            ->findOneBy(['code' => 'VARIANT']);
 
         $group = new Group();
         $group->setType($groupType);
@@ -58,16 +58,16 @@ class VariantGroupController extends GroupController
 
             $url = $this->generateUrl(
                 'pim_catalog_variant_group_edit',
-                array('id' => $group->getId())
+                ['id' => $group->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupForm->createView()
-        );
+        ];
     }
 
     /**
@@ -82,10 +82,10 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.updated');
         }
 
-        return array(
+        return [
             'form'         => $this->groupForm->createView(),
             'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
             'currentGroup' => $group->getId()
-        );
+        ];
     }
 }

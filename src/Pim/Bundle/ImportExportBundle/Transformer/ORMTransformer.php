@@ -46,17 +46,17 @@ class ORMTransformer
     /**
      * @var array
      */
-    protected $transformers = array();
+    protected $transformers = [];
 
     /**
      * @var array
      */
-    protected $transformedColumns = array();
+    protected $transformedColumns = [];
 
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Constructor
@@ -87,10 +87,10 @@ class ORMTransformer
      *
      * @return object
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
-        $this->transformedColumns = array();
-        $this->errors = array();
+        $this->transformedColumns = [];
+        $this->errors = [];
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
         $this->setProperties($class, $entity, $data);
@@ -132,7 +132,7 @@ class ORMTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {
-                $this->errors[$label] = array($error);
+                $this->errors[$label] = [$error];
             }
         }
     }
@@ -163,7 +163,7 @@ class ORMTransformer
                 $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
             }
         } catch (PropertyTransformerException $ex) {
-            return array($ex->getMessageTemplate(), $ex->getMessageParameters());
+            return [$ex->getMessageTemplate(), $ex->getMessageParameters()];
         }
 
         $this->transformedColumns[] = $columnInfo;
@@ -182,14 +182,14 @@ class ORMTransformer
         $label = $columnInfo->getLabel();
         if (!isset($this->transformers[$class][$label])) {
             if (!isset($this->transformers[$class])) {
-                $this->transformers[$class] = array();
+                $this->transformers[$class] = [];
             }
             $this->transformers[$class][$label] = $this->guesser->getTransformerInfo(
                 $columnInfo,
                 $this->doctrine->getManager()->getClassMetadata($class)
             );
             if (!$this->transformers[$class][$label]) {
-                throw new UnknownColumnException(array($label));
+                throw new UnknownColumnException([$label]);
             }
         }
 

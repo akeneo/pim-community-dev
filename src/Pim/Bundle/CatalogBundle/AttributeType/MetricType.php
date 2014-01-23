@@ -21,7 +21,7 @@ class MetricType extends FlexMetricType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['default_unit'] = array($options['default_unit']);
+        $options['default_unit'] = [$options['default_unit']];
 
         return $options;
     }
@@ -31,79 +31,79 @@ class MetricType extends FlexMetricType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = [
+            [
                 'name' => 'defaultValue'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'numberMin',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'numberMax',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'decimalsAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            [
                 'name'      => 'negativeAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            [
                 'name'    => 'metricFamily',
-                'options' => array(
+                'options' => [
                     'required'  => true,
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'    => 'defaultMetricUnit',
-                'options' => array(
+                'options' => [
                     'required' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'translatable',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'availableLocales',
                 'fieldType' => 'pim_catalog_available_locales'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => true,
                     'read_only' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         return $properties;
     }

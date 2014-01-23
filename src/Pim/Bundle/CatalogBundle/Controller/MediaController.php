@@ -88,9 +88,9 @@ class MediaController extends AbstractDoctrineController
     public function showAction(Request $request, $filename)
     {
         $media = $this->getRepository('Pim\Bundle\CatalogBundle\Model\Media')->findOneBy(
-            array(
+            [
                 'filename' => $filename
-            )
+            ]
         );
 
         if (!$media) {

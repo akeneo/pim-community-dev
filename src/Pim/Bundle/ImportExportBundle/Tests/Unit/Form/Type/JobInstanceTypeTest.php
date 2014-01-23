@@ -34,14 +34,14 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
     {
         $jobType = new JobConfigurationType();
 
-        return array(
+        return [
             new PreloadedExtension(
-                array(
+                [
                     $jobType->getName() => $jobType,
-                ),
-                array()
+                ],
+                []
             )
-        );
+        ];
     }
 
     /**

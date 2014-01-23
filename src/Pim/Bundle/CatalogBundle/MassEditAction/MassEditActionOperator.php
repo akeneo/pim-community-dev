@@ -45,14 +45,14 @@ class MassEditActionOperator
      * @var MassEditActionInterface[] $operations
      * @Exclude
      */
-    protected $operations = array();
+    protected $operations = [];
 
     /**
      * The default acls for each configured operation, indexed by code
      *
      * @var string[] $acls
      */
-    protected $acls = array();
+    protected $acls = [];
 
     /**
      * @param ProductManager $manager
@@ -91,7 +91,7 @@ class MassEditActionOperator
      */
     public function getOperationChoices()
     {
-        $choices = array();
+        $choices = [];
 
         foreach (array_keys($this->operations) as $alias) {
             if ($this->isGranted($alias)) {

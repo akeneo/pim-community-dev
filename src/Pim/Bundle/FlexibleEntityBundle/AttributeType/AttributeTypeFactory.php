@@ -28,7 +28,7 @@ class AttributeTypeFactory
     /**
      * @param array $types
      */
-    public function __construct(array $types = array())
+    public function __construct(array $types = [])
     {
         $this->types = $types;
     }
@@ -46,13 +46,13 @@ class AttributeTypeFactory
             foreach ($this->types as $alias => $properties) {
                 $entity = $properties['entity'];
                 if (!isset($this->entityToAliases[$entity])) {
-                    $this->entityToAliases[$entity] = array();
+                    $this->entityToAliases[$entity] = [];
                 }
                 $this->entityToAliases[$entity][] = $alias;
             }
         }
 
-        return (isset($this->entityToAliases[$entity])) ? $this->entityToAliases[$entity] : array();
+        return (isset($this->entityToAliases[$entity])) ? $this->entityToAliases[$entity] : [];
     }
 
     /**

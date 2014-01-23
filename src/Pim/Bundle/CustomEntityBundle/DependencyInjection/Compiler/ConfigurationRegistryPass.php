@@ -32,7 +32,7 @@ class ConfigurationRegistryPass implements CompilerPassInterface
     {
         $definition = $container->getDefinition(self::CONFIGURATION_REGISTRY_SERVICE);
         foreach (array_keys($container->findTaggedServiceIds(self::CONFIGURATION_TAG)) as $serviceId) {
-            $definition->addMethodCall('add', array(new Reference($serviceId)));
+            $definition->addMethodCall('add', [new Reference($serviceId)]);
         }
     }
 }

@@ -112,11 +112,11 @@ class JobExecutionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'execution'   => $jobExecution,
                 'existingLog' => file_exists($jobExecution->getLogFile()),
                 'archives'    => $this->archivist->getArchives($jobExecution),
-            )
+            ]
         );
     }
 
@@ -160,7 +160,7 @@ class JobExecutionController extends AbstractDoctrineController
                 $stream->close();
             },
             200,
-            array('Content-Type' => 'application/octet-stream')
+            ['Content-Type' => 'application/octet-stream']
         );
 
     }

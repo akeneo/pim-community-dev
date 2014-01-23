@@ -32,38 +32,38 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderForLocaleLabel()
     {
-        return array(
-            'FR' => array(
+        return [
+            'FR' => [
                 'fr_FR',
-                array(
+                [
                     'en_US' => 'anglais (États-Unis)',
                     'en_EN' => 'anglais (EN)',
                     'fr_FR' => 'français (France)',
                     'de_DE' => 'allemand (Allemagne)',
                     'azert' => 'azert'
-                )
-            ),
-            'EN' => array(
+                ]
+            ],
+            'EN' => [
                 'en_US',
-                array(
+                [
                     'en_US' => 'English (United States)',
                     'en_EN' => 'English (EN)',
                     'fr_FR' => 'French (France)',
                     'de_DE' => 'German (Germany)',
                     'azert' => 'azert'
-                )
-            ),
-            'DE' => array(
+                ]
+            ],
+            'DE' => [
                 'de_DE',
-                array(
+                [
                     'en_US' => 'Englisch (Vereinigte Staaten)',
                     'en_EN' => 'Englisch (EN)',
                     'fr_FR' => 'Französisch (Frankreich)',
                     'de_DE' => 'Deutsch (Deutschland)',
                     'azert' => 'azert'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

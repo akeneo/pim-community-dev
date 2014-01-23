@@ -18,8 +18,8 @@ class ResolveDoctrineOrmTargetEntitiesPass extends AbstractResolveDoctrineOrmTar
      */
     protected function getParametersMapping()
     {
-        return array(
+        return [
             'Pim\Bundle\ImportExportBundle\Model\ExportInterface' => 'pim_import_export.entity.export.class',
-        );
+        ];
     }
 }

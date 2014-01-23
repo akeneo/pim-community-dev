@@ -19,40 +19,40 @@ class BooleanType extends FlexBooleanType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = [
+            [
                 'name'      => 'defaultValue',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'translatable',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'availableLocales',
                 'fieldType' => 'pim_catalog_available_locales'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => true,
                     'read_only' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         return $properties;
     }

@@ -73,7 +73,7 @@ class CrudStrategy implements StrategyInterface
     {
         $template = $configuration->getIndexTemplate();
 
-        return $this->render($configuration, $request, $template, array());
+        return $this->render($configuration, $request, $template, []);
     }
 
     /**
@@ -103,13 +103,13 @@ class CrudStrategy implements StrategyInterface
 
                 $this->addFlash($request, 'success', sprintf('flash.%s.created', $configuration->getName()));
 
-                $response = array(
+                $response = [
                     'status' => 1,
                     'url' => $this->router->generate(
                         $configuration->getCreateRedirectRoute($entity),
                         $configuration->getCreateRedirectRouteParameters($entity)
                     )
-                );
+                ];
 
                 return new Response(json_encode($response));
             }
@@ -119,7 +119,7 @@ class CrudStrategy implements StrategyInterface
             $configuration,
             $request,
             $configuration->getCreateTemplate(),
-            array('form' => $form->createView())
+            ['form' => $form->createView()]
         );
     }
 
@@ -161,7 +161,7 @@ class CrudStrategy implements StrategyInterface
             $configuration,
             $request,
             $configuration->getEditTemplate(),
-            array('form' => $form->createView())
+            ['form' => $form->createView()]
         );
     }
 
@@ -233,14 +233,14 @@ class CrudStrategy implements StrategyInterface
      */
     protected function getViewVars(ConfigurationInterface $configuration, Request $request)
     {
-        return array(
+        return [
             'customEntityName' => $configuration->getName(),
             'baseTemplate'     => $configuration->getBaseTemplate(),
             'indexRoute'       => $configuration->getIndexRoute(),
             'editRoute'        => $configuration->getEditRoute(),
             'createRoute'      => $configuration->getCreateRoute(),
             'removeRoute'      => $configuration->getRemoveRoute()
-        );
+        ];
     }
 
     /**
@@ -257,7 +257,7 @@ class CrudStrategy implements StrategyInterface
         ConfigurationInterface $configuration,
         Request $request,
         $template,
-        array $parameters = array()
+        array $parameters = []
     ) {
         return $this->templating->renderResponse($template, $parameters + $this->getViewVars($configuration, $request));
     }

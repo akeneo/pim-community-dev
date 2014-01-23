@@ -32,7 +32,7 @@ class Reader extends AbstractConfigurableStepElement implements
     private $executed = false;
 
     /** @var array */
-    protected $results = array();
+    protected $results = [];
 
     /**
      * Set query used by the reader
@@ -82,7 +82,7 @@ class Reader extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

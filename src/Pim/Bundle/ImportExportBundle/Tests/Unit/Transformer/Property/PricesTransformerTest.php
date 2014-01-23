@@ -15,12 +15,12 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function getSetValuesData()
     {
-        return array(
-            'single_price' => array('currency', '25', array('currency' => 25)),
-            'array'        => array(null, array('cur1' => '14', 'cur2' => '25'), array('cur1' => '14', 'cur2' => '25')),
-            'string'       => array(null, '10 cur1, 12.2 cur2', array('cur1' => '10', 'cur2' => '12.2')),
-            'null'         => array(null, null, array())
-        );
+        return [
+            'single_price' => ['currency', '25', ['currency' => 25]],
+            'array'        => [null, ['cur1' => '14', 'cur2' => '25'], ['cur1' => '14', 'cur2' => '25']],
+            'string'       => [null, '10 cur1, 12.2 cur2', ['cur1' => '10', 'cur2' => '12.2']],
+            'null'         => [null, null, []]
+        ];
     }
 
     /**
@@ -31,16 +31,16 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array($suffix)));
+            ->will($this->returnValue([$suffix]));
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->setMethods(['setPrices', 'addPriceForCurrency', '__toString'])
             ->getMock();
 
         if (!$suffix) {
             $object->expects($this->once())
                 ->method('setPrices')
-                ->with($this->equalTo(array()));
+                ->with($this->equalTo([]));
         }
         $object->expects($this->exactly(count($expectedPrices)))
             ->method('addPriceForCurrency')
@@ -70,9 +70,9 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->setMethods(['setPrices', 'addPriceForCurrency', '__toString'])
             ->getMock();
 
         $transformer = new PricesTransformer();

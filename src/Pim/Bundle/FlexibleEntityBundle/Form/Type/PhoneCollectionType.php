@@ -23,7 +23,7 @@ class PhoneCollectionType extends CollectionAbstract
         $builder->add(
             'collection',
             'collection',
-            array(
+            [
                 'type'           => new PhoneType(),
 
                 'allow_add'      => true,
@@ -32,7 +32,7 @@ class PhoneCollectionType extends CollectionAbstract
                 'prototype'      => true,
                 'prototype_name' => '__name__',
                 'label'          => ' '
-            )
+            ]
         );
     }
 

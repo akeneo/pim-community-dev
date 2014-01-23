@@ -26,7 +26,7 @@ class TranslationsUpdateGuesserTest extends AbstractUpdateGuesserTest
         $translation->setLocale('en_US');
         $translation->setForeignKey($category);
 
-        $guesser   = new TranslationsUpdateGuesser(array('Pim\Bundle\CatalogBundle\Entity\Category'));
+        $guesser   = new TranslationsUpdateGuesser(['Pim\Bundle\CatalogBundle\Entity\Category']);
         $em        = $this->getEntityManagerMock();
         $updates   = $guesser->guessUpdates($em, $translation, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));

@@ -46,8 +46,8 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
 
-        $editableColumn = array();
-        $labelColumn = array();
+        $editableColumn = [];
+        $labelColumn = [];
         foreach ($propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
                 $editableColumn[$columnCode] = $columnData;
@@ -57,14 +57,14 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
                 unset($propertiesColumns[$columnCode]);
             }
         }
-        $identifierColumn = array();
+        $identifierColumn = [];
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();
             },
             $this->group->getAttributes()->toArray()
         );
-        $axisColumns = array();
+        $axisColumns = [];
 
         foreach ($this->attributes as $attributeCode => $attribute) {
             $attributeType     = $attribute->getAttributeType();
@@ -73,15 +73,15 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 if ($attributeType === 'pim_catalog_identifier') {
                     $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + array(
+                    $columnConfig = $columnConfig + [
                         'label' => $attribute->getLabel(),
-                    );
+                    ];
                     $identifierColumn[$attributeCode] = $columnConfig;
                 } elseif (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + array(
+                    $columnConfig = $columnConfig + [
                         'label' => $attribute->getLabel(),
-                    );
+                    ];
                     $axisColumns[$attributeCode] = $columnConfig;
                 }
             }

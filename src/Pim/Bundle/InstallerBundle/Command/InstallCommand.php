@@ -162,7 +162,7 @@ class InstallCommand extends ContainerAwareCommand
                 . DIRECTORY_SEPARATOR . 'PimRequirements.php';
         }
 
-        $directories = array();
+        $directories = [];
 
         if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
             $directories[] = $this->getContainer()->getParameter('upload_dir');
@@ -213,17 +213,17 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('<info>Prepare database schema</info>');
 
         $this->commandExecutor
-            ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:drop', ['--force' => true, '--full-database' => true])
             ->runCommand('doctrine:schema:create')
             ->runCommand('oro:entity-config:init')
             ->runCommand('oro:entity-extend:init')
             ->runCommand(
                 'oro:entity-extend:update-config',
-                array('--process-isolation' => true)
+                ['--process-isolation' => true]
             )
             ->runCommand(
                 'doctrine:schema:update',
-                array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
+                ['--process-isolation' => true, '--force' => true, '--no-interaction' => true]
             );
 
         $this
@@ -271,7 +271,7 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('<info>Load fixtures.</info>');
 
         $params =
-            array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
+            ['--process-isolation' => true, '--no-interaction' => true, '--append' => true]
             + $this->getFixturesList($input->getOption('fixtures'));
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
@@ -298,15 +298,15 @@ class InstallCommand extends ContainerAwareCommand
                 ->path('/Oro\/Bundle\/.*Bundle\/DataFixtures$/')
                 ->directories();
 
-            $oroFixtures = array();
+            $oroFixtures = [];
             foreach ($directories as $directory) {
                 $oroFixtures[] = $directory->getPathName();
             }
 
-            return array('--fixtures' => $oroFixtures);
+            return ['--fixtures' => $oroFixtures];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -364,12 +364,12 @@ class InstallCommand extends ContainerAwareCommand
         $role = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
+            ->findOneBy(['role' => 'ROLE_ADMINISTRATOR']);
 
         $businessUnit = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => 'Main'));
+            ->findOneBy(['name' => 'Main']);
 
         $options = $input->getOptions();
         $userName = $input->getOption('user-name');
@@ -422,7 +422,7 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:search:create-index')
             ->runCommand(
                 'pim:search:reindex',
-                array('locale' => $this->getContainer()->getParameter('locale'))
+                ['locale' => $this->getContainer()->getParameter('locale')]
             )
             ->runCommand('pim:versioning:refresh')
             ->runCommand('pim:completeness:calculate');
@@ -444,7 +444,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $this->commandExecutor
             ->runCommand('oro:navigation:init')
-            ->runCommand('fos:js-routing:dump', array('--target' => 'web/js/routes.js'))
+            ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
             ->runCommand('oro:localization:dump')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
@@ -499,18 +499,18 @@ class InstallCommand extends ContainerAwareCommand
         $table = $this->getHelperSet()->get('table');
 
         $table
-            ->setHeaders(array('Check  ', $header))
-            ->setRows(array());
+            ->setHeaders(['Check  ', $header])
+            ->setRows([]);
 
         foreach ($collection as $requirement) {
             if ($requirement->isFulfilled()) {
-                $table->addRow(array('OK', $requirement->getTestMessage()));
+                $table->addRow(['OK', $requirement->getTestMessage()]);
             } else {
                 $table->addRow(
-                    array(
+                    [
                         $requirement->isOptional() ? 'WARNING' : 'ERROR',
                         $requirement->getHelpText()
-                    )
+                    ]
                 );
             }
         }

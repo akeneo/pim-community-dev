@@ -26,7 +26,7 @@ class AddContextListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new AddContextListener($builder);
         $this->assertEquals(
             $listener->getSubscribedEvents(),
-            array('oro_batch.before_job_execution' => 'addContext')
+            ['oro_batch.before_job_execution' => 'addContext']
         );
     }
 

@@ -41,11 +41,11 @@ class CursorReaderTest extends \PHPUnit_Framework_TestCase
     {
         $query  = $this->getQueryMock();
         $result = $this->getIterableResultMock(
-            array(
+            [
                 $item1 = 'foo',
                 $item2 = 'bar',
                 $item3 = 'baz',
-            )
+            ]
         );
 
         $query->expects($this->any())
@@ -66,7 +66,7 @@ class CursorReaderTest extends \PHPUnit_Framework_TestCase
     {
         return $this
             ->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->setMethods(array('_doExecute', 'getSQL', 'iterate'))
+            ->setMethods(['_doExecute', 'getSQL', 'iterate'])
             ->disableOriginalConstructor()
             ->getMock();
     }

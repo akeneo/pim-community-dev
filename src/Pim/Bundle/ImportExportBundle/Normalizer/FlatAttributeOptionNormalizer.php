@@ -16,14 +16,14 @@ class FlatAttributeOptionNormalizer extends AttributeOptionNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
      */
     protected function normalizeLabel(AttributeOption $entity)
     {
-        $values = array();
+        $values = [];
         foreach ($entity->getOptionValues() as $translation) {
             $values[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
         }

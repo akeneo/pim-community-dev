@@ -37,9 +37,9 @@ class AddContextListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::BEFORE_JOB_EXECUTION => 'addContext'
-        );
+        ];
     }
 
     /**

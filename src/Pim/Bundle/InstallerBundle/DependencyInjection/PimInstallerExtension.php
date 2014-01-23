@@ -37,7 +37,7 @@ class PimInstallerExtension extends Extension
         $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
         $dataPath   = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'] . '/';
 
-        $entities = array(
+        $entities = [
             'channels',
             'locales',
             'currencies',
@@ -50,12 +50,12 @@ class PimInstallerExtension extends Extension
             'associations',
             'jobs',
             'products'
-        );
-        $installerFiles = array();
+        ];
+        $installerFiles = [];
 
         foreach ($entities as $entity) {
             $file = $dataPath.$entity;
-            foreach (array('.yml', '.csv') as $extension) {
+            foreach (['.yml', '.csv'] as $extension) {
                 if (is_file($file . $extension)) {
                     $installerFiles[$entity] = $file . $extension;
                     break;

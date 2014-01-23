@@ -37,7 +37,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertConfigValues(
             $this->getConfiguration(),
-            array(
+            [
                 'name'                              => 'name',
                 'entity_class'                      => 'entity_class',
                 'edit_form_type'                    => 'edit_form_type',
@@ -45,21 +45,21 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'edit_template'                     => 'PimCustomEntityBundle:CustomEntity:edit.html.twig',
                 'index_template'                    => 'PimCustomEntityBundle:CustomEntity:index.html.twig',
                 'create_template'                   => 'PimCustomEntityBundle:CustomEntity:quickcreate.html.twig',
-                'create_form_options'               => array(),
+                'create_form_options'               => [],
                 'create_form_type'                  => 'edit_form_type',
-                'create_default_properties'         => array(),
-                'create_options'                    => array(),
+                'create_default_properties'         => [],
+                'create_options'                    => [],
                 'index_route'                       => 'pim_customentity_index',
                 'create_route'                      => 'pim_customentity_create',
                 'edit_route'                        => 'pim_customentity_edit',
                 'remove_route'                      => 'pim_customentity_remove',
-                'edit_form_options'                 => array(),
-                'find_options'                      => array(),
-                'query_builder_options'             => array(),
+                'edit_form_options'                 => [],
+                'find_options'                      => [],
+                'query_builder_options'             => [],
                 'datagrid_namespace'                => 'pim_custom_entity',
                 'manager'                           => $this->manager,
                 'controller_strategy'               => $this->controllerStrategy
-            )
+            ]
         );
     }
 
@@ -68,7 +68,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testUserOptions()
     {
-        $userOptions = array(
+        $userOptions = [
             'entity_class'                      => 'entity_class',
             'edit_form_type'                    => 'edit_form_type',
             'base_template'                     => 'base_template',
@@ -87,7 +87,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'find_options'                      => 'find_options',
             'query_builder_options'             => 'query_builder_options',
             'datagrid_namespace'                => 'datagrid_namespace'
-        );
+        ];
         $this->assertConfigValues($this->getConfiguration($userOptions), $userOptions);
     }
 
@@ -98,16 +98,16 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertConfigValues(
             $this->getConfiguration(
-                array(
+                [
                     'edit_form_options' => 'edit_form_options'
-                )
+                ]
             ),
-            array(
+            [
                 'edit_form_type'        => 'edit_form_type',
                 'create_form_type'      => 'edit_form_type',
                 'edit_form_options'     => 'edit_form_options',
                 'create_form_options'   => 'edit_form_options',
-            )
+            ]
         );
     }
 
@@ -120,14 +120,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $configuration = $this->getConfiguration(
-            array(
+            [
                 'index_route'           =>'index_route',
                 'edit_after_create'     => false
-            )
+            ]
         );
         $this->assertEquals('index_route', $configuration->getCreateRedirectRoute($entity));
         $this->assertEquals(
-            array('customEntityName' => 'name'),
+            ['customEntityName' => 'name'],
             $configuration->getCreateRedirectRouteParameters($entity)
         );
     }
@@ -138,7 +138,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testGetCreateRedirectAsEdit()
     {
         $entity = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getId'))
+            ->setMethods(['getId'])
             ->getMock();
 
         $entity->expects($this->any())
@@ -146,13 +146,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('id'));
 
         $configuration = $this->getConfiguration(
-            array(
+            [
                 'edit_route'           =>'edit_route',
-            )
+            ]
         );
         $this->assertEquals('edit_route', $configuration->getCreateRedirectRoute($entity));
         $this->assertEquals(
-            array('customEntityName' => 'name', 'id' => 'id'),
+            ['customEntityName' => 'name', 'id' => 'id'],
             $configuration->getCreateRedirectRouteParameters($entity)
         );
     }
@@ -166,13 +166,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $configuration = $this->getConfiguration(
-            array(
+            [
                 'index_route'           =>'index_route',
-            )
+            ]
         );
         $this->assertEquals('index_route', $configuration->getEditRedirectRoute($entity));
         $this->assertEquals(
-            array('customEntityName' => 'name'),
+            ['customEntityName' => 'name'],
             $configuration->getEditRedirectRouteParameters($entity)
         );
     }
@@ -197,12 +197,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @return Configuration
      */
-    protected function getConfiguration(array $options = array())
+    protected function getConfiguration(array $options = [])
     {
-        $options = $options + array(
+        $options = $options + [
             'entity_class'      => 'entity_class',
             'edit_form_type'    => 'edit_form_type'
-        );
+        ];
 
         return new Configuration('name', $this->manager, $this->controllerStrategy, $options);
     }

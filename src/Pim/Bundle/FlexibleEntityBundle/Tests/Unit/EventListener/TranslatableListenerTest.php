@@ -39,7 +39,7 @@ class TranslatableListenerTest extends AbstractFlexibleManagerTest
      */
     public function testGetSubscribedEvents()
     {
-        $events = array('postLoad');
+        $events = ['postLoad'];
         $this->assertEquals($this->listener->getSubscribedEvents(), $events);
     }
 

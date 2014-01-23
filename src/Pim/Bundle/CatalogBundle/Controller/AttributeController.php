@@ -71,10 +71,10 @@ class AttributeController extends AbstractDoctrineController
     /**
      * @var array
      */
-    protected $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = [
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect'
-    );
+    ];
 
     /**
      * Constructor
@@ -138,9 +138,9 @@ class AttributeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -157,15 +157,15 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig
-        );
+        ];
     }
 
     /**
@@ -184,17 +184,17 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
-        );
+        ];
     }
 
     /**
@@ -220,24 +220,24 @@ class AttributeController extends AbstractDoctrineController
         $disabledLocales = $this->localeManager->getDisabledLocales();
         $form            = $this->attributeForm->createView();
 
-        $data = array(
+        $data = [
             'parameters' => $this->renderView(
                 'PimCatalogBundle:Attribute:_form_parameters.html.twig',
-                array(
+                [
                     'form'            => $form,
                     'locales'         => $locales,
                     'disabledLocales' => $disabledLocales
-                )
+                ]
             ),
             'values' => $this->renderView(
                 'PimCatalogBundle:Attribute:_form_values.html.twig',
-                array(
+                [
                     'form'            => $form,
                     'locales'         => $locales,
                     'disabledLocales' => $disabledLocales
-                )
+                ]
             )
-        );
+        ];
 
         return new JsonResponse($data);
     }
@@ -289,7 +289,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_attribute_edit', ['id'=> $attribute->getId()]);
         }
 
         $option = new AttributeOption();
@@ -308,23 +308,23 @@ class AttributeController extends AbstractDoctrineController
             if ($form->isValid()) {
                 $this->getManager()->persist($option);
                 $this->getManager()->flush();
-                $response = array(
+                $response = [
                     'status' => 1,
-                    'option' => array(
+                    'option' => [
                         'id'    => $option->getId(),
                         'label' => $option->setLocale($dataLocale)->__toString()
-                    )
-                );
+                    ]
+                ];
 
                 return new Response(json_encode($response));
             }
         }
 
-        return array(
+        return [
             'attribute'  => $attribute,
             'dataLocale' => $dataLocale,
             'form'       => $form->createView()
-        );
+        ];
     }
 
     /**
@@ -378,12 +378,12 @@ class AttributeController extends AbstractDoctrineController
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
-            $messageParameters = array();
+            $messageParameters = [];
         } else {
             $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->countForAttribute($attribute);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
-                $messageParameters = array('%count%' => $groupCount);
+                $messageParameters = ['%count%' => $groupCount];
             }
         }
 

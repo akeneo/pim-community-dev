@@ -30,7 +30,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             ->getMock();
         $this->transformer->expects($this->any())
             ->method('getTransformedColumnsInfo')
-            ->will($this->returnValue(array('columns_info')));
+            ->will($this->returnValue(['columns_info']));
         $this->transformer->expects($this->any())
             ->method('transform')
             ->will(
@@ -77,15 +77,15 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
      */
     protected function getExpectedConfigurationFields()
     {
-        return array(
-            'circularRefsChecked' => array(
+        return [
+            'circularRefsChecked' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_import_export.import.circularRefsChecked.label',
                     'help'  => 'pim_import_export.import.circularRefsChecked.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     public function testGetConfigurationFields()
@@ -99,17 +99,17 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransform()
     {
         $this->processor->setStepExecution($this->stepExecution);
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root'],
+        ];
 
         $this->transformer->expects($this->any())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $categories = $this->processor->process($data);
 
@@ -122,15 +122,15 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransformWithPersistedParent()
     {
         $this->processor->setStepExecution($this->stepExecution);
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'persisted'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'persisted'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root'],
+        ];
 
-        $persisted = $this->getCategoryMock(array('code' => 'persisted', 'parent' => null));
+        $persisted = $this->getCategoryMock(['code' => 'persisted', 'parent' => null]);
         $this->entityCache->expects($this->once())
             ->method('find')
             ->with($this->equalTo('class'), $this->equalTo('persisted'))
@@ -138,7 +138,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
         $this->transformer->expects($this->any())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $categories = $this->processor->process($data);
 
@@ -151,23 +151,23 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransformWithMissingParent()
     {
         $this->processor->setStepExecution($this->stepExecution);
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'bad_root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'bad_root'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root'],
+        ];
 
         $this->transformer->expects($this->any())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->assertErrors(
-            array(
+            [
                 'leaf'    => 'parent: <tr>No category with code bad_root</tr>',
                 'subleaf' => 'parent: <tr>No category with code leaf</tr>',
-            ),
+            ],
             $data
         );
 
@@ -183,24 +183,24 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransformWithCircularReferences()
     {
         $this->processor->setStepExecution($this->stepExecution);
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => 'leaf'),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => 'leaf'],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root2'],
+        ];
 
         $this->transformer->expects($this->any())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->assertErrors(
-            array(
+            [
                 'subleaf' => 'parent: <tr>Circular reference</tr>',
                 'leaf'    => 'parent: <tr>Circular reference</tr>',
                 'root'    => 'parent: <tr>Circular reference</tr>',
-            ),
+            ],
             $data
         );
 
@@ -214,13 +214,13 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransformWithErrors()
     {
         $this->processor->setStepExecution($this->stepExecution);
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root2'],
+        ];
 
         $iteration = 0;
         $this->transformer->expects($this->any())
@@ -231,17 +231,17 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                         $iteration++;
 
                         return ($iteration==2)
-                            ? array('key1' => array(array('Error')))
-                            : array();
+                            ? ['key1' => [['Error']]]
+                            : [];
                     }
                 )
             );
 
         $this->assertErrors(
-            array(
+            [
                 'root2'   => 'key1: <tr>Error</tr>',
                 'leaf2'   => 'parent: <tr>No category with code root2</tr>',
-            ),
+            ],
             $data
         );
 
@@ -260,13 +260,13 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
      */
     public function testTransformWithErrorsWithoutStepExecution()
     {
-        $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
-            'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
-        );
+        $data = [
+            'root'    => ['code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null],
+            'root2'   => ['code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'],
+            'leaf'    => ['code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'],
+            'subleaf' => ['code' => 'subleaf', 'parent' => 'leaf'],
+            'leaf2'    => ['code' => 'leaf2', 'parent' => 'root2'],
+        ];
 
         $iteration = 0;
         $this->transformer->expects($this->any())
@@ -277,8 +277,8 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                         $iteration++;
 
                         return ($iteration==2)
-                            ? array('key1' => array(array('Error')))
-                            : array();
+                            ? ['key1' => [['Error']]]
+                            : [];
                     }
                 )
             );
@@ -322,7 +322,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     protected function getCategoryMock($data)
     {
         $category = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\CategoryInterface')
-            ->setMethods(array('getParent', 'setParent', 'getCode'))
+            ->setMethods(['getParent', 'setParent', 'getCode'])
             ->getMock();
         $category->parent = null;
         foreach ($data as $key => $value) {

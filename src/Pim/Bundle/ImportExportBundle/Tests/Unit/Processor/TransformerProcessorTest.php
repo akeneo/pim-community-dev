@@ -16,9 +16,9 @@ use Pim\Bundle\ImportExportBundle\Exception\ParametrizedException;
 class TransformerProcessorTest extends TransformerProcessorTestCase
 {
     protected $transformer;
-    protected $data = array('key' => 'val', 'key2' => null);
-    protected $mappedData = array('mapped_key' => 'val', 'key2' => null);
-    protected $skipEmptyData = array('key' => 'val');
+    protected $data = ['key' => 'val', 'key2' => null];
+    protected $mappedData = ['mapped_key' => 'val', 'key2' => null];
+    protected $skipEmptyData = ['key' => 'val'];
     protected $entity;
 
     protected function setUp()
@@ -40,7 +40,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->transformer
             ->expects($this->once())
             ->method('getTransformedColumnsInfo')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
     }
 
     public function testProcess()
@@ -51,7 +51,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->validator
             ->expects($this->once())
             ->method('validate')
@@ -67,7 +67,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->validator
             ->expects($this->once())
             ->method('validate')
@@ -87,7 +87,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('transform')
             ->will(
                 $this->throwException(
-                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', ['%arg1%'=>'value'])
                 )
             );
         $this->createProcessor()->process($this->data);
@@ -103,13 +103,13 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->validator
             ->expects($this->once())
             ->method('validate')
             ->will(
                 $this->throwException(
-                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', ['%arg1%'=>'value'])
                 )
             );
 
@@ -124,15 +124,15 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('getErrors')
             ->will(
                 $this->returnValue(
-                    array(
-                        'field1' => array(
-                            array('exception %arg1%', array('%arg1%'=>'value1')),
-                            array('exception %arg2%', array('%arg2%'=>'value1')),
-                        ),
-                        'field2' => array(
-                            array('exception %arg3%', array('%arg3%'=>'value3')),
-                        )
-                    )
+                    [
+                        'field1' => [
+                            ['exception %arg1%', ['%arg1%'=>'value1']],
+                            ['exception %arg2%', ['%arg2%'=>'value1']],
+                        ],
+                        'field2' => [
+                            ['exception %arg3%', ['%arg3%'=>'value3']],
+                        ]
+                    ]
                 )
             );
         $this->validator
@@ -151,7 +151,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
 
     public function testGetConfigurationFields()
     {
-        $this->assertEquals(array(), $this->createProcessor()->getConfigurationFields());
+        $this->assertEquals([], $this->createProcessor()->getConfigurationFields());
     }
 
     protected function createProcessor($skipEmpty = false)

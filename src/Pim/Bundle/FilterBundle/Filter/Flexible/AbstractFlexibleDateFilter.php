@@ -91,8 +91,8 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
      */
     protected function applyFlexibleFilterNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
-        $values    = array();
-        $operators = array();
+        $values    = [];
+        $operators = [];
 
         if ($dateStartValue) {
             $values['from']    = $dateStartValue;

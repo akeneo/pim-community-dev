@@ -22,6 +22,6 @@ class DummyReaderTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $reader = new DummyReader;
-        $this->assertEquals(array(), $reader->getConfigurationFields());
+        $this->assertEquals([], $reader->getConfigurationFields());
     }
 }

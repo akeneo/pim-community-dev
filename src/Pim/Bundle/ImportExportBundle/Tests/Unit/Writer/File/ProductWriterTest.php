@@ -71,16 +71,16 @@ class ProductWriterTest extends \PHPUnit_Framework_TestCase
             ->writer
             ->setFilePath('/tmp/phpunit/export.csv')
             ->write(
-                array(
-                    array(
+                [
+                    [
                         'entry' => 'foo',
-                        'media' => array($media1, $media2, $media3),
-                    ),
-                    array(
+                        'media' => [$media1, $media2, $media3],
+                    ],
+                    [
                         'entry' => 'bar',
-                        'media' => array($media4, $media5),
-                    )
-                )
+                        'media' => [$media4, $media5],
+                    ]
+                ]
             );
     }
 

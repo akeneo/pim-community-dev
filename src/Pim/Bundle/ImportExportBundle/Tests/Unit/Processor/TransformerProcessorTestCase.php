@@ -23,7 +23,7 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
             ->method('trans')
             ->will(
                 $this->returnCallback(
-                    function ($message, array $parameters = array()) {
+                    function ($message, array $parameters = []) {
                         return sprintf(
                             '<tr>%s</tr>',
                             strtr($message, $parameters)

@@ -16,13 +16,13 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function getSetValueData()
     {
-        return array(
-            'only_data'     => array(null, '54.25', false, '54.25', null),
-            'create'        => array(null, '54.25', true, '54.25', null),
-            'data_and_unit' => array(null, '54.25 KG', false, '54.25', 'KG'),
-            'only_unit'     => array('unit', 'KG', false, null, 'KG'),
-            'null'          => array(null, null, false, null, null)
-        );
+        return [
+            'only_data'     => [null, '54.25', false, '54.25', null],
+            'create'        => [null, '54.25', true, '54.25', null],
+            'data_and_unit' => [null, '54.25 KG', false, '54.25', 'KG'],
+            'only_unit'     => ['unit', 'KG', false, null, 'KG'],
+            'null'          => [null, null, false, null, null]
+        ];
     }
 
     /**
@@ -33,10 +33,10 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array($columnSuffix)));
+            ->will($this->returnValue([$columnSuffix]));
 
         $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\AttributeInterface')
-            ->setMethods(array('getMetricFamily'))
+            ->setMethods(['getMetricFamily'])
             ->getMock();
         $columnInfo->expects($this->any())
             ->method('getAttribute')
@@ -46,7 +46,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('metric_family'));
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('getMetric', 'setMetric', '__toString'))
+            ->setMethods(['getMetric', 'setMetric', '__toString'])
             ->getMock();
 
         $metric = null;

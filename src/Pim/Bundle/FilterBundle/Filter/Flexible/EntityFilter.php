@@ -75,7 +75,7 @@ class EntityFilter extends OroEntityFilter
      */
     public function extractIds($entities)
     {
-        $entityIds = array();
+        $entityIds = [];
         foreach ($entities as $entity) {
             $entityIds[] = $entity->getId();
         }

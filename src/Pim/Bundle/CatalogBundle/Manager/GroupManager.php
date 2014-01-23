@@ -65,7 +65,7 @@ class GroupManager
     {
         $attributes = $this->getAvailableAxis();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -98,9 +98,9 @@ class GroupManager
     {
         $types = $this->doctrine
             ->getRepository('PimCatalogBundle:GroupType')
-            ->findBy(array('variant' => $isVariant));
+            ->findBy(['variant' => $isVariant]);
 
-        $choices = array();
+        $choices = [];
         foreach ($types as $type) {
             $choices[$type->getId()] = $type->getLabel();
         }
@@ -175,10 +175,10 @@ class GroupManager
             $count = count($products);
         }
 
-        return array(
+        return [
             'products'      => $products,
             'productCount'  => $count
-        );
+        ];
     }
 
     /**

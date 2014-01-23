@@ -22,15 +22,15 @@ class ProductFormView
      *
      * @var array
      */
-    private $choiceAttributeTypes = array(
+    private $choiceAttributeTypes = [
         'pim_catalog_multiselect',
         'pim_catalog_simpleselect'
-    );
+    ];
 
     /**
      * @var FormView|array
      */
-    protected $view = array();
+    protected $view = [];
 
     /**
      * @return FormView
@@ -81,10 +81,10 @@ class ProductFormView
      */
     protected function initializeGroup(AttributeGroup $group)
     {
-        $this->view[$group->getId()] = array(
+        $this->view[$group->getId()] = [
             'label'      => $group->getLabel(),
-            'attributes' => array(),
-        );
+            'attributes' => [],
+        ];
     }
 
     /**
@@ -94,7 +94,7 @@ class ProductFormView
      */
     protected function getAttributeClasses(AttributeInterface $attribute)
     {
-        $classes = array();
+        $classes = [];
         if ($attribute->isScopable()) {
             $classes['scopable'] = true;
         }
@@ -119,7 +119,7 @@ class ProductFormView
         $attribute = $value->getAttribute();
         $group     = $attribute->getVirtualGroup();
 
-        $attributeView = array(
+        $attributeView = [
             'id'                 => $attribute->getId(),
             'isRemovable'        => $value->isRemovable(),
             'code'               => $attribute->getCode(),
@@ -127,12 +127,12 @@ class ProductFormView
             'sortOrder'          => $attribute->getSortOrder(),
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
             'locale'             => $value->getLocale(),
-        );
+        ];
 
         if ($attribute->isScopable()) {
             $attributeView['values'] = array_merge(
                 $this->getAttributeValues($attribute, $value->getLocale()),
-                array($value->getScope() => $view)
+                [$value->getScope() => $view]
             );
         } else {
             $attributeView['value'] = $view;
@@ -156,7 +156,7 @@ class ProductFormView
     {
         $group = $attribute->getVirtualGroup();
         if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {
-            return array();
+            return [];
         }
 
         return $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'];

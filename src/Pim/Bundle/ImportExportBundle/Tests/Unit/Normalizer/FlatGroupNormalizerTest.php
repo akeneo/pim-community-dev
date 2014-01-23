@@ -28,14 +28,14 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', false),
-            array('stdClass', 'csv', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'json', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'csv', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'json', false],
+            ['stdClass', 'csv', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'json', false],
+        ];
     }
 
     /**
@@ -43,24 +43,24 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'        => 'my_variant_group',
                     'type'        => 'VARIANT',
                     'label-en_US' => 'My variant group',
                     'label-fr_FR' => 'Mon groupe variant',
                     'attributes'  => 'color,size'
-                ),
-                array(
+                ],
+                [
                     'code'        => 'my_group',
                     'type'        => 'RELATED',
                     'label-en_US' => 'My group',
                     'label-fr_FR' => 'Mon groupe',
                     'attributes'  => ''
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -68,10 +68,10 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
      */
     protected function getLabels($data)
     {
-        return array(
+        return [
             'en_US' => $data['label-en_US'],
             'fr_FR' => $data['label-fr_FR']
-        );
+        ];
     }
 
     /**

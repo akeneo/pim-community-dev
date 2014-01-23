@@ -29,7 +29,7 @@ class FamilyRepository extends ReferableEntityRepository
     public function getIdToLabelOrderedByLabel()
     {
         $families = $this->buildAllWithTranslations()->getQuery()->execute();
-        $orderedFamilies = array();
+        $orderedFamilies = [];
         foreach ($families as $family) {
             $orderedFamilies[$family->getId()] = $family->getLabel();
         }

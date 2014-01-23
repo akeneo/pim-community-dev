@@ -28,14 +28,14 @@ class ImageTypeTest extends AttributeTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = [])
     {
         $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
 
         $attribute
             ->expects($this->any())
             ->method('getAllowedExtensions')
-            ->will($this->returnValue(array('jpg', 'png', 'gif', 'psd')));
+            ->will($this->returnValue(['jpg', 'png', 'gif', 'psd']));
 
         return $attribute;
     }

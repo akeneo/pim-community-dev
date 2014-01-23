@@ -30,7 +30,7 @@ class AvailableAttributesTest extends \PHPUnit_Framework_TestCase
     public function testGetSetAttributes()
     {
         $target = $this->getTargetedClass();
-        $attributes = new ArrayCollection(array('foo', 'bar'));
+        $attributes = new ArrayCollection(['foo', 'bar']);
         $target->setAttributes($attributes);
 
         $this->assertEquals($attributes, $target->getAttributes());

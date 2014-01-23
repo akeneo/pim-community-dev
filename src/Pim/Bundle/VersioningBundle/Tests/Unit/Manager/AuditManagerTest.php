@@ -22,7 +22,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Audit[]
      */
-    protected $entries = array();
+    protected $entries = [];
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $first = new Audit();
         $second = new Audit();
         $third = new Audit();
-        $this->entries = array($first, $second, $third);
+        $this->entries = [$first, $second, $third];
         $this->manager = new AuditManager($this->getEntityManagerMock());
     }
 

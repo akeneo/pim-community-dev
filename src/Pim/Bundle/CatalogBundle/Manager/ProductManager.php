@@ -158,7 +158,7 @@ class ProductManager extends FlexibleManager
     {
         $code = $this->getIdentifierAttribute()->getCode();
 
-        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $products = $this->getFlexibleRepository()->findByWithAttributes([], [$code => $identifier]);
         $product = reset($products);
 
         if ($product) {
@@ -240,7 +240,7 @@ class ProductManager extends FlexibleManager
      */
     public function getIdentifierAttribute()
     {
-        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+        return $this->getAttributeRepository()->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 
     /**

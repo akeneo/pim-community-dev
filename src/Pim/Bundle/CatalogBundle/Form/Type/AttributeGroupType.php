@@ -26,12 +26,12 @@ class AttributeGroupType extends AbstractType
             ->add(
                 'label',
                 'pim_translatable_field',
-                array(
+                [
                     'field'             => 'label',
                     'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
                     'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
                     'property_path'     => 'translations'
-                )
+                ]
             )
             ->add('sort_order', 'hidden')
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
@@ -43,9 +43,9 @@ class AttributeGroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
-            )
+            ]
         );
     }
 

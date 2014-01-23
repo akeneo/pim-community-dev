@@ -60,7 +60,7 @@ class AuditBuilder
         if ($previous) {
             $oldData = $previous->getData();
         } else {
-            $oldData = array();
+            $oldData = [];
         }
 
         $diffData = $this->buildDiffData($oldData, $newData);
@@ -90,7 +90,7 @@ class AuditBuilder
     protected function buildDiffData($oldData, $newData)
     {
         $merge = $this->getMergedData($oldData, $newData);
-        $diffData = array();
+        $diffData = [];
         foreach ($merge as $changedField => $data) {
             if ($data['old'] != $data['new'] || !isset($oldData[$changedField])) {
                 $diffData[$changedField] = $data;
@@ -98,7 +98,7 @@ class AuditBuilder
         }
 
         if (!empty($diffData) && $this->context) {
-            $diffData['context'] = array('old' => '', 'new' => $this->context);
+            $diffData['context'] = ['old' => '', 'new' => $this->context];
         }
 
         return $diffData;
@@ -114,13 +114,13 @@ class AuditBuilder
      */
     protected function getMergedData($oldData, $newData)
     {
-        $merge = array();
+        $merge = [];
         foreach ($newData as $field => $value) {
-            $merge[$field] = array('old' => '', 'new' => $value);
+            $merge[$field] = ['old' => '', 'new' => $value];
         }
         foreach ($oldData as $field => $value) {
             if (!isset($merge[$field])) {
-                $merge[$field] = array('old' => $value, 'new' => '');
+                $merge[$field] = ['old' => $value, 'new' => ''];
             } else {
                 $merge[$field]['old'] = $value;
             }

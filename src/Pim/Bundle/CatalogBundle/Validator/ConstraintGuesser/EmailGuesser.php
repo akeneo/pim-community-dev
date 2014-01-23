@@ -28,7 +28,7 @@ class EmailGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ('email' === $attribute->getValidationRule()) {
             $constraints[] = new Assert\Email();

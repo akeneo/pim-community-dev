@@ -17,7 +17,7 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @var TranslationNormalizer
@@ -37,14 +37,14 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
+        return [
             'code'             => $object->getCode(),
             'attributes'       => $this->normalizeAttributes($object),
             'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($object),
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ] + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -64,7 +64,7 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes(Family $family)
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($family->getAttributes() as $attribute) {
             $attributes[] = $attribute->getCode();
         }
@@ -81,11 +81,11 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeRequirements(Family $family)
     {
-        $required = array();
+        $required = [];
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannel()->getCode();
             if (!isset($required[$channelCode])) {
-                $required[$channelCode] = array();
+                $required[$channelCode] = [];
             }
             if ($requirement->isRequired()) {
                 $required[$channelCode][] = $requirement->getAttribute()->getCode();

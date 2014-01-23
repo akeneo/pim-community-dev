@@ -22,9 +22,9 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
     public function testSubscribedEvents()
     {
         $this->assertEquals(
-            array(
+            [
                 EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution'
-            ),
+            ],
             JobExecutionArchivist::getSubscribedEvents()
         );
     }
@@ -37,7 +37,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $this->archivist->registerArchiver($foo);
         $this->archivist->registerArchiver($bar);
 
-        $this->assertAttributeEquals(array('foo' => $foo, 'bar' => $bar), 'archivers', $this->archivist);
+        $this->assertAttributeEquals(['foo' => $foo, 'bar' => $bar], 'archivers', $this->archivist);
     }
 
     /**
@@ -75,25 +75,25 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
 
     public function testGetArchives()
     {
-        $foo = $this->getArchiverMock('foo', array('fooArch1', 'fooArch2'));
-        $bar = $this->getArchiverMock('bar', array('barArch1', 'barArch2'));
+        $foo = $this->getArchiverMock('foo', ['fooArch1', 'fooArch2']);
+        $bar = $this->getArchiverMock('bar', ['barArch1', 'barArch2']);
         $this->archivist->registerArchiver($foo);
         $this->archivist->registerArchiver($bar);
 
         $jobExecution = $this->getJobExecutionMock();
 
         $this->assertSame(
-            array(
-                'foo' => array('fooArch1', 'fooArch2'),
-                'bar' => array('barArch1', 'barArch2'),
-            ),
+            [
+                'foo' => ['fooArch1', 'fooArch2'],
+                'bar' => ['barArch1', 'barArch2'],
+            ],
             $this->archivist->getArchives($jobExecution)
         );
     }
 
     public function testGetArchive()
     {
-        $foo = $this->getArchiverMock('foo', array(), 'fooArch1Stream');
+        $foo = $this->getArchiverMock('foo', [], 'fooArch1Stream');
         $this->archivist->registerArchiver($foo);
 
         $jobExecution = $this->getJobExecutionMock();
@@ -110,7 +110,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetArchiveFromUnknownArchiver()
     {
-        $foo = $this->getArchiverMock('foo', array(), 'fooArch1Stream');
+        $foo = $this->getArchiverMock('foo', [], 'fooArch1Stream');
         $this->archivist->registerArchiver($foo);
 
         $jobExecution = $this->getJobExecutionMock();
@@ -118,7 +118,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $this->archivist->getArchive($jobExecution, 'bar', 'barArch1');
     }
 
-    protected function getArchiverMock($name, array $archives = array(), $archive = null)
+    protected function getArchiverMock($name, array $archives = [], $archive = null)
     {
         $archiver = $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
 

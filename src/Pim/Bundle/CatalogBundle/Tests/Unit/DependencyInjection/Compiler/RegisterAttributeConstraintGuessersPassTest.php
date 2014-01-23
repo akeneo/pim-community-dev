@@ -47,7 +47,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
         $definition = $this->getDefinitionMock();
         $container  = $this->getContainerBuilderMock(
             $definition,
-            array('pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar')
+            ['pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar']
         );
 
         $definition->expects($this->exactly(2))
@@ -63,7 +63,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    private function getContainerBuilderMock($definition = null, array $taggedServices = array())
+    private function getContainerBuilderMock($definition = null, array $taggedServices = [])
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 

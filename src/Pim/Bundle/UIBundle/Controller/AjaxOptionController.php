@@ -45,7 +45,7 @@ class AjaxOptionController
                 $query->get('dataLocale'),
                 $query->get('collectionId'),
                 $query->get('search'),
-                $query->get('options', array())
+                $query->get('options', [])
             );
 
         return new JsonResponse($choices);

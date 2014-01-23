@@ -16,7 +16,7 @@ class BulkProductReader extends ProductReader
      */
     public function read()
     {
-        $products = array();
+        $products = [];
         while ($product = parent::read()) {
             $products[] = $product;
         }

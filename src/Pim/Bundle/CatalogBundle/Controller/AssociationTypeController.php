@@ -101,9 +101,9 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -126,18 +126,18 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.created');
 
-            $response = array(
+            $response = [
                 'status' => 1,
                 'url' =>
-                    $this->generateUrl('pim_catalog_association_type_edit', array('id' => $associationType->getId()))
-            );
+                    $this->generateUrl('pim_catalog_association_type_edit', ['id' => $associationType->getId()])
+            ];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->assocTypeForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -157,17 +157,17 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
 
-            return $this->redirectToRoute('pim_catalog_association_type_edit', array('id' => $id));
+            return $this->redirectToRoute('pim_catalog_association_type_edit', ['id' => $id]);
         }
 
         $usageCount = $this
             ->getRepository('Pim\Bundle\CatalogBundle\Model\Association')
             ->countForAssociationType($associationType);
 
-        return array(
+        return [
             'form'       => $this->assocTypeForm->createView(),
             'usageCount' => $usageCount
-        );
+        ];
     }
 
     /**

@@ -54,13 +54,13 @@ class MetricType extends AbstractAttributeType
     {
         return array_merge(
             parent::prepareValueFormOptions($value),
-            array(
+            [
                 'units'        => $this->manager->getUnitSymbolsForFamily(
                     $value->getAttribute()->getMetricFamily()
                 ),
                 'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
                 'family'       => $value->getAttribute()->getMetricFamily()
-            )
+            ]
         );
     }
 }

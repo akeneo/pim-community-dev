@@ -37,7 +37,7 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (!is_array($value)) {
             throw new PropertyTransformerException('Data should be an array');
@@ -49,7 +49,7 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         if (!isset($options['propertyPath'])) {
             throw new \InvalidArgumentException('propertyPath option is required');

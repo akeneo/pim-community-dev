@@ -16,14 +16,14 @@ class FlatAssociationTypeNormalizer extends AssociationTypeNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
      */
     protected function normalizeLabel(AssociationType $associationType)
     {
-        $values = array();
+        $values = [];
         foreach ($associationType->getTranslations() as $translation) {
             $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
         }

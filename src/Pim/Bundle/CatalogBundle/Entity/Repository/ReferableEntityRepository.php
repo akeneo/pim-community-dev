@@ -18,7 +18,7 @@ class ReferableEntityRepository extends EntityRepository implements ReferableEnt
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -26,6 +26,6 @@ class ReferableEntityRepository extends EntityRepository implements ReferableEnt
      */
     public function getReferenceProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

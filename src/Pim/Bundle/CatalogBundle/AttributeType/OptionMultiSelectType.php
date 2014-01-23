@@ -47,50 +47,50 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = [
+            [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'minimumInputLength',
                 'fieldType' => 'number',
-                'options'   => array(
-                )
-            ),
-            array(
+                'options'   => [
+                ]
+            ],
+            [
                 'name'      => 'options',
                 'fieldType' => 'pim_catalog_options'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'translatable',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'availableLocales',
                 'fieldType' => 'pim_catalog_available_locales'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => true,
                     'read_only' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         return $properties;
     }

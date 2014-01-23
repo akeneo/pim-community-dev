@@ -22,7 +22,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $target  = $this->getProductManager();
         $value   = $this->getValueMock();
-        $product = $this->getProductMock(array($value));
+        $product = $this->getProductMock([$value]);
 
         $product->expects($this->never())
             ->method('addValue');
@@ -39,7 +39,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $target       = $this->getProductManager($mediaManager);
         $media        = $this->getMediaMock('foo.jpg');
         $product      = $this->getProductMock(
-            array($this->getValueMock(null, null, $media, 'baz')),
+            [$this->getValueMock(null, null, $media, 'baz')],
             'foobar'
         );
 
@@ -104,9 +104,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
 
         return new ProductManager(
             'Pim\Bundle\CatalogBundle\Model\Product',
-            array(
-                'entities_config' => array(
-                    'Pim\Bundle\CatalogBundle\Model\Product' => array(
+            [
+                'entities_config' => [
+                    'Pim\Bundle\CatalogBundle\Model\Product' => [
                         'flexible_class' => 'Pim\Bundle\CatalogBundle\Model\Product',
                         'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Model\ProductValue',
                         'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
@@ -114,9 +114,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                         'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
                         'default_locale' => null,
                         'default_scope'  => null
-                    )
-                ),
-            ),
+                    ]
+                ],
+            ],
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $objectManager ?: $this->getEntityManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
@@ -212,7 +212,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $value = $this->getMock(
             'Pim\Bundle\CatalogBundle\Model\ProductValue',
-            array('getAttribute', 'getMedia', 'setMedia')
+            ['getAttribute', 'getMedia', 'setMedia']
         );
 
         $scopable = $scope ? true : false;
@@ -250,7 +250,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            array('isTranslatable', 'isScopable', 'getCode')
+            ['isTranslatable', 'isScopable', 'getCode']
         );
 
         $attribute->expects($this->any())
@@ -284,7 +284,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                 ->method('getValues')
                 ->will($this->returnValue(new ArrayCollection($values)));
 
-        $locales = array($this->getLocaleMock('fr_FR'), $this->getLocaleMock('en_US'));
+        $locales = [$this->getLocaleMock('fr_FR'), $this->getLocaleMock('en_US')];
         $product->expects($this->any())
                 ->method('getActiveLocales')
                 ->will(
@@ -307,7 +307,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getLocaleMock($code)
     {
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', array('getCode'));
+        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', ['getCode']);
 
         $locale->expects($this->any())
                  ->method('getCode')
@@ -325,7 +325,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannelMock($scope = null)
     {
-        $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel', array('getCode'));
+        $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel', ['getCode']);
 
         $channel->expects($this->any())
                  ->method('getCode')
@@ -363,7 +363,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $file = $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->setMethods(array('getClientOriginalName'))
+            ->setMethods(['getClientOriginalName'])
             ->disableOriginalConstructor()
             ->getMock();
 

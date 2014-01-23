@@ -21,7 +21,7 @@ class ObjectTestEntity
      * @param string $entityClass Class name of entity tested
      * @param array  $datas       Data values for entity tested
      */
-    public function __construct($entityClass, array $datas = array())
+    public function __construct($entityClass, array $datas = [])
     {
         $this->entity = new $entityClass();
         $this->fromArray($datas);

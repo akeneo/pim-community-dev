@@ -28,7 +28,7 @@ class NotBlankGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ($attribute->isRequired()) {
             $constraints[] = new Assert\NotBlank();

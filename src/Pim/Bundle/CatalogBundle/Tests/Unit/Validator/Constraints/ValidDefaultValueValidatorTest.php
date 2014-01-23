@@ -25,7 +25,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', [], [], '', false);
         $this->constraint = new ValidDefaultValue();
         $this->validator = new ValidDefaultValueValidator();
         $this->validator->initialize($this->context);
@@ -48,45 +48,45 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerDefaultValueValid()
     {
-        return array(
-            array(
+        return [
+            [
                 'pim_catalog_date',
-                array(
+                [
                     'defaultValue' => new \DateTime('+1 month'),
                     'dateType'     => 'datetime',
                     'dateMin'      => new \DateTime('now'),
                     'dateMax'      => new \DateTime('+1 year')
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_price_collection',
-                array(
+                [
                     'defaultValue'    => 9.99,
                     'numberMin'       => 0.01,
                     'numberMax'       => 1000000,
                     'decimalsAllowed' => true,
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_number',
-                array(
+                [
                     'defaultValue'    => -10,
                     'numberMin'       => -100.1,
                     'numberMax'       => 100,
                     'decimalsAllowed' => true,
                     'negativeAllowed' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_textarea',
-                array(
+                [
                     'defaultValue'  => 'test value',
                     'maxCharacters' => 200
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_metric',
-                array(
+                [
                     'defaultValue'      => 20,
                     'numberMin'         => -273,
                     'numberMax'         => 1000,
@@ -94,32 +94,32 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                     'negativeAllowed'   => true,
                     'metricFamily'      => 'temperature',
                     'defaultMetricUnit' => 'C'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_text',
-                array(
+                [
                     'defaultValue'     => 'Test123',
                     'maxCharacters'    => 100,
                     'validationRule'   => 'regexp',
                     'validationRegexp' => '#[[:alnum:]]#'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_text',
-                array(
+                [
                     'defaultValue'   => 'user@sub.domain.museum',
                     'validationRule' => 'email'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'pim_catalog_text',
-                array(
+                [
                     'defaultValue'   => 'http://symfony.com/',
                     'validationRule' => 'url'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -144,65 +144,65 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerDefaultValueInvalid()
     {
-        return array(
-            array(
+        return [
+            [
                 'pim_catalog_date',
-                array(
+                [
                     'defaultValue' => new \DateTime('now'),
                     'dateMin'      => new \DateTime('+1 day'),
                     'dateMax'      => new \DateTime('+1 month')
-                ),
+                ],
                 'This value should be between the min and max date.'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_price_collection',
-                array(
+                [
                     'defaultValue' => 1,
                     'numberMin'    => 5.5,
-                ),
+                ],
                 'This value should be between the min and max number.'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_number',
-                array(
+                [
                     'defaultValue'    => -100,
                     'negativeAllowed' => false
-                ),
+                ],
                 'This value should be greater than or equal to 0'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_metric',
-                array(
+                [
                     'defaultValue'    => 0.1,
                     'decimalsAllowed' => false
-                ),
+                ],
                 'This value should be a whole number.'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_textarea',
-                array(
+                [
                     'defaultValue'  => 'test value',
                     'maxCharacters' => 5
-                ),
+                ],
                 'This value should not exceed max characters.'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_date',
-                array(
+                [
                     'defaultValue'     => 'Test123'
-                ),
+                ],
                 'This date format is not valid.'
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_text',
-                array(
+                [
                     'defaultValue'     => 'Some text',
                     'validationRule'   => 'regexp',
                     'validationRegexp' => '/^\d+$/'
-                ),
+                ],
                 'This value should match the regular expression.'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -231,7 +231,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @return Attribute
      */
-    protected function createAttribute($attributeType, $properties = array())
+    protected function createAttribute($attributeType, $properties = [])
     {
         $attribute = new Attribute();
 

@@ -20,7 +20,7 @@ class ProductWriter extends FileWriter implements ArchivableWriterInterface
     protected $mediaManager;
 
     /** @var array */
-    protected $writtenFiles = array();
+    protected $writtenFiles = [];
 
     /**
      * Constructor

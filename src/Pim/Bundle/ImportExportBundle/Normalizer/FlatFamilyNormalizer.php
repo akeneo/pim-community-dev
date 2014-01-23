@@ -16,7 +16,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     protected function normalizeRequirements(Family $family)
     {
         $requirements = parent::normalizeRequirements($family);
-        $flat = array();
+        $flat = [];
         foreach ($requirements as $channel => $attributes) {
             $flat[] = $channel.':'.implode(',', $attributes);
         }

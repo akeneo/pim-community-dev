@@ -27,7 +27,7 @@ class FlexibleTypeTest extends AbstractFlexibleManagerTest
     {
         parent::setUp();
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtensions(array())
+            ->addExtensions([])
             ->getFormFactory();
         $this->markTestSkipped('BAP-872: Fix issue with "cascade_validation" does not exist in unit tests');
         $this->type = new FlexibleType($this->manager, 'text');

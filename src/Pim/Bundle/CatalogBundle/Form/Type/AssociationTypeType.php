@@ -38,12 +38,12 @@ class AssociationTypeType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -53,9 +53,9 @@ class AssociationTypeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
-            )
+            ]
         );
     }
 

@@ -45,9 +45,9 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             if ($writer instanceof FileWriter) {
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
-                    array(
+                    [
                         '%filename%' => basename($writer->getPath()),
-                    )
+                    ]
                 );
                 $this->filesystem->write($key, file_get_contents($writer->getPath()), true);
             }

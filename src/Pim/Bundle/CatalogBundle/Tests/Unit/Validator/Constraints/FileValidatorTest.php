@@ -19,12 +19,12 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function getValidData()
     {
-        return array(
-            array(''),
-            array(null),
-            array(__DIR__.'/../../../fixtures/akeneo.jpg'),
-            array(new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')),
-        );
+        return [
+            [''],
+            [null],
+            [__DIR__.'/../../../fixtures/akeneo.jpg'],
+            [new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')],
+        ];
     }
 
     /**
@@ -32,10 +32,10 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function getInvalidData()
     {
-        return array(
-            array(__DIR__.'/../../../fixtures/akeneo.jpg'),
-            array(new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')),
-        );
+        return [
+            [__DIR__.'/../../../fixtures/akeneo.jpg'],
+            [new \SplFileInfo(__DIR__.'/../../../fixtures/akeneo.jpg')],
+        ];
     }
 
     /**
@@ -62,7 +62,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidValue($file)
     {
         $constraint = new File(
-            array('allowedExtensions' => array('gif', 'jpg'))
+            ['allowedExtensions' => ['gif', 'jpg']]
         );
 
         $context = $this
@@ -85,7 +85,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     public function testInvalidValue($file)
     {
         $constraint = new File(
-            array('allowedExtensions' => array('gif', 'png'))
+            ['allowedExtensions' => ['gif', 'png']]
         );
 
         $context = $this
@@ -97,7 +97,7 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('addViolation')
             ->with(
                 $constraint->extensionsMessage,
-                array('{{ extensions }}' => 'gif, png')
+                ['{{ extensions }}' => 'gif, png']
             );
 
         $this->target->initialize($context);

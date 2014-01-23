@@ -22,7 +22,7 @@ class RefreshCommand extends ContainerAwareCommand
     /**
      * Versioned entities
      */
-    protected $versionedEntities = array();
+    protected $versionedEntities = [];
 
     /**
      * {@inheritdoc}
@@ -92,7 +92,7 @@ class RefreshCommand extends ContainerAwareCommand
     protected function createVersion(Pending $pending)
     {
         $em = $this->getEntityManager();
-        $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
+        $user = $em->getRepository('OroUserBundle:User')->findOneBy(['username' => $pending->getUsername()]);
         $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
         if (!in_array(spl_object_hash($versionable), $this->versionedEntities)) {
             $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);

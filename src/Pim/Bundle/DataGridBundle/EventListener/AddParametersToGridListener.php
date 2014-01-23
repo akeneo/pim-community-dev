@@ -67,7 +67,7 @@ class AddParametersToGridListener
      */
     protected function prepareParameters()
     {
-        $queryParameters = array();
+        $queryParameters = [];
         foreach ($this->paramNames as $paramName) {
             $queryParameters[$paramName] = $this->requestParams->get($paramName, null);
         }
@@ -76,10 +76,10 @@ class AddParametersToGridListener
             $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
 
             $queryParameters[self::GRID_PARAM_DATA_IN] = isset($params[self::GRID_PARAM_DATA_IN]) ?
-                     $params[self::GRID_PARAM_DATA_IN] : array(0);
+                     $params[self::GRID_PARAM_DATA_IN] : [0];
 
             $queryParameters[self::GRID_PARAM_DATA_NOT_IN] = isset($params[self::GRID_PARAM_DATA_NOT_IN]) ?
-                     $params[self::GRID_PARAM_DATA_NOT_IN] : array(0);
+                     $params[self::GRID_PARAM_DATA_NOT_IN] : [0];
 
             foreach ($this->paramNames as $paramName) {
                 if (isset($params[$paramName])) {

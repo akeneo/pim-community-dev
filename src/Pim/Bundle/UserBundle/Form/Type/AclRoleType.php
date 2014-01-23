@@ -24,21 +24,21 @@ class AclRoleType extends OroAclRoleType
             $builder->add(
                 $fieldName,
                 'oro_acl_collection',
-                array(
+                [
                     'type' => new AclPrivilegeType(),
                     'allow_add' => true,
                     'prototype' => false,
                     'allow_delete' => false,
                     'mapped' => false,
-                    'options' => array(
+                    'options' => [
                         'privileges_config' => $config,
-                    )
-                )
+                    ]
+                ]
             );
         }
 
         // Empty the privilege config to prevent parent from overriding the fields
-        $this->privilegeConfig = array();
+        $this->privilegeConfig = [];
 
         parent::buildForm($builder, $options);
     }

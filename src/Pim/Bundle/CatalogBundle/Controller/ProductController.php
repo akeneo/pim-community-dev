@@ -192,10 +192,10 @@ class ProductController extends AbstractDoctrineController
             return $response->send();
         }
 
-        return array(
+        return [
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-        );
+        ];
     }
 
     /**
@@ -242,18 +242,18 @@ class ProductController extends AbstractDoctrineController
                 }
                 $url = $this->generateUrl(
                     'pim_catalog_product_edit',
-                    array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
+                    ['id' => $entity->getId(), 'dataLocale' => $dataLocale]
                 );
-                $response = array('status' => 1, 'url' => $url);
+                $response = ['status' => 1, 'url' => $url];
 
                 return new Response(json_encode($response));
             }
         }
 
-        return array(
+        return [
             'form'       => $form->createView(),
             'dataLocale' => $this->getDataLocale()
-        );
+        ];
     }
 
     /**
@@ -292,7 +292,7 @@ class ProductController extends AbstractDoctrineController
                 }
 
                 // TODO : Check if the locale exists and is activated
-                $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+                $params = ['id' => $product->getId(), 'dataLocale' => $this->getDataLocale()];
                 if ($comparisonLocale = $this->getComparisonLocale()) {
                     $params['compareWith'] = $comparisonLocale;
                 }
@@ -306,7 +306,7 @@ class ProductController extends AbstractDoctrineController
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->productManager->getFlexibleRepository()->getProductCountByTree($product);
 
-        return array(
+        return [
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocale(),
             'comparisonLocale' => $this->getComparisonLocale(),
@@ -319,7 +319,7 @@ class ProductController extends AbstractDoctrineController
             'updated'          => $this->auditManager->getNewestLogEntry($product),
             'locales'          => $this->localeManager->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
-        );
+        ];
     }
 
     /**
@@ -334,7 +334,7 @@ class ProductController extends AbstractDoctrineController
         switch ($this->getRequest()->get('action')) {
             case self::BACK_TO_GRID:
                 $route = 'pim_catalog_product_index';
-                $params = array();
+                $params = [];
                 break;
             case self::CREATE:
                 $route = 'pim_catalog_product_edit';
@@ -360,9 +360,9 @@ class ProductController extends AbstractDoctrineController
     {
         return $this->render(
             'PimCatalogBundle:Product:_history.html.twig',
-            array(
+            [
                 'product' => $this->findProductOr404($id),
-            )
+            ]
         );
     }
 
@@ -393,7 +393,7 @@ class ProductController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.product.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $product->getId()));
+        return $this->redirectToRoute('pim_catalog_product_edit', ['id' => $product->getId()]);
     }
 
     /**
@@ -441,7 +441,7 @@ class ProductController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
+            return $this->redirectToRoute('pim_catalog_product_edit', ['id' => $productId]);
         }
     }
 
@@ -473,13 +473,13 @@ class ProductController extends AbstractDoctrineController
         }
         $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
-        return array('trees' => $trees, 'categories' => $categories);
+        return ['trees' => $trees, 'categories' => $categories];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocale();
@@ -595,13 +595,13 @@ class ProductController extends AbstractDoctrineController
      * @return Symfony\Component\Form\Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            ['attributes' => $attributes]
         );
     }
 
@@ -614,12 +614,12 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getEditFormOptions(ProductInterface $product)
     {
-        return array(
+        return [
             'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
             'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
             'currentLocale'    => $this->getDataLocale(),
             'comparisonLocale' => $this->getComparisonLocale(),
-        );
+        ];
     }
 
     /**
@@ -631,6 +631,6 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getCreateFormOptions(ProductInterface $product)
     {
-        return array();
+        return [];
     }
 }

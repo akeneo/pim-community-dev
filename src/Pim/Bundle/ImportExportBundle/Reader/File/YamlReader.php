@@ -132,7 +132,7 @@ class YamlReader extends FileReader implements ItemReaderInterface
             $fileData = $this->homogenizeData($fileData);
         }
 
-        return $this->multiple ? array($fileData) : $fileData;
+        return $this->multiple ? [$fileData] : $fileData;
     }
 
     /**
@@ -144,7 +144,7 @@ class YamlReader extends FileReader implements ItemReaderInterface
      */
     protected function homogenizeData($data)
     {
-        $labels = array();
+        $labels = [];
         foreach ($data as $row) {
             $labels = array_unique(array_merge($labels, array_keys($row)));
         }
@@ -163,6 +163,6 @@ class YamlReader extends FileReader implements ItemReaderInterface
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

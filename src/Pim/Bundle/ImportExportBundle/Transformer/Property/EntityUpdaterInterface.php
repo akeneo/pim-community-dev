@@ -21,5 +21,5 @@ interface EntityUpdaterInterface
      * @param mixed               $data
      * @param array               $options
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array());
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = []);
 }

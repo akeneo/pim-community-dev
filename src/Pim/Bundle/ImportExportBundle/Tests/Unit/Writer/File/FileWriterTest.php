@@ -52,7 +52,7 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         file_put_contents(self::EXPECT_PATH, 'foo');
 
         $this->writer->setFilePath(self::EXPORT_PATH);
-        $this->writer->write(array('foo'));
+        $this->writer->write(['foo']);
 
         $this->assertFileExists(self::EXPORT_PATH);
         $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
@@ -68,7 +68,7 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->stepExecution->expects($this->exactly(2))
             ->method('incrementSummaryInfo');
 
-        $this->writer->write(array('foo', 'bar'));
+        $this->writer->write(['foo', 'bar']);
     }
 
     /**

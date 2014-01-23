@@ -25,11 +25,11 @@ class MassEditActionOperatorType extends AbstractType
             ->add(
                 'operationAlias',
                 'choice',
-                array(
+                [
                     'choices'  => $options['operations'],
                     'expanded' => true,
                     'multiple' => false,
-                )
+                ]
             )
             ->addEventSubscriber(new AddSelectedOperationSubscriber());
     }
@@ -40,9 +40,9 @@ class MassEditActionOperatorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'operations' => array(),
-            )
+            [
+                'operations' => [],
+            ]
         );
     }
 

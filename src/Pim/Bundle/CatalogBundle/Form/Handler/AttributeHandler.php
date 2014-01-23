@@ -109,7 +109,7 @@ class AttributeHandler
         $locales = $this->getLocaleCodes();
         foreach ($entity->getOptions() as $option) {
             if ($option->isTranslatable()) {
-                $existingLocales = array();
+                $existingLocales = [];
                 foreach ($option->getOptionValues() as $value) {
                     $existingLocales[] = $value->getLocale();
                 }
@@ -132,7 +132,7 @@ class AttributeHandler
      */
     protected function ensureOneOption(AttributeInterface $entity)
     {
-        $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
+        $selectTypes = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
             $option = new AttributeOption();
             $option->setTranslatable(true);

@@ -40,7 +40,7 @@ class JobInstanceValidator extends ConstraintValidator
             if (!$this->connectorRegistry->getJob($entity)) {
                 $this->context->addViolation(
                     $constraint->message,
-                    array('{{ job_type }}' => $entity->getType())
+                    ['{{ job_type }}' => $entity->getType()]
                 );
             }
         }

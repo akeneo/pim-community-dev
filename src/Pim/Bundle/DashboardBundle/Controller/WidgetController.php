@@ -61,9 +61,9 @@ class WidgetController extends AbstractController
     public function showAction($alias)
     {
         if (null === $widget = $this->widgetRegistry->get($alias)) {
-            return $this->render('PimDashboardBundle:Widget:error.html.twig', array('alias' => $alias));
+            return $this->render('PimDashboardBundle:Widget:error.html.twig', ['alias' => $alias]);
         }
 
-        return $this->render($widget->getTemplate(), array('widget' => $widget->getParameters()));
+        return $this->render($widget->getTemplate(), ['widget' => $widget->getParameters()]);
     }
 }

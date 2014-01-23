@@ -56,7 +56,7 @@ class Controller
         $configuration = $this->registry->get($customEntityName);
 
         return call_user_func(
-            array($configuration->getControllerStrategy(), $actionName),
+            [$configuration->getControllerStrategy(), $actionName],
             $configuration,
             $this->request
         );

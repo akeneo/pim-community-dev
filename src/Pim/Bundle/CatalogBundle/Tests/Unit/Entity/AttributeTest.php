@@ -392,7 +392,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->attribute->getAllowedExtensions());
 
         // Change value and assert new
-        $extensions = array('jpg', 'png', 'gif');
+        $extensions = ['jpg', 'png', 'gif'];
         $this->assertEntity($this->attribute->setAllowedExtensions(' jpg, png,gif'));
         $this->assertEquals($extensions, $this->attribute->getAllowedExtensions());
     }
@@ -460,18 +460,18 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
      */
     public static function setParametersDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'someValues' =>
-                    array('sortOrder' => 5, 'maxFileSize' => 4, 'dateMin' => '2013-06-15', 'decimalsAllowed' => true)
-            ),
-            array(
-                'onlyOneValue' => array('negativeAllowed' => false)
-            ),
-            array(
-                'noValue' => array()
-            )
-        );
+                    ['sortOrder' => 5, 'maxFileSize' => 4, 'dateMin' => '2013-06-15', 'decimalsAllowed' => true]
+            ],
+            [
+                'onlyOneValue' => ['negativeAllowed' => false]
+            ],
+            [
+                'noValue' => []
+            ]
+        ];
     }
 
     /**

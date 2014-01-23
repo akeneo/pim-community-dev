@@ -18,7 +18,7 @@ class RangeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->target = new Range(array('min' => 0));
+        $this->target = new Range(['min' => 0]);
     }
 
     /**

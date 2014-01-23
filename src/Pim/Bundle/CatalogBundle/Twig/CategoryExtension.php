@@ -45,12 +45,12 @@ class CategoryExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'children_response'        => new \Twig_Function_Method($this, 'childrenResponse'),
             'children_tree_response'   => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
             'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse')
-        );
+        ];
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryExtension extends \Twig_Extension
      */
     public function listTreesResponse(array $trees, $selectedTreeId = null, $includeSub = false)
     {
-        $return = array();
+        $return = [];
         foreach ($trees as $tree) {
             $return[] = $this->formatTree($tree, $selectedTreeId, $includeSub);
         }
@@ -90,7 +90,7 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = null,
         $includeSub = false
     ) {
-        $selectedIds = array($selectedCategory->getId());
+        $selectedIds = [$selectedCategory->getId()];
         $result = $this->formatCategoriesFromArray($categories, $selectedIds, $withProductCount, $includeSub);
 
         if ($parent !== null) {
@@ -116,10 +116,10 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = false,
         $includeSub = false
     ) {
-        $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
+        $result = $this->formatCategories($categories, [], $withProductCount, $includeSub);
 
         if ($parent !== null) {
-            $result = $this->formatCategory($parent, array(), $withProductCount, $includeSub, $result);
+            $result = $this->formatCategory($parent, [], $withProductCount, $includeSub, $result);
         }
 
         return $result;
@@ -135,7 +135,7 @@ class CategoryExtension extends \Twig_Extension
      */
     public function listCategoriesResponse(array $categories, Collection $selectedCategories)
     {
-        $selectedIds = array();
+        $selectedIds = [];
         foreach ($selectedCategories as $selectedCategory) {
             $selectedIds[] = $selectedCategory->getId();
         }
@@ -167,7 +167,7 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = false,
         $includeSub = false
     ) {
-        $result = array();
+        $result = [];
         foreach ($categories as $category) {
             $result[] = $this->formatCategoryFromArray($category, $selectedIds, $withProductCount, $includeSub);
         }
@@ -203,15 +203,15 @@ class CategoryExtension extends \Twig_Extension
         $state = $this->defineCategoryStateFromArray($category, $selectedIds);
         $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
 
-        return array(
-            'attr'     => array(
+        return [
+            'attr'     => [
                 'id' => 'node_'. $category['item']->getId()
-            ),
+            ],
             'data'     => $label,
             'state'    => $state,
             'children' =>
                 $this->formatCategoriesFromArray($category['__children'], $selectedIds, $withProductCount, $includeSub)
-        );
+        ];
     }
 
     /**
@@ -235,21 +235,21 @@ class CategoryExtension extends \Twig_Extension
      */
     protected function formatCategory(
         CategoryInterface $category,
-        array $selectedIds = array(),
+        array $selectedIds = [],
         $withProductCount = false,
         $includeSub = false,
-        array $children = array()
+        array $children = []
     ) {
         $state = $this->defineCategoryState($category, false, $selectedIds);
         $label = $this->getLabel($category, $withProductCount, $includeSub);
 
-        $result = array(
-            'attr'  => array(
+        $result = [
+            'attr'  => [
                 'id' => 'node_'. $category->getId()
-            ),
+            ],
             'data'  => $label,
             'state' => $state
-        );
+        ];
 
         if (!empty($children)) {
             $result['children'] = $children;
@@ -277,11 +277,11 @@ class CategoryExtension extends \Twig_Extension
     {
         $label = $this->getLabel($tree, true, $includeSub);
 
-        return array(
+        return [
             'id' => $tree->getId(),
             'label' => $label,
             'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
-        );
+        ];
     }
 
     /**
@@ -296,13 +296,13 @@ class CategoryExtension extends \Twig_Extension
      */
     protected function formatCategories(
         array $categories,
-        $selectedIds = array(),
+        $selectedIds = [],
         $withProductCount = false,
         $includeSub = false
     ) {
-        $result = array();
+        $result = [];
         foreach ($categories as $category) {
-            $result[] = $this->formatCategory($category, array(), $withProductCount, $includeSub);
+            $result[] = $this->formatCategory($category, [], $withProductCount, $includeSub);
         }
 
         return $result;
@@ -316,9 +316,9 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategoriesAndCount(array $categories, $selectedIds = array())
+    protected function formatCategoriesAndCount(array $categories, $selectedIds = [])
     {
-        $result = array();
+        $result = [];
         foreach ($categories as $category) {
             $result[] = $this->formatCategoryAndCount($category, $selectedIds);
         }
@@ -406,7 +406,7 @@ class CategoryExtension extends \Twig_Extension
     protected function defineCategoryState(
         CategoryInterface $category,
         $hasChild = false,
-        array $selectedIds = array()
+        array $selectedIds = []
     ) {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
@@ -437,7 +437,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    protected function defineCategoryStateFromArray(array $category, $selectedIds = array())
+    protected function defineCategoryStateFromArray(array $category, $selectedIds = [])
     {
         $children = $category['__children'];
         $category = $category['item'];

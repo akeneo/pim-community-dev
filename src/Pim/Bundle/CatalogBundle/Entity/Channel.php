@@ -43,7 +43,7 @@ class Channel implements ReferableInterface
     protected $locales;
 
     /** @var array $conversionUnits */
-    protected $conversionUnits = array();
+    protected $conversionUnits = [];
 
     /**
      * Constructor

@@ -17,7 +17,7 @@ class ChainedGuesser implements GuesserInterface
     /**
      * @var array
      */
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * Adds a guesser

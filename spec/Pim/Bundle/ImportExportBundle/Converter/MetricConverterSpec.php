@@ -50,9 +50,9 @@ class MetricConverterSpec extends ObjectBehavior
         $nameValue->getAttribute()->willReturn($name);
         $nameValue->getData()->willReturn('foobar');
 
-        $product->getValues()->willReturn(array($weightValue, $surfaceValue, $nameValue));
+        $product->getValues()->willReturn([$weightValue, $surfaceValue, $nameValue]);
 
-        $channel->getConversionUnits()->willReturn(array('weight' => 'GRAM'));
+        $channel->getConversionUnits()->willReturn(['weight' => 'GRAM']);
 
         $converter->setFamily('Weight')->shouldBeCalled();
         $converter->convert('KILOGRAM', 'GRAM', 1)->willReturn(0.001);

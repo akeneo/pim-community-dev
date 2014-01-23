@@ -24,10 +24,10 @@ class CollectionTypeSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_BIND     => 'postBind',
             FormEvents::PRE_SET_DATA  => 'preSet',
-        );
+        ];
     }
 
     /**

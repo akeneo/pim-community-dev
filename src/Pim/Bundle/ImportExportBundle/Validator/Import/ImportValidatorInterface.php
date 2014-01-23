@@ -21,5 +21,5 @@ interface ImportValidatorInterface
      *
      * @return array
      */
-    public function validate($entity, array $columnsInfo, array $data, array $errors = array());
+    public function validate($entity, array $columnsInfo, array $data, array $errors = []);
 }

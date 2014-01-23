@@ -96,21 +96,21 @@ class AjaxEntityType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('class'));
-        $resolver->setOptional(array('locale', 'url'));
+        $resolver->setRequired(['class']);
+        $resolver->setOptional(['locale', 'url']);
         $resolver->setDefaults(
-            array(
+            [
                 'multiple'              => false,
-                'transformer_options'   => array(),
+                'transformer_options'   => [],
                 'collection_id'         => null,
                 'route'                 => 'pim_ui_ajaxentity_list',
-                'route_parameters'      => array(),
+                'route_parameters'      => [],
                 'data_class'            => null,
                 'minimum_input_length'  => 0
-            )
+            ]
         );
         $resolver->setNormalizers(
-            array(
+            [
                 'locale' => function (Options $options, $value) {
                     if (!$value) {
                         $value = $this->localeManager->getDataLocale()->getCode();
@@ -126,7 +126,7 @@ class AjaxEntityType extends AbstractType
 
                     return $value;
                 }
-            )
+            ]
         );
     }
 

@@ -20,13 +20,13 @@ class SwitchType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'attr' => array(
+            [
+                'attr' => [
                     'size'           => 'small',
                     'data-on-label'  => 'Yes',
                     'data-off-label' => 'No',
-                )
-            )
+                ]
+            ]
         );
     }
 

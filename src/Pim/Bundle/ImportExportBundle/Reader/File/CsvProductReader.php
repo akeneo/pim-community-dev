@@ -20,7 +20,7 @@ use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
 class CsvProductReader extends CsvReader
 {
     /** @var array Media attribute codes */
-    protected $mediaAttributes = array();
+    protected $mediaAttributes = [];
 
     /**
      * Constructor

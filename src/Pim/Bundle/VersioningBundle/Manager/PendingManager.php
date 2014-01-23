@@ -38,10 +38,10 @@ class PendingManager
      */
     public function getPendingVersion($versionable)
     {
-        $criteria = array(
+        $criteria = [
             'resourceName' => get_class($versionable),
             'resourceId'   => $versionable->getId()
-        );
+        ];
         $pending = $this->getRepository()->findOneBy($criteria);
 
         return $pending;
@@ -55,10 +55,10 @@ class PendingManager
      */
     public function getPendingVersions($versionable)
     {
-        $criteria = array(
+        $criteria = [
             'resourceName' => get_class($versionable),
             'resourceId'   => $versionable->getId()
-        );
+        ];
         $pendings = $this->getRepository()->findBy($criteria);
 
         return $pendings;

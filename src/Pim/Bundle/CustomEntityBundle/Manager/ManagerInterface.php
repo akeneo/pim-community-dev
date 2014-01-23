@@ -20,7 +20,7 @@ interface ManagerInterface
      *
      * @return object
      */
-    public function create($entityClass, array $defaultValues = array(), array $options = array());
+    public function create($entityClass, array $defaultValues = [], array $options = []);
 
     /**
      * Find an entity by id, returns null if the object is not found
@@ -31,7 +31,7 @@ interface ManagerInterface
      *
      * @return object
      */
-    public function find($entityClass, $id, array $options = array());
+    public function find($entityClass, $id, array $options = []);
 
     /**
      * Saves the entity

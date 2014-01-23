@@ -34,12 +34,12 @@ class AddVersionListener implements EventSubscriber
      *
      * @var object[]
      */
-    protected $versionableEntities = array();
+    protected $versionableEntities = [];
 
     /**
      * @var integer[]
      */
-    protected $versionedEntities = array();
+    protected $versionedEntities = [];
 
     /**
      * @var string
@@ -87,7 +87,7 @@ class AddVersionListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush', 'postFlush');
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -151,9 +151,9 @@ class AddVersionListener implements EventSubscriber
         $em = $args->getEntityManager();
         if (!empty($this->versionableEntities)) {
             if ($this->username) {
-                $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+                $user = $em->getRepository('OroUserBundle:User')->findOneBy(['username' => $this->username]);
                 if (!$user and $this->realTimeVersioning) {
-                    $this->versionableEntities = array();
+                    $this->versionableEntities = [];
 
                     return;
                 }
@@ -179,7 +179,7 @@ class AddVersionListener implements EventSubscriber
             }
             $this->versionedEntities[] = spl_object_hash($versionable);
         }
-        $this->versionableEntities = array();
+        $this->versionableEntities = [];
         $em->flush();
     }
 
@@ -199,8 +199,8 @@ class AddVersionListener implements EventSubscriber
 
         $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
             ->findOneBy(
-                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                array('loggedAt' => 'desc')
+                ['objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()],
+                ['loggedAt' => 'desc']
             );
         $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
 

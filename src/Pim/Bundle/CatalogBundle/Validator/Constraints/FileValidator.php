@@ -57,7 +57,7 @@ class FileValidator extends BaseFileValidator
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
-                    array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))
+                    ['{{ extensions }}' => join(', ', $constraint->allowedExtensions)]
                 );
             }
         }

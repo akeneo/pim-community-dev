@@ -18,12 +18,12 @@ class TranslationTransformerTest extends \PHPUnit_Framework_TestCase
         $column = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $column->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array('locale')));
+            ->will($this->returnValue(['locale']));
         $column->expects($this->any())
             ->method('getPropertyPath')
             ->will($this->returnValue('property_path'));
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('setLocale'))
+            ->setMethods(['setLocale'])
             ->getMock();
         $object->expects($this->once())
             ->method('setLocale')
@@ -45,7 +45,7 @@ class TranslationTransformerTest extends \PHPUnit_Framework_TestCase
         $column = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $column->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $column->expects($this->any())
             ->method('getLocale')
             ->will($this->returnValue('locale'));
@@ -53,7 +53,7 @@ class TranslationTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getPropertyPath')
             ->will($this->returnValue('property_path'));
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('setLocale'))
+            ->setMethods(['setLocale'])
             ->getMock();
         $object->expects($this->once())
             ->method('setLocale')

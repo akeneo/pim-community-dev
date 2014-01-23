@@ -71,6 +71,6 @@ class AssociationRepository extends EntityRepository implements ReferableEntityR
      */
     public function getReferenceProperties()
     {
-        return array('owner', 'associationType');
+        return ['owner', 'associationType'];
     }
 }

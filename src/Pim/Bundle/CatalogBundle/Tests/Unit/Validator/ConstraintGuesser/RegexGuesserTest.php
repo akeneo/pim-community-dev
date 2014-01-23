@@ -38,7 +38,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_text')))
+            $this->target->supportAttribute($this->getAttributeMock(['attributeType' => 'pim_catalog_text']))
         );
     }
 
@@ -49,11 +49,11 @@ class RegexGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array(
+                [
                     'attributeType'    => 'pim_catalog_text',
                     'validationRule'   => 'regexp',
                     'validationRegexp' => '/foo/',
-                )
+                ]
             )
         );
 
@@ -61,7 +61,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
         $this->assertConstraintsConfiguration(
             'Symfony\Component\Validator\Constraints\Regex',
             $constraints,
-            array('pattern' => '/foo/')
+            ['pattern' => '/foo/']
         );
     }
 
@@ -75,10 +75,10 @@ class RegexGuesserTest extends ConstraintGuesserTest
             count(
                 $this->target->guessConstraints(
                     $this->getAttributeMock(
-                        array(
+                        [
                             'attributeType'  => 'pim_catalog_text',
                             'validationRule' => 'regexp',
-                        )
+                        ]
                     )
                 )
             )
@@ -89,10 +89,10 @@ class RegexGuesserTest extends ConstraintGuesserTest
             count(
                 $this->target->guessConstraints(
                     $this->getAttributeMock(
-                        array(
+                        [
                             'attributeType'  => 'pim_catalog_text',
                             'validationRule' => null,
-                        )
+                        ]
                     )
                 )
             )

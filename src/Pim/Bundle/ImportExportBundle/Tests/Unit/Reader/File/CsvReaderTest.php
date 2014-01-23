@@ -47,22 +47,22 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->archiver
             ->expects($this->once())
             ->method('setHeader')
-            ->with(array('firstname', 'lastname', 'age'));
+            ->with(['firstname', 'lastname', 'age']);
 
         $this->stepExecution
             ->expects($this->exactly(3))
             ->method('incrementSummaryInfo');
 
         $this->assertEquals(
-            array('firstname' => 'Severin', 'lastname' => 'Gero', 'age' => '28'),
+            ['firstname' => 'Severin', 'lastname' => 'Gero', 'age' => '28'],
             $this->reader->read()
         );
         $this->assertEquals(
-            array('firstname' => 'Kyrylo', 'lastname' => 'Zdislav', 'age' => '34'),
+            ['firstname' => 'Kyrylo', 'lastname' => 'Zdislav', 'age' => '34'],
             $this->reader->read()
         );
         $this->assertEquals(
-            array('firstname' => 'Cenek', 'lastname' => 'Wojtek', 'age' => '7'),
+            ['firstname' => 'Cenek', 'lastname' => 'Wojtek', 'age' => '7'],
             $this->reader->read()
         );
 
@@ -79,12 +79,12 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertSame('pim_import_export.steps.csv_reader.invalid_item_columns_count', $e->getMessage());
             $parameters = $e->getMessageParameters();
             $this->assertEquals(
-                array(
+                [
                     '%totalColumnsCount%',
                     '%itemColumnsCount%',
                     '%csvPath%',
                     '%lineno%',
-                ),
+                ],
                 array_keys($parameters)
             );
 

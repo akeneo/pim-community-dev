@@ -40,9 +40,9 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     {
         if ($value->getAttributeType() === 'pim_catalog_identifier') {
             $identifier = $this->manager->getAttributeRepository()->findOneBy(
-                array(
+                [
                     'attributeType' => 'pim_catalog_identifier'
-                )
+                ]
             );
 
             if ($identifier && $identifier->getId() !== $value->getId()) {

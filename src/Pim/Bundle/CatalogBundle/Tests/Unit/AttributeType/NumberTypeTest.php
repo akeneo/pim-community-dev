@@ -33,16 +33,16 @@ class NumberTypeTest extends AttributeTypeTestCase
      */
     public static function buildValueFormTypeDataProvider()
     {
-        return array(
-            'decimals_allowed'     => array(
-                array('is_decimals_allowed' => true),
-                array('precision' => 4)
-            ),
-            'decimals_now_allowed' => array(
-                array('is_decimals_allowed' => false),
-                array('precision' => 0)
-            )
-        );
+        return [
+            'decimals_allowed'     => [
+                ['is_decimals_allowed' => true],
+                ['precision' => 4]
+            ],
+            'decimals_now_allowed' => [
+                ['is_decimals_allowed' => false],
+                ['precision' => 0]
+            ]
+        ];
     }
 
     /**
@@ -55,11 +55,11 @@ class NumberTypeTest extends AttributeTypeTestCase
         $factory = $this->getFormFactoryMock();
         $data = 5;
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => $data,
                 'backendType' => $this->backendType,
                 'attribute_options' => $attributeOptions
-            )
+            ]
         );
 
         $factory
@@ -70,12 +70,12 @@ class NumberTypeTest extends AttributeTypeTestCase
                 $this->formType,
                 $data,
                 array_merge(
-                    array(
-                        'constraints'     => array('constraints'),
+                    [
+                        'constraints'     => ['constraints'],
                         'label'           => null,
                         'required'        => null,
                         'auto_initialize' => false
-                    ),
+                    ],
                     $expectedResult
                 )
             );
@@ -86,7 +86,7 @@ class NumberTypeTest extends AttributeTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = [])
     {
         $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
 

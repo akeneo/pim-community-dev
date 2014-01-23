@@ -27,15 +27,15 @@ class PhoneType extends CollectionItemAbstract
         $builder->add(
             'type',
             'choice',
-            array(
+            [
                 'empty_value'   => 'Choose phone type...',
                 'empty_data'    => null,
                 'choice_list'   => new ChoiceList(
                     array_keys(self::getTypesArray()),
                     array_values(self::getTypesArray())
                 ),
-                'attr' => array ('class' => 'oro-multiselect')
-            )
+                'attr' => ['class' => 'oro-multiselect']
+            ]
         );
     }
 
@@ -44,10 +44,10 @@ class PhoneType extends CollectionItemAbstract
      */
     public function getTypesArray()
     {
-        return array(
+        return [
             self::TYPE_OFFICE      => 'Office phone',
             self::TYPE_CELL        => 'Cell phone'
-        );
+        ];
     }
 
     /**

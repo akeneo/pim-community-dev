@@ -64,7 +64,7 @@ class ProductReader extends Reader
     {
         if (!$this->query) {
             $code = $this->channel;
-            $this->channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
+            $this->channel = current($this->channelManager->getChannels(['code' => $this->channel]));
             if (!$this->channel) {
                 throw new \InvalidArgumentException(
                     sprintf('Could not find the channel "%s"', $code)
@@ -110,18 +110,18 @@ class ProductReader extends Reader
      */
     public function getConfigurationFields()
     {
-        return array(
-            'channel' => array(
+        return [
+            'channel' => [
                 'type'    => 'choice',
-                'options' => array(
+                'options' => [
                     'choices'  => $this->channelManager->getChannelChoices(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_import_export.export.channel.label',
                     'help'     => 'pim_import_export.export.channel.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

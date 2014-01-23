@@ -54,7 +54,7 @@ class TimestampableListenerTest extends OrmTestCase
      */
     public function testGetSubscribedEvents()
     {
-        $events = array('prePersist', 'preUpdate');
+        $events = ['prePersist', 'preUpdate'];
         $this->assertEquals($this->listener->getSubscribedEvents(), $events);
     }
 

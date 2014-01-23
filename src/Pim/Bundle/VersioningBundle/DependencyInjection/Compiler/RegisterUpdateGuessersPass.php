@@ -29,7 +29,7 @@ class RegisterUpdateGuessersPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('pim_versioning.update_guesser');
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('addUpdateGuesser', array(new Reference($id)));
+            $service->addMethodCall('addUpdateGuesser', [new Reference($id)]);
         }
     }
 }

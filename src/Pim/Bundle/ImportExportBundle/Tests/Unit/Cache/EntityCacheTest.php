@@ -34,8 +34,8 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->with($this->equalTo('class'))
             ->will($this->returnValue($this->repository));
-        $this->doctrineEntities = array();
-        $this->fetchedEntities = array();
+        $this->doctrineEntities = [];
+        $this->fetchedEntities = [];
         $this->repository->expects($this->any())
             ->method('findByReference')
             ->will(
@@ -49,7 +49,7 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->referencedEntities = array();
+        $this->referencedEntities = [];
         $this->referenceRepository = $this->getMockBuilder('Doctrine\Common\DataFixtures\ReferenceRepository')
             ->disableOriginalConstructor()
             ->getMock();
@@ -112,7 +112,7 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertDoctrineFind('code2');
 
         $this->cache->clear();
-        $this->fetchedEntities = array();
+        $this->fetchedEntities = [];
 
         $this->addDoctrineEntity('code1');
         $this->addDoctrineEntity('code2');

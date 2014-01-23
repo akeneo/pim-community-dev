@@ -199,8 +199,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function getOrderedGroups()
     {
-        $firstGroups = array();
-        $lastGroups = array();
+        $firstGroups = [];
+        $lastGroups = [];
 
         foreach ($this->getAttributes() as $attribute) {
             $group = $attribute->getVirtualGroup();
@@ -292,7 +292,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function getCategoryCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
@@ -307,7 +307,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function getGroupCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getGroups() as $group) {
             $codes[] = $group->getCode();
         }
@@ -421,11 +421,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     public function getMedia()
     {
-        $media = array();
+        $media = [];
         foreach ($this->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                ['pim_catalog_image', 'pim_catalog_file']
             )) {
                 $media[] = $value->getData();
             }
@@ -498,7 +498,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      *
      * @return Product
      */
-    public function setAssociations(array $associations = array())
+    public function setAssociations(array $associations = [])
     {
         $this->associations = new ArrayCollection($associations);
 

@@ -33,14 +33,14 @@ class AttributeNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -60,7 +60,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
         $this->assertEquals(
             $expectedResult,
-            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
+            $this->normalizer->normalize($attribute, $this->format, ['versioning' => true])
         );
     }
 
@@ -69,61 +69,61 @@ class AttributeNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'type'                   => 'pim_catalog_multiselect',
                     'code'                   => 'color',
-                    'label'                  => array('en' => 'Color', 'fr' => 'Couleur'),
+                    'label'                  => ['en' => 'Color', 'fr' => 'Couleur'],
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
                     'unique'                 => '0',
-                    'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
-                    'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
+                    'default_options'        => ['red' => ['en' => 'Red', 'fr' => 'Rouge']],
+                    'default_value'          => ['red' => ['en' => 'Red', 'fr' => 'Rouge']],
                     'searchable'             => '1',
                     'localizable'            => '1',
-                    'available_locales'      => array('en', 'fr'),
+                    'available_locales'      => ['en', 'fr'],
                     'date_type'              => '',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Global',
-                    'options'                => array(
-                        'green' => array('en' => 'Green', 'fr' => 'Vert'),
-                        'red'   => array('en' => 'Red', 'fr' => 'Rouge')
-                    ),
+                    'options'                => [
+                        'green' => ['en' => 'Green', 'fr' => 'Vert'],
+                        'red'   => ['en' => 'Red', 'fr' => 'Rouge']
+                    ],
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'type'                   => 'pim_catalog_text',
                     'code'                   => 'description',
-                    'label'                  => array('en' => 'Description', 'fr' => 'Description'),
+                    'label'                  => ['en' => 'Description', 'fr' => 'Description'],
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
                     'unique'                 => '0',
                     'default_value'          => 'No description',
-                    'default_options'        => array(),
+                    'default_options'        => [],
                     'searchable'             => '1',
                     'localizable'            => '1',
-                    'available_locales'      => array('en', 'fr'),
+                    'available_locales'      => ['en', 'fr'],
                     'date_type'              => '',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
-                    'options'                => array(),
+                    'options'                => [],
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '1',
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',
                     'validation_regexp'      => '^[a-zA-Z0-9 ]*$',
                     'wysiwyg_enabled'        => '1',
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -131,7 +131,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
      */
     protected function getOptionalProperties()
     {
-        return array(
+        return [
             'default_value',
             'max_characters',
             'validation_rule',
@@ -148,7 +148,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
             'default_metric_unit',
             'allowed_extensions',
             'max_file_size',
-        );
+        ];
     }
 
     /**

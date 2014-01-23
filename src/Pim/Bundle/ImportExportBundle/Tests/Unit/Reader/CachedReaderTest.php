@@ -16,10 +16,10 @@ class CachedReaderTest extends \PHPUnit_Framework_TestCase
     public function testRead()
     {
         $reader = new CachedReader();
-        $data = array(
-            'row1' => array('key1' => 'value1', 'key2' => 'value2'),
-            'row2' => array('key1' => 'value3', 'key2' => 'value4'),
-        );
+        $data = [
+            'row1' => ['key1' => 'value1', 'key2' => 'value2'],
+            'row2' => ['key1' => 'value3', 'key2' => 'value4'],
+        ];
 
         foreach ($data as $key => $value) {
             $reader->addItem($value, $key);
@@ -29,7 +29,7 @@ class CachedReaderTest extends \PHPUnit_Framework_TestCase
         $reader->addItem($data['row2'], 'row2');
         $this->assertEquals($data['row2'], $reader->getItem('row2'));
 
-        $newElement = array('key1' => 'value6');
+        $newElement = ['key1' => 'value6'];
         $data[] = $newElement;
         $reader->addItem($newElement);
 
@@ -43,6 +43,6 @@ class CachedReaderTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $reader = new CachedReader;
-        $this->assertEquals(array(), $reader->getConfigurationFields());
+        $this->assertEquals([], $reader->getConfigurationFields());
     }
 }

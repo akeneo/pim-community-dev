@@ -42,7 +42,7 @@ interface FlexibleEntityRepositoryInterface extends TranslatableInterface, Scopa
      * @return array The objects.
      */
     public function findByWithAttributes(
-        array $attributes = array(),
+        array $attributes = [],
         array $criteria = null,
         array $orderBy = null,
         $limit = null,

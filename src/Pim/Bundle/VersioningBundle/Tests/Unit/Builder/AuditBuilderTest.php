@@ -39,27 +39,27 @@ class AuditBuilderTest extends \PHPUnit_Framework_TestCase
         $numVersion = 1;
 
         // update version
-        $data = array('field1' => 'the-same', 'field2' => 'will-be-changed', 'field4' => 'old-data');
+        $data = ['field1' => 'the-same', 'field2' => 'will-be-changed', 'field4' => 'old-data'];
         $previousVersion = new Version($resourceName, $resourceId, $numVersion, $data, $user);
 
-        $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
+        $data = ['field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data'];
         $currentVersion = new Version($resourceName, $resourceId, $numVersion, $data, $user);
 
         $audit = $this->manager->buildAudit($currentVersion, $previousVersion);
-        $expected = array(
-            'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),
-            'field3' => array('old' => '', 'new' => 'new-data'),
-            'field4' => array('old' => 'old-data', 'new' => ''),
-        );
+        $expected = [
+            'field2' => ['old' => 'will-be-changed', 'new' => 'has-changed'],
+            'field3' => ['old' => '', 'new' => 'new-data'],
+            'field4' => ['old' => 'old-data', 'new' => ''],
+        ];
         $this->assertEquals($expected, $audit->getData());
 
         // new version
         $audit = $this->manager->buildAudit($currentVersion);
-        $expected = array(
-            'field1' => array('old' => '', 'new' => 'the-same'),
-            'field2' => array('old' => '', 'new' => 'has-changed'),
-            'field3' => array('old' => '', 'new' => 'new-data'),
-        );
+        $expected = [
+            'field1' => ['old' => '', 'new' => 'the-same'],
+            'field2' => ['old' => '', 'new' => 'has-changed'],
+            'field3' => ['old' => '', 'new' => 'new-data'],
+        ];
         $this->assertEquals($audit->getData(), $expected);
     }
 

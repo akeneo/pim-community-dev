@@ -39,12 +39,12 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function getUpdateProductValueData()
     {
-        return array(
-            'no_file_no_media' => array(false, false),
-            'file_no_media' => array(true, false),
-            'no_file_media' => array(false, true),
-            'file_media' => array(true, true),
-        );
+        return [
+            'no_file_no_media' => [false, false],
+            'file_no_media' => [true, false],
+            'no_file_media' => [false, true],
+            'file_media' => [true, true],
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getValue($hasFile, $mediaExists)
     {
         $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('getMedia', 'setMedia', '__toString'))
+            ->setMethods(['getMedia', 'setMedia', '__toString'])
             ->getMock();
         if ($hasFile) {
             $productValue

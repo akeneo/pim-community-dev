@@ -56,7 +56,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = array())
+    public function getCategoriesByIds(array $categoriesIds = [])
     {
         if (count($categoriesIds) === 0) {
             return new ArrayCollection();
@@ -88,7 +88,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
     public function getTreeFromParents(array $parentsIds)
     {
         if (count($parentsIds) === 0) {
-            return array();
+            return [];
         }
 
         $meta = $this->getClassMetadata();
@@ -140,7 +140,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -148,6 +148,6 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      */
     public function getReferenceProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

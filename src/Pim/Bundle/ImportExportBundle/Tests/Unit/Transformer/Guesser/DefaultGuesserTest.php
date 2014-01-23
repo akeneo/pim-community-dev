@@ -29,7 +29,7 @@ class DefaultGuesserTest extends GuesserTestCase
             ->will($this->returnValue(true));
 
         $this->assertEquals(
-            array($this->transformer, array()),
+            [$this->transformer, []],
             $this->guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }

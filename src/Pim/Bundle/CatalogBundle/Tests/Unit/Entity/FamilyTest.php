@@ -166,7 +166,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock();
 
         $this->assertEntity($this->family->addAttribute($attribute));
-        $this->assertEquals(array($attribute), $this->family->getAttributes()->toArray());
+        $this->assertEquals([$attribute], $this->family->getAttributes()->toArray());
     }
 
     /**
@@ -182,7 +182,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->family->addAttribute($address);
         $this->family->addAttribute($phone);
 
-        $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
+        $this->assertEquals([$name, $address], $this->family->getAttributeAsLabelChoices());
     }
 
     /**
@@ -214,20 +214,20 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $ecommerceDescription = $this->getAttributeRequirementMock('ecommerce', 'description');
 
         $this->family->setAttributeRequirements(
-            array(
+            [
                 $mobileName,
                 $mobileDescription,
                 $ecommerceName,
                 $ecommerceDescription
-            )
+            ]
         );
 
-        $expectedAttrRequirements = array(
+        $expectedAttrRequirements = [
             'name_mobile'           => $mobileName,
             'description_mobile'    => $mobileDescription,
             'name_ecommerce'        => $ecommerceName,
             'description_ecommerce' => $ecommerceDescription,
-        );
+        ];
         $this->assertEquals(
             $expectedAttrRequirements,
             $this->family->getAttributeRequirements()

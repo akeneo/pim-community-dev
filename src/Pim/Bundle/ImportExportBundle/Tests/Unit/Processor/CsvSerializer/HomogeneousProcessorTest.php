@@ -58,13 +58,13 @@ class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $item,
                 'csv',
-                array(
+                [
                     'delimiter'     => ';',
                     'enclosure'     => '"',
                     'withHeader'    => true,
                     'heterogeneous' => false,
                     'locales'       => ['fr', 'de', 'it'],
-                )
+                ]
             )
             ->will($this->returnValue('serialized'));
 

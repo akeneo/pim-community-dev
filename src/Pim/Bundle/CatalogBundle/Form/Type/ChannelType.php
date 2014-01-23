@@ -83,7 +83,7 @@ class ChannelType extends AbstractType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', array('label' => 'Default label'));
+        $builder->add('label', 'text', ['label' => 'Default label']);
 
         return $this;
     }
@@ -99,7 +99,7 @@ class ChannelType extends AbstractType
         $builder->add(
             'currencies',
             'entity',
-            array(
+            [
                 'required'      => true,
                 'multiple'      => true,
                 'select2'       => true,
@@ -107,7 +107,7 @@ class ChannelType extends AbstractType
                 'query_builder' => function (CurrencyRepository $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
-            )
+            ]
         );
 
         return $this;
@@ -138,7 +138,7 @@ class ChannelType extends AbstractType
         $builder->add(
             'locales',
             'entity',
-            array(
+            [
                 'required'      => true,
                 'multiple'      => true,
                 'select2'       => true,
@@ -148,7 +148,7 @@ class ChannelType extends AbstractType
                     return $repository->getLocalesQB();
                 },
                 'preferred_choices' => $this->localeManager->getActiveLocales()
-            )
+            ]
         );
 
         return $this;
@@ -165,7 +165,7 @@ class ChannelType extends AbstractType
         $builder->add(
             'category',
             'entity',
-            array(
+            [
                 'label'         => 'Category tree',
                 'required'      => true,
                 'select2'       => true,
@@ -173,7 +173,7 @@ class ChannelType extends AbstractType
                 'query_builder' => function (CategoryRepository $repository) {
                     return $repository->getTreesQB();
                 }
-            )
+            ]
         );
 
         return $this;
@@ -229,9 +229,9 @@ class ChannelType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel',
-            )
+            ]
         );
     }
 

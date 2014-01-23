@@ -36,9 +36,9 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-        );
+        ];
     }
 
     /**
@@ -68,12 +68,12 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
                 $form->add(
                     $name,
                     'pim_product_value',
-                    array(
+                    [
                         'disabled'     => true,
-                        'block_config' => array(
+                        'block_config' => [
                             'mode' => 'comparison'
-                        )
-                    )
+                        ]
+                    ]
                 );
             }
         }

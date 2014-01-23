@@ -39,7 +39,7 @@ class DateTimeGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_date'))
+                $this->getAttributeMock(['attributeType' => 'pim_catalog_date'])
             )
         );
     }
@@ -50,7 +50,7 @@ class DateTimeGuesserTest extends ConstraintGuesserTest
     public function testGuessDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_date', 'dateType' => 'datetime'))
+            $this->getAttributeMock(['attributeType' => 'pim_catalog_date', 'dateType' => 'datetime'])
         );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\DateTime', $constraints);
@@ -62,7 +62,7 @@ class DateTimeGuesserTest extends ConstraintGuesserTest
     public function testDoNotGuessDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
+            $this->getAttributeMock(['attributeType' => 'pim_catalog_text'])
         );
 
         $this->assertEquals(0, count($constraints));

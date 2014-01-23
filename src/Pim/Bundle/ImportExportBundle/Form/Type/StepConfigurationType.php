@@ -35,10 +35,10 @@ class StepConfigurationType extends AbstractType
                             $property,
                             'pim_import_export_step_element_configuration',
                             $element,
-                            array(
+                            [
                                 'label' => sprintf('pim_import_export.steps.%s.title', $element->getName()),
                                 'auto_initialize' => false,
-                            )
+                            ]
                         )
                     );
                 }
@@ -52,9 +52,9 @@ class StepConfigurationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
-            )
+            ]
         );
     }
 

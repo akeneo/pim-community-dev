@@ -103,17 +103,17 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.created');
 
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', ['id' => $group->getId()]);
         }
 
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
-        return array(
+        return [
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
-        );
+        ];
     }
 
     /**
@@ -132,15 +132,15 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', ['id' => $group->getId()]);
         }
 
-        return array(
+        return [
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
-        );
+        ];
     }
 
     /**
@@ -212,13 +212,13 @@ class AttributeGroupController extends AbstractDoctrineController
      * @return Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            ['attributes' => $attributes]
         );
     }
 
@@ -253,7 +253,7 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        return $this->redirectToRoute('pim_catalog_attributegroup_edit', ['id' => $group->getId()]);
     }
 
     /**
@@ -282,7 +282,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', ['id' => $group->getId()]);
         }
     }
 

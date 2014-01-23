@@ -22,8 +22,8 @@ class CsvProductReaderTest extends CsvReaderTest
         $this->reader = new CsvProductReader(
             $this->archiver,
             $this->getEntityManagerMock(
-                array('sku', 'name'),
-                array('view', 'manual')
+                ['sku', 'name'],
+                ['view', 'manual']
             ),
             'Pim\Bundle\CatalogBundle\Entity\Attribute'
         );
@@ -45,7 +45,7 @@ class CsvProductReaderTest extends CsvReaderTest
     public function testInitializeWithAttributeRepository()
     {
         $this->assertAttributeEquals(
-            array('view', 'manual'),
+            ['view', 'manual'],
             'mediaAttributes',
             $this->reader
         );
@@ -59,12 +59,12 @@ class CsvProductReaderTest extends CsvReaderTest
         $this->reader->setFilePath(__DIR__ . '/../../../fixtures/with_media.csv');
 
         $this->assertEquals(
-            array(
+            [
                 'sku'          => 'SKU-001',
                 'name'         => 'door',
                 'view'         => __DIR__ . '/../../../fixtures/sku-001.jpg',
                 'manual-fr_FR' => __DIR__ . '/../../../fixtures/sku-001.txt',
-            ),
+            ],
             $this->reader->read()
         );
     }
@@ -106,7 +106,7 @@ class CsvProductReaderTest extends CsvReaderTest
     {
         $repository = $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setMethods(array('findUniqueAttributeCodes', 'findMediaAttributeCodes'))
+            ->setMethods(['findUniqueAttributeCodes', 'findMediaAttributeCodes'])
             ->disableOriginalConstructor()
             ->getMock();
 

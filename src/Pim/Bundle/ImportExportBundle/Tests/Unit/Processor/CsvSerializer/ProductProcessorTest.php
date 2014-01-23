@@ -58,9 +58,9 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
         $media5 = $this->getMediaMock();
         $media6 = $this->getMediaMock();
 
-        $board = $this->getProductMock(array($media1, $media2));
-        $sail  = $this->getProductMock(array($media3));
-        $mast  = $this->getProductMock(array($media4, $media5, $media6));
+        $board = $this->getProductMock([$media1, $media2]);
+        $sail  = $this->getProductMock([$media3]);
+        $mast  = $this->getProductMock([$media4, $media5, $media6]);
 
         $this->serializer
             ->expects($this->once())
@@ -68,11 +68,11 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('serialized'));
 
         $this->assertEquals(
-            array(
+            [
                 'entry' => 'serialized',
-                'media' => array($media1, $media2, $media3, $media4, $media5, $media6)
-            ),
-            $this->processor->process(array($board, $sail, $mast))
+                'media' => [$media1, $media2, $media3, $media4, $media5, $media6]
+            ],
+            $this->processor->process([$board, $sail, $mast])
         );
     }
 

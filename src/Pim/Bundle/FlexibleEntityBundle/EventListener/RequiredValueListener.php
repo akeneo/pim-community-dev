@@ -45,10 +45,10 @@ class RequiredValueListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'prePersist',
             'preUpdate'
-        );
+        ];
     }
 
     /**
@@ -97,7 +97,7 @@ class RequiredValueListener implements EventSubscriber
 
                 // get required attributes
                 $repo = $flexibleManager->getAttributeRepository();
-                $attributes = $repo->findBy(array('entityType' => $entityClass, 'required' => true));
+                $attributes = $repo->findBy(['entityType' => $entityClass, 'required' => true]);
                 // check that value is set for any required attributes
                 foreach ($attributes as $attribute) {
                     if (!$entity->getValue($attribute->getCode())) {

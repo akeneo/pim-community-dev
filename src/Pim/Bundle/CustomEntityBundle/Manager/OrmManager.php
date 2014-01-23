@@ -39,7 +39,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function create($entityClass, array $defaultValues = array(), array $options = array())
+    public function create($entityClass, array $defaultValues = [], array $options = [])
     {
         $object = new $entityClass();
         foreach ($defaultValues as $propertyPath => $value) {
@@ -52,7 +52,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function find($entityClass, $id, array $options = array())
+    public function find($entityClass, $id, array $options = [])
     {
         return $this->doctrine->getRepository($entityClass)->find($id);
     }
@@ -60,7 +60,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createQueryBuilder($entityClass, array $options = array())
+    public function createQueryBuilder($entityClass, array $options = [])
     {
         $method = isset($options['query_builder_method']) ? $options['query_builder_method'] : 'createQueryBuilder';
         $alias = isset($options['query_builder_alias']) ? $options['query_builder_alias'] : 't';

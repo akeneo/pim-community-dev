@@ -36,7 +36,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         $this->collector
             ->expects($this->any())
             ->method('getInvalidItems')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import'),
@@ -55,20 +55,20 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         $this->collector
             ->expects($this->any())
             ->method('getInvalidItems')
-            ->will($this->returnValue(array('item1', 'item2')));
+            ->will($this->returnValue(['item1', 'item2']));
 
-        $this->archiver->setHeader(array('sku', 'name', 'description'));
+        $this->archiver->setHeader(['sku', 'name', 'description']);
 
         $this->encoder
             ->expects($this->any())
             ->method('encode')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array(array('sku', 'name', 'description'), 'csv', array(), 'sku;name;description'),
-                        array('item1',                             'csv', array(), 'foo;"Teh Foo"'),
-                        array('item2',                             'csv', array(), 'bar;"Teh Bar";"Teh Bar Descr"'),
-                    )
+                    [
+                        [['sku', 'name', 'description'], 'csv', [], 'sku;name;description'],
+                        ['item1',                             'csv', [], 'foo;"Teh Foo"'],
+                        ['item2',                             'csv', [], 'bar;"Teh Bar";"Teh Bar Descr"'],
+                    ]
                 )
             );
 
@@ -93,17 +93,17 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
         $this->filesystem
             ->expects($this->any())
             ->method('listKeys')
-            ->will($this->returnValue(array('keys' => array('foo/fooFile.txt','bar/barFile.txt'))));
+            ->will($this->returnValue(['keys' => ['foo/fooFile.txt','bar/barFile.txt']]));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', null),
             42
         );
         $this->assertSame(
-            array(
+            [
                 'fooFile.txt' => 'foo/fooFile.txt',
                 'barFile.txt' => 'bar/barFile.txt'
-            ),
+            ],
             $this->archiver->getArchives($jobExecution)
         );
     }

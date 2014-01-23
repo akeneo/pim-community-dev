@@ -35,7 +35,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $mediaManager;
 
     /** @var array */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /** @var array */
     protected $results;
@@ -53,14 +53,14 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $scopeCode = null;
         if (isset($context['scopeCode'])) {
             $scopeCode = $context['scopeCode'];
         }
 
-        $localeCodes = array();
+        $localeCodes = [];
         if (isset($context['localeCodes'])) {
             $localeCodes = $context['localeCodes'];
         }
@@ -132,7 +132,7 @@ class FlatProductNormalizer implements NormalizerInterface
             }
         );
 
-        $normalizedValues = array();
+        $normalizedValues = [];
         foreach ($filteredValues as $value) {
             $normalizedValues = array_merge(
                 $normalizedValues,
@@ -169,13 +169,13 @@ class FlatProductNormalizer implements NormalizerInterface
         } elseif ($data instanceof Metric) {
             $fieldName = $this->getFieldValue($value);
 
-            return array(
+            return [
                 $fieldName                     => sprintf('%.4f', $data->getData()),
                 sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
-            );
+            ];
         }
 
-        return array($this->getFieldValue($value) => (string) $data);
+        return [$this->getFieldValue($value) => (string) $data];
     }
 
     /**
@@ -187,7 +187,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizePriceCollection($value)
     {
-        $normalized = array();
+        $normalized = [];
         $fieldName = $this->getFieldValue($value);
 
         foreach ($value->getPrices() as $currency => $price) {
@@ -227,7 +227,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeCollectionData($data)
     {
-        $result = array();
+        $result = [];
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
@@ -279,17 +279,17 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param Association[] $associations
      */
-    protected function normalizeAssociations($associations = array())
+    protected function normalizeAssociations($associations = [])
     {
         foreach ($associations as $association) {
             $columnPrefix = $association->getAssociationType()->getCode();
 
-            $groups = array();
+            $groups = [];
             foreach ($association->getGroups() as $group) {
                 $groups[] = $group->getCode();
             }
 
-            $products = array();
+            $products = [];
             foreach ($association->getProducts() as $product) {
                 $products[] = $product->getIdentifier();
             }

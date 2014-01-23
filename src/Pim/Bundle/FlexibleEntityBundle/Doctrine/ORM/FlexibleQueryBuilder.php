@@ -154,19 +154,19 @@ class FlexibleQueryBuilder
      */
     public function getAllowedOperators($backendType)
     {
-        $typeToOperator = array(
-            AbstractAttributeType::BACKEND_TYPE_DATE     => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_DATETIME => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_DECIMAL  => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_INTEGER  => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_METRIC   => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => array('='),
-            AbstractAttributeType::BACKEND_TYPE_OPTION   => array('IN', 'NOT IN'),
-            AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array('IN', 'NOT IN'),
-            AbstractAttributeType::BACKEND_TYPE_TEXT     => array('=', 'NOT LIKE', 'LIKE'),
-            AbstractAttributeType::BACKEND_TYPE_VARCHAR  => array('=', 'NOT LIKE', 'LIKE'),
-            'prices'                                     => array('=', '<', '<=', '>', '>='),
-        );
+        $typeToOperator = [
+            AbstractAttributeType::BACKEND_TYPE_DATE     => ['=', '<', '<=', '>', '>='],
+            AbstractAttributeType::BACKEND_TYPE_DATETIME => ['=', '<', '<=', '>', '>='],
+            AbstractAttributeType::BACKEND_TYPE_DECIMAL  => ['=', '<', '<=', '>', '>='],
+            AbstractAttributeType::BACKEND_TYPE_INTEGER  => ['=', '<', '<=', '>', '>='],
+            AbstractAttributeType::BACKEND_TYPE_METRIC   => ['=', '<', '<=', '>', '>='],
+            AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => ['='],
+            AbstractAttributeType::BACKEND_TYPE_OPTION   => ['IN', 'NOT IN'],
+            AbstractAttributeType::BACKEND_TYPE_OPTIONS  => ['IN', 'NOT IN'],
+            AbstractAttributeType::BACKEND_TYPE_TEXT     => ['=', 'NOT LIKE', 'LIKE'],
+            AbstractAttributeType::BACKEND_TYPE_VARCHAR  => ['=', 'NOT LIKE', 'LIKE'],
+            'prices'                                     => ['=', '<', '<=', '>', '>='],
+        ];
 
         if (!isset($typeToOperator[$backendType])) {
             throw new FlexibleQueryException('backend type '.$backendType.' is unknown');
@@ -213,7 +213,7 @@ class FlexibleQueryBuilder
         }
 
         if (!is_array($field)) {
-            $fieldArray = array();
+            $fieldArray = [];
             foreach (array_keys($operator) as $key) {
                 $fieldArray[$key] = $field;
             }
@@ -226,7 +226,7 @@ class FlexibleQueryBuilder
             throw new FlexibleQueryException('Field, operator and value arrays must have the same keys');
         }
 
-        $conditions = array();
+        $conditions = [];
         foreach ($field as $key => $fieldName) {
             $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
         }
@@ -247,21 +247,21 @@ class FlexibleQueryBuilder
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {
-        $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
+        $operators = ['=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like'];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
         }
 
-        $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');
+        $operators = ['NULL' => 'isNull', 'NOT NULL' => 'isNotNull'];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field);
         }
 
-        $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
+        $operators = ['IN' => 'in', 'NOT IN' => 'notIn'];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];
 
@@ -289,7 +289,7 @@ class FlexibleQueryBuilder
         $backendType = $attribute->getBackendType();
         $allowed = $this->getAllowedOperators($backendType);
 
-        $operators = is_array($operator) ? $operator : array($operator);
+        $operators = is_array($operator) ? $operator : [$operator];
         foreach ($operators as $key) {
             if (!in_array($key, $allowed)) {
                 throw new FlexibleQueryException(

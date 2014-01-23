@@ -65,7 +65,7 @@ class GroupType extends AbstractType
             ->add(
                 'type',
                 'entity',
-                array(
+                [
                     'class' => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository
@@ -76,7 +76,7 @@ class GroupType extends AbstractType
                     'multiple' => false,
                     'expanded' => false,
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
     }
@@ -91,12 +91,12 @@ class GroupType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -113,7 +113,7 @@ class GroupType extends AbstractType
             ->add(
                 'attributes',
                 'entity',
-                array(
+                [
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
@@ -123,7 +123,7 @@ class GroupType extends AbstractType
                     },
                     'help'     => 'pim_catalog.group.axis.help',
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
@@ -139,22 +139,22 @@ class GroupType extends AbstractType
             ->add(
                 'appendProducts',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true
-                )
+                ]
             )
             ->add(
                 'removeProducts',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true
-                )
+                ]
             )
             ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
@@ -165,9 +165,9 @@ class GroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
-            )
+            ]
         );
     }
 

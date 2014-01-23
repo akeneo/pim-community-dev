@@ -26,10 +26,10 @@ class FileGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_file',
                 'pim_catalog_image',
-            )
+            ]
         );
     }
 
@@ -38,8 +38,8 @@ class FileGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
-        $options     = array();
+        $constraints = [];
+        $options     = [];
 
         if ($maxSize = $attribute->getMaxFileSize()) {
             if ($maxSize == (int) $maxSize) {

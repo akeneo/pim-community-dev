@@ -22,7 +22,7 @@ class PimVersioningExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var multitype:mixed
      */
-    protected $configs = array();
+    protected $configs = [];
 
     /**
      * @var ContainerBuilder

@@ -67,7 +67,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function __construct()
     {
-        $this->allAttributes = array();
+        $this->allAttributes = [];
         $this->values        = new ArrayCollection();
     }
 
@@ -206,7 +206,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $values = $this->getValues();
 
         if (empty($values)) {
-            return array();
+            return [];
         }
 
         $values = $values->filter(

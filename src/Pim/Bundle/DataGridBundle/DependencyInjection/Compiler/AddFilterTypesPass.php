@@ -35,7 +35,7 @@ class AddFilterTypesPass implements CompilerPassInterface
             $filters = $container->findTaggedServiceIds(self::TAG_NAME);
             foreach ($filters as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
-                $extension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
+                $extension->addMethodCall('addFilter', [$tagAttrs['type'], new Reference($serviceId)]);
             }
         }
     }

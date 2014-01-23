@@ -51,19 +51,19 @@ class CategoryFilterType extends NumberFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $choices = array(
+        $choices = [
             self::EXCLUDE_SUB => 0,
             self::INCLUDE_SUB => 1
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'        => CategoryType::NAME,
                 'operator_choices'  => $choices,
                 'empty_value'       => self::EXCLUDE_SUB,
                 'data_type'         => self::DATA_INTEGER,
-                'formatter_options' => array()
-            )
+                'formatter_options' => []
+            ]
         );
     }
 }

@@ -30,25 +30,25 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     public function createTestEntityManager()
     {
         $config = new \Doctrine\ORM\Configuration();
-        $config->setEntityNamespaces(array('SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures'));
+        $config->setEntityNamespaces(['SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures']);
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(\sys_get_temp_dir());
         $config->setProxyNamespace('SymfonyTests\Doctrine');
         $bundlePath = __DIR__."/../../../..";
         $yamlDriver = new SimplifiedYamlDriver(
-            array(
+            [
                 $bundlePath."/Resources/config/doctrine" => "Pim\\Bundle\\CatalogBundle\\Entity"
-            )
+            ]
         );
 
         $config->setMetadataDriverImpl($yamlDriver);
         $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
         $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
 
-        $params = array(
+        $params = [
             'driver' => 'pdo_sqlite',
             'memory' => true,
-        );
+        ];
 
         return EntityManager::create($params, $config);
     }
@@ -109,7 +109,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      */
     protected function getExtensions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
         $manager->expects($this->any())
             ->method('getActiveCodes')
-            ->will($this->returnValue(array('en_US', 'fr_FR')));
+            ->will($this->returnValue(['en_US', 'fr_FR']));
 
         return $manager;
     }

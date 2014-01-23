@@ -38,7 +38,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     {
         $controllerStrategy = $this
             ->getMockBuilder('Pim\Bundle\CustomEntityBundle\Controller\Strategy\strategyInterface')
-            ->setMethods(array('action'))
+            ->setMethods(['action'])
             ->getMock();
 
         $configuration = $this->getMock('Pim\Bundle\CustomEntityBundle\Configuration\ConfigurationInterface');

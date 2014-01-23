@@ -31,10 +31,10 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
         parent::setUp();
         // create a mock of repository (mock only getCodeToAttributes method)
         $metadata = $this->entityManager->getClassMetadata($this->flexibleClassName);
-        $constructorArgs = array($this->entityManager, $metadata);
+        $constructorArgs = [$this->entityManager, $metadata];
         $this->repository = $this->getMock(
             'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository',
-            array('getCodeToAttributes'),
+            ['getCodeToAttributes'],
             $constructorArgs
         );
         $this->repository->setLocale($this->defaultLocale);
@@ -56,7 +56,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
         $attributeDesc->setTranslatable(true);
         $attributeDesc->setScopable(true);
         // method return
-        $return = array($attributeName->getCode() => $attributeName, $attributeDesc->getCode() => $attributeDesc);
+        $return = [$attributeName->getCode() => $attributeName, $attributeDesc->getCode() => $attributeDesc];
         $this->repository->expects($this->any())->method('getCodeToAttributes')->will($this->returnValue($return));
     }
 

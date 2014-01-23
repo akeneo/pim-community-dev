@@ -30,8 +30,8 @@ class FlexibleManagerRegistry
      */
     public function __construct()
     {
-        $this->managers        = array();
-        $this->entityToManager = array();
+        $this->managers        = [];
+        $this->entityToManager = [];
     }
 
     /**

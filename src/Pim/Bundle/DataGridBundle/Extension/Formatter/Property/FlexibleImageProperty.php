@@ -18,10 +18,10 @@ class FlexibleImageProperty extends FlexibleTwigProperty
     {
         if ($value->getMedia() && $fileName = $value->getMedia()->getFileName()) {
             return $this->getTemplate()->render(
-                array(
+                [
                     'value' => $fileName,
                     'title' => $value->getMedia()->getOriginalFilename()
-                )
+                ]
             );
         }
 

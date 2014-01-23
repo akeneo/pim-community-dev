@@ -19,11 +19,11 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function getValidData()
     {
-        return array(
-            array(100),
-            array((float) 100),
-            array('100'),
-        );
+        return [
+            [100],
+            [(float) 100],
+            ['100'],
+        ];
     }
 
     /**
@@ -31,11 +31,11 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function getInvalidData()
     {
-        return array(
-            array(100.5),
-            array((float) 100.5),
-            array('100.5'),
-        );
+        return [
+            [100.5],
+            [(float) 100.5],
+            ['100.5'],
+        ];
     }
 
     /**

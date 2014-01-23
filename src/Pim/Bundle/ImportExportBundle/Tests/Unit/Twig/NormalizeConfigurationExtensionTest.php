@@ -44,15 +44,15 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public static function getNormalizeValuesData()
     {
-        return array(
-            array(true, 'Yes'),
-            array(false, 'No'),
-            array('foo', 'foo'),
-            array(0, 0),
-            array(1, 1),
-            array(2, 2),
-            array(null, 'N/A')
-        );
+        return [
+            [true, 'Yes'],
+            [false, 'No'],
+            ['foo', 'foo'],
+            [0, 0],
+            [1, 1],
+            [2, 2],
+            [null, 'N/A']
+        ];
     }
 
     /**
@@ -71,11 +71,11 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetViolationsFunction()
     {
-        $violations = array(
+        $violations = [
             $this->getViolationMock('job.steps[0].reader.foo', 'The reader foo of step 0 is somehow wrong.'),
             $this->getViolationMock('job.steps[1].writer.bar', 'The writer bar of step 1 is somehow wrong.'),
             $this->getViolationMock('job.steps[1].writer.bar', 'The writer bar of step 1 is elsehow wrong.'),
-        );
+        ];
 
         $this->assertEquals(
             '<span class="label label-important">The reader foo of step 0 is somehow wrong.</span>',

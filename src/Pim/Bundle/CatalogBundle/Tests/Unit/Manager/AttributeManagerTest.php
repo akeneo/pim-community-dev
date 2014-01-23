@@ -98,7 +98,7 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($locale));
         $manager->expects($this->any())
             ->method('getActiveLocales')
-            ->will($this->returnValue(array($locale)));
+            ->will($this->returnValue([$locale]));
 
         return $manager;
     }
@@ -121,7 +121,7 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($attributeType));
         $factory->expects($this->any())
             ->method('getAttributeTypes')
-            ->will($this->returnValue(array('mytype')));
+            ->will($this->returnValue(['mytype']));
 
         return $factory;
     }
@@ -131,7 +131,7 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateAttributeFromFormData()
     {
-        $data = array('attributeType' => 'pim_catalog_metric');
+        $data = ['attributeType' => 'pim_catalog_metric'];
         $attribute = $this->attributeManager->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $attribute);
 
@@ -150,7 +150,7 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrepareFormData()
     {
-        $data = array('attributeType' => 'pim_catalog_multiselect');
+        $data = ['attributeType' => 'pim_catalog_multiselect'];
         $data = $this->attributeManager->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);

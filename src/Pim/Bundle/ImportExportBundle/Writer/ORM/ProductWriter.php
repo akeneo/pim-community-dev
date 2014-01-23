@@ -58,7 +58,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      *
      * @var array
      */
-    protected $nonClearableEntities = array(
+    protected $nonClearableEntities = [
         'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
         'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
@@ -70,7 +70,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
         'Pim\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
-    );
+    ];
 
     /**
      * @param ProductManager     $productManager
@@ -102,15 +102,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'realTimeVersioning' => array(
+        return [
+            'realTimeVersioning' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_import_export.import.realTimeVersioning.label',
                     'help'  => 'pim_import_export.import.realTimeVersioning.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

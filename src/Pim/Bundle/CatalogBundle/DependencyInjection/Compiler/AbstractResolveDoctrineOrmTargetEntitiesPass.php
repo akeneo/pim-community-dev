@@ -24,11 +24,11 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetEntity',
-                array(
+                [
                     $interface,
                     new Parameter($parameterName),
-                    array()
-                )
+                    []
+                ]
             );
         }
     }

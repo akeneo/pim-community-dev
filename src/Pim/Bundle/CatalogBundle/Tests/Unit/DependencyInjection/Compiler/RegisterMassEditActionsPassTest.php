@@ -38,10 +38,10 @@ class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $container
             ->register('pim_catalog.mass_edit_action.foo')
-            ->addTag('pim_catalog.mass_edit_action', array('alias' => 'foo'));
+            ->addTag('pim_catalog.mass_edit_action', ['alias' => 'foo']);
         $container
             ->register('pim_catalog.mass_edit_action.bar')
-            ->addTag('pim_catalog.mass_edit_action', array('alias' => 'bar'));
+            ->addTag('pim_catalog.mass_edit_action', ['alias' => 'bar']);
         $container->register('unrelated_service');
         $container
             ->register('pim_catalog.mass_edit_action.operator');

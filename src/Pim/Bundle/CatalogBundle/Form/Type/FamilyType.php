@@ -79,12 +79,12 @@ class FamilyType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
                 'property_path'     => 'translations'
-            )
+            ]
         );
 
         return $this;
@@ -99,7 +99,7 @@ class FamilyType extends AbstractType
      */
     protected function addAttributeRequirementsField(FormBuilderInterface $builder)
     {
-        $builder->add('attributeRequirements', 'collection', array('type' => 'pim_catalog_attribute_requirement'));
+        $builder->add('attributeRequirements', 'collection', ['type' => 'pim_catalog_attribute_requirement']);
 
         return $this;
     }
@@ -127,9 +127,9 @@ class FamilyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'
-            )
+            ]
         );
     }
 

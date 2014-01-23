@@ -168,7 +168,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
      */
     private function getArrayCollectionMock($element, $contains = true)
     {
-        $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', array('contains'));
+        $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', ['contains']);
         $coll->expects($this->any())
              ->method('contains')
              ->with($this->equalTo($element))

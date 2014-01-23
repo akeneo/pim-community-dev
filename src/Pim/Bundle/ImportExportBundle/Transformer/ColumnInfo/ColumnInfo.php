@@ -94,7 +94,7 @@ class ColumnInfo implements ColumnInfoInterface
                 } else {
                     throw new ColumnLabelException(
                         'The column "%column%" must contain a locale code',
-                        array('%column%' => $this->label)
+                        ['%column%' => $this->label]
                     );
                 }
             }
@@ -104,7 +104,7 @@ class ColumnInfo implements ColumnInfoInterface
                 } else {
                     throw new ColumnLabelException(
                         'The column "%column%" must contain a scope code',
-                        array('%column%' => $this->label)
+                        ['%column%' => $this->label]
                     );
                 }
             }

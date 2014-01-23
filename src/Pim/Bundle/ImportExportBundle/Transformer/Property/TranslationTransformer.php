@@ -32,7 +32,7 @@ class TranslationTransformer extends DefaultTransformer implements EntityUpdater
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         if ($columnInfo->getLocale()) {
             $locale = $columnInfo->getLocale();

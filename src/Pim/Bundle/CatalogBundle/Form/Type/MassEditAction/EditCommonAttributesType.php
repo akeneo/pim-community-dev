@@ -58,33 +58,33 @@ class EditCommonAttributesType extends AbstractType
             ->add(
                 'values',
                 'collection',
-                array(
+                [
                     'type' => 'pim_product_value'
-                )
+                ]
             )
             ->add(
                 'locale',
                 'entity',
-                array(
+                [
                     'choices' => $options['locales'],
                     'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
                     'select2' => true,
-                    'attr'    => array(
+                    'attr'    => [
                         'class' => 'operation-param',
-                    )
-                )
+                    ]
+                ]
             )
             ->add(
                 'attributesToDisplay',
                 'entity',
-                array(
+                [
                     'class'    => $this->attributeClass,
                     'choices'  => $options['commonAttributes'],
                     'required' => false,
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'virtualGroup.label',
-                )
+                ]
             );
     }
 
@@ -107,11 +107,11 @@ class EditCommonAttributesType extends AbstractType
     {
 
         $resolver->setDefaults(
-            array(
+            [
                 'data_class'       => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\EditCommonAttributes',
-                'locales'          => array(),
-                'commonAttributes' => array(),
-            )
+                'locales'          => [],
+                'commonAttributes' => [],
+            ]
         );
     }
 

@@ -16,7 +16,7 @@ class FlatGroupNormalizer extends GroupNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

@@ -37,10 +37,10 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => 'bar',
                 'backendType' => 'foo'
-            )
+            ]
         );
 
         $factory->expects($this->once())
@@ -49,8 +49,8 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
                 'foo',
                 'text',
                 'bar',
-                array(
-                    'constraints'      => array('constraints'),
+                [
+                    'constraints'      => ['constraints'],
                     'label'        => null,
                     'required'     => null,
                     'type'         => 'pim_catalog_price',
@@ -58,7 +58,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
                     'allow_delete' => true,
                     'by_reference' => false,
                     'auto_initialize' => false
-                )
+                ]
             );
 
         $this->target->buildValueFormType($factory, $value);

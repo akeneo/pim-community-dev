@@ -114,14 +114,14 @@ class ORMFamilyTransformer extends ORMTransformer
      */
     protected function getRequirements($channelCode, $attributeCodes)
     {
-        $requirements = array();
+        $requirements = [];
         foreach ($attributeCodes as $attributeCode) {
-            $data = array(
+            $data = [
                 'attribute' => $attributeCode,
                 'channel'   => $channelCode,
                 'required'  => true
-            );
-            $requirement = $this->getEntity($this->requirementClass, array());
+            ];
+            $requirement = $this->getEntity($this->requirementClass, []);
             $this->setProperties($this->requirementClass, $requirement, $data);
             if (count($this->errors)) {
                 break;

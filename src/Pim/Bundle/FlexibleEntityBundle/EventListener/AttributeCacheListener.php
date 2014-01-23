@@ -24,7 +24,7 @@ class AttributeCacheListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush');
+        return ['onFlush'];
     }
 
     /**

@@ -38,7 +38,7 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testSubscribedEvents()
     {
         $this->assertEquals(
-            array(FormEvents::PRE_SUBMIT => 'preSubmit'),
+            [FormEvents::PRE_SUBMIT => 'preSubmit'],
             IgnoreMissingFieldDataSubscriber::getSubscribedEvents()
         );
     }
@@ -49,16 +49,16 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreSubmit()
     {
         $form = $this->getFormMock(
-            array(
+            [
                 'firstname' => '**form**',
                 'lastname'  => '**form**',
                 'age'       => '**form**',
-            )
+            ]
         );
-        $data = array(
+        $data = [
             'firstname' => 'Romain',
             'lastname'  => 'Monceau',
-        );
+        ];
         $event = $this->getFormEventMock($form, $data);
 
         $form->expects($this->once())

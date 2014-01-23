@@ -30,14 +30,14 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json',  true),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', false),
-            array('stdClass', 'json',  false),
-            array('stdClass', 'xml',  false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json',  true],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', false],
+            ['stdClass', 'json',  false],
+            ['stdClass', 'xml',  false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -45,16 +45,16 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'attribute'  => 'color',
                     'code'       => 'red',
                     'default' => 0,
-                    'label' => array('en_US' => 'Red', 'fr_FR' => 'Rouge')
-                )
-            ),
-        );
+                    'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+                ]
+            ],
+        ];
     }
 
     /**

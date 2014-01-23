@@ -25,7 +25,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
 
         $this->productManager      = $this->getProductManagerMock($this->objectManager, $this->attributeRepository);
         $this->localeManager       = $this->getLocaleManagerMock($this->locale);
-        $this->currencyManager     = $this->getCurrencyManagerMock(array('EUR', 'USD'));
+        $this->currencyManager     = $this->getCurrencyManagerMock(['EUR', 'USD']);
 
         $this->action              = new EditCommonAttributes(
             $this->productManager,
@@ -59,18 +59,18 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->attributeRepository
             ->expects($this->any())
             ->method('findAll')
-            ->will($this->returnValue(array($sku, $name, $color, $description, $price)));
+            ->will($this->returnValue([$sku, $name, $color, $description, $price]));
 
         $foo->expects($this->any())
             ->method('hasAttribute')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array($name,        true),
-                        array($color,       true),
-                        array($description, true),
-                        array($price,       true),
-                    )
+                    [
+                        [$name,        true],
+                        [$color,       true],
+                        [$description, true],
+                        [$price,       true],
+                    ]
                 )
             );
 
@@ -78,12 +78,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->method('hasAttribute')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array($name,        true),
-                        array($color,       false),
-                        array($description, true),
-                        array($price,       true),
-                    )
+                    [
+                        [$name,        true],
+                        [$color,       false],
+                        [$description, true],
+                        [$price,       true],
+                    ]
                 )
             );
 
@@ -93,19 +93,19 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->locale
             ->expects($this->any())
             ->method('getChannels')
-            ->will($this->returnValue(array($mobile, $web)));
+            ->will($this->returnValue([$mobile, $web]));
 
         $this->productManager
             ->expects($this->any())
             ->method('createFlexibleValue')
             ->will($this->returnValue($this->getProductValueMock(null, null)));
 
-        $this->action->setAttributesToDisplay(new ArrayCollection(array($name, $description, $price)));
-        $this->action->initialize(array($foo, $bar));
+        $this->action->setAttributesToDisplay(new ArrayCollection([$name, $description, $price]));
+        $this->action->initialize([$foo, $bar]);
 
-        $this->assertEquals(array(1 => $name, 3 => $description, 4 => $price), $this->action->getCommonAttributes());
+        $this->assertEquals([1 => $name, 3 => $description, 4 => $price], $this->action->getCommonAttributes());
         $this->assertEquals(
-            array('name', 'description_mobile', 'description_web', 'price'),
+            ['name', 'description_mobile', 'description_web', 'price'],
             $this->action->getValues()->getKeys()
         );
     }
@@ -145,15 +145,15 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             $price,
             null,
             null,
-            array(
+            [
                 $this->getProductPriceMock('EUR'),
                 $this->getProductPriceMock('USD'),
-            )
+            ]
         );
 
         $this->action->setValues(
             new ArrayCollection(
-                array($newNameVal, $newDescriptionMobileVal, $newDescriptionWebVal, $newPriceVal)
+                [$newNameVal, $newDescriptionMobileVal, $newDescriptionWebVal, $newPriceVal]
             )
         );
         $this->action->setLocale($this->getLocaleMock('en_US'));
@@ -162,12 +162,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->method('getValue')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('name',         'en_US',  null,      $oldFooNameVal),
-                        array('description',  null,     'mobile',  $oldFooDescriptionMobileVal),
-                        array('description',  null,     'web',     $oldFooDescriptionWebVal),
-                        array('price',        null,     null,      $oldFooPriceVal),
-                    )
+                    [
+                        ['name',         'en_US',  null,      $oldFooNameVal],
+                        ['description',  null,     'mobile',  $oldFooDescriptionMobileVal],
+                        ['description',  null,     'web',     $oldFooDescriptionWebVal],
+                        ['price',        null,     null,      $oldFooPriceVal],
+                    ]
                 )
             );
 
@@ -175,12 +175,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->method('getValue')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('name',         'en_US',  null,      $oldBarNameVal),
-                        array('description',  null,     'mobile',  $oldBarDescriptionMobileVal),
-                        array('description',  null,     'web',     $oldBarDescriptionWebVal),
-                        array('price',        null,     null,      $oldBarPriceVal),
-                    )
+                    [
+                        ['name',         'en_US',  null,      $oldBarNameVal],
+                        ['description',  null,     'mobile',  $oldBarDescriptionMobileVal],
+                        ['description',  null,     'web',     $oldBarDescriptionWebVal],
+                        ['price',        null,     null,      $oldBarPriceVal],
+                    ]
                 )
             );
 
@@ -195,14 +195,14 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->productManager
             ->expects($this->once())
             ->method('handleAllMedia')
-            ->with(array($foo, $bar));
+            ->with([$foo, $bar]);
 
         $this->productManager
             ->expects($this->once())
             ->method('saveAll')
-            ->with(array($foo, $bar), false);
+            ->with([$foo, $bar], false);
 
-        $this->action->perform(array($foo, $bar));
+        $this->action->perform([$foo, $bar]);
     }
 
     /**
@@ -221,13 +221,13 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->localeManager
             ->expects($this->any())
             ->method('getUserLocales')
-            ->will($this->returnValue(array('fr', 'en', 'pl')));
+            ->will($this->returnValue(['fr', 'en', 'pl']));
 
         $this->assertEquals(
-            array(
-                'locales'          => array('fr', 'en', 'pl'),
-                'commonAttributes' => array(),
-            ),
+            [
+                'locales'          => ['fr', 'en', 'pl'],
+                'commonAttributes' => [],
+            ],
             $this->action->getFormOptions()
         );
     }
@@ -377,7 +377,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
-    protected function getProductValueMock($attribute, $data, $scope = null, array $prices = array())
+    protected function getProductValueMock($attribute, $data, $scope = null, array $prices = [])
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
@@ -428,7 +428,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
     {
         return $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductPrice')
-            ->setConstructorArgs(array(null, $currency))
+            ->setConstructorArgs([null, $currency])
             ->getMock();
     }
 }

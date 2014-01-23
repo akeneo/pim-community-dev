@@ -19,7 +19,7 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @var Router
@@ -90,7 +90,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function getLocales()
     {
-        return $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
+        return $this->locale ? [$this->locale] : $this->channel->getLocales()->map(
             function ($locale) {
                 return $locale->getCode();
             }
@@ -100,13 +100,13 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = [])
     {
         $values = $this->filterValues($product->getValues());
         $attributes = $this->getAttributes($values);
         $locales = $this->getLocales();
 
-        $data = array();
+        $data = [];
 
         foreach ($attributes as $attribute) {
             $code = $attribute->getCode();
@@ -118,7 +118,7 @@ class ProductNormalizer implements NormalizerInterface
             );
 
             foreach ($attributeValues as $value) {
-                $valueLocales = $value->getLocale() ? array($value->getLocale()): $locales;
+                $valueLocales = $value->getLocale() ? [$value->getLocale()]: $locales;
                 $valueData = $this->normalizeValueData($value->getData());
                 foreach ($valueLocales as $valueLocale) {
                     $data[$code][$valueLocale] = $valueData;
@@ -131,15 +131,15 @@ class ProductNormalizer implements NormalizerInterface
         if ($this->router) {
             $data['resource'] = $this->router->generate(
                 'oro_api_get_product',
-                array(
+                [
                     'scope' => $this->channel->getCode(),
                     'identifier' => $identifier->getData()
-                ),
+                ],
                 true
             );
         }
 
-        return array($identifier->getData() => $data);
+        return [$identifier->getData() => $data];
     }
 
     /**
@@ -189,7 +189,7 @@ class ProductNormalizer implements NormalizerInterface
             }
         );
 
-        $uniqueAttributes = array();
+        $uniqueAttributes = [];
         foreach ($attributes as $attribute) {
             if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
                 $uniqueAttributes[$attribute->getCode()] = $attribute;
@@ -217,7 +217,7 @@ class ProductNormalizer implements NormalizerInterface
     protected function normalizeValueData($data)
     {
         if ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $items = array();
+            $items = [];
             foreach ($data as $item) {
                 $items[] = (string) $item;
             }

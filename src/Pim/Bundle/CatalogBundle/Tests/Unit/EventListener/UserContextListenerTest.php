@@ -61,7 +61,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMock(
             'Symfony\Component\Security\Core\SecurityContextInterface',
-            array('getToken', 'setToken', 'isGranted')
+            ['getToken', 'setToken', 'isGranted']
         );
     }
 
@@ -73,7 +73,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     protected function getProductManagerMock()
     {
         $productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
-                               ->setMethods(array('setLocale', 'setScope'))
+                               ->setMethods(['setLocale', 'setScope'])
                                ->disableOriginalConstructor()
                                ->getMock();
 
@@ -96,7 +96,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     protected function getGetResponseEventMock($type = HttpKernel::MASTER_REQUEST)
     {
         $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
-                      ->setMethods(array('getRequestType', 'getRequest'))
+                      ->setMethods(['getRequestType', 'getRequest'])
                       ->disableOriginalConstructor()
                       ->getMock();
 
@@ -118,7 +118,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getHttpRequest()
     {
-        return new Request(array('dataLocale' => 'en_US', 'dataScope' => 'ecommerce'));
+        return new Request(['dataLocale' => 'en_US', 'dataScope' => 'ecommerce']);
     }
 
     /**
@@ -132,11 +132,11 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     {
         $token = $this->getMock(
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
-            array(
+            [
                 'getUser', 'setUser', '__toString', 'getRoles', 'getCredentials', 'setUsername', 'getUsername',
                 'isAuthenticated', 'setAuthenticated', 'eraseCredentials', 'getAttributes', 'setAttributes',
                 'hasAttribute', 'getAttribute', 'setAttribute', 'serialize', 'unserialize'
-            )
+            ]
         );
 
         $token->expects($this->any())
@@ -157,10 +157,10 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     {
         $user = $this->getMock(
             'Symfony\Component\Security\Core\User\UserInterface',
-            array('getValue', 'getRoles', 'getPassword', 'getSalt', 'getUsername', 'eraseCredentials')
+            ['getValue', 'getRoles', 'getPassword', 'getSalt', 'getUsername', 'eraseCredentials']
         );
 
-        $value = $this->getMock('Oro\Bundle\UserBundle\Entity\UserValue', array('getData'));
+        $value = $this->getMock('Oro\Bundle\UserBundle\Entity\UserValue', ['getData']);
 
         $user->expects($this->any())
              ->method('getValue')
@@ -188,7 +188,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array('kernel.request' => 'onKernelRequest'),
+            ['kernel.request' => 'onKernelRequest'],
             $this->target->getSubscribedEvents()
         );
     }

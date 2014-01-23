@@ -33,7 +33,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsInstanceOf(
             'Symfony\Component\Validator\Constraints\NotBlank',
             $this->target->guessConstraints(
-                $this->getAttributeMock(array('required' => true))
+                $this->getAttributeMock(['required' => true])
             )
         );
     }
@@ -43,7 +43,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsInstanceOf(
             'Symfony\Component\Validator\Constraints\Date',
             $this->target->guessConstraints(
-                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATE))
+                $this->getAttributeMock(['backendType' => AbstractAttributeType::BACKEND_TYPE_DATE])
             )
         );
     }
@@ -53,7 +53,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsInstanceOf(
             'Symfony\Component\Validator\Constraints\DateTime',
             $this->target->guessConstraints(
-                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME))
+                $this->getAttributeMock(['backendType' => AbstractAttributeType::BACKEND_TYPE_DATETIME])
             )
         );
     }
@@ -61,10 +61,10 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     private function getAttributeMock(array $options)
     {
         $options = array_merge(
-            array(
+            [
                 'required'    => false,
                 'backendType' => null,
-            ),
+            ],
             $options
         );
 

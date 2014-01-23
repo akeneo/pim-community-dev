@@ -26,7 +26,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->values = array();
+        $this->values = [];
         $this->constraintGuesser = $this->getMock(
             'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
@@ -35,11 +35,11 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             $this->constraintGuesser
         );
         $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
-            ->setMethods(array('getValue'))
+            ->setMethods(['getValue'])
             ->getMock();
         $this->product->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(array($this, 'getProductValue')));
+            ->will($this->returnCallback([$this, 'getProductValue']));
         $this->identifierColumn = $this->getColumnInfoMock('id');
         $this->identifierColumn->getAttribute()
             ->expects($this->any())
@@ -49,10 +49,10 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
 
     public function getValidateData()
     {
-        return array(
-            array(true),
-            array(false)
-        );
+        return [
+            [true],
+            [false]
+        ];
     }
 
     /**
@@ -63,23 +63,23 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->constraintGuesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue($supportsAttribute));
-        $columns = array(
+        $columns = [
             $this->identifierColumn,
             $this->getColumnInfoMock('key1'),
             $this->getColumnInfoMock('key2'),
             $this->getColumnInfoMock('key3', false),
             $this->getColumnInfoMock('key4', false),
-        );
-        $errors = array(
-            'key1' => array(
-                array('error1', array('error1_parameters')),
-                array('error2', array('error2_parameters')),
-            ),
-            'key3' => array(
-                array('error3', array('error3_parameters')),
-            ),
-        );
-        $constraintList = array($this->getMock('Symfony\Component\Validator\Constraint'));
+        ];
+        $errors = [
+            'key1' => [
+                ['error1', ['error1_parameters']],
+                ['error2', ['error2_parameters']],
+            ],
+            'key3' => [
+                ['error3', ['error3_parameters']],
+            ],
+        ];
+        $constraintList = [$this->getMock('Symfony\Component\Validator\Constraint')];
         $this->constraintGuesser->expects($this->any())
             ->method('guessConstraints')
             ->will($this->returnValue($constraintList));
@@ -91,8 +91,8 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
                         $this->assertSame($constraintList[0], $constraintList[0]);
                         $parts = explode('_', $value);
                         $valueErrors = isset($errors[$parts[0]])
-                            ? array($parts[0] => $errors[$parts[0]])
-                            : array();
+                            ? [$parts[0] => $errors[$parts[0]]]
+                            : [];
 
                         return $this->getViolationListMock($valueErrors);
                     }
@@ -106,8 +106,8 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
                         $this->assertSame($this->product, $product);
                         $parts = explode('_', $propertyPath);
                         $valueErrors = isset($errors[$parts[0]])
-                            ? array($parts[0] => $errors[$parts[0]])
-                            : array();
+                            ? [$parts[0] => $errors[$parts[0]]]
+                            : [];
 
                         return $this->getViolationListMock($valueErrors);
                     }
@@ -128,9 +128,9 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->will($this->returnValue(true));
         $this->validator->expects($this->once())
             ->method('validateValue')
-            ->will($this->returnValue($this->getViolationListMock(array())));
-        $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
-        $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
+            ->will($this->returnValue($this->getViolationListMock([])));
+        $this->importValidator->validate($this->product, [$this->identifierColumn], $this->data);
+        $this->importValidator->validate($this->product, [$this->identifierColumn], $this->data);
     }
 
     /**
@@ -177,7 +177,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->assertEquals('scope', $scope);
         if (!isset($this->values[$name])) {
             $this->values[$name] = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-                ->setMethods(array('getData', '__toString'))
+                ->setMethods(['getData', '__toString'])
                 ->getMock();
             $this->values[$name]->expects($this->any())
                 ->method('getData')

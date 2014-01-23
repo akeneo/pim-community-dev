@@ -75,6 +75,6 @@ class ArrayApcCache implements Cache
      */
     public function __call($name, $arguments)
     {
-        return call_user_func_array(array($this->cache, $name), $arguments);
+        return call_user_func_array([$this->cache, $name], $arguments);
     }
 }

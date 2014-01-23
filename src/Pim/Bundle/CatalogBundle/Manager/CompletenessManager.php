@@ -67,7 +67,7 @@ class CompletenessManager
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
-        $this->generator->generate(array('productId' => $product->getId()));
+        $this->generator->generate(['productId' => $product->getId()]);
     }
 
     /**
@@ -77,7 +77,7 @@ class CompletenessManager
      */
     public function generateChannelCompletenesses(Channel $channel)
     {
-        $this->generator->generate(array('channelId' => $channel->getId()));
+        $this->generator->generate(['channelId' => $channel->getId()]);
     }
 
     /**
@@ -126,7 +126,7 @@ class CompletenessManager
                 $entities
             );
         };
-        $channelTemplate = array_fill_keys($getCodes($channels), array('completeness' => null, 'missing' => array()));
+        $channelTemplate = array_fill_keys($getCodes($channels), ['completeness' => null, 'missing' => []]);
         $localeCodes = $getCodes($locales);
         $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
@@ -173,7 +173,7 @@ class CompletenessManager
         $attribute = $requirement->getAttribute();
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
-            $constraint = new ProductValueNotBlank(array('channel' => $channel));
+            $constraint = new ProductValueNotBlank(['channel' => $channel]);
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {

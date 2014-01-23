@@ -34,7 +34,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $product->setFamily($family);
 
         $builder->addMissingProductValues($product);
-        $this->assertValues($product, array('one'));
+        $this->assertValues($product, ['one']);
 
         $attributeTwo = new Attribute();
         $attributeTwo->setCode('two');
@@ -42,7 +42,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $family->addAttribute($attributeTwo);
 
         $builder->addMissingProductValues($product);
-        $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR'));
+        $this->assertValues($product, ['one', 'twoen_US', 'twofr_FR']);
 
         $attributeThree = new Attribute();
         $attributeThree->setCode('three');
@@ -50,7 +50,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $family->addAttribute($attributeThree);
 
         $builder->addMissingProductValues($product);
-        $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint'));
+        $this->assertValues($product, ['one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint']);
 
         $attributeFour = new Attribute();
         $attributeFour->setCode('four');
@@ -61,10 +61,10 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addMissingProductValues($product);
         $this->assertValues(
             $product,
-            array(
+            [
                 'one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint',
                 'fouren_USecom', 'fouren_USprint', 'fourfr_FRecom', 'fourfr_FRprint'
-            )
+            ]
         );
     }
 
@@ -146,7 +146,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
      */
-    protected function getCurrencyManagerMock(array $activeCodes = array())
+    protected function getCurrencyManagerMock(array $activeCodes = [])
     {
         $manager = $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
@@ -192,7 +192,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getAssociationMappings')
             ->will(
                 $this->returnValue(
-                    array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Model\ProductValue'))
+                    ['values' => ['targetEntity' => 'Pim\Bundle\CatalogBundle\Model\ProductValue']]
                 )
             );
 
@@ -209,7 +209,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
         $localeFr = new Locale();
         $localeFr->setCode('fr_FR');
 
-        return array($localeEn, $localeFr);
+        return [$localeEn, $localeFr];
     }
 
     /**
@@ -217,8 +217,8 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannels()
     {
-        $codes = array('ecom', 'print');
-        $channels = array();
+        $codes = ['ecom', 'print'];
+        $channels = [];
 
         foreach ($codes as $code) {
             $channel = new Channel();

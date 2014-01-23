@@ -64,12 +64,12 @@ class CategoryType extends AbstractSegmentType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Category',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -79,9 +79,9 @@ class CategoryType extends AbstractSegmentType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class'  => $this->className
-            )
+            ]
         );
     }
 

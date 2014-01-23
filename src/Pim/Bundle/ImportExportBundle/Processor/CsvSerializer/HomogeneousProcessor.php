@@ -22,13 +22,13 @@ class HomogeneousProcessor extends Processor
         return $this->serializer->serialize(
             $item,
             'csv',
-            array(
+            [
                 'delimiter'     => $this->delimiter,
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => false,
                 'locales'       => $this->localeManager->getActiveCodes(),
-            )
+            ]
         );
     }
 }

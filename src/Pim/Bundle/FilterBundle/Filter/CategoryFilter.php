@@ -77,7 +77,7 @@ class CategoryFilter extends NumberFilter
             $tree = $repository->find($treeId);
             if ($tree) {
                 $productIds = $this->productManager->getProductIdsInCategory($tree, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $productIds = (empty($productIds)) ? [0] : $productIds;
 
                 $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
                 $qb->andWhere($expression);
@@ -91,7 +91,7 @@ class CategoryFilter extends NumberFilter
             }
             if ($category) {
                 $productIds = $this->productManager->getProductIdsInCategory($category, $includeSub);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $productIds = (empty($productIds)) ? [0] : $productIds;
 
                 $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
                 $qb->andWhere($expression);

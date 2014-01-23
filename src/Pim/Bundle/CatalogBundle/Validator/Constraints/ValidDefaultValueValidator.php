@@ -14,14 +14,14 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValidDefaultValueValidator extends ConstraintValidator
 {
-    protected $methodMapping = array(
+    protected $methodMapping = [
         'pim_catalog_date'             => 'validateDate',
         'pim_catalog_price_collection' => 'validateNumber',
         'pim_catalog_number'           => 'validateNumber',
         'pim_catalog_metric'           => 'validateNumber',
         'pim_catalog_text'             => 'validateText',
         'pim_catalog_textarea'         => 'validateText'
-    );
+    ];
 
     /**
      * @param mixed      $entity

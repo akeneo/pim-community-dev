@@ -19,7 +19,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', [], [], '', false);
         $this->manager = $this->getChannelManagerMock();
         $this->validator = new ChannelValidator($this->manager);
         $this->validator->initialize($this->context);
@@ -40,7 +40,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->manager->expects($this->any())
             ->method('getChannelChoices')
-            ->will($this->returnValue(array('foo' => 'bar')));
+            ->will($this->returnValue(['foo' => 'bar']));
 
         $this->context->expects($this->never())
             ->method('addViolation');
@@ -55,7 +55,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->manager->expects($this->any())
             ->method('getChannelChoices')
-            ->will($this->returnValue(array('foo' => 'bar')));
+            ->will($this->returnValue(['foo' => 'bar']));
 
         $constraint = new Channel();
         $this->context->expects($this->once())

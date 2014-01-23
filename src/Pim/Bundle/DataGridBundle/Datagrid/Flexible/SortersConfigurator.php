@@ -82,10 +82,10 @@ class SortersConfigurator implements ConfiguratorInterface
                 if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                        array(
+                        [
                             PropertyInterface::DATA_NAME_KEY => $attributeCode,
                             'apply_callback'                 => $this->callback
-                        )
+                        ]
                     );
                 }
             }

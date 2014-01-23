@@ -14,7 +14,7 @@ class Registry
     /**
      * @var array
      */
-    protected $configurations = array();
+    protected $configurations = [];
 
     /**
      * Returns true if a configuration with the corresponding name exists

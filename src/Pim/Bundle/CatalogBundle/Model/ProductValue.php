@@ -257,7 +257,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     public function setPrices($prices)
     {
         if (null === $prices) {
-            $prices = array();
+            $prices = [];
         }
         $this->prices = $prices;
 
@@ -318,7 +318,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function addMissingPrices($activeCurrencies)
     {
-        array_walk($activeCurrencies, array($this, 'addPriceForCurrency'));
+        array_walk($activeCurrencies, [$this, 'addPriceForCurrency']);
 
         return $this;
     }

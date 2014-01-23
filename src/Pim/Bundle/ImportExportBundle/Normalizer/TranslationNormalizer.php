@@ -15,12 +15,12 @@ use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 class TranslationNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $context = array_merge(
             [
@@ -39,7 +39,7 @@ class TranslationNormalizer implements NormalizerInterface
             }
         }
 
-        return array($context['property'] => $translations);
+        return [$context['property'] => $translations];
     }
 
     /**

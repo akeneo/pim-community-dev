@@ -50,12 +50,12 @@ class MailRecorder implements \Swift_Events_SendListener
     public function findAll()
     {
         if (!file_exists($this->filename)) {
-            return array();
+            return [];
         }
 
         $contents = unserialize(file_get_contents($this->filename));
 
-        return is_array($contents) ? $contents : array();
+        return is_array($contents) ? $contents : [];
     }
 
     /**
@@ -77,7 +77,7 @@ class MailRecorder implements \Swift_Events_SendListener
      */
     public function getMailsSentTo($email)
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($this->findAll() as $message) {
             $emails = array_keys($message->getTo());

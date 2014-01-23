@@ -55,29 +55,29 @@ class CustomEntityFilterType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('class'));
-        $resolver->setOptional(array('sort'));
+        $resolver->setRequired(['class']);
+        $resolver->setOptional(['sort']);
         $resolver->setDefaults(
-            array(
+            [
                 'field_type' => 'choice'
-            )
+            ]
         );
         $resolver->setNormalizers(
-            array(
+            [
                 'field_options' => function (Options $options) {
                     $entities = $this->doctrine
                             ->getRepository($options['class'])
-                            ->findBy(array(), isset($options['sort']) ? $options['sort'] : null);
-                    $choices = array();
+                            ->findBy([], isset($options['sort']) ? $options['sort'] : null);
+                    $choices = [];
                     foreach ($entities as $entity) {
                         $choices[$entity->getId()] = (string) $entity;
                     }
 
-                    return array(
+                    return [
                         'choices' => $choices
-                    );
+                    ];
                 }
-            )
+            ]
         );
     }
 }

@@ -54,10 +54,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateVariantGroup(Group $variantGroup, Constraint $constraint)
     {
-        $existingCombinations = array();
+        $existingCombinations = [];
 
         foreach ($variantGroup->getProducts() as $product) {
-            $values = array();
+            $values = [];
             foreach ($variantGroup->getAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
@@ -88,7 +88,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 $criteria = $this->prepareQueryCriterias($variantGroup, $entity);
                 $matchingProducts = $this->getMatchingProducts($variantGroup, $entity, $criteria);
                 if (count($matchingProducts) !== 0) {
-                    $values = array();
+                    $values = [];
                     foreach ($criteria as $item) {
                         $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
                     }
@@ -113,13 +113,13 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function prepareQueryCriterias(Group $variantGroup, ProductInterface $entity)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($variantGroup->getAttributes() as $attribute) {
             $value = $entity->getValue($attribute->getCode());
-            $criteria[] = array(
+            $criteria[] = [
                 'attribute' => $attribute,
                 'option'    => $value ? $value->getOption() : null,
-            );
+            ];
         }
 
         return $criteria;
@@ -161,11 +161,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $this->context->addViolation(
             $constraint->message,
-            array(
+            [
                 '%product%'       => $productLabel,
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
-            )
+            ]
         );
     }
 }

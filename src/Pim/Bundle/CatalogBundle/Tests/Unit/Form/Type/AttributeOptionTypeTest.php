@@ -33,14 +33,14 @@ class AttributeOptionTypeTest extends AbstractFormTypeTest
     {
         $optionValueType = new AttributeOptionValueType();
 
-        return array(
+        return [
             new PreloadedExtension(
-                array(
+                [
                     $optionValueType->getName() => $optionValueType,
-                ),
-                array()
+                ],
+                []
             )
-        );
+        ];
     }
 
     /**

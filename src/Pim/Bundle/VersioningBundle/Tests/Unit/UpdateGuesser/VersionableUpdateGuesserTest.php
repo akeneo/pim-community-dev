@@ -21,10 +21,10 @@ class VersionableUpdateGuesserTest extends AbstractUpdateGuesserTest
      */
     public function testGuessUpdates()
     {
-        $versionables = array(
+        $versionables = [
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Bundle\CatalogBundle\Entity\Family'
-        );
+        ];
         $attribute = new Attribute();
         $attribute->setCode('my code');
         $guesser   = new VersionableUpdateGuesser($versionables);

@@ -112,20 +112,20 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderListTrees()
     {
-        return array(
-            array(
-                array(
-                    array('id' => 1, 'label' => 'Selected tree'),
-                    array('id' => 2, 'label' => 'Master catalog')
-                ),
+        return [
+            [
+                [
+                    ['id' => 1, 'label' => 'Selected tree'],
+                    ['id' => 2, 'label' => 'Master catalog']
+                ],
                 1,
                 5,
-                array(
-                    array('id' => 1, 'label' => 'Selected tree (5)', 'selected' => 'true'),
-                    array('id' => 2, 'label' => 'Master catalog (5)', 'selected' => 'false')
-                )
-            )
-        );
+                [
+                    ['id' => 1, 'label' => 'Selected tree (5)', 'selected' => 'true'],
+                    ['id' => 2, 'label' => 'Master catalog (5)', 'selected' => 'false']
+                ]
+            ]
+        ];
     }
 
     /**
@@ -145,7 +145,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getProductsCountInCategory')
             ->will($this->returnValue($resultCount));
 
-        $treeEntities = array();
+        $treeEntities = [];
         foreach ($trees as $tree) {
             $treeEntities[] = $this->getCategoryMock($tree);
         }
@@ -179,7 +179,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      *
      * @return CategoryInterface
      */
-    protected function getCategoryMock(array $properties = array())
+    protected function getCategoryMock(array $properties = [])
     {
         $category = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Category');
 
@@ -220,7 +220,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductInterface
      */
-    protected function getProductMock(array $properties = array())
+    protected function getProductMock(array $properties = [])
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 

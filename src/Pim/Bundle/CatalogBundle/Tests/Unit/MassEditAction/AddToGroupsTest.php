@@ -20,7 +20,7 @@ class AddToGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $this->xsell          = $this->getGroupMock();
         $this->upsell         = $this->getGroupMock();
-        $this->groups         = array($this->xsell, $this->upsell);
+        $this->groups         = [$this->xsell, $this->upsell];
         $this->entityManager  = $this->getEntityManagerMock($this->groups);
         $this->action         = new AddToGroups($this->entityManager);
     }
@@ -36,11 +36,11 @@ class AddToGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testPerform()
     {
-        $products = array(
+        $products = [
             $this->getProductMock(),
             $this->getProductMock(),
             $this->getProductMock(),
-        );
+        ];
 
         $this->xsell->expects($this->at(0))->method('addProduct')->with($products[0]);
         $this->xsell->expects($this->at(1))->method('addProduct')->with($products[1]);

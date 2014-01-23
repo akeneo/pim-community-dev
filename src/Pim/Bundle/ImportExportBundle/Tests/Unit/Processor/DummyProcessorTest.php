@@ -16,12 +16,12 @@ class DummyProcessorTest extends \PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $processor = new DummyProcessor;
-        $this->assertNull($processor->process(array()));
+        $this->assertNull($processor->process([]));
     }
 
     public function testGetConfigurationFields()
     {
         $processor = new DummyProcessor;
-        $this->assertEquals(array(), $processor->getConfigurationFields());
+        $this->assertEquals([], $processor->getConfigurationFields());
     }
 }

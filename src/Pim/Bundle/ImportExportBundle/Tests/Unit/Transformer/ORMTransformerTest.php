@@ -34,8 +34,8 @@ class ORMTransformerTest extends ORMTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2'),
-            array('prop3' => 'val3', 'prop4' => 'val4')
+            ['code' => 'code', 'col1' => 'val1', 'col2' => 'val2'],
+            ['prop3' => 'val3', 'prop4' => 'val4']
         );
         $this->assertInstanceOf('stdClass', $object);
         $this->assertEmpty($this->transformer->getErrors());
@@ -55,12 +55,12 @@ class ORMTransformerTest extends ORMTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
+            ['code' => 'code', 'col1' => 'val1', 'col2' => 'val2']
         );
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
         $this->assertEquals(
-            array('col1' => array(array('error_message', array('error_parameters')))),
+            ['col1' => [['error_message', ['error_parameters']]]],
             $this->transformer->getErrors()
         );
         $this->assertCount(2, $this->transformer->getTransformedColumnsInfo());
@@ -77,7 +77,7 @@ class ORMTransformerTest extends ORMTransformerTestCase
 
         $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
+            ['code' => 'code', 'col1' => 'val1', 'col2' => 'val2']
         );
     }
 }

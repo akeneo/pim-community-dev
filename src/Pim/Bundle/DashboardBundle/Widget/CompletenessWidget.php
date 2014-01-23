@@ -40,20 +40,20 @@ class CompletenessWidget implements WidgetInterface
         $channels = $this->repository->countProductsPerChannels();
         $completeProducts = $this->repository->countCompleteProductsPerChannels();
 
-        $params = array();
+        $params = [];
         foreach ($channels as $channel) {
-            $params[$channel['label']] = array(
+            $params[$channel['label']] = [
                 'total' => $channel['total'],
                 'complete' => 0,
-            );
+            ];
         }
         foreach ($completeProducts as $completeProduct) {
             $params[$completeProduct['label']]['locales'][$completeProduct['locale']] = $completeProduct['total'];
             $params[$completeProduct['label']]['complete'] += $completeProduct['total'];
         }
 
-        return array(
+        return [
             'params' => $params
-        );
+        ];
     }
 }

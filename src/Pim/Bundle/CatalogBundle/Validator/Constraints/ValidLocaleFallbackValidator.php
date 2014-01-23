@@ -40,15 +40,15 @@ class ValidLocaleFallbackValidator extends ConstraintValidator
     {
         if ($locale->getFallback()) {
             $usedAsFallback = $this->em->getRepository('PimCatalogBundle:Locale')
-                                   ->findBy(array('fallback' => $locale->getCode()));
+                                   ->findBy(['fallback' => $locale->getCode()]);
             if ($usedAsFallback) {
-                $this->context->addViolationAt('fallback', $constraint->fallbackNotAllowed, array(), null);
+                $this->context->addViolationAt('fallback', $constraint->fallbackNotAllowed, [], null);
 
                 return;
             }
 
             if ($locale->getCode() === $locale->getFallback()) {
-                $this->context->addViolationAt('fallback', $constraint->fallbackTwinLocale, array(), null);
+                $this->context->addViolationAt('fallback', $constraint->fallbackTwinLocale, [], null);
             }
         }
     }

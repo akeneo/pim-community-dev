@@ -39,7 +39,7 @@ class TimeGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_date'))
+                $this->getAttributeMock(['attributeType' => 'pim_catalog_date'])
             )
         );
     }
@@ -51,10 +51,10 @@ class TimeGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array(
+                [
                     'attributeType' => 'pim_catalog_date',
                     'dateType'      => 'time',
-                )
+                ]
             )
         );
 
@@ -68,7 +68,7 @@ class TimeGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_catalog_text')
+                ['attributeType' => 'pim_catalog_text']
             )
         );
 

@@ -53,12 +53,12 @@ class EntityGuesser implements GuesserInterface
             return;
         }
 
-        return array(
+        return [
             $this->transformer,
-            array(
+            [
                 'class'    => $mapping['targetEntity'],
                 'multiple' => (ClassMetadataInfo::MANY_TO_MANY == $mapping['type'])
-            )
-        );
+            ]
+        ];
     }
 }

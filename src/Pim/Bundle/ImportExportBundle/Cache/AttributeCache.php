@@ -24,12 +24,12 @@ class AttributeCache
     /**
      * @var array
      */
-    protected $familyAttributeCodes = array();
+    protected $familyAttributeCodes = [];
 
     /***
      * @var array
      */
-    protected $groupAttributeCodes = array();
+    protected $groupAttributeCodes = [];
 
     /**
      * @var string
@@ -57,7 +57,7 @@ class AttributeCache
     public function getAttributes($columnsInfo)
     {
         if (!count($columnsInfo)) {
-            return array();
+            return [];
         }
         $codes = array_unique(
             array_map(
@@ -69,8 +69,8 @@ class AttributeCache
         );
 
         $attributes = $this->doctrine->getRepository($this->attributeClass)
-                ->findBy(array('code' => $codes));
-        $attributeMap = array();
+                ->findBy(['code' => $codes]);
+        $attributeMap = [];
         foreach ($attributes as $attribute) {
             $attributeMap[$attribute->getCode()] = $attribute;
         }
@@ -87,7 +87,7 @@ class AttributeCache
      */
     public function getRequiredAttributeCodes(ProductInterface $product)
     {
-        $codes = array();
+        $codes = [];
 
         if ($product->getFamily()) {
             $codes = $this->getFamilyAttributeCodes($product->getFamily());

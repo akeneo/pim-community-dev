@@ -17,7 +17,7 @@ class MetricTransformer extends DefaultTransformer implements EntityUpdaterInter
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         $suffixes = $columnInfo->getSuffixes();
         $suffix = array_pop($suffixes);

@@ -24,7 +24,7 @@ class AssociationProductColumnsConfigurator extends ColumnsConfigurator
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
 
-        $editableColumns = array();
+        $editableColumns = [];
         foreach ($propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
                 $editableColumns[$columnCode] = $columnData;

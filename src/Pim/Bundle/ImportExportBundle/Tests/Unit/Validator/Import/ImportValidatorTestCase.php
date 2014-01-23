@@ -13,7 +13,7 @@ class ImportValidatorTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $validator;
 
-    protected $data = array('field' => 'val');
+    protected $data = ['field' => 'val'];
 
     /**
      * {@inheritdoc}
@@ -49,7 +49,7 @@ class ImportValidatorTestCase extends \PHPUnit_Framework_TestCase
     public function getViolationListMock(array $violationMessages)
     {
         $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
-        $violations = array();
+        $violations = [];
 
         foreach ($violationMessages as $propertyPath => $pathViolationMessage) {
             foreach ($pathViolationMessage as $config) {

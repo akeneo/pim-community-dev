@@ -15,7 +15,7 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = array('label' => 'ASC'), $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['label' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -23,7 +23,7 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('label' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = ['label' =>'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }

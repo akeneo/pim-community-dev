@@ -28,7 +28,7 @@ class ProductImportValidator extends ImportValidator
     /**
      * @var array
      */
-    protected $constraints = array();
+    protected $constraints = [];
 
     /**
      * Constructor
@@ -47,7 +47,7 @@ class ProductImportValidator extends ImportValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
+    public function validate($entity, array $columnsInfo, array $data, array $errors = [])
     {
         $this->checkIdentifier($entity, $columnsInfo, $data);
 
@@ -96,7 +96,7 @@ class ProductImportValidator extends ImportValidator
             if ($this->constraintGuesser->supportAttribute($attribute)) {
                 $this->constraints[$code] = $this->constraintGuesser->guessConstraints($attribute);
             } else {
-                $this->constraints[$code] = array();
+                $this->constraints[$code] = [];
             }
         }
 

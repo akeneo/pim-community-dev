@@ -31,7 +31,7 @@ class AddManagerCompilerPass implements CompilerPassInterface
             foreach ($tagAttributes as $attributes) {
                 $registryDefinition->addMethodCall(
                     'addManager',
-                    array($managerId, new Reference($managerId), $attributes['entity'])
+                    [$managerId, new Reference($managerId), $attributes['entity']]
                 );
             }
         }

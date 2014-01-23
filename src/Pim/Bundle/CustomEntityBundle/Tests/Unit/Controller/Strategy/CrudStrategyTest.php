@@ -29,11 +29,11 @@ class CrudStrategyTest extends AbstractStrategyTest
      */
     public function getFormActionData()
     {
-        return array(
-            'display'   => array(false, false),
-            'error'     => array(true, false),
-            'valid'     => array(true, true)
-        );
+        return [
+            'display'   => [false, false],
+            'error'     => [true, false],
+            'valid'     => [true, true]
+        ];
     }
 
     /**
@@ -47,10 +47,10 @@ class CrudStrategyTest extends AbstractStrategyTest
         $entity = new \stdClass();
         $this->configuration->expects($this->any())
             ->method('getCreateDefaultProperties')
-            ->will($this->returnValue(array('create_default_properties')));
+            ->will($this->returnValue(['create_default_properties']));
         $this->configuration->expects($this->any())
             ->method('getCreateOptions')
-            ->will($this->returnValue(array('create_options')));
+            ->will($this->returnValue(['create_options']));
         $this->configuration->expects($this->any())
             ->method('getCreateTemplate')
             ->will($this->returnValue('create_template'));
@@ -59,20 +59,20 @@ class CrudStrategyTest extends AbstractStrategyTest
             ->will($this->returnValue('create_form_type'));
         $this->configuration->expects($this->any())
             ->method('getCreateFormOptions')
-            ->will($this->returnValue(array('create_form_options')));
+            ->will($this->returnValue(['create_form_options']));
         $this->configuration->expects($this->any())
             ->method('getCreateRedirectRoute')
             ->will($this->returnValue('create_redirect_route'));
         $this->configuration->expects($this->any())
             ->method('getCreateRedirectRouteParameters')
-            ->will($this->returnValue(array('create_redirect_route_parameters')));
+            ->will($this->returnValue(['create_redirect_route_parameters']));
 
         $this->manager->expects($this->once())
             ->method('create')
             ->with(
                 $this->equalTo('entity_class'),
-                $this->equalTo(array('create_default_properties')),
-                $this->equalTo(array('create_options'))
+                $this->equalTo(['create_default_properties']),
+                $this->equalTo(['create_options'])
             )
             ->will($this->returnValue($entity));
 
@@ -80,7 +80,7 @@ class CrudStrategyTest extends AbstractStrategyTest
             ->method('getMethod')
             ->will($this->returnValue($post ? 'POST' : 'GET'));
 
-        $form = $this->getMockForm('create_form_type', $entity, array('create_form_options'));
+        $form = $this->getMockForm('create_form_type', $entity, ['create_form_options']);
         if ($post) {
             $form->expects($this->once())
                 ->method('bind')
@@ -98,14 +98,14 @@ class CrudStrategyTest extends AbstractStrategyTest
                 ->method('generate')
                 ->with(
                     $this->equalTo('create_redirect_route'),
-                    $this->equalTo(array('create_redirect_route_parameters'))
+                    $this->equalTo(['create_redirect_route_parameters'])
                 );
             $this->assertFlash('success', 'flash.name.created');
         } else {
             $form->expects($this->once())
                 ->method('createView')
                 ->will($this->returnValue('form_view'));
-            $this->assertRendered('create_template', array('form'=>'form_view'));
+            $this->assertRendered('create_template', ['form'=>'form_view']);
         }
 
         $result = $this->strategy->createAction($this->configuration, $this->request);
@@ -132,7 +132,7 @@ class CrudStrategyTest extends AbstractStrategyTest
             ->will($this->returnValue('id'));
         $this->configuration->expects($this->any())
             ->method('getFindOptions')
-            ->will($this->returnValue(array('find_options')));
+            ->will($this->returnValue(['find_options']));
         $this->configuration->expects($this->any())
             ->method('getEditTemplate')
             ->will($this->returnValue('edit_template'));
@@ -141,22 +141,22 @@ class CrudStrategyTest extends AbstractStrategyTest
             ->will($this->returnValue('edit_form_type'));
         $this->configuration->expects($this->any())
             ->method('getEditFormOptions')
-            ->will($this->returnValue(array('edit_form_options')));
+            ->will($this->returnValue(['edit_form_options']));
         $this->configuration->expects($this->any())
             ->method('getEditRedirectRoute')
             ->will($this->returnValue('edit_redirect_route'));
         $this->configuration->expects($this->any())
             ->method('getEditRedirectRouteParameters')
-            ->will($this->returnValue(array('edit_redirect_route_parameters')));
+            ->will($this->returnValue(['edit_redirect_route_parameters']));
         $this->manager->expects($this->once())
             ->method('find')
             ->with(
                 $this->equalTo('entity_class'),
                 $this->equalTo('id'),
-                $this->equalTo(array('find_options'))
+                $this->equalTo(['find_options'])
             )
             ->will($this->returnValue($entity));
-        $form = $this->getMockForm('edit_form_type', $entity, array('edit_form_options'));
+        $form = $this->getMockForm('edit_form_type', $entity, ['edit_form_options']);
         $this->request->expects($this->once())
             ->method('getMethod')
             ->will($this->returnValue($post ? 'POST' : 'GET'));
@@ -176,7 +176,7 @@ class CrudStrategyTest extends AbstractStrategyTest
                 ->method('generate')
                 ->with(
                     $this->equalTo('edit_redirect_route'),
-                    $this->equalTo(array('edit_redirect_route_parameters'))
+                    $this->equalTo(['edit_redirect_route_parameters'])
                 )
                 ->will($this->returnValue('url'));
             $this->assertFlash('success', 'flash.name.updated');
@@ -184,7 +184,7 @@ class CrudStrategyTest extends AbstractStrategyTest
             $form->expects($this->once())
                 ->method('createView')
                 ->will($this->returnValue('form_view'));
-            $this->assertRendered('edit_template', array('form'=>'form_view'));
+            $this->assertRendered('edit_template', ['form'=>'form_view']);
         }
         $result = $this->strategy->editAction($this->configuration, $this->request);
         if ($valid) {
@@ -202,7 +202,7 @@ class CrudStrategyTest extends AbstractStrategyTest
     {
         $this->configuration->expects($this->any())
             ->method('getFindOptions')
-            ->will($this->returnValue(array('find_options')));
+            ->will($this->returnValue(['find_options']));
         $this->manager->expects($this->once())
             ->method('find')
             ->will($this->returnValue(null));
@@ -221,13 +221,13 @@ class CrudStrategyTest extends AbstractStrategyTest
             ->will($this->returnValue('id'));
         $this->configuration->expects($this->any())
             ->method('getFindOptions')
-            ->will($this->returnValue(array('find_options')));
+            ->will($this->returnValue(['find_options']));
         $this->manager->expects($this->once())
             ->method('find')
             ->with(
                 $this->equalTo('entity_class'),
                 $this->equalTo('id'),
-                $this->equalTo(array('find_options'))
+                $this->equalTo(['find_options'])
             )
             ->will($this->returnValue($entity));
         $this->manager->expects($this->once())
@@ -245,7 +245,7 @@ class CrudStrategyTest extends AbstractStrategyTest
     {
         $this->configuration->expects($this->any())
             ->method('getFindOptions')
-            ->will($this->returnValue(array('find_options')));
+            ->will($this->returnValue(['find_options']));
         $this->manager->expects($this->once())
             ->method('find')
             ->will($this->returnValue(null));

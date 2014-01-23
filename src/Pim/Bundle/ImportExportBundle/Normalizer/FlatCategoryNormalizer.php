@@ -14,5 +14,5 @@ class FlatCategoryNormalizer extends CategoryNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 }

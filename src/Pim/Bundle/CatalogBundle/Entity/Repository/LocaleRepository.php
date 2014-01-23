@@ -15,7 +15,7 @@ class LocaleRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = array('code' => 'ASC'), $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['code' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -23,7 +23,7 @@ class LocaleRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('code' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = ['code' =>'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }

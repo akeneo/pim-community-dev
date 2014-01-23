@@ -91,11 +91,11 @@ class PendingManagerTest extends \PHPUnit_Framework_TestCase
 
         $repo->expects($this->any())
             ->method('findBy')
-            ->will($this->returnValue(array(new Pending('resourcename', 1, 'user'))));
+            ->will($this->returnValue([new Pending('resourcename', 1, 'user')]));
 
         $repo->expects($this->any())
             ->method('findAll')
-            ->will($this->returnValue(array(new Pending('resourcename', 1, 'user'))));
+            ->will($this->returnValue([new Pending('resourcename', 1, 'user')]));
 
         return $repo;
     }

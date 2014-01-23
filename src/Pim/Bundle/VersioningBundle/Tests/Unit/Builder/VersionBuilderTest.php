@@ -28,8 +28,8 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $encoders = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
+        $encoders = [new CsvEncoder()];
+        $normalizers = [new GetSetMethodNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
         $this->manager = new VersionBuilder($serializer, new ChainedUpdateGuesser());
     }
@@ -39,7 +39,7 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildVersion()
     {
-        $data = array('field' => 'value');
+        $data = ['field' => 'value'];
         $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock(), 1);
         $this->assertTrue($version instanceof Version);
     }

@@ -22,9 +22,9 @@ class JobAliasSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::SUBMIT => 'submit'
-        );
+        ];
     }
 
     /**

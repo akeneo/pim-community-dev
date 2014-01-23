@@ -56,7 +56,7 @@ class FlexibleValueTypeTest extends \PHPUnit_Framework_TestCase
             ->method('addEventSubscriber')
             ->with($this->subscriber);
 
-        $this->type->buildForm($builder, array());
+        $this->type->buildForm($builder, []);
     }
 
     public function testSetDefaultOptions()

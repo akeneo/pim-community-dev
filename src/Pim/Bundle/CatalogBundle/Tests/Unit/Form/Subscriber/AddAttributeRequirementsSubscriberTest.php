@@ -20,10 +20,10 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array(
+            [
                 'form.pre_set_data' => 'preSetData',
                 'form.post_set_data' => 'postSetData',
-            ),
+            ],
             AddAttributeRequirementsSubscriber::getSubscribedEvents()
         );
     }
@@ -36,7 +36,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $mobile      = $this->getChannelMock('mobile');
         $ecommerce   = $this->getChannelMock('ecommerce');
 
-        $channelManager = $this->getChannelManagerMock(array($mobile, $ecommerce));
+        $channelManager = $this->getChannelManagerMock([$mobile, $ecommerce]);
 
         $name        = $this->getAttributeMock('name');
         $description = $this->getAttributeMock('description');
@@ -49,7 +49,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $subscriber  = new AddAttributeRequirementsSubscriber($channelManager);
 
         $existingRequirement = $this->getAttributeRequirementMock($name, $mobile);
-        $family->setAttributeRequirements(array($existingRequirement));
+        $family->setAttributeRequirements([$existingRequirement]);
 
         $subscriber->preSetData($event);
 
@@ -75,7 +75,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $mobile      = $this->getChannelMock('mobile');
         $ecommerce   = $this->getChannelMock('ecommerce');
 
-        $channels    = array($mobile, $ecommerce);
+        $channels    = [$mobile, $ecommerce];
 
         $requirement1 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'bar'));
         $requirement2 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'pim_catalog_identifier'));
@@ -83,10 +83,10 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('setRequired')
             ->with(true);
         $family = $this->getFamilyMock(
-            array(
+            [
                 'foo' => $requirement1,
                 'baz' => $requirement2
-            )
+            ]
         );
 
         $form   = $this->getFormMock();
@@ -97,9 +97,9 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('attributeRequirements', $requirementsForm)
-                    )
+                    [
+                        ['attributeRequirements', $requirementsForm]
+                    ]
                 )
             );
         $requirementsForm->expects($this->once())
@@ -240,7 +240,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      *
      * @return ChannelManager
      */
-    protected function getChannelManagerMock(array $channels = array())
+    protected function getChannelManagerMock(array $channels = [])
     {
         $channelManager = $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
