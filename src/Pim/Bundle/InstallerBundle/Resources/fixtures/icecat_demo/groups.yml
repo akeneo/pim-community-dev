@@ -1,1 +1,8 @@
-groups: {}
+groups: {
+    samsung_tv_related:
+        type: RELATED
+        labels:
+            en_US: Samsung LED TVs
+            fr_FR: Téléviseurs LED Samsung
+            de_DE: Samsung LED-TVs
+}
