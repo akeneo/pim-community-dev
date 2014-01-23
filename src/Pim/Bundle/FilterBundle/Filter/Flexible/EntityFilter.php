@@ -57,9 +57,9 @@ class EntityFilter extends OroEntityFilter
     protected function getClassName()
     {
         /** @var FlexibleManager $fm */
-        $fm            = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
-        $valueName     = $fm->getFlexibleValueName();
-        $valueMetadata = $fm->getStorageManager()
+        $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
+        $valueName       = $flexibleManager->getFlexibleValueName();
+        $valueMetadata   = $flexibleManager->getStorageManager()
             ->getMetadataFactory()
             ->getMetadataFor($valueName);
 

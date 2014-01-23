@@ -30,7 +30,7 @@ Detects when a field, local, or parameter has a very short name and does not bel
         <priority>3</priority>
         <properties>
             <property name="minimum" description="Minimum length for a variable, property or parameter name" value="3"/>
-            <property name="excludeVariables" description="Exclude variables from length check" value="$id|$qb|$em|$e"/>
+            <property name="excludeVariables" description="Exclude variables from length check" value="$id|$qb|$em|$e|$ds"/>
         </properties>
         <example>
             <![CDATA[
