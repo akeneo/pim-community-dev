@@ -34,7 +34,7 @@ class AttributeRepository extends EntityRepository
      */
     public function findOneByEntityAndCode($entity, $code)
     {
-        return $this->findOneBy(array('code' => $code, 'entityType' => $entity));
+        return $this->findOneBy(['code' => $code, 'entityType' => $entity]);
     }
 
     /**
@@ -54,8 +54,8 @@ class AttributeRepository extends EntityRepository
         $query->useResultCache(true, null, self::getAttributesListCacheId($entityType));
 
         // index parameter into from call not works with simple object hydratation
-        $result = $query->execute(array(), AbstractQuery::HYDRATE_SIMPLEOBJECT);
-        $associative = array();
+        $result = $query->execute([], AbstractQuery::HYDRATE_SIMPLEOBJECT);
+        $associative = [];
         foreach ($result as $row) {
             $associative[$row->getCode()] = $row;
         }

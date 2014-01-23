@@ -65,9 +65,9 @@ class ProductEditType extends AbstractType
             ->add(
                 'associations',
                 'collection',
-                array(
+                [
                     'type' => 'pim_catalog_association'
-                )
+                ]
             )
             ->get('associations')
             ->addEventSubscriber(new BindAssociationTargetsSubscriber());
@@ -76,22 +76,22 @@ class ProductEditType extends AbstractType
             $builder->add(
                 'family',
                 'entity',
-                array(
+                [
                     'class'       => 'PimCatalogBundle:Family',
                     'empty_value' => ''
-                )
+                ]
             );
         }
         $builder
             ->add(
                 'categories',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'PimCatalogBundle:Category',
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
-                )
+                ]
             )
             ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
     }
@@ -102,10 +102,10 @@ class ProductEditType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'enable_family' => true,
                 'enable_state'  => true
-            )
+            ]
         );
     }
 

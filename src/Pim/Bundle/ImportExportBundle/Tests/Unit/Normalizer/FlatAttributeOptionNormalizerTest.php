@@ -29,14 +29,14 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json', false),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', true),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json', false],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', true],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -44,17 +44,17 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'attribute'   => 'color',
                     'code'        => 'red',
                     'default'     => 0,
                     'label-en_US' => 'Red',
                     'label-fr_FR' => 'Rouge'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

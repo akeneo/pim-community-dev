@@ -133,9 +133,9 @@ class JobProfileController extends AbstractDoctrineController
 
                 $url = $this->generateUrl(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
-                    array('id' => $jobInstance->getId())
+                    ['id' => $jobInstance->getId()]
                 );
-                $response = array('status' => 1, 'url' => $url);
+                $response = ['status' => 1, 'url' => $url];
 
                 return new Response(json_encode($response));
             }
@@ -143,9 +143,9 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'form' => $form->createView()
-            )
+            ]
         );
     }
 
@@ -183,13 +183,13 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'jobInstance'      => $jobInstance,
-                'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
-                'uploadViolations' => $validator->validate($jobInstance, array('Default', 'UploadExecution')),
+                'violations'       => $validator->validate($jobInstance, ['Default', 'Execution']),
+                'uploadViolations' => $validator->validate($jobInstance, ['Default', 'UploadExecution']),
                 'uploadAllowed'    => $uploadAllowed,
                 'form'             => $form,
-            )
+            ]
         );
     }
 
@@ -229,10 +229,10 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'jobInstance' => $jobInstance,
                 'form'        => $form->createView(),
-            )
+            ]
         );
     }
 
@@ -284,8 +284,8 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
-        $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
-        $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
+        $violations       = $this->getValidator()->validate($jobInstance, ['Default', 'Execution']);
+        $uploadViolations = $this->getValidator()->validate($jobInstance, ['Default', 'UploadExecution']);
 
         $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
 
@@ -450,7 +450,7 @@ class JobProfileController extends AbstractDoctrineController
     {
         return $this->redirectToRoute(
             sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
-            array('id' => $jobId)
+            ['id' => $jobId]
         );
     }
 
@@ -465,7 +465,7 @@ class JobProfileController extends AbstractDoctrineController
     {
         return $this->redirectToRoute(
             sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
-            array('id' => $jobId)
+            ['id' => $jobId]
         );
     }
 

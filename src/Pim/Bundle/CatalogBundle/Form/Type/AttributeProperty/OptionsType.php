@@ -28,12 +28,12 @@ class OptionsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'type'         => 'pim_catalog_attribute_option',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false
-            )
+            ]
         );
     }
 

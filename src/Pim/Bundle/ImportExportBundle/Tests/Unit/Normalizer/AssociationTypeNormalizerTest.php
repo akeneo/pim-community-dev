@@ -29,14 +29,14 @@ class AssociationTypeNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AssociationType', 'json',  true),
-            array('Pim\Bundle\CatalogBundle\Entity\AssociationType', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\AssociationType', 'csv', false),
-            array('stdClass', 'json',  false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\AssociationType', 'json',  true],
+            ['Pim\Bundle\CatalogBundle\Entity\AssociationType', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\AssociationType', 'csv', false],
+            ['stdClass', 'json',  false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -44,14 +44,14 @@ class AssociationTypeNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'  => 'mycode',
-                    'label' => array('en_US' => 'My label', 'fr_FR' => 'Mon étiquette')
-                )
-            ),
-        );
+                    'label' => ['en_US' => 'My label', 'fr_FR' => 'Mon étiquette']
+                ]
+            ],
+        ];
     }
 
     /**

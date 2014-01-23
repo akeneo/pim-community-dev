@@ -32,14 +32,14 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute', 'json', false),
-            array('stdClass', 'csv', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'json', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'csv', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute', 'json', false],
+            ['stdClass', 'csv', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'json', false],
+        ];
     }
 
     /**
@@ -47,9 +47,9 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'type'                   => 'pim_catalog_multiselect',
                     'code'                   => 'color',
                     'label-en_US'            => 'Color',
@@ -69,10 +69,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
                     'useable_as_grid_column' => 1,
                     'useable_as_grid_filter' => 0,
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'type'                   => 'pim_catalog_text',
                     'code'                   => 'description',
                     'label-en_US'            => 'Color',
@@ -97,9 +97,9 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'validation_rule'        => 'regexp',
                     'validation_regexp'      => '^[a-zA-Z0-9 ]*$',
                     'wysiwyg_enabled'        => '1',
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

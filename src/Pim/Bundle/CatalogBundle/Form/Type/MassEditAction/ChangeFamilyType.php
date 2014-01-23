@@ -23,12 +23,12 @@ class ChangeFamilyType extends AbstractType
         $builder->add(
             'family',
             'entity',
-            array(
+            [
                 'class'       => 'PimCatalogBundle:Family',
                 'empty_value' => 'None',
                 'required'    => false,
                 'select2'     => true
-            )
+            ]
         );
     }
 
@@ -38,9 +38,9 @@ class ChangeFamilyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\ChangeFamily'
-            )
+            ]
         );
     }
 

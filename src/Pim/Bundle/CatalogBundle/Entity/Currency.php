@@ -156,7 +156,7 @@ class Currency implements ReferableInterface
      *
      * @return Currency
      */
-    public function setLocales($locales = array())
+    public function setLocales($locales = [])
     {
         $this->locales = new ArrayCollection($locales);
 

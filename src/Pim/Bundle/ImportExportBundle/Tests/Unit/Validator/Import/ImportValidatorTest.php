@@ -15,15 +15,15 @@ class ImportValidatorTest extends ImportValidatorTestCase
 {
     protected $importValidator;
     protected $entity;
-    protected $errors = array(
-            'key1' => array(
-                array('error1', array('error1_parameters')),
-                array('error2', array('error2_parameters')),
-            ),
-            'key2' => array(
-                array('error3', array('error3_parameters')),
-            ),
-        );
+    protected $errors = [
+            'key1' => [
+                ['error1', ['error1_parameters']],
+                ['error2', ['error2_parameters']],
+            ],
+            'key2' => [
+                ['error3', ['error3_parameters']],
+            ],
+        ];
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
         parent::setUp();
         $this->importValidator = new ImportValidator($this->validator);
         $this->entity = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getReference'))
+            ->setMethods(['getReference'])
             ->getMock();
         $this->entity->expects($this->any())
             ->method('getReference')
@@ -49,7 +49,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
             ->method('validate')
             ->with($this->identicalTo($this->entity))
             ->will($this->returnValue($this->getViolationListMock($this->errors)));
-        $errors = $this->importValidator->validate($this->entity, array(), $this->data);
+        $errors = $this->importValidator->validate($this->entity, [], $this->data);
         $this->assertEquals($this->errors, $errors);
     }
 
@@ -60,14 +60,14 @@ class ImportValidatorTest extends ImportValidatorTestCase
      */
     public function testWithPropertyValidate()
     {
-        $otherErrors = array(
-            'key3' => array(
-                array('error4' => 'error4_parameters')
-            )
-        );
+        $otherErrors = [
+            'key3' => [
+                ['error4' => 'error4_parameters']
+            ]
+        ];
         $expectedErrors = $this->errors + $otherErrors;
         unset($expectedErrors['key2']);
-        $columns = array('key1_path' => $this->getColumnInfoMock('key1'));
+        $columns = ['key1_path' => $this->getColumnInfoMock('key1')];
         $this->validator->expects($this->any())
             ->method('validateProperty')
             ->will(
@@ -76,7 +76,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
                         $this->assertSame($this->entity, $entity);
                         $label = $columns[$propertyPath]->getLabel();
 
-                        return $this->getViolationListMock(array($propertyPath => $this->errors[$label]));
+                        return $this->getViolationListMock([$propertyPath => $this->errors[$label]]);
                     }
                 )
             );
@@ -93,8 +93,8 @@ class ImportValidatorTest extends ImportValidatorTestCase
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($this->identicalTo($this->entity))
-            ->will($this->returnValue($this->getViolationListMock(array())));
-        $this->importValidator->validate($this->entity, array(), $this->data);
-        $this->importValidator->validate($this->entity, array(), $this->data);
+            ->will($this->returnValue($this->getViolationListMock([])));
+        $this->importValidator->validate($this->entity, [], $this->data);
+        $this->importValidator->validate($this->entity, [], $this->data);
     }
 }

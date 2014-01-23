@@ -28,14 +28,14 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', true),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', true),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', true],
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', true],
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -57,17 +57,17 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'           => 'my_import',
                     'type'           => 'IMPORT',
                     'label'          => 'My import',
                     'connector'      => 'Akeneo',
-                    'configuration'  => array()
-                ),
-            ),
-        );
+                    'configuration'  => []
+                ],
+            ],
+        ];
     }
 
     /**

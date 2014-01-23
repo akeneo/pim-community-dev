@@ -50,7 +50,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     /**
      * @var array
      */
-    protected $mapping = array();
+    protected $mapping = [];
 
     /**
      * @var StepExecution
@@ -103,7 +103,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -135,7 +135,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
                         ',',
                         array_map(
                             function ($args) {
-                                return call_user_func_array(array($this->translator, 'trans'), $args);
+                                return call_user_func_array([$this->translator, 'trans'], $args);
                             },
                             $fieldErrors
                         )

@@ -31,14 +31,14 @@ class GroupNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Group', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -46,23 +46,23 @@ class GroupNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'        => 'my_variant_group',
                     'type'        => 'VARIANT',
                     'label-en_US' => 'My variant group',
                     'label-fr_FR' => 'Mon groupe variant',
-                    'attributes'  => array('color', 'size')
-                ),
-                array(
+                    'attributes'  => ['color', 'size']
+                ],
+                [
                     'code'       => 'my_group',
                     'type'       => 'RELATED',
-                    'label'      => array('en' => 'My group', 'fr' => 'Mon group'),
-                    'attributes' => array()
-                )
-            ),
-        );
+                    'label'      => ['en' => 'My group', 'fr' => 'Mon group'],
+                    'attributes' => []
+                ]
+            ],
+        ];
     }
 
     /**
@@ -110,7 +110,7 @@ class GroupNormalizerTest extends NormalizerTestCase
      */
     protected function getAttributes($data)
     {
-        $attributes = array();
+        $attributes = [];
         $codes = $data['attributes'];
         foreach ($codes as $code) {
             $attribute = new Attribute();

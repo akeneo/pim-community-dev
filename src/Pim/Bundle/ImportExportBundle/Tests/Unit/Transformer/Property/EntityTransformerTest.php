@@ -23,14 +23,14 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->entities = array();
+        $this->entities = [];
         $this->entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
         $this->entityCache
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(array($this, 'findEntity')));
+            ->will($this->returnCallback([$this, 'findEntity']));
         $this->transformer = new EntityTransformer($this->entityCache);
     }
 
@@ -52,7 +52,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
     public function addEntity($class, $code)
     {
         if (!isset($this->entities[$class])) {
-            $this->entities[$class] = array();
+            $this->entities[$class] = [];
         }
         $this->entities[$class][$code] = new \stdClass();
     }
@@ -67,15 +67,15 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
             $this->findEntity('class', 'code'),
             $this->transformer->transform(
                 ' code ',
-                array('class' => 'class')
+                ['class' => 'class']
             )
         );
     }
 
     public function testEmptyTransform()
     {
-        $this->assertNull($this->transformer->transform('', array('class' => 'class')));
-        $this->assertEquals(array(), $this->transformer->transform('', array('class' => 'class', 'multiple' => true)));
+        $this->assertNull($this->transformer->transform('', ['class' => 'class']));
+        $this->assertEquals([], $this->transformer->transform('', ['class' => 'class', 'multiple' => true]));
     }
 
     /**
@@ -86,7 +86,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->transformer->transform(
             'code',
-            array('class' => 'class')
+            ['class' => 'class']
         );
     }
 
@@ -102,7 +102,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
             array_values($this->entities['class']),
             $this->transformer->transform(
                 ' code1,code2, code3',
-                array('class' => 'class', 'multiple' => true)
+                ['class' => 'class', 'multiple' => true]
             )
         );
     }
@@ -116,7 +116,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         $this->addEntity('class', 'code1');
         $this->transformer->transform(
             ' code1,code2, code3',
-            array('class' => 'class', 'multiple' => true)
+            ['class' => 'class', 'multiple' => true]
         );
     }
 

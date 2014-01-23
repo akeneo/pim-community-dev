@@ -70,10 +70,10 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_BIND => 'preBind',
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
@@ -147,13 +147,13 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
                 'options',
                 'collection',
                 null,
-                array(
+                [
                     'type'            => 'pim_catalog_attribute_option',
                     'allow_add'       => true,
                     'allow_delete'    => true,
                     'by_reference'    => false,
                     'auto_initialize' => false
-                )
+                ]
             )
         );
     }

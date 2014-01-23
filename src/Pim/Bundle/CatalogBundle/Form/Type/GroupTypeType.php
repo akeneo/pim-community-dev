@@ -25,12 +25,12 @@ class GroupTypeType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTypeTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupType',
                 'property_path'     => 'translations'
-            )
+            ]
         );
         $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
@@ -41,9 +41,9 @@ class GroupTypeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\GroupType'
-            )
+            ]
         );
     }
 

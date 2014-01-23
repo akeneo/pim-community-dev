@@ -29,7 +29,7 @@ class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('pim.attribute_constraint_guesser');
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('addConstraintGuesser', array(new Reference($id)));
+            $service->addMethodCall('addConstraintGuesser', [new Reference($id)]);
         }
     }
 }

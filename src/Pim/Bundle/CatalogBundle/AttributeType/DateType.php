@@ -21,76 +21,76 @@ class DateType extends FlexDateType
     {
         $fieldType = $attribute->getDateType() ?: 'datetime';
 
-        $properties = array(
-            array(
+        $properties = [
+            [
                 'name'      => 'defaultValue',
                 'fieldType' => $fieldType,
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'dateType',
                 'fieldType' => 'choice',
-                'options'   => array(
+                'options'   => [
                     'required' => true,
-                    'choices'  => array(
+                    'choices'  => [
                         'date'     => 'Date',
                         'time'     => 'Time',
                         'datetime' => 'Datetime'
-                    ),
+                    ],
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId(),
                     'select2'   => true
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'name'      => 'dateMin',
                 'fieldType' => $fieldType,
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'dateMax',
                 'fieldType' => $fieldType,
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'translatable',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'availableLocales',
                 'fieldType' => 'pim_catalog_available_locales'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         return $properties;
     }

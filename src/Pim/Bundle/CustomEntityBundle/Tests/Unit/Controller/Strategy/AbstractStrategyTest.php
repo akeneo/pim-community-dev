@@ -101,21 +101,21 @@ abstract class AbstractStrategyTest extends \PHPUnit_Framework_TestCase
      * @param string $template
      * @param array  $parameters
      */
-    protected function assertRendered($template, array $parameters = array())
+    protected function assertRendered($template, array $parameters = [])
     {
         $this->templating->expects($this->once())
             ->method('renderResponse')
             ->with(
                 $this->equalTo($template),
                 $this->equalTo(
-                    array(
+                    [
                         'customEntityName' => 'name',
                         'baseTemplate'     => 'base_template',
                         'indexRoute'       => 'index_route',
                         'editRoute'        => 'edit_route',
                         'createRoute'      => 'create_route',
                         'removeRoute'      => 'remove_route'
-                    ) + $parameters
+                    ] + $parameters
                 )
             )
             ->will($this->returnValue('success'));

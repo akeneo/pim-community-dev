@@ -126,19 +126,19 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
         $metric = new Metric();
         $metric->setData(12.5)->setUnit('km');
 
-        return array(
-            array(AbstractAttributeType::BACKEND_TYPE_TEXT, 'my really loooonnnng text'),
-            array(AbstractAttributeType::BACKEND_TYPE_VARCHAR, 'my value'),
-            array(AbstractAttributeType::BACKEND_TYPE_INTEGER, 12),
-            array(AbstractAttributeType::BACKEND_TYPE_DECIMAL, 123.45),
-            array(AbstractAttributeType::BACKEND_TYPE_DATE, new \DateTime()),
-            array(AbstractAttributeType::BACKEND_TYPE_DATETIME, new \DateTime()),
-            array(AbstractAttributeType::BACKEND_TYPE_OPTION, $option),
-            array(AbstractAttributeType::BACKEND_TYPE_OPTIONS, $options),
-            array(AbstractAttributeType::BACKEND_TYPE_MEDIA, new Media()),
-            array(AbstractAttributeType::BACKEND_TYPE_PRICE, $price),
-            array(AbstractAttributeType::BACKEND_TYPE_METRIC, $metric),
-        );
+        return [
+            [AbstractAttributeType::BACKEND_TYPE_TEXT, 'my really loooonnnng text'],
+            [AbstractAttributeType::BACKEND_TYPE_VARCHAR, 'my value'],
+            [AbstractAttributeType::BACKEND_TYPE_INTEGER, 12],
+            [AbstractAttributeType::BACKEND_TYPE_DECIMAL, 123.45],
+            [AbstractAttributeType::BACKEND_TYPE_DATE, new \DateTime()],
+            [AbstractAttributeType::BACKEND_TYPE_DATETIME, new \DateTime()],
+            [AbstractAttributeType::BACKEND_TYPE_OPTION, $option],
+            [AbstractAttributeType::BACKEND_TYPE_OPTIONS, $options],
+            [AbstractAttributeType::BACKEND_TYPE_MEDIA, new Media()],
+            [AbstractAttributeType::BACKEND_TYPE_PRICE, $price],
+            [AbstractAttributeType::BACKEND_TYPE_METRIC, $metric],
+        ];
     }
 
     /**
@@ -188,21 +188,21 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      */
     public static function valueMatchingProvider()
     {
-        return array(
-            array(true, true, 'en_US', 'en_US', 'mobile', 'mobile', true),
-            array(true, true, 'en_US', 'fr_FR', 'mobile', 'mobile', false),
-            array(true, true, 'en_US', 'en_US', 'mobile', 'commerce', false),
-            array(true, true, 'en_US', 'fr_FR', 'mobile', 'commerce', false),
-            array(true, false, 'en_US', 'en_US', null, null, true),
-            array(true, false, 'en_US', 'fr_FR', null, null, false),
-            array(true, false, 'en_US', 'en_US', null, 'mobile', true),
-            array(false, true, null, null, 'mobile', 'mobile', true),
-            array(false, true, null, null, 'mobile', 'ecommerce', false),
-            array(false, true, null, 'en_US', 'mobile', 'mobile', true),
-            array(false, false, null, null, null, null, true),
-            array(false, false, null, 'en_US', null, null, true),
-            array(false, false, null, null, null, 'ecommerce', true),
-        );
+        return [
+            [true, true, 'en_US', 'en_US', 'mobile', 'mobile', true],
+            [true, true, 'en_US', 'fr_FR', 'mobile', 'mobile', false],
+            [true, true, 'en_US', 'en_US', 'mobile', 'commerce', false],
+            [true, true, 'en_US', 'fr_FR', 'mobile', 'commerce', false],
+            [true, false, 'en_US', 'en_US', null, null, true],
+            [true, false, 'en_US', 'fr_FR', null, null, false],
+            [true, false, 'en_US', 'en_US', null, 'mobile', true],
+            [false, true, null, null, 'mobile', 'mobile', true],
+            [false, true, null, null, 'mobile', 'ecommerce', false],
+            [false, true, null, 'en_US', 'mobile', 'mobile', true],
+            [false, false, null, null, null, null, true],
+            [false, false, null, 'en_US', null, null, true],
+            [false, false, null, null, null, 'ecommerce', true],
+        ];
     }
 
     /**

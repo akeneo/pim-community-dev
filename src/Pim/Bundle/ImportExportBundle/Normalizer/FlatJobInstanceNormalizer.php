@@ -16,7 +16,7 @@ class FlatJobInstanceNormalizer extends JobInstanceNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

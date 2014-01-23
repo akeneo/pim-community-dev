@@ -32,14 +32,14 @@ class FamilyNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -47,20 +47,20 @@ class FamilyNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'             => 'mycode',
-                    'label'            => array('en_US' => 'My label', 'fr_FR' => 'Mon étiquette'),
-                    'attributes'       => array('attribute1', 'attribute2', 'attribute3'),
+                    'label'            => ['en_US' => 'My label', 'fr_FR' => 'Mon étiquette'],
+                    'attributes'       => ['attribute1', 'attribute2', 'attribute3'],
                     'attributeAsLabel' => 'attribute1',
-                    'requirements'     => array(
-                        'channel1' => array('attribute1', 'attribute2'),
-                        'channel2' => array('attribute1', 'attribute3'),
-                    ),
-                )
-            ),
-        );
+                    'requirements'     => [
+                        'channel1' => ['attribute1', 'attribute2'],
+                        'channel2' => ['attribute1', 'attribute3'],
+                    ],
+                ]
+            ],
+        ];
     }
 
     /**
@@ -79,8 +79,8 @@ class FamilyNormalizerTest extends NormalizerTestCase
             $family->addTranslation($translation);
         }
 
-        $codes = array('attribute1', 'attribute2', 'attribute3');
-        $attributes = array();
+        $codes = ['attribute1', 'attribute2', 'attribute3'];
+        $attributes = [];
         foreach ($codes as $code) {
             $attribute = new Attribute();
             $attribute->setCode($code);
@@ -95,15 +95,15 @@ class FamilyNormalizerTest extends NormalizerTestCase
         $channel2 = new Channel();
         $channel2->setCode('channel2');
 
-        $requirements = array(
-            array('attribute' => $attributes[0], 'channel' => $channel1, 'required' => true),
-            array('attribute' => $attributes[1], 'channel' => $channel1, 'required' => true),
-            array('attribute' => $attributes[2], 'channel' => $channel1, 'required' => false),
-            array('attribute' => $attributes[0], 'channel' => $channel2, 'required' => true),
-            array('attribute' => $attributes[1], 'channel' => $channel2, 'required' => false),
-            array('attribute' => $attributes[2], 'channel' => $channel2, 'required' => true),
-        );
-        $attrRequirements = array();
+        $requirements = [
+            ['attribute' => $attributes[0], 'channel' => $channel1, 'required' => true],
+            ['attribute' => $attributes[1], 'channel' => $channel1, 'required' => true],
+            ['attribute' => $attributes[2], 'channel' => $channel1, 'required' => false],
+            ['attribute' => $attributes[0], 'channel' => $channel2, 'required' => true],
+            ['attribute' => $attributes[1], 'channel' => $channel2, 'required' => false],
+            ['attribute' => $attributes[2], 'channel' => $channel2, 'required' => true],
+        ];
+        $attrRequirements = [];
         foreach ($requirements as $requirement) {
             $attrRequirement = new AttributeRequirement();
             $attrRequirement->setAttribute($requirement['attribute']);

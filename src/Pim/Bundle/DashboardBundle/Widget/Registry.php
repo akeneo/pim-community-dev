@@ -12,7 +12,7 @@ namespace Pim\Bundle\DashboardBundle\Widget;
 class Registry
 {
     /** @var array */
-    protected $widgets = array();
+    protected $widgets = [];
 
     /**
      * Add a widget to the register

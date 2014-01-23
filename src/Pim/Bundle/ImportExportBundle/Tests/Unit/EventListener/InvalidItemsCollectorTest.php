@@ -27,7 +27,7 @@ class InvalidItemsCollectorTest extends \PHPUnit_Framework_TestCase
     public function testSubscribedToInvalidItem()
     {
         $this->assertEquals(
-            array(EventInterface::INVALID_ITEM => 'collect'),
+            [EventInterface::INVALID_ITEM => 'collect'],
             InvalidItemsCollector::getSubscribedEvents()
         );
     }
@@ -35,21 +35,21 @@ class InvalidItemsCollectorTest extends \PHPUnit_Framework_TestCase
     public function testCollectInvalidItem()
     {
         $event = $this->getInvalidItemEventMock(
-            array(
+            [
                 'sku'  => 'foo',
                 'name' => 'b@r',
-            )
+            ]
         );
 
         $this->collector->collect($event);
 
         $this->assertEquals(
-            array(
-                '3067c955e49d30d7b352a8e7751f36c4' => array(
+            [
+                '3067c955e49d30d7b352a8e7751f36c4' => [
                     'sku'  => 'foo',
                     'name' => 'b@r',
-                )
-            ),
+                ]
+            ],
             $this->collector->getInvalidItems()
         );
     }

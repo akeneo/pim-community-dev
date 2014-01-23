@@ -19,7 +19,7 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOption($id, $collectionId = null, array $options = array())
+    public function getOption($id, $collectionId = null, array $options = [])
     {
         if (null === $collectionId) {
             throw new \InvalidArgumentException('Please supply attribute id as collectionId');
@@ -34,7 +34,7 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         if (null === $collectionId) {
             throw new \InvalidArgumentException('Please supply attribute id as collectionId');
@@ -52,17 +52,17 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
                 ->setParameter('search', "$search%");
         }
 
-        $options = array();
+        $options = [];
         foreach ($qb->getQuery()->getArrayResult() as $row) {
-            $options[] = array(
+            $options[] = [
                 'id'   => $row['id'],
                 'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-            );
+            ];
         }
 
-        return array(
+        return [
             'results' => $options
-        );
+        ];
     }
 
     /**
@@ -109,6 +109,6 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
      */
     public function getReferenceProperties()
     {
-        return array('attribute', 'code');
+        return ['attribute', 'code'];
     }
 }

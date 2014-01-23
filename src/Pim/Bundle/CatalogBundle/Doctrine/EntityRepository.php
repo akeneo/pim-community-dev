@@ -21,7 +21,7 @@ class EntityRepository extends BaseEntityRepository
     {
         if (0 === strpos($method, 'find')) {
             if (method_exists($this, $builder = 'build'.substr($method, 4))) {
-                $qb = call_user_func_array(array($this, $builder), $arguments);
+                $qb = call_user_func_array([$this, $builder], $arguments);
 
                 if (0 === strpos(substr($method, 4), 'One')) {
                     return $qb->getQuery()->getOneOrNullResult();

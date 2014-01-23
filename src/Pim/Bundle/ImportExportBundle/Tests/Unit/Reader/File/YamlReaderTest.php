@@ -15,14 +15,14 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function getReadData()
     {
-        return array(
-            'simple'                   => array(),
-            'simple_homogenize'        => array(false, true),
-            'simple_homogenize_code'   => array(false, true, 'code'),
-            'multiple'                 => array(true),
-            'multiple_homogenize'      => array(true, true),
-            'multiple_homogenize_code' => array(true, true, 'code'),
-        );
+        return [
+            'simple'                   => [],
+            'simple_homogenize'        => [false, true],
+            'simple_homogenize_code'   => [false, true, 'code'],
+            'multiple'                 => [true],
+            'multiple_homogenize'      => [true, true],
+            'multiple_homogenize_code' => [true, true, 'code'],
+        ];
     }
 
     /**
@@ -49,7 +49,7 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
         $reader->read();
 
         $reader->setFilePath(__DIR__ . '/../../../fixtures/fixture2.yml');
-        $this->assertEquals(array('entity5' => array('key1' => 'value5')), $reader->read());
+        $this->assertEquals(['entity5' => ['key1' => 'value5']], $reader->read());
     }
 
     protected function createReader($multiple = false, $homogenize = false, $codeField = false)
@@ -62,11 +62,11 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
 
     protected function getExpectedData($homogenize = false, $codeField = false, $index = false)
     {
-        $expected = array(
-            'entity1' => array('key1' => 'value1'),
-            'entity2' => array('key1' => 'value2', 'key2' => 'value3'),
-            'entity3' => array('key1' => 'value4')
-        );
+        $expected = [
+            'entity1' => ['key1' => 'value1'],
+            'entity2' => ['key1' => 'value2', 'key2' => 'value3'],
+            'entity3' => ['key1' => 'value4']
+        ];
         if ($homogenize) {
             $expected['entity1']['key2'] = null;
             $expected['entity3']['key2'] = null;
@@ -89,6 +89,6 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $reader = new YamlReader;
-        $this->assertEquals(array(), $reader->getConfigurationFields());
+        $this->assertEquals([], $reader->getConfigurationFields());
     }
 }

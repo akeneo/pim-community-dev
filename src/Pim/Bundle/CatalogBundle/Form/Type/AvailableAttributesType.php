@@ -39,7 +39,7 @@ class AvailableAttributesType extends AbstractType
         $builder->add(
             'attributes',
             'entity',
-            array(
+            [
                 'class' => $this->attributeClass,
                 'query_builder' => function (EntityRepository $repository) use ($options) {
                     return $repository->getFindAllExceptQB($options['attributes']);
@@ -47,7 +47,7 @@ class AvailableAttributesType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'group_by' => 'virtualGroup.label',
-            )
+            ]
         );
     }
 
@@ -57,10 +57,10 @@ class AvailableAttributesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'attributes' => array(),
-            )
+                'attributes' => [],
+            ]
         );
     }
 

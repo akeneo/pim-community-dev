@@ -36,7 +36,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->validator = new ProductValueNotBlankValidator();
-        $this->constraint = new ProductValueNotBlank(array('channel' => $this->getChannel()));
+        $this->constraint = new ProductValueNotBlank(['channel' => $this->getChannel()]);
     }
 
     /**
@@ -83,25 +83,25 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
         $price->setCurrency('EUR');
         $price->setData(12.5);
 
-        return array(
-            array('char' => 'a'),
-            array('string' => 'test'),
-            array('sentence' => 'juste a sentence'),
-            array('integer' => 5),
-            array('zero' => 0),
-            array('float' => 3.4),
-            array('zero float' => 0.0),
-            array('negative integer' => -2),
-            array('negative float' => -5.3),
-            array('negative zero' => -0),
-            array('negative zero float' => -0.00),
-            array('boolean true' => true),
-            array('boolean false' => false),
-            array('not empty array' => array('A')),
-            array('object' => new \stdClass()),
-            array('not empty option collection' => new ArrayCollection(array(new AttributeOption()))),
-            array('expected price collection' => new ArrayCollection(array($price)), $attribute),
-        );
+        return [
+            ['char' => 'a'],
+            ['string' => 'test'],
+            ['sentence' => 'juste a sentence'],
+            ['integer' => 5],
+            ['zero' => 0],
+            ['float' => 3.4],
+            ['zero float' => 0.0],
+            ['negative integer' => -2],
+            ['negative float' => -5.3],
+            ['negative zero' => -0],
+            ['negative zero float' => -0.00],
+            ['boolean true' => true],
+            ['boolean false' => false],
+            ['not empty array' => ['A']],
+            ['object' => new \stdClass()],
+            ['not empty option collection' => new ArrayCollection([new AttributeOption()])],
+            ['expected price collection' => new ArrayCollection([$price]), $attribute],
+        ];
     }
 
     /**
@@ -138,12 +138,12 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
         $price->setCurrency('EUR');
         $price->setData(null);
 
-        return array(
-            array('null' => null),
-            array('empty string' => ''),
-            array('empty option collection' => new ArrayCollection()),
-            array('unexpected price collection' => new ArrayCollection(array($price)), $attribute),
-        );
+        return [
+            ['null' => null],
+            ['empty string' => ''],
+            ['empty option collection' => new ArrayCollection()],
+            ['unexpected price collection' => new ArrayCollection([$price]), $attribute],
+        ];
     }
 
     /**

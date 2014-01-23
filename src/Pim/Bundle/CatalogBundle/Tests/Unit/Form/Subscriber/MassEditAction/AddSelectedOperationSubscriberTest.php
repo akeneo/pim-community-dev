@@ -35,7 +35,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPostSetDataWithOperation()
     {
         $form      = $this->getFormMock();
-        $operation = $this->getMassEditActionMock('foo_type', array('foo' => 'bar'));
+        $operation = $this->getMassEditActionMock('foo_type', ['foo' => 'bar']);
         $data      = $this->getMassEditActionOperatorMock($operation);
 
         $event = $this->getFormEventMock($form, $data);
@@ -47,7 +47,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $form->expects($this->once())
             ->method('add')
-            ->with('operation', 'foo_type', array('foo' => 'bar'));
+            ->with('operation', 'foo_type', ['foo' => 'bar']);
 
         $this->subscriber->postSetData($event);
     }

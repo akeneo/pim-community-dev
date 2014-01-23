@@ -14,8 +14,8 @@ class SkipImportValidator implements ImportValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
+    public function validate($entity, array $columnsInfo, array $data, array $errors = [])
     {
-        return array();
+        return [];
     }
 }

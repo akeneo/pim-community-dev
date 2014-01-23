@@ -54,6 +54,6 @@ class FileReader extends AbstractConfigurableStepElement implements ItemReaderIn
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

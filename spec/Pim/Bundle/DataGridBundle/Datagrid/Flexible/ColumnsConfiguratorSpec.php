@@ -13,7 +13,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
     {
-        $attributes = array('sku' => $sku, 'name' => $name);
+        $attributes = ['sku' => $sku, 'name' => $name];
         $this->beConstructedWith($configuration, $registry, $attributes);
     }
 
@@ -31,8 +31,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->getLabel()->willReturn('Name');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['column' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn(['column' => ['text_config']]);
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
         $columns = [
@@ -49,7 +49,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             ]
         ];
 
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(['family' => ['family_config']]);
 
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
         $this->configure();
@@ -62,8 +62,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $name->isUseableAsGridColumn()->willReturn(false);
         $name->getAttributeType()->willReturn('pim_catalog_text');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['column' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn(['column' => ['text_config']]);
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
         $columns = [
@@ -72,7 +72,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             ],
         ];
 
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(['family' => ['family_config']]);
 
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
         $this->configure();
@@ -87,11 +87,11 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->getLabel()->willReturn('Name');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['column' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(['family' => ['family_config']]);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

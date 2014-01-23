@@ -26,9 +26,9 @@ class InitializeValuesListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            FlexibleEntityEvents::CREATE_FLEXIBLE => array('onCreateFlexibleEntity'),
-        );
+        return [
+            FlexibleEntityEvents::CREATE_FLEXIBLE => ['onCreateFlexibleEntity'],
+        ];
     }
 
     /**
@@ -41,7 +41,7 @@ class InitializeValuesListener implements EventSubscriberInterface
         $manager  = $event->getManager();
 
         if ($flexible instanceof FlexibleInterface and $manager->getFlexibleInitMode() !== 'empty') {
-            $findBy = array('entityType' => $manager->getFlexibleName());
+            $findBy = ['entityType' => $manager->getFlexibleName()];
             if ($manager->getFlexibleInitMode() === 'required_attributes') {
                 $findBy['required'] = true;
             }

@@ -46,7 +46,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $localeCodes = $this->getLocaleManager()->getActiveCodes();
         $localeCode  = in_array('en_US', $localeCodes) ? 'en_US' : current($localeCodes);
-        $locale      = current($this->getLocaleManager()->getLocales(array('code' => $localeCode)));
+        $locale      = current($this->getLocaleManager()->getLocales(['code' => $localeCode]));
         $scope       = current($this->getChannelManager()->getChannels());
         $tree        = current($this->getCategoryManager()->getTrees());
 

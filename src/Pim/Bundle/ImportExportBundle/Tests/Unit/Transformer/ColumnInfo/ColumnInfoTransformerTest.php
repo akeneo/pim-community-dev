@@ -28,13 +28,13 @@ class ColumnInfoTransformerTest extends \PHPUnit_Framework_TestCase
     public function testMultiple()
     {
         $transformer = new ColumnInfoTransformer(static::COLUMN_INFO_CLASS);
-        $result = $transformer->transform('class', array('label1', 'label2'));
+        $result = $transformer->transform('class', ['label1', 'label2']);
         $this->assertColumnInfo($result[0], 'label1');
         $this->assertColumnInfo($result[1], 'label2');
-        $result2 = $transformer->transform('class', array('label1', 'label2'));
+        $result2 = $transformer->transform('class', ['label1', 'label2']);
         $this->assertSame($result[0], $result2[0]);
         $this->assertSame($result[1], $result2[1]);
-        $result3 = $transformer->transform('class2', array('label1', 'label2'));
+        $result3 = $transformer->transform('class2', ['label1', 'label2']);
         $this->assertNotSame($result[0], $result3[0]);
         $this->assertNotSame($result[1], $result3[1]);
     }

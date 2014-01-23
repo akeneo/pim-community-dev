@@ -29,9 +29,9 @@ class AttributeRequirementType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement'
-            )
+            ]
         );
     }
 

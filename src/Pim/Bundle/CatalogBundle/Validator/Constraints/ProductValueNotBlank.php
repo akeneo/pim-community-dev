@@ -42,6 +42,6 @@ class ProductValueNotBlank extends Constraint
      */
     public function getRequiredOptions()
     {
-        return array('channel');
+        return ['channel'];
     }
 }

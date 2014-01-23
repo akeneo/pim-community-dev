@@ -32,17 +32,17 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Model\Product', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Model\Product', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Model\Product', 'csv',  false),
-            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Model\Product', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Model\Product', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Model\Product', 'csv',  false],
+            ['Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -65,36 +65,36 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProduct()
     {
         $values = new ArrayCollection(
-            array(
+            [
                 $this->getValueMock($this->getAttributeMock('sku'), 'KB0001'),
                 $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
                 $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
                 $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
                 $this->getValueMock(
                     $this->getAttributeMock('tags'),
-                    new ArrayCollection(array('home', 'garden', 'tools'))
+                    new ArrayCollection(['home', 'garden', 'tools'])
                 ),
-            )
+            ]
         );
         $product = $this->getProductMock($values);
 
-        $result = array(
-            'KB0001' => array(
-                'sku' => array(
+        $result = [
+            'KB0001' => [
+                'sku' => [
                     'en_US' => 'KB0001',
                     'fr_FR' => 'KB0001'
-                ),
-                'name' => array(
+                ],
+                'name' => [
                     'en_US' => 'Wheelbarrow',
                     'fr_FR' => 'Brouette'
-                ),
-                'tags' => array(
+                ],
+                'tags' => [
                     'en_US' => 'home, garden, tools',
                     'fr_FR' => 'home, garden, tools'
-                ),
+                ],
                 'resource' => 'http://akeneo-pim.local/api/rest/ecommerce/products/KB0001.json'
-            ),
-        );
+            ],
+        ];
 
         $this->assertEquals(
             $result,
@@ -118,10 +118,10 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
                     $this->logicalOr(
                         $this->stringContains('oro_api_get_product'),
                         $this->equalTo(
-                            array(
+                            [
                                 'scope' => 'ecommerce',
                                 'identifier' => 'KB0001'
-                            )
+                            ]
                         )
                     )
                 )
@@ -139,10 +139,10 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
 
         $locales = new ArrayCollection(
-            array(
+            [
                 $this->getLocaleMock('en_US'),
                 $this->getLocaleMock('fr_FR')
-            )
+            ]
         );
 
         $channel->expects($this->any())
@@ -161,7 +161,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     private function getLocaleMock($code)
     {
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', array('getCode'));
+        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', ['getCode']);
 
         $locale->expects($this->any())
                  ->method('getCode')

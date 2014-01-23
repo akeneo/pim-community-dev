@@ -88,12 +88,12 @@ class CompletenessController
 
         return $this->templating->renderResponse(
             'PimCatalogBundle:Completeness:_completeness.html.twig',
-            array(
+            [
                 'product'           => $product,
                 'channels'          => $channels,
                 'locales'           => $locales,
                 'completenesses'    => $completenesses
-            )
+            ]
         );
     }
 }

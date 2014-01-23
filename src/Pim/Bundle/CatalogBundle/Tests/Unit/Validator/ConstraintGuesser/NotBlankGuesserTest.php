@@ -47,7 +47,7 @@ class NotBlankGuesserTest extends ConstraintGuesserTest
     {
         $this->assertContainsInstanceOf(
             'Symfony\Component\Validator\Constraints\NotBlank',
-            $this->target->guessConstraints($this->getAttributeMock(array('required' => true)))
+            $this->target->guessConstraints($this->getAttributeMock(['required' => true]))
         );
     }
 

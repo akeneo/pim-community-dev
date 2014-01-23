@@ -44,7 +44,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return [FormEvents::PRE_SET_DATA => 'preSetData'];
     }
 
     /**
@@ -61,7 +61,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                     'attributeAsLabel',
                     'entity',
                     $data->getAttributeAsLabel(),
-                    array(
+                    [
                         'required'        => false,
                         'empty_value'     => 'Id',
                         'label'           => 'Attribute used as label',
@@ -69,7 +69,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
                         'select2'         => true
-                    )
+                    ]
                 )
             );
         }

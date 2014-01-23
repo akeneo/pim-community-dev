@@ -182,7 +182,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCreateRedirectRouteParameters($entity)
     {
-        $parameters = array('customEntityName' => $this->getName());
+        $parameters = ['customEntityName' => $this->getName()];
         if ($this->options['edit_after_create']) {
             $parameters['id'] = $entity->getId();
         }
@@ -227,9 +227,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getEditRedirectRouteParameters($entity)
     {
-        return array(
+        return [
             'customEntityName' => $this->getName()
-        );
+        ];
     }
 
     /**
@@ -296,31 +296,31 @@ class Configuration implements ConfigurationInterface
     protected function setDefaultOptions(OptionsResolverInterface $optionsResolver)
     {
         $optionsResolver->setRequired(
-            array(
+            [
                 'entity_class',
                 'edit_form_type',
-            )
+            ]
         );
         $optionsResolver->setDefaults(
-            array(
+            [
                 'base_template'                     => 'PimCustomEntityBundle::layout.html.twig',
                 'edit_template'                     => 'PimCustomEntityBundle:CustomEntity:edit.html.twig',
                 'index_template'                    => 'PimCustomEntityBundle:CustomEntity:index.html.twig',
                 'create_template'                   => 'PimCustomEntityBundle:CustomEntity:quickcreate.html.twig',
                 'create_form_type'                  => null,
                 'create_form_options'               => null,
-                'create_default_properties'         => array(),
-                'create_options'                    => array(),
+                'create_default_properties'         => [],
+                'create_options'                    => [],
                 'index_route'                       => 'pim_customentity_index',
                 'create_route'                      => 'pim_customentity_create',
                 'edit_route'                        => 'pim_customentity_edit',
                 'remove_route'                      => 'pim_customentity_remove',
                 'edit_after_create'                 => true,
-                'edit_form_options'                 => array(),
-                'find_options'                      => array(),
-                'query_builder_options'             => array(),
+                'edit_form_options'                 => [],
+                'find_options'                      => [],
+                'query_builder_options'             => [],
                 'datagrid_namespace'                => 'pim_custom_entity'
-            )
+            ]
         );
     }
 }

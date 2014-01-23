@@ -25,8 +25,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new Collection();
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        call_user_func_array([$obj, 'set' . ucfirst($property)], [$value]);
+        $this->assertEquals($value, call_user_func_array([$obj, 'get' . ucfirst($property)], []));
     }
 
     /**
@@ -48,10 +48,10 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provider()
     {
-        return array(
-            array('id', 1),
-            array('data', 'asdfasdfsdf'),
-            array('type', 'test_type'),
-        );
+        return [
+            ['id', 1],
+            ['data', 'asdfasdfsdf'],
+            ['type', 'test_type'],
+        ];
     }
 }

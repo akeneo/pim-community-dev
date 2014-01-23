@@ -41,7 +41,7 @@ class EntityTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (!isset($options['class'])) {
             throw new \InvalidArgumentException('class option is required');
@@ -60,7 +60,7 @@ class EntityTransformer implements PropertyTransformerInterface
                 isset($options['reference_prefix']) ? $options['reference_prefix'] . '.' : ''
             );
         } else {
-            return $multiple ? array() : null;
+            return $multiple ? [] : null;
         }
     }
 
@@ -83,7 +83,7 @@ class EntityTransformer implements PropertyTransformerInterface
             if (!$entity) {
                 throw new PropertyTransformerException(
                     'No entity of class "%class%" with code "%code%"',
-                    array('%class%' => $class, '%code%' => $referencePrefix . $value)
+                    ['%class%' => $class, '%code%' => $referencePrefix . $value]
                 );
             }
 

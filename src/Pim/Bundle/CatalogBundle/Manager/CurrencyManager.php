@@ -34,7 +34,7 @@ class CurrencyManager
      */
     public function getActiveCurrencies()
     {
-        $criterias = array('activated' => true);
+        $criterias = ['activated' => true];
 
         return $this->getCurrencies($criterias);
     }
@@ -46,7 +46,7 @@ class CurrencyManager
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
-    public function getCurrencies($criterias = array())
+    public function getCurrencies($criterias = [])
     {
         return $this->objectManager->getRepository('PimCatalogBundle:Currency')->findBy($criterias);
     }
@@ -58,7 +58,7 @@ class CurrencyManager
      */
     public function getActiveCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getActiveCurrencies() as $currency) {
             $codes[] = $currency->getCode();
         }
@@ -81,7 +81,7 @@ class CurrencyManager
         $codes = $this->getActiveCodes();
 
         if (empty($codes)) {
-            return array();
+            return [];
         }
 
         return array_combine($codes, $codes);

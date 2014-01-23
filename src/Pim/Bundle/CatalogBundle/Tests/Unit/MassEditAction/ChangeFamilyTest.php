@@ -26,11 +26,11 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testPerform()
     {
-        $products = array(
+        $products = [
             $this->getProductMock(),
             $this->getProductMock(),
             $this->getProductMock(),
-        );
+        ];
         $family = $this->getFamilyMock();
 
         $products[0]->expects($this->once())

@@ -223,7 +223,7 @@ class Family implements TranslatableInterface, ReferableInterface
      */
     public function getGroupedAttributes()
     {
-        $result = array();
+        $result = [];
         foreach ($this->attributes as $attribute) {
             $result[(string) $attribute->getVirtualGroup()][] = $attribute;
         }
@@ -272,10 +272,10 @@ class Family implements TranslatableInterface, ReferableInterface
             function ($attribute) {
                 return in_array(
                     $attribute->getAttributeType(),
-                    array(
+                    [
                         'pim_catalog_text',
                         'pim_catalog_identifier'
-                    )
+                    ]
                 );
             }
         )->toArray();
@@ -423,7 +423,7 @@ class Family implements TranslatableInterface, ReferableInterface
      */
     public function getAttributeRequirements()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->requirements as $requirement) {
             $key = $this->getAttributeRequirementKey($requirement);

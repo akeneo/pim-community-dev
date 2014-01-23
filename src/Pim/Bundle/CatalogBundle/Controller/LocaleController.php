@@ -31,6 +31,6 @@ class LocaleController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 }

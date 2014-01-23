@@ -23,13 +23,13 @@ class AddToGroupsType extends AbstractType
         $builder->add(
             'groups',
             'entity',
-            array(
+            [
                 'class'    => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choices'  => $options['groups'],
-            )
+            ]
         );
     }
 
@@ -39,10 +39,10 @@ class AddToGroupsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\AddToGroups',
-                'groups'     => array(),
-            )
+                'groups'     => [],
+            ]
         );
     }
 

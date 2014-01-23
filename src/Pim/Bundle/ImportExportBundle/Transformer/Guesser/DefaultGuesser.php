@@ -39,6 +39,6 @@ class DefaultGuesser implements GuesserInterface
             return;
         }
 
-        return array($this->transformer, array());
+        return [$this->transformer, []];
     }
 }

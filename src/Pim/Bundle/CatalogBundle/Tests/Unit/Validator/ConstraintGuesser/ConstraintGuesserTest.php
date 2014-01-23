@@ -16,7 +16,7 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    protected function getAttributeMock(array $options = array())
+    protected function getAttributeMock(array $options = [])
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 

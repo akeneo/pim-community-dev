@@ -201,12 +201,12 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('findBy')
             ->with(
-                array(
+                [
                     'attribute' => $attribute,
                     'varchar' => 'bar'
-                )
+                ]
             )
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this
             ->context
@@ -258,12 +258,12 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('findBy')
             ->with(
-                array(
+                [
                     'attribute' => $attribute,
                     'varchar' => 'bar'
-                )
+                ]
             )
-            ->will($this->returnValue(array($value)));
+            ->will($this->returnValue([$value]));
 
         $this
             ->context
@@ -315,12 +315,12 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('findBy')
             ->with(
-                array(
+                [
                     'attribute' => $attribute,
                     'varchar' => 'bar'
-                )
+                ]
             )
-            ->will($this->returnValue(array($this->getProductValueMock())));
+            ->will($this->returnValue([$this->getProductValueMock()]));
 
         $constraint = new UniqueValue();
         $this

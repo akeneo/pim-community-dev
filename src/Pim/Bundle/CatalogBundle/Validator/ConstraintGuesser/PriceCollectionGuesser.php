@@ -23,9 +23,9 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_price_collection',
-            )
+            ]
         );
     }
 
@@ -38,21 +38,21 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
         $rangeGuesser = new RangeGuesser();
         $numericGuesser = new NumericGuesser();
 
-        return array(
+        return [
             new All(
-                array(
+                [
                     'constraints' => array_merge(
-                        array(
+                        [
                             new Type(
-                                array('type' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice')
+                                ['type' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice']
                             ),
-                        ),
+                        ],
                         $numericGuesser->guessConstraints($attribute),
                         $notDecimalGuesser->guessConstraints($attribute),
                         $rangeGuesser->guessConstraints($attribute)
                     )
-                )
+                ]
             )
-        );
+        ];
     }
 }

@@ -26,16 +26,16 @@ abstract class PimTestCase extends \PHPUnit_Framework_TestCase
 
         // create mock builder for locale manager and redefine constructor to set object manager
         $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager, $securityContext));
+                            ->setConstructorArgs([$objectManager, $securityContext]);
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
             'Pim\Bundle\CatalogBundle\Manager\LocaleManager',
-            array('getActiveCodes')
+            ['getActiveCodes']
         );
         $localeManager->expects($this->any())
                       ->method('getActiveCodes')
-                      ->will($this->returnValue(array('en_US', 'fr_FR')));
+                      ->will($this->returnValue(['en_US', 'fr_FR']));
 
         return $localeManager;
     }

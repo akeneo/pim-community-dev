@@ -96,7 +96,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         $manager->expects($this->any())
             ->method('getActiveCodes')
-            ->will($this->returnValue(array('en_US', 'fr_FR')));
+            ->will($this->returnValue(['en_US', 'fr_FR']));
 
         return $manager;
     }
@@ -127,14 +127,14 @@ class TranslatableFieldTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         // Assert default options
-        $expectedOptions = array(
+        $expectedOptions = [
             'entity_class'      => false,
             'field'             => false,
-            'locales'           => array('en_US', 'fr_FR'),
-            'required_locale'   => array(),
+            'locales'           => ['en_US', 'fr_FR'],
+            'required_locale'   => [],
             'translation_class' => false,
             'widget'            => 'text'
-        );
+        ];
 
         // Assert options
         $options = $this->form->getConfig()->getOptions();
@@ -161,11 +161,11 @@ class TranslatableFieldTypeTest extends TypeTestCase
      */
     protected function buildOptions($entityClass, $fieldName, $translationClass)
     {
-        return array(
+        return [
             'entity_class'      => $entityClass,
             'field'             => $fieldName,
             'translation_class' => $translationClass
-        );
+        ];
     }
 
     /**
@@ -175,11 +175,11 @@ class TranslatableFieldTypeTest extends TypeTestCase
      */
     public static function dataOptionsProvider()
     {
-        return array(
-            array(self::OPT_ENTITY_CLASS, self::OPT_NAME, null),
-            array(self::OPT_ENTITY_CLASS, null, self::OPT_TRANSLATION_CLASS),
-            array(null, self::OPT_NAME, self::OPT_TRANSLATION_CLASS)
-        );
+        return [
+            [self::OPT_ENTITY_CLASS, self::OPT_NAME, null],
+            [self::OPT_ENTITY_CLASS, null, self::OPT_TRANSLATION_CLASS],
+            [null, self::OPT_NAME, self::OPT_TRANSLATION_CLASS]
+        ];
     }
 
     /**

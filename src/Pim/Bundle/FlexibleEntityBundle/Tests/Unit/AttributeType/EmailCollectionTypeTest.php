@@ -25,12 +25,12 @@ class EmailCollectionTypeTest extends AttributeTypeTest
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
-        $email   = $this->getFlexibleValueMock(array());
+        $email   = $this->getFlexibleValueMock([]);
         $value   = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => $email,
                 'backendType' => 'foo',
-            )
+            ]
         );
 
         $factory->expects($this->once())
@@ -58,7 +58,7 @@ class EmailCollectionTypeTest extends AttributeTypeTest
     public function testBuildAttributeFormTypes()
     {
         $this->assertEquals(
-            array(),
+            [],
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)

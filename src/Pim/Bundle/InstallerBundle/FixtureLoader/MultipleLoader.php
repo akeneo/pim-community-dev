@@ -45,18 +45,18 @@ class MultipleLoader
      */
     public function load(ObjectManager $objectManager, ReferenceRepository $referenceRepository, array $paths)
     {
-        $fileIndex = array();
+        $fileIndex = [];
         foreach ($paths as $path) {
             $parts = explode('.', basename($path));
-            $file = array(
+            $file = [
                 'path'      => $path,
                 'extension' => array_pop($parts),
                 'name'      => implode('.', $parts)
-            );
+            ];
             if ($this->registry->contains($file['name'])) {
                 $order = $this->registry->getOrder($file['name']);
                 if (!isset($fileIndex[$order])) {
-                    $fileIndex[$order] = array();
+                    $fileIndex[$order] = [];
                 }
                 $fileIndex[$order][] = $file;
             }

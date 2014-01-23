@@ -52,7 +52,7 @@ interface ProductRepositoryInterface
      *
      * @return array
      */
-    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array());
+    public function findAllForVariantGroup(Group $variantGroup, array $criteria = []);
 
     /**
      * Returns a full product with all relations

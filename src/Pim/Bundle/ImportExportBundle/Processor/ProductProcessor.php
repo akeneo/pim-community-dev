@@ -124,33 +124,33 @@ class ProductProcessor extends TransformerProcessor
      */
     public function getConfigurationFields()
     {
-        return array(
-            'enabled' => array(
+        return [
+            'enabled' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_import_export.import.enabled.label',
                     'help'  => 'pim_import_export.import.enabled.help'
-                )
-            ),
-            'categoriesColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'categoriesColumn' => [
+                'options' => [
                     'label' => 'pim_import_export.import.categoriesColumn.label',
                     'help'  => 'pim_import_export.import.categoriesColumn.help'
-                )
-            ),
-            'familyColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'familyColumn' => [
+                'options' => [
                     'label' => 'pim_import_export.import.familyColumn.label',
                     'help'  => 'pim_import_export.import.familyColumn.help'
-                )
-            ),
-            'groupsColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'groupsColumn' => [
+                'options' => [
                     'label' => 'pim_import_export.import.groupsColumn.label',
                     'help'  => 'pim_import_export.import.groupsColumn.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -158,7 +158,7 @@ class ProductProcessor extends TransformerProcessor
      */
     protected function transform($item)
     {
-        return $this->transformer->transform($this->class, $item, array('enabled' => $this->enabled));
+        return $this->transformer->transform($this->class, $item, ['enabled' => $this->enabled]);
     }
 
     /**
@@ -166,11 +166,11 @@ class ProductProcessor extends TransformerProcessor
      */
     protected function getMapping()
     {
-        return array(
+        return [
             $this->familyColumn     => 'family',
             $this->categoriesColumn => 'categories',
             $this->groupsColumn     => 'groups'
-        ) + $this->mapping;
+        ] + $this->mapping;
     }
 
     /**

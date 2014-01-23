@@ -20,7 +20,7 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         $value = trim($value);
 
@@ -31,7 +31,7 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
         try {
             $file = new File($value);
         } catch (FileNotFoundException $e) {
-            throw new PropertyTransformerException('File not found: "%value%"', array('%value%' => $value));
+            throw new PropertyTransformerException('File not found: "%value%"', ['%value%' => $value]);
         }
 
         return $file;
@@ -40,7 +40,7 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         if (null === $data) {
             return;

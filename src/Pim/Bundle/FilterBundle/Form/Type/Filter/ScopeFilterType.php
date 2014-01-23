@@ -61,10 +61,10 @@ class ScopeFilterType extends ChoiceFilterType
         $scopeChoices = $this->channelManager->getChannelChoiceWithUserChannel();
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type' => 'choice',
-                'field_options' => array('choices' => $scopeChoices)
-            )
+                'field_options' => ['choices' => $scopeChoices]
+            ]
         );
     }
 }

@@ -22,10 +22,10 @@ class NumericGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_metric',
                 'pim_catalog_number',
-            )
+            ]
         );
     }
 
@@ -34,7 +34,7 @@ class NumericGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if (!$attribute->isDecimalsAllowed()) {
             $constraints[] = new Numeric();

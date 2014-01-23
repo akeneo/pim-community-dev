@@ -142,7 +142,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAttributeIds()
     {
-        $expectedIds = array(1, 4, 6);
+        $expectedIds = [1, 4, 6];
         foreach ($expectedIds as $id) {
             $attribute = new Attribute();
             $attribute->setId($id);
@@ -174,7 +174,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
         // Use setter and assert getProducts result
         $newProduct1 = new Product();
-        $expectedProducts = array($newProduct, $newProduct1);
+        $expectedProducts = [$newProduct, $newProduct1];
 
         $this->assertEntity($this->group->setProducts($expectedProducts));
         $this->assertCount(2, $this->group->getProducts());

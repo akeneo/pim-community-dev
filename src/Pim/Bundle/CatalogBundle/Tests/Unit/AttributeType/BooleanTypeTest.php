@@ -34,10 +34,10 @@ class BooleanTypeTest extends AttributeTypeTestCase
         $factory = $this->getFormFactoryMock();
         $data = true;
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data' => $data,
                 'backendType' => $this->backendType
-            )
+            ]
         );
 
         $factory
@@ -47,12 +47,12 @@ class BooleanTypeTest extends AttributeTypeTestCase
                 $this->backendType,
                 $this->formType,
                 $data,
-                array(
-                    'constraints' => array('constraints'),
+                [
+                    'constraints' => ['constraints'],
                     'label' => null,
                     'required' => null,
                     'auto_initialize' => false
-                )
+                ]
             );
 
         $this->target->buildValueFormType($factory, $value);

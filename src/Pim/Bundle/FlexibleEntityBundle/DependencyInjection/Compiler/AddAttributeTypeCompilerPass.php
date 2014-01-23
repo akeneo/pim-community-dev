@@ -31,13 +31,13 @@ class AddAttributeTypeCompilerPass implements CompilerPassInterface
     {
         $factory = $container->getDefinition(self::FLEXIBLE_TYPE_FACTORY_KEY);
 
-        $types   = array();
+        $types   = [];
         foreach ($container->findTaggedServiceIds(self::FLEXIBLE_TYPE_TAG) as $id => $attributes) {
             $attributes = current($attributes);
             $alias = $attributes['alias'];
             $entity = $attributes['entity'];
             $attributeType = $container->getDefinition($id);
-            $types[$alias] = array('type' => $attributeType, 'entity' => $entity);
+            $types[$alias] = ['type' => $attributeType, 'entity' => $entity];
         }
 
         $factory->replaceArgument(0, $types);

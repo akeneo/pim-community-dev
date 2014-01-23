@@ -27,7 +27,7 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
      */
     public function testSubscribedEvents()
     {
-        $this->assertEquals(array('prePersist'), $this->subscriber->getSubscribedEvents());
+        $this->assertEquals(['prePersist'], $this->subscriber->getSubscribedEvents());
     }
 
     /**
@@ -41,10 +41,10 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         $name        = $this->getAttributeMock('pim_catalog_text');
         $description = $this->getAttributeMock('pim_catalog_text');
 
-        $family1     = $this->getFamilyMock(array($sku, $name, $description));
-        $family2     = $this->getFamilyMock(array($sku, $name));
+        $family1     = $this->getFamilyMock([$sku, $name, $description]);
+        $family2     = $this->getFamilyMock([$sku, $name]);
 
-        $em          = $this->getEntityManagerMock(array($family1, $family2));
+        $em          = $this->getEntityManagerMock([$family1, $family2]);
         $event       = $this->getEventMock($channel, $em);
 
         $requirement1 = $this->getAttributeRequirementMock();
@@ -103,7 +103,7 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
      */
     public function testIgnoreNonChannelEntity()
     {
-        $em    = $this->getEntityManagerMock(array());
+        $em    = $this->getEntityManagerMock([]);
         $event = $this->getEventMock($this->getMock('\stdClass'), $em);
 
         $event->expects($this->never())->method('getEntityManager');

@@ -43,8 +43,8 @@ class Classify extends AbstractMassEditAction
     {
         $this->manager         = $manager;
         $this->categoryManager = $categoryManager;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
-        $this->categories      = array();
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
+        $this->categories      = [];
     }
 
     /**

@@ -44,7 +44,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
         $this->channelManager
             ->expects($this->any())
             ->method('getChannels')
-            ->will($this->returnValue(array($channel1, $channel2)));
+            ->will($this->returnValue([$channel1, $channel2]));
 
         $requirement1 = $this->getAttributeRequirementMock($identifier, $channel1);
         $requirement2 = $this->getAttributeRequirementMock($identifier, $channel2);
@@ -53,10 +53,10 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('createAttributeRequirement')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array($identifier, $channel1, true, $requirement1),
-                        array($identifier, $channel2, true, $requirement2),
-                    )
+                    [
+                        [$identifier, $channel1, true, $requirement1],
+                        [$identifier, $channel2, true, $requirement2],
+                    ]
                 )
             );
 
@@ -68,10 +68,10 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $family->getAttributeRequirements());
         $this->assertEquals(
-            array(
+            [
                 'sku_channel1' => $requirement1,
                 'sku_channel2' => $requirement2,
-            ),
+            ],
             $family->getAttributeRequirements()
         );
     }

@@ -30,14 +30,14 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -45,16 +45,16 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'        => 'mycode',
-                    'label'       => array('en_US' => 'My name', 'fr_FR' => 'Mon nom'),
+                    'label'       => ['en_US' => 'My name', 'fr_FR' => 'Mon nom'],
                     'sortOrder'   => 5,
-                    'attributes'  => array('attribute1', 'attribute2', 'attribute3')
-                )
-            ),
-        );
+                    'attributes'  => ['attribute1', 'attribute2', 'attribute3']
+                ]
+            ],
+        ];
     }
 
     /**
@@ -101,7 +101,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
      */
     protected function getAttributes($data)
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($data['attributes'] as $code) {
             $attribute = new Attribute();
             $attribute->setCode($code);

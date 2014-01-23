@@ -38,7 +38,7 @@ class RegisterWidgetsPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('pim_dashboard.widget') as $serviceId => $tag) {
             $alias = isset($tag[0]['alias']) ? $tag[0]['alias'] : $serviceId;
-            $definition->addMethodCall('add', array($alias, $this->factory->createReference($serviceId)));
+            $definition->addMethodCall('add', [$alias, $this->factory->createReference($serviceId)]);
         }
     }
 }

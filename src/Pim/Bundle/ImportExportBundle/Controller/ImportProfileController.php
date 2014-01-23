@@ -25,10 +25,10 @@ class ImportProfileController extends JobProfileController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'jobType'    => $this->getJobType(),
             'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
-        );
+        ];
     }
 
     /**

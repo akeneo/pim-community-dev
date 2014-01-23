@@ -35,16 +35,16 @@ class CategoryType extends AbstractType
             ->add(
                 'categoryId',
                 'integer',
-                array(
+                [
                     'required' => false,
-                )
+                ]
             )
             ->add(
                 'treeId',
                 'integer',
-                array(
+                [
                     'required' => false,
-                )
+                ]
             );
     }
 

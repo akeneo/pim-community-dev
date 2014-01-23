@@ -30,9 +30,9 @@ class ExportMassAction extends WidgetMassAction
         }
 
         if (empty($options['route_parameters'])) {
-            $options['route_parameters'] = array(
+            $options['route_parameters'] = [
                 '_format' => 'csv'
-            );
+            ];
         }
 
         return parent::setOptions($options);

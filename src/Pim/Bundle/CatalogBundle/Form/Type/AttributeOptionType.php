@@ -48,7 +48,7 @@ class AttributeOptionType extends AbstractType
      */
     protected function addFieldSortOrder(FormBuilderInterface $builder)
     {
-        $builder->add('sort_order', 'integer', array('required' => false));
+        $builder->add('sort_order', 'integer', ['required' => false]);
     }
 
     /**
@@ -57,7 +57,7 @@ class AttributeOptionType extends AbstractType
      */
     protected function addFieldTranslatable(FormBuilderInterface $builder)
     {
-        $builder->add('translatable', null, array('required' => false));
+        $builder->add('translatable', null, ['required' => false]);
     }
 
     /**
@@ -66,7 +66,7 @@ class AttributeOptionType extends AbstractType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', array('required' => true));
+        $builder->add('code', 'text', ['required' => true]);
     }
 
     /**
@@ -78,12 +78,12 @@ class AttributeOptionType extends AbstractType
         $builder->add(
             'optionValues',
             'collection',
-            array(
+            [
                 'type'         => 'pim_catalog_attribute_option_value',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false
-            )
+            ]
         );
     }
 
@@ -102,9 +102,9 @@ class AttributeOptionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
-            )
+            ]
         );
     }
 

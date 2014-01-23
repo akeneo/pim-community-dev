@@ -24,24 +24,24 @@ class ClassifyType extends AbstractType
             ->add(
                 'trees',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'PimCatalogBundle:Category',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
-                )
+                ]
             );
 
         $builder
             ->add(
                 'categories',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'PimCatalogBundle:Category',
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
-                )
+                ]
             );
     }
 
@@ -51,9 +51,9 @@ class ClassifyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\Classify'
-            )
+            ]
         );
     }
 

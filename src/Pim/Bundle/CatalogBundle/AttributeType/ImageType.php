@@ -19,54 +19,54 @@ class ImageType extends FlexImageType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = [
+            [
                 'name'      => 'maxFileSize',
                 'fieldType' => 'number',
-                'options'   => array(
+                'options'   => [
                     'precision' => 2
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'    => 'allowedExtensions',
                 'data'    => implode(',', $attribute->getAllowedExtensions()),
-                'options' => array(
+                'options' => [
                     'by_reference' => false,
                     'select2'      => true,
-                    'attr'         => array(
+                    'attr'         => [
                         'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
-                    )
-                )
-            ),
-            array(
+                    ]
+                ]
+            ],
+            [
                 'name'      => 'translatable',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'availableLocales',
                 'fieldType' => 'pim_catalog_available_locales'
-            ),
-            array(
+            ],
+            [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_catalog_scopable',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'disabled'  => true,
                     'read_only' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         return $properties;
     }

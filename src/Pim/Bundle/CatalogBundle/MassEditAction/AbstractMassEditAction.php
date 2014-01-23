@@ -16,7 +16,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
      */
     public function getFormOptions()
     {
-        return array();
+        return [];
     }
 
     /**

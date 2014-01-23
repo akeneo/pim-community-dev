@@ -27,6 +27,6 @@ class DummyReader extends AbstractConfigurableStepElement implements ItemReaderI
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

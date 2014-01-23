@@ -30,7 +30,7 @@ class MetricType extends AbstractType
             ->add('id', 'hidden')
             ->add('data', 'number')
             ->add('unit', 'choice', $unitOptions)
-            ->add('family', 'hidden', array('data' => $options['family']));
+            ->add('family', 'hidden', ['data' => $options['family']]);
     }
 
     /**
@@ -39,12 +39,12 @@ class MetricType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class'   => 'Pim\Bundle\FlexibleEntityBundle\Entity\Metric',
-                'units'        => array(),
+                'units'        => [],
                 'default_unit' => null,
                 'family'       => null
-            )
+            ]
         );
     }
 

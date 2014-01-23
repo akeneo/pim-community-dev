@@ -79,11 +79,11 @@ class AssociationController
 
         return $this->templating->renderResponse(
             'PimCatalogBundle:Association:_associations.html.twig',
-            array(
+            [
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
                 'dataLocale'       => $this->localeManager->getDataLocale(),
-            )
+            ]
         );
     }
 

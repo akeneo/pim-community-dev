@@ -46,9 +46,9 @@ class InjectProductReferenceSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'postLoad'
-        );
+        ];
     }
 
     /**
@@ -64,10 +64,10 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         if ($entity instanceof Group) {
             $this->setProductPersistentCollection(
                 $entity,
-                array(
+                [
                     'mappedBy' => 'groups',
                     'fetch'    => ClassMetadata::FETCH_LAZY
-                ),
+                ],
                 $entityManager
             );
         }
@@ -75,10 +75,10 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         if ($entity instanceof CategoryInterface) {
             $this->setProductPersistentCollection(
                 $entity,
-                array(
+                [
                     'mappedBy' => 'categories',
                     'fetch'    => ClassMetadata::FETCH_EXTRA_LAZY
-                ),
+                ],
                 $entityManager
             );
         }

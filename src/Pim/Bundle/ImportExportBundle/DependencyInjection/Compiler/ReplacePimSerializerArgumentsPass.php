@@ -34,8 +34,8 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
             return;
         }
 
-        $normalizerRefs = array();
-        $encoderRefs    = array();
+        $normalizerRefs = [];
+        $encoderRefs    = [];
 
         foreach ($container->findTaggedServiceIds('pim_serializer.normalizer') as $id => $attributes) {
             $normalizerRefs[] = $this->factory->createReference($id);
@@ -46,6 +46,6 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
         }
 
         $serializerDef = $container->getDefinition('pim_serializer');
-        $serializerDef->setArguments(array($normalizerRefs, $encoderRefs));
+        $serializerDef->setArguments([$normalizerRefs, $encoderRefs]);
     }
 }

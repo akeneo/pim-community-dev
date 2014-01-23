@@ -28,14 +28,14 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', false),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', false),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', true),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', false],
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', false],
+            ['Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', true],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -43,16 +43,16 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'           => 'my_import',
                     'type'           => 'IMPORT',
                     'label'          => 'My import',
                     'connector'      => 'Akeneo',
                     'configuration'  => '[]'
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

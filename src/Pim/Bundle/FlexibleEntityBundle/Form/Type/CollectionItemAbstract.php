@@ -28,10 +28,10 @@ abstract class CollectionItemAbstract extends AbstractType
     {
         $resolver
             ->setDefaults(
-                array(
+                [
                     'data_class'    => 'Pim\Bundle\FlexibleEntityBundle\Entity\Collection',
                     'required'      => false
-                )
+                ]
             );
     }
 }

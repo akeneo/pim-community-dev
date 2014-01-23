@@ -16,9 +16,9 @@ class FilterAttributesExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             'getAttributes' => new \Twig_Filter_Method($this, 'getAttributes')
-        );
+        ];
     }
 
     /**
@@ -35,10 +35,10 @@ class FilterAttributesExtension extends \Twig_Extension
      *
      * @return ArrayCollection
      */
-    public function getAttributes(AbstractEntityFlexible $entity, $attributes = array(), $skip = false)
+    public function getAttributes(AbstractEntityFlexible $entity, $attributes = [], $skip = false)
     {
         if (!empty($attributes) && !is_array($attributes)) {
-            $attributes = array($attributes);
+            $attributes = [$attributes];
         }
 
         /** @var ArrayCollection $values */

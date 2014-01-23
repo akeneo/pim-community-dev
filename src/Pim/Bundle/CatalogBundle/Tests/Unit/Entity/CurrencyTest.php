@@ -107,8 +107,8 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $langEn = $this->createLocale('en_EN', 'en_EN');
 
         // Set locales and assert
-        $newLocales = array($langFr, $langUs, $langEn);
-        $this->assertEntity($this->currency->setLocales(array($langFr, $langUs, $langEn)));
+        $newLocales = [$langFr, $langUs, $langEn];
+        $this->assertEntity($this->currency->setLocales([$langFr, $langUs, $langEn]));
         $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->currency->getLocales());
         $this->assertCount(3, $this->currency->getLocales());
         foreach ($this->currency->getLocales() as $locale) {

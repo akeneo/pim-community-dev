@@ -22,7 +22,7 @@ class PriceType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('currency', 'hidden');
-        $builder->add('data', 'number', array('precision' => 2));
+        $builder->add('data', 'number', ['precision' => 2]);
     }
 
     /**
@@ -31,9 +31,9 @@ class PriceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice'
-            )
+            ]
         );
     }
 

@@ -31,8 +31,8 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $encoders    = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
+        $encoders    = [new CsvEncoder()];
+        $normalizers = [new GetSetMethodNormalizer()];
         $serializer  = new Serializer($normalizers, $encoders);
         $versionBuilder = new VersionBuilder($serializer);
         $auditBuilder   = new AuditBuilder();
@@ -44,7 +44,7 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $this->assertEquals(AddUserListener::getSubscribedEvents(), array(KernelEvents::REQUEST => 'onKernelRequest'));
+        $this->assertEquals(AddUserListener::getSubscribedEvents(), [KernelEvents::REQUEST => 'onKernelRequest']);
     }
 
     /**

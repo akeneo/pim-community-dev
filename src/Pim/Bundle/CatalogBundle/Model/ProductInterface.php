@@ -168,7 +168,7 @@ interface ProductInterface
      *
      * @return Product
      */
-    public function setAssociations(array $associations = array());
+    public function setAssociations(array $associations = []);
 
     /**
      * {@inheritdoc}

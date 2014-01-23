@@ -68,7 +68,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
     public function testGetAllowedOperators()
     {
         $operators = $this->queryBuilder->getAllowedOperators(AbstractAttributeType::BACKEND_TYPE_INTEGER);
-        $this->assertEquals($operators, array('=', '<', '<=', '>', '>='));
+        $this->assertEquals($operators, ['=', '<', '<=', '>', '>=']);
     }
 
     /**
@@ -124,19 +124,19 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
      */
     public static function criteriaProvider()
     {
-        return array(
-            array('code', '=', 'value', "code = 'value'"),
-            array('code', '<', 'value', "code < 'value'"),
-            array('code', '<=', 'value', "code <= 'value'"),
-            array('code', '>', 'value', "code > 'value'"),
-            array('code', '>=', 'value', "code >= 'value'"),
-            array('code', 'LIKE', 'value', "code LIKE 'value'"),
-            array('code', 'NOT LIKE', 'value', "code NOT LIKE 'value'"),
-            array('code', 'NULL', null, "code IS NULL"),
-            array('code', 'NOT NULL', null, "code IS NOT NULL"),
-            array('code', 'IN', array('a', 'b'), "code IN('a', 'b')"),
-            array('code', 'NOT IN', array('a', 'b'), "code NOT IN('a', 'b')")
-        );
+        return [
+            ['code', '=', 'value', "code = 'value'"],
+            ['code', '<', 'value', "code < 'value'"],
+            ['code', '<=', 'value', "code <= 'value'"],
+            ['code', '>', 'value', "code > 'value'"],
+            ['code', '>=', 'value', "code >= 'value'"],
+            ['code', 'LIKE', 'value', "code LIKE 'value'"],
+            ['code', 'NOT LIKE', 'value', "code NOT LIKE 'value'"],
+            ['code', 'NULL', null, "code IS NULL"],
+            ['code', 'NOT NULL', null, "code IS NOT NULL"],
+            ['code', 'IN', ['a', 'b'], "code IN('a', 'b')"],
+            ['code', 'NOT IN', ['a', 'b'], "code NOT IN('a', 'b')"]
+        ];
     }
 
     /**

@@ -42,8 +42,8 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMock(
             'Symfony\Component\Validator\ExecutionContext',
-            array(),
-            array(),
+            [],
+            [],
             '',
             false
         );

@@ -26,10 +26,10 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
     {
         $factory = $this->getFormFactoryMock();
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => 'bar',
                 'backendType' => 'foo',
-            )
+            ]
         );
 
         $factory->expects($this->once())
@@ -40,14 +40,14 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
                 'bar',
                 array_merge(
                     $this->defaultCreateNamedOptions,
-                    array(
+                    [
                         'empty_value' => false,
                         'class'       => 'PimFlexibleEntityBundle:AttributeOption',
                         'expanded'    => true,
                         'multiple'    => false,
                         'query_builder' => function () {
                         },
-                    )
+                    ]
                 )
             );
 
@@ -67,7 +67,7 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
     public function testBuildAttributeFormTypes()
     {
         $this->assertEquals(
-            array(),
+            [],
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)

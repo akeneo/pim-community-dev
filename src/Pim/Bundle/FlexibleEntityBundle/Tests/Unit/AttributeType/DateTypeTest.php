@@ -26,10 +26,10 @@ class DateTypeTest extends AttributeTypeTest
     {
         $factory = $this->getFormFactoryMock();
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => 'bar',
                 'backendType' => 'foo',
-            )
+            ]
         );
 
         $factory->expects($this->once())
@@ -40,10 +40,10 @@ class DateTypeTest extends AttributeTypeTest
                 'bar',
                 array_merge(
                     $this->defaultCreateNamedOptions,
-                    array(
+                    [
                         'widget' => 'single_text',
                         'input'  => 'datetime',
-                    )
+                    ]
                 )
             );
 
@@ -63,7 +63,7 @@ class DateTypeTest extends AttributeTypeTest
     public function testBuildAttributeFormTypes()
     {
         $this->assertEquals(
-            array(),
+            [],
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)

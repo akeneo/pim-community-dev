@@ -27,7 +27,7 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('find', 'method', 'createQueryBuilder'))
+            ->setMethods(['find', 'method', 'createQueryBuilder'])
             ->getMock();
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
             ->method('setValue');
         $object = $this->manager->create(
             'stdClass',
-            array('key1' => 'val1', 'key2' => 'val2')
+            ['key1' => 'val1', 'key2' => 'val2']
         );
         $this->assertInstanceOf('stdClass', $object);
     }
@@ -84,17 +84,17 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function getCreateQueryBuilderData()
     {
-        return array(
-            'no_option'     => array(array(), 'createQueryBuilder', 't'),
-            'with_options'  => array(
-                array(
+        return [
+            'no_option'     => [[], 'createQueryBuilder', 't'],
+            'with_options'  => [
+                [
                     'query_builder_method'  => 'method',
                     'query_builder_alias'   => 'alias'
-                ),
+                ],
                 'method',
                 'alias'
-            ),
-        );
+            ],
+        ];
     }
 
     /**

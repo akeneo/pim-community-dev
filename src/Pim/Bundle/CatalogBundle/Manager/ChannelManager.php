@@ -42,7 +42,7 @@ class ChannelManager
      *
      * @return array
      */
-    public function getChannels($criterias = array())
+    public function getChannels($criterias = [])
     {
         return $this
             ->objectManager
@@ -80,7 +80,7 @@ class ChannelManager
         return $this
             ->objectManager
             ->getRepository('PimCatalogBundle:Channel')
-            ->findOneBy(array('code' => $code));
+            ->findOneBy(['code' => $code]);
     }
 
     /**
@@ -93,7 +93,7 @@ class ChannelManager
     {
         $channels = $this->getChannels();
 
-        $choices = array();
+        $choices = [];
         foreach ($channels as $channel) {
             $choices[$channel->getCode()] = $channel->getLabel();
         }
@@ -117,7 +117,7 @@ class ChannelManager
         }
 
         $userChannelValue = $channelChoices[$userChannelCode];
-        $newChannelChoices = array($userChannelCode => $userChannelValue);
+        $newChannelChoices = [$userChannelCode => $userChannelValue];
         unset($channelChoices[$userChannelCode]);
 
         return array_merge($newChannelChoices, $channelChoices);

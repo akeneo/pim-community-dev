@@ -75,13 +75,13 @@ class FlexibleType extends AbstractType
         $builder->add(
             'values',
             'collection',
-            array(
+            [
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,
                 'allow_delete'       => true,
                 'by_reference'       => false,
                 'cascade_validation' => true,
-            )
+            ]
         );
     }
 
@@ -91,10 +91,10 @@ class FlexibleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => $this->flexibleClass,
                 'cascade_validation' => true
-            )
+            ]
         );
     }
 

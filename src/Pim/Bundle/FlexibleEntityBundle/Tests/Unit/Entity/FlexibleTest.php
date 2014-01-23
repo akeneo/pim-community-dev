@@ -59,9 +59,9 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
 
         $this->flexible = new Flexible();
         $this->flexible->setValueClass('Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue');
-        $attributes = array(
+        $attributes = [
             $this->attributeCodeText => $this->attributeText, $this->attributeCodeSelect => $this->attributeSelect
-        );
+        ];
         $this->flexible->setAllAttributes($attributes);
     }
 

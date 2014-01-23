@@ -29,17 +29,17 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', false),
-            array('stdClass', 'csv', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'json', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', true],
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'csv', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'json', false],
+            ['stdClass', 'csv', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'json', false],
+        ];
     }
 
     /**
@@ -47,24 +47,24 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'        => 'root_category',
                     'label-en_US' => 'Root category',
                     'label-fr_FR' => 'Categorie racine',
                     'parent'      => ''
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'code'        => 'child_category',
                     'label-en_US' => 'Root category',
                     'label-fr_FR' => 'Categorie racine',
                     'parent'      => '1'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -72,9 +72,9 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      */
     protected function getLabels($data)
     {
-        return array(
+        return [
             'en_US' => $data['label-en_US'],
             'fr_FR' => $data['label-fr_FR']
-        );
+        ];
     }
 }

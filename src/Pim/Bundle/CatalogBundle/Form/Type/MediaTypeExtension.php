@@ -21,9 +21,9 @@ class MediaTypeExtension extends AbstractTypeExtension
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\Media'
-            )
+            ]
         );
     }
 

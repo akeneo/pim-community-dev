@@ -111,10 +111,10 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(false)),
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -138,16 +138,16 @@ class GroupController extends AbstractController
 
             $url = $this->generateUrl(
                 'pim_catalog_group_edit',
-                array('id' => $group->getId())
+                ['id' => $group->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupForm->createView()
-        );
+        ];
     }
 
     /**
@@ -165,11 +165,11 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        return array(
+        return [
             'form'         => $this->groupForm->createView(),
             'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
             'currentGroup' => $group->getId()
-        );
+        ];
     }
 
     /**
@@ -216,9 +216,9 @@ class GroupController extends AbstractController
     {
         return $this->render(
             'PimCatalogBundle:Group:_history.html.twig',
-            array(
+            [
                 'group' => $group
-            )
+            ]
         );
     }
 }

@@ -16,7 +16,7 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

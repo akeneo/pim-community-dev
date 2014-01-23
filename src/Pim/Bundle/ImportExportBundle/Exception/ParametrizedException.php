@@ -31,7 +31,7 @@ class ParametrizedException extends \Exception implements ParametrizedExceptionI
      */
     public function __construct(
         $messageTemplate,
-        array $messageParameters = array(),
+        array $messageParameters = [],
         $code = null,
         \Exception $previous = null
     ) {

@@ -33,8 +33,8 @@ class AttributeTypeTest extends AbstractFormTypeTest
         // Create a mock for the form and exclude the availableLocales and getAttributeTypeChoices methods
         $this->type = $this->getMock(
             'Pim\Bundle\CatalogBundle\Form\Type\AttributeType',
-            array('addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber'),
-            array('Pim\Bundle\CatalogBundle\Entity\Attribute')
+            ['addFieldAvailableLocales', 'getAttributeTypeChoices', 'addSubscriber'],
+            ['Pim\Bundle\CatalogBundle\Entity\Attribute']
         );
         $this->form = $this->factory->create($this->type);
     }

@@ -94,11 +94,11 @@ class CategoryTreeController extends AbstractDoctrineController
             $selectNode = $this->getDefaultTree();
         }
 
-        return array(
+        return [
             'trees'          => $this->categoryManager->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
-        );
+        ];
     }
 
     /**
@@ -121,7 +121,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
         $this->categoryManager->getObjectManager()->flush();
 
-        return new JsonResponse(array('status' => 1));
+        return new JsonResponse(['status' => 1]);
     }
 
     /**
@@ -142,7 +142,7 @@ class CategoryTreeController extends AbstractDoctrineController
         try {
             $parent = $this->findCategory($request->get('id'));
         } catch (NotFoundHttpException $e) {
-            return array('categories' => array());
+            return ['categories' => []];
         }
 
         $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
@@ -170,13 +170,13 @@ class CategoryTreeController extends AbstractDoctrineController
 
         return $this->render(
             $view,
-            array(
+            [
                 'categories'    => $categories,
                 'parent'        => ($includeParent) ? $parent : null,
                 'include_sub'   => $includeSub,
                 'product_count' => $withProductsCount,
                 'select_node'   => $selectNode
-            ),
+            ],
             new JsonResponse()
         );
     }
@@ -214,15 +214,15 @@ class CategoryTreeController extends AbstractDoctrineController
 
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
 
-                return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
+                return $this->redirectToRoute('pim_catalog_categorytree_edit', ['id' => $category->getId()]);
             }
         }
 
         return $this->render(
             sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            array(
+            [
                 'form' => $form->createView(),
-            )
+            ]
         );
     }
 
@@ -253,9 +253,9 @@ class CategoryTreeController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            array(
+            [
                 'form' => $form->createView(),
-            )
+            ]
         );
     }
 
@@ -270,7 +270,7 @@ class CategoryTreeController extends AbstractDoctrineController
     public function removeAction(Category $category)
     {
         $parent = $category->getParent();
-        $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
+        $params = ($parent !== null) ? ['node' => $parent->getId()] : [];
 
         if (count($category->getChannels())) {
             throw new DeleteException($this->getTranslator()->trans('flash.tree.not removable'));
@@ -330,6 +330,6 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function getFormOptions(Category $category)
     {
-        return array();
+        return [];
     }
 }

@@ -21,7 +21,7 @@ class JobAliasSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array('form.bind' => 'submit'),
+            ['form.bind' => 'submit'],
             JobAliasSubscriber::getSubscribedEvents()
         );
     }
@@ -38,10 +38,10 @@ class JobAliasSubscriberTest extends \PHPUnit_Framework_TestCase
         // Form mock
         $formConnector = $this->getFormMock();
         $formAlias = $this->getFormMock();
-        $formMap = array(
-            array('connector', $formConnector),
-            array('alias', $formAlias)
-        );
+        $formMap = [
+            ['connector', $formConnector],
+            ['alias', $formAlias]
+        ];
         $form
             ->expects($this->any())
             ->method('get')

@@ -22,9 +22,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
@@ -64,14 +64,14 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             $subForm->add(
                 'catalogLocale',
                 'entity',
-                array(
+                [
                     'class'         => 'PimCatalogBundle:Locale',
                     'property'      => 'code',
                     'select2'       => true,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getActivatedLocalesQB();
                     }
-                )
+                ]
             );
         };
     }
@@ -87,11 +87,11 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             $subForm->add(
                 'catalogScope',
                 'entity',
-                array(
+                [
                     'class'    => 'PimCatalogBundle:Channel',
                     'property' => 'label',
                     'select2'  => true
-                )
+                ]
             );
         };
     }
@@ -107,14 +107,14 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             $subForm->add(
                 'defaultTree',
                 'entity',
-                array(
+                [
                     'class'         => 'PimCatalogBundle:Category',
                     'property'      => 'label',
                     'select2'       => true,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getTreesQB();
                     }
-                )
+                ]
             );
         };
     }

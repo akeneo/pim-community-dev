@@ -76,9 +76,9 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->flexibleValueClassName        = 'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue';
         $this->defaultLocale                 = 'en';
         $this->defaultScope                  = 'mobile';
-        $this->flexibleConfig = array(
-            'entities_config' => array(
-                $this->flexibleClassName => array(
+        $this->flexibleConfig = [
+            'entities_config' => [
+                $this->flexibleClassName => [
                     'flexible_manager'             => 'demo_manager',
                     'flexible_class'               => $this->flexibleClassName,
                     'flexible_value_class'         => $this->flexibleValueClassName,
@@ -87,9 +87,9 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
                     'attribute_option_value_class' => $this->attributeOptionValueClassName,
                     'default_locale'               => $this->defaultLocale,
                     'default_scope'                => $this->defaultScope
-                )
-            )
-        );
+                ]
+            ]
+        ];
         // mock global event dispatcher 'event_dispatcher'
         $dispatcher = new EventDispatcher();
 

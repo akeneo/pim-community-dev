@@ -53,23 +53,23 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
         $this->repository->expects($this->any())
             ->method('getReferenceProperties')
-            ->will($this->returnValue(array('code')));
+            ->will($this->returnValue(['code']));
 
         $this->optionRepository = $this
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
         $this->optionRepository->expects($this->any())
             ->method('getReferenceProperties')
-            ->will($this->returnValue(array('attribute', 'code')));
+            ->will($this->returnValue(['attribute', 'code']));
 
         $this->doctrine
             ->expects($this->any())
             ->method('getRepository')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('Pim\Bundle\CatalogBundle\Entity\Attribute', $this->repository),
-                        array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', $this->optionRepository),
-                    )
+                    [
+                        ['Pim\Bundle\CatalogBundle\Entity\Attribute', $this->repository],
+                        ['Pim\Bundle\CatalogBundle\Entity\AttributeOption', $this->optionRepository],
+                    ]
                 )
             );
     }
@@ -84,23 +84,23 @@ class OrmAttributeTransformerTest extends ORMTransformerTestCase
 
         $object = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            array(
+            [
                 'code' => 'code',
                 'type' => 'type',
                 'col1' => 'val1',
                 'col2' => 'val2',
-                'options' => array(
-                    array(
+                'options' => [
+                    [
                         'code' => 'o1code',
                         'col1' => 'o1val1',
                         'col2' => 'o1val2',
-                    ),
-                    array(
+                    ],
+                    [
                         'col1' => 'o2val1',
                         'col2' => 'o2val2',
-                    ),
-                )
-            )
+                    ],
+                ]
+            ]
         );
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $object);
         $this->assertEmpty($this->transformer->getErrors());

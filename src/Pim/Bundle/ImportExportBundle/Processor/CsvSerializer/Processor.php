@@ -128,27 +128,27 @@ abstract class Processor extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'delimiter' => array(
-                'options' => array(
+        return [
+            'delimiter' => [
+                'options' => [
                     'label' => 'pim_import_export.export.delimiter.label',
                     'help'  => 'pim_import_export.export.delimiter.help'
-                )
-            ),
-            'enclosure' => array(
-                'options' => array(
+                ]
+            ],
+            'enclosure' => [
+                'options' => [
                     'label' => 'pim_import_export.export.enclosure.label',
                     'help'  => 'pim_import_export.export.enclosure.help'
-                )
-            ),
-            'withHeader' => array(
+                ]
+            ],
+            'withHeader' => [
                 'type' => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_import_export.export.withHeader.label',
                     'help'  => 'pim_import_export.export.withHeader.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

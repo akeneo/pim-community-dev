@@ -36,11 +36,11 @@ class ProductProcessorTest extends TransformerProcessorTestCase
         $this->transformer
             ->expects($this->once())
             ->method('getTransformedColumnsInfo')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->transformer
             ->expects($this->once())
             ->method('getErrors')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $stepExecution = $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
@@ -58,13 +58,13 @@ class ProductProcessorTest extends TransformerProcessorTestCase
         $this->processor->setGroupsColumn('grp');
         $this->assertEquals('grp', $this->processor->getGroupsColumn());
 
-        $data = array('key' => 'val1', 'fml' => 'val2', 'ctg' => 'val3', 'grp' => 'val4');
-        $mappedData = array(
+        $data = ['key' => 'val1', 'fml' => 'val2', 'ctg' => 'val3', 'grp' => 'val4'];
+        $mappedData = [
             'key'           => 'val1',
             'family'        => 'val2',
             'categories'    => 'val3',
             'groups'        => 'val4'
-        );
+        ];
         $entity = new \stdClass();
         $this->transformer->expects($this->once())
             ->method('transform')
@@ -72,9 +72,9 @@ class ProductProcessorTest extends TransformerProcessorTestCase
                 $this->equalTo('product_class'),
                 $this->equalTo($mappedData),
                 $this->equalTo(
-                    array(
+                    [
                         'enabled' => 'enabled'
-                    )
+                    ]
                 )
             )
             ->will($this->returnValue($entity));

@@ -47,10 +47,10 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannels(['code' => 'foobar'])->willReturn([$channel]);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $query->execute()->willReturn([$sku1, $sku2]);
 
         $this->setChannel('foobar');
         $this->read()->shouldReturn($sku1);
@@ -68,10 +68,10 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannels(['code' => 'foobar'])->willReturn([$channel]);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $query->execute()->willReturn([$sku1, $sku2]);
 
         $completenessManager->generateChannelCompletenesses($channel)->shouldBeCalledTimes(1);
 
@@ -91,10 +91,10 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannels(['code' => 'foobar'])->willReturn([$channel]);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $query->execute()->willReturn([$sku1, $sku2]);
 
         $metricConverter->convert($sku1, $channel)->shouldBeCalled();
         $metricConverter->convert($sku2, $channel)->shouldBeCalled();
@@ -115,10 +115,10 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannels(['code' => 'foobar'])->willReturn([$channel]);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $query->execute()->willReturn([$sku1, $sku2]);
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 
@@ -130,7 +130,7 @@ class ProductReaderSpec extends ObjectBehavior
 
     function its_read_method_throws_exception_if_channel_cannot_be_found($channelManager)
     {
-        $channelManager->getChannels(array('code' => 'mobile'))->willReturn(array());
+        $channelManager->getChannels(['code' => 'mobile'])->willReturn([]);
 
         $this->setChannel('mobile');
         $this->shouldThrow(new \InvalidArgumentException('Could not find the channel "mobile"'))->duringRead();
@@ -139,28 +139,28 @@ class ProductReaderSpec extends ObjectBehavior
     function it_exposes_the_channel_field($channelManager)
     {
         $channelManager->getChannelChoices()->willReturn(
-            array(
+            [
                 'foo' => 'Foo',
                 'bar' => 'Bar',
-            )
+            ]
         );
 
         $this->getConfigurationFields()->shouldReturn(
-            array(
-                'channel' => array(
+            [
+                'channel' => [
                     'type'    => 'choice',
-                    'options' => array(
-                        'choices'  => array(
+                    'options' => [
+                        'choices'  => [
                             'foo' => 'Foo',
                             'bar' => 'Bar',
-                        ),
+                        ],
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_import_export.export.channel.label',
                         'help'     => 'pim_import_export.export.channel.help'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
     }
 }

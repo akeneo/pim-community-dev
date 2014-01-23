@@ -15,7 +15,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
     {
-        $attributes = array('sku' => $sku, 'name' => $name);
+        $attributes = ['sku' => $sku, 'name' => $name];
         $callback = function () {};
         $this->beConstructedWith($configuration, $registry, $attributes, $callback);
     }
@@ -30,11 +30,11 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $name->getAttributeType()->willReturn('pim_catalog_text');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => array()));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => array()));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['column' => ['identifier_config'], 'sorter' => []]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn(['column' => ['text_config'], 'sorter' => []]);
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config'), 'sku' => array(), 'name' => array()));
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(['family' => ['family_config'], 'sku' => [], 'name' => []]);
 
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
@@ -50,8 +50,8 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $name->getAttributeType()->willReturn('pim_catalog_text');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['column' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

@@ -38,16 +38,16 @@ class LengthGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_text')))
+            $this->target->supportAttribute($this->getAttributeMock(['attributeType' => 'pim_catalog_text']))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_textarea')))
+            $this->target->supportAttribute($this->getAttributeMock(['attributeType' => 'pim_catalog_textarea']))
         );
 
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_identifier'))
+                $this->getAttributeMock(['attributeType' => 'pim_catalog_identifier'])
             )
         );
     }
@@ -58,14 +58,14 @@ class LengthGuesserTest extends ConstraintGuesserTest
     public function testGuessLengthConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text', 'maxCharacters' => 128))
+            $this->getAttributeMock(['attributeType' => 'pim_catalog_text', 'maxCharacters' => 128])
         );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Length', $constraints);
         $this->assertConstraintsConfiguration(
             'Symfony\Component\Validator\Constraints\Length',
             $constraints,
-            array('max' => 128)
+            ['max' => 128]
         );
     }
 
@@ -75,7 +75,7 @@ class LengthGuesserTest extends ConstraintGuesserTest
     public function testDoNotGuessLengthConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
+            $this->getAttributeMock(['attributeType' => 'pim_catalog_text'])
         );
 
         $this->assertEquals(0, count($constraints));

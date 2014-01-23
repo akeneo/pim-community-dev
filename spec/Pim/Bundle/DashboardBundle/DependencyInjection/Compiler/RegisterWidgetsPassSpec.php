@@ -31,17 +31,17 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
         $container->hasDefinition('pim_dashboard.widget.registry')->willReturn(true);
         $container->getDefinition('pim_dashboard.widget.registry')->willReturn($definition);
         $container->findTaggedServiceIds('pim_dashboard.widget')->willReturn(
-            array(
-                'pim_dashboard.widget.foo' => array(0 => array('alias' => 'foo')),
-                'pim_dashboard.widget.bar' => array(),
-            )
+            [
+                'pim_dashboard.widget.foo' => [0 => ['alias' => 'foo']],
+                'pim_dashboard.widget.bar' => [],
+            ]
         );
 
         $factory->createReference('pim_dashboard.widget.foo')->willReturn($fooReference);
         $factory->createReference('pim_dashboard.widget.bar')->willReturn($barReference);
 
-        $definition->addMethodCall('add', array('foo', $fooReference))->shouldBeCalled();
-        $definition->addMethodCall('add', array('pim_dashboard.widget.bar', $barReference))->shouldBeCalled();
+        $definition->addMethodCall('add', ['foo', $fooReference])->shouldBeCalled();
+        $definition->addMethodCall('add', ['pim_dashboard.widget.bar', $barReference])->shouldBeCalled();
 
         $this->process($container);
     }

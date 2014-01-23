@@ -64,7 +64,7 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $this->assertEquals(array(FormEvents::PRE_SET_DATA => 'preSetData'), $this->subscriber->getSubscribedEvents());
+        $this->assertEquals([FormEvents::PRE_SET_DATA => 'preSetData'], $this->subscriber->getSubscribedEvents());
     }
 
     /**

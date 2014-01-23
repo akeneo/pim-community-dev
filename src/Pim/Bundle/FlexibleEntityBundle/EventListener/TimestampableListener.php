@@ -24,10 +24,10 @@ class TimestampableListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'prePersist',
             'preUpdate'
-        );
+        ];
     }
 
     /**
@@ -54,7 +54,7 @@ class TimestampableListener implements EventSubscriber
         if ($entity instanceof \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
             $flexible = $entity->getEntity();
             if ($flexible !== null) {
-                $this->updateFlexibleFields($args->getEntityManager(), $flexible, array('updated'));
+                $this->updateFlexibleFields($args->getEntityManager(), $flexible, ['updated']);
             }
         }
 
@@ -74,9 +74,9 @@ class TimestampableListener implements EventSubscriber
     {
         $uow     = $manager->getUnitOfWork();
         $now     = new \DateTime('now', new \DateTimeZone('UTC'));
-        $changes = array();
+        $changes = [];
         foreach ($fields as $field) {
-            $changes[$field] = array(null, $now);
+            $changes[$field] = [null, $now];
         }
         $uow->scheduleExtraUpdate($flexible, $changes);
     }

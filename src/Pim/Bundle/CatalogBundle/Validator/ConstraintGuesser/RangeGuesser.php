@@ -22,11 +22,11 @@ class RangeGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_metric',
                 'pim_catalog_number',
                 'pim_catalog_date',
-            )
+            ]
         );
     }
 
@@ -35,7 +35,7 @@ class RangeGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ('pim_catalog_date' === $attribute->getAttributeType()) {
             $min = $attribute->getDateMin();
@@ -49,7 +49,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         }
 
         if (null !== $min || null !== $max) {
-            $constraints[] = new Range(array('min' => $min, 'max' => $max));
+            $constraints[] = new Range(['min' => $min, 'max' => $max]);
         }
 
         return $constraints;

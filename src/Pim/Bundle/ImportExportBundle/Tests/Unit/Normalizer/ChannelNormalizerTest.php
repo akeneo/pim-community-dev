@@ -31,14 +31,14 @@ class ChannelNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false)
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false]
+        ];
     }
 
     /**
@@ -46,18 +46,18 @@ class ChannelNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'             => 'channel_code',
                     'label'            => 'channel_label',
-                    'currencies'       => array('EUR', 'USD'),
-                    'locales'          => array('fr_FR', 'en_US'),
+                    'currencies'       => ['EUR', 'USD'],
+                    'locales'          => ['fr_FR', 'en_US'],
                     'category'         => 'My_Tree',
                     'conversion_units' => 'weight: KILOGRAM, washing_temperature: ',
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -84,10 +84,10 @@ class ChannelNormalizerTest extends NormalizerTestCase
         $category = $this->createCategory($data['category']);
         $channel->setCategory($category);
         $channel->setConversionUnits(
-            array(
+            [
                 'weight'              => 'KILOGRAM',
                 'washing_temperature' => null,
-            )
+            ]
         );
 
         return $channel;

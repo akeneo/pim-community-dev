@@ -19,5 +19,5 @@ interface OrmManagerInterface extends ManagerInterface
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createQueryBuilder($entityClass, array $options = array());
+    public function createQueryBuilder($entityClass, array $options = []);
 }

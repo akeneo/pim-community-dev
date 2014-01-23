@@ -19,45 +19,45 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
      */
     protected $configurationRegistry;
 
-    protected $configuration = array(
-        'default' => array(
+    protected $configuration = [
+        'default' => [
             'order' => 100,
             'class' => 'default_class',
-            'format1' => array(
+            'format1' => [
                 'reader'            => 'default_format1_reader',
-                'reader_options'    => array('key' => 'default_format1_reader_option'),
+                'reader_options'    => ['key' => 'default_format1_reader_option'],
                 'processor'         => 'default_format1_processor',
-                'processor_options' => array('key' => 'default_format1_processor_option'),
-            ),
-            'format2' => array(
+                'processor_options' => ['key' => 'default_format1_processor_option'],
+            ],
+            'format2' => [
                 'reader'            => 'default_format2_reader',
-                'reader_options'    => array('key' => 'default_format2_reader_option'),
+                'reader_options'    => ['key' => 'default_format2_reader_option'],
                 'processor'         => 'default_format2_processor',
-                'processor_options' => array('key' => 'default_format2_processor_option'),
-            ),
-        ),
-        'entity1' => array(
+                'processor_options' => ['key' => 'default_format2_processor_option'],
+            ],
+        ],
+        'entity1' => [
             'order' => 150,
             'class' => 'entity1_class',
-            'format1' => array(
+            'format1' => [
                 'reader'            => 'entity1_format1_reader',
-                'reader_options'    => array('key' => 'entity1_format1_reader_option'),
+                'reader_options'    => ['key' => 'entity1_format1_reader_option'],
                 'processor'         => 'entity1_format1_processor',
-                'processor_options' => array('key' => 'entity1_format1_processor_option'),
-            ),
-            'format2' => array(
+                'processor_options' => ['key' => 'entity1_format1_processor_option'],
+            ],
+            'format2' => [
                 'reader'            => 'entity1_format2_reader',
-                'reader_options'    => array('key' => 'entity1_format2_reader_option'),
+                'reader_options'    => ['key' => 'entity1_format2_reader_option'],
                 'processor'         => 'entity1_format2_processor',
-                'processor_options' => array('key' => 'entity1_format2_processor_option'),
-            ),
-        ),
-        'entity2' => array(
-            'format2' => array(
-                'processor_options' => array('key' => 'entity2_format2_processor_option')
-            )
-        )
-    );
+                'processor_options' => ['key' => 'entity1_format2_processor_option'],
+            ],
+        ],
+        'entity2' => [
+            'format2' => [
+                'processor_options' => ['key' => 'entity2_format2_processor_option']
+            ]
+        ]
+    ];
 
     protected function setUp()
     {
@@ -88,8 +88,8 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
 
             $this->configurationRegistry = $this
                 ->getMockBuilder('Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry')
-                ->setMethods(array('getConfiguration'))
-                ->setConstructorArgs(array($this->container, $this->propertyAccessor, array(), '', false))
+                ->setMethods(['getConfiguration'])
+                ->setConstructorArgs([$this->container, $this->propertyAccessor, [], '', false])
                 ->getMock();
 
             $this->configurationRegistry->expects($this->any())

@@ -27,12 +27,12 @@ class MultipleLoaderTest extends \PHPUnit_Framework_TestCase
             ->method('contains')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('entity1', true),
-                        array('entity2', true),
-                        array('entity3', true),
-                        array('entity4', false)
-                    )
+                    [
+                        ['entity1', true],
+                        ['entity2', true],
+                        ['entity3', true],
+                        ['entity4', false]
+                    ]
                 )
             );
         $configurationRegistry
@@ -40,11 +40,11 @@ class MultipleLoaderTest extends \PHPUnit_Framework_TestCase
             ->method('getOrder')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('entity1', 150),
-                        array('entity2', 100),
-                        array('entity3', 100)
-                    )
+                    [
+                        ['entity1', 150],
+                        ['entity2', 100],
+                        ['entity3', 100]
+                    ]
                 )
             );
 
@@ -79,12 +79,12 @@ class MultipleLoaderTest extends \PHPUnit_Framework_TestCase
         $multipleLoader->load(
             $objectManager,
             $referenceRepository,
-            array(
+            [
                 '/dir1/entity1.yml',
                 '/dir1/entity2.csv',
                 '/dir2/entity3.yml',
                 '/dir4/entity4.csv'
-            )
+            ]
         );
     }
 }

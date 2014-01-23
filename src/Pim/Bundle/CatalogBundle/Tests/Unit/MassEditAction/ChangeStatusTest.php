@@ -49,7 +49,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
 
         $this->action->setToEnable(false);
 
-        $this->action->perform(array($foo, $bar));
+        $this->action->perform([$foo, $bar]);
     }
 
     /**
@@ -69,7 +69,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
 
         $this->action->setToEnable(true);
 
-        $this->action->perform(array($foo, $bar));
+        $this->action->perform([$foo, $bar]);
     }
 
     /**

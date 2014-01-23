@@ -50,14 +50,14 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->guesser = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface');
         $this->guesser->expects($this->any())
             ->method('getTransformerInfo')
-            ->will($this->returnCallback(array($this, 'getTransformer')));
+            ->will($this->returnCallback([$this, 'getTransformer']));
         $this->columnInfoTransformer = $this
             ->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
         $this->columnInfoTransformer->expects($this->any())
             ->method('transform')
-            ->will($this->returnCallback(array($this, 'getColumnInfo')));
-        $this->transformers = array();
-        $this->columnInfos = array();
+            ->will($this->returnCallback([$this, 'getColumnInfo']));
+        $this->transformers = [];
+        $this->columnInfos = [];
         $this->setupRepositories();
     }
 
@@ -67,7 +67,7 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
         $this->repository->expects($this->any())
             ->method('getReferenceProperties')
-            ->will($this->returnValue(array('code')));
+            ->will($this->returnValue(['code']));
 
         $this->doctrine
             ->expects($this->any())
@@ -91,7 +91,7 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
                 ->method('transform')
                 ->will(
                     $this->throwException(
-                        new PropertyTransformerException('error_message', array('error_parameters'))
+                        new PropertyTransformerException('error_message', ['error_parameters'])
                     )
                 );
         } else {
@@ -112,7 +112,7 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
     public function getTransformer($columnInfo)
     {
         return isset($this->transformers[$columnInfo->getPropertyPath()])
-            ? array($this->transformers[$columnInfo->getPropertyPath()], array())
+            ? [$this->transformers[$columnInfo->getPropertyPath()], []]
             : null;
     }
 
@@ -131,7 +131,7 @@ abstract class ORMTransformerTestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($label));
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $columnInfo->expects($this->any())
             ->method('getPropertyPath')
             ->will($this->returnValue($label . '_path'));

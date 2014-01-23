@@ -62,9 +62,9 @@ class AddToGroups extends AbstractMassEditAction
             ->getRepository('PimCatalogBundle:Group')
             ->findAll();
 
-        return array(
+        return [
             'groups' => $groups,
-        );
+        ];
     }
 
     /**

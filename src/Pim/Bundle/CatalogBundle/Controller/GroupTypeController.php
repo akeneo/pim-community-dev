@@ -102,9 +102,9 @@ class GroupTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -128,16 +128,16 @@ class GroupTypeController extends AbstractDoctrineController
 
             $url = $this->generateUrl(
                 'pim_catalog_group_type_edit',
-                array('id' => $groupType->getId())
+                ['id' => $groupType->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupTypeForm->createView()
-        );
+        ];
     }
 
     /**
@@ -155,9 +155,9 @@ class GroupTypeController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.group type.updated');
         }
 
-        return array(
+        return [
             'form' => $this->groupTypeForm->createView(),
-        );
+        ];
     }
 
     /**

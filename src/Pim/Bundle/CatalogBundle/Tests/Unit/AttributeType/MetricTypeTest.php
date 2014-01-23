@@ -36,21 +36,21 @@ class MetricTypeTest extends AttributeTypeTestCase
      */
     protected function initializeMetricConfig()
     {
-        return array(
-            'Weight' => array(
+        return [
+            'Weight' => [
                 'standard' => 'KILOGRAM',
-                'units'    => array(
-                    'GRAM'     => array(
-                        'convert' => array(array('mul' => 0.001)),
+                'units'    => [
+                    'GRAM'     => [
+                        'convert' => [['mul' => 0.001]],
                         'symbol'  => 'g'
-                    ),
-                    'KILOGRAM' => array(
-                        'convert' => array(array('mul' => 1)),
+                    ],
+                    'KILOGRAM' => [
+                        'convert' => [['mul' => 1]],
                         'symbol'  => 'kg'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -61,14 +61,14 @@ class MetricTypeTest extends AttributeTypeTestCase
         $factory = $this->getFormFactoryMock();
         $data = true;
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data' => $data,
                 'backendType' => $this->backendType,
-                'attribute_options' => array(
+                'attribute_options' => [
                     'metric_family' => 'Weight',
                     'default_metric_unit' => 'GRAM'
-                )
-            )
+                ]
+            ]
         );
 
         $factory
@@ -78,15 +78,15 @@ class MetricTypeTest extends AttributeTypeTestCase
                 $this->backendType,
                 $this->formType,
                 $data,
-                array(
-                    'constraints' => array('constraints'),
+                [
+                    'constraints' => ['constraints'],
                     'label' => null,
                     'required' => null,
                     'auto_initialize' => false,
-                    'default_unit' => array('GRAM'),
-                    'units' => array('GRAM' => 'g', 'KILOGRAM' => 'kg'),
+                    'default_unit' => ['GRAM'],
+                    'units' => ['GRAM' => 'g', 'KILOGRAM' => 'kg'],
                     'family' => 'Weight'
-                )
+                ]
             );
 
         $this->target->buildValueFormType($factory, $value);
@@ -95,7 +95,7 @@ class MetricTypeTest extends AttributeTypeTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
+    protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = [])
     {
         $attribute = parent::getAttributeMock($backendType, $defaultValue, $attributeOptions);
 

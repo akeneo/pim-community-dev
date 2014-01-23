@@ -102,9 +102,9 @@ class ChannelController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -136,13 +136,13 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_catalog_channel_edit', array('id' => $channel->getId()))
+                $this->generateUrl('pim_catalog_channel_edit', ['id' => $channel->getId()])
             );
         }
 
-        return array(
+        return [
             'form' => $this->channelForm->createView(),
-        );
+        ];
     }
 
     /**

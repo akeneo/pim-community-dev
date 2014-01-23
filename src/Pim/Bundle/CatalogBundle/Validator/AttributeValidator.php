@@ -34,7 +34,7 @@ class AttributeValidator
      */
     public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {
-        $existingValues = array();
+        $existingValues = [];
         foreach ($attribute->getOptions() as $option) {
             if (in_array($option->getCode(), $existingValues)) {
                 $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_CODE);

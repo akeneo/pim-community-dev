@@ -15,22 +15,22 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
 {
     public function getConstructData()
     {
-        return array(
-            'simple'        => array('name', 'name', 'name'),
-            'underscored'   => array('property_name', 'property_name', 'propertyName'),
-            'suffixed'      => array(
+        return [
+            'simple'        => ['name', 'name', 'name'],
+            'underscored'   => ['property_name', 'property_name', 'propertyName'],
+            'suffixed'      => [
                 'property_name-scope-locale',
                 'property_name',
                 'propertyName',
-                array('scope', 'locale')
-            )
-        );
+                ['scope', 'locale']
+            ]
+        ];
     }
 
     /**
      * @dataProvider getConstructData
      */
-    public function testConstruct($label, $expectedName, $expectedPropertyPath, array $expectedSuffixes = array())
+    public function testConstruct($label, $expectedName, $expectedPropertyPath, array $expectedSuffixes = [])
     {
         $info = new ColumnInfo($label);
         $this->assertEquals($label, $info->getLabel());
@@ -41,12 +41,12 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
 
     public function getSetAttributeData()
     {
-        return array(
-            'simple'                => array('label'),
-            'with_locale'           => array('label-locale-scope', 'locale'),
-            'with_scope'            => array('label-scope', null, 'scope'),
-            'with_locale_and_scope' => array('label-locale-scope', 'locale', 'scope')
-        );
+        return [
+            'simple'                => ['label'],
+            'with_locale'           => ['label-locale-scope', 'locale'],
+            'with_scope'            => ['label-scope', null, 'scope'],
+            'with_locale_and_scope' => ['label-locale-scope', 'locale', 'scope']
+        ];
     }
 
     /**
@@ -69,7 +69,7 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(true, true);
         $info->setAttribute($attribute);
         $info->setAttribute(null);
-        $this->assertEquals(array('locale', 'scope'), $info->getSuffixes());
+        $this->assertEquals(['locale', 'scope'], $info->getSuffixes());
         $this->assertNull($info->getAttribute());
         $this->assertNull($info->getLocale());
         $this->assertNull($info->getScope());

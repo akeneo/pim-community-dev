@@ -196,8 +196,8 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function parseConfiguration(ConfigCache $configCache)
     {
-        $config = array();
-        $resources = array();
+        $config = [];
+        $resources = [];
         foreach ($this->bundles as $class) {
             $reflection = new \ReflectionClass($class);
             $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';

@@ -29,7 +29,7 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $config = $this->initializeMeasureConfig();
 
-        $converter = new MeasureConverter(array('measures_config' => $config));
+        $converter = new MeasureConverter(['measures_config' => $config]);
         $manager   = new MeasureManager();
         $manager->setMeasureConfig($config);
 
@@ -43,34 +43,34 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeMeasureConfig()
     {
-        return array(
-            'Length' => array(
+        return [
+            'Length' => [
                 'standard' => 'METER',
-                'units'    => array(
-                    'KILOMETER' => array(
-                        'convert' => array(array('mul' => 1000)),
+                'units'    => [
+                    'KILOMETER' => [
+                        'convert' => [['mul' => 1000]],
                         'symbol'  => 'km'
-                    ),
-                    'METER'     => array(
-                        'convert' => array(array('mul' => 1)),
+                    ],
+                    'METER'     => [
+                        'convert' => [['mul' => 1]],
                         'symbol'  => 'm'
-                    )
-                )
-            ),
-            'Weight' => array(
+                    ]
+                ]
+            ],
+            'Weight' => [
                 'standard' => 'KILOGRAM',
-                'units'    => array(
-                    'GRAM'     => array(
-                        'convert' => array(array('mul' => 0.001)),
+                'units'    => [
+                    'GRAM'     => [
+                        'convert' => [['mul' => 0.001]],
                         'symbol'  => 'g'
-                    ),
-                    'KILOGRAM' => array(
-                        'convert' => array(array('mul' => 1)),
+                    ],
+                    'KILOGRAM' => [
+                        'convert' => [['mul' => 1]],
                         'symbol'  => 'kg'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -79,7 +79,7 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array('prePersist', 'preUpdate'),
+            ['prePersist', 'preUpdate'],
             $this->metricSubscriber->getSubscribedEvents()
         );
     }
@@ -91,26 +91,26 @@ class MetricBaseValuesSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderForMetrics()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'family'    => 'Weight',
                     'data'      => 1500,
                     'unit'      => 'GRAM',
                     'base_data' => 1.5,
                     'base_unit' => 'KILOGRAM'
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'family'    => 'Length',
                     'data'      => 30,
                     'unit'      => 'KILOMETER',
                     'base_data' => 30000,
                     'base_unit' => 'METER'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

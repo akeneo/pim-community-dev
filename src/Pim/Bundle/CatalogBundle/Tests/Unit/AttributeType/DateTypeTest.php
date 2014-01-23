@@ -33,12 +33,12 @@ class DateTypeTest extends AttributeTypeTestCase
      */
     public static function buildValueFormTypeDataProvider()
     {
-        return array(
-            array(
-                array(),
-                array('widget' => 'single_text', 'input' => 'datetime')
-            )
-        );
+        return [
+            [
+                [],
+                ['widget' => 'single_text', 'input' => 'datetime']
+            ]
+        ];
     }
 
     /**
@@ -51,11 +51,11 @@ class DateTypeTest extends AttributeTypeTestCase
         $factory = $this->getFormFactoryMock();
         $data = '12/06/2013';
         $value = $this->getFlexibleValueMock(
-            array(
+            [
                 'data'        => $data,
                 'backendType' => $this->backendType,
                 'attribute_options' => $attributeOptions
-            )
+            ]
         );
 
         $factory
@@ -66,12 +66,12 @@ class DateTypeTest extends AttributeTypeTestCase
                 $this->formType,
                 $data,
                 array_merge(
-                    array(
-                        'constraints'     => array('constraints'),
+                    [
+                        'constraints'     => ['constraints'],
                         'label'           => null,
                         'required'        => null,
                         'auto_initialize' => false
-                    ),
+                    ],
                     $expectedResult
                 )
             );

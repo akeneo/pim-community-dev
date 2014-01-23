@@ -349,7 +349,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      *
      * @return Group
      */
-    public function setAttributes(array $attributes = array())
+    public function setAttributes(array $attributes = [])
     {
         $this->attributes = $attributes;
 
@@ -362,7 +362,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      */
     public function getGroupSequence()
     {
-        return array('Default', strtolower($this->getType()->getCode()));
+        return ['Default', strtolower($this->getType()->getCode())];
     }
 
     /**

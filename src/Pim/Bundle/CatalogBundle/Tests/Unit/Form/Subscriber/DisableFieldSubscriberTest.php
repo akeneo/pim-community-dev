@@ -18,11 +18,11 @@ class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function getTestAddCodeFieldData()
     {
-        return array(
-            array(null),
-            array(false),
-            array(1)
-        );
+        return [
+            [null],
+            [false],
+            [1]
+        ];
     }
 
     /**
@@ -75,7 +75,7 @@ class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->with(
                         $this->equalTo('code'),
                         $this->equalTo(null),
-                        $this->equalTo(array('disabled' => true, 'read_only' => true))
+                        $this->equalTo(['disabled' => true, 'read_only' => true])
                     );
             } else {
                 $form->expects($this->never())

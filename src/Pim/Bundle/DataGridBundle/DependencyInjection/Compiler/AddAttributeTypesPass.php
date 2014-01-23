@@ -39,14 +39,14 @@ class AddAttributeTypesPass implements CompilerPassInterface
                 }
             );
             $parameters     = array_intersect_key($allParameters, array_flip($parameterKeys));
-            $configurations = array();
+            $configurations = [];
             foreach ($parameters as $key => $configuration) {
                 $configurations[str_replace(self::PARAM_PREFIX, '', $key)] = $configuration;
             }
 
             // TODO process configuration to add default values
 
-            $registry->addMethodCall('setConfigurations', array($configurations));
+            $registry->addMethodCall('setConfigurations', [$configurations]);
         }
     }
 }

@@ -42,7 +42,7 @@ class ProductType extends AbstractType
         $builder->add(
             'values',
             'pim_catalog_localized_collection',
-            array(
+            [
                 'type'               => 'pim_product_value',
                 'allow_add'          => true,
                 'allow_delete'       => true,
@@ -50,7 +50,7 @@ class ProductType extends AbstractType
                 'cascade_validation' => true,
                 'currentLocale'      => $options['currentLocale'],
                 'comparisonLocale'   => $options['comparisonLocale'],
-            )
+            ]
         );
     }
 
@@ -60,10 +60,10 @@ class ProductType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'currentLocale'    => null,
                 'comparisonLocale' => null,
-            )
+            ]
         );
     }
 

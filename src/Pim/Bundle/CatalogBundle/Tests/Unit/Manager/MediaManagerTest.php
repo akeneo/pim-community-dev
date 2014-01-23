@@ -179,12 +179,12 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public static function getExportPathData()
     {
-        return array(
-            array('',      '',          'files/sku000/mockFile/phpunit-file.txt'),
-            array('en_US', '',          'files/sku000/mockFile/en_US/phpunit-file.txt'),
-            array('',      'ecommerce', 'files/sku000/mockFile/ecommerce/phpunit-file.txt'),
-            array('en_US', 'ecommerce', 'files/sku000/mockFile/en_US/ecommerce/phpunit-file.txt'),
-        );
+        return [
+            ['',      '',          'files/sku000/mockFile/phpunit-file.txt'],
+            ['en_US', '',          'files/sku000/mockFile/en_US/phpunit-file.txt'],
+            ['',      'ecommerce', 'files/sku000/mockFile/ecommerce/phpunit-file.txt'],
+            ['en_US', 'ecommerce', 'files/sku000/mockFile/en_US/ecommerce/phpunit-file.txt'],
+        ];
     }
 
     /**

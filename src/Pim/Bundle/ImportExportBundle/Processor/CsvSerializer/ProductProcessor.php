@@ -75,29 +75,29 @@ class ProductProcessor extends HeterogeneousProcessor
         $csv =  $this->serializer->serialize(
             $products,
             'csv',
-            array(
+            [
                 'delimiter'     => $this->delimiter,
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => true,
                 'scopeCode'     => $this->channel,
                 'localeCodes'   => $this->getLocaleCodes($this->channel)
-            )
+            ]
         );
 
         if (!is_array($products)) {
-            $products = array($products);
+            $products = [$products];
         }
 
-        $media = array();
+        $media = [];
         foreach ($products as $product) {
             $media = array_merge($product->getMedia(), $media);
         }
 
-        return array(
+        return [
             'entry' => $csv,
             'media' => $media
-        );
+        ];
     }
 
     /**
@@ -107,18 +107,18 @@ class ProductProcessor extends HeterogeneousProcessor
     {
         return array_merge(
             parent::getConfigurationFields(),
-            array(
-                'channel' => array(
+            [
+                'channel' => [
                     'type'    => 'choice',
-                    'options' => array(
+                    'options' => [
                         'choices'  => $this->channelManager->getChannelChoices(),
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_import_export.export.channel.label',
                         'help'     => 'pim_import_export.export.channel.help'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
     }
 

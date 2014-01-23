@@ -62,11 +62,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAttributes()
     {
-        $attributes = array(
+        $attributes = [
             $this->getAttributeMock(),
             $this->getAttributeMock(),
             $this->getAttributeMock(),
-        );
+        ];
 
         foreach ($attributes as $attribute) {
             $this->product->addValue($this->getValueMock($attribute));
@@ -80,12 +80,12 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetGroups()
     {
-        $groups = array(
+        $groups = [
             $otherGroup   = $this->getGroupMock(1, 'Other', -1),
             $generalGroup = $this->getGroupMock(2, 'General', 0),
             $alphaGroup   = $this->getGroupMock(3, 'Alpha', 20),
             $betaGroup    = $this->getGroupMock(4, 'Beta', 10),
-        );
+        ];
 
         foreach ($groups as $group) {
             $this->product->addValue($this->getValueMock($this->getAttributeMock($group)));
@@ -266,7 +266,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            array($view, $manual),
+            [$view, $manual],
             $this->product->getMedia()
         );
     }
@@ -374,7 +374,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     protected function getFamilyMock($attributeAsLabel)
     {
-        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family', array('getAttributeAsLabel'));
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family', ['getAttributeAsLabel']);
 
         $family->expects($this->any())
                ->method('getAttributeAsLabel')

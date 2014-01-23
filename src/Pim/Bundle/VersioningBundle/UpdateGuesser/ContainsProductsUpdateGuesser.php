@@ -22,7 +22,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
     {
         return in_array(
             $action,
-            array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE)
+            [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]
         );
     }
 
@@ -31,7 +31,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(Entitymanager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
 
         if ($entity instanceof Group) {
             $products = $entity->getProducts();

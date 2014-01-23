@@ -110,21 +110,21 @@ class CsvReader extends FileReader implements
      */
     public function getUploadedFileConstraints()
     {
-        return array(
+        return [
             new Assert\NotBlank(),
             new AssertFile(
-                array(
-                    'allowedExtensions' => array('csv', 'zip'),
-                    'mimeTypes'         => array(
+                [
+                    'allowedExtensions' => ['csv', 'zip'],
+                    'mimeTypes'         => [
                         'text/csv',
                         'text/comma-separated-values',
                         'text/plain',
                         'application/csv',
                         'application/zip'
-                    )
-                )
+                    ]
+                ]
             )
-        );
+        ];
     }
 
     /**
@@ -279,7 +279,7 @@ class CsvReader extends FileReader implements
         $data = $this->csv->fgetcsv();
 
         if (false !== $data) {
-            if ($data === array(null) || $data === null) {
+            if ($data === [null] || $data === null) {
                 return null;
             }
             if ($this->stepExecution) {
@@ -290,12 +290,12 @@ class CsvReader extends FileReader implements
                 throw new InvalidItemException(
                     'pim_import_export.steps.csv_reader.invalid_item_columns_count',
                     $data,
-                    array(
+                    [
                         '%totalColumnsCount%' => count($this->fieldNames),
                         '%itemColumnsCount%'  => count($data),
                         '%csvPath%'           => $this->csv->getRealPath(),
                         '%lineno%'            => $this->csv->key()
-                    )
+                    ]
                 );
             }
 
@@ -312,39 +312,39 @@ class CsvReader extends FileReader implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'filePath' => array(
-                'options' => array(
+        return [
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_import_export.import.filePath.label',
                     'help'  => 'pim_import_export.import.filePath.help'
-                )
-            ),
-            'uploadAllowed' => array(
+                ]
+            ],
+            'uploadAllowed' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_import_export.import.uploadAllowed.label',
                     'help'  => 'pim_import_export.import.uploadAllowed.help'
-                )
-            ),
-            'delimiter' => array(
-                'options' => array(
+                ]
+            ],
+            'delimiter' => [
+                'options' => [
                     'label' => 'pim_import_export.import.delimiter.label',
                     'help'  => 'pim_import_export.import.delimiter.help'
-                )
-            ),
-            'enclosure' => array(
-                'options' => array(
+                ]
+            ],
+            'enclosure' => [
+                'options' => [
                     'label' => 'pim_import_export.import.enclosure.label',
                     'help'  => 'pim_import_export.import.enclosure.help'
-                )
-            ),
-            'escape' => array(
-                'options' => array(
+                ]
+            ],
+            'escape' => [
+                'options' => [
                     'label' => 'pim_import_export.import.escape.label',
                     'help'  => 'pim_import_export.import.escape.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

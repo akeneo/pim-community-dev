@@ -32,9 +32,9 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
      */
     public function __construct($identifier, array $item)
     {
-        $this->messageParameters = array(
+        $this->messageParameters = [
             '%identifier%'       => $identifier
-        );
+        ];
         $exception = new ParametrizedException(
             $this->messageTemplate,
             $this->messageParameters

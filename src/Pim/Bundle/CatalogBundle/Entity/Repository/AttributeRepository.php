@@ -102,10 +102,10 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
             ->select('a.code')
             ->andWhere('a.attributeType IN (:file_type, :image_type)')
             ->setParameters(
-                array(
+                [
                     ':file_type'  => 'pim_catalog_file',
                     ':image_type' => 'pim_catalog_image',
-                )
+                ]
             )
             ->getQuery()
             ->getArrayResult();
@@ -130,7 +130,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect'))
+                $qb->expr()->in('a.attributeType', ['pim_catalog_simpleselect'])
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
             ->andWhere($qb->expr()->neq('a.translatable', 1));
@@ -162,7 +162,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array('pim_catalog_text', 'pim_catalog_identifier'))
+                $qb->expr()->in('a.attributeType', ['pim_catalog_text', 'pim_catalog_identifier'])
             );
 
         return $qb->getQuery()->getResult();
@@ -177,7 +177,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
     {
         $attributes = $this->getAvailableAttributesAsLabel();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -190,7 +190,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -198,7 +198,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements RefEnti
      */
     public function getReferenceProperties()
     {
-        return array('code');
+        return ['code'];
     }
 
     /**

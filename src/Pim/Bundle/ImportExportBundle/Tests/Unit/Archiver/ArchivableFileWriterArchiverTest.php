@@ -34,14 +34,14 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
     {
         $archivableWriter = $this->getProductWriterMock(
             '/tmp/export.csv',
-            array(
+            [
                 __DIR__.'/../../fixtures/export.csv' => 'export.csv',
-            )
+            ]
         );
         $job = $this->getJobMock(
-            array(
+            [
                 $this->getItemStepMock($archivableWriter),
-            )
+            ]
         );
 
         $jobExecution = $this->getJobExecutionMock(
@@ -65,15 +65,15 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
     {
         $archivableWriter = $this->getProductWriterMock(
             '/tmp/export.csv',
-            array(
+            [
                 __DIR__.'/../../fixtures/export.csv' => 'export.csv',
                 __DIR__.'/../../fixtures/files/image1.jpg' => 'files/image1.jpg',
-            )
+            ]
         );
         $job = $this->getJobMock(
-            array(
+            [
                 $this->getItemStepMock($archivableWriter),
-            )
+            ]
         );
 
         $jobExecution = $this->getJobExecutionMock(
@@ -99,17 +99,17 @@ class ArchivableFileWriterArchiverTest extends \PHPUnit_Framework_TestCase
         $this->filesystem
             ->expects($this->any())
             ->method('listKeys')
-            ->will($this->returnValue(array('keys' => array('foo/fooFile.txt','bar/barFile.txt'))));
+            ->will($this->returnValue(['keys' => ['foo/fooFile.txt','bar/barFile.txt']]));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', null),
             42
         );
         $this->assertSame(
-            array(
+            [
                 'fooFile.txt' => 'foo/fooFile.txt',
                 'barFile.txt' => 'bar/barFile.txt'
-            ),
+            ],
             $this->archiver->getArchives($jobExecution)
         );
     }

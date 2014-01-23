@@ -87,11 +87,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::POST_BIND    => 'postBind',
             FormEvents::BIND         => 'bind'
-        );
+        ];
     }
 
     /**
@@ -119,12 +119,12 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $binded['fieldName'],
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
-                    array(
+                    [
                         'label'           => $this->localeHelper->getLocaleLabel($binded['locale']),
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false
-                    )
+                    ]
                 )
             );
         }
@@ -156,7 +156,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
             $errors = $this->validator->validate(
                 $translation,
-                array($locale)
+                [$locale]
             );
 
             if (count($errors) > 0) {
@@ -202,8 +202,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     protected function bindTranslations($data)
     {
-        $collection = array();
-        $availableTrans = array();
+        $collection = [];
+        $availableTrans = [];
 
         foreach ($data as $translation) {
             $availableTrans[strtolower($translation->getLocale())] = $translation;
@@ -216,11 +216,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                 $translation = $this->translationFactory->createTranslation($locale);
             }
 
-            $collection[] = array(
+            $collection[] = [
                 'locale'      => $locale,
                 'fieldName'   => $fieldName,
                 'translation' => $translation,
-            );
+            ];
         }
 
         return $collection;
@@ -234,7 +234,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected function getFieldNames()
     {
         $userLocales = $this->localeManager->getUserCodes();
-        $collection = array();
+        $collection = [];
 
         foreach ($this->getOption('locales') as $locale) {
             if (in_array($locale, $userLocales)) {

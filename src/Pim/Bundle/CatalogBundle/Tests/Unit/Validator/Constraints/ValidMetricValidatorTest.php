@@ -23,27 +23,27 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array Measures
      */
-    protected $measures = array(
-        'measures_config' => array(
-            'Length' => array(
+    protected $measures = [
+        'measures_config' => [
+            'Length' => [
                 'standard' => 'METER',
-                'units' => array(
-                    'INCH' => array(),
-                    'KILOMETER' => array(),
-                    'METER' => array(),
-                )
-            ),
-            'Temperature' => array(
+                'units' => [
+                    'INCH' => [],
+                    'KILOMETER' => [],
+                    'METER' => [],
+                ]
+            ],
+            'Temperature' => [
                 'standard' => 'KELVIN',
-                'units' => array(
-                    'CELSIUS' => array(),
-                    'KELVIN' => array(),
-                    'RANKINE' => array(),
-                    'REAUMUR' => array()
-                )
-            )
-        )
-    );
+                'units' => [
+                    'CELSIUS' => [],
+                    'KELVIN' => [],
+                    'RANKINE' => [],
+                    'REAUMUR' => []
+                ]
+            ]
+        ]
+    ];
 
     /**
      * {@inheritdoc}
@@ -51,7 +51,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->propertyAccessor = $this->getMock('Symfony\Component\PropertyAccess\PropertyAccessorInterface');
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', [], [], '', false);
         $this->validator = new ValidMetricValidator($this->propertyAccessor, $this->measures);
         $this->validator->initialize($this->context);
         $this->constraint = new ValidMetric();
@@ -121,11 +121,11 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerMetricFamilyInvalid()
     {
-        return array(
-            array('METER'),
-            array('CELSIUS'),
-            array('invalid_family')
-        );
+        return [
+            ['METER'],
+            ['CELSIUS'],
+            ['invalid_family']
+        ];
     }
 
     /**
@@ -154,11 +154,11 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerMetricUnitInvalid()
     {
-        return array(
-            array('Length', 'REAUMUR'),
-            array('Temperature', 'KILOMETER'),
-            array('Temperature', 'invalid_unit')
-        );
+        return [
+            ['Length', 'REAUMUR'],
+            ['Temperature', 'KILOMETER'],
+            ['Temperature', 'invalid_unit']
+        ];
     }
 
     /**
@@ -186,11 +186,11 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerMetricFamilyAndUnitValid()
     {
-        return array(
-            array('Length', 'INCH'),
-            array('Temperature', 'RANKINE'),
-            array('Temperature', 'KELVIN')
-        );
+        return [
+            ['Length', 'INCH'],
+            ['Temperature', 'RANKINE'],
+            ['Temperature', 'KELVIN']
+        ];
     }
 
     /**

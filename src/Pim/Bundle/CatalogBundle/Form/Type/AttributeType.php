@@ -104,7 +104,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', array('required' => true));
+        $builder->add('code', 'text', ['required' => true]);
     }
 
     /**
@@ -113,7 +113,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldUnique(FormBuilderInterface $builder)
     {
-        $builder->add('unique', 'choice', array('choices' => array('No', 'Yes')));
+        $builder->add('unique', 'choice', ['choices' => ['No', 'Yes']]);
     }
 
     /**
@@ -124,10 +124,10 @@ class AttributeType extends AbstractType
         $builder->add(
             'attributeType',
             'choice',
-            array(
+            [
                 'choices' => $this->getAttributeTypeChoices(),
                 'select2' => true
-            )
+            ]
         );
     }
 
@@ -140,12 +140,12 @@ class AttributeType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
                 'entity_class'      => $this->attributeClass,
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -158,13 +158,13 @@ class AttributeType extends AbstractType
         $builder->add(
             'group',
             'entity',
-            array(
+            [
                 'class'       => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
                 'required'    => false,
                 'multiple'    => false,
                 'empty_value' => AttributeGroup::DEFAULT_GROUP_CODE,
                 'select2'     => true
-            )
+            ]
         );
     }
 
@@ -210,7 +210,7 @@ class AttributeType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => $this->attributeClass));
+        $resolver->setDefaults(['data_class' => $this->attributeClass]);
     }
 
     /**

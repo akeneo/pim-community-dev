@@ -25,9 +25,9 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->fields = array();
-        $this->values = array();
-        $this->attributes = array();
+        $this->fields = [];
+        $this->values = [];
+        $this->attributes = [];
 
         $this->metadata->expects($this->any())
             ->method('hasField')
@@ -40,12 +40,12 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
             );
 
         $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
-            ->setMethods(array('getValue', 'createValue', 'addValue'))
+            ->setMethods(['getValue', 'createValue', 'addValue'])
             ->getMock();
 
         $this->product->expects($this->any())
             ->method('createValue')
-            ->will($this->returnCallback(array($this, 'createValue')));
+            ->will($this->returnCallback([$this, 'createValue']));
 
         $this->productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
@@ -68,7 +68,7 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
             ->getMock();
         $this->attributeCache->expects($this->any())
             ->method('getAttributes')
-            ->will($this->returnCallback(array($this, 'getAttributes')));
+            ->will($this->returnCallback([$this, 'getAttributes']));
 
         $this->associationsReader = $this->getMock('Pim\Bundle\ImportExportBundle\Reader\CachedReader');
 
@@ -93,11 +93,11 @@ class ORMProductTransformerTest extends ORMTransformerTestCase
         $this->addColumn('col2', true, false);
         $product = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Model\Product',
-            array(
+            [
                 'identifier' => 'id',
                 'col1' => 'value1',
                 'col2' => 'value2'
-            )
+            ]
         );
 
         $this->assertEquals('col1_path-value1', $product->col1_path);

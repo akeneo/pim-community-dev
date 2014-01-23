@@ -46,10 +46,10 @@ class UniqueValueValidator extends ConstraintValidator
         }
 
         $em = $this->registry->getManagerForClass(get_class($entity));
-        $criteria = array(
+        $criteria = [
             'attribute'                               => $entity->getAttribute(),
             $entity->getAttribute()->getBackendType() => $value,
-        );
+        ];
         $result = $em->getRepository(get_class($entity))->findBy($criteria);
 
         if (0 === count($result) ||

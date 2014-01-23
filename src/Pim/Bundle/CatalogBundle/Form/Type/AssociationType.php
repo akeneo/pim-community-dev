@@ -24,51 +24,51 @@ class AssociationType extends AbstractType
             ->add(
                 'associationType',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\AssociationType',
                     'property' => 'id',
                     'multiple' => false
-                )
+                ]
             )
             ->add(
                 'appendProducts',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
-                )
+                ]
             )
             ->add(
                 'removeProducts',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
-                )
+                ]
             )
             ->add(
                 'appendGroups',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
-                )
+                ]
             )
             ->add(
                 'removeGroups',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
-                )
+                ]
             );
     }
 
@@ -78,9 +78,9 @@ class AssociationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\Association'
-            )
+            ]
         );
     }
 

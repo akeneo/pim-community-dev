@@ -22,11 +22,11 @@ class LengthGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_text',
                 'pim_catalog_textarea',
                 'pim_catalog_identifier',
-            )
+            ]
         );
     }
 
@@ -35,10 +35,10 @@ class LengthGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ($maxCharacters = $attribute->getMaxCharacters()) {
-            $constraints[] = new Assert\Length(array('max' => $maxCharacters));
+            $constraints[] = new Assert\Length(['max' => $maxCharacters]);
         }
 
         return $constraints;

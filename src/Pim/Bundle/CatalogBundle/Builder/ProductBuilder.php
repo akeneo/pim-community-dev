@@ -151,7 +151,7 @@ class ProductBuilder
     {
         $values = $this->objectManager
             ->getRepository($this->getProductValueClass())
-            ->findBy(array('entity' => $product, 'attribute' => $attribute));
+            ->findBy(['entity' => $product, 'attribute' => $attribute]);
 
         foreach ($values as $value) {
             $this->objectManager->remove($value);
@@ -233,10 +233,10 @@ class ProductBuilder
      */
     protected function getExistingValues(ProductInterface $product, AttributeInterface $attribute)
     {
-        $existingValues = array();
+        $existingValues = [];
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute() === $attribute) {
-                $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
+                $existingValues[] = ['locale' => $value->getLocale(), 'scope' => $value->getScope()];
             }
         }
 
@@ -253,7 +253,7 @@ class ProductBuilder
      */
     protected function getExpectedValues(AttributeInterface $attribute)
     {
-        $requiredValues = array();
+        $requiredValues = [];
         if ($attribute->isScopable() and $attribute->isTranslatable()) {
             $requiredValues = $this->getScopeToLocaleRows();
 
@@ -264,7 +264,7 @@ class ProductBuilder
             $requiredValues = $this->getLocaleRows();
 
         } else {
-            $requiredValues[] = array('locale' => null, 'scope' => null);
+            $requiredValues[] = ['locale' => null, 'scope' => null];
         }
 
         return $this->filterExpectedValues($attribute, $requiredValues);
@@ -323,9 +323,9 @@ class ProductBuilder
     {
         if (!$this->localeRows) {
             $locales = $this->localeManager->getActiveLocales();
-            $this->localeRows = array();
+            $this->localeRows = [];
             foreach ($locales as $locale) {
-                $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
+                $this->localeRows[] = ['locale' => $locale->getCode(), 'scope' => null];
             }
         }
 
@@ -341,9 +341,9 @@ class ProductBuilder
     {
         if (!$this->scopeRows) {
             $channels = $this->channelManager->getChannels();
-            $this->scopeRows = array();
+            $this->scopeRows = [];
             foreach ($channels as $channel) {
-                $this->scopeRows[] = array('locale' => null, 'scope' => $channel->getCode());
+                $this->scopeRows[] = ['locale' => null, 'scope' => $channel->getCode()];
             }
         }
 
@@ -359,10 +359,10 @@ class ProductBuilder
     {
         if (!$this->scopeToLocaleRows) {
             $channels = $this->channelManager->getChannels();
-            $this->scopeToLocaleRows = array();
+            $this->scopeToLocaleRows = [];
             foreach ($channels as $channel) {
                 foreach ($channel->getLocales() as $locale) {
-                    $this->scopeToLocaleRows[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                    $this->scopeToLocaleRows[] = ['locale' => $locale->getCode(), 'scope' => $channel->getCode()];
                 }
             }
         }

@@ -43,9 +43,9 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_SET_DATA => 'postSetData'
-        );
+        ];
     }
 
     /**
@@ -77,10 +77,10 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      */
     protected function prepareOptions(FormConfigInterface $config)
     {
-        $options = array(
+        $options = [
             'disabled'  => true,
             'read_only' => true,
-        );
+        ];
 
         if ($help = $config->getOption('help')) {
             $options['help'] = $help;

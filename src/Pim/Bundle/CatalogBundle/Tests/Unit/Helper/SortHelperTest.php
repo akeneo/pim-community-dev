@@ -20,20 +20,20 @@ class SortHelperTest extends \PHPUnit_Framework_TestCase
      */
     public static function dataProviderSort()
     {
-        return array(
-            'sort_alphabetically' => array(
-                array(1 => 'baz', 2 => 'foo', 3 => 'world', 4 => 'bar', 5 => 'qux', 6 => 'hello'),
-                array(4 => 'bar', 1 => 'baz', 2 => 'foo', 6 => 'hello', 5 => 'qux', 3 => 'world')
-            ),
-            'sort_numerically' => array(
-                array('a' => 52, 'b' => 2, 'c' => 14, 'd' => 10, 'e' => 03),
-                array('e' => 03, 'b' => 2, 'd' => 10, 'c' => 14, 'a' => 52)
-            ),
-            'sort_with_some_identique_values' => array(
-                array(1 => 'a', 2 => 'b', 3 => 'a', 4 => 'b'),
-                array(1 => 'a', 3 => 'a', 2 => 'b', 4 => 'b')
-            )
-        );
+        return [
+            'sort_alphabetically' => [
+                [1 => 'baz', 2 => 'foo', 3 => 'world', 4 => 'bar', 5 => 'qux', 6 => 'hello'],
+                [4 => 'bar', 1 => 'baz', 2 => 'foo', 6 => 'hello', 5 => 'qux', 3 => 'world']
+            ],
+            'sort_numerically' => [
+                ['a' => 52, 'b' => 2, 'c' => 14, 'd' => 10, 'e' => 03],
+                ['e' => 03, 'b' => 2, 'd' => 10, 'c' => 14, 'a' => 52]
+            ],
+            'sort_with_some_identique_values' => [
+                [1 => 'a', 2 => 'b', 3 => 'a', 4 => 'b'],
+                [1 => 'a', 3 => 'a', 2 => 'b', 4 => 'b']
+            ]
+        ];
     }
 
     /**

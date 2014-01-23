@@ -24,8 +24,8 @@ class VersionRepository extends EntityRepository
     {
         $previous = $this
             ->findOneBy(
-                array('resourceId' => $resourceId, 'resourceName' => $resourceName),
-                array('loggedAt' => 'desc')
+                ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+                ['loggedAt' => 'desc']
             );
 
         return $previous;

@@ -20,5 +20,5 @@ interface CompletenessGeneratorInterface
      * @param array   $criteria
      * @param integer $limit
      */
-    public function generate(array $criteria = array(), $limit = null);
+    public function generate(array $criteria = [], $limit = null);
 }

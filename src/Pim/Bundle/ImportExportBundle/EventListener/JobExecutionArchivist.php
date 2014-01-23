@@ -18,16 +18,16 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 class JobExecutionArchivist implements EventSubscriberInterface
 {
     /** @var array */
-    protected $archivers = array();
+    protected $archivers = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
-        );
+        ];
     }
 
     /**
@@ -75,7 +75,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $archives = array();
+        $archives = [];
 
         foreach ($this->archivers as $archiver) {
             $archives[$archiver->getName()] = $archiver->getArchives($jobExecution);

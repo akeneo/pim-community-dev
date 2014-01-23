@@ -28,7 +28,7 @@ class EntityCache
     /**
      * @var array
      */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Constructor
@@ -61,7 +61,7 @@ class EntityCache
     public function find($class, $code)
     {
         if (!isset($this->cache[$class])) {
-            $this->cache[$class] = array();
+            $this->cache[$class] = [];
         }
         if (!array_key_exists($code, $this->cache[$class])) {
             $this->cache[$class][$code] = $this->getEntity($class, $code);
@@ -91,7 +91,7 @@ class EntityCache
     public function clear()
     {
         foreach (array_keys($this->cache) as $class) {
-            $this->cache[$class] = array();
+            $this->cache[$class] = [];
         }
     }
 

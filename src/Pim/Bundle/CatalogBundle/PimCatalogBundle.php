@@ -31,14 +31,14 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
 
-        $productMappings = array(
+        $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
-        );
+        ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $productMappings,
-                array('doctrine.orm.entity_manager'),
+                ['doctrine.orm.entity_manager'],
                 'pim_catalog.storage_driver.doctrine/orm'
             )
         );
@@ -48,7 +48,7 @@ class PimCatalogBundle extends Bundle
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $productMappings,
-                    array('doctrine.odm.mongodb.document_manager'),
+                    ['doctrine.odm.mongodb.document_manager'],
                     'pim_catalog.storage_driver.doctrine/mongodb-odm'
                 )
             );

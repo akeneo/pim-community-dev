@@ -52,10 +52,10 @@ class ExportMassActionHandler implements MassActionHandlerInterface
 
         $results = $qb->getQuery()->execute();
 
-        $context = array(
+        $context = [
             'withHeader'    => true,
             'heterogeneous' => true
-        );
+        ];
 
         $entities = array_map(
             function ($result) {

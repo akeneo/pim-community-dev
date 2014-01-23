@@ -44,7 +44,7 @@ class PimFlexibleEntityExtension extends Extension
      */
     protected function mergeFlexibleConfig(array $bundles)
     {
-        $entitiesConfig = array();
+        $entitiesConfig = [];
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/flexibleentity.yml')) {

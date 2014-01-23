@@ -65,7 +65,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
         $result = $this->extension->getAttributes($this->entityMock, 'test attribute');
         $this->assertEquals($this->valuesMock, $result);
 
-        $result = $this->extension->getAttributes($this->entityMock, array('test'), true);
+        $result = $this->extension->getAttributes($this->entityMock, ['test'], true);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
     }
 
@@ -101,7 +101,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
         $result = $this->extension->getAttributes($this->entityMock);
         $this->assertInstanceOf('\PHPUnit_Framework_MockObject_MockObject', $result);
 
-        $result = $this->extension->getAttributes($this->entityMock, array(), true);
+        $result = $this->extension->getAttributes($this->entityMock, [], true);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
     }
 
@@ -129,16 +129,16 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('codeNotNeeded'));
 
         $collection = new ArrayCollection(
-            array(
+            [
                 $valueMock1, $valueMock2
-            )
+            ]
         );
 
         $this->entityMock->expects($this->once())
             ->method('getValues')
             ->will($this->returnValue($collection));
 
-        $result = $this->extension->getAttributes($this->entityMock, array('codeNeeded'));
+        $result = $this->extension->getAttributes($this->entityMock, ['codeNeeded']);
         $this->assertCount(1, $result);
         $this->assertEquals($valueMock1, $result->first());
     }
@@ -167,16 +167,16 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('codeNotNeeded'));
 
         $collection = new ArrayCollection(
-            array(
+            [
                 $valueMock1, $valueMock2
-            )
+            ]
         );
 
         $this->entityMock->expects($this->once())
             ->method('getValues')
             ->will($this->returnValue($collection));
 
-        $result = $this->extension->getAttributes($this->entityMock, array('codeNotNeeded'), true);
+        $result = $this->extension->getAttributes($this->entityMock, ['codeNotNeeded'], true);
         $this->assertCount(1, $result);
         $this->assertEquals($valueMock1, $result->first());
     }

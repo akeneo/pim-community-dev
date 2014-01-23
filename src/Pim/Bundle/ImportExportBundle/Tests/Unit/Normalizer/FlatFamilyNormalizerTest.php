@@ -29,14 +29,14 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', false),
-            array('stdClass', 'csv', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'json', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'csv', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Family', 'json', false],
+            ['stdClass', 'csv', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'json', false],
+        ];
     }
 
     /**
@@ -44,18 +44,18 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'             => 'mycode',
                     'label-en_US'      => 'My label',
                     'label-fr_FR'      => 'Mon étiquette',
                     'attributes'       => 'attribute1,attribute2,attribute3',
                     'attributeAsLabel' => 'attribute1',
                     'requirements'     => 'channel1:attribute1,attribute2|channel2:attribute1,attribute3',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -63,9 +63,9 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
      */
     protected function getLabels($data)
     {
-        return array(
+        return [
             'en_US' => $data['label-en_US'],
             'fr_FR' => $data['label-fr_FR']
-        );
+        ];
     }
 }

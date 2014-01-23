@@ -61,7 +61,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        $prependConfig = array(
+        $prependConfig = [
             'TwigBundle'                     => 'twig',
             'AsseticBundle'                  => 'assetic',
             'DoctrineBundle'                 => 'doctrine',
@@ -81,7 +81,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             'OroFilterBundle'                => 'oro_filter',
             'OroBatchBundle'                 => 'oro_batch',
             'KnpGaufretteBundle'             => 'knp_gaufrette',
-        );
+        ];
 
         foreach ($prependConfig as $bundle => $alias) {
             if (isset($bundles[$bundle])) {
@@ -98,7 +98,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     protected function loadValidationFiles(ContainerBuilder $container)
     {
         // load validation files
-        $dirs = array();
+        $dirs = [];
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $dir = dirname($reflection->getFileName()) . '/Resources/config/validation';
@@ -107,7 +107,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
             }
         }
         $finder = new Finder();
-        $mappingFiles = array();
+        $mappingFiles = [];
         foreach ($finder->files()->in($dirs) as $file) {
             $mappingFiles[$file->getBasename('.yml')] = $file->getRealPath();
         }
@@ -126,7 +126,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
      */
     protected function getSupportedStorageDrivers()
     {
-        return array(self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM);
+        return [self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM];
     }
 
     /**

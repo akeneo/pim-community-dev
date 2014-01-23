@@ -23,7 +23,7 @@ class EmailCollectionType extends CollectionAbstract
         $builder->add(
             'collection',
             'collection',
-            array(
+            [
                 'type'           => new EmailType(),
                 'allow_add'      => true,
                 'allow_delete'   => true,
@@ -31,7 +31,7 @@ class EmailCollectionType extends CollectionAbstract
                 'prototype'      => true,
                 'prototype_name' => '__name__',
                 'label'          => ' '
-            )
+            ]
         );
     }
 

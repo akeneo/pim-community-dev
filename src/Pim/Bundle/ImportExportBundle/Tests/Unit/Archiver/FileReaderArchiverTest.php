@@ -34,11 +34,11 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         $fileReader   = $this->getFileReaderMock(__DIR__ . '/../../fixtures/import.csv');
         $lambdaReader = $this->getReaderMock();
         $job          = $this->getJobMock(
-            array(
+            [
                 $this->getStepMock(),
                 $this->getItemStepMock($fileReader),
                 $this->getItemStepMock($lambdaReader),
-            )
+            ]
         );
 
         $jobExecution = $this->getJobExecutionMock(
@@ -63,17 +63,17 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
         $this->filesystem
             ->expects($this->any())
             ->method('listKeys')
-            ->will($this->returnValue(array('keys' => array('foo/fooFile.txt','bar/barFile.txt'))));
+            ->will($this->returnValue(['keys' => ['foo/fooFile.txt','bar/barFile.txt']]));
 
         $jobExecution = $this->getJobExecutionMock(
             $this->getJobInstanceMock('import', 'product_import', null),
             42
         );
         $this->assertSame(
-            array(
+            [
                 'fooFile.txt' => 'foo/fooFile.txt',
                 'barFile.txt' => 'bar/barFile.txt'
-            ),
+            ],
             $this->archiver->getArchives($jobExecution)
         );
     }

@@ -65,14 +65,14 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
         $guesser2->expects($this->any())->method('supportAttribute')->will($this->returnValue(false));
         $guesser3->expects($this->any())->method('supportAttribute')->will($this->returnValue(true));
 
-        $guesser1->expects($this->once())->method('guessConstraints')->will($this->returnValue(array('foo')));
+        $guesser1->expects($this->once())->method('guessConstraints')->will($this->returnValue(['foo']));
         $guesser2->expects($this->never())->method('guessConstraints');
-        $guesser3->expects($this->once())->method('guessConstraints')->will($this->returnValue(array('bar')));
+        $guesser3->expects($this->once())->method('guessConstraints')->will($this->returnValue(['bar']));
 
         $this->target->addConstraintGuesser($guesser1);
         $this->target->addConstraintGuesser($guesser2);
         $this->target->addConstraintGuesser($guesser3);
 
-        $this->assertEquals(array('foo', 'bar'), $this->target->guessConstraints($this->getAttributeMock()));
+        $this->assertEquals(['foo', 'bar'], $this->target->guessConstraints($this->getAttributeMock()));
     }
 }

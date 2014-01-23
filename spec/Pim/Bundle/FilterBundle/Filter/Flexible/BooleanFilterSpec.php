@@ -32,27 +32,27 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_parses_value_of_type_yes()
     {
-        $this->shouldParseData(array('value' => BooleanFilterType::TYPE_YES));
+        $this->shouldParseData(['value' => BooleanFilterType::TYPE_YES]);
     }
 
     function it_parses_value_of_type_no()
     {
-        $this->shouldParseData(array('value' => BooleanFilterType::TYPE_NO));
+        $this->shouldParseData(['value' => BooleanFilterType::TYPE_NO]);
     }
 
     function it_does_not_parse_value_of_other_type()
     {
-        $this->shouldNotParseData(array('value' => 'foo'));
+        $this->shouldNotParseData(['value' => 'foo']);
     }
 
     function it_does_not_parse_empty_value()
     {
-        $this->shouldNotParseData(array('value' => null));
+        $this->shouldNotParseData(['value' => null]);
     }
 
     function it_does_not_parse_unexisting_value_key()
     {
-        $this->shouldNotParseData(array());
+        $this->shouldNotParseData([]);
     }
 
     function it_does_not_parse_something_else_than_an_array()
@@ -66,7 +66,7 @@ class BooleanFilterSpec extends ObjectBehavior
     ) {
         $utility->applyFlexibleFilter($datasource, 'baz', 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
 
-        $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
+        $this->apply($datasource, ['value' => BooleanFilterType::TYPE_YES])->shouldReturn(true);
     }
 
     function it_does_not_apply_boolean_flexible_filter_on_unparsable_data(
@@ -75,9 +75,9 @@ class BooleanFilterSpec extends ObjectBehavior
     ) {
         $utility->applyFlexibleFilter(Argument::cetera())->shouldNotBeCalled();
 
-        $this->apply($datasource, array('value' => 'foo'))->shouldReturn(false);
-        $this->apply($datasource, array('value' => null))->shouldReturn(false);
-        $this->apply($datasource, array())->shouldReturn(false);
+        $this->apply($datasource, ['value' => 'foo'])->shouldReturn(false);
+        $this->apply($datasource, ['value' => null])->shouldReturn(false);
+        $this->apply($datasource, [])->shouldReturn(false);
         $this->apply($datasource, 0)->shouldReturn(false);
     }
 
@@ -104,10 +104,10 @@ class BooleanFilterSpec extends ObjectBehavior
         $factory->create(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
         $form->createView()->willReturn($formView);
 
-        $formView->children = array('value' => $fieldView, 'type' => $typeView);
-        $formView->vars     = array('populate_default' => true);
-        $fieldView->vars    = array('multiple' => true, 'choices' => array($yesChoice, $noChoice));
-        $typeView->vars     = array('choices' => array($maybeChoice));
+        $formView->children = ['value' => $fieldView, 'type' => $typeView];
+        $formView->vars     = ['populate_default' => true];
+        $fieldView->vars    = ['multiple' => true, 'choices' => [$yesChoice, $noChoice]];
+        $typeView->vars     = ['choices' => [$maybeChoice]];
 
         $yesChoice->label = 'Yes';
         $yesChoice->value = 1;

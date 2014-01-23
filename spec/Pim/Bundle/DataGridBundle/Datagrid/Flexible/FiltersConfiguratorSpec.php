@@ -13,7 +13,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
     {
-        $attributes = array('sku' => $sku, 'name' => $name);
+        $attributes = ['sku' => $sku, 'name' => $name];
         $this->beConstructedWith($configuration, $registry, $attributes, 'Pim/Catalog/Product');
     }
 
@@ -31,8 +31,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->getLabel()->willReturn('Name');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('filter' => array('text_config')));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn(['filter' => ['text_config']]);
 
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
         $expectedConf = [
@@ -66,8 +66,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->getLabel()->willReturn('Name');
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

@@ -117,7 +117,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
         $repository
             ->expects($this->any())
             ->method('findBy')
-            ->will($this->returnValue(array($this->channel1, $this->channel2)));
+            ->will($this->returnValue([$this->channel1, $this->channel2]));
 
         return $repository;
     }
@@ -177,7 +177,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     protected function getUserMock($scope)
     {
         $user = $this
-            ->getMock('Oro\Bundle\UserBundle\Entity\User', array('getCatalogScope'));
+            ->getMock('Oro\Bundle\UserBundle\Entity\User', ['getCatalogScope']);
 
         $user
             ->expects($this->any())
@@ -208,10 +208,10 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChannelChoices()
     {
-        $expectedArray = array(
+        $expectedArray = [
             'ecommerce' => 'Ecommerce',
             'mobile'    => 'Mobile'
-        );
+        ];
 
         $channelChoices = $this->manager->getChannelChoices();
         $this->assertEquals($expectedArray, $channelChoices);
@@ -222,10 +222,10 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChannelChoiceWithUserChannel()
     {
-        $expectedArray = array(
+        $expectedArray = [
             'ecommerce' => 'Ecommerce',
             'mobile'    => 'Mobile'
-        );
+        ];
 
         $channelChoices = $this->manager->getChannelChoiceWithUserChannel();
         $this->assertEquals($expectedArray, $channelChoices);

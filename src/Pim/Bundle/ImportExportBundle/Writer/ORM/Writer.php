@@ -45,7 +45,7 @@ class Writer extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

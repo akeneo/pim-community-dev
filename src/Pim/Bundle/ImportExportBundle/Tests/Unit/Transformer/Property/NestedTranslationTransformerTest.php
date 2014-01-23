@@ -24,7 +24,7 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransform()
     {
-        $data = array('data');
+        $data = ['data'];
         $result = $this->transformer->transform($data);
         $this->assertEquals($result, $data);
     }
@@ -41,7 +41,7 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
     public function testSetValue()
     {
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('setLocale'))
+            ->setMethods(['setLocale'])
             ->getMock();
 
         $object->expects($this->at(0))
@@ -62,8 +62,8 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer->setValue(
             $object,
             $columnInfo,
-            array('locale1' => 'value1', 'locale2' => 'value2'),
-            array('propertyPath' => 'key')
+            ['locale1' => 'value1', 'locale2' => 'value2'],
+            ['propertyPath' => 'key']
         );
     }
 
@@ -74,6 +74,6 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
     public function testNoPropertyPath()
     {
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
-        $this->transformer->setValue(new \stdClass, $columnInfo, array());
+        $this->transformer->setValue(new \stdClass, $columnInfo, []);
     }
 }

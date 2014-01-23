@@ -40,7 +40,7 @@ class NestedTranslationGuesser implements GuesserInterface
             return null;
         }
 
-        return array($this->transformer, array('propertyPath' => $mapping[$columnInfo->getName()]));
+        return [$this->transformer, ['propertyPath' => $mapping[$columnInfo->getName()]]];
     }
 
     /**
@@ -53,8 +53,8 @@ class NestedTranslationGuesser implements GuesserInterface
      */
     protected function getMapping()
     {
-        return array(
+        return [
             'labels' => 'label'
-        );
+        ];
     }
 }

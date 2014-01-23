@@ -43,10 +43,10 @@ class AjaxEntityTransformer implements DataTransformerInterface
     {
         if ($this->options['multiple']) {
             if (!$value) {
-                return array();
+                return [];
             }
 
-            $values = array();
+            $values = [];
             foreach (explode(',', $value) as $id) {
                 $values[] = $this->repository->getOption($id, $this->options['collection_id']);
             }
@@ -63,7 +63,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
     public function transform($value)
     {
         if ($this->options['multiple']) {
-            $values = array();
+            $values = [];
             foreach ($value as $entity) {
                 $values[] = $this->repository->getOptionId($entity);
             }
@@ -84,7 +84,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
     public function getOptions($value)
     {
         if ($this->options['multiple']) {
-            $options = array();
+            $options = [];
 
             foreach ($value as $entity) {
                 $options[] = $this->getOption($entity);
@@ -107,10 +107,10 @@ class AjaxEntityTransformer implements DataTransformerInterface
      */
     protected function getOption($entity)
     {
-        return array(
+        return [
             'id'    => $this->repository->getOptionId($entity),
             'text'  => $this->repository->getOptionLabel($entity, $this->options['locale'])
-        );
+        ];
     }
 
     /**

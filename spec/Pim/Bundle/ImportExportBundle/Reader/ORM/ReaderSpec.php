@@ -23,7 +23,7 @@ class ReaderSpec extends ObjectBehavior
 
     function it_reads_records_one_by_one(AbstractQuery $query)
     {
-        $query->execute()->willReturn(array('foo','bar'));
+        $query->execute()->willReturn(['foo','bar']);
 
         $this->setQuery($query);
         $this->read()->shouldReturn('foo');
@@ -33,7 +33,7 @@ class ReaderSpec extends ObjectBehavior
 
     function it_increments_read_count_for_each_record_reading($stepExecution, AbstractQuery $query)
     {
-        $query->execute()->willReturn(array('foo','bar'));
+        $query->execute()->willReturn(['foo','bar']);
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 

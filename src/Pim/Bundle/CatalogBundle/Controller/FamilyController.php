@@ -136,9 +136,9 @@ class FamilyController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        return array(
+        return [
             'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -159,17 +159,17 @@ class FamilyController extends AbstractDoctrineController
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.created');
 
-            $response = array(
+            $response = [
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_catalog_family_edit', array('id' => $family->getId()))
-            );
+                'url'    => $this->generateUrl('pim_catalog_family_edit', ['id' => $family->getId()])
+            ];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->familyForm->createView()
-        );
+        ];
     }
 
     /**
@@ -187,13 +187,13 @@ class FamilyController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.family.updated');
         }
 
-        return array(
+        return [
             'form'            => $this->familyForm->createView(),
             'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
             'channels' => $this->channelManager->getChannels()
-        );
+        ];
     }
 
     /**
@@ -207,9 +207,9 @@ class FamilyController extends AbstractDoctrineController
     {
         return $this->render(
             'PimCatalogBundle:Family:_history.html.twig',
-            array(
+            [
                 'family' => $family
-            )
+            ]
         );
     }
 
@@ -259,7 +259,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.family.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+        return $this->redirectToRoute('pim_catalog_family_edit', ['id' => $family->getId()]);
     }
 
     /**
@@ -291,7 +291,7 @@ class FamilyController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+            return $this->redirectToRoute('pim_catalog_family_edit', ['id' => $family->getId()]);
         }
     }
 
@@ -304,13 +304,13 @@ class FamilyController extends AbstractDoctrineController
      * @return Symfony\Component\Form\Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            ['attributes' => $attributes]
         );
     }
 }

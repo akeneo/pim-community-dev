@@ -53,7 +53,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * @var array
      */
-    protected $commonAttributes = array();
+    protected $commonAttributes = [];
 
     /**
      * @var ArrayCollection
@@ -196,10 +196,10 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function getFormOptions()
     {
-        return array(
+        return [
             'locales'          => $this->localeManager->getUserLocales(),
             'commonAttributes' => $this->commonAttributes,
-        );
+        ];
     }
 
     /**

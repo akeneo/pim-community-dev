@@ -189,7 +189,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getGroupSequence()
     {
-        $groups = array('Default', $this->getAttributeType());
+        $groups = ['Default', $this->getAttributeType()];
 
         if ($rule = $this->getValidationRule()) {
             $groups[] = $rule;
@@ -770,7 +770,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getAllowedExtensions()
     {
-        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : array();
+        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : [];
     }
 
     /**

@@ -29,17 +29,17 @@ class CategoryNormalizerTest extends NormalizerTestCase
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false),
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'json', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'xml', true],
+            ['Pim\Bundle\CatalogBundle\Entity\Category', 'csv', false],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false],
+        ];
     }
 
     /**
@@ -47,22 +47,22 @@ class CategoryNormalizerTest extends NormalizerTestCase
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'    => 'root_category',
-                    'label'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
+                    'label'   => ['en' => 'Root category', 'fr' => 'Categorie racine'],
                     'parent'  => ''
-                )
-            ),
-            array(
-                array(
+                ]
+            ],
+            [
+                [
                     'code'    => 'child_category',
-                    'label'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
+                    'label'   => ['en' => 'Child category', 'fr' => 'fr:Catégorie enfant'],
                     'parent'  => '1'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

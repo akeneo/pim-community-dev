@@ -23,7 +23,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     protected $encoder;
 
     /** @var array */
-    protected $header = array();
+    protected $header = [];
 
     /**
      * @param InvalidItemsCollector $collector
@@ -54,7 +54,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         $this->filesystem->write(
             strtr(
                 $this->getRelativeArchivePath($jobExecution),
-                array('%filename%' => 'invalid_items.csv')
+                ['%filename%' => 'invalid_items.csv']
             ),
             $content,
             true

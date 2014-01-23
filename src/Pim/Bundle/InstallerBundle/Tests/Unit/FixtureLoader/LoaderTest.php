@@ -20,7 +20,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $reader = $this->getMockBuilder('Oro\Bundle\BatchBundle\Item\ItemReaderInterface')
-            ->setMethods(array('setFilePath', 'read'))
+            ->setMethods(['setFilePath', 'read'])
             ->getMock();
         $processor = $this->getMock('Oro\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
@@ -30,8 +30,8 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->method('setFilePath')
             ->with($this->equalTo('file'));
 
-        $data1 = array('code'=>'data1');
-        $data2 = array('code'=>'data2');
+        $data1 = ['code'=>'data1'];
+        $data2 = ['code'=>'data2'];
         $reader->expects($this->at(1))
             ->method('read')
             ->will($this->returnValue($data1));

@@ -14,7 +14,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  */
 class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
 {
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         foreach ($this->guessers as $guesser) {
             if ($guesser->supportAttribute($attribute)) {

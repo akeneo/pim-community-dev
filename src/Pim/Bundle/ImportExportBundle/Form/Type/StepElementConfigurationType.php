@@ -32,17 +32,17 @@ class StepElementConfigurationType extends AbstractType
 
                 foreach ($stepElement->getConfigurationFields() as $field => $config) {
                     $config = array_merge(
-                        array(
+                        [
                             'type'    => 'text',
-                            'options' => array(),
-                        ),
+                            'options' => [],
+                        ],
                         $config
                     );
                     $options = array_merge(
-                        array(
+                        [
                             'auto_initialize' => false,
                             'required'        => false,
-                        ),
+                        ],
                         $config['options']
                     );
 
@@ -58,9 +58,9 @@ class StepElementConfigurationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Oro\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement',
-            )
+            ]
         );
     }
 

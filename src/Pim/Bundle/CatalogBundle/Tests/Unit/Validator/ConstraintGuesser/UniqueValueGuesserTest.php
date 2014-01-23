@@ -44,22 +44,22 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
      */
     public static function dataProviderForSupportedAttributes()
     {
-        return array(
-            'boolean'    => array(AbstractAttributeType::BACKEND_TYPE_BOOLEAN, false),
-            'collection' => array(AbstractAttributeType::BACKEND_TYPE_COLLECTION, false),
-            'date'       => array(AbstractAttributeType::BACKEND_TYPE_DATE, true),
-            'datetime'   => array(AbstractAttributeType::BACKEND_TYPE_DATETIME, true),
-            'decimal'    => array(AbstractAttributeType::BACKEND_TYPE_DECIMAL, true),
-            'entity'     => array(AbstractAttributeType::BACKEND_TYPE_ENTITY, false),
-            'integer'    => array(AbstractAttributeType::BACKEND_TYPE_INTEGER, true),
-            'media'      => array(AbstractAttributeType::BACKEND_TYPE_MEDIA, false),
-            'metric'     => array(AbstractAttributeType::BACKEND_TYPE_METRIC, false),
-            'option'     => array(AbstractAttributeType::BACKEND_TYPE_OPTION, false),
-            'options'    => array(AbstractAttributeType::BACKEND_TYPE_OPTIONS, false),
-            'price'      => array(AbstractAttributeType::BACKEND_TYPE_PRICE, false),
-            'text'       => array(AbstractAttributeType::BACKEND_TYPE_TEXT, false),
-            'varchar'    => array(AbstractAttributeType::BACKEND_TYPE_VARCHAR, true),
-        );
+        return [
+            'boolean'    => [AbstractAttributeType::BACKEND_TYPE_BOOLEAN, false],
+            'collection' => [AbstractAttributeType::BACKEND_TYPE_COLLECTION, false],
+            'date'       => [AbstractAttributeType::BACKEND_TYPE_DATE, true],
+            'datetime'   => [AbstractAttributeType::BACKEND_TYPE_DATETIME, true],
+            'decimal'    => [AbstractAttributeType::BACKEND_TYPE_DECIMAL, true],
+            'entity'     => [AbstractAttributeType::BACKEND_TYPE_ENTITY, false],
+            'integer'    => [AbstractAttributeType::BACKEND_TYPE_INTEGER, true],
+            'media'      => [AbstractAttributeType::BACKEND_TYPE_MEDIA, false],
+            'metric'     => [AbstractAttributeType::BACKEND_TYPE_METRIC, false],
+            'option'     => [AbstractAttributeType::BACKEND_TYPE_OPTION, false],
+            'options'    => [AbstractAttributeType::BACKEND_TYPE_OPTIONS, false],
+            'price'      => [AbstractAttributeType::BACKEND_TYPE_PRICE, false],
+            'text'       => [AbstractAttributeType::BACKEND_TYPE_TEXT, false],
+            'varchar'    => [AbstractAttributeType::BACKEND_TYPE_VARCHAR, true],
+        ];
     }
 
     /**
@@ -72,7 +72,7 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     public function testSupportVarcharAttribute($backendType, $expectedAvailability)
     {
         $result = $this->target->supportAttribute(
-            $this->getAttributeMock(array('backendType' => $backendType))
+            $this->getAttributeMock(['backendType' => $backendType])
         );
 
         $this->assertEquals($expectedAvailability, $result);
@@ -85,10 +85,10 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array(
+                [
                     'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
                     'unique'      => true,
-                )
+                ]
             )
         );
 
@@ -102,10 +102,10 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array(
+                [
                     'backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR,
                     'unique'      => false,
-                )
+                ]
             )
         );
 

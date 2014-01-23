@@ -14,7 +14,7 @@ class BooleanTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if ('0' === $value) {
             return false;

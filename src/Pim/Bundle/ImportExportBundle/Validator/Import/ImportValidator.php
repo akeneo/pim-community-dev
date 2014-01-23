@@ -24,7 +24,7 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * @var array
      */
-    protected $identifiers = array();
+    protected $identifiers = [];
 
     /**
      * Constructor
@@ -39,7 +39,7 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
+    public function validate($entity, array $columnsInfo, array $data, array $errors = [])
     {
         $this->checkIdentifier($entity, $columnsInfo, $data);
         if (!count($errors)) {
@@ -63,7 +63,7 @@ class ImportValidator implements ImportValidatorInterface
         $identifier = $this->getIdentifier($columnsInfo, $entity);
         $class = get_class($entity);
         if (!isset($this->identifiers[$class])) {
-            $this->identifiers[$class] = array();
+            $this->identifiers[$class] = [];
         } elseif (in_array($identifier, $this->identifiers[$class])) {
             throw new DuplicateIdentifierException($identifier, $data);
         }
@@ -93,7 +93,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function validateProperties($entity, array $columnsInfo)
     {
-        $errors = array();
+        $errors = [];
         foreach ($columnsInfo as $columnInfo) {
             $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
             if ($violations->count()) {
@@ -113,11 +113,11 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getErrorMap(ConstraintViolationListInterface $violations)
     {
-        $errors = array();
+        $errors = [];
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if (!isset($errors[$path])) {
-                $errors[$path] = array();
+                $errors[$path] = [];
             }
             $errors[$path][] = $this->getViolationError($violation);
         }
@@ -134,7 +134,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getErrorArray(ConstraintViolationListInterface $violations)
     {
-        $errors = array();
+        $errors = [];
         foreach ($violations as $violation) {
             $errors[] = $this->getViolationError($violation);
         }
@@ -151,6 +151,6 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getViolationError(ConstraintViolationInterface $violation)
     {
-        return array($violation->getMessageTemplate(), $violation->getMessageParameters());
+        return [$violation->getMessageTemplate(), $violation->getMessageParameters()];
     }
 }

@@ -118,18 +118,18 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_catalog_mass_edit_action_configure',
-                    array(
+                    [
                         'products'       => $productIds,
                         'operationAlias' => $this->massEditActionOperator->getOperationAlias(),
-                    )
+                    ]
                 );
             }
         }
 
-        return array(
+        return [
             'form'       => $form->createView(),
             'productIds' => $productIds,
-        );
+        ];
     }
 
     /**
@@ -164,11 +164,11 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'          => $form->createView(),
                 'massEditActionOperator' => $this->massEditActionOperator,
                 'productIds'    => $productIds,
-            )
+            ]
         );
     }
 
@@ -232,11 +232,11 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'                   => $form->createView(),
                 'massEditActionOperator' => $this->massEditActionOperator,
                 'productIds'             => $productIds,
-            )
+            ]
         );
     }
 
@@ -251,22 +251,22 @@ class MassEditActionController extends AbstractDoctrineController
         $productIds = $this->getProductIds($request);
         $this->productManager->removeAll($productIds);
         $entitiesCount = count($productIds);
-        $options = array('count' => $entitiesCount);
+        $options = ['count' => $entitiesCount];
 
         $response = new MassActionResponse(
             true,
             $this->getTranslator()->transChoice(
                 'oro.grid.mass_action.delete.success_message',
                 $entitiesCount,
-                array('%count%' => $entitiesCount)
+                ['%count%' => $entitiesCount]
             ),
             $options
         );
 
-        $data = array(
+        $data = [
             'successful' => $response->isSuccessful(),
             'message'    => $response->getMessage(),
-        );
+        ];
 
         return new JsonResponse(array_merge($data, $response->getOptions()));
     }
@@ -279,7 +279,7 @@ class MassEditActionController extends AbstractDoctrineController
         return $this->createForm(
             new MassEditActionOperatorType(),
             $this->massEditActionOperator,
-            array('operations' => $this->massEditActionOperator->getOperationChoices())
+            ['operations' => $this->massEditActionOperator->getOperationChoices()]
         );
     }
 

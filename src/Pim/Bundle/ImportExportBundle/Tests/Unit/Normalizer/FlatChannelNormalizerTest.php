@@ -27,14 +27,14 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
      */
     public static function getSupportNormalizationData()
     {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'json', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', true),
-            array('stdClass', 'json', false),
-            array('stdClass', 'xml', false),
-            array('stdClass', 'csv', false)
-        );
+        return [
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'json', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', false],
+            ['Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', true],
+            ['stdClass', 'json', false],
+            ['stdClass', 'xml', false],
+            ['stdClass', 'csv', false]
+        ];
     }
 
     /**
@@ -42,18 +42,18 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
      */
     public static function getNormalizeData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'code'             => 'channel_code',
                     'label'            => 'channel_label',
                     'currencies'       => 'EUR,USD',
                     'locales'          => 'fr_FR,en_US',
                     'category'         => 'My_Tree',
                     'conversion_units' => 'weight: KILOGRAM, washing_temperature: '
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

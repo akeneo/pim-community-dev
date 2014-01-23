@@ -24,7 +24,7 @@ class AttributeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', [], [], '', false);
     }
 
     /**
@@ -68,23 +68,23 @@ class AttributeValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function providerAttributeOptionsInvalid()
     {
-        return array(
-            array(
+        return [
+            [
                 'pim_catalog_multiselect',
-                array('a', 'b', null),
+                ['a', 'b', null],
                 AttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_simpleselect',
-                array(1, null, 3),
+                [1, null, 3],
                 AttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
-            ),
-            array(
+            ],
+            [
                 'pim_catalog_simpleselect',
-                array('a', 'a', 'b'),
+                ['a', 'a', 'b'],
                 AttributeValidator::VIOLATION_DUPLICATE_OPTION_CODE
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -94,7 +94,7 @@ class AttributeValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @return Attribute
      */
-    protected function createAttribute($attributeType, $properties = array())
+    protected function createAttribute($attributeType, $properties = [])
     {
         $attribute = new Attribute();
 

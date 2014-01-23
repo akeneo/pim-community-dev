@@ -16,6 +16,6 @@ class SkipImportValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidate()
     {
         $validator = new SkipImportValidator();
-        $this->assertEquals(array(), $validator->validate(new \stdClass, array(), array()));
+        $this->assertEquals([], $validator->validate(new \stdClass, [], []));
     }
 }
