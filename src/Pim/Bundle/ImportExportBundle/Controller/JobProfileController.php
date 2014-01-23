@@ -181,8 +181,12 @@ class JobProfileController extends AbstractDoctrineController
 
         $validator = $this->getValidator();
 
+        if (null === $template = $job->getShowTemplate()) {
+            $template = sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType()));
+        }
+
         return $this->render(
-            sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType())),
+            $template,
             array(
                 'jobInstance'      => $jobInstance,
                 'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
