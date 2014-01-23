@@ -31,6 +31,7 @@ attributes:
         translatable: true
         scopable: true
         sortOrder: 3
+        wysiwyg_enabled: true
     weight:
         labels:
             en_US: Weight
