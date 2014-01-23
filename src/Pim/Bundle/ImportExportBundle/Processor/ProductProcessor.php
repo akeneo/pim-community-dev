@@ -172,20 +172,4 @@ class ProductProcessor extends TransformerProcessor
             $this->groupsColumn     => 'groups'
         ) + $this->mapping;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTransformedColumnsInfo()
-    {
-        return $this->transformer->getTransformedColumnsInfo();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTransformerErrors()
-    {
-        return $this->transformer->getErrors();
-    }
 }

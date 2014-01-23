@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser;
+use Pim\Bundle\ImportExportBundle\Transformer\Guesser\RelationGuesser;
 
 /**
  * Tests related class
@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityGuesserTest extends GuesserTestCase
+class RelationGuesserTest extends GuesserTestCase
 {
     protected $doctrine;
     protected $manager;
@@ -59,7 +59,7 @@ class EntityGuesserTest extends GuesserTestCase
             ->with($this->equalTo('target_entity'))
             ->will($this->returnValue($repository));
 
-        $guesser = new EntityGuesser($this->transformer, $this->doctrine);
+        $guesser = new RelationGuesser($this->transformer, $this->doctrine);
         $this->assertEquals(
             array($this->transformer, array('class' => 'target_entity', 'multiple' => $multiple)),
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
@@ -73,7 +73,7 @@ class EntityGuesserTest extends GuesserTestCase
             ->method('hasAssociation')
             ->with($this->equalTo('property_path'))
             ->will($this->returnValue(false));
-        $guesser = new EntityGuesser($this->transformer, $this->doctrine);
+        $guesser = new RelationGuesser($this->transformer, $this->doctrine);
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
@@ -98,7 +98,7 @@ class EntityGuesserTest extends GuesserTestCase
             ->with($this->equalTo('target_entity'))
             ->will($this->returnValue($repository));
 
-        $guesser = new EntityGuesser($this->transformer, $this->doctrine);
+        $guesser = new RelationGuesser($this->transformer, $this->doctrine);
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 }

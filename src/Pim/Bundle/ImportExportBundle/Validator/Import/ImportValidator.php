@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;
 
 /**
  * Validates an imported entity
@@ -61,6 +62,10 @@ class ImportValidator implements ImportValidatorInterface
     protected function checkIdentifier($entity, array $columnsInfo, $data)
     {
         $identifier = $this->getIdentifier($columnsInfo, $entity);
+        if (!$identifier) {
+            return;
+        }
+
         $class = get_class($entity);
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
@@ -80,7 +85,9 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
-        return $entity->getReference();
+        return ($entity instanceof ReferableInterface)
+                ? $entity->getReference()
+                : null;
     }
 
     /**

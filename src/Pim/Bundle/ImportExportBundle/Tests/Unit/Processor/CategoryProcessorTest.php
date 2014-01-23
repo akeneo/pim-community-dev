@@ -25,9 +25,6 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
         $this->entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->transformer = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMTransformer')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->transformer->expects($this->any())
             ->method('getTransformedColumnsInfo')
             ->will($this->returnValue(array('columns_info')));

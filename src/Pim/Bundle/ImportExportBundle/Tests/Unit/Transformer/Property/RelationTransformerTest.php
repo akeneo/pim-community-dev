@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\RelationTransformer;
 
 /**
  * Tests related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityTransformerTest extends \PHPUnit_Framework_TestCase
+class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected $entityCache;
     protected $transformer;
@@ -31,7 +31,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(array($this, 'findEntity')));
-        $this->transformer = new EntityTransformer($this->entityCache);
+        $this->transformer = new RelationTransformer($this->entityCache);
     }
 
     /**

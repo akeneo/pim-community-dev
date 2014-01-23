@@ -17,7 +17,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMAttributeTransformer extends ORMTransformer
+class AttributeTransformer extends NestedEntityTransformer
 {
     /**
      * @var AttributeManagerInterface
@@ -36,6 +36,7 @@ class ORMAttributeTransformer extends ORMTransformer
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeManagerInterface      $attributeManager
      * @param EntityCache                    $entityCache
      */
@@ -44,10 +45,11 @@ class ORMAttributeTransformer extends ORMTransformer
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
+        EntityTransformerInterface $transformerRegistry,
         AttributeManagerInterface $attributeManager,
         EntityCache $entityCache
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry);
         $this->attributeManager = $attributeManager;
         $this->entityCache = $entityCache;
     }
@@ -57,37 +59,35 @@ class ORMAttributeTransformer extends ORMTransformer
      */
     protected function setProperties($class, $entity, array $data)
     {
-        $attributeClass = $this->attributeManager->getAttributeClass();
-        if ($attributeClass === $class && isset($data['options'])) {
+        if (isset($data['options'])) {
             $optionsData = $data['options'];
             unset($data['options']);
-            parent::setProperties($class, $entity, $data);
-            $this->setOptions($entity, $optionsData);
-        } else {
-            parent::setProperties($class, $entity, $data);
+        }
+
+        parent::setProperties($class, $entity, $data);
+
+        if (isset($optionsData)) {
+            $this->setOptions($class, $entity, $optionsData);
         }
     }
 
     /**
      * Sets the options of the attribute
      *
+     * @param string             $class
      * @param AttributeInterface $attribute
      * @param array              $optionsData
      */
-    protected function setOptions(AttributeInterface $attribute, array $optionsData)
+    protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
     {
         $this->entityCache->setReference($attribute);
+        $optionClass = $this->attributeManager->getAttributeOptionClass();
         foreach ($optionsData as $code => $optionData) {
             $optionData['attribute'] = $attribute->getCode();
             if (!isset($optionData['code'])) {
                 $optionData['code'] = $code;
             }
-            $attributeClass = $this->attributeManager->getAttributeOptionClass();
-            $option = $this->getEntity($attributeClass, $optionData);
-            $this->setProperties($attributeClass, $option, $optionData);
-            if (count($this->errors)) {
-                break;
-            }
+            $option = $this->transformNestedEntity($class, 'options', $optionClass, $optionData);
             $attribute->addOption($option);
             $this->entityCache->setReference($option);
         }
@@ -98,8 +98,6 @@ class ORMAttributeTransformer extends ORMTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return ($this->attributeManager->getAttributeClass() === $class)
-            ? $this->attributeManager->createAttribute($data['type'])
-            : parent::createEntity($class, $data);
+        return $this->attributeManager->createAttribute($data['type']);
     }
 }

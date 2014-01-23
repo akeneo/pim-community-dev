@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 /**
  * Family transformer
@@ -17,17 +16,12 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMFamilyTransformer extends ORMTransformer
+class FamilyTransformer extends NestedEntityTransformer
 {
     /**
      * @var FamilyFactory
      */
     protected $factory;
-
-    /**
-     * @var string
-     */
-    protected $familyClass;
 
     /**
      * @var string
@@ -41,8 +35,8 @@ class ORMFamilyTransformer extends ORMTransformer
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param EntityTransformerInterface     $transformerRegistry
      * @param FamilyFactory                  $factory
-     * @param string                         $familyClass
      * @param string                         $requirementClass
      */
     public function __construct(
@@ -50,13 +44,12 @@ class ORMFamilyTransformer extends ORMTransformer
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
+        EntityTransformerInterface $transformerRegistry,
         FamilyFactory $factory,
-        $familyClass,
         $requirementClass
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry);
         $this->factory = $factory;
-        $this->familyClass = $familyClass;
         $this->requirementClass = $requirementClass;
     }
 
@@ -65,9 +58,7 @@ class ORMFamilyTransformer extends ORMTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return ($this->familyClass === $class)
-            ? $this->factory->createFamily()
-            : parent::createEntity($class, $data);
+        return $this->factory->createFamily();
     }
 
     /**
@@ -75,61 +66,51 @@ class ORMFamilyTransformer extends ORMTransformer
      */
     protected function setProperties($class, $entity, array $data)
     {
-        if ($this->familyClass === $class && isset($data['requirements'])) {
+        if (isset($data['requirements'])) {
             $requirementsData = $data['requirements'];
             unset($data['requirements']);
-            parent::setProperties($class, $entity, $data);
-            $this->setRequirements($entity, $requirementsData);
+        }
 
-        } else {
-            parent::setProperties($class, $entity, $data);
+        parent::setProperties($class, $entity, $data);
+
+        if (isset($requirementsData)) {
+            $this->setRequirements($class, $entity, $requirementsData);
         }
     }
 
     /**
      * Sets the requirements
      *
+     * @param string $class
      * @param Family $family
      * @param array  $requirementsData
      */
-    protected function setRequirements(Family $family, array $requirementsData)
+    protected function setRequirements($class, Family $family, array $requirementsData)
     {
         foreach ($requirementsData as $channelCode => $attributeCodes) {
-            foreach ($this->getRequirements($channelCode, $attributeCodes) as $requirement) {
-                $family->addAttributeRequirement($requirement);
-            }
-            if (count($this->errors)) {
-                break;
-            }
+            $this->setChannelRequirements($class, $family, $channelCode, $attributeCodes);
         }
     }
 
     /**
-     * Returns the requirements for a channel
+     * Sets the requirements for a channel
      *
+     * @param string $class
+     * @param Family $family
      * @param string $channelCode
      * @param array  $attributeCodes
-     *
-     * @return AttributeRequirement[]
      */
-    protected function getRequirements($channelCode, $attributeCodes)
+    protected function setChannelRequirements($class, Family $family, $channelCode, $attributeCodes)
     {
-        $requirements = array();
         foreach ($attributeCodes as $attributeCode) {
             $data = array(
                 'attribute' => $attributeCode,
                 'channel'   => $channelCode,
                 'required'  => true
             );
-            $requirement = $this->getEntity($this->requirementClass, array());
-            $this->setProperties($this->requirementClass, $requirement, $data);
-            if (count($this->errors)) {
-                break;
-            }
+            $requirement = $this->transformNestedEntity($class, 'requirements', $this->requirementClass, $data);
 
-            $requirements[] = $requirement;
+            $family->addAttributeRequirement($requirement);
         }
-
-        return $requirements;
     }
 }

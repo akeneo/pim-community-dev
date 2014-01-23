@@ -21,7 +21,7 @@ use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMTransformer
+class EntityTransformer implements EntityTransformerInterface
 {
     /**
      * @var RegistryInterface
@@ -79,18 +79,12 @@ class ORMTransformer
     }
 
     /**
-     * Transforms an array into an entity
-     *
-     * @param string $class
-     * @param array  $data
-     * @param array  $defaults
-     *
-     * @return object
+     * {@inheritdoc}
      */
     public function transform($class, array $data, array $defaults = array())
     {
-        $this->transformedColumns = array();
-        $this->errors = array();
+        $this->transformedColumns[$class] = array();
+        $this->errors[$class] = array();
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
         $this->setProperties($class, $entity, $data);
@@ -99,23 +93,19 @@ class ORMTransformer
     }
 
     /**
-     * Return infos about the last imported columns
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getTransformedColumnsInfo()
+    public function getTransformedColumnsInfo($class)
     {
-        return $this->transformedColumns;
+        return $this->transformedColumns[$class];
     }
 
     /**
-     * Returns the errors for the last imported entity
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getErrors()
+    public function getErrors($class)
     {
-        return $this->errors;
+        return $this->errors[$class];
     }
 
     /**
@@ -132,7 +122,7 @@ class ORMTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {
-                $this->errors[$label] = array($error);
+                $this->errors[$class][$label] = array($error);
             }
         }
     }
@@ -166,7 +156,7 @@ class ORMTransformer
             return array($ex->getMessageTemplate(), $ex->getMessageParameters());
         }
 
-        $this->transformedColumns[] = $columnInfo;
+        $this->transformedColumns[get_class($entity)][] = $columnInfo;
     }
 
     /**

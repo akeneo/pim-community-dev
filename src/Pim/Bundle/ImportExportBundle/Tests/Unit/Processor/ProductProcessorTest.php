@@ -19,10 +19,6 @@ class ProductProcessorTest extends TransformerProcessorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->transformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->processor = new ProductProcessor(
             $this->validator,
             $this->translator,
