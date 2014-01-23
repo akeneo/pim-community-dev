@@ -145,6 +145,6 @@ class ChoiceFilterSpec extends ObjectBehavior
             ]
         ])->willReturn($form);
 
-        $this->getForm()->shouldReturn($form);
+        $this->getForm()->shouldReturn(false);
     }
 }
