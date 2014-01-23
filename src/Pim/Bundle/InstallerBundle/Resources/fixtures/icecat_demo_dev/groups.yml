@@ -5,3 +5,11 @@ groups:
             en_US: Samsung LED TVs
             fr_FR: Téléviseurs LED Samsung
             de_DE: Samsung LED-TVs
+    printer:
+        type: VARIANT
+        labels:
+            en_US: Printer
+            fr_FR: Imprimante
+            de_DE: Drucker
+        attributes:
+            - maximum_print_size
