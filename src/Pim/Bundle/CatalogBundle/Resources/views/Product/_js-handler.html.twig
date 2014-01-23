@@ -4,7 +4,7 @@
         function ($, _, Scopable, CurrencyField, Dialog, DialogForm) {
             'use strict';
             $(function () {
-                _.each($('form div.scopable:not(".currency")'), function (field) {
+                _.each($('form div.scopable:not(.currency)'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
