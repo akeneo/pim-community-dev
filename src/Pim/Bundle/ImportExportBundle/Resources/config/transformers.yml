@@ -41,7 +41,7 @@ services:
             - '@pim_import_export.attribute_cache'
             - '@pim_import_export.reader.cached_association'
         tags:
-            - { name: pim_import_export.transformer.entity, entity: "%pim_catalog.entity.product.class%" }
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.product.class% }
 
     pim_import_export.transformer.attribute:
         class: %pim_import_export.transformer.attribute.class%
@@ -51,7 +51,7 @@ services:
             - '@pim_catalog.manager.attribute'
             - '@pim_import_export.entity_cache'
         tags:
-            - { name: pim_import_export.transformer.entity, entity: "%pim_catalog.entity.attribute.class%" }
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.attribute.class% }
 
     pim_import_export.transformer.family:
         class: %pim_import_export.transformer.family.class%
@@ -61,13 +61,13 @@ services:
             - '@pim_catalog.factory.family'
             - %pim_catalog.entity.attribute_requirement.class%
         tags:
-            - { name: pim_import_export.transformer.entity, entity: "%pim_catalog.entity.family.class%" }
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.family.class% }
 
     pim_import_export.transformer.job_instance:
         class: %pim_import_export.transformer.job_instance.class%
         parent: pim_import_export.transformer.entity
         tags:
-            - { name: pim_import_export.transformer.entity, entity: "%pim_catalog.entity.job_instance.class%" }
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.job_instance.class% }
 
     pim_import_export.transformer.column_info_transformer:
         class: %pim_import_export.transformer.column_info_transformer.class%

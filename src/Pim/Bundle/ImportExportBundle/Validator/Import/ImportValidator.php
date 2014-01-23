@@ -85,7 +85,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
-        return ($entity instanceof ReferableInterface )
+        return ($entity instanceof ReferableInterface)
                 ? $entity->getReference()
                 : null;
     }
