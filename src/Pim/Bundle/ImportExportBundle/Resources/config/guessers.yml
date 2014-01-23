@@ -1,7 +1,7 @@
 parameters:
     pim_import_export.transformer.guesser.chained.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
     pim_import_export.transformer.guesser.type.class:               Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
-    pim_import_export.transformer.guesser.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\EntityGuesser
+    pim_import_export.transformer.guesser.relation.class:           Pim\Bundle\ImportExportBundle\Transformer\Guesser\RelationGuesser
     pim_import_export.transformer.guesser.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
     pim_import_export.transformer.guesser.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Guesser\NestedTranslationGuesser
     pim_import_export.transformer.guesser.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
@@ -117,11 +117,11 @@ services:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
 
 
-    pim_import_export.transformer.guesser.entity:
-        class: %pim_import_export.transformer.guesser.entity.class%
+    pim_import_export.transformer.guesser.relation:
+        class: %pim_import_export.transformer.guesser.relation.class%
         public: false
         arguments:
-            - '@pim_import_export.transformer.property.entity'
+            - '@pim_import_export.transformer.property.relation'
             - '@doctrine'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 50 }
@@ -139,7 +139,7 @@ services:
     pim_import_export.transformer.guesser.attribute_options:
         class: %pim_import_export.transformer.guesser.attribute_option.class%
         public: false
-        parent: pim_import_export.transformer.guesser.entity
+        parent: pim_import_export.transformer.guesser.relation
         arguments:
             - %pim_catalog.entity.product_value.class%
         tags:
@@ -149,7 +149,7 @@ services:
         class: %pim_import_export.transformer.guesser.regexp.class%
         public: false
         arguments:
-            - '@pim_import_export.transformer.property.entity'
+            - '@pim_import_export.transformer.property.relation'
             - %pim_catalog.entity.category.class%
             - ['/^products/']
             - { class: %pim_catalog.entity.product.class%, multiple: true }

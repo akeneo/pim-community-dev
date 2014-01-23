@@ -24,6 +24,6 @@ class PimImportExportBundle extends Connector
             ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass())
             ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass())
             ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\EntityTransformerPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterEntityTransformersPass());
     }
 }

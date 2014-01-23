@@ -8,7 +8,7 @@ parameters:
     pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
     pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
     pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
-    pim_import_export.transformer.property.entity.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
+    pim_import_export.transformer.property.relation.class:           Pim\Bundle\ImportExportBundle\Transformer\Property\RelationTransformer
     pim_import_export.transformer.property.media.class:              Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
     pim_import_export.transformer.property.date.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
     pim_import_export.transformer.property.boolean.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
@@ -91,8 +91,8 @@ services:
             - name: pim_import_export.transformer.attribute
               backend_type: default
 
-    pim_import_export.transformer.property.entity:
-        class: %pim_import_export.transformer.property.entity.class%
+    pim_import_export.transformer.property.relation:
+        class: %pim_import_export.transformer.property.relation.class%
         arguments:
             - '@pim_import_export.entity_cache'
         public: false
