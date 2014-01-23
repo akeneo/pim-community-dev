@@ -1,0 +1,379 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+            fr_FR: SKU
+            de_DE: SKU
+        type: pim_catalog_identifier
+        group: marketing
+        required: true
+        unique: true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder: 1
+    name:
+        labels:
+            en_US: Name
+            fr_FR: Nom
+            de_DE: Name
+        type: pim_catalog_text
+        group: marketing
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder: 2
+    description:
+        labels:
+            en_US: Description
+            fr_FR: Description
+            de_DE: Beschreibung
+        type: pim_catalog_textarea
+        group: marketing
+        translatable: true
+        scopable: true
+        sortOrder: 3
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+            de_DE: Gewicht
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 4
+        metricFamily: Weight
+        defaultMetricUnit: KILOGRAM
+        decimalsAllowed: true
+    maximum_scan_size:
+        labels:
+            en_US: 'Maximum scan size'
+            fr_FR: 'Surface maximal de numérisation'
+            de_DE: 'Maximale Scan-Abmessung'
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 5
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+    color_scanning:
+        labels:
+            en_US: 'Color scanning'
+            fr_FR: 'Numérisation couleur'
+            de_DE: Farbscannen
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 6
+    power_requirements:
+        labels:
+            en_US: 'Power requirements'
+            fr_FR: 'Exigences d''alimentation'
+            de_DE: Energiebedarf
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 7
+    maximum_print_size:
+        labels:
+            en_US: 'Maximum print size'
+            fr_FR: 'Format d’impression maximale'
+            de_DE: 'Maximale Druckgröße'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 8
+        options:
+            210-x-1219-mm:
+                code: 210-x-1219-mm
+                labels: { fr_FR: '210 x 1219 mm', en_US: '210 x 1219 mm', de_DE: '210 x 1219 mm' }
+            215-x-355-mm:
+                code: 215-x-355-mm
+                labels: { fr_FR: '215 x 355 mm', en_US: '215 x 355 mm', de_DE: '215 x 355 mm' }
+            216-x-406-4-mm:
+                code: 216-x-406-4-mm
+                labels: { fr_FR: '216 x 406.4 mm', en_US: '216 x 406.4 mm', de_DE: '216 x 406.4 mm' }
+            216-x-432-mm:
+                code: 216-x-432-mm
+                labels: { fr_FR: '216 x 432 mm', en_US: '216 x 432 mm', de_DE: '216 x 432 mm' }
+            297-x-432-mm:
+                code: 297-x-432-mm
+                labels: { fr_FR: '297 x 432 mm', en_US: '297 x 432 mm', de_DE: '297 x 432 mm' }
+            a3-297-x-420-mm-:
+                code: a3-297-x-420-mm-
+                labels: { fr_FR: 'A3 (297 x 420 mm)', en_US: 'A3 (297 x 420 mm)', de_DE: 'A3 (297 x 420 mm)' }
+            a4-210-x-297-mm-:
+                code: a4-210-x-297-mm-
+                labels: { fr_FR: 'A4 (210 x 297 mm)', en_US: 'A4 (210 x 297 mm)', de_DE: 'A4 (210 x 297 mm)' }
+            a4-letter-216-x-297-mm-:
+                code: a4-letter-216-x-297-mm-
+                labels: { fr_FR: 'A4 / Letter (216 x 297 mm)', en_US: 'A4 / Letter (216 x 297 mm)', de_DE: 'A4 / Letter (216 x 297 mm)' }
+            din-a3-310-x-437-mm-:
+                code: din-a3-310-x-437-mm-
+                labels: { fr_FR: 'DIN A3 (310 x 437 mm)', en_US: 'DIN A3 (310 x 437 mm)', de_DE: 'DIN A3 (310 x 437 mm)' }
+            legal-216-x-356-mm-:
+                code: legal-216-x-356-mm-
+                labels: { fr_FR: 'Legal (216 x 356 mm)', en_US: 'Legal (216 x 356 mm)', de_DE: 'Legal (216 x 356 mm)' }
+    sensor_type:
+        labels:
+            en_US: 'Sensor type'
+            fr_FR: 'Type de capteur'
+            de_DE: CCD-Bildsensor
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 9
+        options:
+            ccd:
+                code: ccd
+                labels: { fr_FR: CCD, en_US: CCD, de_DE: CCD }
+            cmos:
+                code: cmos
+                labels: { fr_FR: CMOS, en_US: CMOS, de_DE: CMOS }
+    total_megapixels:
+        labels:
+            en_US: 'Total megapixels'
+            fr_FR: 'Total des megapixels'
+            de_DE: 'Total megapixels'
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 10
+        decimalsAllowed: true
+        negativeAllowed: false
+    optical_zoom:
+        labels:
+            en_US: 'Optical zoom'
+            fr_FR: 'Zoom optique'
+            de_DE: 'Optischer Zoom'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 11
+        decimalsAllowed: true
+        negativeAllowed: false
+    image_stabilizer:
+        labels:
+            en_US: 'Image stabilizer'
+            fr_FR: 'Stabilisateur d''image'
+            de_DE: Bildstabilisator
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 12
+    camera_type:
+        labels:
+            en_US: 'Camera type'
+            fr_FR: 'Type d''appareil photo'
+            de_DE: Kamera-Typ
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 13
+        options:
+            bridge:
+                code: bridge
+                labels: { fr_FR: Bridge, en_US: Bridge, de_DE: Bridge }
+            compact:
+                code: compact
+                labels: { fr_FR: Compact, en_US: Compact, de_DE: Compact }
+            milc:
+                code: milc
+                labels: { fr_FR: MILC, en_US: MILC, de_DE: MILC }
+            milc-body:
+                code: milc-body
+                labels: { fr_FR: 'MILC Body', en_US: 'MILC Body', de_DE: 'MILC Body' }
+            slr-body:
+                code: slr-body
+                labels: { fr_FR: 'SLR Body', en_US: 'SLR Body', de_DE: 'SLR Body' }
+            slr-kit:
+                code: slr-kit
+                labels: { fr_FR: 'SLR Kit', en_US: 'SLR Kit', de_DE: 'SLR Kit' }
+    thd:
+        labels:
+            en_US: 'Total Harmonic Distortion (THD)'
+            fr_FR: 'DHT, distorsion harmonique totale'
+            de_DE: 'THD, totalklirren'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 14
+        decimalsAllowed: false
+        negativeAllowed: false
+    snr:
+        labels:
+            en_US: 'Signal-to-Noise Ratio (SNR)'
+            fr_FR: 'Rapport de signal-à-bruit'
+            de_DE: 'Signal-zu-Geräusche Verhältnis (SNR)'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 21
+        decimalsAllowed: false
+        negativeAllowed: false
+    headphone_connectivity:
+        labels:
+            en_US: 'Headphone connectivity'
+            fr_FR: Casque
+            de_DE: Kopfhörerausgang
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 16
+        options:
+            6-3mm:
+                code: 6-3mm
+                labels: { fr_FR: 6.3mm, en_US: 6.3mm, de_DE: 6.3mm }
+    maximum_video_resolution:
+        labels:
+            en_US: 'Maximum video resolution'
+            fr_FR: 'Résolution vidéo maximale'
+            de_DE: 'Maximale Video-Auflösung'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 17
+        options:
+            1280-x-1024:
+                code: 1280-x-1024
+                labels: { fr_FR: '1280 x 1024', en_US: '1280 x 1024', de_DE: '1280 x 1024' }
+            1280-x-720:
+                code: 1280-x-720
+                labels: { fr_FR: '1280 x 720', en_US: '1280 x 720', de_DE: '1280 x 720' }
+            1280-x-960:
+                code: 1280-x-960
+                labels: { fr_FR: '1280 x 960', en_US: '1280 x 960', de_DE: '1280 x 960' }
+            1600-x-1200:
+                code: 1600-x-1200
+                labels: { fr_FR: '1600 x 1200', en_US: '1600 x 1200', de_DE: '1600 x 1200' }
+            1920-x-1080:
+                code: 1920-x-1080
+                labels: { fr_FR: '1920 x 1080', en_US: '1920 x 1080', de_DE: '1920 x 1080' }
+            2560-x-1920:
+                code: 2560-x-1920
+                labels: { fr_FR: '2560 x 1920', en_US: '2560 x 1920', de_DE: '2560 x 1920' }
+            2560-x-2048:
+                code: 2560-x-2048
+                labels: { fr_FR: '2560 x 2048', en_US: '2560 x 2048', de_DE: '2560 x 2048' }
+            320-x-240:
+                code: 320-x-240
+                labels: { fr_FR: '320 x 240', en_US: '320 x 240', de_DE: '320 x 240' }
+            640-x-480:
+                code: 640-x-480
+                labels: { fr_FR: '640 x 480', en_US: '640 x 480', de_DE: '640 x 480' }
+            800-x-600:
+                code: 800-x-600
+                labels: { fr_FR: '800 x 600', en_US: '800 x 600', de_DE: '800 x 600' }
+    maximum_frame_rate:
+        labels:
+            en_US: 'Maximum frame rate'
+            fr_FR: 'Cadence maximale'
+            de_DE: 'Maximale Bildfrequenz'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 18
+        decimalsAllowed: false
+        negativeAllowed: false
+    multifunctional_functions:
+        labels:
+            en_US: 'All-in-one functions'
+            fr_FR: 'Fonctions tout-en-un'
+            de_DE: 'Functies all-in-one'
+        type: pim_catalog_multiselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 19
+        options:
+            copy:
+                code: copy
+                labels: { fr_FR: copy, en_US: copy, de_DE: copy }
+            fax:
+                code: fax
+                labels: { fr_FR: fax, en_US: fax, de_DE: fax }
+            n:
+                code: n
+                labels: { fr_FR: N, en_US: N, de_DE: N }
+            print:
+                code: print
+                labels: { fr_FR: print, en_US: print, de_DE: print }
+            scan:
+                code: scan
+                labels: { fr_FR: scan, en_US: scan, de_DE: scan }
+    response_time:
+        labels:
+            en_US: 'Response time (ms)'
+            fr_FR: 'Temps de réponse (ms)'
+            de_DE: Erscheinungstermin
+        type: pim_catalog_number
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 20
+    display_srgb:
+        labels:
+            en_US: 'Display sRGB'
+            fr_FR: sRGB
+            de_DE: sRGB
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 22
+    display_color:
+        labels:
+            en_US: Color
+            fr_FR: Couleur
+            de_DE: Farbe
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 23
+        decimalsAllowed: true
+    display_diagonal:
+        labels:
+            en_US: 'Display diagonal'
+            fr_FR: 'Taille de l''écran'
+            de_DE: Bildschirmdiagonale
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: INCH
+    release_date:
+        labels:
+            en_US: 'Release date'
+            fr_FR: 'Date de sortie'
+            de_DE: Erscheinungstermin
+        type: pim_catalog_date
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 25
+    viewing_area:
+        labels:
+            en_US: 'Effective viewing area'
+            fr_FR: 'Zone d''affichage active'
+            de_DE: 'Effektive Bildfläche'
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+    price:
+        labels:
+            en_US: Price
+            fr_FR: Prix
+            de_DE: Preis
+        type: pim_catalog_price_collection
+        group: marketing
+        useableAsGridFilter: true
+        useableAsGridColumn: true
+        sortOrder: 25
+        decimalsAllowed: true
+    picture:
+        labels:
+            en_US: Picture
+            fr_FR: Photographie
+            de_DE: Photography
+        type: pim_catalog_image
+        group: marketing
+        useableAsGridFilter: false
+        useableAsGridColumn: false
+        sortOrder: 27
+        allowedExtensions: 'jpg,jpeg,gif'

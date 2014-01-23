@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -15,7 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler\AddAttributeTyp
  */
 class PimFlexibleEntityBundle extends Bundle
 {
-
     /**
      * {@inheritdoc}
      */

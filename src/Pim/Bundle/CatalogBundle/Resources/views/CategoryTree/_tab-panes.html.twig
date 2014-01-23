@@ -7,12 +7,13 @@
         {{ form_row(form.label) }}
     {% endset %}
 
-    {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': nodeValues }) }}
+    {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.node_values': nodeValues }) }}
 
 </div>
 
 {% if form.vars.value.id %}
     <div class="tab-pane" id="history">
-        <div id="history-grid"></div>
+        {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+        {{ dataGrid.renderHistoryGrid(form.vars.value) }}
     </div>
 {% endif %}

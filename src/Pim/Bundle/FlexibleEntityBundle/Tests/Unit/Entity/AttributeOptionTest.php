@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
@@ -14,7 +15,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @staticvar string
      */

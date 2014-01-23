@@ -52,9 +52,9 @@ class Collection
     /**
      * Set id
      *
-     * @param int $id
+     * @param integer $id
      *
-     * @return $this
+     * @return Collection
      */
     public function setId($id)
     {

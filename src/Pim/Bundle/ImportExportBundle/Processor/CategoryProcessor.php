@@ -171,6 +171,7 @@ class CategoryProcessor extends TransformerProcessor
             $this->stepExecution->addWarning(
                 $this->getName(),
                 implode("\n", $this->getErrorMessages($errors)),
+                array(),
                 $item
             );
         } else {

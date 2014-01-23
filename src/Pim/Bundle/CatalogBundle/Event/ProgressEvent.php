@@ -19,21 +19,21 @@ class ProgressEvent extends Event
     protected $section;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $totalItems;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $treatedItems;
 
     /**
      * Constructor
      *
-     * @param int    $totalItems
-     * @param int    $treatedItems
-     * @param string $section
+     * @param integer $totalItems
+     * @param integer $treatedItems
+     * @param string  $section
      */
     public function __construct($totalItems, $treatedItems, $section = '')
     {
@@ -47,7 +47,7 @@ class ProgressEvent extends Event
      *
      * @return string
      */
-    public function getsection()
+    public function getSection()
     {
         return $this->section;
     }

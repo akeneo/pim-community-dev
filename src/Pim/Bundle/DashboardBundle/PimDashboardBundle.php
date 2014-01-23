@@ -3,6 +3,8 @@
 namespace Pim\Bundle\DashboardBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Dashboard bundle
@@ -13,4 +15,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimDashboardBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new Compiler\RegisterWidgetsPass());
+    }
 }

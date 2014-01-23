@@ -54,23 +54,16 @@
                     {% endfor %}
                 {% endset %}
                 {{ elements.accordion({
-                    'General Properties': generalProperties,
+                    'pane.accordion.general_properties': generalProperties,
                     'pim_catalog.channel.pick_conversion_unit': conversionOptions
                 }) }}
             </div>
             {% if form.vars.value.id %}
+                {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
                 <div class="tab-pane" id="history">
-                    <div id="history-grid"></div>
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
                 </div>
             {% endif %}
         </div>
     {{ form_end(form) }}
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-
-{% if form.vars.value.id %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with { 'datagridView': historyDatagrid, 'selector': '#history-grid' } %}
-{% endif %}
 {% endblock %}

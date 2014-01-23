@@ -383,7 +383,7 @@ class CategoryExtension extends \Twig_Extension
      * Count products for a category
      *
      * @param CategoryInterface $category
-     * @param bool              $includeSub
+     * @param boolean           $includeSub
      *
      * @return string
      */

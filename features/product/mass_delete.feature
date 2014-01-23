@@ -16,8 +16,8 @@ Feature: Delete many product at once
 
   Scenario: Remove many products
     Given I mass-delete products pim, pam, poum
-    Then I should see "Execution confirmation"
-    And I confirm the removal
+    Then I should see "Are you sure you want to delete selected products?"
+    When I confirm the removal
     Then I should not see product pim
-    Then I should not see product pam
-    Then I should not see product poum
+    And I should not see product pam
+    And I should not see product poum

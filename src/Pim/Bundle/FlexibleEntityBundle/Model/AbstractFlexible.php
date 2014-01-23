@@ -16,7 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 abstract class AbstractFlexible implements FlexibleInterface, TimestampableInterface,
 TranslatableInterface, ScopableInterface
 {
-
     /**
      * @var integer $id
      */

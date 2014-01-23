@@ -46,6 +46,14 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
+    public function supportsEncoding($format)
+    {
+        return self::FORMAT === $format;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function encode($data, $format, array $context = array())
     {
         if (!is_array($data)) {
@@ -114,14 +122,6 @@ class CsvEncoder implements EncoderInterface
             'withHeader'    => false,
             'heterogeneous' => false,
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsEncoding($format)
-    {
-        return self::FORMAT === $format;
     }
 
     /**

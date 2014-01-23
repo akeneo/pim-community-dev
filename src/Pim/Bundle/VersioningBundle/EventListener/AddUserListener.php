@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
 /**
  * Add current user to version builder
@@ -39,6 +38,16 @@ class AddUserListener implements EventSubscriberInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            KernelEvents::REQUEST => 'onKernelRequest',
+        );
+    }
+
+    /**
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
@@ -51,15 +60,5 @@ class AddUserListener implements EventSubscriberInterface
         if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->listener->setUsername($token);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-            KernelEvents::REQUEST => 'onKernelRequest',
-        );
     }
 }

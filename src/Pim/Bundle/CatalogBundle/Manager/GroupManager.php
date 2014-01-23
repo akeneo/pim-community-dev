@@ -75,6 +75,19 @@ class GroupManager
     }
 
     /**
+     * Get choices
+     *
+     * @return array
+     */
+    public function getChoices()
+    {
+        $choices = $this->getRepository()->getChoices();
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
      * Get axis as choice list
      *
      * @param boolean $isVariant
@@ -131,8 +144,8 @@ class GroupManager
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
-     * @param Group $group
-     * @param int   $maxResults
+     * @param Group   $group
+     * @param integer $maxResults
      *
      * @return array
      */

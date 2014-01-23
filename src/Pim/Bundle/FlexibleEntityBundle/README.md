@@ -8,38 +8,6 @@ Areas of responsibilities :
 
 Based on classic Doctrine 2 classes, entity, repository, entity manager
 
-Install
-=======
-
-To install for dev :
-
-```bash
-$ php composer.phar update --dev
-```
-To use as dependency, use composer and add bundle in your AppKernel :
-
-```yaml
-    "require": {
-        [...]
-        "akeneo/FlexibleEntityBundle": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:akeneo/FlexibleEntityBundle.git",
-            "branch": "master"
-        }
-    ]
-
-```
-
-Run unit tests
-==============
-
-```bash
-$ phpunit --coverage-html=cov/
-```
-
 Main classes / concepts
 =======================
 

@@ -21,7 +21,8 @@ parameters:
     default_locale:    default
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    upload_dir:        %kernel.root_dir%/uploads_test/product
+    upload_dir:        %kernel.root_dir%/uploads/product
+    archive_dir:       %kernel.root_dir%/archive
 
     installed:         true
 

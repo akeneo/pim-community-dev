@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
@@ -120,8 +121,6 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
      * Data provider
      *
      * @return multitype:multitype:number string
-     *
-     * @static
      */
     public static function criteriaProvider()
     {

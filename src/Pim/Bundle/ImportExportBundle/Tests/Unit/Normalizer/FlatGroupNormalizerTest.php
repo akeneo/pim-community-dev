@@ -79,7 +79,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
      */
     protected function getAttributes($data)
     {
-        $data['attributes']= explode(',', $data['attributes']);
+        $data['attributes'] = explode(',', $data['attributes']);
 
         return parent::getAttributes($data);
     }

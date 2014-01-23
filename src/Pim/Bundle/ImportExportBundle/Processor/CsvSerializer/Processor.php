@@ -8,6 +8,7 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * An abstract processor to serialize data into csv
@@ -19,8 +20,6 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @abstract
  */
 abstract class Processor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
@@ -40,24 +39,28 @@ abstract class Processor extends AbstractConfigurableStepElement implements
      */
     protected $enclosure = '"';
 
-    /**
-     * @var boolean
-     */
+    /** @var boolean */
     protected $withHeader = true;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
+
+    /** @var SerializerInterface */
+    protected $serializer;
+
+    /** @var LocaleManager */
+    protected $localeManager;
 
     /**
      * Constructor
      *
      * @param SerializerInterface $serializer
+     * @param LocaleManager       $localeManager
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer, LocaleManager $localeManager)
     {
-        $this->serializer = $serializer;
+        $this->serializer    = $serializer;
+        $this->localeManager = $localeManager;
     }
 
     /**

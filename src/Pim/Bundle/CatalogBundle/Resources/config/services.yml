@@ -136,6 +136,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    pim_catalog.twig.object_class_extension:
+        class: Pim\Bundle\CatalogBundle\Twig\ObjectClassExtension
+        tags:
+            - { name: twig.extension }
+
     # extension listener
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_catalog.event_listener.user_context.class%

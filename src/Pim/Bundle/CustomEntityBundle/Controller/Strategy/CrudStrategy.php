@@ -62,6 +62,21 @@ class CrudStrategy implements StrategyInterface
     }
 
     /**
+     * Index action
+     *
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
+     * @return Response
+     */
+    public function indexAction(ConfigurationInterface $configuration, Request $request)
+    {
+        $template = $configuration->getIndexTemplate();
+
+        return $this->render($configuration, $request, $template, array());
+    }
+
+    /**
      * Quick create action
      *
      * @param ConfigurationInterface $configuration

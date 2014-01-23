@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle;
 
 /**
@@ -10,7 +11,6 @@ namespace Pim\Bundle\FlexibleEntityBundle;
  */
 final class FlexibleEntityEvents
 {
-
     /**
      * This event is thrown each time an attribute is created in the system.
      *

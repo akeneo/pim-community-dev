@@ -5,11 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -35,6 +32,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
      */
     protected $family;
+
+    /**
+     * @var integer
+     */
+    protected $familyId;
 
     /**
      * @var ArrayCollection $categories
@@ -91,11 +93,39 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      *
      * @return Product
      */
-    public function setFamily($family)
+    public function setFamily(Family $family = null)
     {
+        if (null !== $family) {
+            $this->familyId = $family->getId();
+        }
         $this->family = $family;
 
         return $this;
+    }
+
+    /**
+     * Set family id
+     *
+     * @param integer $familyId
+     *
+     * @return Product
+     */
+    public function setFamilyId($familyId)
+    {
+        $this->familyId = $familyId;
+
+        return $this;
+    }
+
+    /**
+     * Get family id
+     *
+     * @return int
+     */
+    public function getFamilyId()
+    {
+        return $this->familyId;
+
     }
 
     /**

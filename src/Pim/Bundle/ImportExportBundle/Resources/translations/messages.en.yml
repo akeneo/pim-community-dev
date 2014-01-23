@@ -1,7 +1,23 @@
+# Entities
+export profile: export profile
+import profile: import profile
+Job: Job
+Connector: Connector
+
 pim_import_export:
     ## Job status
     status:
         0: Ready
+
+    batch_status:
+        1: COMPLETED
+        2: STARTING
+        3: STARTED
+        4: STOPPING
+        5: STOPPED
+        6: FAILED
+        7: ABANDONED
+        8: UNKNOWN
 
     ## Job titles
     jobs:
@@ -50,7 +66,9 @@ pim_import_export:
         dummy_writer.title:                  Dummy writer
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
-        csv_reader.title:                    CSV reader
+        csv_reader:
+            title:                      CSV reader
+            invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
         product_processor.title:             Product creation
@@ -125,12 +143,35 @@ pim_import_export:
         invalid: download invalid data
 
 # Page titles:
-Import management:        Import management
-Import %job.name% | Edit: Import %job.name% | Edit
-Import %job.name% | Show: Import %job.name% | Show
 Export management:        Export management
 Export %job.name% | Edit: Export %job.name% | Edit
 Export %job.name% | Show: Export %job.name% | Show
+Export profiles:                       Export profiles
+Export profiles | Create:              Export profiles | Create
+Export profiles %export.label% | Edit: Export profiles %export.label% | Edit
+Exports history: Exports history
+
+Import management:        Import management
+Import %job.name% | Edit: Import %job.name% | Edit
+Import %job.name% | Show: Import %job.name% | Show
+Import profiles:                       Import profiles
+Import profiles | Create:              Import profiles | Create
+Import profiles %import.label% | Edit: Import profiles %import.label% | Edit
+Imports history: Imports history
+
+# Page header titles
+export profile:
+    overview: export profile overview
+    create:   create export profile
+    edit:     edit export profile
+export report:
+    overview: export reports
+import profile:
+    overview: import profile overview
+    create:   create import profile
+    edit:     edit import profile
+import report:
+    overview: import reports
 
 # ACLs
 pim_importexport:
@@ -159,3 +200,48 @@ pim_importexport:
             show: View import report details
             dl_log: Download import report log
             dl_files: Download imported files
+
+# Buttons
+btn:
+    create:
+        export profile: create export profile
+        import profile: create import profile
+
+Upload and import: Upload and import
+
+# Confirmation messages
+confirmation:
+    remove:
+        export profile:   Are you sure you want to delete the export profile %name%?
+        import profile:   Are you sure you want to delete the import profile %name%?
+
+# Flash messages
+flash:
+    export:
+        created: The export has been successfully created
+        removed: The export has been removed
+        updated: The export has been successfully updated
+    import:
+        created: The import has been successfully created
+        removed: The import has been removed
+        updated: The import has been successfully updated
+
+# Menu entries
+pim_menu:
+    item:
+        export_history: Exports history
+        export_profile: Export profiles
+        import_history: Imports history
+        import_profile: Import profiles
+
+# Tabs
+General properties: General properties
+History: History
+pane.accordion:
+    properties: Properties
+    global_settings: Global settings
+
+# Popin titles
+popin.create:
+    export_profile.title: Create a new export profile
+    import_profile.title: Create a new import profile

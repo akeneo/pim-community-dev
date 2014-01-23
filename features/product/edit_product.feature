@@ -3,7 +3,7 @@ Feature: Edit a product
   In order to enrich the catalog
   As a user
   I need to be able edit and save a product
-  
+
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "admin"

@@ -12,7 +12,7 @@ Feature: Filter products per metric
       | library   |
     And the following attributes:
       | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
-      | weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
+      | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce |
       | postit | furniture | yes     | 120 GRAM         |
@@ -26,7 +26,7 @@ Feature: Filter products per metric
     And the grid should contain 2 elements
     And I should see products postit and book
     And I should be able to use the following filters:
-      | filter | value      | result          |
+      | filter | value            | result          |
       | Weight | >= 200 Gram      | book            |
       | Weight | > 120 Gram       | book            |
       | Weight | = 120 Gram       | postit          |

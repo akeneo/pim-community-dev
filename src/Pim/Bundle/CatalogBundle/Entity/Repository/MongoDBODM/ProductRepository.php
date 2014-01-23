@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -17,7 +18,8 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface
+class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
+ ReferableEntityRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -197,5 +199,37 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         // FIXME_MONGO Shortcut, but must do the same thing
         // than the parent
         return $this->find($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByReference($code)
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceProperties()
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteProductsPerChannels()
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

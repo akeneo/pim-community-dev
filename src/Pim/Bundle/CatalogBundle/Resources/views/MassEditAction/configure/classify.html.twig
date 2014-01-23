@@ -52,13 +52,10 @@
                 {% if trees %}
                     {% if app.user.defaulttree is defined %}
                         {% for tree in trees %}
-                            {% if tree.code == app.user.defaulttree %}
+                            {% if loop.first or tree.code == app.user.defaulttree.code %}
                                 {% set selectedTree = tree.id %}
                             {% endif %}
                         {% endfor %}
-                    {% else %}
-                        {% set firstTree = trees|first %}
-                        {% set selectedTree = firstTree.id %}
                     {% endif %}
                 {% endif %}
                 <div id="trees" data-selected-tree="{{ selectedTree }}">

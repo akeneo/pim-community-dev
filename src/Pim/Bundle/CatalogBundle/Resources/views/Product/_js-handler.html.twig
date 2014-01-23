@@ -18,22 +18,18 @@
                         {{ 'info.product.keep attributes'|trans }}
                     {% endset %}
 
-                    var message = '{{ familyWidget|e("js")|raw }}',
-                        title   = '{{ "info.product.change family"|trans }}',
-                        doAction = function () {
-                            $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
-                            $('#{{ form.vars.id }}').submit();
-                        };
-
                     $('#edit-family').on('click', function () {
-                        Dialog.confirm(message, title, doAction);
+                        Dialog.confirm(
+                            '{{ familyWidget|e("js")|raw }}',
+                            '{{ "info.product.change family"|trans }}',
+                            function () {
+                                $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                $('#{{ form.vars.id }}').submit();
+                            }
+                        );
                         $('#{{ form.family.vars.id }}')
                             .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                             .select2({ allowClear: true });
-                    });
-
-                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function () {
-                        $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
                     });
                 {% endif %}
 

@@ -1,0 +1,13 @@
+---
+Close: Close
+Update: Update
+Selected Rows: Geselecteerde rijen
+Localized value: Gelokaliseerde waarde
+Action: Actie
+Unit: Eenheid
+Currency: Valuta
+jstree:
+  all: Alle producten
+  unclassified: Niet-geclassificeerde producten
+  no_tree: Geen structuur beschikbaar
+  include_sub: Inclusief subcategorieën

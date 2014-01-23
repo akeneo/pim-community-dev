@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -257,7 +256,7 @@ class Media
     /**
      * Set the media id to copy from
      *
-     * @param int $copyFrom
+     * @param integer $copyFrom
      *
      * @return Media
      */

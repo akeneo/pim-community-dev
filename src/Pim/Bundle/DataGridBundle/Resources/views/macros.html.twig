@@ -1,0 +1,44 @@
+{#
+    Datagrid macro to load state listener before the grid builders
+#}
+{% macro renderGrid(name, params = {}, renderParams = {}) %}
+    {% set metaData = oro_datagrid_metadata(name, params) %}
+    {% set listenerName = 'pim/datagrid/state-listener' %}
+    {% set listenerActive = listenerName in metaData.requireJSModules %}
+    {% set emptyData = {
+        data: [],
+        options: {
+            totalRecords: 0
+        }
+    } %}
+
+    <div id="grid-{{ name }}" data-type="datagrid" data-data="{% if listenerActive %}{{ emptyData|json_encode }}{% else %}{{ oro_datagrid_data(name, params)|escape }}{% endif %}"
+         {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
+         data-metadata="{{ metaData|json_encode }}"></div>
+    <script type="text/javascript">
+        {% if listenerActive %}
+            require(
+                ['{{ listenerName }}'],
+                function (StateListener) {
+                    $(function() {
+                        StateListener.prepareGrid('{{ name }}');
+                    });
+                }
+            );
+        {% endif %}
+        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        function ($, datagridBuilder) {
+            var builders = _.toArray(arguments).slice(2);
+            $(function () {
+                datagridBuilder(builders);
+            });
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Datagrid macro to render entity history grid
+#}
+{% macro renderHistoryGrid(entity) %}
+    {{ _self.renderGrid('history-grid', { object_class: entity|class, object_id: entity.id }) }}
+{% endmacro %}

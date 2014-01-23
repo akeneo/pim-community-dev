@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
@@ -15,7 +16,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class ScopableListenerTest extends AbstractFlexibleManagerTest
 {
-
     /**
      * @var Flexible
      */

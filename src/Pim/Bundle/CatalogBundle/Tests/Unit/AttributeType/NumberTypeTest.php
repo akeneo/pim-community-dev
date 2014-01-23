@@ -29,8 +29,6 @@ class NumberTypeTest extends AttributeTypeTestCase
     /**
      * Data provider for build value form type method
      *
-     * @static
-     *
      * @return array
      */
     public static function buildValueFormTypeDataProvider()

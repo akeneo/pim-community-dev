@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
@@ -14,7 +14,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  */
 class EmailCollectionTypeTest extends TypeTestCase
 {
-
     /**
      * {@inheritdoc}
      */

@@ -93,12 +93,12 @@ class AuditBuilder
         $diffData = array();
         foreach ($merge as $changedField => $data) {
             if ($data['old'] != $data['new'] || !isset($oldData[$changedField])) {
-                $diffData[$changedField]= $data;
+                $diffData[$changedField] = $data;
             }
         }
 
         if (!empty($diffData) && $this->context) {
-            $diffData['context']= array('old' => '', 'new' => $this->context);
+            $diffData['context'] = array('old' => '', 'new' => $this->context);
         }
 
         return $diffData;
@@ -116,11 +116,11 @@ class AuditBuilder
     {
         $merge = array();
         foreach ($newData as $field => $value) {
-            $merge[$field]= array('old' => '', 'new' => $value);
+            $merge[$field] = array('old' => '', 'new' => $value);
         }
         foreach ($oldData as $field => $value) {
             if (!isset($merge[$field])) {
-                $merge[$field]= array('old' => $value, 'new' => '');
+                $merge[$field] = array('old' => $value, 'new' => '');
             } else {
                 $merge[$field]['old'] = $value;
             }

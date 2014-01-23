@@ -19,7 +19,7 @@ Feature: Display the variant group history
     And I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | property   | value             |
-      | create | 1       | code       | converse_sneakers |
-      | create | 1       | type       | VARIANT           |
-      | create | 1       | attributes | size              |
+      | version | property   | value             |
+      | 1       | code       | converse_sneakers |
+      | 1       | type       | VARIANT           |
+      | 1       | attributes | size              |

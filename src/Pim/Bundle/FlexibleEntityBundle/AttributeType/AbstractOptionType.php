@@ -4,7 +4,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Abstract option attribute type

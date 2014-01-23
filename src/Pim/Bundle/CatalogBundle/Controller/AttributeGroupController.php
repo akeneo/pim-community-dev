@@ -21,7 +21,6 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * AttributeGroup controller
@@ -32,11 +31,6 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
-    protected $datagridHelper;
-
     /**
      * @var AttributeGroupHandler
      */
@@ -63,7 +57,6 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $datagridHelper
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
      * @param string                   $attributeClass
@@ -77,7 +70,6 @@ class AttributeGroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridHelperInterface $datagridHelper,
         AttributeGroupHandler $formHandler,
         Form $form,
         $attributeClass
@@ -93,7 +85,6 @@ class AttributeGroupController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper = $datagridHelper;
         $this->formHandler    = $formHandler;
         $this->form           = $form;
         $this->attributeClass = $attributeClass;
@@ -149,25 +140,7 @@ class AttributeGroupController extends AbstractDoctrineController
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
-    }
-
-    /**
-     * History of a group
-     *
-     * @param Request        $request
-     * @param AttributeGroup $group
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
-     */
-    public function historyAction(Request $request, AttributeGroup $group)
-    {
-        $historyGridView = $this->getHistoryGrid($group)->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
-        }
     }
 
     /**
@@ -321,21 +294,5 @@ class AttributeGroupController extends AbstractDoctrineController
     protected function getGroupedAttributes()
     {
         return $this->getRepository($this->attributeClass)->findAllGrouped();
-    }
-
-    /**
-     * @param AttributeGroup $group
-     *
-     * @return Datagrid
-     */
-    protected function getHistoryGrid(AttributeGroup $group)
-    {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_attributegroup_history',
-            array('id' => $group->getId())
-        );
-
-        return $historyGrid;
     }
 }

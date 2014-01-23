@@ -27,9 +27,9 @@ Feature: Import options
     And I launch the import job
     And I wait for the job to finish
     Then there should be the following options:
-      | attribute    | code        | default    | label-en_US |
-      | manufacturer | Converse    | 0          | Converse    |
-      | manufacturer | TimberLand  | 0          | TimberLand  |
-      | manufacturer | Nike        | 0          | Nike        |
-      | manufacturer | Caterpillar | 1          | Caterpillar |
+      | attribute    | code        | default | label-en_US |
+      | manufacturer | Converse    | 0       | Converse    |
+      | manufacturer | TimberLand  | 0       | TimberLand  |
+      | manufacturer | Nike        | 0       | Nike        |
+      | manufacturer | Caterpillar | 1       | Caterpillar |
 

@@ -1,6 +1,8 @@
-{% extends 'PimCatalogBundle:Group:index.html.twig' %}
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+
     {% set title = 'variant group.overview'|trans %}
 
     {% set buttons %}
@@ -12,5 +14,8 @@
         ) }}
     {% endset %}
 
-    {{ parent() }}
+    {{ elements.page_header(title, buttons) }}
+
+    {{ dataGrid.renderGrid('variant-group-grid', {localeCode: localeCode, groupTypes: groupTypes}) }}
+
 {% endblock %}

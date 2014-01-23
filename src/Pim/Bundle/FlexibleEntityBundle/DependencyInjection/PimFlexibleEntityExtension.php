@@ -23,7 +23,7 @@ class PimFlexibleEntityExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
-        $configs[]= $this->mergeFlexibleConfig($bundles);
+        $configs[] = $this->mergeFlexibleConfig($bundles);
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -51,7 +51,7 @@ class PimFlexibleEntityExtension extends Extension
                 $bundleConfig = Yaml::parse(realpath($file));
                 if (isset($bundleConfig['entities_config'])) {
                     foreach ($bundleConfig['entities_config'] as $entity => $entityConfig) {
-                        $entitiesConfig['entities_config'][$entity]= $entityConfig;
+                        $entitiesConfig['entities_config'][$entity] = $entityConfig;
                     }
                 }
             }

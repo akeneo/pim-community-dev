@@ -293,7 +293,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             ->method('addWarning')
             ->will(
                 $this->returnCallback(
-                    function ($name, $message, $item) use (&$errorMessages, $data) {
+                    function ($name, $message, array $messageParameters, $item) use (&$errorMessages, $data) {
                         list($code, $expectedMessage) = each($errorMessages);
                         $this->assertEquals('category_processor', $name);
                         $this->assertEquals($expectedMessage, $message);

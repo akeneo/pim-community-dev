@@ -1,0 +1,102 @@
+categories:
+    default:
+        labels:
+            en_US: Master catalog
+            fr_FR: Catalog principal
+    collections:
+        labels:
+            en_US: Collections
+            fr_FR: Collections
+    colors:
+        labels:
+            en_US: Colors
+            fr_FR: Couleurs
+    europe_sales:
+        labels:
+            en_US: Europe Sales Catalog
+            fr_FR: Catalog de ventes européenees
+    books:
+        labels:
+            en_US: Books
+            fr_FR: Livres
+        parent: default
+    computers:
+        labels:
+            en_US: Computers
+            fr_FR: Ordinateurs
+        parent: default
+    desktops:
+        labels:
+            en_US: Desktops
+            fr_FR: Ordinateurs de bureau
+        parent: computers
+    laptops:
+        labels:
+            en_US: Laptops
+            fr_FR: Ordinateurs portables
+        parent: computers
+    notebooks:
+        labels:
+            en_US: Notebooks
+            fr_FR: Ordinateurs ultra-portables
+        parent: computers
+    accessories:
+        labels:
+            en_US: Accessories
+            fr_FR: Accessoires
+        parent: computers
+    games:
+        labels:
+            en_US: Games
+            fr_FR: Jeux
+        parent: computers
+    software:
+        labels:
+            en_US: Software
+            fr_FR: Logiciels
+        parent: computers
+    apparels_shoes:
+        labels:
+            en_US: Apparels & Shoes
+            fr_FR: Habillements & chaussures
+        parent: default
+    shirts:
+        labels:
+            en_US: Shirts
+            fr_FR: Chemises
+        parent: apparels_shoes
+    jeans:
+        labels:
+            en_US: Jeans
+            fr_FR: Jeans
+        parent: apparels_shoes
+    shoes:
+        labels:
+            en_US: Shoes
+            fr_FR: Chaussures
+        parent: apparels_shoes
+    shoes_male:
+        labels:
+            en_US: Shoes Male
+            fr_FR: Chaussures homme
+        parent: shoes
+    shoes_female:
+        labels:
+            en_US: Shoes Female
+            fr_FR: Chaussures femme
+        parent: shoes
+    shoes_eu:
+        labels:
+            en_US: Shoes
+            fr_FR: Chaussures
+        parent: europe_sales
+    shoes_male_eu:
+        labels:
+            en_US: Shoes Male
+            fr_FR: Chaussures homme
+        parent: shoes_eu
+    shoes_female_eu:
+        labels:
+            en_US: Shoes Female
+            fr_FR: Chaussures femme
+        parent: shoes_eu

@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Attribute manager
@@ -192,6 +191,23 @@ class AttributeManager implements AttributeManagerInterface
         $choices = array();
         foreach ($types as $type) {
             $choices[$type] = $type;
+        }
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
+     * Get the attribute group choices
+     *
+     * @return array
+     */
+    public function getAttributeGroupChoices()
+    {
+        $groups = $this->objectManager->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
+        $choices = array();
+        foreach ($groups as $group) {
+            $choices[$group->getCode()] = $group->getLabel();
         }
         asort($choices);
 

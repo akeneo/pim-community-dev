@@ -1,0 +1,4128 @@
+---
+address_type.billing: Facturation
+address_type.shipping: Expédition
+country.AD: Andorre
+country.AE: Émirats Arabes Unis
+country.AF: Afghanistan
+country.AG: Antigua et Barbuda
+country.AI: Anguilla
+country.AL: Albanie
+country.AM: Arménie
+country.AO: Angola
+country.AQ: "L'Antarctique"
+country.AR: Argentine
+country.AS: Samoa américaines
+country.AT: Autriche
+country.AU: Australie
+country.AW: Aruba
+country.AX: Iles Aland
+country.AZ: Azerbaïdjan
+country.BA: Bosnie-Herzégovine
+country.BB: Barbade
+country.BD: Bangladesh
+country.BE: Belgique
+country.BF: Burkina Faso
+country.BG: Bulgarie
+country.BH: Bahreïn
+country.BI: Burundi
+country.BJ: Bénin
+country.BL: Saint-Barthélemy
+country.BM: Bermudes
+country.BN: Brunei
+country.BO: Bolivie
+country.BQ: "Bonaire, Saint Eustache et Saba "
+country.BR: Brésil
+country.BS: Bahamas
+country.BT: Bhoutan
+country.BV: Île Bouvet
+country.BW: Botswana
+country.BY: Biélorussie
+country.BZ: Bélize
+country.CA: Canada
+country.CC: Îles Cocos
+country.CD: République démocratique du Congo
+country.CF: République centrafricaine
+country.CG: République du Congo
+country.CH: Suisse
+country.CI: "Côte d'Ivoire"
+country.CK: Îles Cook
+country.CL: Chili
+country.CM: Cameroun
+country.CN: Chine
+country.CO: Colombie
+country.CR: Costa Rica
+country.CU: Cuba
+country.CV: Cap-Vert
+country.CW: Curacao
+country.CX: Île Christmas
+country.CY: Chypre
+country.CZ: République tchèque
+country.DE: Allemagne
+country.DJ: Djibouti
+country.DK: Danemark
+country.DM: Dominique
+country.DO: République dominicaine
+country.DZ: Algérie
+country.EC: Équateur
+country.EE: Estonie
+country.EG: Égypte
+country.EH: Sahara occidental
+country.ER: "L'Érythrée"
+country.ES: Espagne
+country.ET: Éthiopie
+country.FI: Finlande
+country.FJ: Fidji
+country.FK: Îles Falkland
+country.FM: Micronésie
+country.FO: îles Féroé
+country.FR: France
+country.GA: Gabon
+country.GB: Royaume-Uni
+country.GD: Grenade
+country.GE: Géorgie
+country.GF: Guyane française
+country.GG: Guernesey
+country.GH: Ghana
+country.GI: Gibraltar
+country.GL: Groenland
+country.GM: Gambie
+country.GN: Guinée
+country.GP: Guadeloupe
+country.GQ: La Guinée équatoriale
+country.GR: Grèce
+country.GS: Géorgie du Sud et îles Sandwich du Sud
+country.GT: Guatemala
+country.GU: Guam
+country.GW: Guinée-Bissau
+country.GY: Guyane
+country.HK: Hong Kong
+country.HM: Île Heard et îles McDonald
+country.HN: Honduras
+country.HR: Croatie
+country.HT: Haïti
+country.HU: Hongrie
+country.ID: Indonésie
+country.IE: Irlande
+country.IL: Israël
+country.IM: Île de Man
+country.IN: Inde
+country.IO: British Indian Ocean Territory
+country.IQ: Irak
+country.IR: Iran
+country.IS: Islande
+country.IT: Italie
+country.JE: Jersey
+country.JM: Jamaïque
+country.JO: Jordanie
+country.JP: Japon
+country.KE: Kenya
+country.KG: Kirghizistan
+country.KH: Cambodge
+country.KI: Kiribati
+country.KM: Comores
+country.KN: Saint-Kitts-et-Nevis
+country.KP: La Corée du Nord
+country.KR: Corée du Sud
+country.XK: Kosovo
+country.KW: Koweït
+country.KY: Îles Caïmans
+country.KZ: Kazakhstan
+country.LA: Laos
+country.LB: Liban
+country.LC: Sainte-Lucie
+country.LI: Liechtenstein
+country.LK: Sri Lanka
+country.LR: Libéria
+country.LS: Lesotho
+country.LT: Lituanie
+country.LU: Luxembourg
+country.LV: Lettonie
+country.LY: Libye
+country.MA: Maroc
+country.MC: Monaco
+country.MD: Moldavie
+country.ME: Monténégro
+country.MF: Saint-Martin
+country.MG: Madagascar
+country.MH: Îles Marshall
+country.MK: Macédoine
+country.ML: Mali
+country.MM: Myanmar
+country.MN: Mongolie
+country.MO: Macao
+country.MP: Îles Mariannes du Nord
+country.MQ: Martinique
+country.MR: Mauritanie
+country.MS: Montserrat
+country.MT: Malte
+country.MU: Maurice
+country.MV: Maldives
+country.MW: Malawi
+country.MX: Mexique
+country.MY: Malaisie
+country.MZ: Mozambique
+country.NA: Namibie
+country.NC: Nouvelle Calédonie
+country.NE: Niger
+country.NF: Île Norfolk
+country.NG: Nigeria
+country.NI: Nicaragua
+country.NL: Pays-Bas
+country.NO: Norvège
+country.NP: Népal
+country.NR: Nauru
+country.NU: Niue
+country.NZ: Nouvelle-Zélande
+country.OM: Oman
+country.PA: Panama
+country.PE: Pérou
+country.PF: Polynésie française
+country.PG: Papouasie Nouvelle-Guinée
+country.PH: Philippines
+country.PK: Pakistan
+country.PL: Pologne
+country.PM: Saint Pierre et Miquelon
+country.PN: Pitcairn
+country.PR: Porto Rico
+country.PS: Territoire palestinien
+country.PT: Portugal
+country.PW: Palau
+country.PY: Paraguay
+country.QA: Qatar
+country.RE: REUNION
+country.RO: Roumanie
+country.RS: Serbie
+country.RU: Russie
+country.RW: Rwanda
+country.SA: Arabie Saoudite
+country.SB: Îles Salomon
+country.SC: Seychelles
+country.SD: Soudan
+country.SS: Sud-Soudan
+country.SE: Suède
+country.SG: Singapour
+country.SH: Sainte-Hélène
+country.SI: Slovénie
+country.SJ: Svalbard et Jan Mayen
+country.SK: Slovaquie
+country.SL: Sierra Leone
+country.SM: Saint-Marin
+country.SN: Sénégal
+country.SO: Somalie
+country.SR: Suriname
+country.ST: Sao Tomé et Principe
+country.SV: Salvador
+country.SX: Sint Maarten
+country.SY: Syrie
+country.SZ: Swaziland
+country.TC: Îles Turques et Caïques
+country.TD: Tchad
+country.TF: Terres australes françaises
+country.TG: Togo
+country.TH: Thaïlande
+country.TJ: Tadjikistan
+country.TK: Tokélaou
+country.TL: Timor oriental
+country.TM: Turkménistan
+country.TN: Tunisie
+country.TO: Tonga
+country.TR: Turquie
+country.TT: Trinité-et-Tobago
+country.TV: Tuvalu
+country.TW: Taiwan
+country.TZ: Tanzanie
+country.UA: Ukraine
+country.UG: Ouganda
+country.UM: Îles mineures éloignées des États-Unis
+country.US: États-Unis
+country.UY: Uruguay
+country.UZ: Ouzbékistan
+country.VA: Vatican
+country.VC: Saint Vincent et les Grenadines
+country.VE: Venezuela
+country.VG: Îles Vierges britanniques
+country.VI: Îles Vierges américaines
+country.VN: Vietnam
+country.VU: Vanuatu
+country.WF: Wallis et Futuna
+country.WS: Samoa
+country.YE: Yémen
+country.YT: Mayotte
+country.ZA: Afrique du Sud
+country.ZM: Zambie
+country.ZW: Zimbabwe
+country.CS: Serbie et Monténégro
+country.AN: Antilles néerlandaises
+region.AD.06: Parròquia de Sant Julià de Lòria
+region.AD.05: Ordino
+region.AD.04: Parròquia de la Massana
+region.AD.03: "Parròquia d'Encamp"
+region.AD.02: Canillo
+region.AD.07: "Parròquia d'Andorra la Vella"
+region.AD.08: "Parròquia d'Escaldes-Engordany"
+region.AE.07: Um al Qaywayn
+region.AE.05: Raʼs al Khaymah
+region.AE.03: Dubaï
+region.AE.06: Cendres Shāriqah
+region.AE.04: Al-Fujaïrah
+region.AE.02: Ajman
+region.AE.01: Abou Dabi
+region.AF.28: Zaboul
+region.AF.27: Vardak
+region.AF.26: Takhār
+region.AF.33: SAR-é Pol
+region.AF.32: Samangān
+region.AF.40: Parvān
+region.AF.29: Paktīkā
+region.AF.36: Paktia
+region.AF.39: Orūzgān
+region.AF.19: Nīmrūz
+region.AF.18: Nangarhār
+region.AF.17: Lowgar
+region.AF.35: Laghmān
+region.AF.24: Kunduz
+region.AF.34: Konar
+region.AF.14: Kāpīsā
+region.AF.23: Kandahar
+region.AF.13: Kaboul
+region.AF.31: Jowzjān
+region.AF.11: Hérat
+region.AF.10: Helmand
+region.AF.09: Ghowr
+region.AF.08: Ghaznī
+region.AF.07: Faryab
+region.AF.06: Farah
+region.AF.05: Bāmīān
+region.AF.30: La Province de Balkh
+region.AF.03: Créé-e Baghlān
+region.AF.02: Badghis
+region.AF.01: Badakhchan
+region.AF.37: Khowst
+region.AF.38: Khowst
+region.AF.41: Wilāyat-e Dāykundī
+region.AF.42: Panjshir
+region.AG.08: Saint Philip
+region.AG.07: Saint Pierre
+region.AG.06: Saint Paul
+region.AG.05: Sainte-Marie
+region.AG.04: Saint-Jean
+region.AG.03: Saint-Georges
+region.AG.09: Redonda
+region.AG.01: Barbuda
+region.AL.40: Berat
+region.AL.41: Dibër
+region.AL.43: Elbasan
+region.AL.45: Gjirokastër
+region.AL.46: Korçë
+region.AL.47: Kukës
+region.AL.42: Durrës
+region.AL.44: Fier
+region.AL.48: Lezhë
+region.AL.49: Shkodër
+region.AL.50: Tiranë
+region.AL.51: Vlorë
+region.AM.02: Ararat
+region.AM.08: Syunikʼ
+region.AM.10: Vayotsʼ Dzor
+region.AM.11: Yerevan
+region.AM.01: Aragatsotn
+region.AM.03: Armavir
+region.AM.04: Gegharkʼunikʼ
+region.AM.05: Kotaykʼ
+region.AM.06: Lorri
+region.AM.07: Shirak
+region.AM.09: Tavush
+region.AO.18: Lunda Sul
+region.AO.17: Lunda Norte
+region.AO.14: Moxico
+region.AO.04: Cuando Cubango
+region.AO.16: Zaïre
+region.AO.15: Uíge
+region.AO.12: Malanje
+region.AO.20: Luanda
+region.AO.05: Cuanza Norte
+region.AO.03: Cabinda
+region.AO.19: Bengo
+region.AO.13: Namibe
+region.AO.09: Huíla
+region.AO.08: Huambo
+region.AO.07: Cunene
+region.AO.06: Cuanza Sul
+region.AO.02: Bié
+region.AO.01: Benguela
+region.AR.14: Misiones
+region.AR.09: Formosa
+region.AR.07: Buenos Aires F.D.
+region.AR.08: Entre Ríos
+region.AR.06: Corrientes
+region.AR.01: Buenos Aires
+region.AR.24: Tucumán
+region.AR.23: Tierra del Fuego
+region.AR.22: Santiago del Estero
+region.AR.21: Santa Fe
+region.AR.20: Santa Cruz
+region.AR.19: San Luis
+region.AR.18: San Juan
+region.AR.17: Salta
+region.AR.16: Río Negro
+region.AR.15: Neuquén
+region.AR.13: Mendoza
+region.AR.12: La Rioja
+region.AR.11: La Pampa
+region.AR.10: Jujuy
+region.AR.05: Córdoba
+region.AR.04: Chubut
+region.AR.03: Chaco
+region.AR.02: Catamarca
+region.AS.050: "District de l'ouest"
+region.AS.040: Île de Swains
+region.AS.010: "District de l'est"
+region.AS.020: "Manu ' a"
+region.AS.030: Rose Atoll
+region.AT.09: Vienne
+region.AT.08: Vorarlberg
+region.AT.07: Tyrol
+region.AT.06: Styrie
+region.AT.05: Salzbourg
+region.AT.04: Haute-Autriche
+region.AT.03: Basse-Autriche
+region.AT.02: Carinthie
+region.AT.01: Burgenland
+region.AU.08: "L'Australie-occidentale"
+region.AU.05: Australie-méridionale
+region.AU.03: Territoire du Nord
+region.AU.07: Victoria
+region.AU.06: Tasmanie
+region.AU.04: Queensland
+region.AU.02: Nouvelle-Galles du Sud
+region.AU.01: Australian Capital Territory
+region.AX.941: Vårdö
+region.AX.771: Sund
+region.AX.766: Sottunga
+region.AX.736: Saltvik
+region.AX.438: Lumparland
+region.AX.417: Lemland
+region.AX.295: Kumlinge
+region.AX.318: Kökar
+region.AX.062: Föglö
+region.AX.035: Brändö
+region.AX.478: Mariehamn
+region.AX.170: Jomala
+region.AX.076: Hammarland
+region.AX.065: Geta
+region.AX.060: Finström
+region.AX.043: Eckerö
+region.AZ.12: Beyləqan
+region.AZ.69: Zǝngilan
+region.AZ.66: Yardımlı
+region.AZ.55: Şuşa
+region.AZ.49: Salyan
+region.AZ.46: Sabirabad
+region.AZ.45: Saatlı
+region.AZ.13: Bilǝsuvar
+region.AZ.36: Neftçala
+region.AZ.35: Nakhitchevan
+region.AZ.32: Masali
+region.AZ.31: Lerik
+region.AZ.29: Lənkəran
+region.AZ.28: Laçın
+region.AZ.43: Qubadlı
+region.AZ.24: İmişli
+region.AZ.18: Fizouline
+region.AZ.14: Cǝbrayıl
+region.AZ.15: Cəlilabad
+region.AZ.08: Astara
+region.AZ.64: Xocalı
+region.AZ.02: Ağcabǝdi
+region.AZ.03: Ağdam
+region.AZ.07: Əli Bayramlı
+region.AZ.30: Lənkəran Şəhəri
+region.AZ.56: Şuşa Şəhəri
+region.AZ.57: Tǝrtǝr
+region.AZ.61: Xankǝndi
+region.AZ.65: Xocavǝnd
+region.AZ.71: Zərdab
+region.AZ.70: Zaqatala
+region.AZ.67: Yevlax
+region.AZ.37: Oğuz
+region.AZ.59: UCAR
+region.AZ.58: Tovuz
+region.AZ.50: Şamaxı
+region.AZ.47: Şǝki
+region.AZ.51: Şǝmkir
+region.AZ.27: Kürdǝmir
+region.AZ.38: Qǝbǝlǝ
+region.AZ.44: Qusar
+region.AZ.42: Quba
+region.AZ.62: Goygol rayonne
+region.AZ.60: Xaçmaz
+region.AZ.26: Kǝlbǝcǝr
+region.AZ.40: Qazax
+region.AZ.21: Goranboy
+region.AZ.39: Qǝx
+region.AZ.25: İsmayıllı
+region.AZ.22: Göyçay
+region.AZ.17: Dǝvǝçi
+region.AZ.16: Daşkǝsǝn
+region.AZ.10: Balakǝn
+region.AZ.11: Bǝrdǝ
+region.AZ.09: Baki
+region.AZ.01: Abşeron
+region.AZ.06: Ağsu
+region.AZ.04: Ağdaş
+region.AZ.19: Gǝdǝbǝy
+region.AZ.05: Ağstafa
+region.AZ.20: Gǝncǝ
+region.AZ.33: Mingǝcevir
+region.AZ.34: Naftalan
+region.AZ.41: Gobustan
+region.AZ.52: Samux
+region.AZ.48: Ville de Shaki
+region.AZ.53: Siyǝzǝn
+region.AZ.54: Sumqayıt
+region.AZ.63: Xızı
+region.AZ.68: Yevlax ville
+region.AZ.23: Hacıqabul
+region.AZ.75: Nakhitchevan Şəhəri
+region.BA.01: Fédération de Bosnie-Herzégovine
+region.BA.02: Republika Srpska
+region.BA.BRC: Brčko
+region.BB.11: Saint Thomas
+region.BB.10: Saint Philip
+region.BB.09: Saint Pierre
+region.BB.08: Saint Michael
+region.BB.07: Sainte-Lucie
+region.BB.06: Saint-Joseph
+region.BB.05: Saint-Jean
+region.BB.04: Saint James
+region.BB.03: Saint-Georges
+region.BB.02: Saint-André
+region.BB.01: Christ Church
+region.BD.83: Rājshāhi
+region.BD.81: Dhaka
+region.BD.84: Chittagong
+region.BD.82: Khulna
+region.BD.85: Barisāl
+region.BD.86: Sylhet
+region.BD.87: Division de Rangpur
+region.BE.BRU: Région de la capitale Bruxelles
+region.BE.WAL: Région wallonne
+region.BE.VLG: Flandre
+region.BF.01: Du boucle Mouhoun région
+region.BF.02: Région de cascades
+region.BF.03: Centre
+region.BF.04: Centre-Est
+region.BF.05: Centre-Nord
+region.BF.06: Centre-Ouest
+region.BF.07: Centre-Sud
+region.BF.08: Est
+region.BF.09: Région Haute-bassins
+region.BF.10: Nord
+region.BF.11: Plateau-Central
+region.BF.12: Sahel
+region.BF.13: Région du sud-ouest
+region.BG.52: Razgrad
+region.BG.47: Montana
+region.BG.64: Vratsa
+region.BG.61: Varna
+region.BG.40: Dobrich
+region.BG.58: Sofiya
+region.BG.53: Ruse
+region.BG.51: Plovdiv
+region.BG.50: Pleven
+region.BG.49: Pernik
+region.BG.48: Pazardzhit
+region.BG.46: Lovech
+region.BG.43: Khaskovo
+region.BG.42: Sofia-Capital
+region.BG.39: Burgas
+region.BG.38: Blagoevgrad
+region.BG.41: Province de Gabrovo
+region.BG.44: Kŭrdzhali
+region.BG.45: Kyustendil
+region.BG.54: Shumen
+region.BG.55: Silistra
+region.BG.56: Sliven
+region.BG.57: Smolyan
+region.BG.59: Stara Zagora
+region.BG.60: Tŭrgovishte
+region.BG.62: Veliko Tŭrnovo
+region.BG.63: Vidin
+region.BG.65: Yambol
+region.BH.15: Muharraq
+region.BH.16: Capital
+region.BH.17: Gouvernorat du Sud
+region.BH.18: Gouvernorat de central
+region.BH.19: Nord
+region.BI.17: Makamba
+region.BI.10: Bururi
+region.BI.22: Muramvya
+region.BI.13: Gitega
+region.BI.21: Ruyigi
+region.BI.11: Cankuzo
+region.BI.14: Karuzi
+region.BI.09: Bubanza
+region.BI.12: Cibitoke
+region.BI.19: Ngozi
+region.BI.15: Kayanza
+region.BI.18: Muyinga
+region.BI.16: Kirundo
+region.BI.20: Rutana
+region.BI.23: Mwaro
+region.BI.24: Province de Bujumbura Mairie
+region.BI.25: Province de Bujumbura-Rural
+region.BJ.18: Zou
+region.BJ.16: Ouémé
+region.BJ.15: Mono
+region.BJ.10: Borgou
+region.BJ.09: Atlantique
+region.BJ.08: Atakora
+region.BJ.07: Alibori
+region.BJ.11: Collines
+region.BJ.12: Couffo
+region.BJ.13: Donga
+region.BJ.14: Littoral
+region.BJ.17: Plateau
+region.BM.11: Warwick
+region.BM.10: Southampton
+region.BM.09: Smithʼs
+region.BM.08: Sandys
+region.BM.07: Saint Georgeʼs
+region.BM.06: Saint-Georges
+region.BM.05: Pembroke
+region.BM.04: Paget
+region.BM.02: Hamilton Parish
+region.BM.03: Ville de Hamilton
+region.BM.01: Devonshire
+region.BN.04: Tutong
+region.BN.03: Temburong
+region.BN.02: Brunei et Muara
+region.BN.01: Belait
+region.BO.09: Tarija
+region.BO.08: Santa Cruz
+region.BO.07: Potosí
+region.BO.06: Pando
+region.BO.05: Oruro
+region.BO.04: La Paz
+region.BO.02: Cochabamba
+region.BO.01: Chuquisaca
+region.BO.03: El Beni
+region.BQ.BO: Bonaire
+region.BQ.SB: Saba
+region.BQ.SE: Saint-Eustache
+region.BR.22: Rio Grande do Norte
+region.BR.20: Piauí
+region.BR.30: Pernambuco
+region.BR.17: Paraíba
+region.BR.16: Pará
+region.BR.13: Maranhão
+region.BR.06: Ceará
+region.BR.03: Amapá
+region.BR.02: Alagoas
+region.BR.28: Sergipe
+region.BR.27: São Paulo
+region.BR.26: Santa Catarina
+region.BR.23: Rio Grande Sul
+region.BR.21: Rio de Janeiro
+region.BR.18: Paraná
+region.BR.15: Minas Gerais
+region.BR.11: Estado de Mato Grosso do Sul
+region.BR.14: Mato Grosso
+region.BR.29: Goiás
+region.BR.07: District fédéral
+region.BR.08: Espírito Santo
+region.BR.05: Estado de Bahía
+region.BR.31: Tocantins
+region.BR.25: Roraima
+region.BR.04: Amazonas
+region.BR.01: Acre
+region.BR.24: Rondônia
+region.BS.35: San Salvador
+region.BS.34: Sandy Point
+region.BS.33: Rock Sound
+region.BS.18: Ragged Island
+region.BS.32: District des îles Berry
+region.BS.23: New Providence
+region.BS.16: Mayaguana
+region.BS.31: Marsh Harbour
+region.BS.15: Long Island
+region.BS.30: Kemps Bay
+region.BS.13: Inagua
+region.BS.29: Haut rocher
+region.BS.22: Harbour Island
+region.BS.28: Green Turtle Cay
+region.BS.27: Governorʼs Harbour
+region.BS.26: Fresh Creek
+region.BS.25: Freeport
+region.BS.10: Exuma
+region.BS.06: Cat Island
+region.BS.05: Bimini
+region.BS.24: Acklins et Crooked Islands
+region.BS.36: Point noir
+region.BS.37: Central Abaco
+region.BS.38: Central Andros
+region.BS.39: Central Eleuthera
+region.BS.40: Crooked Island et Long Cay
+region.BS.41: East Grand Bahama
+region.BS.42: Grand Cay
+region.BS.43: Hope Town
+region.BS.44: Mangrove Cay
+region.BS.45: Île de Moore
+region.BS.46: North Abaco
+region.BS.47: North Andros
+region.BS.48: North Eleuthera
+region.BS.49: Rhum Cay
+region.BS.50: South Abaco
+region.BS.51: South Andros
+region.BS.52: Eleuthera sud
+region.BS.53: Puits espagnol
+region.BS.54: Occidental Grand Bahama
+region.BT.05: Bumthang
+region.BT.06: Chhukha
+region.BT.08: Daga
+region.BT.07: Chirang
+region.BT.09: Geylegphug
+region.BT.10: Ha
+region.BT.11: Lhuntshi
+region.BT.12: Mongar
+region.BT.13: Paro
+region.BT.14: Pemagatshel
+region.BT.15: Punakha
+region.BT.16: Samchi
+region.BT.17: Samdrup Jongkhar
+region.BT.18: Shemgang
+region.BT.19: Tashigang
+region.BT.20: Thimphu
+region.BT.21: Trongsa
+region.BT.22: Wangdi Phodrang
+region.BT.23: GASA
+region.BT.24: Trashi Yangsté
+region.BW.10: Sud
+region.BW.09: Sud-est
+region.BW.08: Nord-est
+region.BW.11: Nord-ouest
+region.BW.06: Kweneng
+region.BW.05: Kgatleng
+region.BW.04: Kgalagadi
+region.BW.03: Ghanzi
+region.BW.01: Central
+region.BY.07: Vitsyebskaya Voblastsʼ
+region.BY.06: Mahilyowskaya Voblastsʼ
+region.BY.05: Minskaya Voblastsʼ
+region.BY.04: Minsk
+region.BY.03: Hrodzyenskaya Voblastsʼ
+region.BY.02: Homyelʼskaya Voblastsʼ
+region.BY.01: Brestskaya Voblastsʼ
+region.BZ.06: Toledo
+region.BZ.05: Stann Creek
+region.BZ.04: Orange Walk
+region.BZ.03: Corozal
+region.BZ.02: Cayo
+region.BZ.01: Bélize
+region.CA.01: Alberta
+region.CA.02: Colombie-Britannique
+region.CA.03: Manitoba
+region.CA.04: New Brunswick
+region.CA.13: Territoires du Nord-Ouest
+region.CA.07: Nova Scotia
+region.CA.14: Nunavut
+region.CA.08: Ontario
+region.CA.09: Prince Edward Island
+region.CA.10: Québec
+region.CA.11: Saskatchewan
+region.CA.12: Yukon
+region.CA.05: Terre-Neuve et Labrador
+region.CD.12: Sud-Kivu
+region.CD.05: Katanga
+region.CD.11: Nord Kivu
+region.CD.10: Maniema
+region.CD.04: Kasaï-Oriental
+region.CD.03: Kasaï-Occidental
+region.CD.09: Province orientale
+region.CD.02: Équateur
+region.CD.06: Kinshasa
+region.CD.08: Bas-Congo
+region.CD.01: Bandundu
+region.CF.14: Vakaga
+region.CF.11: Ouaka
+region.CF.08: Mbomou
+region.CF.05: Haut-Mbomou
+region.CF.03: Haute-Kotto
+region.CF.02: Basse-Kotto
+region.CF.01: Bamingui-Bangoran
+region.CF.16: Sangha-Mbaéré
+region.CF.13: Ouham-Pendé
+region.CF.12: Ouham
+region.CF.17: Ombella-Mpoko
+region.CF.09: Nana-Mambéré
+region.CF.07: Lobaye
+region.CF.06: Kémo
+region.CF.04: Mambéré-Kadéï
+region.CF.15: Nana-Grébizi
+region.CF.18: Bangui
+region.CG.10: Sangha
+region.CG.11: Pool
+region.CG.08: Plateaux
+region.CG.07: Niari
+region.CG.06: Likouala
+region.CG.05: Lékoumou
+region.CG.04: Kouilou
+region.CG.13: Godet
+region.CG.01: Bouenza
+region.CG.12: Brazzaville
+region.CG.14: Cuvette-Ouest
+region.CG.7280295: Pointe-Noire
+region.CH.ZH: Zurich
+region.CH.ZG: Zug
+region.CH.VD: Vaud
+region.CH.VS: Valais
+region.CH.UR: URI
+region.CH.TI: Ticino
+region.CH.TG: Thurgovie
+region.CH.SO: Soleure
+region.CH.SZ: Schwyz
+region.CH.SH: Schaffhouse
+region.CH.SG: Saint Gallen
+region.CH.OW: Obwald
+region.CH.NW: Canton de Nidwald
+region.CH.NE: Neuchâtel
+region.CH.LU: Lucerne
+region.CH.JU: Jura
+region.CH.GR: Grisons
+region.CH.GL: Glaris
+region.CH.GE: Genève
+region.CH.FR: Fribourg
+region.CH.BE: Berne
+region.CH.BS: Bâle-ville
+region.CH.BL: Basel-Landschaft
+region.CH.AR: Appenzell Rhodes-extérieures
+region.CH.AI: "Canton d'Appenzell Rhoden-Intérieur"
+region.CH.AG: Argovie
+region.CI.82: Lagunes
+region.CI.89: Sud-Comoé
+region.CI.74: Agnébi
+region.CI.80: Haut-Sassandra
+region.CI.87: Savanes
+region.CI.90: Vallée du Bandama
+region.CI.85: Moyen-Comoé
+region.CI.78: Dix-huit Montagnes
+region.CI.81: Lacs
+region.CI.92: Zanzan
+region.CI.76: Région du Bas-Sassandra
+region.CI.91: Worodougou
+region.CI.77: Denguélé
+region.CI.88: Sud-Bandama
+region.CI.79: Fromager
+region.CI.86: Nʼzi-Comoé
+region.CI.83: Marahoué
+region.CI.84: Moyen-Cavally
+region.CI.75: Bafing
+region.CL.01: Valparaíso
+region.CL.15: Région de Tarapacá
+region.CL.12: Santiago
+region.CL.11: Maule
+region.CL.14: Los Lagos
+region.CL.08: "O ' Higgins"
+region.CL.07: Coquimbo
+region.CL.06: Biobío
+region.CL.05: Atacama
+region.CL.04: Araucanie
+region.CL.03: Antofagasta
+region.CL.02: Aisén
+region.CL.10: Magallanes
+region.CL.16: Arica y Parinacota
+region.CL.17: Los Ríos
+region.CM.09: Province du sud-ouest
+region.CM.14: La Province du Sud
+region.CM.08: "Région de l'ouest"
+region.CM.07: La Province du Nord-Ouest
+region.CM.13: La Province du Nord
+region.CM.05: Province du littoral
+region.CM.12: Région extrême-nord
+region.CM.04: "Province de l'est"
+region.CM.11: Région Centre
+region.CM.10: "Province de l'Adamaoua"
+region.CN.14: Région autonome du Tibet
+region.CN.06: Qinghai Sheng
+region.CN.13: Xinjiang Uygur Zizhiqu
+region.CN.02: Zhejiang Sheng
+region.CN.29: Yunnan
+region.CN.28: Shi de Tianjin
+region.CN.32: Sichuan
+region.CN.24: Shanxi Sheng
+region.CN.23: Shanghai Shi
+region.CN.25: Shandong Sheng
+region.CN.26: Shaanxi
+region.CN.21: Ningxia Huizu Zizhiqu
+region.CN.03: Jiangxi Sheng
+region.CN.04: Jiangsu Sheng
+region.CN.11: Hunan
+region.CN.12: Hubei
+region.CN.09: Henan Sheng
+region.CN.10: Hebei
+region.CN.31: Hainan
+region.CN.18: Guizhou Sheng
+region.CN.16: Guangxi Zhuangzu Zizhiqu
+region.CN.30: La Province du Guangdong
+region.CN.15: Gansu Sheng
+region.CN.07: Fujian
+region.CN.33: Chongqing Shi
+region.CN.01: Anhui Sheng
+region.CN.20: Mongolie-intérieure
+region.CN.19: Liaoning
+region.CN.05: Jilin Sheng
+region.CN.08: Heilongjiang Sheng
+region.CN.22: Beijing
+region.CO.31: Vichada
+region.CO.30: Vaupés
+region.CO.29: Valle del Cauca
+region.CO.28: Tolima
+region.CO.27: Sucre
+region.CO.26: Santander
+region.CO.25: Archipiélago de San Andrés, Providencia y Santa Catalina
+region.CO.24: Risaralda
+region.CO.23: Quindío
+region.CO.22: Putumayo
+region.CO.21: Norte de Santander
+region.CO.20: Nariño
+region.CO.19: Meta
+region.CO.38: Magdalena
+region.CO.17: La Guajira
+region.CO.16: Huila
+region.CO.14: Guaviare
+region.CO.15: Guainía
+region.CO.33: Cundinamarca
+region.CO.12: Córdoba
+region.CO.11: Chocó
+region.CO.10: Cesar
+region.CO.09: Cauca
+region.CO.32: Casanare
+region.CO.08: Caquetá
+region.CO.37: Caldas
+region.CO.36: Boyacá
+region.CO.35: Bolívar
+region.CO.34: Bogota D.C.
+region.CO.04: Atlántico
+region.CO.03: Arauca
+region.CO.02: Departamento de Antioquia
+region.CO.01: Amazonas
+region.CR.08: San José
+region.CR.07: Puntarenas
+region.CR.06: Limón
+region.CR.04: Heredia
+region.CR.03: Guanacaste
+region.CR.02: Cartago
+region.CR.01: Alajuela
+region.CU.16: Villa Clara
+region.CU.15: Santiago de Cuba
+region.CU.14: Sancti Spíritus
+region.CU.01: Pinar del Río
+region.CU.03: Matanzas
+region.CU.13: Las Tunas
+region.CU.04: Isla de la Juventud
+region.CU.12: Holguín
+region.CU.10: Guantánamo
+region.CU.09: Granma
+region.CU.02: Ciudad de La Habana
+region.CU.08: Cienfuegos
+region.CU.07: Ciego de Ávila
+region.CU.05: Camagüey
+region.CU.AR: Provincia Artemisa
+region.CU.MA: Provincia Mayabeque
+region.CV.20: Tarrafal
+region.CV.11: São Vicente
+region.CV.15: Santa Catarina
+region.CV.08: Sal Municipality
+region.CV.07: Ribeira Grande
+region.CV.14: Praia
+region.CV.05: Paul
+region.CV.04: Maio
+region.CV.02: Brava
+region.CV.01: Boa Vista
+region.CV.13: Mosteiros
+region.CV.16: Santa Cruz
+region.CV.17: São Domingos
+region.CV.18: São Filipe
+region.CV.19: São Miguel
+region.CV.21: Porto Novo
+region.CV.22: Ribeira Brava
+region.CV.24: Santa Catarina do Fogo
+region.CV.26: São Salvador do Mundo
+region.CV.27: Tarrafal de São Nicolau
+region.CV.25: Concelho de São Lourenço dos Órgãos
+region.CV.23: Ribeira Grande de Santiago
+region.CY.06: Pafos
+region.CY.04: Lefkosia
+region.CY.05: Lemesos
+region.CY.03: Larnaka
+region.CY.02: Keryneia
+region.CY.01: Ammochostos
+region.CZ.52: Praha
+region.CZ.78: South Moravian Region
+region.CZ.79: Jihočeský
+region.CZ.80: Vysočina
+region.CZ.81: Karlovarský
+region.CZ.82: Královéhradecký
+region.CZ.83: Liberecký
+region.CZ.84: Olomoucký
+region.CZ.85: Moravskoslezský
+region.CZ.86: Pardubický
+region.CZ.87: Plzeňský
+region.CZ.88: Středočeský
+region.CZ.89: Ústecký
+region.CZ.90: Zlínský
+region.DE.15: Thuringe
+region.DE.10: Schleswig-Holstein
+region.DE.14: Saxe-Anhalt
+region.DE.13: Saxe
+region.DE.09: La Sarre
+region.DE.08: Rheinland-Pfalz
+region.DE.07: Westphalie-Du-Nord
+region.DE.06: Basse-Saxe
+region.DE.12: Mecklembourg-Poméranie-occidentale
+region.DE.05: Hesse
+region.DE.04: Ville libre et hanséatique de Hambourg
+region.DE.03: Bremen
+region.DE.11: Brandebourg
+region.DE.16: Berlin
+region.DE.02: Bavière
+region.DE.01: Région de Bade-Wurtemberg
+region.DJ.05: Tadjourah
+region.DJ.04: Obock
+region.DJ.07: Djibouti
+region.DJ.06: Dikhil
+region.DJ.01: Ali Sabieh
+region.DJ.08: Arta
+region.DK.17: Région de la capitale
+region.DK.18: Jutland-central
+region.DK.19: Jutland du Nord
+region.DK.20: Zélande
+region.DK.21: Danemark du Sud
+region.DM.11: Saint Pierre
+region.DM.10: Saint Paul
+region.DM.09: Saint Patrick
+region.DM.08: Sainte-Marie
+region.DM.07: Saint-Luc
+region.DM.06: Saint-Joseph
+region.DM.05: Saint-Jean
+region.DM.04: Saint-Georges
+region.DM.03: Saint David
+region.DM.02: Saint-André
+region.DO.27: Valverde
+region.DO.26: Santiago Rodríguez
+region.DO.25: Santiago
+region.DO.24: San Pedro de Macorís
+region.DO.23: San Juan
+region.DO.33: San Cristóbal
+region.DO.21: Sánchez Ramírez
+region.DO.20: Samaná
+region.DO.19: Hermanas Mirabal
+region.DO.18: Puerto Plata
+region.DO.35: Peravia
+region.DO.16: Pedernales
+region.DO.34: Distrito Nacional
+region.DO.32: Monte Plata
+region.DO.15: Monte Cristi
+region.DO.31: Monseñor Nouel
+region.DO.14: María Trinidad Sánchez
+region.DO.30: La Vega
+region.DO.12: La Romana
+region.DO.10: La Altagracia
+region.DO.09: Independencia
+region.DO.29: Hato Mayor
+region.DO.08: Espaillat
+region.DO.28: El Seíbo
+region.DO.11: Elías Piña
+region.DO.06: Duarte
+region.DO.04: Dajabón
+region.DO.03: Barahona
+region.DO.02: Baoruco
+region.DO.01: Azua
+region.DO.36: San José de Ocoa
+region.DO.37: Saint-Domingue
+region.DZ.15: Tlemcen
+region.DZ.14: Tizi Ouzou
+region.DZ.56: Tissemsilt
+region.DZ.55: Tipaza
+region.DZ.54: Tindouf
+region.DZ.13: Tiaret
+region.DZ.33: Tébessa
+region.DZ.53: Tamanghasset
+region.DZ.52: Souk-Ahras
+region.DZ.31: Skikda
+region.DZ.30: Sidi Bel Abbès
+region.DZ.12: Sétif
+region.DZ.10: Saïda
+region.DZ.51: Relizane
+region.DZ.29: Oum el Bouaghi
+region.DZ.50: Ouargla
+region.DZ.09: Oran
+region.DZ.49: Naama النعامة
+region.DZ.27: Mʼsila
+region.DZ.07: Mostaganem
+region.DZ.48: Mila
+region.DZ.06: Médéa
+region.DZ.26: Mascara
+region.DZ.25: Laghouat
+region.DZ.47: Khenchela
+region.DZ.24: Jijel
+region.DZ.46: Illizi
+region.DZ.23: Guelma
+region.DZ.45: Ghardaïa
+region.DZ.44: El Tarf
+region.DZ.43: El Oued
+region.DZ.42: El Bayadh
+region.DZ.22: Djelfa
+region.DZ.04: Constantine
+region.DZ.41: Chlef
+region.DZ.40: Boumerdes
+region.DZ.21: Bouira
+region.DZ.39: Bordj Bou Arreridj
+region.DZ.20: Blida
+region.DZ.19: Biskra
+region.DZ.18: Bejaïa
+region.DZ.38: Béchar
+region.DZ.03: Batna
+region.DZ.37: Annaba
+region.DZ.01: Alger
+region.DZ.36: Aïn Temouchent
+region.DZ.35: Aïn Defla
+region.DZ.34: Adrar
+region.EC.20: Zamora-Chinchipe
+region.EC.19: Tungurahua
+region.EC.18: Pichincha
+region.EC.17: Pastaza
+region.EC.23: Napo
+region.EC.15: Morona-Santiago
+region.EC.14: Manabí
+region.EC.13: Los Ríos
+region.EC.12: Loja
+region.EC.11: Imbabura
+region.EC.10: Guayas
+region.EC.01: Galápagos
+region.EC.09: Esmeraldas
+region.EC.08: El Oro
+region.EC.07: Cotopaxi
+region.EC.06: Chimborazo
+region.EC.05: Carchi
+region.EC.04: Cañar
+region.EC.03: Bolívar
+region.EC.02: Azuay
+region.EC.22: Sucumbios
+region.EC.24: Orellana
+region.EC.26: Santo Domingo de los Tsáchilas
+region.EC.25: Santa Elena
+region.EE.21: Võrumaa
+region.EE.20: Viljandimaa
+region.EE.19: Valgamaa
+region.EE.18: Comté de Tartu
+region.EE.14: Comté de Saare
+region.EE.13: Raplamaa
+region.EE.12: Põlvamaa
+region.EE.11: Pärnumaa
+region.EE.08: Lääne-Virumaa
+region.EE.07: Comté de Lääne
+region.EE.05: Jõgevamaa
+region.EE.04: Järvamaa
+region.EE.03: Ida-Virumaa
+region.EE.02: Hiiumaa
+region.EE.01: Harju County
+region.EG.24: Sūhāj
+region.EG.27: Shamāl Sīnāʼ
+region.EG.23: Qinā
+region.EG.22: Maţrūḩ
+region.EG.21: Kafr ash Shaykh
+region.EG.26: Janūb Sīnāʼ
+region.EG.20: Dumyāţ
+region.EG.19: "Būr Sa'īd"
+region.EG.18: Fait Sowayf
+region.EG.17: Assiout
+region.EG.16: Assouan
+region.EG.15: Comme Suways
+region.EG.14: Province orientale
+region.EG.13: Al Wādī al Jadīd
+region.EG.12: Al Qalyūbīyah
+region.EG.11: Al Qāhirah
+region.EG.10: Al Minyā
+region.EG.09: Al Minūfīyah
+region.EG.08: Al Jīzah
+region.EG.07: "Al Ismā'īlīyah"
+region.EG.06: Alexandrie
+region.EG.05: Al Gharbīyah
+region.EG.04: Al Fayyūm
+region.EG.03: Al Buḩayrah
+region.EG.02: Al Baḩr al Aḩmar
+region.EG.01: Annonce Daqahlīyah
+region.EG.28: Muḩāfaz̧at al Uqşur
+region.EH.CE: Oued ed Dahab-Lagouira
+region.ER.01: Ānseba
+region.ER.02: Debub
+region.ER.03: Debubawī Kʼeyih Bahrī
+region.ER.04: Gash Barka
+region.ER.05: Maʼākel
+region.ER.06: Semēnawī Kʼeyih Bahrī
+region.ES.31: Murcia
+region.ES.CE: Ceuta
+region.ES.07: Îles Baléares
+region.ES.51: Andalousie
+region.ES.53: Îles Canaries
+region.ES.54: Castille-La Mancha
+region.ES.57: Extremadura
+region.ES.60: Valence
+region.ES.34: Asturias
+region.ES.32: Navarre
+region.ES.29: Madrid
+region.ES.27: La Rioja
+region.ES.39: Cantabria
+region.ES.52: Aragon
+region.ES.55: Castille et León
+region.ES.56: Catalogne
+region.ES.58: Galice
+region.ES.59: Pays basque
+region.ES.ML: Melilla
+region.ET.44: Ādīs Ābeba
+region.ET.45: "Région de l'Afar"
+region.ET.46: Région Amhara
+region.ET.47: Région Benishangul-Gumuz
+region.ET.48: Dire Dawa région
+region.ET.49: Gambela
+region.ET.50: Région Harar
+region.ET.51: "Région d'Oromiya"
+region.ET.52: Région Somali
+region.ET.53: Tigré
+region.ET.54: Southern Nations, nationalités et région populaire
+region.FI.08: Oulu
+region.FI.06: Lapponia
+region.FI.13: Province de Finlande méridionale
+region.FI.14: Province de Finlande orientale
+region.FI.15: Province de Finlande occidentale
+region.FJ.05: Europe occidentale
+region.FJ.03: Nord
+region.FJ.01: Central
+region.FJ.02: Orientale
+region.FJ.04: Rotuma
+region.FM.04: Yap
+region.FM.02: Pohnpei
+region.FM.01: Kosrae
+region.FM.03: Chuuk
+region.FO.VG: Vágar
+region.FO.SU: Suðuroy
+region.FO.ST: Streymoy
+region.FO.SA: Sandoy
+region.FO.NO: Norðoyar
+region.FO.OS: Eysturoy
+region.FR.B9: Rhône-Alpes
+region.FR.B8: "Provence-Alpes-Côte d'Azur"
+region.FR.B7: Poitou-Charentes
+region.FR.B6: Picardie
+region.FR.B5: Pays de la Loire
+region.FR.B4: Nord-Pas-de-Calais
+region.FR.B3: Midi-Pyrénées
+region.FR.B2: Lorraine
+region.FR.B1: Limousin
+region.FR.A9: Languedoc-Roussillon
+region.FR.A8: Île-de-France
+region.FR.A7: Haute-Normandie
+region.FR.A6: Hotel Franche-Comté
+region.FR.A5: Corse
+region.FR.A4: Champagne-Ardenne
+region.FR.A3: Centre
+region.FR.A2: Bretagne
+region.FR.A1: Bourgogne
+region.FR.99: Basse Normandie
+region.FR.98: Auvergne
+region.FR.97: Aquitaine
+region.FR.C1: Alsace
+region.GA.09: Woleu-Ntem
+region.GA.08: Ogooué-Maritime
+region.GA.07: Ogooué-Lolo
+region.GA.06: Ogooué-Ivindo
+region.GA.05: Nyanga
+region.GA.04: Ngounié
+region.GA.03: Moyen-Ogooué
+region.GA.02: Haut-Ogooué
+region.GA.01: Estuaire
+region.GB.WLS: Pays de Galles
+region.GB.SCT: Ecosse
+region.GB.NIR: N Ireland
+region.GB.ENG: Angleterre
+region.GD.06: Saint Patrick
+region.GD.05: Sainte-Marie
+region.GD.04: Saint-Jean
+region.GD.03: Saint-Georges
+region.GD.02: Saint David
+region.GD.01: Saint-André
+region.GD.10: Carriacou et Petite Martinique
+region.GE.51: Tbilisi
+region.GE.04: Adjarie
+region.GE.68: Kvemo Kartli
+region.GE.67: Kakhétie
+region.GE.65: Guria
+region.GE.66: Iméréthie
+region.GE.73: Mme Shida Kartli
+region.GE.69: Mtskheta-Mtianeti
+region.GE.70: Racha-Lechkhumi et Kvemo Svaneti
+region.GE.71: Samegrelo et Zemo Svaneti
+region.GE.72: Samtskhe-Djavakheti
+region.GE.02: Abkhazie
+region.GF.GF: Guyane
+region.GH.09: Europe occidentale
+region.GH.08: Europe occidentale
+region.GH.11: Upper West
+region.GH.10: Upper East
+region.GH.06: Nord
+region.GH.01: Greater Accra
+region.GH.05: Orientale
+region.GH.04: Central
+region.GH.03: Brong-Ahafo
+region.GH.02: Ashanti
+region.GL.05: Qaasuitsup
+region.GL.04: Kujalleq
+region.GL.06: Qeqqata
+region.GL.07: Sermersooq
+region.GM.05: Europe occidentale
+region.GM.04: Upper River
+region.GM.07: Rive Nord
+region.GM.03: Central River
+region.GM.02: Rivière Lower
+region.GM.01: Banjul
+region.GN.04: Conakry
+region.GN.B: Région de boke
+region.GN.F: Région de Faranah
+region.GN.K: Région de Kankan
+region.GN.D: Région de Kindia
+region.GN.L: Région de Labé
+region.GN.M: Région de mamou
+region.GN.N: Région de Nzerekore
+region.GP.GP: Guadeloupe
+region.GQ.03: Annobón
+region.GQ.04: Bioko Norte
+region.GQ.05: Sur Bioko
+region.GQ.06: Centro Sur
+region.GQ.07: Kié-Ntem
+region.GQ.08: Litoral
+region.GQ.09: Wele-Nzas
+region.GR.736572: Mont Athos
+region.GR.ESYE31: Attica
+region.GR.ESYE24: Grèce centrale
+region.GR.ESYE12: Macédoine centrale
+region.GR.ESYE43: Crète
+region.GR.ESYE11: Macédoine orientale et Thrace
+region.GR.ESYE21: Épire
+region.GR.ESYE22: Îles Ioniennes
+region.GR.ESYE41: "Nord de l'Egée"
+region.GR.ESYE25: Péloponnèse
+region.GR.ESYE42: "Sud de l'Égée"
+region.GR.ESYE14: Thessalie
+region.GR.ESYE23: Grèce-occidentale
+region.GR.ESYE13: Macédoine-occidentale
+region.GT.22: Zacapa
+region.GT.21: Totonicapán
+region.GT.20: Suchitepéquez
+region.GT.19: Sololá
+region.GT.18: Santa Rosa
+region.GT.17: San Marcos
+region.GT.16: Sacatepéquez
+region.GT.15: Retalhuleu
+region.GT.14: Quiché
+region.GT.13: Quetzaltenango
+region.GT.12: Petén
+region.GT.11: Jutiapa
+region.GT.10: Jalapa
+region.GT.09: Izabal
+region.GT.08: Huehuetenango
+region.GT.07: Guatemala
+region.GT.06: Escuintla
+region.GT.05: El Progreso
+region.GT.04: Chiquimula
+region.GT.03: Chimaltenango
+region.GT.02: Baja Verapaz
+region.GT.01: Alta Verapaz
+region.GU.PI: Municipalité de Piti
+region.GU.SR: Municipalité de Santa Rita
+region.GU.SJ: Municipalité de Sinajana
+region.GU.TF: Municipalité de Talofofo
+region.GU.TM: Municipalité de Tumon-Tamuning-Harmon
+region.GU.UM: Municipalité de Umatac
+region.GU.YG: Municipalité de yigo
+region.GU.YN: Municipalité de Yona
+region.GU.ME: Municipalité de merizo
+region.GU.MA: Municipalité de Mangilao
+region.GU.AH: "Municipalité d'Agana Heights"
+region.GU.CP: Municipalité de Chalan Pago-Ordot
+region.GU.AS: Municipalité de Asan-Maina
+region.GU.AT: Municipalité de AGAT
+region.GU.DD: Dededo municipalité
+region.GU.BA: Municipalité de Barrigada
+region.GU.AN: Hagåtña municipalité
+region.GU.IN: Municipalité de Inarajan
+region.GU.MT: Municipalité de Mongmong-Toto-Maite
+region.GW.07: Tombali
+region.GW.02: Quinara
+region.GW.04: OIO
+region.GW.10: Gabú
+region.GW.06: Cacheu
+region.GW.05: Bolama et Bijagos
+region.GW.11: Région autonome de Bissau
+region.GW.12: Biombo
+region.GW.01: Bafatá
+region.GY.19: Upper Takutu-Upper Essequibo
+region.GY.18: Haut-Demerara-Berbice
+region.GY.17: Potaro-Siparuni
+region.GY.16: Pomeroon-Supenaam
+region.GY.15: Mahaica-Berbice
+region.GY.14: "Îles d'Essequibo-Ouest Demerara"
+region.GY.13: East Berbice Oriental-Courantyne
+region.GY.12: Demerara-Mahaica
+region.GY.11: Cuyuni-Mazaruni
+region.GY.10: Barima-Waini
+region.HK.NYL: Yuen Long
+region.HK.NTW: Tsuen Wan
+region.HK.NTP: Tai Po
+region.HK.NSK: Sai Kung
+region.HK.NIS: Îles
+region.HK.HCW: Centrale et occidentale
+region.HK.HWC: Wanchai
+region.HK.HEA: Orientale
+region.HK.HSO: Sud
+region.HK.KYT: Yau Tsim Mong
+region.HK.KSS: Sham Shui Po
+region.HK.KKC: Kowloon City
+region.HK.KWT: Wong Tai Sin
+region.HK.KKT: Kwon Tong
+region.HK.NKT: Kwai Tsing
+region.HK.NTM: Tuen Mun
+region.HK.NNO: Nord
+region.HK.NST: Sha Tin
+region.HN.18: Yoro
+region.HN.17: Valle
+region.HN.16: Santa Bárbara
+region.HN.15: Olancho
+region.HN.14: Ocotepeque
+region.HN.13: Lempira
+region.HN.12: La Paz
+region.HN.11: Îles de la baie
+region.HN.10: Intibucá
+region.HN.09: Gracias a Dios
+region.HN.08: Francisco Morazán
+region.HN.07: El Paraíso
+region.HN.06: Cortés
+region.HN.05: Copán
+region.HN.04: Comayagua
+region.HN.03: Colón
+region.HN.02: Choluteca
+region.HN.01: Atlántida
+region.HR.01: Bjelovar-bilo Gora
+region.HR.02: Brodsko-Posavska
+region.HR.03: Dubrovačko-Neretvanska
+region.HR.04: Istarska
+region.HR.05: Karlovačka
+region.HR.06: Koprivničko-Križevačka
+region.HR.07: Krapinsko-Zagorska
+region.HR.08: Ličko-Senjska
+region.HR.09: Međimurska
+region.HR.10: Osječko-Baranjska
+region.HR.11: Požeško-Slavonska
+region.HR.12: Primorsko-Goranska
+region.HR.13: Šibensko-Kniniska
+region.HR.14: Sisačko-Moslavačka
+region.HR.15: Splitsko-Dalmatinska
+region.HR.16: Varaždinska
+region.HR.18: Vukovar
+region.HR.19: Zadarska
+region.HR.20: Zagrebačka
+region.HR.21: Grad Zagreb
+region.HR.17: Virovitičk-Podravska
+region.HT.13: Sud-Est
+region.HT.12: Sud
+region.HT.11: Ouest
+region.HT.03: Nord-Ouest
+region.HT.10: Nord-Est
+region.HT.09: Nord
+region.HT.14: GrandʼAnse
+region.HT.07: Centre
+region.HT.06: Artibonite
+region.HT.15: Nippes
+region.HU.18: Comitat de Szabolcs-Szatmár-Bereg
+region.HU.20: Jász-Nagykun-Szolnok
+region.HU.11: Heves
+region.HU.10: Hajdú-Bihar
+region.HU.06: Csongrád
+region.HU.04: Borsod-Abaúj-Zemplén
+region.HU.03: Le comté de Békés
+region.HU.24: Zala
+region.HU.23: Veszprém
+region.HU.22: Guerre
+region.HU.21: Tolna
+region.HU.17: Somogy
+region.HU.16: Lutte antiparasitaire
+region.HU.14: Nógrád
+region.HU.12: Komárom-Esztergom
+region.HU.09: Győr-Moson-Sopron
+region.HU.08: Fejér
+region.HU.05: Budapest
+region.HU.02: Comté de Baranya
+region.HU.01: Comitat de Bács-Kiskun
+region.ID.26: Sumatra-Nord
+region.ID.01: Aceh
+region.ID.10: Daerah province Yogyakarta
+region.ID.32: Sumatra du Sud
+region.ID.24: Sumatra occidental
+region.ID.31: Sulawesi du Nord
+region.ID.22: Sulawesi Tenggara
+region.ID.21: Sulawesi central
+region.ID.38: Sulawesi du Sud
+region.ID.37: Riau
+region.ID.18: East Nusa Tenggara
+region.ID.17: Nusa Tenggara Barat
+region.ID.28: Maluku
+region.ID.15: Lampung
+region.ID.14: Kalimantan oriental
+region.ID.13: Kalimantan Tengah
+region.ID.12: Kalimantan du Sud
+region.ID.11: Kalimantan occidental
+region.ID.08: Java est
+region.ID.07: Java central
+region.ID.30: Java-Ouest
+region.ID.05: Jambi
+region.ID.04: Jakarta Raya
+region.ID.36: Papouasie
+region.ID.03: Bengkulu
+region.ID.02: Bali
+region.ID.33: Banten
+region.ID.34: Gorontalo
+region.ID.35: Bangka-Belitung
+region.ID.29: Maluku Utara
+region.ID.39: Papouasie occidentale
+region.ID.41: Sulawesi Barat
+region.ID.40: Îles Riau
+region.IE.C: Connaught
+region.IE.L: Leinster
+region.IE.M: Munster
+region.IE.U: Ulster
+region.IL.06: District de Jérusalem
+region.IL.05: Tel-Aviv
+region.IL.04: "District d'Haïfa"
+region.IL.03: District Nord
+region.IL.02: Quartier central
+region.IL.01: District Sud
+region.IN.28: Bengal
+region.IN.36: Uttar Pradesh
+region.IN.26: Tripura
+region.IN.25: Tamil Nādu
+region.IN.29: Sikkim
+region.IN.24: Rajasthan
+region.IN.23: Punjab
+region.IN.22: Pondichéry
+region.IN.21: Orissa
+region.IN.20: Nāgāland
+region.IN.31: Mizoram
+region.IN.18: Meghālaya
+region.IN.17: Manipur
+region.IN.16: Maharashtra
+region.IN.35: Madhya Pradesh
+region.IN.14: Laccadives
+region.IN.13: Kerala
+region.IN.19: Karnātaka
+region.IN.12: Kashmir
+region.IN.11: Himachal Pradesh
+region.IN.10: Haryana
+region.IN.09: Gujarāt
+region.IN.32: Daman et Diu
+region.IN.33: Goa
+region.IN.07: NCT
+region.IN.06: Dādra et Nagar Haveli
+region.IN.05: Chandīgarh
+region.IN.34: Bihar
+region.IN.03: Assam
+region.IN.30: Arunāchal Pradesh
+region.IN.02: Andhra Pradesh
+region.IN.01: Îles Andaman et Nicobar
+region.IN.37: Chhattisgarh
+region.IN.38: Jharkhand
+region.IN.39: Uttarakhand
+region.IQ.02: Al Başrah
+region.IQ.16: Wāsiţ
+region.IQ.18: Şalāḩ ad Dīn
+region.IQ.15: Nīnawá
+region.IQ.14: Mayssane
+region.IQ.12: Karbalāʼ
+region.IQ.11: Arbīl
+region.IQ.10: La Province de Diyala
+region.IQ.09: Dhi Qar
+region.IQ.08: Dahūk
+region.IQ.07: Mayorality de Bagdad
+region.IQ.06: Babylone
+region.IQ.13: À Taʼmīm
+region.IQ.05: Comme السليمانيه
+region.IQ.17: An Najaf
+region.IQ.04: Al Qādisīyah
+region.IQ.03: Al Muthanná
+region.IQ.01: Anbar
+region.IR.26: Téhéran
+region.IR.36: Zanjan
+region.IR.40: Yazd
+region.IR.25: Semnan
+region.IR.35: Māzandarān
+region.IR.34: Markazi
+region.IR.23: Lorestan
+region.IR.16: Kurdistan
+region.IR.05: Kohgīlūyeh va Būyer Aḩmad
+region.IR.15: Khuzestan
+region.IR.13: Kermānshāh
+region.IR.29: Kerman
+region.IR.10: Īlām
+region.IR.11: Hormozgan
+region.IR.09: Hamadān
+region.IR.08: گیلکی
+region.IR.07: Fārs
+region.IR.03: Chahār Maḩāll va Bakhtīārī
+region.IR.22: Bushehr
+region.IR.33: Azerbaïdjan oriental
+region.IR.01: Āz̄ārbāyjān-e Gharbī
+region.IR.32: Ardabīl
+region.IR.28: Ispahan persan
+region.IR.37: Golestān
+region.IR.38: Qazvīn
+region.IR.39: Qom
+region.IR.04: Sīstān va Balouchestan
+region.IR.41: Razavi-e jonubi
+region.IR.42: Razavi Khorasan
+region.IR.43: Razavi-e Shomālī
+region.IR.44: Alborz
+region.IS.41: Nord-Ouest
+region.IS.40: Nord-est
+region.IS.38: Est
+region.IS.42: Sud
+region.IS.39: Région de la capitale
+region.IS.43: Sud de la péninsule
+region.IS.45: Ouest
+region.IS.44: Fjords
+region.IT.15: Sicile
+region.IT.14: Sardaigne
+region.IT.03: Calabre
+region.IT.20: Veneto
+region.IT.19: "Vallée d'Aoste"
+region.IT.18: Umbria
+region.IT.17: Trentin-Haut-Adige
+region.IT.16: Tuscany
+region.IT.13: Apulia
+region.IT.12: Piémont
+region.IT.11: Molise
+region.IT.10: Les Marches
+region.IT.09: Lombardie
+region.IT.08: Ligurie
+region.IT.07: Latium
+region.IT.06: Frioul-Vénétie Julienne
+region.IT.05: Emilia-Romagna
+region.IT.04: Campanie
+region.IT.02: Basilicate
+region.IT.01: Abruzzes
+region.JM.16: Westmoreland
+region.JM.15: Trelawny
+region.JM.14: Saint Thomas
+region.JM.13: Sainte-Marie
+region.JM.12: Saint James
+region.JM.11: St. Elizabeth
+region.JM.10: Sainte-Catherine
+region.JM.09: Saint Ann
+region.JM.08: Saint-André
+region.JM.07: Portland
+region.JM.04: Manchester
+region.JM.17: Kingston
+region.JM.02: Paroisse de Hanover
+region.JM.01: Clarendon
+region.JO.19: Maan
+region.JO.18: Irbid
+region.JO.17: Zarqa
+region.JO.12: Tafielah
+region.JO.16: Amman
+region.JO.15: Mafraq
+region.JO.09: Karak
+region.JO.02: Balqa
+region.JO.20: Ajlun
+region.JO.22: Jerash
+region.JO.21: Aqaba
+region.JO.23: Madaba
+region.JP.46: Yamanashi
+region.JP.45: Yamaguchi
+region.JP.43: Wakayama
+region.JP.42: Toyama
+region.JP.41: Tottori
+region.JP.40: Tōkyō
+region.JP.39: Tokushima
+region.JP.38: Tochigi
+region.JP.37: Shizuoka
+region.JP.36: Préfecture de Shimane
+region.JP.35: Préfecture de Shiga
+region.JP.34: Saitama
+region.JP.33: Saga
+region.JP.32: Ōsaka
+region.JP.47: Okinawa
+region.JP.31: Okayama
+region.JP.30: Ōita
+region.JP.29: Niigata
+region.JP.28: Nara
+region.JP.27: Nagasaki
+region.JP.26: Nagano
+region.JP.25: Miyazaki
+region.JP.23: Mie
+region.JP.22: Kyōto
+region.JP.21: Préfecture de Kumamoto
+region.JP.20: Kōchi
+region.JP.19: Kanagawa
+region.JP.18: Kagoshima
+region.JP.17: Kagawa
+region.JP.15: Ishikawa
+region.JP.13: Préfecture de Hyōgo
+region.JP.11: Hiroshima
+region.JP.10: Préfecture de Gunma
+region.JP.09: Gifu
+region.JP.07: Fukuoka
+region.JP.06: Fukui
+region.JP.05: Ehime
+region.JP.01: Aichi
+region.JP.44: Yamagata
+region.JP.24: Miyagi
+region.JP.16: Iwate
+region.JP.14: Ibaraki
+region.JP.08: Fukushima
+region.JP.04: Chiba
+region.JP.02: Akita
+region.JP.12: Hokkaidō
+region.JP.03: "Préfecture d'Aomori"
+region.KE.55: West Pokot
+region.KE.54: Wajir
+region.KE.52: Uasin Gishu
+region.KE.51: Turkana
+region.KE.50: Trans Nzoia
+region.KE.49: "Tharaka - Eric Jacques"
+region.KE.48: Tana River
+region.KE.46: Siaya
+region.KE.45: Samburu
+region.KE.05: Zone de Nairobi
+region.KE.38: "Murang'A"
+region.KE.37: Mombasa
+region.KE.35: Meru
+region.KE.34: Marsabit
+region.KE.33: Mandera
+region.KE.29: District de Laikipia
+region.KE.28: Kwale
+region.KE.27: Kitui
+region.KE.26: Kisumu
+region.KE.25: Kisii
+region.KE.24: Kirinyaga
+region.KE.23: Kilifi
+region.KE.22: Kiambu
+region.KE.21: Kericho
+region.KE.20: Kakamega
+region.KE.18: Isiolo
+region.KE.16: Garissa
+region.KE.15: Embu
+region.KE.13: Busia
+region.KE.12: Bungoma
+region.KE.10: Baringo
+region.KE.43: Nyandarua
+region.KE.53: Vihiga
+region.KE.30: Lamu
+region.KE.31: Machakos
+region.KE.32: Makueni
+region.KE.14: Elegeyo-Marakwet
+region.KE.47: Taita Taveta
+region.KE.19: Kajiado
+region.KE.44: Nyeri
+region.KE.17: Homa Bay
+region.KE.11: Bomet
+region.KE.36: Migori
+region.KE.39: Nakuru
+region.KE.41: Narok
+region.KE.42: Nyamira
+region.KE.40: Nandi
+region.KG.08: Osh
+region.KG.09: Batken Oblasty
+region.KG.06: Talas
+region.KG.04: Naryn
+region.KG.07: Ysyk-Köl
+region.KG.01: Bichkek
+region.KG.03: Jalal-Abad
+region.KG.02: Chüy
+region.KH.12: Poŭthĭsăt
+region.KH.29: La Province de Battambang
+region.KH.19: Takeo
+region.KH.18: Svay Rieng
+region.KH.17: Stung Treng
+region.KH.27: Ŏtâr Méanchey
+region.KH.24: Siem Reap
+region.KH.23: Ratanakiri
+region.KH.14: Prey Veng
+region.KH.13: Preah Vihear
+region.KH.22: Phnom Penh
+region.KH.30: Pailin
+region.KH.10: Mondolkiri
+region.KH.09: Kratie
+region.KH.26: Kep
+region.KH.08: Kaoh Kŏng
+region.KH.07: Kandal
+region.KH.21: Kampot
+region.KH.05: Kampong Thom
+region.KH.04: Kampong Speu
+region.KH.03: Kampong Chhnang
+region.KH.02: Kampong Cham
+region.KH.28: Preah Sihanouk
+region.KH.25: Province de Banteay Meanchey
+region.KI.01: Îles Gilbert
+region.KI.02: Îles de la ligne
+region.KI.03: Îles Phoenix
+region.KM.03: Mohéli
+region.KM.02: Grande Comore
+region.KM.01: Anjouan
+region.KN.15: Trinity Palmetto Point
+region.KN.13: Saint Thomas Middle Island
+region.KN.12: Saint Thomas Lowland
+region.KN.11: Saint-Peter Basseterre
+region.KN.10: Saint Paul Charlestown
+region.KN.09: Saint Paul Capesterre
+region.KN.08: Saint-Mary Cayon
+region.KN.07: Saint John Figtree
+region.KN.06: Saint John Capesterre
+region.KN.05: Saint James Windwa
+region.KN.04: Saint George Gingerland
+region.KN.03: Saint-George Basseterre
+region.KN.02: Saint-Anne Sandy Point
+region.KN.01: Christ Church Nichola Town
+region.KP.12: "P' Pyongyang-si"
+region.KP.15: "P'yŏngan-namdo"
+region.KP.11: "P'yŏngan-bukto"
+region.KP.09: Gangwon
+region.KP.06: Hwanghae-namdo
+region.KP.07: Hwanghae-bukto
+region.KP.03: Hamgyong-namdo
+region.KP.13: Yanggang-do
+region.KP.17: Hamgyong-bukto
+region.KP.01: Adresse-do
+region.KP.18: Najin Sŏnbong-TR
+region.KR.21: Ulsan
+region.KR.19: Daejeon
+region.KR.15: Daegu
+region.KR.11: Séoul
+region.KR.10: Busan
+region.KR.14: Gyeongsang du Nord
+region.KR.13: La Province du Gyeonggi
+region.KR.18: Gwangju
+region.KR.06: Gangwon
+region.KR.12: Incheon
+region.KR.17: Chungcheong du Sud
+region.KR.05: Chungcheong du Nord
+region.KR.16: Jeolla du Sud
+region.KR.03: Jeolla du Nord
+region.KR.01: Jeju
+region.KR.20: Gyeongsang du Sud
+region.KR.22: Sejong
+region.KW.08: Ḩawallī
+region.KW.02: "Gouvernorat d'Al Asimah"
+region.KW.05: Al Jahrāʼ
+region.KW.07: Al Farwaniyah
+region.KW.04: Al Aḩmadī
+region.KW.09: Muḩāfaz̧at Mubārak al Kabir
+region.KZ.07: Batys Qazaqstan
+region.KZ.09: Mangghystaū
+region.KZ.06: Atyraū
+region.KZ.04: Aqtöbe
+region.KZ.15: Kazakhstan oriental
+region.KZ.03: Aqmola
+region.KZ.16: Soltüstik Qazaqstan
+region.KZ.11: Pavlodar
+region.KZ.14: Kyzylorda
+region.KZ.13: Koustanaï
+region.KZ.12: Qaraghandy
+region.KZ.17: Zhambyl
+region.KZ.10: Ongtüstik Qazaqstan
+region.KZ.02: Almaty Qalasy
+region.KZ.01: AlmaAta
+region.KZ.08: Bayqongyr Qalasy
+region.KZ.05: Astana Qalasy
+region.LA.14: Xiangkhoang
+region.LA.13: Xiagnabouli
+region.LA.27: La Province de Vientiane
+region.LA.20: Savannahkhét
+region.LA.19: Saravane
+region.LA.18: Phôngsali
+region.LA.07: Oudômxai
+region.LA.17: Louangphabang
+region.LA.16: Loungnamtha
+region.LA.15: Khammouane
+region.LA.03: Houaphan
+region.LA.02: Champasak
+region.LA.01: Attapu
+region.LA.26: Xékong
+region.LA.22: Bokèo
+region.LA.23: Bolikhamxai
+region.LA.24: Préfecture de Vientiane
+region.LB.05: Mont-Liban
+region.LB.04: Beyrouth
+region.LB.09: Liban-Nord
+region.LB.06: Liban-Sud
+region.LB.08: Béqaa
+region.LB.07: Nabatîyé
+region.LB.10: Aakkâr
+region.LB.11: Baalbek-Hermel
+region.LC.10: Vieux-Fort
+region.LC.09: Soufrière
+region.LC.11: Praslin
+region.LC.08: Micoud
+region.LC.07: Laborie
+region.LC.06: Gros-Islet
+region.LC.05: Dennery
+region.LC.02: Dauphin
+region.LC.04: Choiseul
+region.LC.03: Castries
+region.LC.01: Anse-la-Raye
+region.LI.11: Vaduz
+region.LI.10: Triesenberg
+region.LI.09: Triesen
+region.LI.08: Schellenberg
+region.LI.07: Schaan
+region.LI.06: Ruggell
+region.LI.05: Planken
+region.LI.04: Mauren
+region.LI.03: Gamprin
+region.LI.02: Eschen
+region.LI.01: Balzers
+region.LK.36: Europe occidentale
+region.LK.35: UVA
+region.LK.34: Sud
+region.LK.33: Sabaragamuwa
+region.LK.32: Nord Ouest
+region.LK.30: Centre Nord
+region.LK.29: Central
+region.LK.38: Province Nord
+region.LK.37: Province orientale
+region.LR.10: Sinoe
+region.LR.09: Nimba
+region.LR.14: Montserrado
+region.LR.13: Maryland
+region.LR.20: Lofa
+region.LR.19: Grand Gedeh
+region.LR.12: Grand Cape Mount
+region.LR.11: Grand Bassa
+region.LR.01: Bong
+region.LR.15: Bomi
+region.LR.16: Grand Kru
+region.LR.17: Margibi
+region.LR.18: River Cess
+region.LR.21: Gbarpolu
+region.LR.22: Rivière Gee
+region.LS.19: Thaba-Tseka
+region.LS.18: Quthing
+region.LS.17: Qachaʼs Nek
+region.LS.16: Mokhotlong
+region.LS.15: Mohaleʼs Hoek
+region.LS.14: Maseru
+region.LS.13: Mafeteng
+region.LS.12: Leribe
+region.LS.11: Butha-Buthe
+region.LS.10: Berea
+region.LT.56: Alytaus Apskritis
+region.LT.57: Kauno Apskritis
+region.LT.58: Klaipėdos Apskritis
+region.LT.59: Marijampolės Apskritis
+region.LT.60: Panevėžio Apskritis
+region.LT.61: Šiaulių Apskritis
+region.LT.62: Tauragės Apskritis
+region.LT.63: Telšių Apskritis
+region.LT.64: Utenos Apskritis
+region.LT.65: Vilniaus Apskritis
+region.LU.03: Luxembourg
+region.LU.02: Grevenmacher
+region.LU.01: Diekirch
+region.LV.33: Ventspils Rajons
+region.LV.32: Ventspils
+region.LV.31: Valmieras Rajons
+region.LV.30: Valkas Rajons
+region.LV.29: Tukuma Rajons
+region.LV.28: Talsu Rajons
+region.LV.27: Saldus Rajons
+region.LV.25: Rīga
+region.LV.24: Rēzeknes Rajons
+region.LV.23: Rēzekne
+region.LV.22: Preiļu Rajons
+region.LV.21: Ogres Rajons
+region.LV.20: Madonas Rajons
+region.LV.19: Ludzas Rajons
+region.LV.18: Limbažu Rajons
+region.LV.16: Liepāja
+region.LV.15: Kuldīgas Rajons
+region.LV.14: Krāslavas Rajons
+region.LV.13: Jūrmala
+region.LV.12: Jelgavas Rajons
+region.LV.11: Jelgava
+region.LV.10: Rajons de Jēkabpils
+region.LV.09: Gulbenes Rajons
+region.LV.08: Dobeles Rajons
+region.LV.07: Municipalité de Daugavpils
+region.LV.06: Daugavpils
+region.LV.05: Cēsu Rajons
+region.LV.04: Bauskas Rajons
+region.LV.03: Balvu Rajons
+region.LV.02: Alūksnes Rajons
+region.LV.01: Aizkraukles Rajons
+region.LV.60: Dundagas Novads
+region.LV.40: Alsungas Novads
+region.LV.A5: Pāvilostas Novads
+region.LV.99: Nīcas Novads
+region.LV.B6: Rucavas Novads
+region.LV.65: Grobiņas Novads
+region.LV.61: Durbes Novads
+region.LV.37: Aizputes Novads
+region.LV.A8: Priekules Novads
+region.LV.D7: Vaiņodes Novads
+region.LV.C9: Skrundas Novads
+region.LV.51: Brocēnu Novads
+region.LV.B4: Rojas Novads
+region.LV.77: Kandavas Novads
+region.LV.44: Auces Novads
+region.LV.73: Jaunpils Novads
+region.LV.62: Engures Novads
+region.LV.D5: Tērvetes Novads
+region.LV.A3: Ozolnieku Novads
+region.LV.B9: Rundāles Novads
+region.LV.45: Babītes Novads
+region.LV.95: Mārupes Novads
+region.LV.A2: Olaines Novads
+region.LV.67: Iecavas Novads
+region.LV.80: Ķekavas Novads
+region.LV.C3: Salaspils Novads
+region.LV.46: Baldones Novads
+region.LV.D2: Stopiņu Novads
+region.LV.53: Carnikavas Novads
+region.LV.34: Ādažu Novads
+region.LV.64: Garkalnes Novads
+region.LV.E4: Vecumnieku Novads
+region.LV.79: Ķeguma Novads
+region.LV.87: Lielvārdes Novads
+region.LV.C8: Skrīveru Novads
+region.LV.71: Jaunjelgavas Novads
+region.LV.98: Neretas Novads
+region.LV.E6: Viesītes Novads
+region.LV.C2: Salas Novads
+region.LV.74: Jēkabpils
+region.LV.38: Aknīstes Novads
+region.LV.69: Ilūkstes Novads
+region.LV.E2: Vārkavas Novads
+region.LV.90: Līvānu Novads
+region.LV.E1: Varakļānu Novads
+region.LV.E8: Viļānu Novads
+region.LV.B3: Riebiņu Novads
+region.LV.35: Aglonas Novads
+region.LV.56: Ciblas Novads
+region.LV.E9: Zilupes Novads
+region.LV.E7: Viļakas Novads
+region.LV.47: Baltinavas Novads
+region.LV.57: Dagdas Novads
+region.LV.78: Kārsavas Novads
+region.LV.B7: Rugāju Novads
+region.LV.55: Cesvaines Novads
+region.LV.91: Lubānas Novads
+region.LV.85: Krustpils Novads
+region.LV.A6: Pļaviņu Novads
+region.LV.82: Kokneses Novads
+region.LV.68: Ikšķiles Novads
+region.LV.B5: Ropažu Novads
+region.LV.70: Inčukalna Novads
+region.LV.84: Krimuldas Novads
+region.LV.C7: Siguldas Novads
+region.LV.88: Līgatnes Novads
+region.LV.94: Mālpils Novads
+region.LV.C6: Sējas Novads
+region.LV.C5: Saulkrastu Novads
+region.LV.C1: Salacgrīvas Novads
+region.LV.39: Tranquilo Novads
+region.LV.97: Naukšēnu Novads
+region.LV.B8: Rūjienas Novads
+region.LV.96: Mazsalacas Novads
+region.LV.52: Burtnieku Novads
+region.LV.A4: Pārgaujas Novads
+region.LV.81: Kocēnu Novads
+region.LV.42: Amatas Novads
+region.LV.A9: Priekuļu Novads
+region.LV.B1: Raunas Novads
+region.LV.D3: Strenču Novads
+region.LV.50: Beverīnas Novads
+region.LV.D1: Smiltenes Novads
+region.LV.72: Jaunpiebalgas Novads
+region.LV.63: Ērgļu Novads
+region.LV.E3: Vecpiebalgas Novads
+region.LV.43: Singes Novads
+region.LV.F1: Mērsraga Novads
+region.LY.70: Darnah
+region.LY.69: Banghāzī
+region.LY.66: Al Marj
+region.LY.65: Al Kufrah
+region.LY.63: Al Jabal al Akhdar
+region.LY.77: Ţarābulus
+region.LY.76: Surt
+region.LY.75: Sebha
+region.LY.74: "Sha'bīyat Nālūt"
+region.LY.73: Murzuq
+region.LY.72: Mişrātah
+region.LY.71: "Sha'bīyat Ghāt"
+region.LY.68: AZ Zāwiyah
+region.LY.78: Cendres Shāţiʼ
+region.LY.64: Al Jufrah
+region.LY.67: Un Nuqāţ al Khams
+region.LY.79: "Sha' al bīyat Buţnān"
+region.LY.80: "Sha'bīyat al Jabal al Gharbī"
+region.LY.81: "Sha' al bīyat Jafārah"
+region.LY.82: Al Marqab
+region.LY.83: "Sha' al bīyat Wāḩāt"
+region.LY.84: "Sha'bīyat : Wādī al Ḩayāt"
+region.MA.49: Rabat-Salé-Zemmour-Zaër
+region.MA.48: Meknès-Tafilalet
+region.MA.47: Marrakech-Tensift-Al Haouz
+region.MA.46: Fès-Boulemane
+region.MA.45: Grand Casablanca
+region.MA.50: Chaouia-Ouardigha
+region.MA.51: Doukkala-Abda
+region.MA.52: Gharb-Chrarda-Beni Hssen
+region.MA.53: Guelmim-Es Smara
+region.MA.54: "Région de l'oriental"
+region.MA.55: Souss-Massa-Drâa
+region.MA.56: Tadla-Azilal
+region.MA.57: Tanger-Tétouan
+region.MA.58: Taza-Al Hoceima-Taounate
+region.MA.59: Laâyoune-Boujdour-Sakia El Hamra
+region.MA.EH: Oued ed Dahab-Lagouira
+region.MD.73: Raion Edinet
+region.MD.92: District Ungheni
+region.MD.91: Raion de Teleneşti
+region.MD.90: Raion de Taraclia
+region.MD.88: Ştefan-Vodă
+region.MD.89: Strășeni District
+region.MD.87: Raion de Soroca
+region.MD.84: Raion de Rîşcani
+region.MD.83: Raion Rezina
+region.MD.82: Raion Orhei
+region.MD.81: Raion de Ocniţa
+region.MD.59: Raion Anenii Noi
+region.MD.80: Raion Nisporeni
+region.MD.79: Raion Leova
+region.MD.85: Raion de Sîngerei
+region.MD.69: Raion de Criuleni
+region.MD.78: Raion de Ialoveni
+region.MD.57: Chişinău
+region.MD.67: Căuşeni
+region.MD.65: Raion Cantemir
+region.MD.66: Călăraşi
+region.MD.64: District de Cahul
+region.MD.76: Raion Glodeni
+region.MD.75: Raion de Floreşti
+region.MD.74: Raion de Faleşti
+region.MD.72: Dubăsari
+region.MD.71: Drochia District
+region.MD.70: Raion de Dondyushanskom
+region.MD.68: Raion de Cimişlia
+region.MD.63: Raion Briceni
+region.MD.61: Raion de Basarabeasca
+region.MD.77: Raion Hînceşti
+region.MD.86: Raion Şoldăneşti
+region.MD.58: Stînga Nistrului
+region.MD.51: Găgăuzia
+region.MD.62: Bender
+region.MD.60: Bălţi
+region.ME.17: Opština Rožaje
+region.ME.21: Opština Žabljak
+region.ME.20: Ulcinj
+region.ME.19: Tivat
+region.ME.16: Podgorica
+region.ME.18: Opština Šavnik
+region.ME.15: Opština Plužine
+region.ME.14: Pljevlja
+region.ME.13: Opština Plav
+region.ME.12: Opština Nikšić
+region.ME.11: Mojkovac
+region.ME.10: Kotor
+region.ME.09: Opština Kolašin
+region.ME.03: Berane
+region.ME.08: Herceg Novi
+region.ME.07: Danilovgrad
+region.ME.06: Cetinje
+region.ME.05: Budva
+region.ME.04: Bijelo Polje
+region.ME.02: Bar
+region.ME.01: Andrijevica
+region.MG.7670842: Diana
+region.MG.7670846: Sava
+region.MG.7670847: Sofia
+region.MG.7670848: Analanjirofo
+region.MG.7670849: Boeny
+region.MG.7670850: Betsiboka
+region.MG.7670851: Alaotra Mangoro
+region.MG.7670852: Melaky
+region.MG.7670853: Bongolava
+region.MG.7670854: Vakinankaratra
+region.MG.7670855: Itasy
+region.MG.7670856: Analamanga
+region.MG.7670857: Atsinanana
+region.MG.7670902: Menabe
+region.MG.7670904: "Amoron ' i Mania"
+region.MG.7670905: Haute Matsiatra
+region.MG.7670906: Vatovavy Fitovinany
+region.MG.7670907: Ihorombe
+region.MG.7670908: "Région d'Atsimo-Atsinanana"
+region.MG.7670910: Anosy
+region.MG.7670911: Androy
+region.MG.7670913: Atsimo-Andrefana
+region.MH.007: Ailinginae Atoll
+region.MH.010: Ailinglaplap Atoll
+region.MH.030: Ailuk Atoll
+region.MH.040: Atoll Arno
+region.MH.050: Atoll Aur
+region.MH.060: Bikar Atoll
+region.MH.070: Atoll de bikini
+region.MH.080: Atoll ébène
+region.MH.090: "Atoll d'Enewetak"
+region.MH.100: Atoll de Erikub
+region.MH.120: Atoll de Jaluit
+region.MH.150: Atoll de Kwajalein
+region.MH.160: LAE Atoll
+region.MH.180: Likiep Atoll
+region.MH.190: Atoll de Majuro
+region.MH.300: Maloelap Atoll
+region.MH.320: Mili Atoll
+region.MH.330: Atoll de Namdrik
+region.MH.340: Atoll de Namu
+region.MH.350: Atoll de Rongelap
+region.MH.360: Atoll de Rongrik
+region.MH.385: Atoll de Taka
+region.MH.073: Bokak Atoll
+region.MH.390: Ujae Atoll
+region.MH.400: Ujelang
+region.MH.410: Utrik Atoll
+region.MH.420: Wotho Atoll
+region.MH.430: Wotje Atoll
+region.MH.110: Île de jacky
+region.MH.130: Île de Lhost
+region.MH.140: Île de kili
+region.MH.170: Île de lib
+region.MH.310: Île Mejit
+region.MK.E9: Valandovo
+region.MK.86: Resen
+region.MK.51: Kratovo
+region.MK.78: Pehtchevo
+region.MK.72: Novo Selo
+region.MK.11: Bosilovo
+region.MK.A9: Vasilevo
+region.MK.E5: Dojran
+region.MK.08: Bogdantsi
+region.MK.47: Konče
+region.MK.62: Makedonska Kamenica
+region.MK.C6: Zrnovtsi
+region.MK.40: Karbintsi
+region.MK.25: Demir Kapija
+region.MK.87: Rosoman
+region.MK.35: Gradsko
+region.MK.60: Lozovo
+region.MK.19: Češinovo
+region.MK.E1: Novaci
+region.MK.04: Berovo
+region.MK.06: Bitola
+region.MK.D9: Mogila
+region.MK.01: Aračinovo
+region.MK.C7: Bogovinje
+region.MK.12: Brvenica
+region.MK.C8: Čair
+region.MK.C9: Čaška
+region.MK.D1: Centar
+region.MK.18: Centar Župa
+region.MK.20: Čučer-Sandevo
+region.MK.D2: Debar
+region.MK.22: Reçut
+region.MK.D3: Demir Hisar
+region.MK.28: Dolneni
+region.MK.29: Opstina Gjorce Petrov
+region.MK.30: Drougovo
+region.MK.32: Gazi Baba
+region.MK.33: Gevgelija
+region.MK.D4: Gostivar
+region.MK.36: Ilinden
+region.MK.D5: Jegunovce
+region.MK.41: Karpoš
+region.MK.D6: Kavadarci
+region.MK.43: Kičevo
+region.MK.44: Kisela Voda
+region.MK.46: Kočani
+region.MK.52: Kriva Palanka
+region.MK.53: Krivogachtani
+region.MK.54: Kruševo
+region.MK.D7: Kumanovo
+region.MK.59: Opstina Lipkovo
+region.MK.D8: Makedonski Brod
+region.MK.69: Negotino
+region.MK.E2: Ohrid
+region.MK.77: Oslomej
+region.MK.79: Petrovec
+region.MK.80: Plasnica
+region.MK.E3: Prilep
+region.MK.83: Probichtip
+region.MK.84: Radoviš
+region.MK.85: Opstina Rankovtse
+region.MK.E4: Opština Rostoucha
+region.MK.90: Saraj
+region.MK.92: Sopište
+region.MK.97: Staro Nagoricane
+region.MK.98: Štip
+region.MK.E6: Struga
+region.MK.E7: Strumica
+region.MK.A2: Studeničani
+region.MK.A3: Šuto Orizari
+region.MK.A4: Sveti Nikole
+region.MK.A5: Tearce
+region.MK.E8: Tetovo
+region.MK.F1: Veles
+region.MK.B3: Vevčani
+region.MK.B4: Vinica
+region.MK.B6: Vranechtitsa
+region.MK.B7: Vraptchichte
+region.MK.C1: Zajas
+region.MK.C2: Zelenikovo
+region.MK.C3: Želino
+region.MK.F3: Aerodrom
+region.MK.F4: Butel
+region.MK.F5: Debartsa
+region.ML.08: Région de Tombouctou
+region.ML.06: Région de Sikasso
+region.ML.05: Région de Ségou
+region.ML.04: Région de Mopti
+region.ML.07: Région de Koulikoro
+region.ML.03: Région de Kayes
+region.ML.09: Région de Gao
+region.ML.01: Bamako
+region.ML.10: Région de Kidal
+region.MM.12: Tanintharyi
+region.MM.11: shan
+region.MM.10: Sagain
+region.MM.17: Rangoon
+region.MM.01: Rakhine
+region.MM.16: Bago
+region.MM.13: Lun
+region.MM.08: Mandalay
+region.MM.15: Magway
+region.MM.06: Kayah
+region.MM.05: Kayin
+region.MM.04: Kachin
+region.MM.03: Ayeyarwady
+region.MM.02: Menton
+region.MN.19: UVS
+region.MN.12: Hovd
+region.MN.10: Govĭ-Altay
+region.MN.09: Dzabkhan
+region.MN.03: Bayan-Ölgiy
+region.MN.02: Bayanhongor
+region.MN.20: Oulan-Bator
+region.MN.18: Aimak central
+region.MN.17: Sühbaatar
+region.MN.16: Selenge
+region.MN.15: Övörhangay
+region.MN.14: "Province d ' Ömnögovĭ"
+region.MN.13: Hövsgöl
+region.MN.11: Hentiy
+region.MN.08: Govĭ moyen
+region.MN.07: Gobi oriental Aymag
+region.MN.06: Aimak oriental
+region.MN.21: Bulgan
+region.MN.01: Arhangay
+region.MN.23: Darhan Uul
+region.MN.24: Govĭ-Sumber
+region.MN.25: Orhon
+region.MO.02: Macao
+region.MO.01: Ilhas
+region.MP.100: Municipalité de Rota
+region.MP.110: Municipalité de Saipan
+region.MP.120: Municipalité de Tinian
+region.MP.085: Municipalité des îles du Nord
+region.MQ.MQ: Martinique
+region.MR.06: Trarza
+region.MR.11: Tiris Zemmour
+region.MR.09: Tagant
+region.MR.NKC: Nouakchott
+region.MR.12: Inchiri
+region.MR.02: Hodh el Gharbi
+region.MR.01: Hodh ech Chargui
+region.MR.10: Guidimaka
+region.MR.04: Gorgol
+region.MR.08: Dakhlet Nouadhibou
+region.MR.05: Brakna
+region.MR.03: Assaba
+region.MR.07: Adrar
+region.MS.03: Saint Pierre
+region.MS.02: Saint-Georges
+region.MS.01: Saint-Antoine
+region.MT.01: Attard
+region.MT.02: Balzan
+region.MT.03: Il-Birgu
+region.MT.04: Birkirkara
+region.MT.05: Birżebbuġa
+region.MT.06: Bormla
+region.MT.07: Dingli
+region.MT.08: Il-Fgura
+region.MT.09: Il-Furjana
+region.MT.10: Il-Fontana
+region.MT.11: Għajnsielem
+region.MT.12: L-Għarb
+region.MT.13: Ħal Għargħur
+region.MT.14: L-Għasri
+region.MT.15: Ħal Għaxaq
+region.MT.16: Il-Gudja
+region.MT.17: Il-Gżira
+region.MT.18: Il-Ħamrun
+region.MT.19: L-Iklin
+region.MT.20: L-Imdina
+region.MT.21: L-Imġarr
+region.MT.22: L-Imqabba
+region.MT.23: L-Imsida
+region.MT.24: L-Mtarfa
+region.MT.25: L-Isla
+region.MT.26: Il-Kalkara
+region.MT.27: "Ta' Kerċem"
+region.MT.28: Kirkop
+region.MT.29: Lija
+region.MT.30: Luqa
+region.MT.31: Il-Marsa
+region.MT.32: Marsaskala
+region.MT.33: Marsaxlokk
+region.MT.34: Il-Mellieħa
+region.MT.35: Il-Mosta
+region.MT.36: Il-Munxar
+region.MT.37: Dans-Nadur
+region.MT.38: In-Naxxar
+region.MT.39: Paola
+region.MT.40: Pembroke
+region.MT.41: Tal-Pietà
+region.MT.42: Il-Qala
+region.MT.43: Qormi
+region.MT.44: Il-Qrendi
+region.MT.46: IR-Rabat
+region.MT.47: Safi
+region.MT.48: Saint John
+region.MT.49: Saint Julian
+region.MT.50: Saint Lawrence
+region.MT.51: Sainte-Lucie
+region.MT.52: Baie de Saint Paul
+region.MT.53: Saint Venera
+region.MT.54: Sannat
+region.MT.55: Est-Siġġiewi
+region.MT.56: Tas-Sliema
+region.MT.57: Est-Swieqi
+region.MT.58: Tarxien
+region.MT.59: "Ta' Xbiex"
+region.MT.61: IX-Xaghra
+region.MT.62: IX-Xewkija
+region.MT.63: IX-Xgħajra
+region.MT.64: Ħaż-Żabbar
+region.MT.65: Ħaż-Żebbuġ
+region.MT.66: Iż-Żebbuġ
+region.MT.67: Iż-Żejtun
+region.MT.68: Iż-Żurrieq
+region.MT.60: Il-Belt Valletta
+region.MU.21: Îles Agalega
+region.MU.20: Savanne
+region.MU.19: Rivière du Rempart
+region.MU.18: Port-Louis
+region.MU.17: Plaines Wilhems
+region.MU.16: Pamplemousses
+region.MU.15: Moka
+region.MU.14: Grand Port
+region.MU.13: Flacq
+region.MU.12: Rivière Noire
+region.MU.22: Cargados Carajos
+region.MU.23: Rodrigues
+region.MV.47: Vaavu Atholhu
+region.MV.46: Thaa Atholhu
+region.MV.45: Shaviyani Atholhu
+region.MV.01: Elarbi
+region.MV.44: RAA Atholhu
+region.MV.43: Noonu Atoll
+region.MV.42: Atoll de Gnyaviyani
+region.MV.41: Meemu Atholhu
+region.MV.39: Shaviyani Atholhu
+region.MV.05: Laamu
+region.MV.38: Kaafu Atoll
+region.MV.37: HAA Dhaalu Atholhu
+region.MV.36: Haa Alifu Atholhu
+region.MV.35: Gaafu Dhaalu Atholhu
+region.MV.34: Gaafu Alifu Atholhu
+region.MV.33: Faafu Atholhu
+region.MV.32: Dhaalu Atholhu
+region.MV.31: RAA Atholhu
+region.MV.30: "Atoll d'Ari Nord"
+region.MV.40: Maale
+region.MV.48: La Province du Sud
+region.MV.49: Upper South Province
+region.MV.50: Upper South Province
+region.MV.51: Province centrale
+region.MV.52: La Province centrale du Sud
+region.MV.53: Province du Centre Nord
+region.MV.54: La Province du Nord
+region.MW.S: Région sud
+region.MW.N: Région du Nord
+region.MW.C: Région du centre
+region.MX.31: Yucatán
+region.MX.30: Veracruz-Llave
+region.MX.29: Tlaxcala
+region.MX.28: Tamaulipas
+region.MX.27: Tabasco
+region.MX.23: Quintana Roo
+region.MX.22: Querétaro
+region.MX.21: Puebla
+region.MX.20: Oaxaca
+region.MX.19: Nuevo León
+region.MX.17: Morelos
+region.MX.15: México
+region.MX.13: Hidalgo
+region.MX.12: Guerrero
+region.MX.09: Le District fédéral
+region.MX.05: Chiapas
+region.MX.04: Campeche
+region.MX.32: Zacatecas
+region.MX.26: Sonora
+region.MX.25: Sinaloa
+region.MX.24: San Luis Potosí
+region.MX.18: Nayarit
+region.MX.16: Michoacán
+region.MX.14: Jalisco
+region.MX.11: Guanajuato
+region.MX.10: Durango
+region.MX.08: Colima
+region.MX.07: Coahuila
+region.MX.06: Chihuahua
+region.MX.03: Baja California Sur
+region.MX.02: Basse-Californie
+region.MX.01: Aguascalientes
+region.MY.04: Melaka
+region.MY.13: Terengganu
+region.MY.12: Selangor
+region.MY.11: Sarawak
+region.MY.16: Sabah
+region.MY.08: Perlis
+region.MY.07: Perak
+region.MY.06: Pahang
+region.MY.05: Negeri Sembilan
+region.MY.03: Kelantan
+region.MY.14: Kuala Lumpur
+region.MY.09: Pulau Pinang
+region.MY.02: Kedah
+region.MY.01: Johor
+region.MY.15: Labuan
+region.MY.17: Putrajaya
+region.MZ.09: Zambézia
+region.MZ.08: Province de Tete
+region.MZ.05: Sofala
+region.MZ.07: Niassa
+region.MZ.06: Nampula
+region.MZ.04: Maputo
+region.MZ.10: Manica
+region.MZ.03: Inhambane
+region.MZ.02: Gaza
+region.MZ.01: Cabo Delgado
+region.MZ.11: La ville de Maputo
+region.NA.28: Caprivi
+region.NA.21: Khomas
+region.NA.29: Erongo
+region.NA.30: Hardap
+region.NA.31: Karas
+region.NA.32: Kunene
+region.NA.33: Ohangwena
+region.NA.34: Okavango
+region.NA.35: Omaheke
+region.NA.36: Omusati
+region.NA.37: Oshana
+region.NA.38: Oshikoto
+region.NA.39: Otjozondjupa
+region.NC.02: Province Sud
+region.NC.01: Province Nord
+region.NC.03: Province des îles Loyauté
+region.NE.07: Zinder
+region.NE.06: Tahoua
+region.NE.04: Maradi
+region.NE.03: Dosso
+region.NE.02: Diffa
+region.NE.01: "Région d'Agadez"
+region.NE.09: Tillabéri
+region.NE.08: Niamey
+region.NG.51: Sokoto
+region.NG.50: "Cours d'eau"
+region.NG.49: Plateau
+region.NG.32: Oyo
+region.NG.48: Ondo
+region.NG.16: Ogun
+region.NG.31: Niger
+region.NG.05: Lagos
+region.NG.30: Kwara
+region.NG.24: Katsina
+region.NG.29: Kano
+region.NG.23: Kaduna
+region.NG.28: "L'état d'IMO"
+region.NG.22: Traverser la rivière
+region.NG.27: Borno
+region.NG.26: État de Benue
+region.NG.46: "L'état de Bauchi"
+region.NG.25: "État d'Anambra"
+region.NG.21: Akwa Ibom
+region.NG.11: Territoire de la capitale fédérale Abuja
+region.NG.45: Abia
+region.NG.36: État de Delta
+region.NG.35: "Etat d'Adamawa"
+region.NG.37: Edo
+region.NG.47: "L'état d'Enugu"
+region.NG.39: État de Jigawa
+region.NG.52: Bayelsa
+region.NG.53: Ebonyi
+region.NG.54: Ekiti
+region.NG.55: Gombe
+region.NG.56: Nassarawa
+region.NG.57: Zamfara
+region.NG.40: Kebbi
+region.NG.41: Kogi
+region.NG.42: Osun
+region.NG.43: "L'Etat de Taraba"
+region.NG.44: Yobe
+region.NI.15: Rivas
+region.NI.14: Río San Juan
+region.NI.13: Nueva Segovia
+region.NI.12: Matagalpa
+region.NI.11: Masaya
+region.NI.10: Managua
+region.NI.09: Madriz
+region.NI.08: León
+region.NI.07: Jinotega
+region.NI.06: Grenade
+region.NI.05: Estelí
+region.NI.04: Chontales
+region.NI.03: Chinandega
+region.NI.02: Carazo
+region.NI.01: Boaco
+region.NI.17: Atlántico Norte
+region.NI.18: Atlántico Sur
+region.NL.11: La Hollande-méridionale
+region.NL.10: Zeeland
+region.NL.09: Utrecht
+region.NL.15: Overijssel
+region.NL.07: La Hollande-septentrionale
+region.NL.06: Brabant-septentrional
+region.NL.05: Limbourg
+region.NL.04: Groningen
+region.NL.03: Gelderland
+region.NL.02: Friesland
+region.NL.01: Drenthe
+region.NL.16: Flevoland
+region.NO.05: Finnmark
+region.NO.20: Comté de Vestfold
+region.NO.19: Vest-Agder
+region.NO.18: Troms
+region.NO.17: Comté de Telemark
+region.NO.16: Sør-Trøndelag
+region.NO.15: Sogn og Fjordane
+region.NO.14: Rogaland
+region.NO.13: Østfold
+region.NO.12: Comté de Oslo
+region.NO.11: "Comté d'Oppland"
+region.NO.10: Nord-Trøndelag
+region.NO.09: Nordland
+region.NO.08: Comté de Møre og Romsdal
+region.NO.07: Hordaland
+region.NO.06: Comté de Hedmark
+region.NO.04: Comté de Buskerud
+region.NO.02: "Comté d'Aust-Agder"
+region.NO.01: "Comté d'Akershus"
+region.NP.FR: "Région de l'extrême ouest"
+region.NP.MR: Région occidentale moyenne
+region.NP.CR: Région du centre
+region.NP.ER: "Région de l'est"
+region.NP.WR: "Région de l'ouest"
+region.NR.14: Yaren
+region.NR.13: Uaboe
+region.NR.12: Nibok
+region.NR.11: Meneng
+region.NR.10: Ijuw
+region.NR.09: Ewa
+region.NR.08: Denigomodu
+region.NR.07: Buada
+region.NR.06: BOE
+region.NR.05: Baiti
+region.NR.04: Anibare
+region.NR.03: Anetan
+region.NR.02: Anabar
+region.NR.01: Omai
+region.NZ.G2: Wellington
+region.NZ.F3: Manawatu-Wanganui
+region.NZ.G1: Waikato
+region.NZ.TAS: Tasman
+region.NZ.F9: Taranaki
+region.NZ.F8: Région de Southland
+region.NZ.E8: Bay of Plenty
+region.NZ.F6: Northland
+region.NZ.F4: Marlborough
+region.NZ.F2: "Bay de Hawke's"
+region.NZ.F1: Région de Gisborne
+region.NZ.E9: Région de Canterbury
+region.NZ.E7: Auckland
+region.NZ.10: Îles Chatham
+region.NZ.F5: Nelson
+region.NZ.F7: "Région de l'Otago"
+region.NZ.G3: Côte ouest
+region.OM.01: Ad Dākhilīyah
+region.OM.02: Al Bāţinah
+region.OM.03: Al Wusţá
+region.OM.04: Cendres Sharqīyah
+region.OM.09: AZ̧ Z̧āhirah
+region.OM.06: Masqaţ
+region.OM.07: Musandam
+region.OM.08: Z̧ufār
+region.OM.10: Muḩāfaz̧at al Buraymī
+region.OM.12: Cendres Muḩāfaz̧at Shamāl Sharqīyah
+region.OM.11: Muḩāfaz̧at Gharb al Bāţinah
+region.PA.10: Veraguas
+region.PA.09: Kuna Yala
+region.PA.08: Panamá
+region.PA.07: Los Santos
+region.PA.06: Herrera
+region.PA.05: Darién
+region.PA.04: Colón
+region.PA.03: Coclé
+region.PA.02: Chiriquí
+region.PA.01: Bocas del Toro
+region.PA.11: Emberá
+region.PA.12: Ngöbe-Buglé
+region.PE.25: "Région d'Ucayali"
+region.PE.24: Tumbes
+region.PE.22: San Martín
+region.PE.20: Région de Piura
+region.PE.16: Région de Loreto
+region.PE.14: Région de Lambayeque
+region.PE.13: Région de la Libertad
+region.PE.10: Huanuco
+region.PE.06: Cajamarca
+region.PE.02: "Région d'Ancash"
+region.PE.01: "Région d'Amazonas"
+region.PE.23: Région de Tacna
+region.PE.21: Région de Puno
+region.PE.19: Pasco
+region.PE.18: Moquegua
+region.PE.17: Madre de Dios
+region.PE.LMA: Provincia de Lima
+region.PE.15: Région de Lima
+region.PE.12: Junín
+region.PE.11: "Région d'ICA"
+region.PE.09: Région de Huancavelica
+region.PE.08: Cusco
+region.PE.07: Callao
+region.PE.05: "Région d'Ayacucho"
+region.PE.04: "Région d'Arequipa"
+region.PE.03: Apurímac
+region.PF.04: Îles Marquises
+region.PF.03: Îles Tuamotu-Gambier
+region.PF.02: Îles Sous-le-Vent
+region.PF.01: Îles du Vent
+region.PF.05: Îles Australes
+region.PG.17: Nouvelle-Bretagne occidentale
+region.PG.06: Province occidentale
+region.PG.16: Western Highlands
+region.PG.05: Southern Highlands
+region.PG.18: Sandaun
+region.PG.07: Bougainville
+region.PG.04: Province Nord
+region.PG.15: Nouvelle-Irlande
+region.PG.20: National Capital District
+region.PG.14: Morobe
+region.PG.13: Manus
+region.PG.12: Madang
+region.PG.02: Golfe
+region.PG.19: Enga
+region.PG.11: Sepik oriental
+region.PG.10: Nouvelle-Bretagne orientale
+region.PG.09: Eastern Highlands
+region.PG.08: Chimbu
+region.PG.03: La baie de Milne
+region.PG.01: Province centrale
+region.PG.21: HeLa
+region.PG.22: Jiwaka
+region.PH.14: Région autonome musulmane de Mindanao
+region.PH.10: Mindanao du Nord
+region.PH.41: Mimaropa
+region.PH.02: Vallée de Cagayan
+region.PH.12: Soccsksargen
+region.PH.13: Caraga
+region.PH.15: Région Administrative de la Cordillère
+region.PH.01: "Région d'Ilocos"
+region.PH.40: CALABARZON
+region.PH.06: Visayas occidentales
+region.PH.03: Luçon centrale
+region.PH.07: Visayas centrales
+region.PH.08: Visayas orientales
+region.PH.09: Péninsule de Zamboanga
+region.PH.11: Davao
+region.PH.05: Bicol
+region.PH.NCR: National Capital Region
+region.PK.08: Islāmābād
+region.PK.05: Sindh
+region.PK.04: Punjab
+region.PK.03: Province frontalière du Nord-Ouest
+region.PK.07: Gilgit-Baltistan
+region.PK.01: Zones tribales administrées par le gouvernement fédéral
+region.PK.02: Balochistān
+region.PK.06: Azad Cachemire
+region.PL.75: Voïvodie de Lublin
+region.PL.77: Petite-Pologne
+region.PL.78: Voïvodie de Mazovie
+region.PL.80: Voïvodie des Basses-Carpates
+region.PL.81: Podlasie
+region.PL.84: Świętokrzyskie
+region.PL.85: Voïvodie de Varmie-Mazurie
+region.PL.72: Basse-Silésie
+region.PL.74: Voïvodie de Łódź
+region.PL.76: Lubusz
+region.PL.79: "Voïvodie d'Opole"
+region.PL.82: Voïvodie de Poméranie
+region.PL.83: Voïvodie de Silésie
+region.PL.86: Une plus grande voïvodie de Pologne
+region.PL.87: Voïvodie de Poméranie occidentale
+region.PL.73: Kujawsko-Pomorskie
+region.PM.97502: Saint-Pierre
+region.PM.97501: Miquelon-Langlade
+region.PR.001: Adjuntas
+region.PR.003: Aguada
+region.PR.005: Aguadilla
+region.PR.007: Aguas Buenas
+region.PR.009: Aibonito
+region.PR.011: Añasco
+region.PR.013: Arecibo
+region.PR.015: Arroyo
+region.PR.017: Barceloneta
+region.PR.019: Barranquitas
+region.PR.021: Bayamón
+region.PR.023: Cabo Rojo
+region.PR.025: Caguas
+region.PR.027: Camuy
+region.PR.029: Canovanas
+region.PR.031: Caroline
+region.PR.033: Catano
+region.PR.035: Cayey
+region.PR.037: Ceiba
+region.PR.039: Ciales
+region.PR.041: Cidra
+region.PR.043: Coamo
+region.PR.045: Comerio
+region.PR.047: Corozal
+region.PR.049: Culebra
+region.PR.051: Dorado
+region.PR.053: Fajardo
+region.PR.054: Floride
+region.PR.055: Guanica
+region.PR.057: Guayama
+region.PR.059: Guayanilla
+region.PR.061: Guaynabo
+region.PR.063: Gurabo
+region.PR.065: Hatillo
+region.PR.067: Hormigueros
+region.PR.069: Humacao
+region.PR.071: Isabela
+region.PR.073: Municipio de Jayuya
+region.PR.075: Juana Diaz
+region.PR.077: Municipio de Juncos
+region.PR.079: Lajas
+region.PR.081: Lares
+region.PR.083: Las Marias
+region.PR.085: Las Piedras
+region.PR.087: Loiza
+region.PR.089: Luquillo
+region.PR.091: Manati
+region.PR.093: Maricao
+region.PR.095: Maunabo
+region.PR.097: Mayaguez
+region.PR.099: MOCA
+region.PR.101: Morovis
+region.PR.103: Naguabo
+region.PR.105: Naranjito
+region.PR.107: Orocovis
+region.PR.109: Patillas
+region.PR.111: Penuelas
+region.PR.113: Ponce
+region.PR.117: Rincon
+region.PR.115: Quebradillas
+region.PR.119: Rio Grande
+region.PR.121: Sabana Grande
+region.PR.123: Salinas
+region.PR.125: San allemand
+region.PR.127: San Juan
+region.PR.129: San Lorenzo
+region.PR.131: Saint-Sébastien
+region.PR.133: Santa Isabel Municipio
+region.PR.135: Toa Alta
+region.PR.137: Toa Baja
+region.PR.139: Trujillo Alto
+region.PR.141: Utuado
+region.PR.143: Vega Alta
+region.PR.145: Vega Baja
+region.PR.149: Villalba
+region.PR.151: Yabucoa
+region.PR.153: Yauco
+region.PR.147: Vieques
+region.PS.GZ: Bande de Gaza
+region.PS.WE: Cisjordanie
+region.PT.19: Setúbal
+region.PT.18: Santarém
+region.PT.16: Portalegre
+region.PT.14: Lisbonne
+region.PT.13: Leiria
+region.PT.09: Faro
+region.PT.08: Évora
+region.PT.06: Castelo Branco
+region.PT.03: Bedja
+region.PT.10: Madère
+region.PT.22: Viseu
+region.PT.21: Vila Real
+region.PT.20: Viana do Castelo
+region.PT.17: Porto
+region.PT.11: Guarda
+region.PT.07: Coimbra
+region.PT.05: Bragança
+region.PT.04: Braga
+region.PT.02: Aveiro
+region.PT.23: Açores
+region.PW.11: Ngatpang
+region.PW.16: Sonsorol
+region.PW.05: Kayangel
+region.PW.04: État de Hatohobei
+region.PW.01: Aimeliik
+region.PW.02: Airai
+region.PW.03: Angaur
+region.PW.06: Koror
+region.PW.07: Melekeok
+region.PW.08: Ngaraard
+region.PW.12: Ngchesar
+region.PW.09: Ngarchelong
+region.PW.10: Ngardmau
+region.PW.13: État de Ngeremlengui
+region.PW.14: Ngiwal
+region.PW.15: Peleliu
+region.PY.17: San Pedro
+region.PY.16: Presidente Hayes
+region.PY.15: Paraguarí
+region.PY.13: Ñeembucú
+region.PY.12: Misiones
+region.PY.11: Itapúa
+region.PY.10: Guairá
+region.PY.08: Cordillère
+region.PY.07: Concepción
+region.PY.06: Central
+region.PY.19: Canindeyú
+region.PY.05: Caazapá
+region.PY.04: Caaguazú
+region.PY.02: Amambay
+region.PY.01: Alto Paraná
+region.PY.23: Alto Paraguay
+region.PY.22: Asunción
+region.PY.24: Boquerón
+region.QA.08: Madīnat cendres Gharb
+region.QA.02: Al Ghuwayrīyah
+region.QA.04: Al Khawr
+region.QA.09: um Şalāl
+region.QA.03: Al Jumaylīyah
+region.QA.06: AR Rayyān
+region.QA.01: Ad Dawḩah
+region.QA.10: Al Wakrah
+region.QA.11: Jarayān al Bāţinah
+region.QA.12: "Baladīyat um Sa'īd"
+region.QA.13: "Baladīyat az̧ Z̧a'āyin"
+region.RE.RE: Réunion
+region.RO.40: Vrancea
+region.RO.39: Vâlcea
+region.RO.38: Vaslui
+region.RO.37: Tulcea
+region.RO.36: Timiş
+region.RO.35: Teleorman
+region.RO.34: Suceava
+region.RO.33: Sibiu
+region.RO.32: Satu Mare
+region.RO.31: Sălaj
+region.RO.30: Judeţ de Prahova
+region.RO.29: BTA
+region.RO.28: Neamţ
+region.RO.27: Mureş
+region.RO.26: Mehedinţi
+region.RO.25: Maramureş
+region.RO.23: Iaşi
+region.RO.22: Ialomiţa
+region.RO.21: Hunedoara
+region.RO.20: Harghita
+region.RO.19: Gorj
+region.RO.42: Giurgiu
+region.RO.18: Galaţi
+region.RO.17: Dolj
+region.RO.16: Dâmboviţa
+region.RO.15: Covasna
+region.RO.14: Constanţa
+region.RO.13: Cluj
+region.RO.12: Caraş-Severin
+region.RO.41: Călăraşi
+region.RO.11: Buzău
+region.RO.10: Bucureşti
+region.RO.09: Braşov
+region.RO.08: Brăila
+region.RO.07: Botoşani
+region.RO.06: Bistriţa-Năsăud
+region.RO.05: Bihor
+region.RO.04: Bacău
+region.RO.03: Argeş
+region.RO.02: Arad
+region.RO.01: Alba
+region.RO.43: "Département d'Ilfov"
+region.RS.VO: Autonomna Pokrajina Vojvodina
+region.RS.SE: Centre de la Serbie
+region.RU.88: Jaroslavl
+region.RU.86: Voronezj
+region.RU.85: Vologda
+region.RU.84: Volgograd
+region.RU.81: Oulianovsk
+region.RU.80: Oudmourtie
+region.RU.77: Tverskaya
+region.RU.76: Tula
+region.RU.73: Tatarstan
+region.RU.72: Tambov
+region.RU.70: "Stavropol'skiy"
+region.RU.69: Smolensk
+region.RU.67: Saratov
+region.RU.65: Samara
+region.RU.62: Rjazan
+region.RU.61: Rostov
+region.RU.60: Pskov
+region.RU.90: Perm
+region.RU.57: Penza
+region.RU.56: Orjol
+region.RU.55: Orenbourg
+region.RU.52: Novgorod
+region.RU.68: "L'Ossétie du Nord"
+region.RU.50: Avtonomnyy Okrug Nenetskiy
+region.RU.49: Murmansk
+region.RU.48: Moscou
+region.RU.47: Moskovskaya
+region.RU.46: Mordoviya
+region.RU.45: Mariy-El
+region.RU.43: Lipetsk
+region.RU.42: Leningrad
+region.RU.66: Saint-Pétersbourg
+region.RU.41: Kursk
+region.RU.38: Krasnodarskiy
+region.RU.37: Kostroma
+region.RU.34: République des Komis
+region.RU.33: Kirov
+region.RU.28: Carélie
+region.RU.27: Karatchaïevo-Cherkesiya
+region.RU.25: Kalouga
+region.RU.24: Kalmoukie
+region.RU.23: Kaliningrad
+region.RU.22: Kabardino-Balkariya
+region.RU.21: Ivanovo
+region.RU.19: Ingouchie
+region.RU.51: Nizjnij Novgorod
+region.RU.17: Daghestan
+region.RU.16: Tchouvachie
+region.RU.12: Tchétchénie
+region.RU.10: Brjansk
+region.RU.09: Belgorod
+region.RU.08: Bachkirie
+region.RU.07: Astrakhan
+region.RU.06: Arkhangelskaya
+region.RU.01: Adyguéens
+region.RU.83: Vladimir
+region.RU.87: Avtonomnyy Okrug Yamalo-Nenetskiy
+region.RU.78: Tjumen
+region.RU.79: Tyva
+region.RU.75: Tomsk
+region.RU.71: Sverdlovsk
+region.RU.54: Omsk
+region.RU.53: Novosibirsk
+region.RU.40: Kurgan
+region.RU.91: Krasnoyarskiy
+region.RU.32: Khanty-Mansiyskiy Avtonomnyy Okrug
+region.RU.31: Khakasiya
+region.RU.29: Kemerovo
+region.RU.03: Altay
+region.RU.13: Oblast de Tcheliabinsk
+region.RU.04: Altaï
+region.RU.63: iakoute
+region.RU.59: Primorsky
+region.RU.30: Kraï de Khabarovsk
+region.RU.20: Irkoutsk
+region.RU.89: Oblast autonome juif
+region.RU.05: Amur
+region.RU.11: Buryatiya
+region.RU.64: Sakhaline
+region.RU.44: Magadan
+region.RU.92: Kamtsjatka
+region.RU.15: Tchoukotka Avtonomnyy Okrug
+region.RU.93: "Zabaykal'skiy Kray"
+region.RW.11: Province orientale
+region.RW.12: Province de Kigali
+region.RW.13: Province Nord
+region.RW.14: Province occidentale
+region.RW.15: Province du Sud
+region.SA.19: Tabūk
+region.SA.16: Najrān
+region.SA.14: Makkah
+region.SA.17: Jīzān
+region.SA.13: Ḩāʼil
+region.SA.11: "Îles ' Asīr"
+region.SA.06: Province orientale
+region.SA.10: AR Riyāḑ
+region.SA.08: "Province d'Al-Qassim"
+region.SA.05: Al Madinah
+region.SA.20: Al Jawf
+region.SA.15: Les frontières du Nord région
+region.SA.02: Al Bāḩah
+region.SB.11: Province occidentale
+region.SB.03: Malaita
+region.SB.07: Isabel
+region.SB.06: Guadalcanal
+region.SB.10: Province centrale
+region.SB.09: Temotu
+region.SB.08: Makira
+region.SB.12: Choiseul
+region.SB.13: Rennell et Bellona
+region.SC.23: Takamaka
+region.SC.22: Saint-Louis
+region.SC.27: Port Glaud
+region.SC.20: Pointe Larue
+region.SC.19: Plaisance
+region.SC.18: Mont Fleuri
+region.SC.17: Mont Buxton
+region.SC.26: English River
+region.SC.25: Îles intérieures
+region.SC.24: Grand Anse Mahe
+region.SC.14: Grand Anse Praslin
+region.SC.12: Glacis
+region.SC.11: Cascade
+region.SC.10: Bel Ombre
+region.SC.09: Bel Air
+region.SC.08: Beau Vallon
+region.SC.07: Baie Sainte Anne
+region.SC.06: Baie Lazare
+region.SC.05: Anse Royale
+region.SC.03: Anse Etoile
+region.SC.02: Anse Boileau
+region.SC.01: Anse aux Pins
+region.SC.29: Les Mamelles
+region.SC.30: Roche Caiman
+region.SC.28: Au Cap
+region.SD.43: "Nord de l'État"
+region.SD.29: "L'Etat de Khartoum"
+region.SD.36: Mer rouge
+region.SD.38: Al Jazirah État
+region.SD.39: Al Qadarif État
+region.SD.41: "L'état du Nil blanc"
+region.SD.42: Nil bleu
+region.SD.47: "L'Etat du Darfour occidental"
+region.SD.49: Etat du Darfour Sud
+region.SD.50: Etat de Kordofan Sud
+region.SD.52: "L'Etat de Kassala"
+region.SD.53: Nil
+region.SD.55: Etat du Darfour du Nord
+region.SD.56: Etat de Kordofan Sud
+region.SD.58: Etat de Sinnar
+region.SD.60: "L'Etat du Darfour occidental"
+region.SD.61: "L'Etat du Darfour centrale"
+region.SE.14: Norrbotten
+region.SE.25: Västmanland
+region.SE.24: Västernorrland
+region.SE.23: Västerbotten
+region.SE.22: Värmland
+region.SE.21: Uppsala
+region.SE.26: Stockholm
+region.SE.18: Södermanland
+region.SE.16: Östergötland
+region.SE.15: Örebro
+region.SE.12: Kronoberg
+region.SE.10: Dalécarlie
+region.SE.09: Kalmar
+region.SE.08: Jönköping
+region.SE.07: Jämtland
+region.SE.06: Halland
+region.SE.05: Gotland
+region.SE.03: Gävleborg
+region.SE.02: Blekinge
+region.SE.27: Skåne
+region.SE.28: Västra Götaland
+region.SG.01: Central de Singapour
+region.SG.02: Nord-est
+region.SG.04: Sud-est
+region.SG.05: Sud-ouest
+region.SG.03: Nord-ouest
+region.SH.01: Ascension
+region.SH.03: Tristan da Cunha
+region.SH.02: Sainte-Hélène
+region.SI.N5: Žalec
+region.SI.E7: Zagorje ob Savi
+region.SI.E5: Vrhnika
+region.SI.D5: Tržič
+region.SI.D4: Trebnje
+region.SI.D3: Trbovlje
+region.SI.D2: Tolmin
+region.SI.D7: Velenje
+region.SI.C5: Šmarje pri Jelšah
+region.SI.C4: Slovenska Konjice
+region.SI.L8: Slovenska Bistrica
+region.SI.C2: Slovenj Gradec
+region.SI.B9: Škofja Loka
+region.SI.B7: Sežana
+region.SI.B6: Sevnica
+region.SI.L7: Šentjur pri Celju
+region.SI.L1: Ribnica
+region.SI.A3: Radovljica
+region.SI.A2: Radlje ob Dravi
+region.SI.K7: Ptuj
+region.SI.94: Postojna
+region.SI.J9: Piran-Pirano
+region.SI.87: Ormoz
+region.SI.J7: Novo Mesto
+region.SI.84: Nova Gorica
+region.SI.80: Murska Sobota
+region.SI.79: Mozirje
+region.SI.73: Metlika
+region.SI.J2: Maribor
+region.SI.64: Logatec
+region.SI.I6: Ljutomer
+region.SI.I5: Litija
+region.SI.I3: Lenart
+region.SI.57: Laško
+region.SI.54: Krško
+region.SI.52: Kranj
+region.SI.50: Koper-Isola
+region.SI.H7: Kočevje
+region.SI.H6: Kamnik
+region.SI.H4: Jesenice
+region.SI.40: Izola-Isola
+region.SI.38: Ilirska Bistrica
+region.SI.36: Idrija
+region.SI.34: Hrastnik
+region.SI.32: Grosuplje
+region.SI.29: Gornja Radgona
+region.SI.25: Dravograd
+region.SI.G7: Domžale
+region.SI.17: Črnomelj
+region.SI.13: Cerknica
+region.SI.11: Celje
+region.SI.08: Brežice
+region.SI.01: Ajdovščina
+region.SI.35: Hrpelje-Kozina
+region.SI.19: Divača
+region.SI.91: Pivka
+region.SI.I7: Loška Dolina
+region.SI.66: Loški Potok
+region.SI.88: Osilnica
+region.SI.D8: Velike Lašče
+region.SI.C1: Škofljica
+region.SI.37: IG
+region.SI.09: Brezovica
+region.SI.05: Borovnica
+region.SI.E1: Vipava
+region.SI.49: Komen
+region.SI.J5: Miren-Kostanjevica
+region.SI.07: Brda
+region.SI.44: Kanal
+region.SI.F2: Žiri
+region.SI.14: Cerkno
+region.SI.F1: Železniki
+region.SI.27: Gorenja Vas-Poljane
+region.SI.G4: Dobrova-Horjul-Dobrova Gradec
+region.SI.46: Kobarid
+region.SI.06: Bovec
+region.SI.04: Bohinj
+region.SI.03: Bled
+region.SI.82: Naklo
+region.SI.53: Kranjska Gora
+region.SI.K5: Preddvor
+region.SI.12: Cerklje na Gorenjskem
+region.SI.B2: Šenčur
+region.SI.E3: Vodice
+region.SI.71: Medvode
+region.SI.72: Mengeš
+region.SI.22: Dol pri Ljubljani
+region.SI.77: Moravče
+region.SI.30: Gornji Grad
+region.SI.I9: Luče
+region.SI.K8: Ravne na Koroškem
+region.SI.74: Mežica
+region.SI.81: Muta
+region.SI.E6: Vuzenica
+region.SI.16: Črna na Koroškem
+region.SI.62: Ljubno
+region.SI.C7: Šoštanj
+region.SI.C6: Šmartno ob Paki
+region.SI.68: Lukovica
+region.SI.99: Radeče
+region.SI.39: Ivančna Gorica
+region.SI.20: Dobrepolje
+region.SI.B1: Semič
+region.SI.B4: Šentjernej
+region.SI.B8: Škocjan
+region.SI.C9: Štore
+region.SI.N3: Vojnik
+region.SI.E2: Vitanje
+region.SI.F3: Zreče
+region.SI.76: Mislinja
+region.SI.L3: Ruše
+region.SI.55: Kungota
+region.SI.B3: Šentilj
+region.SI.89: Pesnica
+region.SI.26: Duplek
+region.SI.98: Rače-Fram
+region.SI.C8: Starše
+region.SI.45: Kidričevo
+region.SI.J1: Makole
+region.SI.N2: Videm
+region.SI.A7: Rogaška Slatina
+region.SI.A8: Rogatec
+region.SI.92: Podčetrtek
+region.SI.51: Kozje
+region.SI.28: Gorišnica
+region.SI.E9: Zavrč
+region.SI.24: Dornava
+region.SI.42: Juršinci
+region.SI.D1: Sveti Jurij
+region.SI.A1: Radenci
+region.SI.97: Puconci
+region.SI.A6: Rogašovci
+region.SI.I2: Kuzma
+region.SI.31: Gornji Petrovci
+region.SI.78: Moravske Toplice
+region.SI.47: Kobilje
+region.SI.02: Beltinci
+region.SI.D6: Turnišče
+region.SI.86: Odranci
+region.SI.15: Črenšovci
+region.SI.83: Nazarje
+region.SI.61: Ljubljana
+region.SI.N7: Žirovnica
+region.SI.H5: Jezersko
+region.SI.M2: Solčava
+region.SI.H8: Komenda
+region.SI.H3: Horjul
+region.SI.L6: Šempeter-Vrtojba
+region.SI.F6: Mec
+region.SI.M1: Sodražica
+region.SI.M8: Trzin
+region.SI.K6: ÀPrevalje
+region.SI.N4: Vransko
+region.SI.M5: Tabor
+region.SI.F7: Localité
+region.SI.K3: Polzela
+region.SI.K4: Prebold
+region.SI.H9: Kostel
+region.SI.N8: Žužemberk
+region.SI.G6: Dolenjske Toplice
+region.SI.J6: Mirna Peč
+region.SI.F5: Bistrica ob Sotli
+region.SI.G2: Dobje
+region.SI.G3: Dobrna
+region.SI.J8: Oplotnica
+region.SI.K2: Podvelka
+region.SI.L2: Ribnica na Pohorju
+region.SI.I8: Lovrenc na Pohorju
+region.SI.L5: Selnica ob Dravi
+region.SI.H1: Hoče-Slivnica
+region.SI.J4: Traduction na Dravskem Polju
+region.SI.G9: Hajdina
+region.SI.N6: Žetale
+region.SI.K1: Podlehnik
+region.SI.J3: Markovci
+region.SI.G1: Destrnik
+region.SI.M7: Trnovska Vas
+region.SI.M4: Sveti Andraž v Slovenskih Goricah
+region.SI.F9: Cerkvenjak
+region.SI.F4: Benedikt
+region.SI.M3: Sveta Ana
+region.SI.I1: Križevci
+region.SI.N1: Veržej
+region.SI.M9: Velika Polana
+region.SI.I4: Lendava-Lendva
+region.SI.G5: Dobrovnik-Dobronak
+region.SI.M6: Tišina
+region.SI.F8: Cankova
+region.SI.G8: Grad
+region.SI.H2: Hodoš-Hodos
+region.SI.K9: Razkrižje
+region.SI.L9: Šmartno pri Litiji
+region.SI.L4: Šalovci
+region.SI.N9: Občina Apače
+region.SI.O1: Cirkulane
+region.SI.O3: Kostanjevica na Krki
+region.SI.O4: Journal-Dragomer
+region.SI.O5: Makole
+region.SI.O7: Mokronog-Trebelno
+region.SI.O8: Občina Poljčane
+region.SI.O9: Občina Rečica ob Savinji
+region.SI.P1: Občina Renče-Vogrsko
+region.SI.P4: Občina Središče ob Dravi
+region.SI.P5: Občina Straža
+region.SI.P6: Sveta Trojica v Slovenskih Goricah
+region.SI.P8: Sveti Tomaž Občina
+region.SI.P2: Občina Šentrupert
+region.SI.P3: Občina Šmarješke Toplice
+region.SI.P7: Sveti Jurij v Slovenskih Goricah
+region.SJ.22: Jan Mayen
+region.SJ.21: Svalbard
+region.SK.03: Košický
+region.SK.05: Prešovský
+region.SK.08: Žilinský
+region.SK.01: Banskobystrický
+region.SK.02: Bratislavský
+region.SK.04: Nitriansky
+region.SK.06: Trenčiansky
+region.SK.07: Trnavský
+region.SL.04: "Secteur de l'ouest"
+region.SL.03: Province du Sud
+region.SL.02: Province Nord
+region.SL.01: Province orientale
+region.SM.09: Serravalle
+region.SM.02: Chiesanuova
+region.SM.07: Saint-Marin
+region.SM.01: Acquaviva
+region.SM.06: Borgo Maggiore
+region.SM.03: Domagnano
+region.SM.04: Faetano
+region.SM.05: Fiorentino
+region.SM.08: Montegiardino
+region.SN.12: Ziguinchor
+region.SN.07: Thiès
+region.SN.05: Tambacounda
+region.SN.14: Saint-Louis
+region.SN.15: Matam
+region.SN.13: Louga
+region.SN.11: Kolda
+region.SN.10: Kaolack
+region.SN.09: Fatick
+region.SN.03: Diourbel
+region.SN.01: Dakar
+region.SN.16: Kaffrine
+region.SN.17: Kédougou
+region.SN.18: Sédhiou
+region.SO.20: Waqooyi Galbeed région
+region.SO.19: Région de Togdheer
+region.SO.14: Shabeele Hoose région
+region.SO.13: Shabele moyen
+region.SO.12: Région de Sanaag
+region.SO.18: Nugaal région
+region.SO.10: Région de Mudug
+region.SO.09: Juba inférieur
+region.SO.08: Middle Juba
+region.SO.07: Hiiran région
+region.SO.06: Région de Gedo
+region.SO.05: Région de Galgadud
+region.SO.04: Région de la baie
+region.SO.03: Région de Bari
+region.SO.02: Région de Banadir
+region.SO.01: Région de Bakool
+region.SO.21: Région Awadal
+region.SO.22: Région de Sool
+region.SR.19: Wanica
+region.SR.18: Sipaliwini
+region.SR.17: Saramacca
+region.SR.16: Paramaribo
+region.SR.15: Para
+region.SR.14: Nickerie
+region.SR.13: Marowijne
+region.SR.12: Coronie
+region.SR.11: Commewijne
+region.SR.10: Brokopondo
+region.SS.07: Du Haut-Nil
+region.SS.04: Lacs
+region.SS.06: Unité
+region.SS.01: "L'état d'Equatoria central"
+region.SS.10: "L'état d'Equatoria occidental"
+region.SS.09: Western Bahr el-Ghazal
+region.SS.03: "L'état de Jonglei"
+region.SS.05: État du Nord du Bahr el-Ghazal
+region.SS.02: "L'Equatoria oriental"
+region.SS.08: Etat de Warab
+region.ST.02: "L'île de São Tomé"
+region.ST.01: Príncipe
+region.SV.14: Usulután
+region.SV.13: Sonsonate
+region.SV.12: San Vicente
+region.SV.11: Santa Ana
+region.SV.10: San Salvador
+region.SV.09: San Miguel
+region.SV.08: Morazán
+region.SV.07: La Unión
+region.SV.06: La Paz
+region.SV.05: La Libertad
+region.SV.04: Cuscatlán
+region.SV.03: Chalatenango
+region.SV.02: Cabañas
+region.SV.01: Ahuachapán
+region.SY.14: Tartous
+region.SY.13: Ville de Damas
+region.SY.12: Idlib
+region.SY.11: Homs
+region.SY.10: Hama
+region.SY.09: Alep
+region.SY.08: RIF dimashq
+region.SY.07: Deir ez-Zor
+region.SY.06: Daraa
+region.SY.05: As-Suwayda
+region.SY.04: Ar-Raqqa
+region.SY.03: Quneitra
+region.SY.02: Lattaquié
+region.SY.01: Al-Hasakah
+region.SZ.04: Région de Shiselweni
+region.SZ.03: Manzini
+region.SZ.02: Lubombo
+region.SZ.01: Hhohho
+region.TD.13: Salamat
+region.TD.12: Ouaddaï
+region.TD.02: Biltine
+region.TD.14: Tandjilé
+region.TD.17: Moyen-Chari
+region.TD.16: Région du Mayo-Kebbi
+region.TD.09: Logone Oriental
+region.TD.08: Logone Occidental
+region.TD.07: Lac
+region.TD.06: Kanem
+region.TD.05: Guéra
+region.TD.15: Chari-Baguirmi
+region.TD.01: Batha
+region.TD.23: Région de Borkou
+region.TD.18: Hadjer-Lamis
+region.TD.19: Mandoul
+region.TD.20: Région du Mayo-Kebbi
+region.TD.21: "Ville de N' Ne Djaména"
+region.TD.22: Barh el Gazel
+region.TD.24: "Région de l'Ennedi"
+region.TD.25: Sila
+region.TD.26: Région du Tibesti
+region.TF.02: Crozet
+region.TF.03: Kerguelen
+region.TF.01: Saint-Paul-et-Amsterdam
+region.TF.05: Îles Éparses
+region.TF.04: Terre-Adélie
+region.TG.26: Savanes
+region.TG.25: Plateaux
+region.TG.24: Maritime
+region.TG.22: Centrale
+region.TG.23: Kara
+region.TH.15: Uthai Thani
+region.TH.65: Trang
+region.TH.08: Tak
+region.TH.60: Surat Thani
+region.TH.09: Sukhothai
+region.TH.52: Ratchaburi
+region.TH.59: Ranong
+region.TH.57: Prachuap Khiri Khan
+region.TH.62: Province de Phuket
+region.TH.56: Phetchaburi
+region.TH.61: Phangnga
+region.TH.01: Mae Hong Son
+region.TH.05: Lamphun
+region.TH.06: Lampang
+region.TH.63: Krabi
+region.TH.50: Kanchanaburi
+region.TH.11: Kamphaeng Phet
+region.TH.58: Chumphon
+region.TH.03: Chiang Rai
+region.TH.02: Chiang Rai
+region.TH.72: Yasothon
+region.TH.70: Yala
+region.TH.10: Uttaradit
+region.TH.49: Trat
+region.TH.29: Surin
+region.TH.51: Suphan Buri
+region.TH.68: Songkhla
+region.TH.30: Sisaket
+region.TH.33: Sing Buri
+region.TH.67: Satun
+region.TH.37: Sara Buri
+region.TH.54: Samut Songkhram
+region.TH.55: Samut Sakhon
+region.TH.42: Samut Prakan
+region.TH.20: Sakon Nakhon
+region.TH.25: Roi Et
+region.TH.47: Rayong
+region.TH.36: Phra Nakhon Si Ayutthaya
+region.TH.07: Phrae
+region.TH.12: Phitsanulok
+region.TH.13: Phichit
+region.TH.14: Phetchabun
+region.TH.41: Phayao
+region.TH.66: Phatthalung
+region.TH.69: Pattani
+region.TH.39: Pathum Thani
+region.TH.38: Nonthaburi
+region.TH.17: Nong Khai
+region.TH.31: Narathiwat
+region.TH.04: Nan
+region.TH.64: Nakhon Si Thammarat
+region.TH.16: Nakhon Sawan
+region.TH.27: Nakhon Ratchasima
+region.TH.73: Nakhon Phanom
+region.TH.53: Nakhon Pathom
+region.TH.43: Nakhon Nayok
+region.TH.78: Mukdahan
+region.TH.24: Maha Sarakham
+region.TH.34: Lop Buri
+region.TH.18: Loei
+region.TH.40: Bangkok
+region.TH.22: Khon Kaen
+region.TH.23: Kalasin
+region.TH.46: Chon Buri
+region.TH.48: Chanthaburi
+region.TH.26: Chaiyaphum
+region.TH.32: Chai Nat
+region.TH.44: Chachoengsao
+region.TH.28: Buriram
+region.TH.35: Ang Thong
+region.TH.76: Changwat Udon Thani
+region.TH.74: Prachin Buri
+region.TH.75: Changwat Ubon Ratchathani
+region.TH.77: Amnat Charoen
+region.TH.79: Changwat Nong Bua Lamphu
+region.TH.80: Sa Kaeo
+region.TH.81: Changwat Bueng Kan
+region.TJ.03: viloyati Sughd
+region.TJ.01: Haut-Badakhchan
+region.TJ.02: Khatlon
+region.TJ.RR: Région de Subordination républicaine
+region.TJ.7280679: Douchanbé
+region.TK.N: Nukunonu
+region.TK.F: Fakaofo
+region.TK.A: Atafu
+region.TL.VI: Distrito Viqueque
+region.TL.MF: Manufahi
+region.TL.MT: Distrito Manatuto
+region.TL.LI: Distrito Liquiçá
+region.TL.LA: Distrito Lautém
+region.TL.CO: Distrito Cova Lima
+region.TL.ER: Ermera
+region.TL.DI: Distrito Díli
+region.TL.BO: Bobonaro
+region.TL.BA: Distrito Bacau
+region.TL.OE: Distrito Oecussi-Ambeno
+region.TL.AN: Distrito Ainaro
+region.TL.AL: Distrito Aileu
+region.TM.02: Balkan
+region.TM.01: Ahal
+region.TM.03: Daşoguz
+region.TM.05: Mary
+region.TM.04: Lebap
+region.TN.37: Zaghouan
+region.TN.36: بتونس
+region.TN.35: Tawzar
+region.TN.34: Tataouine
+region.TN.23: Sousse
+region.TN.22: Silyānah
+region.TN.33: Sīdī Bū Zayd
+region.TN.32: Şafāqis
+region.TN.31: Qibilī
+region.TN.30: Gafsa
+region.TN.29: Qābis
+region.TN.19: Nabeul
+region.TN.28: Médenine
+region.TN.06: Jundūbah
+region.TN.27: "Bin ' Arūs"
+region.TN.18: Banzart
+region.TN.17: Béja
+region.TN.38: Ariana
+region.TN.03: Al Qayrawān
+region.TN.02: Al Qaşrayn
+region.TN.16: Al Munastīr
+region.TN.15: Al Mahdīyah
+region.TN.14: KEF
+region.TN.39: Manouba
+region.TO.03: "Vava ' u"
+region.TO.02: Tongatapu
+region.TO.01: APAI
+region.TO.EU: EUA
+region.TO.NI: Niuas
+region.TR.66: Yozgat
+region.TR.65: Van
+region.TR.64: Uşak
+region.TR.63: Şanlıurfa
+region.TR.62: Tunceli
+region.TR.58: Sivas
+region.TR.74: Siirt
+region.TR.73: Niğde
+region.TR.50: Nevşehir
+region.TR.49: Muş
+region.TR.48: Muğla
+region.TR.72: Mardin
+region.TR.45: Manisa
+region.TR.44: Malatya
+region.TR.43: Kütahya
+region.TR.71: Konya
+region.TR.40: Kırşehir
+region.TR.38: Kayseri
+region.TR.46: Kahramanmaraş
+region.TR.35: Izmir
+region.TR.33: Isparta
+region.TR.32: Mersin
+region.TR.31: Hatay
+region.TR.70: Hakkâri
+region.TR.83: Gaziantep
+region.TR.26: Eskişehir
+region.TR.25: Erzurum
+region.TR.24: Erzincan
+region.TR.23: Elazığ
+region.TR.21: Diyarbakır
+region.TR.20: Denizli
+region.TR.15: Burdur
+region.TR.13: Bitlis
+region.TR.12: Bingöl
+region.TR.11: Bilecik
+region.TR.10: Balıkesir
+region.TR.09: Aydın
+region.TR.07: Antalya
+region.TR.68: Ankara
+region.TR.04: Ağrı
+region.TR.03: Afyonkarahisar
+region.TR.02: Adıyaman
+region.TR.81: Adana
+region.TR.91: Osmaniye
+region.TR.88: Iğdır
+region.TR.75: Aksaray
+region.TR.76: Batman
+region.TR.78: Karaman
+region.TR.79: Kirikkale
+region.TR.80: Şırnak
+region.TR.90: Kilis
+region.TR.85: Zonguldak
+region.TR.61: Trabzon
+region.TR.60: Tokat
+region.TR.59: Tekirdağ
+region.TR.57: Sinop
+region.TR.55: Samsun
+region.TR.54: Sakarya
+region.TR.53: Rize
+region.TR.52: Ordu
+region.TR.41: Kocaeli
+region.TR.39: Kirklareli
+region.TR.37: Kastamonu
+region.TR.84: Kars
+region.TR.34: Istanbul
+region.TR.69: Gümüşhane
+region.TR.28: Giresun
+region.TR.22: Edirne
+region.TR.19: Çorum
+region.TR.82: Çankırı
+region.TR.17: Çanakkale
+region.TR.16: Bursa
+region.TR.14: Bolu
+region.TR.08: Artvin
+region.TR.05: Amasya
+region.TR.87: Bartın
+region.TR.89: Karabük
+region.TR.92: Yalova
+region.TR.86: Ardahan
+region.TR.77: Bayburt
+region.TR.93: Düzce
+region.TT.11: Tobago
+region.TT.10: Ville de San Fernando
+region.TT.05: Ville de Port of Spain
+region.TT.03: Mayaro
+region.TT.01: Arrondissement de Arima
+region.TT.CHA: Chaguanas
+region.TT.CTT: Couva-Tabaquite-Talparo
+region.TT.DMN: Diego Martin
+region.TT.ETO: Tobago orientale
+region.TT.PED: Pénal/Debe
+region.TT.PRT: Ville de princes
+region.TT.PTF: Point Fortin
+region.TT.SGE: Sangre Grande
+region.TT.SIP: Siparia
+region.TT.SJL: San Juan/Laventille
+region.TT.TUP: Tunapuna/Piarco
+region.TV.NUI: Nui
+region.TV.NMA: Nanumea
+region.TV.FUN: Funafuti
+region.TV.NIT: Niutao
+region.TV.NMG: Nanumaga
+region.TV.VAI: Vaitupu
+region.TV.NKF: Nukufetau
+region.TV.NKL: Nukulaelae
+region.TW.01: Fukien
+region.TW.02: Kaohsiung
+region.TW.03: Taipei
+region.TW.04: Taiwan
+region.TZ.19: Kagera
+region.TZ.25: Zanzibar urbain/ouest
+region.TZ.22: Nord de Zanzibar
+region.TZ.21: Zanzibar centrale/du Sud
+region.TZ.18: Tanga
+region.TZ.17: Tabora
+region.TZ.16: Singida
+region.TZ.15: Shinyanga
+region.TZ.24: Région de Rukwa
+region.TZ.02: Pwani
+region.TZ.20: Pemba sud
+region.TZ.13: Pemba nord
+region.TZ.12: Mwanza
+region.TZ.10: Région de Morogoro
+region.TZ.09: Mbeya
+region.TZ.08: Mara
+region.TZ.07: Lindi
+region.TZ.06: Kilimandjaro
+region.TZ.05: Kigoma
+region.TZ.04: Iringa
+region.TZ.03: Dodoma
+region.TZ.23: Dar es Salaam
+region.TZ.26: Arusha
+region.TZ.27: Manyara
+region.TZ.14: Ruvuma
+region.TZ.11: Mtwara
+region.TZ.31: Région SIMIYU
+region.TZ.28: Région de Geita
+region.TZ.29: Région de Katavi
+region.TZ.30: Région de Njombe
+region.UA.27: "Zhytomyrs'ka Oblast'"
+region.UA.26: "Zaporiz'ka Oblast'"
+region.UA.25: Zakarpattia Oblast
+region.UA.24: "Volyns'ka Oblast'"
+region.UA.23: "Vinnyts'ka"
+region.UA.22: "'Ka Oblast' de Ternopil"
+region.UA.21: "Sums'ka Oblast'"
+region.UA.20: "Misto Sevastopol'"
+region.UA.19: "Rivnens'ka Oblast'"
+region.UA.18: "Poltavs'ka Oblast'"
+region.UA.17: "Odes'ka Oblast'"
+region.UA.16: "Mykolayivs'ka Oblast'"
+region.UA.15: Vivs « ka Oblast »
+region.UA.14: "Luhans'ka Oblast'"
+region.UA.13: "Kyyivs'ka Oblast'"
+region.UA.12: Ville de Kiev
+region.UA.11: Avtonomna Respublika Krym
+region.UA.10: "Kirovohrads'ka Oblast'"
+region.UA.09: "Khmel'nyts « ka Oblast »"
+region.UA.08: "Khersons'ka Oblast'"
+region.UA.07: "Oblast de Kharkivs '"
+region.UA.06: "Oblast d'Ivano-Frankivs'ka'"
+region.UA.05: "Donets Oblast'"
+region.UA.04: "Dnipropetrovs'ka Oblast'"
+region.UA.03: "Chernivets'ka Oblast'"
+region.UA.02: "Chernihivs'ka Oblast'"
+region.UA.01: "Cherkas Oblast'"
+region.UG.C: Région du centre
+region.UG.E: "Région de l'est"
+region.UG.N: Région du Nord
+region.UG.W: "Région de l'ouest"
+region.UM.450: Île Wake
+region.UM.350: Île de Navassa
+region.UM.050: Île de Baker
+region.UM.100: Île Howland
+region.UM.150: Île Jarvis
+region.UM.200: Atoll de Johnston
+region.UM.250: Récif Kingman
+region.UM.300: Atoll de Midway
+region.UM.400: Atoll de Palmyra
+region.US.AR: Arkansas
+region.US.DC: Washington, D.C.
+region.US.DE: Delaware
+region.US.FL: Floride
+region.US.GA: Géorgie
+region.US.KS: Kansas
+region.US.LA: Louisiane
+region.US.MD: Maryland
+region.US.MO: Missouri
+region.US.MS: Mississippi
+region.US.NC: Caroline du Nord
+region.US.OK: Oklahoma
+region.US.SC: Caroline du Sud
+region.US.TN: Tennessee
+region.US.TX: Texas
+region.US.WV: Virginie-occidentale
+region.US.AL: Alabama
+region.US.CT: Connecticut
+region.US.IA: Iowa
+region.US.IL: Illinois
+region.US.IN: Indiana
+region.US.ME: Maine
+region.US.MI: Michigan
+region.US.MN: Minnesota
+region.US.NE: Nebraska
+region.US.NH: New Hampshire
+region.US.NJ: New Jersey
+region.US.NY: New York
+region.US.OH: Ohio
+region.US.RI: Rhode Island
+region.US.VT: Vermont
+region.US.WI: Wisconsin
+region.US.CA: Californie
+region.US.CO: Colorado
+region.US.NM: Nouveau-Mexique
+region.US.NV: Nevada
+region.US.UT: Utah
+region.US.AZ: Arizona
+region.US.ID: Idaho
+region.US.MT: Montana
+region.US.ND: Dakota du Nord
+region.US.OR: Oregon
+region.US.SD: Dakota du Sud
+region.US.WA: Washington
+region.US.WY: Wyoming
+region.US.HI: Hawaï
+region.US.AK: Alaska
+region.US.KY: Kentucky
+region.US.MA: Massachusetts
+region.US.PA: Pennsylvanie
+region.US.VA: Virginie
+region.UY.19: Treinta y Tres
+region.UY.18: Tacuarembó
+region.UY.17: Soriano
+region.UY.16: San José
+region.UY.15: Salto
+region.UY.14: Rocha
+region.UY.13: Rivera
+region.UY.12: Río Negro
+region.UY.11: Paysandú
+region.UY.10: Montevideo
+region.UY.09: Maldonado
+region.UY.08: Lavalleja
+region.UY.07: Floride
+region.UY.06: Flores
+region.UY.05: Durazno
+region.UY.04: Colonia
+region.UY.03: Cerro Largo
+region.UY.02: Canelones
+region.UY.01: Artigas
+region.UZ.09: Karakalpakstan
+region.UZ.12: Surxondaryo
+region.UZ.10: Samarqand
+region.UZ.08: Province de Kashkadarya
+region.UZ.02: Bukhara
+region.UZ.14: Toshkent
+region.UZ.13: Toshkent Shahri
+region.UZ.16: Sirdaryo
+region.UZ.07: Navoï
+region.UZ.06: Province de Namangan
+region.UZ.05: Khorezm
+region.UZ.15: Jizzax
+region.UZ.03: Fergana
+region.UZ.01: Andijon
+region.VC.05: Saint Patrick
+region.VC.04: Saint-Georges
+region.VC.03: Saint David
+region.VC.02: Saint Andrew
+region.VC.06: Grenadines
+region.VC.01: Charlotte
+region.VE.23: Estado Zulia
+region.VE.22: Estado Yaracuy
+region.VE.21: Trujillo
+region.VE.20: Estado Táchira
+region.VE.19: Sucre
+region.VE.18: Estado Portuguesa
+region.VE.17: Estado Nueva Esparta
+region.VE.16: Estado Monagas
+region.VE.15: Estado Miranda
+region.VE.14: Estado de Mérida
+region.VE.13: Estado Lara
+region.VE.12: Estado Guárico
+region.VE.24: Dependencias Federales
+region.VE.25: Distrito Federal
+region.VE.11: Estado Falcón
+region.VE.09: Delta Amacuro
+region.VE.08: Estado Cojedes
+region.VE.07: Estado Carabobo
+region.VE.06: Estado Bolívar
+region.VE.05: Estado Barinas
+region.VE.04: Estado Aragua
+region.VE.03: Estado Apure
+region.VE.02: Estado Anzoátegui
+region.VE.01: Estado de Amazonas
+region.VE.26: Vargas
+region.VI.010: Île-Sainte-Croix
+region.VI.020: Île de Saint-Jean
+region.VI.030: Saint Thomas Island
+region.VN.58: Nghe une
+region.VN.59: Ninh Bình
+region.VN.60: Ninh Thuận
+region.VN.65: Sóc Trăng
+region.VN.67: Trà Vinh
+region.VN.68: Tuyên Quang
+region.VN.69: Vĩnh Long
+region.VN.70: Yên Bái
+region.VN.90: Lào Cai
+region.VN.37: Tiền Giang
+region.VN.66: Thừa Thiên-Huế
+region.VN.55: Kon Tum
+region.VN.34: Thanh Hóa
+region.VN.35: Thái Bình
+region.VN.33: Tây Ninh
+region.VN.32: La Sơn
+region.VN.64: Quảng Trị
+region.VN.30: Quảng Ninh
+region.VN.63: Quảng Ngãi
+region.VN.62: Quảng Bình
+region.VN.61: Phú Yên
+region.VN.53: Hòa Bình
+region.VN.24: Long un
+region.VN.39: Lạng Sơn
+region.VN.23: Lâm Đồng
+region.VN.89: Lai Châu
+region.VN.21: Kiến Giang
+region.VN.54: Khánh Hòa
+region.VN.20: Hồ Chí Minh
+region.VN.52: Hà Tĩnh
+region.VN.51: Hà Tây
+region.VN.50: Hà Giang
+region.VN.49: Gia Lai
+region.VN.44: Ha Nội
+region.VN.87: Cần Thơ
+region.VN.13: Hải Phòng
+region.VN.47: Bình Thuận
+region.VN.09: Tháp Đồng
+region.VN.43: Đồng Nai
+region.VN.88: Ðắc Lắk
+region.VN.45: Bà Rịa-Vũng Tàu
+region.VN.05: Cao Bằng
+region.VN.46: Bình Định
+region.VN.03: Bến Tre
+region.VN.01: Un Giang
+region.VN.91: Ðắk Nông
+region.VN.92: Huyện Ðiện Biên
+region.VN.74: Bắc Ninh
+region.VN.71: Bắc Giang
+region.VN.78: Đà Nẵng
+region.VN.75: Bình Dương
+region.VN.76: Bình Phước
+region.VN.85: Thái Nguyên
+region.VN.84: Quảng Nam
+region.VN.83: Phú Thọ
+region.VN.82: Nam Ðịnh
+region.VN.80: Hà Nam
+region.VN.72: Bắc Kạn
+region.VN.73: Bạc Liêu
+region.VN.77: Cà Mau
+region.VN.79: Hải Dương
+region.VN.81: Hưng Yên
+region.VN.86: Vinh Phuc
+region.VN.93: Hau Giang
+region.VU.15: Tafea
+region.VU.13: Sanma
+region.VU.07: Torba
+region.VU.16: Malampa
+region.VU.17: Penama
+region.VU.18: SHEFA
+region.WF.98613: "Circonscription d' Ouvéa"
+region.WF.98612: Circonscription de Sigavé
+region.WF.98611: "Circonscription d'Alo"
+region.WS.11: Vaisigano
+region.WS.06: "Va ' a-o-foulon"
+region.WS.10: Tuamasaga
+region.WS.09: "Satupa'itea"
+region.WS.08: Palauli
+region.WS.07: Gagaifomauga
+region.WS.05: "Gaga'emauga"
+region.WS.04: "Fa'asaleleaga"
+region.WS.03: Atua
+region.WS.02: AIGA-i-le-Tai
+region.WS.01: "A'ana"
+region.XK.28: Vushtrri
+region.XK.27: Komuna e Vitisë
+region.XK.03: Komuna e Ferizajt
+region.XK.15: Komuna e Mitrovicës
+region.XK.26: Komuna e Thërandës
+region.XK.25: Komuna e Skenderajt
+region.XK.21: Prizren
+region.XK.20: Komuna e Prishtinës
+region.XK.19: Podujevo
+region.XK.18: Komuna e Pejës
+region.XK.22: Orahovac
+region.XK.13: Lipjan
+region.XK.12: Komuna e Leposaviqit
+region.XK.10: Kamenica
+region.XK.11: Komuna e Klines
+region.XK.09: Komuna e Kaçanikut
+region.XK.08: Komuna e Istogut
+region.XK.06: Komuna e Gjilanit
+region.XK.07: Komuna e Drenasit
+region.XK.02: Komuna e Dragashit
+region.XK.01: Komuna e Deçanit
+region.XK.05: Komuna e Gjakovës
+region.XK.04: Kosovo Polje
+region.XK.23: Opština Štrpce
+region.XK.24: Komuna e Shtimes
+region.XK.16: Novo Brdo
+region.XK.17: Komuna e Obiliqit
+region.XK.14: Komuna e Malisheves
+region.XK.29: Komuna e Zubin Potokut
+region.XK.30: Opština Zvečan
+region.XK.31: Komuna e Graçanicës
+region.XK.32: Hani i Elezit
+region.XK.33: Komuna e Junikut
+region.XK.34: Komuna e Kllokotit
+region.XK.35: Komuna e Mamushës
+region.XK.36: Komuna e Parteshit
+region.XK.37: Komuna e Ranillugut
+region.YE.25: Muḩāfaz̧at Izz
+region.YE.05: Shabwah
+region.YE.16: Sanaa
+region.YE.15: "Muḩāfaz̧at Şa'dah"
+region.YE.27: Muḩāfaz̧at raima
+region.YE.14: Muḩāfaz̧at Marib
+region.YE.10: Al Maḩwīt
+region.YE.21: Muḩāfaz̧at al Jawf
+region.YE.04: Ḩaḑramawt
+region.YE.11: Muḩāfaz̧at Dhamār
+region.YE.03: Al Mahrah
+region.YE.08: Al Ḩudaydah
+region.YE.20: Al Bayḑāʼ
+region.YE.02: Aden
+region.YE.01: Abyan
+region.YE.18: "Muḩāfaz̧at aḑ Ḑāli'"
+region.YE.19: Omran
+region.YE.22: Muḩāfaz̧at Ḩajjah
+region.YE.23: IBB
+region.YE.24: Muḩāfaz̧at Laḩij
+region.YE.26: Amanat Al Asimah
+region.YT.97601: Acoua
+region.YT.97602: Bandraboua
+region.YT.97603: BANDRELE
+region.YT.97604: Bouéni
+region.YT.97605: Chiconi
+region.YT.97606: Chirongui
+region.YT.97607: Dembeni
+region.YT.97608: Dzaoudzi
+region.YT.97609: Kani-Kéli
+region.YT.97610: Koungou
+region.YT.97611: Mamoudzou
+region.YT.97612: Mtsamboro
+region.YT.97613: "M'Tsangamouji"
+region.YT.97614: Ouangani
+region.YT.97615: Pamandzi
+region.YT.97616: Sada
+region.YT.97617: Tsingoni
+region.ZA.03: État libre
+region.ZA.02: KwaZulu-Natal
+region.ZA.05: Cap-oriental
+region.ZA.06: Gauteng
+region.ZA.07: Mpumalanga
+region.ZA.08: Cap-Nord
+region.ZA.09: Limpopo
+region.ZA.10: Nord-ouest
+region.ZA.11: Cap-occidental
+region.ZM.01: Europe occidentale
+region.ZM.07: Sud
+region.ZM.06: Nord Ouest
+region.ZM.05: Nord
+region.ZM.09: Lusaka
+region.ZM.04: Luapula
+region.ZM.03: Orientale
+region.ZM.08: Copperbelt
+region.ZM.02: Central
+region.ZW.02: Midlands
+region.ZW.07: Matabeleland Sud
+region.ZW.06: Matabeleland Nord
+region.ZW.08: Masvingo
+region.ZW.05: Province de Mashonaland West
+region.ZW.04: Mashonaland East
+region.ZW.03: Province de Mashonaland Central
+region.ZW.01: Manicaland
+region.ZW.09: Bulawayo
+region.ZW.10: Province de Harare

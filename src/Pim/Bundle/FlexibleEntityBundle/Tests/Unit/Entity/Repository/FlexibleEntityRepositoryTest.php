@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -17,7 +18,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  */
 class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
 {
-
     /**
      * @var FlexibleEntityRepository
      */

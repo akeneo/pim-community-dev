@@ -1,3 +1,21 @@
+# 1.0.0-rc-1 -
+
+## Features
+- Created the completenesses over channels and locales widget
+- Create command to install the PIM
+
+## Improvements
+- Add some missing translations
+
+## Bug fixes
+- Bug #658: Export all activated translations even if no value has been set
+
+## BC breaks
+- Change some translation message keys
+- Remove GridBundle, add a new DataGridBundle (based on OroPlatform changes)
+- Change filters implementations in FilterBundle
+- Update all PIM grids to use the new implementation
+
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
 ## Features
@@ -5,7 +23,7 @@
 - New translation mode : Compare and copy values within a product edit form
 - Convert metric values into the conversion unit selected for the channel during export
 - Allow filtering and sorting by metric values
-- Allow to back to the grid or create another product when editing one
+- Allow to go back to the grid or create another product after saving one
 - Add products to many groups through mass edit wizard
 - Attribute options fixture
 - Product associations fixture

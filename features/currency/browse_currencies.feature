@@ -10,7 +10,7 @@ Feature: Browse currencies
     And I am on the currencies page
 
   Scenario: Successfully view, sort and filter currencies
-    Then I should see the columns Code, Label and Activated
+    Then I should see the columns Code and Activated
     And the rows should be sorted ascending by code
     And I should be able to sort the rows by code and activated
     And I should be able to use the following filters:

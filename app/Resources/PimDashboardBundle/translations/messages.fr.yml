@@ -1,0 +1,22 @@
+---
+pim_dashboard:
+  menu:
+    label:
+      collect: Extraire
+      enrich: Enrichir
+      spread: Diffuser
+      settings: Paramètres
+  link:
+    label:
+      import_profile: "Gérer les profils d'imports"
+      import_report: Historique des imports
+      product: Gérer les produits
+      category: Gérer les catégories
+      variant: Gérer les groupes de variantes
+      group: Gérer les groupes
+      channel: Gérer les canaux
+      export_profile: "Gérer les profils d'exports"
+      export_report: Historique des exports
+      attribute: Gérer les attributs
+      family: Gérer des familles
+  quick_launchpad: "Panneau d'accès rapide"

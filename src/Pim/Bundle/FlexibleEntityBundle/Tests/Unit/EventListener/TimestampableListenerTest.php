@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Doctrine\Tests\OrmTestCase;
@@ -17,7 +18,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class TimestampableListenerTest extends OrmTestCase
 {
-
     /**
      * @var EntityManager
      */

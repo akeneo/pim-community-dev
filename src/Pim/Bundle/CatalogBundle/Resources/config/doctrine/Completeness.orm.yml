@@ -7,6 +7,14 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
                 - channel_id
                 - locale_id
                 - product_id
+    indexes:
+        completeness_idx:
+            columns:
+                - locale_id
+                - channel_id
+        ratio_idx:
+            columns:
+                - ratio
     fields:
         id:
             type: integer

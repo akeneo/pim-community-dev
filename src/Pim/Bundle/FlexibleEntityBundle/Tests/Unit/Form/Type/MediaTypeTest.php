@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
 
@@ -15,7 +15,6 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  */
 class MediaTypeTest extends TypeTestCase
 {
-
     /**
      * {@inheritdoc}
      */

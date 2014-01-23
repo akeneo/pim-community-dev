@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AttributeOption extends AbstractEntityAttributeOption
 {
-
     /**
      * Overrided to change target entity name
      *

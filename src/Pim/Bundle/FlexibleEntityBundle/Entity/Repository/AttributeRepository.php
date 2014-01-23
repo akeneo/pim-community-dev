@@ -57,7 +57,7 @@ class AttributeRepository extends EntityRepository
         $result = $query->execute(array(), AbstractQuery::HYDRATE_SIMPLEOBJECT);
         $associative = array();
         foreach ($result as $row) {
-            $associative[$row->getCode()]= $row;
+            $associative[$row->getCode()] = $row;
         }
 
         return $associative;

@@ -39,11 +39,12 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $loader->load('form_types.yml');
         $loader->load('handlers.yml');
         $loader->load('managers.yml');
-        $loader->load('grid.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
         $loader->load('factory.yml');
         $loader->load('entities.yml');
+        $loader->load('datagrid_listeners.yml');
+        $loader->load('repositories.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
@@ -51,6 +52,42 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        $prependConfig = array(
+            'TwigBundle'                     => 'twig',
+            'AsseticBundle'                  => 'assetic',
+            'DoctrineBundle'                 => 'doctrine',
+            'KnpPaginatorBundle'             => 'knp_paginator',
+            'FOSRestBundle'                  => 'fos_rest',
+            'FOSJsRoutingBundle'             => 'fos_js_routing',
+            'BeSimpleSoapBundle'             => 'be_simple_soap',
+            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
+            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
+            'LiipImagineBundle'              => 'liip_imagine',
+            'GenemuFormBundle'               => 'genemu_form',
+            'OroSearchBundle'                => 'oro_search',
+            'OroUIBundle'                    => 'oro_ui',
+            'OroTranslationBundle'           => 'oro_translation',
+            'JMSDiExtraBundle'               => 'jms_di_extra',
+            'OroEntityExtendBundle'          => 'oro_entity_extend',
+            'OroFilterBundle'                => 'oro_filter',
+            'OroBatchBundle'                 => 'oro_batch',
+            'KnpGaufretteBundle'             => 'knp_gaufrette',
+        );
+
+        foreach ($prependConfig as $bundle => $alias) {
+            if (isset($bundles[$bundle])) {
+                $this->prependExtensionConfig($container, $alias);
+            }
+        }
     }
 
     /**
@@ -111,42 +148,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $container->setParameter($this->getAlias().'.storage_driver', $storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
         $container->setParameter($this->getAlias().'.storage_driver.'.$storageDriver, true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        $prependConfig = array(
-            'TwigBundle'                     => 'twig',
-            'AsseticBundle'                  => 'assetic',
-            'DoctrineBundle'                 => 'doctrine',
-            'KnpPaginatorBundle'             => 'knp_paginator',
-            'FOSRestBundle'                  => 'fos_rest',
-            'FOSJsRoutingBundle'             => 'fos_js_routing',
-            'BeSimpleSoapBundle'             => 'be_simple_soap',
-            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
-            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
-            'LiipImagineBundle'              => 'liip_imagine',
-            'GenemuFormBundle'               => 'genemu_form',
-            'OroSearchBundle'                => 'oro_search',
-            'OroUIBundle'                    => 'oro_ui',
-            'OroTranslationBundle'           => 'oro_translation',
-            'JMSDiExtraBundle'               => 'jms_di_extra',
-            'OroEntityExtendBundle'          => 'oro_entity_extend',
-            'OroFilterBundle'                => 'oro_filter',
-            'OroBatchBundle'                 => 'oro_batch',
-            'KnpGaufretteBundle'             => 'knp_gaufrette',
-        );
-
-        foreach ($prependConfig as $bundle => $alias) {
-            if (isset($bundles[$bundle])) {
-                $this->prependExtensionConfig($container, $alias);
-            }
-        }
     }
 
     /**

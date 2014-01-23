@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
@@ -14,7 +14,6 @@ use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
  */
 class MetricTypeTest extends AbstractFormTypeTest
 {
-
     /**
      * {@inheritdoc}
      */
