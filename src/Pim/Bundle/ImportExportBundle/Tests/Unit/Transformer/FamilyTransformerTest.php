@@ -153,5 +153,4 @@ class FamilyTransformerTest extends EntityTransformerTestCase
         $this->assertEquals('col2_path-val2', $object->col2_path);
         $this->assertCount(6, $this->transformers);
     }
-
 }

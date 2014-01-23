@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
 
 /**
  * Validates an imported product
