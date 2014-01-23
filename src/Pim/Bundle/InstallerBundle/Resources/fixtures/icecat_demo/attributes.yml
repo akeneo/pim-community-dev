@@ -372,8 +372,19 @@ attributes:
             fr_FR: Photographie
             de_DE: Photography
         type: pim_catalog_image
-        group: marketing
+        group: media
         useableAsGridFilter: false
         useableAsGridColumn: false
         sortOrder: 27
         allowedExtensions: 'jpg,jpeg,gif'
+    pdf_description:
+        labels:
+            en_US: PDF description
+            fr_FR: Description PDF
+            de_DE: PDF Bezeichnung
+        type: pim_catalog_file
+        group: media
+        useableAsGridFilter: false
+        useableAsGridColumn: false
+        sortOrder: 28
+        allowedExtensions: 'pdf'
