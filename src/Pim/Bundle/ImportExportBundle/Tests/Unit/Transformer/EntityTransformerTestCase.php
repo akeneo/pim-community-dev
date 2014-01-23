@@ -95,7 +95,8 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             $transformer = $this
                 ->getMock('Pim\Bundle\ImportExportBundle\Tests\Stub\EntityUpdaterPropertyTransformerInterface');
         } else {
-            $transformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface');
+            $transformer = $this
+                ->getMock('Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface');
         }
         if ($failing) {
             $transformer->expects($this->any())
@@ -147,8 +148,13 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
             : $this->columnInfos[$label];
     }
 
-    protected function addColumn($label, $addTransformer = true, $skipped = false, $withUpdater = false, $suffixes = array())
-    {
+    protected function addColumn(
+        $label,
+        $addTransformer = true,
+        $skipped = false,
+        $withUpdater = false,
+        $suffixes = array()
+    ) {
         $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getLabel')
