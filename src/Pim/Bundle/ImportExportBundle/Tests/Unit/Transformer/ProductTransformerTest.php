@@ -14,6 +14,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
 class ProductTransformerTest extends EntityTransformerTestCase
 {
     protected $productManager;
+    protected $flexibleRepository;
     protected $attributeCache;
     protected $attributes;
     protected $transformer;
@@ -50,12 +51,18 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->method('createValue')
             ->will($this->returnCallback(array($this, 'createValue')));
 
+        $this->flexibleRepository = $this->getMock(
+            'Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface'
+        );
         $this->productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
         $this->productManager->expects($this->any())
             ->method('createProduct')
             ->will($this->returnValue($this->product));
+        $this->productManager->expects($this->any())
+            ->method('getFlexibleRepository')
+            ->will($this->returnValue($this->flexibleRepository));
         $this->productManager->expects($this->any())
             ->method('getFlexibleValueName')
             ->will($this->returnValue('product_value_class'));

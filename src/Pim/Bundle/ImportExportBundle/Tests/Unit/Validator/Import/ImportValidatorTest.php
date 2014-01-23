@@ -104,7 +104,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
 
     public function testWithoutIdentifier()
     {
-        $this->validator->expects($this->once())
+        $this->validator->expects($this->any())
             ->method('validate')
             ->with($this->identicalTo($this->entity))
             ->will($this->returnValue($this->getViolationListMock(array())));
