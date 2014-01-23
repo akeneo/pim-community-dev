@@ -59,7 +59,7 @@
         var $fields = getFields(el);
 
         $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(icon));
+        var $icon = $('<span>').html($('<i>').addClass(icon)).css('width', 20);
         $fields.first().find('label.control-label').prepend($icon);
     }
 
