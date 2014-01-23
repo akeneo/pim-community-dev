@@ -36,7 +36,8 @@
         <mkdir dir="${basedir}/app/build/code-browser"/>
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/coverage-parts"/>
-        <mkdir dir="${basedir}/app/build/logs"/>
+        <mkdir dir="${basedir}/app/build/logs/phpunit"/>
+        <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
         <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
@@ -177,12 +178,13 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec">
-        <exec executable="bin/phpspec" failonerror="true">
+        <exec executable="bin/phpspec">
             <arg value="run" />
             <arg value="--ansi" />
-            <arg value="-fpretty" />
+            <arg value="-fjunit" />
             <arg value="--no-interaction" />
             <arg value="--verbose" />
+            <redirector output="${basedir}/app/build/logs/phpspec/junit.xml"/>
         </exec>
     </target>
 
