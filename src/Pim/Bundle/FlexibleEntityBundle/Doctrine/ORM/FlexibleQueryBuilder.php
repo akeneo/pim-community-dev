@@ -128,7 +128,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @return string
      */
-    public function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
@@ -157,7 +157,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @return multitype:string
      */
-    public function getAllowedOperators($backendType)
+    protected function getAllowedOperators($backendType)
     {
         $typeToOperator = array(
             AbstractAttributeType::BACKEND_TYPE_DATE     => array('=', '<', '<=', '>', '>='),
@@ -190,7 +190,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @return string
      * @throws FlexibleQueryException
      */
-    public function prepareCriteriaCondition($field, $operator, $value)
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
         if (is_array($operator)) {
             return $this->prepareMultiCriteriaCondition($field, $operator, $value);
