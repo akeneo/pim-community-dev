@@ -34,10 +34,3 @@ associations:
         - akeneo_vneck_tshirt
       products:
         - AKNSTK
-
-    - owner: AKNMUG_BW
-      associationType: PACK
-      groups:
-        - akeneo_vneck_tshirt
-      products:
-        - AKNSTK
