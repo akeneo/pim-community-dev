@@ -10,6 +10,7 @@
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
+- Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
 
 ## BC breaks
 - Change some translation message keys
