@@ -7,12 +7,12 @@
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) }) }}
+    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': operator.operationAlias, 'products': productIds }) }) }}
 
         <div class="row">
             <div class="offset1 span12">
-                <h3>{{ ('pim_catalog.mass_edit_action.' ~ massEditActionOperator.operationAlias ~ '.label')|trans }}</h3>
-                <h4>{{ ('pim_catalog.mass_edit_action.' ~ massEditActionOperator.operationAlias ~ '.description')|trans }}</h4>
+                <h3>{{ ('pim_catalog.mass_edit_action.' ~ operator.operationAlias ~ '.label')|trans }}</h3>
+                <h4>{{ ('pim_catalog.mass_edit_action.' ~ operator.operationAlias ~ '.description')|trans }}</h4>
                 <div class="pull-right">
                     {% block formTitle %}{% endblock %}
                 </div>
@@ -54,7 +54,7 @@
     {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) %}
+    {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],

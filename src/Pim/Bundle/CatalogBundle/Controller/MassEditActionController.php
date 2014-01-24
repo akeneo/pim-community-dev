@@ -35,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 class MassEditActionController extends AbstractDoctrineController
 {
     /** @var MassEditActionOperator */
-    protected $massEditActionOperator;
+    protected $operator;
 
     /** @var Manager */
     protected $manager;
@@ -60,7 +60,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
      * @param RegistryInterface          $doctrine
-     * @param MassEditActionOperator     $massEditActionOperator
+     * @param MassEditActionOperator     $operator
      * @param Manager                    $manager
      * @param MassActionParametersParser $parametersParser
      * @param ProductManager             $productManager
@@ -74,7 +74,7 @@ class MassEditActionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        MassEditActionOperator $massEditActionOperator,
+        MassEditActionOperator $operator,
         Manager $manager,
         MassActionParametersParser $parametersParser,
         ProductManager $productManager
@@ -90,11 +90,11 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator              = $validator;
-        $this->massEditActionOperator = $massEditActionOperator;
-        $this->manager                = $manager;
-        $this->parametersParser       = $parametersParser;
-        $this->productManager         = $productManager;
+        $this->validator        = $validator;
+        $this->operator         = $operator;
+        $this->manager          = $manager;
+        $this->parametersParser = $parametersParser;
+        $this->productManager   = $productManager;
     }
 
     /**
@@ -111,7 +111,7 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $form = $this->getMassEditActionOperatorForm();
+        $form = $this->getOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -120,7 +120,7 @@ class MassEditActionController extends AbstractDoctrineController
                     'pim_catalog_mass_edit_action_configure',
                     array(
                         'products'       => $productIds,
-                        'operationAlias' => $this->massEditActionOperator->getOperationAlias(),
+                        'operationAlias' => $this->operator->getOperationAlias(),
                     )
                 );
             }
@@ -143,7 +143,7 @@ class MassEditActionController extends AbstractDoctrineController
     public function configureAction(Request $request, $operationAlias)
     {
         try {
-            $this->massEditActionOperator->setOperationAlias($operationAlias);
+            $this->operator->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
@@ -153,21 +153,21 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $this->massEditActionOperator->initializeOperation($productIds);
-        $form = $this->getMassEditActionOperatorForm();
+        $this->operator->initializeOperation($productIds);
+        $form = $this->getOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $this->massEditActionOperator->initializeOperation($productIds);
-            $form = $this->getMassEditActionOperatorForm();
+            $this->operator->initializeOperation($productIds);
+            $form = $this->getOperatorForm();
         }
 
         return $this->render(
             sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
-                'form'          => $form->createView(),
-                'massEditActionOperator' => $this->massEditActionOperator,
-                'productIds'    => $productIds,
+                'form'       => $form->createView(),
+                'operator'   => $this->operator,
+                'productIds' => $productIds,
             )
         );
     }
@@ -183,7 +183,7 @@ class MassEditActionController extends AbstractDoctrineController
     public function performAction(Request $request, $operationAlias)
     {
         try {
-            $this->massEditActionOperator->setOperationAlias($operationAlias);
+            $this->operator->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
@@ -195,18 +195,18 @@ class MassEditActionController extends AbstractDoctrineController
 
         // Hacky hack for the edit common attribute operation to work
         // first time is to set diplayed attributes and locale
-        $this->massEditActionOperator->initializeOperation($productIds);
-        $form = $this->getMassEditActionOperatorForm();
+        $this->operator->initializeOperation($productIds);
+        $form = $this->getOperatorForm();
         $form->submit($request);
 
         //second time is to set values
-        $this->massEditActionOperator->initializeOperation($productIds);
-        $form = $this->getMassEditActionOperatorForm();
+        $this->operator->initializeOperation($productIds);
+        $form = $this->getOperatorForm();
         $form->submit($request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->massEditActionOperator->performOperation($productIds);
-        foreach ($this->validator->validate($this->massEditActionOperator) as $violation) {
+        $this->operator->performOperation($productIds);
+        foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
                     $violation->getMessage(),
@@ -233,9 +233,9 @@ class MassEditActionController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
-                'form'                   => $form->createView(),
-                'massEditActionOperator' => $this->massEditActionOperator,
-                'productIds'             => $productIds,
+                'form'       => $form->createView(),
+                'operator'   => $this->operator,
+                'productIds' => $productIds,
             )
         );
     }
@@ -274,12 +274,12 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * @return Form
      */
-    protected function getMassEditActionOperatorForm()
+    protected function getOperatorForm()
     {
         return $this->createForm(
             new MassEditActionOperatorType(),
-            $this->massEditActionOperator,
-            array('operations' => $this->massEditActionOperator->getOperationChoices())
+            $this->operator,
+            array('operations' => $this->operator->getOperationChoices())
         );
     }
 
