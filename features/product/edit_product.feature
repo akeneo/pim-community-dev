@@ -17,4 +17,4 @@ Feature: Edit a product
       | Name | My Sandal |
     When I press the "Save" button
     Then I should be on the product "sandal" edit page
-    And I should see "My Sandal"
+    Then the product Name should be "My Sandal"

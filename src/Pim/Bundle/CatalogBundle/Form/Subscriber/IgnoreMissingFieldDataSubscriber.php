@@ -35,8 +35,11 @@ class IgnoreMissingFieldDataSubscriber implements EventSubscriberInterface
     public function preSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $data = $event->getData();
+        if (!$form->isValid()) {
+            return;
+        }
 
+        $data = $event->getData();
         foreach (array_keys($form->all()) as $name) {
             if (!array_key_exists($name, $data)) {
                 $form->remove($name);

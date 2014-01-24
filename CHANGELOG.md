@@ -10,12 +10,13 @@
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
+- Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
 
 ## BC breaks
 - Change some translation message keys
 - Remove GridBundle, add a new DataGridBundle (based on OroPlatform changes)
 - Change filters implementations in FilterBundle
-- Update all PIM grids to use the new implementation
+- Update all PIM grids to use the new implementation (extensions for filter, sorter, pager, custom datasource, custom cell formatters)
 - Rename TranslatableInterface and TranslatableListener by Localizable one in FlexibleEntityBundle
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
