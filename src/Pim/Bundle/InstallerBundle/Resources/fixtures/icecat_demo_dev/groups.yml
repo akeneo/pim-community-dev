@@ -9,6 +9,17 @@ groups:
             - main_color
             - secondary_color
 
+    oro_mug:
+        type: VARIANT
+        labels:
+            en_US: Oro Mugs
+            fr_FR: Mugs Oro
+            de_DE: Oro Tassen
+        attributes:
+            - main_color
+            - secondary_color
+            - container_material
+
     akeneo_tshirt:
         type: VARIANT
         labels:
@@ -19,6 +30,29 @@ groups:
             - main_color
             - secondary_color
             - clothing_size
+
+    akeneo_long_sleeve_tshirt:
+        type: VARIANT
+        labels:
+            en_US: Akeneo T-Shirts
+            fr_FR: T-Shirts Akeneo
+            de_DE: T-Shirts Akeneo
+        attributes:
+            - main_color
+            - secondary_color
+            - clothing_size
+
+    akeneo_vneck_tshirt:
+        type: VARIANT
+        labels:
+            en_US: Akeneo T-Shirts
+            fr_FR: T-Shirts Akeneo
+            de_DE: T-Shirts Akeneo
+        attributes:
+            - main_color
+            - secondary_color
+            - clothing_size
+            - tshirt_materials
 
     oro_tshirt:
         type: VARIANT

@@ -429,6 +429,15 @@ attributes:
             grey:
                 code: grey
                 labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
+            blue:
+                code: blue
+                labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+            purple:
+                code: purple
+                labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
+            orange:
+                code: orange
+                labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
     secondary_color:
         labels:
             en_US: 'Secondary color'
