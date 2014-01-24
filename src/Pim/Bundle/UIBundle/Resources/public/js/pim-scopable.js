@@ -241,7 +241,14 @@ define(
 
             _setFieldFirst: function (field) {
                 var $field = $(field);
-                $field.insertAfter(this.$el.find('>label'));
+
+                var $target = this.$el.find('>label');
+                if ($target.length) {
+                    $field.insertAfter($target);
+                } else {
+                    $field.prependTo(this.$el);
+                }
+
                 $field.find('.field-toggle').removeClass('hide');
 
                 if (this.expanded) {

@@ -92,8 +92,7 @@ class ProductEditType extends AbstractType
                     'mapped'   => true,
                     'multiple' => true,
                 )
-            )
-            ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
+            );
     }
 
     /**

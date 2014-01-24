@@ -279,7 +279,7 @@ class ProductController extends AbstractDoctrineController
         );
 
         if ($request->isMethod('POST')) {
-            $form->submit($request);
+            $form->submit($request, false);
 
             if ($form->isValid()) {
                 try {

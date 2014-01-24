@@ -131,11 +131,13 @@ class Edit extends Form
     public function findField($name)
     {
         $currency = null;
-        if (false !== strpos($name, ' in ')) { // Price in EUR
+        if (false !== strpos($name, ' in ')) {
+            // Price in EUR
             list($name, $currency) = explode(' in ', $name);
 
             return $this->findPriceField($name, $currency);
-        } elseif (2 === str_word_count($name)) { // mobile Description
+        } elseif (2 === str_word_count($name)) {
+            // mobile Description
             list($scope, $name) = str_word_count($name, 1);
 
             return $this->findScopedField($name, $scope);
@@ -514,20 +516,27 @@ class Edit extends Form
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
 
-        $label = $label
-            ->getParent()
-            ->find('css', sprintf('label:contains("%s")', $currency));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        $labels = $label->getParent()->findAll('css', '.currency-label');
+
+        $fieldNum = null;
+        foreach ($labels as $index => $element) {
+            if ($element->getText() === $currency) {
+                $fieldNum = $index;
+                break;
+            }
         }
 
-        $field = $label->getParent()->find('css', 'input');
-
-        if (!$field) {
+        if ($fieldNum === null) {
             throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
         }
 
-        return $field;
+        $fields = $label->getParent()->findAll('css', 'input[type="text"]');
+
+        if (!isset($fields[$fieldNum])) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        return $fields[$fieldNum];
     }
 
     protected function findScopedField($name, $scope)

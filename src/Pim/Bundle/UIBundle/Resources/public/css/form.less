@@ -679,18 +679,55 @@ table i {
   }
 }
 
-.currencyfield {
-  &>.control-group .control-group:first-of-type .input-prepend {
-    margin-left: 20px;
+.attribute-field.currency {
+  max-width: inherit;
+  .control-group {
+    max-width: inherit;
   }
-  .input-large {
-    width: 288px;
+  .currency-header {
+    display: inline-block;
+    margin-left: 10px;
+    .currency-label {
+      display: inline-block;
+      width: 103px;
+      text-align: center;
+      font-weight: bold;
+    }
+    &.small .currency-label {
+      width: 74px;
+    }
   }
-  .input-prepend .control-label {
-    padding-right: 8px;
-    line-height: 20px;
-    border-right-width: 0;
+  &.scopable {
+    .currency-header {
+      padding-left: 135px;
+    }
   }
+  .controls {
+    .input-small, .input-mini {
+      height: 21px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      &:not(:last-of-type) {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
+  >div.first .controls {
+    .control-label.add-on {
+      font-weight: bold;
+      background-color: @backgroundColor-white;
+      border-top-left-radius: 3px;
+    }
+    input {
+      border-top-right-radius: 3px;
+    }
+  }
+}
+
+table.comparison .no-label .attribute-field.currency.scopable .currency-header {
+  padding-left: 165px;
 }
 
 .metric {
@@ -701,6 +738,7 @@ table i {
 
 .attribute-field.scopable {
   margin-bottom: 10px;
+  max-width: inherit;
   >div {
     &:first-of-type .controls {
       .control-label.add-on {
@@ -723,7 +761,7 @@ table i {
         border-bottom-right-radius: 3px;
       }
     }
-    &:not(:first-of-type) {
+    &:not(.first):not(:first-of-type) {
       &>.control-group {
         .control-label.add-on, input, select, textarea {
           border-top: 0;
@@ -742,6 +780,11 @@ table i {
     background-color: #fbfbfb;
     border-right-width: 0;
     border-radius: 0;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     span.field-toggle {
       position: relative;
       top: -4px;
@@ -888,81 +931,6 @@ h1 {
 }
 span.muted.small {
   font-size: 14px;
-}
-
-form.form-horizontal .currency {
-  margin-bottom: 10px;
-  .control-group {
-    margin: 0;
-  }
-  &>.control-group .control-group>.controls .control-group {
-    .controls {
-      margin: 0;
-      .control-label {
-        height: 29px;
-      }
-    }
-    &:first-of-type {
-      .control-label {
-        height: 30px;
-        font-weight: bold;
-        background-color: @backgroundColor-white;
-        border-top-left-radius: 3px;
-      }
-      input {
-        border-top-right-radius: 3px;
-      }
-    }
-    &:last-of-type {
-      .control-label {
-        border-bottom-left-radius: 3px;
-      }
-      input {
-        border-bottom-right-radius: 3px;
-      }
-    }
-  }
-  div.controls {
-    .control-label {
-      float: left;
-      width: 50px;
-      padding-top: 4px;
-      margin-bottom: 0;
-      font-weight: normal;
-      text-align: right;
-      background-color: #fbfbfb;
-      border-radius: 0;
-      span {
-        position: relative;
-        top: -4px;
-        left: -5px;
-        float: left;
-        height: 100%;
-        padding: 4px 5px;
-        i {
-          padding-left: 3px;
-          font-size: 16px;
-          line-height: 18px;
-        }
-      }
-    }
-    &>.control-group:not(:first-of-type) {
-      .control-label, input {
-        border-top: 0;
-      }
-    }
-    input {
-      border-radius: 0;
-    }
-  }
-  &.collapsed .controls {
-     .control-label {
-      border-bottom-left-radius: 3px;
-    }
-    input {
-      border-bottom-right-radius: 3px;
-    }
-  }
 }
 
 div.dropdown-menu.channel {
