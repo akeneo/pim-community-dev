@@ -1,0 +1,43 @@
+associations:
+    - owner: OROMUG_DBO
+      associationType: SUBSTITUTION
+      products:
+        - OROMUG_BO
+        - OROMUG_WO
+        - OROMUG_OW
+        - OROMUG_OB
+        - OROMUG_ODB
+
+    - owner: AKNMUG_BP
+      associationType: SUBSTITUTION
+      products:
+        - AKNMUG_WP
+        - AKNMUG_PB
+        - AKNMUG_PW
+
+    - owner: AKNTS_WPM
+      associationType: PACK
+      groups:
+        - akeneo_mug
+      products:
+        - OROMUG_DBO
+        - AKNSTK
+
+    - owner: AKNMUG_WP
+      associationType: PACK
+      groups:
+        - akeneo_tshirt
+
+    - owner: AKNMUG_PW
+      associationType: PACK
+      groups:
+        - akeneo_vneck_tshirt
+      products:
+        - AKNSTK
+
+    - owner: AKNMUG_BW
+      associationType: PACK
+      groups:
+        - akeneo_vneck_tshirt
+      products:
+        - AKNSTK

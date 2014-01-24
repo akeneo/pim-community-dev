@@ -477,7 +477,7 @@ families:
             - picture
             - container_material
 
-    tshirt:
+    tshirts:
         requirements:
             print:
                 - sku

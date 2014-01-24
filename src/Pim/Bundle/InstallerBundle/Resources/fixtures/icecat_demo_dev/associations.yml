@@ -1,0 +1,16 @@
+associations:
+    - owner: OROMUG_DBO
+      associationType: PACK
+      products:
+        - OROMUG_BO
+        - OROMUG_WO
+        - OROMUG_OW
+        - OROMUG_OB
+        - OROMUG_ODB
+
+    - owner: AKNMUG_BP
+      associationType: PACK
+      products:
+        - AKNMUG_WP
+        - AKNMUG_PB
+        - AKNMUG_PW
