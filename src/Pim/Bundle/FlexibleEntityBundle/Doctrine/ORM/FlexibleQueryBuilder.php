@@ -8,7 +8,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
-
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -359,17 +359,8 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             $this->qb->innerJoin($joinAlias .'.'. $backendType, $joinAliasEntity, 'WITH', $condition);
 
         } else {
-
-            // inner join with condition on backend value
-            $backendField = sprintf('%s.%s', $joinAlias, $backendType);
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
-                $joinAlias,
-                'WITH',
-                $condition
-            );
+            $filter = new BaseFilter($this->qb);
+            $filter->add($attribute, $operator, $value);
         }
 
         return $this;
