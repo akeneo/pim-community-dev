@@ -465,9 +465,9 @@ attributes:
             purple:
                 code: purple
                 labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
-    size_clothing:
+    clothing_size:
         labels:
-            en_US: 'Size clothing'
+            en_US: 'Clothing size'
             fr_FR: 'Taille du vêtement'
             de_DE: 'Größe Kleidung'
         type: pim_catalog_simpleselect
