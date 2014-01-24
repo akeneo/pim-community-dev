@@ -45,25 +45,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     protected $aliasCounter = 1;
 
     /**
-     * Filters
-     */
-    protected $attributeTypeFilters;
-
-    /**
-     * Sorters
-     */
-    protected $attributeTypeSorters;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributeTypeFilters = array();
-        $this->attributeTypeSorters = array();
-    }
-
-    /**
      * Get query builder
      *
      * @param QueryBuilder $qb
@@ -73,6 +54,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     public function setQueryBuilder(QueryBuilder $qb)
     {
         $this->qb = $qb;
+        $this->aliasCounter = 1;
 
         return $this;
     }
