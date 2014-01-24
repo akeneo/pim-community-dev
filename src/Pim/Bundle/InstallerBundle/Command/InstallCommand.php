@@ -32,7 +32,7 @@ class InstallCommand extends ContainerAwareCommand
     const LOAD_ALL    = 'all';
     const LOAD_ORO    = 'OroPlatform';
 
-    const LOAD_FIXTURES_TIMEOUT = 360;
+    const LOAD_FIXTURES_TIMEOUT = 0;
 
     /**
      * @var CommandExecutor $commandExecutor

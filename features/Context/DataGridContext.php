@@ -44,7 +44,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theGridShouldContainElement($count)
     {
-        if ($count > 10) {
+       $this->wait();
+       if ($count > 10) {
             $this->datagrid->changePageSize(100);
             $this->wait();
         }
