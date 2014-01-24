@@ -441,3 +441,33 @@ families:
             - picture
             - weight
             - power_requirements
+    mugs:
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - picture
+            mobile:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+                - picture
+                - container_material
+        attributes:
+            - sku
+            - name
+            - description
+            - main_color
+            - price
+            - picture
+            - container_material
