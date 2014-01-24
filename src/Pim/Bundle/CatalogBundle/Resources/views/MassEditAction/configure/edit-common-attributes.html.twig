@@ -47,19 +47,21 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
-            function ($, _, Scopable) {
+            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
+            function ($, _, Scopable, CurrencyField) {
                 'use strict';
                 $(function () {
                     {% if form.operation.vars.groups is empty %}
                         $('a.next').hide();
                     {% endif %}
 
-                    _.each($('form div.scopable'), function (field) {
+                    _.each($('form div.scopable:not(.currency)'), function (field) {
                         new Scopable({ el: $(field) });
                     });
 
-                    $('form div.currency').currencyField();
+                    _.each($('form div.currency'), function (field) {
+                        new CurrencyField({ el: $(field) });
+                    });
 
                     /**
                      * Add attributes widget
@@ -93,7 +95,7 @@
                     var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
                     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                         $el.multiselect('close');
-                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': massEditActionOperator.operationAlias, 'products': productIds }) %}
+                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'products': productIds }) %}
                         $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                     }).appendTo(footerContainer);
 

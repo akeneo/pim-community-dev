@@ -210,7 +210,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->initializeCommonAttributes();
         $this->skipUneditableAttributes($products);
 
-        foreach ($this->commonAttributes as $key => $attribute) {
+        foreach ($this->commonAttributes as $attribute) {
             if ($this->attributesToDisplay->contains($attribute)) {
                 $this->addValues($attribute);
             }

@@ -307,23 +307,35 @@
 {% endspaceless %}
 {% endblock pim_flexibleentity_metric_row %}
 
+{% block pim_catalog_price_collection_row %}
+    {{ form_row(form, { attr: { class: 'hide' }}) }}
+{% endblock pim_catalog_price_collection_row %}
+
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}
-        {% if child.vars.value.currency == locale_currency() %}
-            {{ form_widget(child) }}
-        {% endif %}
+        {{ form_widget(child) }}
     {% endfor %}
-    {% for child in form.children %}
-        {% if child.vars.value.currency != locale_currency() %}
-            {{ form_widget(child) }}
-        {% endif %}
-    {% endfor %}
+    {{ block('form_info') }}
 {% endblock pim_catalog_price_collection_widget %}
 
 {% block pim_catalog_price_widget %}
 {% spaceless %}
-    {{ form_widget(form.currency) }}
-    {{ form_row(form.data, {label:currency_symbol(form.currency.vars.value)} ) }}
+    {% set metadata = {
+        label: currency_symbol(form.currency.vars.value),
+        currency: {
+            fieldName: form.currency.vars.full_name,
+            fieldId:   form.currency.vars.id,
+            data:      form.currency.vars.value,
+            disabled:  form.data.vars.disabled
+        },
+        value: {
+            fieldName: form.data.vars.full_name,
+            fieldId:   form.data.vars.id,
+            data:      form.data.vars.value,
+            disabled:  form.data.vars.disabled
+        }
+    } %}
+    <div class="currency-field" data-metadata="{{ metadata|json_encode }}"></div>
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 
