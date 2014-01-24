@@ -85,7 +85,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return FlexibleQueryBuilder
      */
     public function setLocale($code)
     {
@@ -109,7 +109,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return FlexibleQueryBuilder
      */
     public function setScope($code)
     {

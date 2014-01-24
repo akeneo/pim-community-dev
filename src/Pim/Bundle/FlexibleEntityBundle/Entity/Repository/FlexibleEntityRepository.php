@@ -273,7 +273,7 @@ class FlexibleEntityRepository extends EntityRepository implements
     protected function getFlexibleQueryBuilder($qb)
     {
         if (!$this->flexibleQB) {
-            throw new \Exception('Flexible query builder must be configured');
+            throw new \LogicException('Flexible query builder must be configured');
         }
 
         $this->flexibleQB
