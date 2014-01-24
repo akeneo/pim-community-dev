@@ -10,16 +10,19 @@ define(
          * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
          */
         return Backbone.View.extend({
-            fieldSelector: '.currency-field[data-metadata]',
-            expandIcon:    'icon-caret-right',
-            collapseIcon:  'icon-caret-down',
-            first:         true,
-            expanded:      true,
-            currencies:    null,
-            scopable:      false,
+            fieldSelector:   '.currency-field[data-metadata]',
+            expandIcon:      'icon-caret-right',
+            collapseIcon:    'icon-caret-down',
+            first:           true,
+            expanded:        true,
+            currencies:      null,
+            scopable:        false,
+            inputClass:      'input-small',
+            smallInputClass: 'input-mini',
+            inputThreshold:  3,
 
             currencyTemplate: _.template(
-                '<div class="currency-header">' +
+                '<div class="currency-header<%= small ? " small" : "" %>">' +
                     '<% _.each(currencies, function(currency) { %>' +
                         '<span class="currency-label"><%= currency %></span>' +
                     '<% }); %>' +
@@ -42,7 +45,7 @@ define(
                             '<input type="hidden" id="<%= item.currency.fieldId %>" ' +
                                 'name="<%= item.currency.fieldName %>" value="<%= item.currency.data %>"' +
                                 '<%= item.currency.disabled ? " disabled" : "" %> >' +
-                            '<input type="text" class="input-small" id="<%= item.value.fieldId %>"' +
+                            '<input type="text" class="<%= inputClass %>" id="<%= item.value.fieldId %>"' +
                                 'name="<%= item.value.fieldName %>" value="<%= item.value.data %>"' +
                                 '<% if (!scopable && index === 0) { %>' +
                                     ' style="border-top-left-radius:3px;border-bottom-left-radius:3px;"' +
@@ -116,7 +119,8 @@ define(
                         data:         data,
                         scopable:     this.scopable,
                         first:        this.first,
-                        collapseIcon: this.collapseIcon
+                        collapseIcon: this.collapseIcon,
+                        inputClass:   this.currencies.length > this.inputThreshold ? this.smallInputClass : this.inputClass
                     })
                 );
 
@@ -144,7 +148,8 @@ define(
 
                 var $header = $(this.currencyTemplate({
                     currencies: this.currencies,
-                    scopable:   this.scopable
+                    scopable:   this.scopable,
+                    small:      this.currencies.length > this.inputThreshold
                 }));
                 $header.insertAfter($label);
                 this.$el.find('.icons-container:first').insertAfter($header);

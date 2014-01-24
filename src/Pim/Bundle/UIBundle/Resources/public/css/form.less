@@ -683,12 +683,15 @@ table i {
   .currency-header {
     display: inline-block;
     margin-left: 10px;
-  }
-  span.currency-label {
-    display: inline-block;
-    width: 103px;
-    text-align: center;
-    font-weight: bold;
+    .currency-label {
+      display: inline-block;
+      width: 103px;
+      text-align: center;
+      font-weight: bold;
+    }
+    &.small .currency-label {
+      width: 74px;
+    }
   }
   &.scopable {
     .currency-header {
