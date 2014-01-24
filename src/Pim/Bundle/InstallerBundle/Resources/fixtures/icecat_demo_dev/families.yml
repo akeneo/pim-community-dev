@@ -441,3 +441,76 @@ families:
             - picture
             - weight
             - power_requirements
+    mugs:
+        labels:
+            en_US: Mugs
+            fr_FR: Chopes/Mugs
+            de_DE: Tassen
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - picture
+            mobile:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+                - picture
+                - container_material
+        attributes:
+            - sku
+            - name
+            - description
+            - main_color
+            - price
+            - picture
+            - container_material
+
+    tshirt:
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - picture
+            mobile:
+                - sku
+                - name
+                - description
+                - main_color
+                - secondary_color
+                - price
+                - clothing_size
+            ecommerce:
+                - sku
+                - name
+                - description
+                - main_color
+                - secondary_color
+                - price
+                - picture
+                - tshirt_materials
+                - clothing_size
+        attributes:
+            - sku
+            - name
+            - description
+            - main_color
+            - secondary_color
+            - price
+            - picture
+            - clothing_size
+            - tshirt_materials
+            - tshirt_style

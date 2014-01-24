@@ -8,6 +8,7 @@ groups:
         attributes:
             - main_color
             - secondary_color
+
     akeneo_tshirt:
         type: VARIANT
         labels:
@@ -18,6 +19,7 @@ groups:
             - main_color
             - secondary_color
             - clothing_size
+
     oro_tshirt:
         type: VARIANT
         labels:
