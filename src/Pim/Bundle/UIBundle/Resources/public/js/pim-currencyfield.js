@@ -11,83 +11,194 @@ define(
          */
         return Backbone.View.extend({
             fieldSelector: '.currency-field[data-metadata]',
-            metadata:      null,
+            expandIcon:    'icon-caret-right',
+            collapseIcon:  'icon-caret-down',
+            first:         true,
+            expanded:      true,
+            currencies:    null,
+            scopable:      false,
 
-            template: _.template(
-                '<div class="currency-field" style="display:inline-block;">' +
-                    '<table class="table table-condensed table-bordered<%= scopable ? " table-hover" : "" %>">' +
-                        '<thead>' +
-                            '<tr>' +
-                                '<%= scopable ? "<th></th>" : "" %>' +
-                                '<% _.each(currencies, function(currency) { %>' +
-                                    '<th><%= currency %></th>' +
-                                '<% }); %>' +
-                            '</tr>' +
-                        '</thead>' +
-                        '<tbody>' +
-                            '<% _.each(data, function(item) { %>' +
-                                '<% _.each(currencies, function(currency, index) { %>' +
-                                    '<% if (item.label === currency) { %>' +
-                                        '<% if (index === 0) { %>' +
-                                            '<tr><%= scopable ? "<td>" + item.scope + "</td>" : "" %>' +
-                                        '<% } %>' +
-                                        '<td>' +
-                                            '<input type="text" class="input-small" id="<%= item.value.fieldId %> "' +
-                                                'name="<%= item.value.fieldName %>" value="<%= item.value.data %>"' +
-                                                '<%= item.value.disabled ? " disabled" : "" %> >' +
-                                            '<input type="hidden" id="<%= item.currency.fieldId %>" ' +
-                                                'name="<%= item.currency.fieldName %>" value="<%= item.currency.data %>"' +
-                                                '<%= item.currency.disabled ? " disabled" : "" %> >' +
-                                        '</td>' +
-                                        '<% if (index + 1 === currencies.length) { %>' +
-                                            '</tr>' +
-                                        '<% } %>' +
-                                    '<% } %>' +
-                                '<% }); %>' +
-                            '<% }); %>' +
-                        '</tbody>' +
-                    '</table>' +
+            currencyTemplate: _.template(
+                '<div class="currency-header">' +
+                    '<% _.each(currencies, function(currency) { %>' +
+                        '<span class="currency-label"><%= currency %></span>' +
+                    '<% }); %>' +
                 '</div>'
             ),
+
+            template: _.template(
+                '<% _.each(data, function(item) { %>' +
+                    '<% _.each(currencies, function(currency, index) { %>' +
+                        '<% if (item.label === currency) { %>' +
+                            '<% if (scopable && index === 0) { %>' +
+                                '<label class="control-label add-on">' +
+                                    '<% if (first) { %>' +
+                                        '<span class="field-toggle"><i class="<%= collapseIcon %>"></i></span>' +
+                                    '<% } %>' +
+                                    '<%= item.scope %>' +
+                                '</label>' +
+                                '<div class="scopable-input">' +
+                            '<% } %>' +
+                            '<input type="hidden" id="<%= item.currency.fieldId %>" ' +
+                                'name="<%= item.currency.fieldName %>" value="<%= item.currency.data %>"' +
+                                '<%= item.currency.disabled ? " disabled" : "" %> >' +
+                            '<input type="text" class="input-small" id="<%= item.value.fieldId %>"' +
+                                'name="<%= item.value.fieldName %>" value="<%= item.value.data %>"' +
+                                '<% if (!scopable && index === 0) { %>' +
+                                    ' style="border-top-left-radius:3px;border-bottom-left-radius:3px;"' +
+                                '<% } %>' +
+                                '<%= item.value.disabled ? " disabled" : "" %> >' +
+                            '<% if (scopable && index + 1 === currencies.length) { %>' +
+                                '</div>' +
+                            '<% } %>' +
+                        '<% } %>' +
+                    '<% }); %>' +
+                '<% }); %>'
+            ),
+
+            events: {
+                'click label span.field-toggle' : '_toggle'
+            },
 
             initialize: function () {
                 this._extractMetadata();
                 this.render();
+
+                if (this.scopable) {
+                    mediator.on('scopablefield:changescope', function (scope) {
+                        this._changeDefault(scope);
+                    }, this);
+
+                    mediator.on('scopablefield:collapse', function (id) {
+                        if (!id || this.$el.find('#' + id).length) {
+                            this._collapse();
+                        }
+                    }, this);
+
+                    mediator.on('scopablefield:expand', function (id) {
+                        if (!id || this.$el.find('#' + id).length) {
+                            this._expand();
+                        }
+                    }, this);
+                }
             },
 
             _extractMetadata: function () {
-                var data = [];
-                var scopable = false;
+                this.scopable = this.$el.hasClass('scopable');
+                var currencies = [];
+
                 this.$el.find(this.fieldSelector).each(function() {
                     var metadata = $(this).data('metadata');
-                    var scope = $(this).parent().parent().parent().data('scope');
-                    if (scope) {
-                        scopable = true;
-                        metadata.scope = scope;
+                    currencies.push(metadata.label);
+                });
+
+                this.currencies = _.uniq(currencies);
+            },
+
+            _renderTarget: function (index, target) {
+                var $target = $(target);
+                var data = [];
+
+                var extractScope = this.scopable;
+
+                $target.find(this.fieldSelector).each(function() {
+                    var metadata = $(this).data('metadata');
+                    if (extractScope) {
+                        metadata.scope = $(this).parent().parent().parent().data('scope');
                     }
                     data.push(metadata);
                 });
 
-                this.metadata = {
-                    currencies: _.uniq(_.pluck(data, 'label')),
-                    data:       data,
-                    scopable:   scopable
-                };
+                $target.empty();
+                $target.prepend(
+                    this.template({
+                        currencies:   this.currencies,
+                        data:         data,
+                        scopable:     this.scopable,
+                        first:        this.first,
+                        collapseIcon: this.collapseIcon
+                    })
+                );
+
+                if (this.first) {
+                    $target.parent().parent().addClass('first');
+                    this.first = false;
+                }
             },
 
             render: function () {
-                this.$el.find('>.control-group:not(:first)').remove();
-                this.$el.find('.control-group.hide').removeClass('hide');
+                this.$el.addClass('control-group').find('.control-group.hide').removeClass('hide');
 
-                var $target = this.$el.find('.controls').eq(0);
-                $target.find('.currency-field').remove();
-                $target.prepend(
-                    this.template({
-                        currencies: this.metadata.currencies,
-                        data:       this.metadata.data,
-                        scopable:   this.metadata.scopable
-                    })
-                );
+                var $label = this.$el.find('label.control-label:first').prependTo(this.$el);
+                this.$el.find('label.control-label:not(:first)').remove();
+
+                this.$el.find('div[data-scope]').each(function() {
+                    var $parent = $(this).parent();
+                    $(this).insertBefore($parent);
+                    $parent.remove();
+                });
+
+                if (this.scopable) {
+                    this.$el.find('div.controls').addClass('input-prepend');
+                }
+
+                var $header = $(this.currencyTemplate({
+                    currencies: this.currencies,
+                    scopable:   this.scopable
+                }));
+                $header.insertAfter($label);
+                this.$el.find('.icons-container:first').insertAfter($header);
+
+                var $targets = this.$el.find('div.controls');
+
+                $targets.each(this._renderTarget.bind(this));
+
+                if (this.scopable) {
+                    this._collapse();
+                    mediator.trigger('scopablefield:rendered', this.$el);
+                }
+
+                return this;
+            },
+
+            _expand: function () {
+                if (!this.expanded) {
+                    this.expanded = true;
+
+                    this.$el.find('div[data-scope]').removeClass('hide');
+                    this.$el.find('.field-toggle i').toggleClass(this.expandIcon + ' ' + this.collapseIcon);
+                    this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
+                }
+
+                return this;
+            },
+
+            _collapse: function () {
+                if (this.expanded) {
+                    this.expanded = false;
+
+                    this.$el.find('div[data-scope]:not(:first)').addClass('hide');
+                    this.$el.find('.field-toggle i').toggleClass(this.expandIcon + ' ' + this.collapseIcon);
+                    this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
+                }
+
+                return this;
+            },
+
+            _toggle: function () {
+                return this.expanded ? this._collapse() : this._expand();
+            },
+
+            _changeDefault: function (scope) {
+                var $fields = this.$el.find('>div[data-scope]');
+                this.$el.find('.first').removeClass('first');
+                var $firstField = $fields.filter('[data-scope="'+ scope +'"]');
+
+                $firstField.addClass('first').insertBefore($fields.eq(0));
+                $fields.find('.field-toggle').prependTo($firstField.find('label.add-on'));
+
+                this._toggle();
+                this._toggle();
 
                 return this;
             }
