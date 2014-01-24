@@ -123,6 +123,20 @@ class FlexibleEntityRepository extends EntityRepository implements
     }
 
     /**
+     * Set flexible query builder
+     *
+     * @param FlexibleQueryBuilder $flexibleQB
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleQueryBuilder($flexibleQB)
+    {
+        $this->flexibleQB = $flexibleQB;
+
+        return $this;
+    }
+
+    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes
@@ -258,7 +272,16 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     protected function getFlexibleQueryBuilder($qb)
     {
-        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+        if (!$this->flexibleQB) {
+            throw new \Exception('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
     }
 
     /**

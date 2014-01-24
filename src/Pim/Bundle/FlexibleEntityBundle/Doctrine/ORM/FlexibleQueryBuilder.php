@@ -7,6 +7,8 @@ use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
+
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -16,7 +18,7 @@ use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleQueryBuilder
+class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
 {
     /**
      * QueryBuilder
@@ -43,17 +45,38 @@ class FlexibleQueryBuilder
     protected $aliasCounter = 1;
 
     /**
-     * Constructor
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param string       $scope
+     * Filters
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    protected $attributeTypeFilters;
+
+    /**
+     * Sorters
+     */
+    protected $attributeTypeSorters;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->attributeTypeFilters = array();
+        $this->attributeTypeSorters = array();
     }
+
+    /**
+     * Get query builder
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return FlexibleQueryBuilder
+     */
+    public function setQueryBuilder(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+
+        return $this;
+    }
+
 
     /**
      * Get query builder
