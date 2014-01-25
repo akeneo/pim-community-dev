@@ -65,9 +65,6 @@ class BaseFilter implements FilterInterface
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 
-        // TODO ? check that operator is allowed
-        //$allowed = $this->getAllowedOperators($backendType);
-
         $backendField = sprintf('%s.%s', $joinAlias, $backendType);
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);

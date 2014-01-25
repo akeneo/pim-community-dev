@@ -7,13 +7,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -116,35 +109,73 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Get allowed operators for related backend type
+     * Add an attribute to filter
      *
-     * @param string $backendType
+     * @param AbstractAttribute $attribute the attribute
+     * @param string|array      $operator  the used operator
+     * @param string|array      $value     the value(s) to filter
      *
-     * @throws FlexibleQueryException
-     *
-     * @return multitype:string
+     * @return QueryBuilder This QueryBuilder instance.
      */
-    protected function getAllowedOperators($backendType)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $typeToOperator = array(
-            AbstractAttributeType::BACKEND_TYPE_DATE     => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_DATETIME => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_DECIMAL  => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_INTEGER  => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_METRIC   => array('=', '<', '<=', '>', '>='),
-            AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => array('='),
-            AbstractAttributeType::BACKEND_TYPE_OPTION   => array('IN', 'NOT IN'),
-            AbstractAttributeType::BACKEND_TYPE_OPTIONS  => array('IN', 'NOT IN'),
-            AbstractAttributeType::BACKEND_TYPE_TEXT     => array('=', 'NOT LIKE', 'LIKE'),
-            AbstractAttributeType::BACKEND_TYPE_VARCHAR  => array('=', 'NOT LIKE', 'LIKE'),
-            'prices'                                     => array('=', '<', '<=', '>', '>='),
-        );
-
-        if (!isset($typeToOperator[$backendType])) {
-            throw new FlexibleQueryException('backend type '.$backendType.' is unknown');
+        $attributeType = $attribute->getAttributeType();
+        $allowed = $this->getAllowedOperators($attribute);
+        $operators = is_array($operator) ? $operator : array($operator);
+        foreach ($operators as $key) {
+            if (!in_array($key, $allowed)) {
+                throw new FlexibleQueryException(
+                    sprintf('%s is not allowed for type %s, use %s', $key, $attributeType, implode(', ', $allowed))
+                );
+            }
         }
 
-        return $typeToOperator[$backendType];
+        $customFilters = [
+            'pim_catalog_multiselect'      => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_simpleselect'     => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_metric'           => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter',
+            'pim_catalog_price_collection' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter'
+        ];
+
+        if (isset($customFilters[$attributeType])) {
+            $filterClass = $customFilters[$attributeType];
+        } else {
+            $filterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter';
+        }
+
+        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter->add($attribute, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Sort by attribute value
+     *
+     * @param AbstractAttribute $attribute the attribute to sort on
+     * @param string            $direction the direction to use
+     *
+     * @return QueryBuilder This QueryBuilder instance.
+     */
+    public function addAttributeOrderBy(AbstractAttribute $attribute, $direction)
+    {
+        $attributeType = $attribute->getAttributeType();
+        $customSorters = [
+            'pim_catalog_multiselect'  => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_simpleselect' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_metric'       => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter'
+        ];
+
+        if (isset($customSorters[$attributeType])) {
+            $sorterClass = $customSorters[$attributeType];
+        } else {
+            $sorterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter';
+        }
+
+        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter->add($attribute, $direction);
+
+        return $this;
     }
 
     /**
@@ -167,66 +198,36 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Add an attribute to filter
+     * Get allowed operators for related attribute
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
+     * @param AbstractAttribute $attribute
      *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @throws FlexibleQueryException
+     *
+     * @return array
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    protected function getAllowedOperators($attribute)
     {
-        $backendType = $attribute->getBackendType();
-        $allowed = $this->getAllowedOperators($backendType);
+        $operators = [
+            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE'],
+            'pim_catalog_text'             => ['=', 'NOT LIKE', 'LIKE'],
+            'pim_catalog_textarea'         => ['=', 'NOT LIKE', 'LIKE'],
+            'pim_catalog_simpleselect'     => ['IN', 'NOT IN'],
+            'pim_catalog_multiselect'      => ['IN', 'NOT IN'],
+            'pim_catalog_number'           => ['=', '<', '<=', '>', '>='],
+            'pim_catalog_boolean'          => ['='],
+            'pim_catalog_date'             => ['=', '<', '<=', '>', '>='],
+            'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>='],
+            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=']
+        ];
 
-        $operators = is_array($operator) ? $operator : array($operator);
-        foreach ($operators as $key) {
-            if (!in_array($key, $allowed)) {
-                throw new FlexibleQueryException(
-                    sprintf('%s is not allowed for type %s, use %s', $key, $backendType, implode(', ', $allowed))
-                );
-            }
-        }
-
-        $options = ['pim_catalog_multiselect', 'pim_catalog_simpleselect'];
         $attributeType = $attribute->getAttributeType();
-        if (isset($options[$attributeType])) {
-            $filter = new EntityFilter($this->qb, $this->locale, $this->scope);
-
-        } elseif ($attributeType === 'pim_catalog_price_collection') {
-            $filter = new PriceFilter($this->qb, $this->locale, $this->scope);
-
-        } elseif ($attributeType === 'pim_catalog_metric') {
-            $filter = new MetricFilter($this->qb, $this->locale, $this->scope);
-
-        } else {
-            $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
-        }
-        $filter->add($attribute, $operator, $value);
-
-        return $this;
-    }
-
-    /**
-     * Sort by attribute value
-     *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
-     */
-    public function addAttributeOrderBy(AbstractAttribute $attribute, $direction)
-    {
-        $backendType = $attribute->getBackendType();
-
-        if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-            $sorter = new EntitySorter($this->qb, $this->locale, $this->scope);
-        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
-            $sorter = new MetricSorter($this->qb, $this->locale, $this->scope);
-        } else {
-            $sorter = new BaseSorter($this->qb, $this->locale, $this->scope);
+        if (!isset($operators[$attributeType])) {
+            throw new \LogicalException(
+                sprintf('Attribute type %s is not configured for attribute %s', $attributeType, $attribute->getCode())
+            );
         }
 
-        $sorter->add($attribute, $direction);
+        return $operators[$attributeType];
     }
 }
