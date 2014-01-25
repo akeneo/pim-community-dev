@@ -96,6 +96,8 @@ class BaseFilter implements FilterInterface
     }
 
     /**
+     * TODO : should become protected
+     *
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name
@@ -105,7 +107,7 @@ class BaseFilter implements FilterInterface
      * @return string
      * @throws FlexibleQueryException
      */
-    protected function prepareCriteriaCondition($field, $operator, $value)
+    public function prepareCriteriaCondition($field, $operator, $value)
     {
         if (is_array($operator)) {
             return $this->prepareMultiCriteriaCondition($field, $operator, $value);
