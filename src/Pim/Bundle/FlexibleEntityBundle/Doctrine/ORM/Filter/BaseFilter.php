@@ -26,6 +26,14 @@ class BaseFilter implements FilterInterface
     protected $qb;
 
     /**
+     * TODO : we must use same instance of Filter to ensure the increment
+     *
+     * Alias counter, to avoid duplicate alias name
+     * @return integer
+     */
+    protected $aliasCounter = 1;
+
+    /**
      * Instanciate a filter
      *
      * @param QueryBuilder $qb
@@ -47,7 +55,7 @@ class BaseFilter implements FilterInterface
         //$allowed = $this->getAllowedOperators($backendType);
 
         $backendField = sprintf('%s.%s', $joinAlias, $backendType);
-        $condition = $this->getJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin(
             $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
@@ -67,7 +75,7 @@ class BaseFilter implements FilterInterface
      *
      * @return string
      */
-    protected function getJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 

@@ -9,6 +9,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -306,8 +307,14 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 
         if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION
-            || $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC
+            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
+
+            $filter = new EntityFilter($this->qb);
+            $filter->add($attribute, $operator, $value);
+
+
+        } elseif (
+            $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC
             || $backendType === 'prices') {
 
             // inner join to value
@@ -344,19 +351,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             }
 
             $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
-
-        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_ENTITY) {
-
-            // inner join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $rootAlias = $this->qb->getRootAliases();
-            $this->qb->innerJoin($rootAlias[0] .'.'. $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition);
-
-            // then join to linked entity with filter on id
-            $joinAliasOpt = 'filterentity'.$attribute->getCode().$this->aliasCounter;
-            $backendField = sprintf('%s.id', $joinAliasEntity);
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias .'.'. $backendType, $joinAliasEntity, 'WITH', $condition);
 
         } else {
             $filter = new BaseFilter($this->qb);
