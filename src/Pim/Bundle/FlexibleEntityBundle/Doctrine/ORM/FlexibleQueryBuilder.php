@@ -11,6 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -222,8 +223,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             }
         }
 
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
-
         if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
             || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
 
@@ -240,31 +239,8 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         } elseif (
           $backendType === 'prices') {
 
-            // inner join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-
-            if ($backendType === 'prices') {
-                $joinAliasOpt = 'filterP'.$attribute->getCode().$this->aliasCounter;
-
-                list($value, $currency) = explode(' ', $value);
-
-                $currencyField = sprintf('%s.%s', $joinAliasOpt, 'currency');
-                $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $currency);
-
-                $valueField = sprintf('%s.%s', $joinAliasOpt, 'data');
-                $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value);
-
-                $condition = sprintf('(%s AND %s)', $currencyCondition, $valueCondition);
-
-            } 
-
-            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+            $filter = new PriceFilter($this->qb);
+            $filter->add($attribute, $operator, $value);
 
         } else {
             $filter = new BaseFilter($this->qb);
