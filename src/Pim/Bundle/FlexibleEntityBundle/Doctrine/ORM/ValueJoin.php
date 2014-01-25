@@ -77,5 +77,4 @@ class ValueJoin
 
         return $condition;
     }
-
 }
