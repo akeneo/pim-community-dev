@@ -70,7 +70,6 @@ class BaseSorter implements SorterInterface
 
         // Reapply previous join after the orderBy related join
         $this->applyJoins($joinsSet);
-
     }
 
     /**
