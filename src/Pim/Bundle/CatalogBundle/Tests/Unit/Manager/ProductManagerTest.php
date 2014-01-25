@@ -100,7 +100,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductManager($mediaManager = null, $objectManager = null)
     {
-        $flexibleRepository = $this->getEntityRepositoryMock();
+        $flexibleRepository = $this->getProductRepositoryMock();
 
         return new ProductManager(
             'Pim\Bundle\CatalogBundle\Model\Product',
@@ -122,7 +122,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $this->getEventDispatcherInterfaceMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
             $this->getCompletenessManagerMock(),
-            $this->getProductBuilderMock()
+            $this->getProductBuilderMock(),
+            $flexibleRepository
         );
     }
 
@@ -394,6 +395,17 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         return $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getProductRepositoryMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository')
             ->disableOriginalConstructor()
             ->getMock();
     }
