@@ -13,6 +13,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -281,19 +282,8 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
 
         } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
 
-            // join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-
-            $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode().$this->aliasCounter;
-            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
-
-            $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
+            $sorter = new MetricSorter($this->qb);
+            $sorter->add($attribute, $direction);
 
         } else {
 
