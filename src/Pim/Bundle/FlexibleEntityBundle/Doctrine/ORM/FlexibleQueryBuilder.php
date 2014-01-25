@@ -10,6 +10,7 @@ use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -191,94 +192,11 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @return string
      * @throws FlexibleQueryException
      */
-    protected function prepareCriteriaCondition($field, $operator, $value)
+    public function prepareCriteriaCondition($field, $operator, $value)
     {
-        if (is_array($operator)) {
-            return $this->prepareMultiCriteriaCondition($field, $operator, $value);
+        $filter = new BaseFilter($this->qb);
 
-        } else {
-            return $this->prepareSingleCriteriaCondition($field, $operator, $value);
-        }
-    }
-
-    /**
-     * Prepare multi criteria condition with field, operator and value
-     *
-     * @param array $field    the backend field name
-     * @param array $operator the operator used to filter
-     * @param array $value    the value(s) to filter
-     *
-     * @throws FlexibleQueryException
-     *
-     * @return string
-     */
-    protected function prepareMultiCriteriaCondition($field, $operator, $value)
-    {
-        if (!is_array($value)) {
-            throw new FlexibleQueryException('Values must be array');
-        }
-
-        if (!is_array($field)) {
-            $fieldArray = array();
-            foreach (array_keys($operator) as $key) {
-                $fieldArray[$key] = $field;
-            }
-            $field = $fieldArray;
-        }
-
-        if (array_diff(array_keys($field), array_keys($operator))
-            || array_diff(array_keys($field), array_keys($value))
-        ) {
-            throw new FlexibleQueryException('Field, operator and value arrays must have the same keys');
-        }
-
-        $conditions = array();
-        foreach ($field as $key => $fieldName) {
-            $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
-        }
-
-        return '(' . implode(' OR ', $conditions) . ')';
-    }
-
-    /**
-     * Prepare single criteria condition with field, operator and value
-     *
-     * @param string $field    the backend field name
-     * @param string $operator the operator used to filter
-     * @param string $value    the value(s) to filter
-     *
-     * @throws FlexibleQueryException
-     *
-     * @return string
-     */
-    protected function prepareSingleCriteriaCondition($field, $operator, $value)
-    {
-        $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
-        }
-
-        $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field);
-        }
-
-        $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field, $value)->__toString();
-        }
-
-        if ($operator == 'NOT LIKE') {
-            return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
-        }
-
-        throw new FlexibleQueryException('operator '.$operator.' is not supported');
+        return $filter->prepareCriteriaCondition($field, $operator, $value);
     }
 
     /**
@@ -312,10 +230,15 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             $filter = new EntityFilter($this->qb);
             $filter->add($attribute, $operator, $value);
 
+        } elseif (
+            $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC)
+        {
+            $filter = new MetricFilter($this->qb);
+            $filter->add($attribute, $operator, $value);
+
 
         } elseif (
-            $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC
-            || $backendType === 'prices') {
+          $backendType === 'prices') {
 
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -339,16 +262,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
 
                 $condition = sprintf('(%s AND %s)', $currencyCondition, $valueCondition);
 
-            } else {
-                if ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
-                    $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
-                    $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-                } else {
-                    $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-                    $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-                }
-                $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            }
+            } 
 
             $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
