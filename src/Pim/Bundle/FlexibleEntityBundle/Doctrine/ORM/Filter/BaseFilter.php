@@ -111,6 +111,7 @@ class BaseFilter implements FilterInterface
     protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
     {
         $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+
         return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 

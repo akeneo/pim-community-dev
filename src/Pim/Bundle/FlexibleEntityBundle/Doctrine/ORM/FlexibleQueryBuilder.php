@@ -4,7 +4,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 
