@@ -26,6 +26,18 @@ class BaseSorter implements SorterInterface
     protected $qb;
 
     /**
+     * Locale code
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * Scope code
+     * @var string
+     */
+    protected $scope;
+
+    /**
      * TODO : we must use same instance of Filter to ensure the increment
      *
      * Alias counter, to avoid duplicate alias name
@@ -34,13 +46,17 @@ class BaseSorter implements SorterInterface
     protected $aliasCounter = 1;
 
     /**
-     * Instanciate a filter
+     * Instanciate a sorter
      *
      * @param QueryBuilder $qb
+     * @param string       $locale
+     * @param scope        $scope
      */
-    public function __construct(QueryBuilder $qb)
+    public function __construct(QueryBuilder $qb, $locale, $scope)
     {
-        $this->qb = $qb;
+        $this->qb     = $qb;
+        $this->locale = $locale;
+        $this->scope  = $scope;
     }
 
     /**
@@ -73,7 +89,7 @@ class BaseSorter implements SorterInterface
     }
 
     /**
-     * TODO : move this method in another object cause used by both sorter and filter
+     * TODO : mvoe in other object cause also used by filter
      *
      * Prepare join to attribute condition with current locale and scope criterias
      *
@@ -89,16 +105,16 @@ class BaseSorter implements SorterInterface
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
         if ($attribute->isTranslatable()) {
-            if ($this->getLocale() === null) {
+            if ($this->locale === null) {
                 throw new FlexibleQueryException('Locale must be configured');
             }
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->getLocale());
+            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->locale);
         }
         if ($attribute->isScopable()) {
-            if ($this->getScope() === null) {
+            if ($this->scope === null) {
                 throw new FlexibleQueryException('Scope must be configured');
             }
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->getScope());
+            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->scope);
         }
 
         return $condition;

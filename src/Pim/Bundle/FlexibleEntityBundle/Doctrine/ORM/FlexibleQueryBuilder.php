@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
@@ -13,6 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter;
 
 /**
@@ -44,12 +44,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     protected $scope;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Get query builder
      *
      * @param QueryBuilder $qb
@@ -59,7 +53,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     public function setQueryBuilder(QueryBuilder $qb)
     {
         $this->qb = $qb;
-        $this->aliasCounter = 1;
 
         return $this;
     }
@@ -121,36 +114,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         $this->scope = $code;
 
         return $this;
-    }
-
-    /**
-     * Prepare join to attribute condition with current locale and scope criterias
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
-     *
-     * @throws FlexibleQueryException
-     *
-     * @return string
-     */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
-    {
-        $condition = $joinAlias.'.attribute = '.$attribute->getId();
-
-        if ($attribute->isTranslatable()) {
-            if ($this->getLocale() === null) {
-                throw new FlexibleQueryException('Locale must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->getLocale());
-        }
-        if ($attribute->isScopable()) {
-            if ($this->getScope() === null) {
-                throw new FlexibleQueryException('Scope must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->getScope());
-        }
-
-        return $condition;
     }
 
     /**
@@ -228,16 +191,16 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         $options = ['pim_catalog_multiselect', 'pim_catalog_simpleselect'];
         $attributeType = $attribute->getAttributeType();
         if (isset($options[$attributeType])) {
-            $filter = new EntityFilter($this->qb);
+            $filter = new EntityFilter($this->qb, $this->locale, $this->scope);
 
         } elseif ($attributeType === 'pim_catalog_price_collection') {
-            $filter = new PriceFilter($this->qb);
+            $filter = new PriceFilter($this->qb, $this->locale, $this->scope);
 
         } elseif ($attributeType === 'pim_catalog_metric') {
-            $filter = new MetricFilter($this->qb);
+            $filter = new MetricFilter($this->qb, $this->locale, $this->scope);
 
         } else {
-            $filter = new BaseFilter($this->qb);
+            $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
         }
         $filter->add($attribute, $operator, $value);
 
@@ -252,73 +215,17 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      */
     public function addAttributeOrderBy(AbstractAttribute $attribute, $direction)
     {
-        $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
         $backendType = $attribute->getBackendType();
 
         if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
             || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-
-            // join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-            $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-
-            // then to option and option value to sort on
-            $joinAliasOpt = $aliasPrefix.'O'.$attribute->getCode().$this->aliasCounter;
-            $condition    = $joinAliasOpt.".attribute = ".$attribute->getId();
-            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
-
-            $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode().$this->aliasCounter;
-            $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->getLocale());
-            $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
-
-            $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
-            $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
-
+            $sorter = new EntitySorter($this->qb, $this->locale, $this->scope);
         } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
-
-            $sorter = new MetricSorter($this->qb);
-            $sorter->add($attribute, $direction);
-
+            $sorter = new MetricSorter($this->qb, $this->locale, $this->scope);
         } else {
-
-            $sorter = new BaseSorter($this->qb);
-            $sorter->add($attribute, $direction);
+            $sorter = new BaseSorter($this->qb, $this->locale, $this->scope);
         }
-    }
 
-    /**
-     * Reapply joins from a set of joins got from getDQLPart('join')
-     *
-     * @param array $joinsSet
-     */
-    protected function applyJoins($joinsSet)
-    {
-        foreach ($joinsSet as $joins) {
-            foreach ($joins as $join) {
-                if ($join->getJoinType() === Join::LEFT_JOIN) {
-                    $this->qb->leftJoin(
-                        $join->getJoin(),
-                        $join->getAlias(),
-                        $join->getConditionType(),
-                        $join->getCondition(),
-                        $join->getIndexBy()
-                    );
-                } else {
-                    $this->qb->join(
-                        $join->getJoin(),
-                        $join->getAlias(),
-                        $join->getConditionType(),
-                        $join->getCondition(),
-                        $join->getIndexBy()
-                    );
-                }
-            }
-        }
+        $sorter->add($attribute, $direction);
     }
 }
