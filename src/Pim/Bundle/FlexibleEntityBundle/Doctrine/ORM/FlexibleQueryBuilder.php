@@ -12,6 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -295,25 +296,9 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
 
         } else {
-            // join to value and sort on
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
 
-            // Remove current join in order to put the orderBy related join
-            // at first place in the join queue for performances reasons
-            $joinsSet = $this->qb->getDQLPart('join');
-            $this->qb->resetDQLPart('join');
-
-            $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-            $this->qb->addOrderBy($joinAlias.'.'.$backendType, $direction);
-
-            // Reapply previous join after the orderBy related join
-            $this->applyJoins($joinsSet);
-
+            $sorter = new BaseSorter($this->qb);
+            $sorter->add($attribute, $direction);
         }
     }
 
