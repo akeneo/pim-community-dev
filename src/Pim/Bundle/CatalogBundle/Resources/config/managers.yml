@@ -4,7 +4,6 @@ services:
         class: %pim_catalog.manager.product.class%
         arguments:
             - %pim_catalog.entity.product.class%
-            - %pim_flexibleentity.flexible_config%
             - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
