@@ -161,7 +161,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
-        $filter = new BaseFilter($this->qb);
+        $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
 
         return $filter->prepareCriteriaCondition($field, $operator, $value);
     }

@@ -3,10 +3,10 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FilterInterface;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\ValueJoin;
 
 /**
  * Base filter
@@ -69,7 +69,8 @@ class BaseFilter implements FilterInterface
         //$allowed = $this->getAllowedOperators($backendType);
 
         $backendField = sprintf('%s.%s', $joinAlias, $backendType);
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+        $condition = $joinHelper->prepareCondition($attribute, $joinAlias);
         $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin(
             $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
@@ -77,36 +78,6 @@ class BaseFilter implements FilterInterface
             'WITH',
             $condition
         );
-    }
-
-    /**
-     * Prepare join to attribute condition with current locale and scope criterias
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
-     *
-     * @throws FlexibleQueryException
-     *
-     * @return string
-     */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
-    {
-        $condition = $joinAlias.'.attribute = '.$attribute->getId();
-
-        if ($attribute->isTranslatable()) {
-            if ($this->locale === null) {
-                throw new FlexibleQueryException('Locale must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->locale);
-        }
-        if ($attribute->isScopable()) {
-            if ($this->scope === null) {
-                throw new FlexibleQueryException('Scope must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->scope);
-        }
-
-        return $condition;
     }
 
     /**
