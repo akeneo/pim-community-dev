@@ -67,9 +67,7 @@ class BaseSorter implements SorterInterface
         $backendType = $attribute->getBackendType();
 
         // join to value and sort on
-        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
-        $condition = $joinHelper->prepareCondition($attribute, $joinAlias);
-
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         // Remove current join in order to put the orderBy related join
         // at first place in the join queue for performances reasons
         $joinsSet = $this->qb->getDQLPart('join');
@@ -85,6 +83,22 @@ class BaseSorter implements SorterInterface
 
         // Reapply previous join after the orderBy related join
         $this->applyJoins($joinsSet);
+    }
+
+    /**
+     * Prepare join to attribute condition with current locale and scope criterias
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string            $joinAlias the value join alias
+     *
+     * @throws FlexibleQueryException
+     *
+     * @return string
+     */
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    {
+        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+        return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 
     /**

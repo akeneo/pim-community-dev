@@ -69,8 +69,7 @@ class BaseFilter implements FilterInterface
         //$allowed = $this->getAllowedOperators($backendType);
 
         $backendField = sprintf('%s.%s', $joinAlias, $backendType);
-        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
-        $condition = $joinHelper->prepareCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin(
             $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
@@ -100,6 +99,22 @@ class BaseFilter implements FilterInterface
         } else {
             return $this->prepareSingleCriteriaCondition($field, $operator, $value);
         }
+    }
+
+    /**
+     * Prepare join to attribute condition with current locale and scope criterias
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string            $joinAlias the value join alias
+     *
+     * @throws FlexibleQueryException
+     *
+     * @return string
+     */
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    {
+        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+        return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 
     /**
