@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
