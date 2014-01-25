@@ -72,6 +72,8 @@ class BaseFilter implements FilterInterface
             'WITH',
             $condition
         );
+
+        return $this;
     }
 
     /**

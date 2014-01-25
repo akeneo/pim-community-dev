@@ -35,5 +35,7 @@ class MetricFilter extends BaseFilter
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+
+        return $this;
     }
 }

@@ -19,6 +19,8 @@ interface FilterInterface
      * @param AbstractAttribute $attribute the attribute
      * @param string|array      $operator  the used operator
      * @param string|array      $value     the value(s) to filter
+     *
+     * @return FilterInterface
      */
     public function add(AbstractAttribute $attribute, $operator, $value);
 }

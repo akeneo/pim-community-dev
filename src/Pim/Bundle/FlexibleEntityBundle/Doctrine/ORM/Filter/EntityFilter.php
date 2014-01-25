@@ -36,5 +36,7 @@ class EntityFilter extends BaseFilter
         $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
 
         $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+
+        return $this;
     }
 }

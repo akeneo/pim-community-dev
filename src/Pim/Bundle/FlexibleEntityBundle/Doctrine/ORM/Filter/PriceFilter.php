@@ -43,5 +43,7 @@ class PriceFilter extends BaseFilter
 
         $condition = sprintf('(%s AND %s)', $currencyCondition, $valueCondition);
         $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+
+        return $this;
     }
 }

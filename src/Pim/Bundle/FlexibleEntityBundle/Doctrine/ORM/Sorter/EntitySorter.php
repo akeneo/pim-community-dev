@@ -43,5 +43,7 @@ class EntitySorter extends BaseSorter
 
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
         $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
+
+        return $this;
     }
 }

@@ -36,5 +36,7 @@ class MetricSorter extends BaseSorter
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
+
+        return $this;
     }
 }

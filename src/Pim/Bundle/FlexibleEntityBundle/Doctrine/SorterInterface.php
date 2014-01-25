@@ -18,6 +18,8 @@ interface SorterInterface
      *
      * @param AbstractAttribute $attribute the attribute to sort on
      * @param string            $direction the direction to use
+     *
+     * @return SorterInterface
      */
     public function add(AbstractAttribute $attribute, $direction);
 }
