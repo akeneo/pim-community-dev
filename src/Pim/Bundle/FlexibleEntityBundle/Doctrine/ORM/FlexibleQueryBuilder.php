@@ -223,29 +223,21 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             }
         }
 
-        if ($backendType === AbstractAttributeType::BACKEND_TYPE_OPTIONS
-            || $backendType === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-
+        $options = ['pim_catalog_multiselect', 'pim_catalog_simpleselect'];
+        $attributeType = $attribute->getAttributeType();
+        if (isset($options[$attributeType])) {
             $filter = new EntityFilter($this->qb);
-            $filter->add($attribute, $operator, $value);
 
-        } elseif (
-            $backendType === AbstractAttributeType::BACKEND_TYPE_METRIC)
-        {
-            $filter = new MetricFilter($this->qb);
-            $filter->add($attribute, $operator, $value);
-
-
-        } elseif (
-          $backendType === 'prices') {
-
+        } elseif ($attributeType === 'pim_catalog_price_collection') {
             $filter = new PriceFilter($this->qb);
-            $filter->add($attribute, $operator, $value);
+
+        } elseif ($attributeType === 'pim_catalog_metric') {
+            $filter = new MetricFilter($this->qb);
 
         } else {
             $filter = new BaseFilter($this->qb);
-            $filter->add($attribute, $operator, $value);
         }
+        $filter->add($attribute, $operator, $value);
 
         return $this;
     }
