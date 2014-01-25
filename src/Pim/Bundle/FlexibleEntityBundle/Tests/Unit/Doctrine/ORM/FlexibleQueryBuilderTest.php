@@ -5,8 +5,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 /**
  * Test related class
