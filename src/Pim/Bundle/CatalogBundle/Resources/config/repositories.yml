@@ -8,6 +8,8 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
+        calls:
+            - [setFlexibleQueryBuilder, [@pim_flexibleentity.doctrine.orm.flexible_query_builder]]
 
     pim_catalog.repository.orm.locale:
         class: %pim_catalog.repository.orm.product.class%

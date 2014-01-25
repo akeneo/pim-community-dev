@@ -123,6 +123,20 @@ class FlexibleEntityRepository extends EntityRepository implements
     }
 
     /**
+     * Set flexible query builder
+     *
+     * @param FlexibleQueryBuilder $flexibleQB
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleQueryBuilder($flexibleQB)
+    {
+        $this->flexibleQB = $flexibleQB;
+
+        return $this;
+    }
+
+    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes
@@ -187,7 +201,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
         } else {
             $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
         }
@@ -258,7 +272,16 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     protected function getFlexibleQueryBuilder($qb)
     {
-        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
     }
 
     /**
