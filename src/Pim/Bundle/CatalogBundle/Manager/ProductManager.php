@@ -66,7 +66,7 @@ class ProductManager extends FlexibleManager
      * @param MediaManager               $mediaManager        Media manager
      * @param CompletenessManager        $completenessManager Completeness manager
      * @param ProductBuilder             $builder             Product builder
-     * @param ProductRepositoryInterface $repo
+     * @param ProductRepositoryInterface $repo                Product repository
      */
     public function __construct(
         $flexibleName,
