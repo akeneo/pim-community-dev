@@ -36,8 +36,6 @@ class BaseSorter implements SorterInterface
     protected $scope;
 
     /**
-     * TODO : we must use same instance of Filter to ensure the increment
-     *
      * Alias counter, to avoid duplicate alias name
      * @return integer
      */
