@@ -3,8 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible

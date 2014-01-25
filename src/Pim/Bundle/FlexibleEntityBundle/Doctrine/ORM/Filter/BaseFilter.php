@@ -5,13 +5,11 @@ namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\FilterInterface;
 
 /**
- * Base filter 
+ * Base filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

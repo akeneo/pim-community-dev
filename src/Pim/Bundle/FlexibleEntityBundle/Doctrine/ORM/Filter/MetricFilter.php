@@ -2,13 +2,8 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FilterInterface;
 
 /**
  * Metric filter

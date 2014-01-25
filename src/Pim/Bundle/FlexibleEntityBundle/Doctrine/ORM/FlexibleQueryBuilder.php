@@ -57,7 +57,6 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         return $this;
     }
 
-
     /**
      * Get query builder
      *
@@ -149,6 +148,8 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
+     * TODO : should not be public !
+     *
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name

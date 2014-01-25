@@ -5,13 +5,11 @@ namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\SorterInterface;
 
 /**
- * Base sorter 
+ * Base sorter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

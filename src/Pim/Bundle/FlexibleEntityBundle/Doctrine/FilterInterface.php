@@ -3,11 +3,9 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 
 /**
- * Filter interface 
+ * Filter interface
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
