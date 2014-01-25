@@ -157,7 +157,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function addAttributeOrderBy(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $attributeType = $attribute->getAttributeType();
         $customSorters = [

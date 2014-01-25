@@ -201,7 +201,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
         } else {
             $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
         }

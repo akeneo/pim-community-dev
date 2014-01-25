@@ -65,5 +65,5 @@ interface FlexibleQueryBuilderInterface
      *
      * @return FlexibleQueryBuilderInterface
      */
-    public function addAttributeOrderBy(AbstractAttribute $attribute, $direction);
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
 }
