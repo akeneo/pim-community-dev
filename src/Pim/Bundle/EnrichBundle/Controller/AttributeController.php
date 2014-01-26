@@ -72,8 +72,8 @@ class AttributeController extends AbstractDoctrineController
      * @var array
      */
     protected $choiceAttributeTypes = array(
-        'pim_enrich_simpleselect',
-        'pim_enrich_multiselect'
+        'pim_catalog_simpleselect',
+        'pim_catalog_multiselect'
     );
 
     /**
