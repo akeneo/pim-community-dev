@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -82,7 +82,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_category_list")
+     * @AclAncestor("pim_enrich_category_list")
      * @return array
      */
     public function listTreeAction(Request $request)
@@ -105,7 +105,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * Move a node
      * @param Request $request
      *
-     * @AclAncestor("pim_catalog_category_edit")
+     * @AclAncestor("pim_enrich_category_edit")
      * @return Response
      */
     public function moveNodeAction(Request $request)
@@ -134,7 +134,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_category_list")
+     * @AclAncestor("pim_enrich_category_list")
      * @return array
      */
     public function childrenAction(Request $request)
@@ -187,7 +187,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $parent
      *
-     * @AclAncestor("pim_catalog_category_create")
+     * @AclAncestor("pim_enrich_category_create")
      * @return array
      */
     public function createAction(Request $request, $parent = null)
@@ -214,7 +214,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
 
-                return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
+                return $this->redirectToRoute('pim_enrich_categorytree_edit', array('id' => $category->getId()));
             }
         }
 
@@ -232,7 +232,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request  $request
      * @param Category $category
      *
-     * @AclAncestor("pim_catalog_category_edit")
+     * @AclAncestor("pim_enrich_category_edit")
      * @return array
      */
     public function editAction(Request $request, Category $category)
@@ -264,7 +264,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param Category $category
      *
-     * @AclAncestor("pim_catalog_category_remove")
+     * @AclAncestor("pim_enrich_category_remove")
      * @return RedirectResponse
      */
     public function removeAction(Category $category)
@@ -281,7 +281,7 @@ class CategoryTreeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
+            return $this->redirectToRoute('pim_enrich_categorytree_create', $params);
         }
     }
 
