@@ -87,7 +87,7 @@ class CompletenessController
         );
 
         return $this->templating->renderResponse(
-            'PimCatalogBundle:Completeness:_completeness.html.twig',
+            'PimEnrichBundle:Completeness:_completeness.html.twig',
             array(
                 'product'           => $product,
                 'channels'          => $channels,
