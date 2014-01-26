@@ -163,7 +163,7 @@ services:
         public: false
         class: %pim_catalog.mass_edit_action.change_status.class%
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_catalog_product_change_state }
+            - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_enrich_product_change_state }
 
     pim_catalog.mass_edit_action.edit_common_attributes:
         public: false
@@ -173,7 +173,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: edit-common-attributes, acl: pim_catalog_product_edit }
+            - { name: pim_catalog.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
 
     pim_catalog.mass_edit_action.classify:
         public: false
@@ -182,7 +182,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: classify, acl: pim_catalog_product_categories_view }
+            - { name: pim_catalog.mass_edit_action, alias: classify, acl: pim_enrich_product_categories_view }
 
     pim_catalog.mass_edit_action.change_family:
         public: false
@@ -190,14 +190,14 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: change-family, acl: pim_catalog_product_change_family }
+            - { name: pim_catalog.mass_edit_action, alias: change-family, acl: pim_enrich_product_change_family }
 
     pim_catalog.mass_edit_action.add_to_groups:
         class: %pim_catalog.mass_edit_action.add_to_groups.class%
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_catalog_product_add_to_groups }
+            - { name: pim_catalog.mass_edit_action, alias: add-to-groups, acl: pim_enrich_product_add_to_groups }
 
     # Media management
     pim_catalog.imagine.local_dir_resolver:
