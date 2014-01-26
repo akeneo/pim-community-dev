@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -131,7 +131,7 @@ class FamilyController extends AbstractDoctrineController
      * List families
      *
      * @Template
-     * @AclAncestor("pim_catalog_family_index")
+     * @AclAncestor("pim_enrich_family_index")
      * @return Response
      */
     public function indexAction()
@@ -145,13 +145,13 @@ class FamilyController extends AbstractDoctrineController
      * Create a family
      *
      * @Template
-     * @AclAncestor("pim_catalog_family_create")
+     * @AclAncestor("pim_enrich_family_create")
      * @return array
      */
     public function createAction()
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_family_index');
+            return $this->redirectToRoute('pim_enrich_family_index');
         }
 
         $family = $this->factory->createFamily();
@@ -161,7 +161,7 @@ class FamilyController extends AbstractDoctrineController
 
             $response = array(
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_catalog_family_edit', array('id' => $family->getId()))
+                'url'    => $this->generateUrl('pim_enrich_family_edit', array('id' => $family->getId()))
             );
 
             return new Response(json_encode($response));
@@ -178,7 +178,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @Template
-     * @AclAncestor("pim_catalog_family_edit")
+     * @AclAncestor("pim_enrich_family_edit")
      * @return array
      */
     public function editAction(Family $family)
@@ -218,7 +218,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @AclAncestor("pim_catalog_family_remove")
+     * @AclAncestor("pim_enrich_family_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(Family $family)
@@ -229,7 +229,7 @@ class FamilyController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_family_index');
+            return $this->redirectToRoute('pim_enrich_family_index');
         }
     }
 
@@ -238,7 +238,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @AclAncestor("pim_catalog_family_add_attribute")
+     * @AclAncestor("pim_enrich_family_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Family $family)
@@ -259,7 +259,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.family.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+        return $this->redirectToRoute('pim_enrich_family_edit', array('id' => $family->getId()));
     }
 
     /**
@@ -268,7 +268,7 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $familyId
      * @param integer $attributeId
      *
-     * @AclAncestor("pim_catalog_family_remove_atribute")
+     * @AclAncestor("pim_enrich_family_remove_atribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws DeleteException
@@ -280,7 +280,7 @@ class FamilyController extends AbstractDoctrineController
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
-        } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        } elseif ($attribute->getAttributeType() === 'pim_enrich_identifier') {
             throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
@@ -291,7 +291,7 @@ class FamilyController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+            return $this->redirectToRoute('pim_enrich_family_edit', array('id' => $family->getId()));
         }
     }
 
