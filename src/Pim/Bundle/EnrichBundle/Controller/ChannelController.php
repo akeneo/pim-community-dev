@@ -110,7 +110,7 @@ class ChannelController extends AbstractDoctrineController
     /**
      * Create channel
      *
-     * @Template("PimCatalogBundle:Channel:edit.html.twig")
+     * @Template("PimEnrichBundle:Channel:edit.html.twig")
      * @AclAncestor("pim_enrich_channel_create")
      * @return array
      */
