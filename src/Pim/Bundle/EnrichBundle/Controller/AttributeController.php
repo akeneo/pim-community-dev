@@ -146,7 +146,7 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Create attribute
      *
-     * @Template("PimCatalogBundle:Attribute:form.html.twig")
+     * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_create")
      * @return array
      */
@@ -174,7 +174,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @Template("PimCatalogBundle:Attribute:form.html.twig")
+     * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
      * @return array
      */
@@ -202,7 +202,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Template("PimCatalogBundle:Attribute:_form_parameters.html.twig")
+     * @Template("PimEnrichBundle:Attribute:_form_parameters.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
      * @return array
      */
@@ -222,7 +222,7 @@ class AttributeController extends AbstractDoctrineController
 
         $data = array(
             'parameters' => $this->renderView(
-                'PimCatalogBundle:Attribute:_form_parameters.html.twig',
+                'PimEnrichBundle:Attribute:_form_parameters.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -230,7 +230,7 @@ class AttributeController extends AbstractDoctrineController
                 )
             ),
             'values' => $this->renderView(
-                'PimCatalogBundle:Attribute:_form_values.html.twig',
+                'PimEnrichBundle:Attribute:_form_values.html.twig',
                 array(
                     'form'            => $form,
                     'locales'         => $locales,
@@ -281,7 +281,7 @@ class AttributeController extends AbstractDoctrineController
      * @param integer $id
      * @param string  $dataLocale
      *
-     * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
+     * @Template("PimEnrichBundle:Attribute:form_options.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
      * @return Response
      */
