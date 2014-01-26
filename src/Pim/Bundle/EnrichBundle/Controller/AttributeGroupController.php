@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -93,7 +93,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_catalog_attribute_group_create")
+     * @AclAncestor("pim_enrich_attribute_group_create")
      * @return array
      */
     public function createAction()
@@ -103,7 +103,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.created');
 
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
         }
 
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
@@ -122,7 +122,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param AttributeGroup $group
      *
      * @Template
-     * @AclAncestor("pim_catalog_attribute_group_edit")
+     * @AclAncestor("pim_enrich_attribute_group_edit")
      * @return array
      */
     public function editAction(AttributeGroup $group)
@@ -132,7 +132,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
         }
 
         return array(
@@ -148,13 +148,13 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_catalog_attribute_group_sort")
+     * @AclAncestor("pim_enrich_attribute_group_sort")
      * @return Response
      */
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_attributegroup_create');
+            return $this->redirectToRoute('pim_enrich_attributegroup_create');
         }
 
         $data = $request->request->all();
@@ -181,7 +181,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request        $request
      * @param AttributeGroup $group
      *
-     * @AclAncestor("pim_catalog_attribute_group_remove")
+     * @AclAncestor("pim_enrich_attribute_group_remove")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request, AttributeGroup $group)
@@ -199,7 +199,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_attributegroup_create');
+            return $this->redirectToRoute('pim_enrich_attributegroup_create');
         }
     }
 
@@ -228,7 +228,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The group id to add attributes to
      *
-     * @AclAncestor("pim_catalog_attribute_group_add_attribute")
+     * @AclAncestor("pim_enrich_attribute_group_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
@@ -253,7 +253,7 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
     }
 
     /**
@@ -262,7 +262,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param integer $groupId
      * @param integer $attributeId
      *
-     * @AclAncestor("pim_catalog_attribute_group_remove_attribute")
+     * @AclAncestor("pim_enrich_attribute_group_remove_attribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($groupId, $attributeId)
@@ -282,7 +282,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
         }
     }
 
