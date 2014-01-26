@@ -76,14 +76,14 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
         $this->objectManager        = $manager;
         $this->eventDispatcher      = $eventDispatcher;
 
-        $entityMeta      = $this->objectManager->getClassMetadata($this->flexibleName);
-        $valueClass      = $entityMeta->getAssociationMappings()['values']['targetEntity'];
-        $valueMeta       = $this->objectManager->getClassMetadata($valueClass);
-        $attributeClass  = $valueMeta->getAssociationMappings()['attribute']['targetEntity'];
-        $attributeMeta   = $this->objectManager->getClassMetadata($attributeClass);
-        $optionClass     = $attributeMeta->getAssociationMappings()['options']['targetEntity'];
-        $optionMeta      = $this->objectManager->getClassMetadata($optionClass);
-        $optionValClass  = $optionMeta->getAssociationMappings()['optionValues']['targetEntity'];
+        $entityMeta     = $this->objectManager->getClassMetadata($this->flexibleName);
+        $valueClass     = $entityMeta->getAssociationMappings()['values']['targetEntity'];
+        $valueMeta      = $this->objectManager->getClassMetadata($valueClass);
+        $attributeClass = $valueMeta->getAssociationMappings()['attribute']['targetEntity'];
+        $attributeMeta  = $this->objectManager->getClassMetadata($attributeClass);
+        $optionClass    = $attributeMeta->getAssociationMappings()['options']['targetEntity'];
+        $optionMeta     = $this->objectManager->getClassMetadata($optionClass);
+        $optionValClass = $optionMeta->getAssociationMappings()['optionValues']['targetEntity'];
 
         $this->flexibleConfig = array(
             'flexible_class'               => $flexibleName,
@@ -93,7 +93,7 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
             'attribute_option_value_class' => $optionValClass
         );
 
-        $this->repository   = $manager->getRepository($this->flexibleName);
+        $this->repository = $manager->getRepository($this->flexibleName);
         $this->repository->setFlexibleConfig($this->flexibleConfig);
     }
 
