@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -106,7 +106,7 @@ class GroupController extends AbstractController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_index")
+     * @AclAncestor("pim_enrich_group_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -122,13 +122,13 @@ class GroupController extends AbstractController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_create")
+     * @AclAncestor("pim_enrich_group_create")
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_group_index');
+            return $this->redirectToRoute('pim_enrich_group_index');
         }
 
         $group = new Group();
@@ -137,7 +137,7 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.created');
 
             $url = $this->generateUrl(
-                'pim_catalog_group_edit',
+                'pim_enrich_group_edit',
                 array('id' => $group->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -156,7 +156,7 @@ class GroupController extends AbstractController
      * @param Group $group
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_edit")
+     * @AclAncestor("pim_enrich_group_edit")
      * @return array
      */
     public function editAction(Group $group)
@@ -176,7 +176,7 @@ class GroupController extends AbstractController
      * Remove a group
      * @param Group $group
      *
-     * @AclAncestor("pim_catalog_group_remove")
+     * @AclAncestor("pim_enrich_group_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(Group $group)
@@ -186,7 +186,7 @@ class GroupController extends AbstractController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_group_index');
+            return $this->redirectToRoute('pim_enrich_group_index');
         }
     }
 
@@ -197,7 +197,7 @@ class GroupController extends AbstractController
      *
      * @return array
      *
-     * @AclAncestor("pim_catalog_product_edit")
+     * @AclAncestor("pim_enrich_product_edit")
      * @Template("PimCatalogBundle:Group:_productList.html.twig")
      */
     public function productListAction(Group $group)
