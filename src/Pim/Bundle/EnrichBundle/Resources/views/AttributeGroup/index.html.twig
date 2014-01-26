@@ -7,7 +7,7 @@
     <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
             {% if resource_granted('pim_enrich_attribute_group_sort') %}
-                <form id="pim_enrich_attributegroup_sort" action="{{ path('pim_enrich_attributegroup_sort') }}" method="POST">
+                <form id="pim_catalog_attributegroup_sort" action="{{ path('pim_enrich_attributegroup_sort') }}" method="POST">
                     <ul id="entities-sortable">
                         {% for groupId, groupName in groups %}
                             <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
