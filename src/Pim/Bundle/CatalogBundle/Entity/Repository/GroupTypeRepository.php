@@ -21,7 +21,7 @@ class GroupTypeRepository extends ReferableEntityRepository
     }
 
     /**
-     * {0inheritdoc}
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {

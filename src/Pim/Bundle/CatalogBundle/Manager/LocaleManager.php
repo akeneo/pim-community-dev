@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 
@@ -36,7 +35,7 @@ class LocaleManager
     private $userLocales;
 
     /**
-     * @param ObjectManager            $objectManager   the storage manager
+     * @param LocaleRepository         $repository      the locale repository
      * @param SecurityContextInterface $securityContext the security context
      * @param SecurityFacade           $securityFacade  the Security Facade
      * @param string                   $defaultLocale   the default locale for the UI
