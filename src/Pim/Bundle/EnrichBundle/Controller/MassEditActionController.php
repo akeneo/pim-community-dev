@@ -163,7 +163,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
+            sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'       => $form->createView(),
                 'operator'   => $this->operator,
@@ -231,7 +231,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
+            sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'       => $form->createView(),
                 'operator'   => $this->operator,
