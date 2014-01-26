@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -96,7 +96,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_type_index")
+     * @AclAncestor("pim_enrich_association_type_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -112,13 +112,13 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_type_create")
+     * @AclAncestor("pim_enrich_association_type_create")
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_association_type_index');
+            return $this->redirectToRoute('pim_enrich_association_type_index');
         }
 
         $associationType = new AssociationType();
@@ -129,7 +129,7 @@ class AssociationTypeController extends AbstractDoctrineController
             $response = array(
                 'status' => 1,
                 'url' =>
-                    $this->generateUrl('pim_catalog_association_type_edit', array('id' => $associationType->getId()))
+                    $this->generateUrl('pim_enrich_association_type_edit', array('id' => $associationType->getId()))
             );
 
             return new Response(json_encode($response));
@@ -147,7 +147,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pim_catalog_association_type_edit")
+     * @AclAncestor("pim_enrich_association_type_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -157,7 +157,7 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
 
-            return $this->redirectToRoute('pim_catalog_association_type_edit', array('id' => $id));
+            return $this->redirectToRoute('pim_enrich_association_type_edit', array('id' => $id));
         }
 
         $usageCount = $this
@@ -175,7 +175,7 @@ class AssociationTypeController extends AbstractDoctrineController
      *
      * @param AssociationType $associationType
      *
-     * @AclAncestor("pim_catalog_association_type_remove")
+     * @AclAncestor("pim_enrich_association_type_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(AssociationType $associationType)
@@ -186,7 +186,7 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_association_type_index');
+            return $this->redirectToRoute('pim_enrich_association_type_index');
         }
     }
 }
