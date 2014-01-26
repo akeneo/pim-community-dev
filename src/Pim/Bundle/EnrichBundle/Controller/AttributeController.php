@@ -152,7 +152,7 @@ class AttributeController extends AbstractDoctrineController
      */
     public function createAction()
     {
-        $attribute = $this->attributeManager->createAttribute('pim_enrich_text');
+        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
 
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
