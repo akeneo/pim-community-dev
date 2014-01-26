@@ -16,7 +16,7 @@ define(
 
             getTreeUrl = function() {
                 return Routing.generate(
-                    'pim_catalog_categorytree_listtree',
+                    'pim_enrich_categorytree_listtree',
                     {
                         _format:        'json',
                         dataLocale:     dataLocale,
@@ -28,7 +28,7 @@ define(
 
             getChildrenUrl = function() {
                 return Routing.generate(
-                    'pim_catalog_categorytree_children',
+                    'pim_enrich_categorytree_children',
                     {
                         _format:    'json',
                         dataLocale: dataLocale
