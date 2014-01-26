@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      * @Template
-     * @AclAncestor("pim_catalog_group_index")
+     * @AclAncestor("pim_enrich_group_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -38,12 +38,12 @@ class VariantGroupController extends GroupController
      * {@inheritdoc}
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_create")
+     * @AclAncestor("pim_enrich_group_create")
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_variant_group_index');
+            return $this->redirectToRoute('pim_enrich_variant_group_index');
         }
 
         $groupType = $this->groupManager
@@ -57,7 +57,7 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.created');
 
             $url = $this->generateUrl(
-                'pim_catalog_variant_group_edit',
+                'pim_enrich_variant_group_edit',
                 array('id' => $group->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -73,7 +73,7 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_catalog_group_edit")
+     * @AclAncestor("pim_enrich_group_edit")
      * @Template
      */
     public function editAction(Group $group)
