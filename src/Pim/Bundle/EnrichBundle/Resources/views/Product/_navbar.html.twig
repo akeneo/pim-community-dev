@@ -1,0 +1,12 @@
+{% set form_tabs=['Attributes'] %}
+
+{% if resource_granted('pim_enrich_product_categories_view') %}
+    {% set form_tabs = form_tabs|merge(['Categories']) %}
+{% endif %}
+
+{% if resource_granted('pim_enrich_associations_view') %}
+    {% set form_tabs = form_tabs|merge(['Associations']) %}
+{% endif %}
+
+{% set form_tabs = form_tabs|merge(['Completeness', 'History']) %}
+{{ elements.form_navbar(form_tabs) }}

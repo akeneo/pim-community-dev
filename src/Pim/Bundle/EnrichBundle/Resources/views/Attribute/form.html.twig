@@ -1,0 +1,75 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { "%attribute.label%": form.vars.value.label } }) %}
+
+{% block content %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': form.vars.value.id ?
+            path('pim_enrich_attribute_edit', { id: form.vars.value.id }) :
+            path('pim_enrich_attribute_create'),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute'|trans })
+        }
+    }) }}
+
+        {% set title = form.vars.value.id ? 'attribute.edit'|trans ~ ' - ' ~ form.vars.value.label : 'attribute.create'|trans %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_enrich_attribute_index')) }}
+            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_enrich_identifier' %}
+                {{ elements.deleteLink(
+                    path('pim_enrich_attribute_remove', { id: form.vars.value.id }),
+                    'pim_enrich_attribute_remove',
+                    path('pim_enrich_attribute_index'),
+                    'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }),
+                    'flash.attribute.removed'|trans
+                ) }}
+            {% endif %}
+            {{ elements.submitBtn }}
+        {% endset %}
+
+        {% set left %}
+            {% if form.vars.value.id %}
+            <ul class="inline">
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+            </ul>
+            {% endif %}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
+
+        {% set tabs = form.vars.value.id ? ['Parameters', 'Values', 'History'] : ['Parameters', 'Values'] %}
+
+        {{ elements.form_navbar(tabs) }}
+
+        <div class="row-fluid tab-content">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="parameters">
+                {% include 'PimEnrichBundle:Attribute:_form_parameters.html.twig' with {'form': form} %}
+            </div>
+
+            <div class="tab-pane" id="values">
+                {% include 'PimEnrichBundle:Attribute:_form_values.html.twig' with {'form': form} %}
+            </div>
+
+            {% if form.vars.value.id %}
+                <div class="tab-pane" id="history">
+                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+                </div>
+            {% endif %}
+
+            {{ form_row(form.id) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+    {% include 'PimEnrichBundle:Attribute:_js-handler.html.twig' with measures %}
+{% endblock %}

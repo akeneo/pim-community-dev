@@ -1,0 +1,118 @@
+{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block formTitle %}
+    <div class="pull-left">
+        {{ form_widget(form.operation.locale) }}
+    </div>
+    <div class="pull-left buffer-small-left">
+        {{ form_widget(form.operation.attributesToDisplay) }}
+    </div>
+{% endblock %}
+
+{% block formContent %}
+    {% for groupView in form.operation.vars.groups %}
+
+        <h4>{{ groupView.label }}</h4>
+
+        {% for attributeView in groupView.attributes %}
+            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+                {% if attributeView.values is defined %}
+                    {% for scope, subvalue in attributeView.values %}
+                        <div class="control-group" data-field="{{ attributeView.code }}">
+                            {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="control-group" data-field="{{ attributeView.code }}">
+                        {{ form_widget(attributeView.value) }}
+                    </div>
+                {% endif %}
+                <i class="icon-remove remove-attribute" data-id="{{ attributeView.id }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+            </div>
+        {% endfor %}
+
+        {% if not loop.last %}
+            <hr />
+        {% endif %}
+
+    {% else %}
+
+        {{ 'pim_catalog.mass_edit_action.edit-common-attributes.empty'|trans }}
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
+            function ($, _, Scopable, CurrencyField) {
+                'use strict';
+                $(function () {
+                    {% if form.operation.vars.groups is empty %}
+                        $('a.next').hide();
+                    {% endif %}
+
+                    _.each($('form div.scopable:not(.currency)'), function (field) {
+                        new Scopable({ el: $(field) });
+                    });
+
+                    _.each($('form div.currency'), function (field) {
+                        new CurrencyField({ el: $(field) });
+                    });
+
+                    /**
+                     * Add attributes widget
+                     */
+                    var opts = {
+                        title: '{{ "Select attributes"|trans }}',
+                        placeholder: '{{ "Search"|trans }}',
+                        header: '',
+                        height: 175,
+                        minWidth: 50,
+                        classes: 'pimmultiselect',
+                        position: {
+                            my: 'right top',
+                            at: 'right bottom',
+                            collision: 'none'
+                        }
+                    };
+                    opts.selectedText = opts.title;
+                    opts.noneSelectedText = opts.title;
+                    var $el = $('#{{ form.operation.attributesToDisplay.vars.id }}')
+                        .addClass('pimmultiselect')
+                        .multiselect(opts)
+                        .multiselectfilter({
+                            label: false,
+                            placeholder: opts.placeholder
+                        });
+
+                    var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
+                    var saveButton = '{{ "Select"|trans }}';
+
+                    var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
+                    var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
+                        $el.multiselect('close');
+                        {% set action = path('pim_enrich_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'products': productIds }) %}
+                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
+                    }).appendTo(footerContainer);
+
+                    var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
+                    $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+
+                    $menu.find('input[type="search"]').width(207);
+
+                    /**
+                     * Manage removal of attributes from the form
+                     */
+                    $('.remove-attribute').on('click', function () {
+                        $el.multiselect('widget').find('input[value="' + $(this).attr('data-id') + '"]').click();
+                        $saveButton.click();
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}

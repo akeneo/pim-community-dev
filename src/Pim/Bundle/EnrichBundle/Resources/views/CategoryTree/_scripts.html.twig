@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap-tooltip'],
+        function($, TreeManage){
+            'use strict';
+            $(function() {
+                var buttons = [];
+                {% if resource_granted('pim_enrich_category_create') %}
+                    buttons.push($('<a>', {
+                        'href': '{{ path("pim_enrich_categorytree_create") }}',
+                        'data-toggle': 'tooltip',
+                        'data-placement': 'right',
+                        'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
+                    }).html(
+                        $('<i>', { 'class': 'icon-plus-sign' })
+                    ).tooltip());
+                {% endif %}
+                // Instantiate sidebar
+                $('#category-tree-container').sidebarize({ buttons: buttons });
+                new TreeManage('#tree');
+            });
+        }
+    );
+</script>

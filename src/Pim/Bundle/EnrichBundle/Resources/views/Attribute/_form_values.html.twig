@@ -1,0 +1,68 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+{% set accordionContent = { 'pane.accordion.label_translations': form_row(form.label) } %}
+
+{% if form.options is defined %}
+    {% set optionsContent %}
+        {% form_theme form 'PimEnrichBundle:Form:simple_layout.html.twig' %}
+        <table id="sortable_options" class="table table-striped table-hover table-condensed options">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ "Code"|trans }}</th>
+                    {% for locale in locales %}
+                        <th>{{ locale.code|trans }}</th>
+                    {% endfor %}
+                    <th>{{ "Default"|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for option in form.options %}
+                <tr class="att-option">
+                    <td class="handle">
+                        <i class="icon-reorder"></i>
+                        {{ form_row(option.sort_order) }}
+                    </td>
+                    <td>
+                        {{ form_row(option.code) }}
+                    </td>
+                    {% for locale in locales %}
+                    <td>
+                        {% for value in option.optionValues %}
+                            {% if value.locale.vars.value == locale.code %}
+                                {{ form_row(value.id) }}
+                                {{ form_row(value.value) }}
+                                {{ form_row(value.locale) }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    {% endfor %}
+                    <td>
+                        {{ form_row(option.default) }}
+                        <input type="{{ form.attributeType.vars.value == 'pim_enrich_multiselect' ? 'checkbox' : 'radio' }}" name="default"{% if option.vars.value.default %} checked="checked"{% endif %}>
+                    </td>
+                    {% if disabledLocales is not empty %}
+                    <td style="display:none;">
+                        {% for i in 0..disabledLocales|length-1 %}
+                            {% for value in option.optionValues %}
+                                {% if value.locale.vars.value == disabledLocales[i].code %}
+                                    {{ form_row(value.id) }}
+                                    {{ form_row(value.locale) }}
+                                    {{ form_row(value.value) }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endset %}
+    {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': optionsContent }) %}
+{% endif %}
+
+{{ elements.accordion(accordionContent, 2) }}

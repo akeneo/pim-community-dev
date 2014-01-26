@@ -1,0 +1,51 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({ params: { '%association type.label%': form.vars.value.label } }) %}
+
+{% block content %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_enrich_association_type_edit', { id: form.vars.value.id}),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'association type'|trans })
+        }
+    }) }}
+
+        {% set title = 'association type.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+
+        {% set confirmationMessage = 'confirmation.remove.association type'|trans({ '%name%': form.vars.value.label }) %}
+        {% if usageCount %}
+            {% set confirmationMessage = confirmationMessage ~ '</br>' ~ 'info.association type.remove from products'|trans({ '%count%': usageCount }) %}
+        {% endif %}
+        {% set buttons %}
+            {{ elements.backLink(path('pim_enrich_association_type_index')) }}
+            {{ elements.deleteLink(
+                path('pim_enrich_association_type_remove', { id: form.vars.value.id }),
+                'pim_enrich_association_type_remove',
+                path('pim_enrich_association_type_index'),
+                confirmationMessage,
+                'flash.association type.removed'|trans
+            ) }}
+            {{ elements.submitBtn() }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(['Properties', 'History']) }}
+
+        <div class="row-fluid tab-content">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="properties">
+                {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.locale_values': form_row(form.label) }) }}
+            </div>
+
+            <div class="tab-pane" id="history">
+                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+<div class="tab-content">
+    <div id="attribute-buttons"></div>
+
+    {% set columnWidth = 85/(channels|length) %}
+
+    <table class="table groups">
+        <thead>
+            <th width="10%">{{ 'Label'|trans|upper }}</th>
+            {% for channel in channels %}
+                <th class="channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
+            {% endfor %}
+            <th width="5%">&nbsp;</th>
+        </thead>
+
+        {% set colspan = channels|length + 2 %}
+        {% for groupLabel, attributes in form.vars.value.groupedAttributes %}
+        <tbody>
+            <tr class="group">
+                <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
+            </tr>
+            {% for attribute in attributes %}
+            <tr>
+                <td>{{ attribute.label }}</td>
+                {% for channel in channels %}
+                    <td>
+                        {% if attribute.attributeType == 'pim_enrich_identifier' %}
+                            <div class="attribute-requirement identifier">
+                                <i class="icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
+                            </div>
+                        {% else %}
+                            {{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    {% if attribute.attributeType != 'pim_enrich_identifier' and resource_granted('pim_enrich_family_remove_atribute') %}
+                        <a {{ elements.deleteLinkAttributes(
+                                path('pim_enrich_family_removeattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
+                                path('pim_enrich_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),
+                                'confirmation.remove.attribute'|trans({ '%name%': attribute.label }),
+                                'flash.family.attribute removed'|trans
+                            )}} class="remove-attribute">
+                            <i class="icon-trash"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endfor %}
+    </table>
+</div>

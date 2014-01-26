@@ -1,0 +1,105 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { "%family.label%": form.vars.value.label } }) %}
+
+{% block content %}
+
+    {% if resource_granted('pim_enrich_family_add_attribute') %}
+        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_enrich_family_addattributes', {'id': form.vars.value.id})
+        } %}
+    {% endif %}
+
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_enrich_family_edit', { id: form.vars.value.id }),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family'|trans })
+        }
+    }) }}
+
+        {% set title = 'family.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_enrich_family_index')) }}
+            {% if form.vars.value.id %}
+                {{ elements.deleteLink(
+                    path('pim_enrich_family_remove', { 'id': form.vars.value.id }),
+                    'pim_enrich_family_remove',
+                    path('pim_enrich_family_index'),
+                    'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }),
+                    'flash.family.removed'|trans
+                ) }}
+            {% endif %}
+            {{ elements.submitBtn() }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
+
+        <div class="tab-content">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.attributeAsLabel) }}
+                {% endset %}
+
+                {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.locale_values': form_row(form.label) }) }}
+            </div>
+
+            <div class="tab-pane" id="attributes">
+                {% include 'PimEnrichBundle:Family:_attributeRequirements.html.twig' %}
+            </div>
+
+            <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_family_history', {id: form.vars.value.id}) }}"></div>
+
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery'],
+            function ($) {
+                'use strict';
+
+                $(function() {
+                    $('.group').click(function() {
+                        $(this).parent().find('tr:not(.group)').toggle();
+                        $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                    });
+
+                    $('.attribute-requirement:not(.identifier) i').each(function() {
+                        var $input = $(this).siblings('input[type="checkbox"]');
+                        if ($input.attr('checked')) {
+                            $(this).attr('data-original-title', $(this).parent().data('required-title'));
+                        } else {
+                            $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
+                        }
+                    }).click(function() {
+                        $(this).toggleClass('icon-ok required');
+                        $(this).toggleClass('icon-circle non-required');
+
+                        var $input = $(this).siblings('input[type="checkbox"]');
+                        if ($input.attr('checked')) {
+                            $(this).attr('data-original-title', $(this).parent().data('not-required-title')).tooltip('show');
+                            $input.removeAttr('checked').trigger('change');
+                        } else {
+                            $(this).attr('data-original-title', $(this).parent().data('required-title')).tooltip('show');
+                            $input.attr('checked', 'checked').trigger('change');
+                        }
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+
+{{ form_start(form, {
+    'action': path('pim_enrich_product_create', { dataLocale: dataLocale }),
+    'class': 'form-inline',
+    'attr': {
+        'data-title': 'popin.create.product.title'|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
+    }
+}) }}
+    {{ JSFV(form) }}
+
+    {{ elements.form_errors(form) }}
+
+    <div class="row-fluid">
+        {{ form_row(form.id) }}
+        {% for value in form.values %}
+            {{ form_widget(value) }}
+        {% endfor %}
+        {{ form_row(form.family) }}
+    </div>
+{{ form_end(form) }}

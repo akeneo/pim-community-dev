@@ -1,0 +1,73 @@
+{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/tree/associate'],
+            function($, _, TreeAssociate){
+                'use strict';
+                $(function() {
+                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}');
+                    var $nextBtn = $('a.next');
+                    $nextBtn.hide();
+                    $('#{{ form.operation.categories.vars.id }}').on('change', function() {
+                        if ($(this).val()) {
+                            $nextBtn.show();
+                        } else {
+                            $nextBtn.hide();
+                        }
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% block formContent %}
+
+    {{ form_widget(form.operation.categories) }}
+
+    {% set trees = form.vars.value.operation.trees %}
+
+    <div class="classify">
+        <div class="tab-pane">
+            <div id="trees-list" class="tab-groups">
+                <ul class="nav nav-list">
+                    {% for tree in trees %}
+                        {% set aClass = "" %}
+                        {% set iClass = "gray" %}
+                        <li>
+                            <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree.id }}">
+                                <i class="icon-ok {{ iClass }}"></i>{{ tree.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                {% set selectedTree = 0 %}
+                {% if trees %}
+                    {% if app.user.defaulttree is defined %}
+                        {% for tree in trees %}
+                            {% if loop.first or tree.code == app.user.defaulttree.code %}
+                                {% set selectedTree = tree.id %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+                <div id="trees" data-selected-tree="{{ selectedTree }}">
+                    {% for tree in trees %}
+                        <div class="tree" data-tree-id="{{ tree.id }}">
+                            <h3>{{ tree.label }}</h3>
+                            <input type="hidden" id="apply-on-tree-{{ tree.id }}" name="apply_on_tree_{{ tree.id }}" value="0"/>
+                            <div id="tree-{{ tree.id }}"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

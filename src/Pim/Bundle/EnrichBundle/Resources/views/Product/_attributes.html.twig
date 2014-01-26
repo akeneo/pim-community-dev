@@ -1,0 +1,85 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+<div class="tab-groups">
+    <ul class="nav nav-list">
+        {% for group in product.orderedGroups if form.vars.groups[group.id] is defined %}
+        <li class="tab{% if loop.index == 1 %} active{% endif %}">
+            <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.label }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="tab-content">
+    <div {{ comparisonLocale is not null ? 'class="compare" ' }}id="comparison-buttons">
+        {% if comparisonLocale is not null %}
+            <div id="copy-selection-switcher" class="btn-group pull-left">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    {{ 'Select'|trans }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="left-aligned"><a class="copy-selection" data-target="all" href="#">{{ 'All'|trans }}</a></li>
+                    <li class="left-aligned"><a class="copy-selection" data-target="current-tab" href="#">{{ 'Current Tab'|trans }}</a></li>
+                    <li class="left-aligned"><a class="copy-selection" data-target="none" href="#">{{ 'None'|trans }}</a></li>
+                </ul>
+            </div>
+
+            <a href="#" id="copy-selection" class="btn pull-left">{{ 'Copy'|trans }}</a>
+        {% endif %}
+
+        <div id="comparison-switcher" class="btn-group">
+
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                {{ 'Translate from'|trans }}{% if comparisonLocale is not null %}: {{ comparisonLocale|flag }}<span class="title">{{ locale_label(comparisonLocale) }}</span>{% endif %}
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu pull-right">
+                {% for locale in locales if locale != dataLocale %}
+                    <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
+                        <a href="{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
+                                {% if locale == comparisonLocale %}
+                                    <i class="icon-circle"></i>
+                                {% endif %}
+                            </span>
+                            {{ locale.code|flag }}
+                            <span class="title">{{ locale_label(locale.code) }}</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="javascript:void(0);">
+                            <span class="title">{{ 'pim_catalog.product.no_comparison_locale_available'|trans }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if comparisonLocale is not null %}
+            <a href="{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}) }}" class="btn">
+                &times;
+            </a>
+        {% endif %}
+    </div>
+    <div id="attribute-buttons">
+        {{ elements.channelSwitcher(channels) }}
+    </div>
+
+    {% for groupId, groupView in form.vars.groups %}
+        <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
+            <h3>{{ groupView.label }}</h3>
+            {% if comparisonLocale %}
+                {% include 'PimEnrichBundle:Product:_edit_with_comparison.html.twig' %}
+            {% else %}
+                {% include 'PimEnrichBundle:Product:_edit_without_comparison.html.twig' %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    {{ form_widget(form.associations, { 'attr': { 'class': 'hide' }}) }}
+</div>
+
+{% if comparisonLocale is not null %}
+    {% include 'PimEnrichBundle:Product:_comparison-handler.html.twig' %}
+{% endif %}

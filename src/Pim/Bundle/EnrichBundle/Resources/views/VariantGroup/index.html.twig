@@ -1,0 +1,21 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {% set title = 'variant group.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'variant group',
+            path('pim_enrich_variant_group_create'),
+            'dialog',
+            'pim_enrich_group_create'
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {{ dataGrid.renderGrid('variant-group-grid', {localeCode: localeCode, groupTypes: groupTypes}) }}
+
+{% endblock %}
