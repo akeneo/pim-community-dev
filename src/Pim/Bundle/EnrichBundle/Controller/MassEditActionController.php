@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -101,14 +101,14 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_mass_edit")
+     * @AclAncestor("pim_enrich_mass_edit")
      * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
     {
         $productIds = $this->getProductIds($request);
         if (!$productIds) {
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         $form = $this->getOperatorForm();
@@ -117,7 +117,7 @@ class MassEditActionController extends AbstractDoctrineController
             $form->submit($request);
             if ($form->isValid()) {
                 return $this->redirectToRoute(
-                    'pim_catalog_mass_edit_action_configure',
+                    'pim_enrich_mass_edit_action_configure',
                     array(
                         'products'       => $productIds,
                         'operationAlias' => $this->operator->getOperationAlias(),
@@ -136,7 +136,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @AclAncestor("pim_catalog_mass_edit")
+     * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
@@ -150,7 +150,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $productIds = $this->getProductIds($request);
         if (!$productIds) {
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         $this->operator->initializeOperation($productIds);
@@ -176,7 +176,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @AclAncestor("pim_catalog_mass_edit")
+     * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
@@ -190,7 +190,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $productIds = $this->getProductIds($request);
         if (!$productIds) {
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         // Hacky hack for the edit common attribute operation to work
@@ -227,7 +227,7 @@ class MassEditActionController extends AbstractDoctrineController
                 sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias)
             );
 
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         return $this->render(
