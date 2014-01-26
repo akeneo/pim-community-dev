@@ -78,7 +78,7 @@ class AssociationController
         $associationTypes = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
 
         return $this->templating->renderResponse(
-            'PimCatalogBundle:Association:_associations.html.twig',
+            'PimEnrichBundle:Association:_associations.html.twig',
             array(
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
