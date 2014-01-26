@@ -1,0 +1,44 @@
+pim_enrich_family_index:
+    path: /.{_format}
+    defaults: { _controller: pim_enrich.controller.family:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_enrich_family_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.family:createAction }
+
+pim_enrich_family_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.family:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_family_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.family:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_enrich_family_addattributes:
+    path: /{id}/attributes
+    defaults: { _controller: pim_enrich.controller.family:addAttributesAction }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_enrich_family_removeattribute:
+    path: /{familyId}/attribute/{attributeId}/remove
+    defaults: { _controller: pim_enrich.controller.family:removeAttributeAction }
+    requirements:
+        familyId: \d+
+        attributeId: \d+
+    methods: [DELETE]
+
+pim_enrich_family_history:
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_enrich.controller.family:historyAction, _format: html }
+    requirements:
+        id: \d+
+        _format: html|json

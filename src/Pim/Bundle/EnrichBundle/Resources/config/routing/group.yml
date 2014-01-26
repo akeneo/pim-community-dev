@@ -1,0 +1,35 @@
+pim_enrich_group_index:
+    path: /.{_format}
+    defaults: { _controller: pim_enrich.controller.group:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_enrich_group_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.group:createAction }
+
+pim_enrich_group_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.group:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_group_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.group:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_enrich_group_productlist:
+    path: /{id}/productlist
+    defaults: { _controller: pim_enrich.controller.group:productListAction }
+    requirements:
+        id: \d+
+
+pim_enrich_group_history:
+    path: /{id}/history.{_format}
+    defaults: { _controller: pim_enrich.controller.group:historyAction, _format: html }
+    requirements:
+        id: \d+
+        _format: html|json

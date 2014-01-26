@@ -1,0 +1,22 @@
+pim_enrich_channel_index:
+    path: /.{_format}
+    defaults: { _controller: pim_enrich.controller.channel:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_enrich_channel_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.channel:createAction }
+
+pim_enrich_channel_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.channel:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_channel_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.channel:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]

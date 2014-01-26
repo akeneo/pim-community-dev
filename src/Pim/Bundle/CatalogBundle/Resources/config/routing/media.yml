@@ -1,3 +1,0 @@
-pim_catalog_media_show:
-    path: /{filename}
-    defaults: { _controller: pim_catalog.controller.media:showAction }

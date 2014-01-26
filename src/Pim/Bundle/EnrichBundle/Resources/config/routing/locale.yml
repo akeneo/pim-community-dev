@@ -1,0 +1,23 @@
+pim_enrich_locale_index:
+    path: /.{_format}
+    defaults: { _controller: pim_enrich.controller.locale:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_enrich_locale_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.locale:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_locale_disable:
+    path: /{id}/disable
+    defaults: { _controller: pim_enrich.controller.locale:disableAction }
+    requirements:
+        id: \d+
+
+pim_enrich_locale_enable:
+    path: /{id}/enable
+    defaults: { _controller: pim_enrich.controller.locale:enableAction }
+    requirements:
+        id: \d+
