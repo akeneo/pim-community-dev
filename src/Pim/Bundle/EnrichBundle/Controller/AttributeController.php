@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -72,8 +72,8 @@ class AttributeController extends AbstractDoctrineController
      * @var array
      */
     protected $choiceAttributeTypes = array(
-        'pim_catalog_simpleselect',
-        'pim_catalog_multiselect'
+        'pim_enrich_simpleselect',
+        'pim_enrich_multiselect'
     );
 
     /**
@@ -133,7 +133,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_attribute_index")
+     * @AclAncestor("pim_enrich_attribute_index")
      * @return template
      */
     public function indexAction(Request $request)
@@ -147,17 +147,17 @@ class AttributeController extends AbstractDoctrineController
      * Create attribute
      *
      * @Template("PimCatalogBundle:Attribute:form.html.twig")
-     * @AclAncestor("pim_catalog_attribute_create")
+     * @AclAncestor("pim_enrich_attribute_create")
      * @return array
      */
     public function createAction()
     {
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
+        $attribute = $this->attributeManager->createAttribute('pim_enrich_text');
 
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -175,7 +175,7 @@ class AttributeController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template("PimCatalogBundle:Attribute:form.html.twig")
-     * @AclAncestor("pim_catalog_attribute_edit")
+     * @AclAncestor("pim_enrich_attribute_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -184,7 +184,7 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
         }
 
         return array(
@@ -203,18 +203,18 @@ class AttributeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template("PimCatalogBundle:Attribute:_form_parameters.html.twig")
-     * @AclAncestor("pim_catalog_attribute_edit")
+     * @AclAncestor("pim_enrich_attribute_edit")
      * @return array
      */
     public function preProcessAction(Request $request)
     {
         $data = $request->request->all();
-        if (!isset($data['pim_catalog_attribute_form'])) {
-            return $this->redirectToRoute('pim_catalog_attribute_create');
+        if (!isset($data['pim_enrich_attribute_form'])) {
+            return $this->redirectToRoute('pim_enrich_attribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->attributeHandler->preProcess($data['pim_catalog_attribute_form']);
+        $this->attributeHandler->preProcess($data['pim_enrich_attribute_form']);
 
         $locales         = $this->localeManager->getActiveLocales();
         $disabledLocales = $this->localeManager->getDisabledLocales();
@@ -247,13 +247,13 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_catalog_attribute_sort")
+     * @AclAncestor("pim_enrich_attribute_sort")
      * @return Response
      */
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_attribute_index');
+            return $this->redirectToRoute('pim_enrich_attribute_index');
         }
 
         $data = $request->request->all();
@@ -282,14 +282,14 @@ class AttributeController extends AbstractDoctrineController
      * @param string  $dataLocale
      *
      * @Template("PimCatalogBundle:Attribute:form_options.html.twig")
-     * @AclAncestor("pim_catalog_attribute_edit")
+     * @AclAncestor("pim_enrich_attribute_edit")
      * @return Response
      */
     public function createOptionAction(Request $request, $id, $dataLocale)
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_catalog_attribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
         }
 
         $option = new AttributeOption();
@@ -333,7 +333,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @AclAncestor("pim_catalog_attribute_remove")
+     * @AclAncestor("pim_enrich_attribute_remove")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -348,7 +348,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_attribute_index');
+            return $this->redirectToRoute('pim_enrich_attribute_index');
         }
     }
 
@@ -376,7 +376,7 @@ class AttributeController extends AbstractDoctrineController
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
-        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        if ($attribute->getAttributeType() === 'pim_enrich_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = array();
         } else {
@@ -393,7 +393,7 @@ class AttributeController extends AbstractDoctrineController
             } else {
                 $this->addFlash($errorMessage, $messageParameters);
 
-                return $this->redirectToRoute('pim_catalog_attribute_index');
+                return $this->redirectToRoute('pim_enrich_attribute_index');
             }
         }
     }
