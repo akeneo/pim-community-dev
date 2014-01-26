@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -65,7 +65,7 @@ class AssociationController
      *
      * @param integer $id
      *
-     * @AclAncestor("pim_catalog_associations_view")
+     * @AclAncestor("pim_enrich_associations_view")
      *
      * @return Response
      */
