@@ -206,7 +206,7 @@ class FamilyController extends AbstractDoctrineController
     public function historyAction(Family $family)
     {
         return $this->render(
-            'PimCatalogBundle:Family:_history.html.twig',
+            'PimEnrichBundle:Family:_history.html.twig',
             array(
                 'family' => $family
             )
