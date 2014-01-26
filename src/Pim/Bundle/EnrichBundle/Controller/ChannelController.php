@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -97,7 +97,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_channel_index")
+     * @AclAncestor("pim_enrich_channel_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -111,7 +111,7 @@ class ChannelController extends AbstractDoctrineController
      * Create channel
      *
      * @Template("PimCatalogBundle:Channel:edit.html.twig")
-     * @AclAncestor("pim_catalog_channel_create")
+     * @AclAncestor("pim_enrich_channel_create")
      * @return array
      */
     public function createAction()
@@ -127,7 +127,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Channel $channel
      *
      * @Template
-     * @AclAncestor("pim_catalog_channel_edit")
+     * @AclAncestor("pim_enrich_channel_edit")
      * @return array
      */
     public function editAction(Channel $channel)
@@ -136,7 +136,7 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_catalog_channel_edit', array('id' => $channel->getId()))
+                $this->generateUrl('pim_enrich_channel_edit', array('id' => $channel->getId()))
             );
         }
 
@@ -151,7 +151,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Request $request
      * @param Channel $channel
      *
-     * @AclAncestor("pim_catalog_channel_remove")
+     * @AclAncestor("pim_enrich_channel_remove")
      * @return Response
      */
     public function removeAction(Request $request, Channel $channel)
@@ -171,7 +171,7 @@ class ChannelController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
+            return $this->redirect($this->generateUrl('pim_enrich_channel_index'));
         }
     }
 }
