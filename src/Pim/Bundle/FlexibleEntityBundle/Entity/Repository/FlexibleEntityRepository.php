@@ -73,10 +73,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
         return $this->locale;
     }
 
@@ -101,10 +97,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
         return $this->scope;
     }
 

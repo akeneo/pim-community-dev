@@ -51,15 +51,9 @@ class ProductManager extends FlexibleManager
     protected $entityManager;
 
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
      * Constructor
      *
      * @param string                     $flexibleName        Entity name
-     * @param array                      $flexibleConfig      Global flexible entities configuration array
      * @param ObjectManager              $objectManager       Storage manager for product
      * @param EntityManager              $entityManager       Entity manager for other entitites
      * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
@@ -70,7 +64,6 @@ class ProductManager extends FlexibleManager
      */
     public function __construct(
         $flexibleName,
-        $flexibleConfig,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
@@ -81,7 +74,6 @@ class ProductManager extends FlexibleManager
     ) {
         parent::__construct(
             $flexibleName,
-            $flexibleConfig,
             $objectManager,
             $eventDispatcher
         );
@@ -91,6 +83,7 @@ class ProductManager extends FlexibleManager
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
+        $this->repository->setFlexibleConfig($this->flexibleConfig);
     }
 
     /**
