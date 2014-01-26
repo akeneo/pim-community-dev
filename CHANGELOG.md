@@ -25,6 +25,7 @@
 - FlexibleQueryBuilder has been rewritten to prepare the MongoDB support (add filters and sorters in FlexibleEntityBundle/Doctrine/ORM)
 - FlexibleQueryBuilder is injected to ProductRepository
 - ProductRepository is injected in ProductManager
+- Remove deprecated flexible entity config which is now builded by flexible manager itself (use doctrine meta)
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
