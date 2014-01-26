@@ -104,19 +104,6 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
 
         return new ProductManager(
             'Pim\Bundle\CatalogBundle\Model\Product',
-            array(
-                'entities_config' => array(
-                    'Pim\Bundle\CatalogBundle\Model\Product' => array(
-                        'flexible_class' => 'Pim\Bundle\CatalogBundle\Model\Product',
-                        'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Model\ProductValue',
-                        'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
-                        'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
-                        'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
-                        'default_locale' => null,
-                        'default_scope'  => null
-                    )
-                ),
-            ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $objectManager ?: $this->getEntityManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),

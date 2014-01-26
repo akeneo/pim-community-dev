@@ -23,7 +23,6 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     {
         $myManager = new FlexibleManager(
             $this->flexibleClassName,
-            $this->container->getParameter('pim_flexibleentity.flexible_config'),
             $this->entityManager,
             $this->container->get('event_dispatcher')
         );
@@ -49,7 +48,7 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
         $this->assertNotEmpty($this->manager->getFlexibleConfig());
         $this->assertEquals(
             $this->manager->getFlexibleConfig(),
-            $this->flexibleConfig['entities_config'][$this->flexibleClassName]
+            $this->flexibleConfig
         );
     }
 
