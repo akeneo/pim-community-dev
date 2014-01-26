@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +26,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_currency_index")
+     * @AclAncestor("pim_enrich_currency_index")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -39,7 +39,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @param Currency $currency
      *
-     * @AclAncestor("pim_catalog_currency_toggle")
+     * @AclAncestor("pim_enrich_currency_toggle")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)
@@ -53,6 +53,6 @@ class CurrencyController extends AbstractDoctrineController
             $this->addFlash('error', 'flash.error ocurred');
         }
 
-        return $this->redirect($this->generateUrl('pim_catalog_currency_index'));
+        return $this->redirect($this->generateUrl('pim_enrich_currency_index'));
     }
 }
