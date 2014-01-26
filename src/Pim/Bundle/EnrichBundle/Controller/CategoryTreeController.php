@@ -162,10 +162,10 @@ class CategoryTreeController extends AbstractDoctrineController
 
         if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
-            $view = 'PimCatalogBundle:CategoryTree:children-tree.json.twig';
+            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
-            $view = 'PimCatalogBundle:CategoryTree:children.json.twig';
+            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
 
         return $this->render(
@@ -219,7 +219,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             array(
                 'form' => $form->createView(),
             )
@@ -252,7 +252,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             array(
                 'form' => $form->createView(),
             )
