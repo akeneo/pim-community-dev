@@ -198,7 +198,7 @@ class GroupController extends AbstractController
      * @return array
      *
      * @AclAncestor("pim_enrich_product_edit")
-     * @Template("PimCatalogBundle:Group:_productList.html.twig")
+     * @Template("PimEnrichBundle:Group:_productList.html.twig")
      */
     public function productListAction(Group $group)
     {
@@ -215,7 +215,7 @@ class GroupController extends AbstractController
     public function historyAction(Group $group)
     {
         return $this->render(
-            'PimCatalogBundle:Group:_history.html.twig',
+            'PimEnrichBundle:Group:_history.html.twig',
             array(
                 'group' => $group
             )
