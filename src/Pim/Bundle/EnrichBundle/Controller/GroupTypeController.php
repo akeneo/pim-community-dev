@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -97,7 +97,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_type_index")
+     * @AclAncestor("pim_enrich_group_type_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -112,13 +112,13 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_type_create")
+     * @AclAncestor("pim_enrich_group_type_create")
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_group_type_index');
+            return $this->redirectToRoute('pim_enrich_group_type_index');
         }
 
         $groupType = new GroupType();
@@ -127,7 +127,7 @@ class GroupTypeController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.group type.created');
 
             $url = $this->generateUrl(
-                'pim_catalog_group_type_edit',
+                'pim_enrich_group_type_edit',
                 array('id' => $groupType->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -146,7 +146,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param GroupType $groupType
      *
      * @Template
-     * @AclAncestor("pim_catalog_group_type_edit")
+     * @AclAncestor("pim_enrich_group_type_edit")
      * @return array
      */
     public function editAction(GroupType $groupType)
@@ -164,7 +164,7 @@ class GroupTypeController extends AbstractDoctrineController
      * Remove a group type
      * @param GroupType $groupType
      *
-     * @AclAncestor("pim_catalog_group_type_remove")
+     * @AclAncestor("pim_enrich_group_type_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(GroupType $groupType)
@@ -181,7 +181,7 @@ class GroupTypeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_group_type_index');
+            return $this->redirectToRoute('pim_enrich_group_type_index');
         }
     }
 }
