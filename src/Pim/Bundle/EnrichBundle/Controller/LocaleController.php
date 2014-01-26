@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class LocaleController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_catalog_locale_index")
+     * @AclAncestor("pim_enrich_locale_index")
      * @return Response
      */
     public function indexAction(Request $request)
