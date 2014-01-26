@@ -359,7 +359,7 @@ class ProductController extends AbstractDoctrineController
     public function historyAction(Request $request, $id)
     {
         return $this->render(
-            'PimCatalogBundle:Product:_history.html.twig',
+            'PimEnrichBundle:Product:_history.html.twig',
             array(
                 'product' => $this->findProductOr404($id),
             )
