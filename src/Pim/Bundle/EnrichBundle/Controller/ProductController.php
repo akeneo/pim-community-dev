@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
@@ -153,7 +153,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param Request $request the request
      *
-     * @AclAncestor("pim_catalog_product_index")
+     * @AclAncestor("pim_enrich_product_index")
      * @Template
      * @return Response
      */
@@ -220,13 +220,13 @@ class ProductController extends AbstractDoctrineController
      * @param string  $dataLocale
      *
      * @Template
-     * @AclAncestor("pim_catalog_product_create")
+     * @AclAncestor("pim_enrich_product_create")
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         $entity = $this->productManager->createProduct();
@@ -241,7 +241,7 @@ class ProductController extends AbstractDoctrineController
                     $dataLocale = $this->getDataLocale();
                 }
                 $url = $this->generateUrl(
-                    'pim_catalog_product_edit',
+                    'pim_enrich_product_edit',
                     array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
                 );
                 $response = array('status' => 1, 'url' => $url);
@@ -263,7 +263,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pim_catalog_product_edit")
+     * @AclAncestor("pim_enrich_product_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -333,15 +333,15 @@ class ProductController extends AbstractDoctrineController
     {
         switch ($this->getRequest()->get('action')) {
             case self::BACK_TO_GRID:
-                $route = 'pim_catalog_product_index';
+                $route = 'pim_enrich_product_index';
                 $params = array();
                 break;
             case self::CREATE:
-                $route = 'pim_catalog_product_edit';
+                $route = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
                 break;
             default:
-                $route = 'pim_catalog_product_edit';
+                $route = 'pim_enrich_product_edit';
                 break;
         }
 
@@ -372,7 +372,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The product id to which add attributes
      *
-     * @AclAncestor("pim_catalog_product_add_attribute")
+     * @AclAncestor("pim_enrich_product_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
@@ -393,7 +393,7 @@ class ProductController extends AbstractDoctrineController
 
         $this->addFlash('success', 'flash.product.attributes added');
 
-        return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $product->getId()));
+        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
     }
 
     /**
@@ -402,7 +402,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @AclAncestor("pim_catalog_product_remove")
+     * @AclAncestor("pim_enrich_product_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
@@ -413,7 +413,7 @@ class ProductController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
     }
 
@@ -423,7 +423,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $productId
      * @param integer $attributeId
      *
-     * @AclAncestor("pim_catalog_product_remove_attribute")
+     * @AclAncestor("pim_enrich_product_remove_attribute")
      * @return RedirectResponse
      *
      * @throws NotFoundHttpException
@@ -441,7 +441,7 @@ class ProductController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
+            return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $productId));
         }
     }
 
@@ -457,7 +457,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
-     * @AclAncestor("pim_catalog_product_categories_view")
+     * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, Category $parent)
@@ -615,8 +615,8 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
-            'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
+            'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
             'currentLocale'    => $this->getDataLocale(),
             'comparisonLocale' => $this->getComparisonLocale(),
         );
