@@ -26,7 +26,7 @@
                 <td>{{ attribute.label }}</td>
                 {% for channel in channels %}
                     <td>
-                        {% if attribute.attributeType == 'pim_enrich_identifier' %}
+                        {% if attribute.attributeType == 'pim_catalog_identifier' %}
                             <div class="attribute-requirement identifier">
                                 <i class="icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
                             </div>
@@ -36,7 +36,7 @@
                     </td>
                 {% endfor %}
                 <td>
-                    {% if attribute.attributeType != 'pim_enrich_identifier' and resource_granted('pim_enrich_family_remove_atribute') %}
+                    {% if attribute.attributeType != 'pim_catalog_identifier' and resource_granted('pim_enrich_family_remove_atribute') %}
                         <a {{ elements.deleteLinkAttributes(
                                 path('pim_enrich_family_removeattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
                                 path('pim_enrich_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),

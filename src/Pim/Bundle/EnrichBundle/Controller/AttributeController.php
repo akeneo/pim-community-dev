@@ -376,7 +376,7 @@ class AttributeController extends AbstractDoctrineController
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
-        if ($attribute->getAttributeType() === 'pim_enrich_identifier') {
+        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = array();
         } else {

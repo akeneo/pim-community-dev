@@ -18,7 +18,7 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_enrich_attribute_index')) }}
-            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_enrich_identifier' %}
+            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
                 {{ elements.deleteLink(
                     path('pim_enrich_attribute_remove', { id: form.vars.value.id }),
                     'pim_enrich_attribute_remove',

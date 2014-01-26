@@ -280,7 +280,7 @@ class FamilyController extends AbstractDoctrineController
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
-        } elseif ($attribute->getAttributeType() === 'pim_enrich_identifier') {
+        } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
