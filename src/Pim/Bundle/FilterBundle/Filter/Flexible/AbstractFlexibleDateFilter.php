@@ -70,7 +70,13 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
     protected function applyFlexibleFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         if ($dateStartValue && $dateEndValue) {
-            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, array($dateStartValue, $dateEndValue), 'BETWEEN');
+            $this->util->applyFlexibleFilter(
+                $ds,
+                $this->getFEN(),
+                $fieldName,
+                array($dateStartValue, $dateEndValue),
+                'BETWEEN'
+            );
         }
     }
 
