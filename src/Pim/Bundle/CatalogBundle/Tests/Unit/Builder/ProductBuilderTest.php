@@ -38,7 +38,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
 
         $attributeTwo = new Attribute();
         $attributeTwo->setCode('two');
-        $attributeTwo->setTranslatable(true);
+        $attributeTwo->setLocalizable(true);
         $family->addAttribute($attributeTwo);
 
         $builder->addMissingProductValues($product);
@@ -54,7 +54,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
 
         $attributeFour = new Attribute();
         $attributeFour->setCode('four');
-        $attributeFour->setTranslatable(true);
+        $attributeFour->setLocalizable(true);
         $attributeFour->setScopable(true);
         $family->addAttribute($attributeFour);
 

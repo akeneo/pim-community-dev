@@ -165,17 +165,17 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param boolean $translatable
+     * @param boolean $localizable
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    private function getAttributeMock($translatable = true)
+    private function getAttributeMock($localizable = true)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         return $attribute;
     }
