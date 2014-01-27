@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Helper;
+namespace Pim\Bundle\EnrichBundle\Helper;
 
 /**
  * Sort helper defines a set of static methods to reorder your arrays

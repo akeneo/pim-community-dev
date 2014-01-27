@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Helper;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Helper;
 
-use Pim\Bundle\CatalogBundle\Helper\SortHelper;
+use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 
 /**
  * Test related class
