@@ -209,12 +209,12 @@ class AttributeController extends AbstractDoctrineController
     public function preProcessAction(Request $request)
     {
         $data = $request->request->all();
-        if (!isset($data['pim_enrich_attribute_form'])) {
+        if (!isset($data['pim_catalog_attribute_form'])) {
             return $this->redirectToRoute('pim_enrich_attribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this->attributeHandler->preProcess($data['pim_enrich_attribute_form']);
+        $this->attributeHandler->preProcess($data['pim_catalog_attribute_form']);
 
         $locales         = $this->localeManager->getActiveLocales();
         $disabledLocales = $this->localeManager->getDisabledLocales();
