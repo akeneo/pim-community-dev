@@ -106,7 +106,7 @@ datagrid:
             scopable:
                 label:         Scopable
                 frontend_type: boolean
-            translatable:
+            localizable:
                 label:         Localizable
                 frontend_type: boolean
             group:
@@ -123,8 +123,8 @@ datagrid:
                     data_name: a.code
                 scopable:
                     data_name: a.scopable
-                translatable:
-                    data_name: a.translatable
+                localizable:
+                    data_name: a.localizable
                 group:
                     data_name: groupLabel
         filters:
@@ -140,9 +140,9 @@ datagrid:
                 scopable:
                     type:      boolean
                     data_name: a.scopable
-                translatable:
+                localizable:
                     type:      boolean
-                    data_name: a.translatable
+                    data_name: a.localizable
                 group:
                     type:      choice
                     data_name: attributeGroup.code

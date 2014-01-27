@@ -69,7 +69,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock(),
                 self::OTHER_LOCALE
             ),
-            'not_translatable_attribute' => $this->getProductValueMock($this->getAttributeMock(false), null),
+            'not_localizable_attribute' => $this->getProductValueMock($this->getAttributeMock(false), null),
         );
 
         $form  = $this->getFormMock();

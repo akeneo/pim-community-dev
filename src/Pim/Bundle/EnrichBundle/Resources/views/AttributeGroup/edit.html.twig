@@ -78,7 +78,7 @@
                                 <td>{{ attribute.attributeType|trans }}</td>
                                 <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
                                 <td>
-                                    <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
+                                    <input type="checkbox" disabled="disabled"{% if attribute.localizable %} checked="checked"{% endif %}>
                                 </td>
                                 {% if removalGranted %}
                                     <td>

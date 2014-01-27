@@ -133,7 +133,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements
                 $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect'))
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
-            ->andWhere($qb->expr()->neq('a.translatable', 1));
+            ->andWhere($qb->expr()->neq('a.localizable', 1));
 
         return $qb;
     }
