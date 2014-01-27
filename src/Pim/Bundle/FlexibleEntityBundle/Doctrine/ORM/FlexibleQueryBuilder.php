@@ -216,7 +216,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
             'pim_catalog_multiselect'      => ['IN', 'NOT IN'],
             'pim_catalog_number'           => ['=', '<', '<=', '>', '>='],
             'pim_catalog_boolean'          => ['='],
-            'pim_catalog_date'             => ['=', '<', '<=', '>', '>='],
+            'pim_catalog_date'             => ['=', '<', '<=', '>', '>=', 'BETWEEN'],
             'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>='],
             'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=']
         ];
