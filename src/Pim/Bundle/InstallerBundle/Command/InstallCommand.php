@@ -365,8 +365,6 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function createUser(InputInterface $input, OutputInterface $output)
     {
-        $this->clearCache();
-
         $user = $this->getContainer()->get('oro_user.manager')->createUser();
         $role = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
