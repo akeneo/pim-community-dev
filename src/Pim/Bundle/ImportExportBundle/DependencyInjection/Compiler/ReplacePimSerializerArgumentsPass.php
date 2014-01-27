@@ -44,8 +44,8 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 
         $container->getDefinition('pim_serializer')->setArguments(
             array(
-                $this->getDependencyReferences($container, 'pim_serializer.normalizer'),
-                $this->getDependencyReferences($container, 'pim_serializer.encoder')
+                $this->getDependencyReferences($container, 'pim_serializer.normalizer', static::DEFAULT_PRIORITY),
+                $this->getDependencyReferences($container, 'pim_serializer.encoder', static::DEFAULT_PRIORITY)
             )
         );
     }
@@ -58,25 +58,16 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      *
      * @return \Symfony\Component\DependencyInjection\Reference[]
      */
-    protected function getDependencyReferences(ContainerBuilder $container, $tagName)
+    protected function getDependencyReferences(ContainerBuilder $container, $tagName, $priority)
     {
-        $priorities = array();
+        $services = new \SplPriorityQueue();
         foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
-            $priority = isset($attributes[0]['priority'])
-                    ? $attributes[0]['priority']
-                    : static::DEFAULT_PRIORITY;
-            if (!isset($priorities[$priority])) {
-                $priorities[$priority] = array();
-            }
-            $priorities[$priority][] = $this->factory->createReference($id);
+            $services->insert(
+                $this->factory->createReference($id),
+                isset($attributes[0]['priority']) ? $attributes[0]['priority'] : $priority
+            );
         }
 
-        krsort($priorities);
-        $sortedReferences = array();
-        foreach ($priorities as $references) {
-            $sortedReferences = array_merge($sortedReferences, $references);
-        }
-
-        return $sortedReferences;
+        return array_values(iterator_to_array($services));
     }
 }
