@@ -47,7 +47,7 @@ class PriceCollectionType extends AbstractAttributeType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['type']         = 'pim_catalog_price';
+        $options['type']         = 'pim_enrich_price';
         $options['allow_add']    = true;
         $options['allow_delete'] = true;
         $options['by_reference'] = false;

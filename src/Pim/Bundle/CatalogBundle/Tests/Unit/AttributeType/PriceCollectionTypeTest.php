@@ -53,7 +53,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
                     'constraints'      => array('constraints'),
                     'label'        => null,
                     'required'     => null,
-                    'type'         => 'pim_catalog_price',
+                    'type'         => 'pim_enrich_price',
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => false,

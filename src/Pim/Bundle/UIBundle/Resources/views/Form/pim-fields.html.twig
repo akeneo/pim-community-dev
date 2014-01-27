@@ -198,7 +198,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block pim_catalog_image_row %}
+{% block pim_enrich_image_row %}
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
@@ -255,7 +255,7 @@
     {% endif %}
 
     {% endspaceless %}
-{% endblock %}
+{% endblock pim_enrich_image_row %}
 
 {% block widget_attributes %}
 {% if attr.size is not defined %}
@@ -307,18 +307,18 @@
 {% endspaceless %}
 {% endblock pim_flexibleentity_metric_row %}
 
-{% block pim_catalog_price_collection_row %}
+{% block pim_enrich_price_collection_row %}
     {{ form_row(form, { attr: { class: 'hide' }}) }}
-{% endblock pim_catalog_price_collection_row %}
+{% endblock pim_enrich_price_collection_row %}
 
-{% block pim_catalog_price_collection_widget %}
+{% block pim_enrich_price_collection_widget %}
     {% for child in form.children %}
         {{ form_widget(child) }}
     {% endfor %}
     {{ block('form_info') }}
-{% endblock pim_catalog_price_collection_widget %}
+{% endblock pim_enrich_price_collection_widget %}
 
-{% block pim_catalog_price_widget %}
+{% block pim_enrich_price_widget %}
 {% spaceless %}
     {% set metadata = {
         label: currency_symbol(form.currency.vars.value),
@@ -337,9 +337,9 @@
     } %}
     <div class="currency-field" data-metadata="{{ metadata|json_encode }}"></div>
 {% endspaceless %}
-{% endblock pim_catalog_price_widget %}
+{% endblock pim_enrich_price_widget %}
 
-{% block pim_catalog_attribute_requirement_widget %}
+{% block pim_enrich_attribute_requirement_widget %}
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
         {% if form.required.vars.checked %}
@@ -348,7 +348,7 @@
         <i class="icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
         {% endif %}
     </div>
-{% endblock pim_catalog_attribute_requirement_widget %}
+{% endblock pim_enrich_attribute_requirement_widget %}
 
 {% block pim_ajax_entity_row %}
     {{ block('form_row_field') }}
