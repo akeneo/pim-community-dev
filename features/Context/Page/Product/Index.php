@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Context\Page\Base\Grid;
+use Context\Page\Base\Index as BaseIndex;
 
 /**
  * Product index page
@@ -11,7 +11,7 @@ use Context\Page\Base\Grid;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends Grid
+class Index extends BaseIndex
 {
     /**
      * @var string $path
@@ -25,14 +25,7 @@ class Index extends Grid
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->elements = array_merge(
-            $this->elements,
-            array(
-                'Categories tree'  => array('css' => '#tree'),
-                'Tree select'      => array('css' => '#tree_select'),
-                'Locales dropdown' => array('css' => '#locale-switcher'),
-            )
-        );
+        $this->grid = $this->getElement('Grid');
     }
 
     /**
@@ -112,4 +105,27 @@ class Index extends Grid
     {
         $this->pressButton('Delete');
     }
+
+    public function getGridColumnsCount()
+    {
+        return $this->grid->countColumns();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnPosition($column)
+    {
+        $headers = $this->grid->getColumnHeaders(false, false);
+        foreach ($headers as $position => $header) {
+            if (strtolower($column) === strtolower($header->getText())) {
+                return $position;
+            }
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf('Couldn\'t find a column "%s"', $column)
+        );
+    }
+
 }
