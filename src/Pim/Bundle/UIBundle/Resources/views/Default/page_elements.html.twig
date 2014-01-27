@@ -188,8 +188,8 @@
     </a>
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/dialogform', 'oro/messenger', 'jquery.select2'],
-            function ($, DialogForm, messenger) {
+            ['jquery', 'pim/dialogform', 'oro/messenger', 'pim/initselect2', 'jquery.select2'],
+            function ($, DialogForm, messenger, initSelect2) {
                 'use strict';
                 $(function () {
                     var $field = $('#{{ id }}'),
@@ -209,6 +209,8 @@
                                     return selectData;
                                 })(selectData);
                             }
+                            $select.select2('destroy');
+                            initSelect2.initSelect($select);
                             $select.select2('data', selectData);
                             messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
                         } else {
