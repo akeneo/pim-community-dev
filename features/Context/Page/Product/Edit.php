@@ -80,7 +80,17 @@ class Edit extends Form
      */
     public function switchLocale($locale)
     {
-        $this->getElement('Locales dropdown')->clickLink($locale);
+        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
+        if (!$elt) {
+            throw new \Exception('Could not find locale switcher.');
+        }
+        $elt->click();
+
+        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
+        }
+        $elt->click();
     }
 
     /**
