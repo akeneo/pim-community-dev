@@ -15,6 +15,14 @@ use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory
  */
 class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
+    /**
+     * @staticvar int The default priority for services
+     */
+    const DEFAULT_PRIORITY = 100;
+
+    /**
+     * @var ReferenceFactory
+     */
     protected $factory;
 
     /**
@@ -34,18 +42,32 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
             return;
         }
 
-        $normalizerRefs = array();
-        $encoderRefs    = array();
+        $container->getDefinition('pim_serializer')->setArguments(
+            array(
+                $this->getDependencyReferences($container, 'pim_serializer.normalizer', static::DEFAULT_PRIORITY),
+                $this->getDependencyReferences($container, 'pim_serializer.encoder', static::DEFAULT_PRIORITY)
+            )
+        );
+    }
 
-        foreach ($container->findTaggedServiceIds('pim_serializer.normalizer') as $id => $attributes) {
-            $normalizerRefs[] = $this->factory->createReference($id);
+    /**
+     * Returns an array of service references for a specified tag name
+     *
+     * @param ContainerBuilder $container
+     * @param string           $tagName
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference[]
+     */
+    protected function getDependencyReferences(ContainerBuilder $container, $tagName, $priority)
+    {
+        $services = new \SplPriorityQueue();
+        foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
+            $services->insert(
+                $this->factory->createReference($id), 
+                isset($attributes[0]['priority']) ? $attributes[0]['priority'] : $priority
+            );
         }
 
-        foreach ($container->findTaggedServiceIds('pim_serializer.encoder') as $id => $attributes) {
-            $encoderRefs[] = $this->factory->createReference($id);
-        }
-
-        $serializerDef = $container->getDefinition('pim_serializer');
-        $serializerDef->setArguments(array($normalizerRefs, $encoderRefs));
+        return iterator_to_array($services);
     }
 }
