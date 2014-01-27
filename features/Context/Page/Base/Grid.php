@@ -13,11 +13,11 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-    const FILTER_CONTAINS = 1;
+    const FILTER_CONTAINS         = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
-    const FILTER_IS_EQUAL_TO = 3;
-    const FILTER_STARTS_WITH = 4;
-    const FILTER_ENDS_WITH = 5;
+    const FILTER_IS_EQUAL_TO      = 3;
+    const FILTER_STARTS_WITH      = 4;
+    const FILTER_ENDS_WITH        = 5;
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,8 @@ class Grid extends Index
                 'Grid content'   => array('css' => 'table.grid tbody'),
                 'Filters'        => array('css' => 'div.filter-box'),
                 'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
-                'Manage filters' => array('css' => 'div.filter-list')
+                'Manage filters' => array('css' => 'div.filter-list'),
+                'Body'           => array('css' => 'body')
             ),
             $this->elements
         );
