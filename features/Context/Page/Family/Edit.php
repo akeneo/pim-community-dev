@@ -29,7 +29,7 @@ class Edit extends Form
             $this->elements,
             array(
                 'Attributes'                 => array('css' => '#attributes table'),
-                'Attribute as label choices' => array('css' => '#pim_catalog_family_form_attributeAsLabel'),
+                'Attribute as label choices' => array('css' => '#pim_enrich_family_form_attributeAsLabel'),
             )
         );
     }
@@ -99,7 +99,7 @@ class Edit extends Form
             },
             $this->getElement('Attribute as label choices')->findAll('css', 'option')
         );
-        $options[0] = $this->find('css', '#s2id_pim_catalog_family_form_attributeAsLabel .select2-chosen')->getText();
+        $options[0] = $this->find('css', '#s2id_pim_enrich_family_form_attributeAsLabel .select2-chosen')->getText();
 
         return $options;
     }
@@ -112,7 +112,7 @@ class Edit extends Form
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $selector = '#pim_catalog_family_form_attributeRequirements_%s_%s_required';
+        $selector = '#pim_enrich_family_form_attributeRequirements_%s_%s_required';
         $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
         if (!$checkbox) {
             throw new \RuntimeException(

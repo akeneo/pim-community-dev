@@ -12,7 +12,7 @@ namespace Context\Page\Base;
 class Wizard extends Form
 {
     protected $elements = array(
-        'Available attributes form' => array('css' => '#pim_catalog_mass_edit_action_operation_attributesToDisplay'),
+        'Available attributes form' => array('css' => '#pim_enrich_mass_edit_action_operation_attributesToDisplay'),
     );
 
     protected $currentStep;
