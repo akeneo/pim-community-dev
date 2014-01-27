@@ -230,8 +230,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', '1987-05-14', '>=')->shouldBeCalled();
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', '2014-01-23', '<=')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
