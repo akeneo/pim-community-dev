@@ -62,9 +62,9 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
-        $langage = \Locale::getPrimaryLanguage();
+        $language = \Locale::getPrimaryLanguage();
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $langage);
+        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
     }
 
     /**
@@ -80,9 +80,9 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
-        $langage = \Locale::getPrimaryLanguage();
+        $language = \Locale::getPrimaryLanguage();
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $langage);
+        return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
     }
 
     /**
@@ -97,9 +97,9 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
-        $langage = \Locale::getPrimaryLanguage($locale);
+        $language = \Locale::getPrimaryLanguage($locale);
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencyNames($langage);
+        return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
     }
 
     /**
