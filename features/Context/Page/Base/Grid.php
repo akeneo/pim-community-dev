@@ -661,4 +661,48 @@ class Grid extends Index
 
         $filter->find('css', 'button.filter-update')->click();
     }
+
+    /**
+     * @param string $filterName The name of the date filter
+     * @param double $value      Value to filter
+     * @param string $operator   Type of filtering (>, >=, etc.)
+     */
+    public function filterPerDate($filterName, $value, $operator)
+    {
+        $filterDate = new \DateTime($value);
+        list($filterDay, $filterMonth, $filterYear) = [
+            $filterDate->format('d'),
+            (int) $filterDate->format('m'),
+            $filterDate->format('Y')
+        ];
+
+        $filter = $this->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $operatorElt = $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
+        $criteriaElt->find('css', 'input.hasDatepicker')->focus();
+
+        $datePicker = $this->getElement('Body')->find('css', '#ui-datepicker-div');
+        sleep(1);
+        $dateMonth = $datePicker->find('css', 'select.ui-datepicker-month')->selectOption($filterMonth-1);
+        sleep(1);
+        $datePicker->find('css', 'select.ui-datepicker-year')->selectOption($filterYear);
+        $days = $datePicker->find('css', 'table.ui-datepicker-calendar')->findAll('css', sprintf('a:contains("%d")', $filterDay));
+        $days = array_filter(
+            $days,
+            function ($day) use ($filterDay) {
+                return (int) $day->getText() === (int) $filterDay;
+            }
+        );
+        $day = current($days);
+        sleep(1);
+        $day->click();
+        sleep(1);
+        $filter->find('css', 'button.filter-update')->click();
+    }
 }
