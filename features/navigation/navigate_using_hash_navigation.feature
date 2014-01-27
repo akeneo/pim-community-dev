@@ -10,21 +10,21 @@ Feature: Navigate the application in hash navigation mode
     And I am on the home page
     Then I should be able visit the following pages without errors
       | page                                    |
-      | pim_catalog_association_type_index      |
-      | pim_catalog_attributegroup_create       |
-      | pim_catalog_attributegroup_index        |
-      | pim_catalog_categorytree_create         |
-      | pim_catalog_channel_create              |
-      | pim_catalog_channel_index               |
-      | pim_catalog_currency_index              |
-      | pim_catalog_family_index                |
-      | pim_catalog_group_index                 |
-      | pim_catalog_group_type_index            |
-      | pim_catalog_locale_index                |
-      | pim_catalog_product_index               |
-      | pim_catalog_attribute_create            |
-      | pim_catalog_attribute_index             |
-      | pim_catalog_variant_group_index         |
+      | pim_enrich_association_type_index       |
+      | pim_enrich_attributegroup_create        |
+      | pim_enrich_attributegroup_index         |
+      | pim_enrich_categorytree_create          |
+      | pim_enrich_channel_create               |
+      | pim_enrich_channel_index                |
+      | pim_enrich_currency_index               |
+      | pim_enrich_family_index                 |
+      | pim_enrich_group_index                  |
+      | pim_enrich_group_type_index             |
+      | pim_enrich_locale_index                 |
+      | pim_enrich_product_index                |
+      | pim_enrich_attribute_create             |
+      | pim_enrich_attribute_index              |
+      | pim_enrich_variant_group_index          |
       | pim_importexport_export_profile_index   |
       | pim_importexport_export_execution_index |
       | pim_importexport_import_profile_index   |

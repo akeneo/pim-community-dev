@@ -1,0 +1,53 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
+{% set parentId = form.vars.value.parent ? form.vars.value.parent.id : null %}
+
+{% set entityName = parentId ? 'category' : 'tree' %}
+
+{% if form.vars.value.id %}
+    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.label %}
+{% else %}
+    {% set title = (entityName ~ '.create')|trans %}
+{% endif %}
+{% endspaceless %}
+
+{{ JSFV(form) }}
+{{ form_start(form, {
+    'action': form.vars.value.id ?
+        path('pim_enrich_categorytree_edit', { id: form.vars.value.id }) :
+        path('pim_enrich_categorytree_create', { parent: parentId }),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityName|trans })
+    }
+}) }}
+
+    {% set buttons %}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(
+                path('pim_enrich_categorytree_remove', { id: form.vars.value.id }),
+                'pim_enrich_category_remove',
+                form.vars.value.parent ? path('pim_enrich_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_enrich_categorytree_create'),
+                'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
+                ~ 'info.category.remove children'|trans ~ '<br />'
+                ~ 'info.category.keep products'|trans,
+                (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans
+            ) }}
+        {% elseif parentId %}
+            {{ elements.backLink(path('pim_enrich_categorytree_edit', { id: parentId }), 'btn.to parent') }}
+        {% endif %}
+        {{ elements.submitBtn() }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+    {% include 'PimEnrichBundle:CategoryTree:_navbar.html.twig' %}
+
+    <div class="row-fluid tab-content">
+        {{ elements.form_errors(form) }}
+        {% include 'PimEnrichBundle:CategoryTree:_tab-panes.html.twig' %}
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,28 @@
+{% extends 'PimEnrichBundle:AttributeGroup:index.html.twig' %}
+
+{% block groupTab %}
+{{ JSFV(form) }}
+{{ form_start(form, {
+    'action': path('pim_enrich_attributegroup_create'),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute group'|trans })
+    }
+}) }}
+
+    {{ elements.page_header('attribute group.create'|trans, elements.submitBtn, null, null, elements.updated(form.vars.id)) }}
+
+    {{ elements.form_navbar('Properties') }}
+
+    <div class="tab-content">
+        {{ elements.form_errors(form) }}
+
+        <div class="tab-pane active" id="properties">
+            {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
+        </div>
+
+        {{ form_row(form.sort_order) }}
+    </div>
+
+{{ form_end(form) }}
+{% endblock %}

@@ -26,7 +26,7 @@ class ExportMassAction extends WidgetMassAction
         $options['frontend_type'] = 'export';
 
         if (empty($options['route'])) {
-            $options['route'] = 'pim_catalog_product_index';
+            $options['route'] = 'pim_enrich_product_index';
         }
 
         if (empty($options['route_parameters'])) {

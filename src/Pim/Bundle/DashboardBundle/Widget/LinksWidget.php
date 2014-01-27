@@ -29,27 +29,27 @@ class LinksWidget implements WidgetInterface
             'label' => 'pim_dashboard.menu.label.enrich',
             'links' => array(
                 array(
-                    'route' => 'pim_catalog_product_index',
+                    'route' => 'pim_enrich_product_index',
                     'label' => 'pim_dashboard.link.label.product',
                 ),
                 array(
-                    'route' => 'pim_catalog_categorytree_create',
+                    'route' => 'pim_enrich_categorytree_create',
                     'label' => 'pim_dashboard.link.label.category',
                 ),
                 array(
-                    'route' => 'pim_catalog_variant_group_index',
+                    'route' => 'pim_enrich_variant_group_index',
                     'label' => 'pim_dashboard.link.label.variant',
                 ),
                 array(
-                    'route' => 'pim_catalog_group_index',
+                    'route' => 'pim_enrich_group_index',
                     'label' => 'pim_dashboard.link.label.group',
                 ),
                 array(
-                    'route' => 'pim_catalog_attribute_index',
+                    'route' => 'pim_enrich_attribute_index',
                     'label' => 'pim_dashboard.link.label.attribute',
                 ),
                 array(
-                    'route' => 'pim_catalog_family_create',
+                    'route' => 'pim_enrich_family_create',
                     'label' => 'pim_dashboard.link.label.family',
                 )
             ),

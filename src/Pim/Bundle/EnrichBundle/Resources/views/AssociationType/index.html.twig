@@ -1,0 +1,21 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {% set title = 'association type.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'association type',
+            path('pim_enrich_association_type_create'),
+            'dialog',
+            'pim_enrich_association_type_create'
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {{ dataGrid.renderGrid('association-type-grid', { localeCode: localeCode }) }}
+
+{% endblock %}

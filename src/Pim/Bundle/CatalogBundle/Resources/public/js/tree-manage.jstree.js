@@ -37,7 +37,7 @@ define(
                 },
                 tree_selector: {
                     ajax: {
-                        url: Routing.generate('pim_catalog_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree })
+                        url: Routing.generate('pim_enrich_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree })
                     },
                     auto_open_root: true,
                     node_label_field: 'label',
@@ -50,7 +50,7 @@ define(
                 },
                 json_data: {
                     ajax: {
-                        url: Routing.generate('pim_catalog_categorytree_children', { _format: 'json' }),
+                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json' }),
                         data: function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = null;
@@ -96,7 +96,7 @@ define(
                         $.ajax({
                             async: false,
                             type: 'POST',
-                            url: Routing.generate('pim_catalog_categorytree_movenode'),
+                            url: Routing.generate('pim_enrich_categorytree_movenode'),
                             data: {
                                 id: $(this).attr('id').replace('node_', ''),
                                 parent: data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
@@ -119,7 +119,7 @@ define(
                     });
                 }).bind('select_node.jstree', function (e, data) {
                     var id  = data.rslt.obj.attr('id').replace('node_', ''),
-                        url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
+                        url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
                     if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
                         return;
@@ -148,7 +148,7 @@ define(
                 }).bind('create.jstree', function (e, data) {
                     $.jstree._focused().lock();
                     var id       = data.rslt.parent.attr('id').replace('node_', ''),
-                        url      = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
+                        url      = Routing.generate('pim_enrich_categorytree_create', { parent: id }),
                         position = data.rslt.position,
                         label    = data.rslt.name;
 

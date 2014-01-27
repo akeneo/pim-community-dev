@@ -1,0 +1,121 @@
+{% extends 'PimEnrichBundle:AttributeGroup:index.html.twig' %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({ params: { "%group.label%": form.vars.value.label } }) %}
+
+{% block groupTab %}
+{{ JSFV(form) }}
+{{ form_start(form, {
+    'action': path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute group'|trans })
+    }
+}) }}
+
+    {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
+
+    {% set buttons %}
+        {{ elements.deleteLink(
+            path('pim_enrich_attributegroup_remove', {'id': form.vars.value.id}),
+            'pim_enrich_attribute_group_remove',
+            path('pim_enrich_attributegroup_index'),
+            'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}),
+            'flash.attribute group.removed'|trans)
+        }}
+        {{ elements.submitBtn() }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+    {% set tabs = ['Properties', 'Attributes', 'History'] %}
+
+    {{ elements.form_navbar(tabs) }}
+
+    <div class="tab-content">
+
+        {{ elements.form_errors(form) }}
+
+        <div class="tab-pane active" id="properties">
+            {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
+        </div>
+        {{ form_row(form.sort_order) }}
+
+        {% set removalGranted = resource_granted('pim_enrich_attribute_group_remove_attribute') %}
+        {% set sortGranted = resource_granted('pim_enrich_attribute_sort') %}
+
+        <div class="tab-pane" id="attributes">
+            <div id="attribute-buttons"></div>
+            <div class="clearfix"></div>
+            <table class="table groups">
+                <thead>
+                    {% if sortGranted %}
+                        <th>&nbsp;</th>
+                    {% endif %}
+                    <th>{{ 'Name'|trans }}</th>
+                    <th>{{ 'Type'|trans }}</th>
+                    <th>{{ 'Scope'|trans }}</th>
+                    <th>{{ 'Translatable'|trans }}</th>
+                    {% if removalGranted %}
+                        <th>&nbsp;</th>
+                    {% endif %}
+                </thead>
+                    <tbody id="attributes-sortable">
+                        {% for attribute in group.attributes %}
+                            <tr>
+                                {% if sortGranted %}
+                                    <td>
+                                        <span class="handle">
+                                            <i class="icon-reorder"></i>
+                                            <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
+                                        </span>
+                                    </td>
+                                {% endif %}
+                                <td>{{ attribute.label }}</td>
+                                <td>{{ attribute.attributeType|trans }}</td>
+                                <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
+                                <td>
+                                    <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
+                                </td>
+                                {% if removalGranted %}
+                                    <td>
+                                        <a {{ elements.deleteLinkAttributes(
+                                            path('pim_enrich_attributegroup_removeattribute', {'groupId': group.id, 'attributeId': attribute.id}),
+                                            path('pim_enrich_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
+                                            'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
+                                            'flash.attribute group.attribute removed'|trans
+                                        ) }} class="remove-attribute">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="history">
+            {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+
+{% if form.vars.value.id and resource_granted('pim_enrich_attribute_group_add_attribute') %}
+    {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_enrich_attributegroup_addattributes', { id: form.vars.value.id })
+    } %}
+{% endif %}
+
+{% if sortGranted %}
+    {% include 'PimEnrichBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
+        'list': '#attributes-sortable',
+        'attributes': group.attributes
+    } %}
+{% endif %}
+
+{% endblock %}

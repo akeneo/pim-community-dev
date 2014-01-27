@@ -1,0 +1,19 @@
+<div class="tab-pane active" id="attributes">
+    {% include 'PimEnrichBundle:Product:_attributes.html.twig' %}
+</div>
+{% if resource_granted("pim_enrich_product_categories_view") %}
+    <div class="tab-pane" id="categories">
+       {% include 'PimEnrichBundle:Product:_associateCategories.html.twig' %}
+    </div>
+{% endif %}
+
+{% if resource_granted("pim_enrich_associations_view") %}
+    <div class="tab-pane" id="associations" data-url="{{ path('pim_enrich_associations', { id: product.id }) }}">
+    </div>
+{% endif %}
+
+<div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id }) }}">
+</div>
+
+<div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">
+</div>

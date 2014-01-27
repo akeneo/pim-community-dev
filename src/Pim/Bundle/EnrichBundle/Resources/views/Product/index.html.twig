@@ -1,0 +1,83 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set title = 'products'|trans %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'oro/mediator', 'jquery.sidebarize'],
+            function ($, mediator) {
+                'use strict';
+
+                // Move scope filter to the proper location and remove it from the 'Manage filters' selector
+                // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/datagrid/filter-list.js and manage this there
+                function moveScopeFilter() {
+                    if (!$('.scope-filter').length || $('.scope-filter').parent().parent().hasClass('.actions-panel')) {
+                        return;
+                    }
+
+                    $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
+                    $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
+
+                    $('#add-filter-select').find('option[value="scope"]').remove();
+                    $('#add-filter-select').find('option[value="category"]').remove();
+                    $('#add-filter-select').multiselect('refresh');
+                }
+
+                mediator.once('datagrid_filters:rendered', moveScopeFilter);
+
+                $(function() {
+                    moveScopeFilter();
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'product',
+            path('pim_enrich_product_create'),
+            'dialog',
+            'pim_enrich_product_create'
+        ) }}
+    {% endset %}
+
+    {% set subtitle %}
+        <div id="locale-switcher" class="btn-group sub-title">
+            <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                {{ dataLocale|flag }}
+                <i class="icon-caret-down"></i>
+            </span>
+            <ul class="dropdown-menu">
+                {% for locale in locales %}
+                    <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
+                        <a href="{{ path('pim_enrich_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
+                                {% if locale.code == dataLocale %}
+                                    <i class="icon-circle"></i>
+                                {% endif %}
+                            </span>
+                            {{ locale.code|flag }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle) }}
+
+    <div class="row-fluid has-sidebar">
+        <div id="tree" data-datalocale="{{ dataLocale }}"></div>
+        <div id="product-grid">
+            {{ dataGrid.renderGrid('product-grid', { dataLocale: dataLocale }) }}
+        </div>
+    </div>
+
+{% endblock %}

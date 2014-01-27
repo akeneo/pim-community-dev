@@ -1,0 +1,12 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {% set title = 'locale.overview'|trans %}
+
+    {{ elements.page_header(title) }}
+
+    {{ dataGrid.renderGrid('locale-grid') }}
+
+{% endblock %}

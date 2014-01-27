@@ -1,0 +1,21 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {% set title = 'family.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'family',
+            path('pim_enrich_family_create'),
+            'dialog',
+            'pim_enrich_family_create'
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {{ dataGrid.renderGrid('family-grid', { localeCode: localeCode }) }}
+
+{% endblock %}

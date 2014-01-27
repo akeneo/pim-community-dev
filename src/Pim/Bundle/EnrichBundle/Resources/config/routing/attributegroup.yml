@@ -1,0 +1,40 @@
+pim_enrich_attributegroup_index:
+    path: ''
+    defaults: { _controller: pim_enrich.controller.attribute_group:createAction }
+
+pim_enrich_attributegroup_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.attribute_group:createAction }
+
+pim_enrich_attributegroup_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.attribute_group:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_attributegroup_sort:
+    path: /sort
+    defaults: { _controller: pim_enrich.controller.attribute_group:sortAction }
+    methods: [POST]
+
+pim_enrich_attributegroup_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.attribute_group:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_enrich_attributegroup_addattributes:
+    path: /{id}/attributes
+    defaults: { _controller: pim_enrich.controller.attribute_group:addAttributesAction }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_enrich_attributegroup_removeattribute:
+    path: /{groupId}/attribute/{attributeId}/remove
+    defaults: { _controller: pim_enrich.controller.attribute_group:removeAttributeAction }
+    requirements:
+        groupId: \d+
+        attributeId: \d+
+    methods: [DELETE]

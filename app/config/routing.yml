@@ -1,7 +1,7 @@
 # PIM
 
-pim_catalog:
-    resource: "@PimCatalogBundle/Resources/config/routing.yml"
+pim_enrich:
+    resource: "@PimEnrichBundle/Resources/config/routing.yml"
 
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"

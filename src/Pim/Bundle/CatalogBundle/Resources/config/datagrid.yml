@@ -55,13 +55,13 @@ datagrid:
         options:
             entityHint: association
         source:
-            acl_resource: pim_catalog_association_type_index
+            acl_resource: pim_enrich_association_type_index
             entity: %pim_catalog.entity.association_type.class%
         properties:
             edit_link:
-                route: pim_catalog_association_type_edit
+                route: pim_enrich_association_type_edit
             delete_link:
-                route: pim_catalog_association_type_remove
+                route: pim_enrich_association_type_remove
         sorters:
             columns:
                 code:
@@ -76,13 +76,13 @@ datagrid:
         options:
             entityHint: group type
         source:
-            acl_resource: pim_catalog_group_type_index
+            acl_resource: pim_enrich_group_type_index
             entity: %pim_catalog.entity.group_type.class%
         properties:
             edit_link:
-                route: pim_catalog_group_type_edit
+                route: pim_enrich_group_type_edit
             delete_link:
-                route: pim_catalog_group_type_remove
+                route: pim_enrich_group_type_remove
         sorters:
             columns:
                 code:
@@ -97,7 +97,7 @@ datagrid:
         options:
             entityHint: attribute
         source:
-            acl_resource: pim_catalog_attribute_index
+            acl_resource: pim_enrich_attribute_index
             entity: %pim_catalog.entity.attribute.class%
         columns:
             attributeType:
@@ -114,9 +114,9 @@ datagrid:
                 data_name: groupLabel
         properties:
             edit_link:
-                route: pim_catalog_attribute_edit
+                route: pim_enrich_attribute_edit
             delete_link:
-                route: pim_catalog_attribute_remove
+                route: pim_enrich_attribute_remove
         sorters:
             columns:
                 code:
@@ -157,7 +157,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_channel_index
+            acl_resource: pim_enrich_channel_index
             type: pim_orm
             entity: %pim_catalog.entity.channel.class%
             repository_method: createDatagridQueryBuilder
@@ -173,12 +173,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_channel_edit
+                route: pim_enrich_channel_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_channel_remove
+                route: pim_enrich_channel_remove
                 params:
                     - id
         actions:
@@ -233,7 +233,7 @@ datagrid:
                 label: Export CSV
                 icon: download
         source:
-            acl_resource: pim_catalog_product_index
+            acl_resource: pim_enrich_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createDatagridQueryBuilder
@@ -250,7 +250,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -267,12 +267,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_product_edit
+                route: pim_enrich_product_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_product_remove
+                route: pim_enrich_product_remove
                 params:
                     - id
         actions:
@@ -320,7 +320,7 @@ datagrid:
             mass_edit:
                 type: redirect
                 label: Mass Edit
-                route: pim_catalog_mass_edit_action_choose
+                route: pim_enrich_mass_edit_action_choose
                 icon: edit
         sorters:
             columns:
@@ -403,7 +403,7 @@ datagrid:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
         source:
-            acl_resource: pim_catalog_product_index
+            acl_resource: pim_enrich_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
@@ -428,7 +428,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -507,7 +507,7 @@ datagrid:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
         source:
-            acl_resource: pim_catalog_product_index
+            acl_resource: pim_enrich_product_index
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
@@ -532,7 +532,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -604,7 +604,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_family_index
+            acl_resource: pim_enrich_family_index
             type: pim_orm
             entity: %pim_catalog.entity.family.class%
             repository_method: createDatagridQueryBuilder
@@ -619,12 +619,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_family_edit
+                route: pim_enrich_family_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_family_remove
+                route: pim_enrich_family_remove
                 params:
                     - id
         actions:
@@ -674,7 +674,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_currency_index
+            acl_resource: pim_enrich_currency_index
             type: pim_orm
             entity: %pim_catalog.entity.currency.class%
             repository_method: createDatagridQueryBuilder
@@ -693,7 +693,7 @@ datagrid:
             id: ~
             toggle_link:
                 type: url
-                route: pim_catalog_currency_toggle
+                route: pim_enrich_currency_toggle
                 params:
                     - id
         actions:
@@ -702,7 +702,7 @@ datagrid:
                 label:        Change status
                 icon:         random
                 link:         toggle_link
-                acl_resource: pim_catalog_currency_toggle
+                acl_resource: pim_enrich_currency_toggle
         sorters:
             columns:
                 code:
@@ -728,7 +728,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_locale_index
+            acl_resource: pim_enrich_locale_index
             type: pim_orm
             entity: %pim_catalog.entity.locale.class%
             repository_method: createDatagridQueryBuilder
@@ -767,7 +767,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_group_index
+            acl_resource: pim_enrich_group_index
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
             repository_method: createDatagridQueryBuilder
@@ -782,12 +782,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_group_edit
+                route: pim_enrich_group_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_group_remove
+                route: pim_enrich_group_remove
                 params:
                     - id
         actions:
@@ -836,7 +836,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/state-listener
         source:
-            acl_resource: pim_catalog_group_index
+            acl_resource: pim_enrich_group_index
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
             repository_method: createDatagridQueryBuilder
@@ -854,12 +854,12 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pim_catalog_variant_group_edit
+                route: pim_enrich_variant_group_edit
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_catalog_variant_group_remove
+                route: pim_enrich_variant_group_remove
                 params:
                     - id
         actions:
@@ -932,7 +932,7 @@ datagrid:
                 label:         Complete
                 data_name:     ratio
                 type:          twig
-                template:      PimCatalogBundle:Completeness:_datagridCompleteness.html.twig
+                template:      PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
                 frontend_type: html
             created:
                 label:         Created

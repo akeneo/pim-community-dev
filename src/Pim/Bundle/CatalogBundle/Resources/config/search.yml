@@ -2,7 +2,7 @@
     alias:                          pim_category
     title_fields:                   [label]
     route:
-        name:                       pim_catalog_categorytree_edit
+        name:                       pim_enrich_categorytree_edit
         parameters:
             id:                     id
     search_template:                PimCatalogBundle:CategoryTree:result.html.twig
@@ -19,7 +19,7 @@
 %pim_catalog.entity.product.class%:
     alias:                          pim_product
     route:
-        name:                       pim_catalog_product_edit
+        name:                       pim_enrich_product_edit
         parameters:
             id:                     id
     search_template:                PimCatalogBundle:Product:result.html.twig

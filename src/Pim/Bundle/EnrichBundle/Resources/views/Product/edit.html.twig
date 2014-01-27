@@ -1,0 +1,128 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { "%product.sku%": product.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'PimEnrichBundle:Product:_js-handler.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    {% if resource_granted('pim_enrich_product_add_attribute') %}
+        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_enrich_product_addattributes', {'id': product.id, 'dataLocale': dataLocale})
+        } %}
+    {% endif %}
+
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_enrich_product_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'attr': {
+            'class': 'product-edit',
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product'|trans })
+        }
+    }) }}
+
+        {% set title = 'product'|trans %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_enrich_product_index')) }}
+            {{ elements.enabledSwitch(form) }}
+            {% if resource_granted("pim_enrich_product_remove") %}
+                {{ elements.deleteLink(
+                    path('pim_enrich_product_remove', { id: form.vars.value.id }),
+                    'pim_enrich_product_remove',
+                    path('pim_enrich_product_index'),
+                    'confirmation.remove.product'|trans({ '%name%': product.label }),
+                    'flash.product.removed'|trans
+                ) }}
+            {% endif %}
+            {{ elements.submitDropdownBtn(
+                'btn.save',
+                {
+                    'Create': { 'text': 'btn.save and create' },
+                    'BackGrid': { 'text': 'btn.save and back' }
+                }
+            ) }}
+        {% endset %}
+
+        {% set subtitle %}
+            <div id="locale-switcher" class="btn-group sub-title">
+                <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                    {{ dataLocale|flag }}
+                    <span class="title">
+                        {{ product.label }}
+                    </span>
+                    <i class="icon-caret-down"></i>
+                </span>
+                <ul class="dropdown-menu">
+                    {% for locale in locales %}
+                        <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
+                            <a href="{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                                <span class="indicator">
+                                    {% if locale.code == dataLocale %}
+                                        <i class="icon-circle"></i>
+                                    {% endif %}
+                                </span>
+                                {{ locale.code|flag }}
+                                <span class="title">{{ product.label(locale.code) }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ elements.enabledLabel(form) }}
+        {% endset %}
+
+        {% set left %}
+            <ul class="inline">
+                <li>
+                    {{ 'family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+                    {% if resource_granted('pim_enrich_product_change_family') %}
+                        <i id="edit-family" class="icon-pencil"></i>
+                    {% endif %}
+                </li>
+
+                {% if form.vars.value.groups|length != 0 %}
+                <li>
+                    {{ 'groups'|trans|capitalize }}:
+                    {% for group in form.vars.value.groups %}
+                        <a id="group-products-{{ group.id }}" href="#"
+                        {% if group.type.isVariant %}
+                            data-toggle="tooltip" data-placement="bottom" data-html="true"
+                            data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
+                        {% endif %}
+                        >
+                            {{ group.label }}</a>{% if not loop.last %}, {% endif %}
+                        </a>
+                    {% endfor %}
+                </li>
+                {% endif %}
+
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+           </ul>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
+
+        <div class="layout-content">
+            {% include 'PimEnrichBundle:Product:_navbar.html.twig' %}
+
+            <div class="row-fluid tab-content">
+                {{ elements.form_errors(form) }}
+
+                {% include 'PimEnrichBundle:Product:_tab-panes.html.twig' %}
+
+                {{ form_row(form.id) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    <a href="javascript:void(0);"
+        id="create-product"
+        data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
+{% endblock %}

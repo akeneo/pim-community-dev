@@ -1,0 +1,11 @@
+{% include 'PimEnrichBundle:Group:_group.html.twig'
+    with {
+        'indexRoute':  'pim_enrich_group_index',
+        'editRoute':   'pim_enrich_group_edit',
+        'removeRoute': 'pim_enrich_group_remove',
+        'confirmationMessage': 'confirmation.remove.group',
+        'removeMessage':       'flash.group.removed',
+        'entityType': 'group',
+        'title':      'group.edit'|trans,
+        'gridName':   'product-group-grid'
+    } %}

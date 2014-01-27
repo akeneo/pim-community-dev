@@ -26,6 +26,7 @@
 - FlexibleQueryBuilder is injected to ProductRepository
 - ProductRepository is injected in ProductManager
 - Remove deprecated flexible entity config which is now builded by flexible manager itself (use doctrine meta)
+- Move controllers, routing and views from CatalogBundle to EnrichBundle (rename routes, acls, services)
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
