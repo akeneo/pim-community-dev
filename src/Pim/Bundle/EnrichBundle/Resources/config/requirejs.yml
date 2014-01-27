@@ -1,0 +1,16 @@
+config:
+    shim:
+        jquery.wizard:
+            deps:
+                - jquery
+        jstree/jquery.jstree.nested_switch:
+            deps:
+                - jquery.jstree
+
+    paths:
+        jquery.wizard:                      pimenrich/js/jquery.wizard
+        jstree/jquery.jstree.nested_switch: pimenrich/js/lib/jstree/jquery.jstree.nested_switch
+        pim/tree/view:                      pimenrich/js/tree-view.jstree
+        pim/tree/associate:                 pimenrich/js/tree-associate.jstree
+        pim/tree/mass-associate:            pimenrich/js/tree-mass-associate.jstree
+        pim/tree/manage:                    pimenrich/js/tree-manage.jstree
