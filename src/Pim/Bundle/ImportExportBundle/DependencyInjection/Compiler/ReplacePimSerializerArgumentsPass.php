@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Compiler pass to register tagged encoders and normalizers into the pim serializer
