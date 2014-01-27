@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection;
+namespace Pim\Bundle\EnrichBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Pim Catalog bundle configuration
+ * Pim Enrich bundle configuration
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Configuration implements ConfigurationInterface
@@ -20,11 +20,11 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_catalog');
+        $rootNode = $treeBuilder->root('pim_enrich');
 
         $rootNode
             ->children()
-                ->scalarNode('storage_driver')->defaultValue('doctrine/orm')->end()
+                ->booleanNode('record_mails')->defaultFalse()->end()
             ->end()
         ->end();
 
