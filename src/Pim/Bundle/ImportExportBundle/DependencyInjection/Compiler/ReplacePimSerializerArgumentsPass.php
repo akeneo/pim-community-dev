@@ -63,7 +63,7 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
         $services = new \SplPriorityQueue();
         foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
             $services->insert(
-                $this->factory->createReference($id), 
+                $this->factory->createReference($id),
                 isset($attributes[0]['priority']) ? $attributes[0]['priority'] : $priority
             );
         }
