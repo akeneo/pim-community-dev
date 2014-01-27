@@ -234,7 +234,7 @@ class WebUser extends RawMinkContext
                 throw $this->createExpectationException(
                     sprintf(
                         'Could not find locale "%s %s" in the locale switcher',
-                        $data['locale'],
+                        $data['language'],
                         $data['label']
                     )
                 );

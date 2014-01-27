@@ -23,8 +23,9 @@ Feature: Switch product locale
     And I save the product
     Then the product Name should be "My cool jacket"
 
+  @javascript
   Scenario: Successfully edit a product in another locale
-    Given I switch the locale to "German"
+    Given I switch the locale to "German (Germany)"
     Then the product Name should be empty
     When I change the Name to "Meine Jacke"
     And I save the product
