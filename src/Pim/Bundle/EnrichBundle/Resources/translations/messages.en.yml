@@ -424,7 +424,7 @@ Select: Select
 Remove this attribute: Remove this attribute
 
 # Product completeness
-pim_catalog.completeness:
+pim_enrich.completeness:
     progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
     subtitle:           '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
     missing_attributes: Missing value|Missing values
@@ -432,7 +432,7 @@ pim_catalog.completeness:
         locale_not_associated: Locale not associated to this channel
 
 # Product groups
-pim_catalog.group:
+pim_enrich.group:
     axis.help: 'Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.'
     type:
         VARIANT:    Variant
@@ -441,15 +441,15 @@ pim_catalog.group:
         RELATED:    Related
 
 # Product comparison
-pim_catalog.product:
-    no_comparison_locale_available: 'No other locale is available for comparison'
-    no_compared_media: 'No media available for comparison'
+pim_enrich.product:
+    no_comparison_locale_available: No other locale is available for comparison
+    no_compared_media: No media available for comparison
 Copy: Copy
 Translate from: Translate from
 Current tab: Current tab
 
 # Channel form
-pim_catalog.channel.pick_conversion_unit: 'Pick a conversion unit for each metric attribute that will be used during product export'
+pim_enrich.channel.pick_conversion_unit: Pick a conversion unit for each metric attribute that will be used during product export
 
 # Product view
 Group: Group
@@ -457,51 +457,51 @@ View group: View group
 Products: Products
 
 # ACLs
-pim_catalog:
+pim_enrich:
     acl:
-        locale.index: 'List locales'
+        locale.index: List locales
         currency:
-            index: 'List currencies'
-            toggle: 'Toggle currencies'
+            index: List currencies
+            toggle: Toggle currencies
         product:
-            index: 'List products'
-            create: 'Create a product'
-            edit: 'Edit a product'
-            remove: 'Remove a product'
-            add_attribute: 'Add an attribute to a product'
-            remove_attribute: 'Remove an attribute from a product'
-            categories_view: 'Consult the categories of a product'
-            associations_view: 'View the association types of a product'
-            change_family: 'Change product family'
-            change_state: 'Change state of product'
-            add_to_groups: 'Add product to groups'
-            mass_edit: 'Product mass edit actions'
+            index: List products
+            create: Create a product
+            edit: Edit a product
+            remove: Remove a product
+            add_attribute: Add an attribute to a product
+            remove_attribute: Remove an attribute from a product
+            categories_view: Consult the categories of a product
+            associations_view: View the association types of a product
+            change_family: Change product family
+            change_state: Change state of product
+            add_to_groups: Add product to groups
+            mass_edit: Product mass edit actions
         category:
-            list: 'List categories'
-            create: 'Create a category'
-            edit: 'Edit a category'
-            remove: 'Remove a category'
-            move: 'Move category'
-            children: 'See category children'
-            products: See category's product
+            list: List categories
+            create: Create a category
+            edit: Edit a category
+            remove: Remove a category
+            move: Move category
+            children: See category children
+            products: See category's products
         channel:
-            index: 'List channels'
-            create: 'Create a channel'
-            edit: 'Edit a channel'
-            remove: 'Remove a channel'
+            index: List channels
+            create: Create a channel
+            edit: Edit a channel
+            remove: Remove a channel
         family:
-            create: 'Create a family'
-            edit: 'Edit a family'
-            remove: 'Remove a family'
-            add_attribute: 'Add attribute to a family'
-            remove_attribute: 'Remove attribute from a family'
+            create: Create a family
+            edit: Edit a family
+            remove: Remove a family
+            add_attribute: Add attribute to a family
+            remove_attribute: Remove attribute from a family
         attribute_group:
-            create: 'Create an attribute group'
-            edit: 'Edit an attribute group'
-            remove: 'Remove an attribute group'
-            sort: 'Sort attribute groups'
-            add_attribute: 'Add attribute to a group'
-            remove_attribute: 'Remove attribute from a group'
+            create: Create an attribute group
+            edit: Edit an attribute group
+            remove: Remove an attribute group
+            sort: Sort attribute groups
+            add_attribute: Add attribute to a group
+            remove_attribute: Remove attribute from a group
         attribute:
             index: List attributes
             create: Create an attribute
@@ -509,20 +509,20 @@ pim_catalog:
             remove: Remove an attribute
             sort: Sort attributes inside attribute groups
         group:
-            index: 'List groups'
-            create: 'Create a group'
-            edit: 'Edit a group'
-            remove: 'Remove a group'
+            index: List groups
+            create: Create a group
+            edit: Edit a group
+            remove: Remove a group
         group_type:
-            index: 'List group types'
-            create: 'Create a group type'
-            edit: 'Edit a group type'
-            remove: 'Remove a group type'
+            index: List group types
+            create: Create a group type
+            edit: Edit a group type
+            remove: Remove a group type
         association_type:
-            index: 'List association types'
-            create: 'Create an association type'
-            edit: 'Edit an association type'
-            remove: 'Remove an association type'
+            index: List association types
+            create: Create an association type
+            edit: Edit an association type
+            remove: Remove an association type
 
 # Menu entries
 pim_menu:

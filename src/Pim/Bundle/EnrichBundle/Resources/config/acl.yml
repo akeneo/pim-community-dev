@@ -1,183 +1,183 @@
 # Locales
 pim_enrich_locale_index:
     type: action
-    label: pim_catalog.acl.locale.index
+    label: pim_enrich.acl.locale.index
 
 # Currency
 pim_enrich_currency_index:
     type: action
-    label: pim_catalog.acl.currency.index
+    label: pim_enrich.acl.currency.index
 pim_enrich_currency_toggle:
     type: action
-    label: pim_catalog.acl.currency.toggle
+    label: pim_enrich.acl.currency.toggle
 
 # Product
 pim_enrich_product_index:
     type: action
-    label: pim_catalog.acl.product.index
+    label: pim_enrich.acl.product.index
 pim_enrich_product_create:
     type: action
-    label: pim_catalog.acl.product.create
+    label: pim_enrich.acl.product.create
 pim_enrich_product_edit:
     type: action
-    label: pim_catalog.acl.product.edit
+    label: pim_enrich.acl.product.edit
 pim_enrich_product_remove:
     type: action
-    label: pim_catalog.acl.product.remove
+    label: pim_enrich.acl.product.remove
 
 pim_enrich_product_add_attribute:
     type: action
-    label: pim_catalog.acl.product.add_attribute
+    label: pim_enrich.acl.product.add_attribute
 pim_enrich_product_remove_attribute:
     type: action
-    label: pim_catalog.acl.product.remove_attribute
+    label: pim_enrich.acl.product.remove_attribute
 pim_enrich_product_categories_view:
     type: action
-    label: pim_catalog.acl.product.categories_view
+    label: pim_enrich.acl.product.categories_view
 pim_enrich_associations_view:
     type: action
-    label: pim_catalog.acl.product.associations_view
+    label: pim_enrich.acl.product.associations_view
 pim_enrich_product_change_family:
     type: action
-    label: pim_catalog.acl.product.change_family
+    label: pim_enrich.acl.product.change_family
 pim_enrich_product_change_state:
     type: action
-    label: pim_catalog.acl.product.change_state
+    label: pim_enrich.acl.product.change_state
 pim_enrich_product_add_to_groups:
     type: action
-    label: pim_catalog.acl.product.add_to_groups
+    label: pim_enrich.acl.product.add_to_groups
 
 # Mass edit action
 pim_enrich_mass_edit:
     type: action
-    label: pim_catalog.acl.product.mass_edit
+    label: pim_enrich.acl.product.mass_edit
 
 # Category
 pim_enrich_category_list:
     type: action
-    label: pim_catalog.acl.category.list
+    label: pim_enrich.acl.category.list
 pim_enrich_category_create:
     type: action
-    label: pim_catalog.acl.category.create
+    label: pim_enrich.acl.category.create
 pim_enrich_category_edit:
     type: action
-    label: pim_catalog.acl.category.edit
+    label: pim_enrich.acl.category.edit
 pim_enrich_category_remove:
     type: action
-    label: pim_catalog.acl.category.remove
+    label: pim_enrich.acl.category.remove
 
 # Channel
 pim_enrich_channel_index:
     type: action
-    label: pim_catalog.acl.channel.index
+    label: pim_enrich.acl.channel.index
 pim_enrich_channel_create:
     type: action
-    label: pim_catalog.acl.channel.create
+    label: pim_enrich.acl.channel.create
 pim_enrich_channel_edit:
     type: action
-    label: pim_catalog.acl.channel.edit
+    label: pim_enrich.acl.channel.edit
 pim_enrich_channel_remove:
     type: action
-    label: pim_catalog.acl.channel.remove
+    label: pim_enrich.acl.channel.remove
 
 #Family
 pim_enrich_family_index:
     type: action
-    label: pim_catalog.acl.family.index
+    label: pim_enrich.acl.family.index
 pim_enrich_family_create:
     type: action
-    label: pim_catalog.acl.family.create
+    label: pim_enrich.acl.family.create
 pim_enrich_family_edit:
     type: action
-    label: pim_catalog.acl.family.edit
+    label: pim_enrich.acl.family.edit
 pim_enrich_family_remove:
     type: action
-    label: pim_catalog.acl.family.remove
+    label: pim_enrich.acl.family.remove
 
 pim_enrich_family_add_attribute:
     type: action
-    label: pim_catalog.acl.family.add_attribute
+    label: pim_enrich.acl.family.add_attribute
 pim_enrich_family_remove_atribute:
     type: action
-    label: pim_catalog.acl.family.remove_attribute
+    label: pim_enrich.acl.family.remove_attribute
 
 # Attribute group
 pim_enrich_attribute_group_create:
     type: action
-    label: pim_catalog.acl.attribute_group.create
+    label: pim_enrich.acl.attribute_group.create
 pim_enrich_attribute_group_edit:
     type: action
-    label: pim_catalog.acl.attribute_group.edit
+    label: pim_enrich.acl.attribute_group.edit
 pim_enrich_attribute_group_remove:
     type: action
-    label: pim_catalog.acl.attribute_group.remove
+    label: pim_enrich.acl.attribute_group.remove
 
 pim_enrich_attribute_group_sort:
     type: action
-    label: pim_catalog.acl.attribute_group.sort
+    label: pim_enrich.acl.attribute_group.sort
 pim_enrich_attribute_group_add_attribute:
     type: action
-    label: pim_catalog.acl.attribute_group.add_attribute
+    label: pim_enrich.acl.attribute_group.add_attribute
 pim_enrich_attribute_group_remove_attribute:
     type: action
-    label: pim_catalog.acl.attribute_group.remove_attribute
+    label: pim_enrich.acl.attribute_group.remove_attribute
 
 # AttributeInterface
 pim_enrich_attribute_index:
     type: action
-    label: pim_catalog.acl.attribute.index
+    label: pim_enrich.acl.attribute.index
 pim_enrich_attribute_create:
     type: action
-    label: pim_catalog.acl.attribute.create
+    label: pim_enrich.acl.attribute.create
 pim_enrich_attribute_edit:
     type: action
-    label: pim_catalog.acl.attribute.edit
+    label: pim_enrich.acl.attribute.edit
 pim_enrich_attribute_remove:
     type: action
-    label: pim_catalog.acl.attribute.remove
+    label: pim_enrich.acl.attribute.remove
 
 pim_enrich_attribute_sort:
     type: action
-    label: pim_catalog.acl.attribute.sort
+    label: pim_enrich.acl.attribute.sort
 
 # Groups
 pim_enrich_group_index:
     type: action
-    label: pim_catalog.acl.group.index
+    label: pim_enrich.acl.group.index
 pim_enrich_group_create:
     type: action
-    label: pim_catalog.acl.group.create
+    label: pim_enrich.acl.group.create
 pim_enrich_group_edit:
     type: action
-    label: pim_catalog.acl.group.edit
+    label: pim_enrich.acl.group.edit
 pim_enrich_group_remove:
     type: action
-    label: pim_catalog.acl.group.remove
+    label: pim_enrich.acl.group.remove
 
 # Group types
 pim_enrich_group_type_index:
     type: action
-    label: pim_catalog.acl.group_type.index
+    label: pim_enrich.acl.group_type.index
 pim_enrich_group_type_create:
     type: action
-    label: pim_catalog.acl.group_type.create
+    label: pim_enrich.acl.group_type.create
 pim_enrich_group_type_edit:
     type: action
-    label: pim_catalog.acl.group_type.edit
+    label: pim_enrich.acl.group_type.edit
 pim_enrich_group_type_remove:
     type: action
-    label: pim_catalog.acl.group_type.remove
+    label: pim_enrich.acl.group_type.remove
 
 # Association
 pim_enrich_association_type_index:
     type: action
-    label: pim_catalog.acl.association_type.index
+    label: pim_enrich.acl.association_type.index
 pim_enrich_association_type_create:
     type: action
-    label: pim_catalog.acl.association_type.create
+    label: pim_enrich.acl.association_type.create
 pim_enrich_association_type_edit:
     type: action
-    label: pim_catalog.acl.association_type.edit
+    label: pim_enrich.acl.association_type.edit
 pim_enrich_association_type_remove:
     type: action
-    label: pim_catalog.acl.association_type.remove
+    label: pim_enrich.acl.association_type.remove
