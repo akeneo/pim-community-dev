@@ -287,11 +287,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param string  $code
      * @param string  $type
      * @param boolean $scopable
-     * @param boolean $translatable
+     * @param boolean $localizable
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    protected function getAttributeMock($code, $type = 'text', $scopable = false, $translatable = false)
+    protected function getAttributeMock($code, $type = 'text', $scopable = false, $localizable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -308,8 +308,8 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         $attribute->expects($this->any())
             ->method('getVirtualGroup')

@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validator for attribute not being translatable and scopable when unique
+ * Validator for attribute not being localizable and scopable when unique
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -23,8 +23,8 @@ class UniqueMatrixValidator extends ConstraintValidator
             if ($entity->isScopable()) {
                 $this->context->addViolationAt('scopable', $constraint->scopableMessage);
             }
-            if ($entity->isTranslatable()) {
-                $this->context->addViolationAt('translatable', $constraint->translatableMessage);
+            if ($entity->isLocalizable()) {
+                $this->context->addViolationAt('localizable', $constraint->localizableMessage);
             }
         }
     }

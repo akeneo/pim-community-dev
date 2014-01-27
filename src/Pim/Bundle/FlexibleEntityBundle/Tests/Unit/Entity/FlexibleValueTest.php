@@ -38,7 +38,7 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
         // create attribute
         $this->attribute = new Attribute();
         $this->attribute->setCode('mycode');
-        $this->attribute->setTranslatable(true);
+        $this->attribute->setLocalizable(true);
         $this->attribute->setScopable(true);
         $this->attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         // create value
@@ -208,21 +208,21 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      *
-     * @param boolean $isTranslatable is translatable
-     * @param boolean $isScopable     is scopable
-     * @param string  $locale         locale
-     * @param string  $matchLocale    locale to match
-     * @param string  $scope          scope
-     * @param string  $matchScope     scope to match
-     * @param boolean $expected       expected result
+     * @param boolean $isLocalizable is translatable
+     * @param boolean $isScopable    is scopable
+     * @param string  $locale        locale
+     * @param string  $matchLocale   locale to match
+     * @param string  $scope         scope
+     * @param string  $matchScope    scope to match
+     * @param boolean $expected      expected result
      *
      * @dataProvider valueMatchingProvider
      */
-    public function testIsMatching($isTranslatable, $isScopable, $locale, $matchLocale, $scope, $matchScope, $expected)
+    public function testIsMatching($isLocalizable, $isScopable, $locale, $matchLocale, $scope, $matchScope, $expected)
     {
         $attribute = new Attribute();
         $attribute->setCode('mycode');
-        $attribute->setTranslatable($isTranslatable);
+        $attribute->setLocalizable($isLocalizable);
         $attribute->setScopable($isScopable);
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
