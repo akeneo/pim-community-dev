@@ -1,0 +1,65 @@
+services:
+    pim_enrich.form.handler.attribute:
+        class: %pim_enrich.form.handler.attribute.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.attribute'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.attribute'
+
+    pim_enrich.form.handler.attribute_group:
+        class: %pim_enrich.form.handler.attribute_group.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.attribute_group'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.channel:
+        class: %pim_enrich.form.handler.channel.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.channel'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.currency:
+        class: %pim_enrich.form.handler.currency.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.currency'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.group:
+        class: %pim_enrich.form.handler.group.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.group'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.group_type:
+        class: %pim_enrich.form.handler.group_type.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.group_type'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.association_type:
+        class: %pim_enrich.form.handler.association_type.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.association_type'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    pim_enrich.form.handler.family:
+        class: %pim_enrich.form.handler.family.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.family'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

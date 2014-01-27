@@ -1,16 +1,16 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = 'pim_catalog.mass_edit_action.page_title'|trans %}
-    {% set subtitle = 'pim_catalog.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
+    {% set title = 'pim_enrich.mass_edit_action.page_title'|trans %}
+    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
 
     <div class="row">
         <div class="offset1">
-            <h3>{{ 'pim_catalog.mass_edit_action.title'|trans }}</h3>
-            <h4>{{ 'pim_catalog.mass_edit_action.subtitle'|transchoice(productIds|length) }}</h4>
+            <h3>{{ 'pim_enrich.mass_edit_action.title'|trans }}</h3>
+            <h4>{{ 'pim_enrich.mass_edit_action.subtitle'|transchoice(productIds|length) }}</h4>
         </div>
     </div>
 

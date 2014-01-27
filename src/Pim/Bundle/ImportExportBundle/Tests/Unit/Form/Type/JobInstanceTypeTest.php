@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\PreloadedExtension;
-use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
+use Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobConfigurationType;
 
