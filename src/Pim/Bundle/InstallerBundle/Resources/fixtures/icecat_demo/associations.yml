@@ -1,0 +1,120 @@
+associations:
+    - owner: OROMUG_DBO
+      associationType: SUBSTITUTION
+      products:
+        - OROMUG_BO
+        - OROMUG_WO
+        - OROMUG_OW
+        - OROMUG_OB
+        - OROMUG_ODB
+
+    - owner: AKNMUG_BP
+      associationType: SUBSTITUTION
+      products:
+        - AKNMUG_WP
+        - AKNMUG_PB
+        - AKNMUG_PW
+
+    - owner: AKNTS_BPXS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXS
+        - AKNTS_PBXS
+        - AKNTS_PWXS
+
+    - owner: AKNTS_BPS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPS
+        - AKNTS_PBS
+        - AKNTS_PWS
+
+    - owner: AKNTS_BPM
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPM
+        - AKNTS_PBM
+        - AKNTS_PWM
+
+    - owner: AKNTS_BPL
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPL
+        - AKNTS_PBL
+        - AKNTS_PWL
+
+    - owner: AKNTS_BPXL
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXL
+        - AKNTS_PBXL
+        - AKNTS_PWXL
+
+    - owner: AKNTS_BPXXL
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXXL
+        - AKNTS_PBXXL
+        - AKNTS_PWXXL
+
+    - owner: AKNTS_BPXS_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXS_LS
+        - AKNTS_PBXS_LS
+        - AKNTS_PWXS_LS
+
+    - owner: AKNTS_BPS_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPS_LS
+        - AKNTS_PBS_LS
+        - AKNTS_PWS_LS
+
+    - owner: AKNTS_BPM_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPM_LS
+        - AKNTS_PBM_LS
+        - AKNTS_PWM_LS
+
+    - owner: AKNTS_BPL_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPL_LS
+        - AKNTS_PBL_LS
+        - AKNTS_PWL_LS
+
+    - owner: AKNTS_BPXL_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXL_LS
+        - AKNTS_PBXL_LS
+        - AKNTS_PWXL_LS
+
+    - owner: AKNTS_BPXXL_LS
+      associationType: SUBSTITUTION
+      products:
+        - AKNTS_WPXXL_LS
+        - AKNTS_PBXXL_LS
+        - AKNTS_PWXXL_LS
+
+    - owner: AKNTS_WPM
+      associationType: PACK
+      groups:
+        - akeneo_mug
+      products:
+        - OROMUG_DBO
+        - AKNSTK
+
+    - owner: AKNMUG_WP
+      associationType: PACK
+      groups:
+        - akeneo_tshirt
+
+    - owner: AKNMUG_PW
+      associationType: PACK
+      groups:
+        - akeneo_vneck_tshirt
+      products:
+        - AKNSTK

@@ -31,6 +31,7 @@ attributes:
         translatable: true
         scopable: true
         sortOrder: 3
+        wysiwyg_enabled: true
     weight:
         labels:
             en_US: Weight
@@ -342,6 +343,7 @@ attributes:
             de_DE: Erscheinungstermin
         type: pim_catalog_date
         group: marketing
+        scopable: true
         useableAsGridFilter: true
         sortOrder: 25
     viewing_area:
@@ -372,8 +374,184 @@ attributes:
             fr_FR: Photographie
             de_DE: Photography
         type: pim_catalog_image
-        group: marketing
+        group: media
         useableAsGridFilter: false
         useableAsGridColumn: false
         sortOrder: 27
         allowedExtensions: 'jpg,jpeg,gif'
+    pdf_description:
+        labels:
+            en_US: PDF description
+            fr_FR: Description PDF
+            de_DE: PDF Bezeichnung
+        type: pim_catalog_file
+        group: media
+        useableAsGridFilter: false
+        useableAsGridColumn: false
+        sortOrder: 28
+        allowedExtensions: 'pdf'
+    container_material:
+        labels:
+            en_US: 'Container material'
+            fr_FR: 'Matériau du récipient'
+            de_DE: 'Behältermaterial'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        useableAsGridFilter: true
+        sortOrder: 29
+        options:
+            earthenware:
+                code: earthenware
+                labels: { fr_FR: 'Faïence', en_US: 'Earthenware', de_DE: 'Tonwaren' }
+            porcelain:
+                code: porcelain
+                labels: { fr_FR: 'Porcelaine', en_US: 'Porcelain', de_DE: 'Porzellan' }
+            ceramic:
+                code: ceramic
+                labels: { fr_FR: 'Céramique', en_US: 'Ceramic', de_DE: 'Keramisch' }
+    main_color:
+        labels:
+            en_US: 'Main color'
+            fr_FR: 'Couleur principale'
+            de_DE: 'Hauptfarbe'
+        type: pim_catalog_simpleselect
+        group: color
+        useableAsGridFilter: true
+        sortOrder: 30
+        options:
+            white:
+                code: white
+                labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
+                default: 1
+            black:
+                code: black
+                labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
+            grey:
+                code: grey
+                labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
+            blue:
+                code: blue
+                labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+            purple:
+                code: purple
+                labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
+            orange:
+                code: orange
+                labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
+    secondary_color:
+        labels:
+            en_US: 'Secondary color'
+            fr_FR: 'Couleur secondaire'
+            de_DE: 'Sekundärfarbe'
+        type: pim_catalog_simpleselect
+        group: color
+        sortOrder: 31
+        options:
+            white:
+                code: white
+                labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
+            black:
+                code: black
+                labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
+            grey:
+                code: grey
+                labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
+            yellow:
+                code: yellow
+                labels: { fr_FR: 'Jaune', en_US: 'Yellow', de_DE: 'Gelb' }
+            orange:
+                code: orange
+                labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
+            red:
+                code: red
+                labels: { fr_FR: 'Rouge', en_US: 'Red', de_DE: 'Rot' }
+            green:
+                code: green
+                labels: { fr_FR: 'Vert', en_US: 'Green', de_DE: 'Grün' }
+            blue:
+                code: blue
+                labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+            purple:
+                code: purple
+                labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
+    clothing_size:
+        labels:
+            en_US: 'Clothing size'
+            fr_FR: 'Taille du vêtement'
+            de_DE: 'Größe Kleidung'
+        type: pim_catalog_simpleselect
+        group: size
+        sortOrder: 32
+        options:
+            xs:
+                code: xs
+                labels: { fr_FR: 'XS', en_US: 'XS', de_DE: 'XS' }
+            s:
+                code: s
+                labels: { fr_FR: 'S', en_US: 'S', de_DE: 'S' }
+            m:
+                code: m
+                labels: { fr_FR: 'M', en_US: 'M', de_DE: 'M' }
+            l:
+                code: l
+                labels: { fr_FR: 'L', en_US: 'L', de_DE: 'L' }
+            xl:
+                code: xl
+                labels: { fr_FR: 'XL', en_US: 'XL', de_DE: 'XL' }
+            xxl:
+                code: xxl
+                labels: { fr_FR: 'XXL', en_US: 'XXL', de_DE: 'XXL' }
+    tshirt_materials:
+        labels:
+            en_US: 'T-Shirt material'
+            fr_FR: 'Matière T-Shirt'
+            de_DE: 'T-Shirt gewebe'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        sortOrder: 33
+        options:
+            cotton:
+                code: cotton
+                labels: { fr_FR: '100% Coton', en_US: '100% Cotton', de_DE: '100% Baumwolle' }
+            polyester:
+                code: polyester
+                labels: { fr_FR: 'Polyester', en_US: 'Polyester', de_DE: 'Polyester' }
+            polycotton:
+                code: polycotton
+                labels: { fr_FR: 'Poly/Coton', en_US: 'Poly/Cotton', de_DE: 'Poly/Bauwolle' }
+            wool:
+                code: wool
+                labels: { fr_FR: 'Laine', en_US: 'Wool', de_DE: 'Wolle' }
+            organic_cotton:
+                code: organic_cotton
+                labels: { fr_FR: 'Coton Bio', en_US: 'Organic Cotton', de_DE: 'Bio Baumwolle' }
+            recycled_materials:
+                code: recycled_materials
+                labels: { fr_FR: 'Matières recyclées', en_US: 'Recycled materials', de_DE: 'Recycling-Materialien' }
+    tshirt_style:
+        labels:
+            en_US: 'T-Shirt style'
+            fr_FR: 'Style du T-Shirt'
+            de_DE: 'T-Shirt stil'
+        type: pim_catalog_multiselect
+        group: design
+        sortOrder: 34
+        options:
+            turtleneck:
+                code: turtleneck
+                labels: { fr_FR: 'Col roulé', en_US: 'Turtleneck', de_DE: 'Rollkragen' }
+            vneck:
+                code: vneck
+                labels: { fr_FR: 'Col en V', en_US: 'V neck', de_DE: 'V-Ausschnitt' }
+            sportwear:
+                code: sportwear
+                labels: { fr_FR: 'Sportif', en_US: 'Sport wear', de_DE: 'Sport Verschleiß' }
+            crewneck:
+                code: crewneck
+                labels: { fr_FR: 'Col ras du cou', en_US: 'Crewneck', de_DE: 'Rundhalsausschnitt' }
+            long_sleeve:
+                code: long_sleeve
+                labels: { fr_FR: 'Manches longues', en_US: 'Long sleeve', de_DE: 'Lange Ärmel ' }
+            short_sleeve:
+                code: short_sleeve
+                labels: { fr_FR: 'Manches courtes', en_US: 'Short sleeve', de_DE: 'Kurze Ärmel' }
