@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver;
+namespace Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
@@ -57,7 +57,7 @@ class LocalDirResolver extends WebPathResolver
     public function getBrowserPath($targetPath, $filter, $absolute = false)
     {
         throw new \Exception(
-            'The Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path'
+            'The Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path'
         );
     }
 
