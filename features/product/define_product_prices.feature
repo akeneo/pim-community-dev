@@ -1,3 +1,4 @@
+@javascript
 Feature: Define product prices
   In order to define a product prices
   As Julia

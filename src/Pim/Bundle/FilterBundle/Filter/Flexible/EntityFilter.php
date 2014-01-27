@@ -18,6 +18,9 @@ class EntityFilter extends OroEntityFilter
 {
     const BACKEND_TYPE_KEY = 'backend_type';
 
+    /**
+     * {@inheritdoc}
+     */
     public function init($name, array $params)
     {
         $params['class'] = $this->getClassName();

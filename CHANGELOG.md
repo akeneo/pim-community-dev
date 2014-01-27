@@ -8,6 +8,9 @@
 ## Improvements
 - Add some missing translations
 - Quick export of selected products in the grid
+- Performance of grids
+- Add a status column in the product grid
+- Add a thumbnail in product grid for attribute of type image
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
@@ -19,6 +22,10 @@
 - Change filters implementations in FilterBundle
 - Update all PIM grids to use the new implementation (extensions for filter, sorter, pager, custom datasource, custom cell formatters)
 - Rename TranslatableInterface and TranslatableListener by Localizable one in FlexibleEntityBundle
+- FlexibleQueryBuilder has been rewritten to prepare the MongoDB support (add filters and sorters in FlexibleEntityBundle/Doctrine/ORM)
+- FlexibleQueryBuilder is injected to ProductRepository
+- ProductRepository is injected in ProductManager
+- Remove deprecated flexible entity config which is now builded by flexible manager itself (use doctrine meta)
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

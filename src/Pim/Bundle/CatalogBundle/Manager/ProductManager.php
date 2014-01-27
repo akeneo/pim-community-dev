@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -52,28 +53,27 @@ class ProductManager extends FlexibleManager
     /**
      * Constructor
      *
-     * @param string                   $flexibleName        Entity name
-     * @param array                    $flexibleConfig      Global flexible entities configuration array
-     * @param ObjectManager            $objectManager       Storage manager for product
-     * @param EntityManager            $entityManager       Entity manager for other entitites
-     * @param EventDispatcherInterface $eventDispatcher     Event dispatcher
-     * @param MediaManager             $mediaManager        Media manager
-     * @param CompletenessManager      $completenessManager Completeness manager
-     * @param ProductBuilder           $builder             Product builder
+     * @param string                     $flexibleName        Entity name
+     * @param ObjectManager              $objectManager       Storage manager for product
+     * @param EntityManager              $entityManager       Entity manager for other entitites
+     * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
+     * @param MediaManager               $mediaManager        Media manager
+     * @param CompletenessManager        $completenessManager Completeness manager
+     * @param ProductBuilder             $builder             Product builder
+     * @param ProductRepositoryInterface $repo                Product repository
      */
     public function __construct(
         $flexibleName,
-        $flexibleConfig,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         CompletenessManager $completenessManager,
-        ProductBuilder $builder
+        ProductBuilder $builder,
+        ProductRepositoryInterface $repo
     ) {
         parent::__construct(
             $flexibleName,
-            $flexibleConfig,
             $objectManager,
             $eventDispatcher
         );
@@ -82,6 +82,16 @@ class ProductManager extends FlexibleManager
         $this->mediaManager        = $mediaManager;
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
+        $this->repository          = $repo;
+        $this->repository->setFlexibleConfig($this->flexibleConfig);
+    }
+
+    /**
+     * @return ProductRepositoryInterface
+     */
+    public function getFlexibleRepository()
+    {
+        return $this->repository;
     }
 
     /**

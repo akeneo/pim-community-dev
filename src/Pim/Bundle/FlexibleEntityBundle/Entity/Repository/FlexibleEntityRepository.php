@@ -73,10 +73,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
         return $this->locale;
     }
 
@@ -101,10 +97,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
         return $this->scope;
     }
 
@@ -118,6 +110,20 @@ class FlexibleEntityRepository extends EntityRepository implements
     public function setScope($code)
     {
         $this->scope = $code;
+
+        return $this;
+    }
+
+    /**
+     * Set flexible query builder
+     *
+     * @param FlexibleQueryBuilder $flexibleQB
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleQueryBuilder($flexibleQB)
+    {
+        $this->flexibleQB = $flexibleQB;
 
         return $this;
     }
@@ -187,7 +193,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $attributeCodes = array_keys($codeToAttribute);
         if (in_array($attributeCode, $attributeCodes)) {
             $attribute = $codeToAttribute[$attributeCode];
-            $this->getFlexibleQueryBuilder($qb)->addAttributeOrderBy($attribute, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
         } else {
             $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
         }
@@ -258,7 +264,16 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     protected function getFlexibleQueryBuilder($qb)
     {
-        return new FlexibleQueryBuilder($qb, $this->getLocale(), $this->getScope());
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
     }
 
     /**

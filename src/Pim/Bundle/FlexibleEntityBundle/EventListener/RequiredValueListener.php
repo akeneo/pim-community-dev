@@ -92,7 +92,7 @@ class RequiredValueListener implements EventSubscriber
 
             $flexibleConfig = $this->container->getParameter('pim_flexibleentity.flexible_config');
             if (!$metadata->isMappedSuperclass && array_key_exists($entityClass, $flexibleConfig['entities_config'])) {
-                $flexibleManagerName = $flexibleConfig['entities_config'][$entityClass]['flexible_manager'];
+                $flexibleManagerName = $flexibleConfig['entities_config'][$entityClass];
                 $flexibleManager = $this->container->get($flexibleManagerName);
 
                 // get required attributes
