@@ -41,10 +41,6 @@ class PimCatalogExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('repositories.yml');
 
-        if ($config['record_mails']) {
-            $loader->load('mail_recorder.yml');
-        }
-
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);
     }

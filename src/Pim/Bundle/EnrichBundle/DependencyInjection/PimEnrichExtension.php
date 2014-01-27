@@ -23,6 +23,8 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
         $loader->load('services.yml');
@@ -30,6 +32,10 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('handlers.yml');
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
+
+        if ($config['record_mails']) {
+            $loader->load('mail_recorder.yml');
+        }
     }
 
     /**

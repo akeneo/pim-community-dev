@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Mailer;
+namespace Pim\Bundle\EnrichBundle\Mailer;
 
 /**
  * Mail recorder for test purpose

@@ -200,6 +200,6 @@ JS;
      */
     public function getMailRecorder()
     {
-        return $this->getContainer()->get('pim_catalog.mailer.mail_recorder');
+        return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
     }
 }
