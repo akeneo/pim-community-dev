@@ -1,0 +1,65 @@
+services:
+    # Form
+    pim_enrich.form.attribute:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_attribute_form
+            - pim_enrich_attribute
+
+    pim_enrich.form.attribute_group:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_attribute_group_form
+            - pim_enrich_attribute_group
+
+    pim_enrich.form.family:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_family_form
+            - pim_enrich_family
+
+    pim_enrich.form.channel:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_channel_form
+            - pim_enrich_channel
+
+    pim_enrich.form.currency:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_currency_form
+            - pim_enrich_currency
+
+    pim_enrich.form.group:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_group_form
+            - pim_enrich_group
+
+    pim_enrich.form.group_type:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_group_type_form
+            - pim_enrich_group_type
+
+    pim_enrich.form.association_type:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_enrich_association_type_form
+            - pim_enrich_association_type

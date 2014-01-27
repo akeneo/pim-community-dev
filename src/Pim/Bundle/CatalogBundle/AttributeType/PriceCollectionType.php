@@ -47,7 +47,7 @@ class PriceCollectionType extends AbstractAttributeType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['type']         = 'pim_catalog_price';
+        $options['type']         = 'pim_enrich_price';
         $options['allow_add']    = true;
         $options['allow_delete'] = true;
         $options['by_reference'] = false;
@@ -90,11 +90,11 @@ class PriceCollectionType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'availableLocales',
-                'fieldType' => 'pim_catalog_available_locales'
+                'fieldType' => 'pim_enrich_available_locales'
             ),
             array(
                 'name'      => 'scopable',
-                'fieldType' => 'pim_catalog_scopable',
+                'fieldType' => 'pim_enrich_scopable',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()

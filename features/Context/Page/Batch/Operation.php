@@ -43,7 +43,7 @@ class Operation extends Wizard
 
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof BrowserKitDriver) {
-            $this->selectFieldOption('pim_catalog_mass_edit_action[operationAlias]', $choice->getAttribute('value'));
+            $this->selectFieldOption('pim_enrich_mass_edit_action[operationAlias]', $choice->getAttribute('value'));
         } else {
             $driver->click($choice->getXpath());
         }

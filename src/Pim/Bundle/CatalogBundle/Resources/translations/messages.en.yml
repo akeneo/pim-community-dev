@@ -382,7 +382,7 @@ Edit:      Edit
 Disable:   Disable
 
 # Batch operations
-pim_catalog.mass_edit_action:
+pim_enrich.mass_edit_action:
     page_title:    Products
     page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
     title:         Choose operation

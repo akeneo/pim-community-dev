@@ -18,7 +18,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 

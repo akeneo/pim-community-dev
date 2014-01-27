@@ -1,0 +1,56 @@
+parameters:
+    pim_enrich.form.type.product.class:                        Pim\Bundle\EnrichBundle\Form\Type\ProductType
+    pim_enrich.form.type.product_edit.class:                   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
+    pim_enrich.form.type.product_create.class:                 Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
+    pim_enrich.form.type.product.view.class:                   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
+    pim_enrich.form.type.product_value.class:                  Pim\Bundle\EnrichBundle\Form\Type\ProductValueType
+    pim_enrich.form.type.product_value_wysiwyg.class:          Pim\Bundle\EnrichBundle\Form\Type\WysiwygType
+    pim_enrich.form.type.product_value_price.class:            Pim\Bundle\EnrichBundle\Form\Type\PriceType
+    pim_enrich.form.type.product_value_price_collection.class: Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType
+
+    pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
+    pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
+    pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
+    pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
+    pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
+    pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
+    pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
+    pim_enrich.form.type.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Type\AttributeGroupType
+    pim_enrich.form.type.association.class:      Pim\Bundle\EnrichBundle\Form\Type\AssociationType
+    pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
+
+    pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
+    pim_enrich.form.type.edit_common_attributes.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_enrich.form.type.add_to_groups.class:                       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
+    pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
+    pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
+    pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
+    pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
+    pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
+    pim_enrich.form.type.attribute_property_scopable.class:         Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\ScopableType
+    pim_enrich.form.type.attribute_property_available_locale.class: Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType
+    pim_enrich.form.type.attribute_property_options.class:          Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType
+    pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
+    pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
+
+    pim_enrich.extension.type.media.class:  Pim\Bundle\EnrichBundle\Form\Type\MediaTypeExtension
+    pim_enrich.extension.type.metric.class: Pim\Bundle\EnrichBundle\Form\Type\MetricTypeExtension
+
+    pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
+    pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler
+    pim_enrich.form.handler.family.class:           Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler
+    pim_enrich.form.handler.currency.class:         Pim\Bundle\EnrichBundle\Form\Handler\CurrencyHandler
+    pim_enrich.form.handler.channel.class:          Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler
+    pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
+    pim_enrich.form.handler.group_type.class:       Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler
+    pim_enrich.form.handler.association_type.class: Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler
+
+    pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+
+    pim_enrich.mass_edit_action.operator.class:               Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator
+    pim_enrich.mass_edit_action.change_status.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeStatus
+    pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\EditCommonAttributes
+    pim_enrich.mass_edit_action.classify.class:               Pim\Bundle\EnrichBundle\MassEditAction\Classify
+    pim_enrich.mass_edit_action.change_family.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeFamily
+    pim_enrich.mass_edit_action.add_to_groups.class:          Pim\Bundle\EnrichBundle\MassEditAction\AddToGroups
