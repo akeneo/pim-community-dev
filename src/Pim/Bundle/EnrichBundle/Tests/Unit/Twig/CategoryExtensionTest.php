@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Twig;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Twig;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Twig\CategoryExtension;
+use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 
 /**
  * Test related class

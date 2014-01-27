@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Twig;
+namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 

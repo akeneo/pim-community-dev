@@ -58,3 +58,24 @@ services:
             - %kernel.cache_dir%/media
         tags:
             - { name: liip_imagine.cache.resolver, resolver: local_dir }
+
+    # Twig extensions
+    pim_enrich.twig.locale_extension:
+        class: Pim\Bundle\EnrichBundle\Twig\LocaleExtension
+        arguments:
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.category_extension:
+        class: Pim\Bundle\EnrichBundle\Twig\CategoryExtension
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@pim_catalog.manager.product'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.object_class_extension:
+        class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
+        tags:
+            - { name: twig.extension }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Twig;
+namespace Pim\Bundle\EnrichBundle\Twig;
 
 /**
  * Twig filter to get entity FQCN

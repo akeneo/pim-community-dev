@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Twig;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Twig;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Twig\LocaleExtension;
+use Pim\Bundle\EnrichBundle\Twig\LocaleExtension;
 
 /**
  * Test related class
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Twig\LocaleExtension;
 class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Twig\LocaleExtension
+     * @var \Pim\Bundle\EnrichBundle\Twig\LocaleExtension
      */
     protected $localeExtension;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Twig;
+namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
