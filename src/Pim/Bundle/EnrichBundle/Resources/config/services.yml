@@ -79,3 +79,8 @@ services:
         class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
         tags:
             - { name: twig.extension }
+
+    pim_enrich.event_listener.request:
+        class: Pim\Bundle\EnrichBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_subscriber }

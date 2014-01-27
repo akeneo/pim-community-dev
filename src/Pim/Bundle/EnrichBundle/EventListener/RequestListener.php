@@ -1,15 +1,14 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener;
-
-use Symfony\Component\HttpKernel\HttpKernel;
+namespace Pim\Bundle\EnrichBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
- * Kernel listener used to authorized csv format in the request
+ * Kernel listener used to authorize csv format in the request
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

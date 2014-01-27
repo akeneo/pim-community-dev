@@ -24,11 +24,6 @@ services:
         arguments:
             - '@event_dispatcher'
 
-    pim_catalog.event_listener.request:
-        class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_listener.metric_base_values:
         class: %pim_catalog.event_listener.metric_base_values.class%
         arguments:
