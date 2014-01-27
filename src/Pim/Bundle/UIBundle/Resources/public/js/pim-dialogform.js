@@ -3,6 +3,11 @@ define(
     function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
+        // Allow using select2 search box in jquery ui dialog
+        $.ui.dialog.prototype._allowInteraction = function(e) {
+            return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
+        };
+
         return function (elementId, callback) {
             var $el = $(elementId);
             if (!$el.length) {
