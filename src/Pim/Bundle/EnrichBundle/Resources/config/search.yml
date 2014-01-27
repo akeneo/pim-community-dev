@@ -5,7 +5,7 @@
         name:                       pim_enrich_categorytree_edit
         parameters:
             id:                     id
-    search_template:                PimCatalogBundle:CategoryTree:result.html.twig
+    search_template:                PimEnrichBundle:CategoryTree:result.html.twig
     fields:
         -
             name:                   label
@@ -22,7 +22,7 @@
         name:                       pim_enrich_product_edit
         parameters:
             id:                     id
-    search_template:                PimCatalogBundle:Product:result.html.twig
+    search_template:                PimEnrichBundle:Product:result.html.twig
     fields:
         -
             name: values
