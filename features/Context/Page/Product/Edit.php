@@ -508,37 +508,6 @@ class Edit extends Form
         return $cells[$columnIdx];
     }
 
-    protected function findPriceField($name, $currency)
-    {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $labels = $label->getParent()->findAll('css', '.currency-label');
-
-        $fieldNum = null;
-        foreach ($labels as $index => $element) {
-            if ($element->getText() === $currency) {
-                $fieldNum = $index;
-                break;
-            }
-        }
-
-        if ($fieldNum === null) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
-
-        $fields = $label->getParent()->findAll('css', 'input[type="text"]');
-
-        if (!isset($fields[$fieldNum])) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        return $fields[$fieldNum];
-    }
-
     protected function findScopedField($name, $scope)
     {
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
