@@ -110,15 +110,17 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
                 ->method('getDefinition')
                 ->will($this->returnValue($definition));
 
-            $container->expects($this->at(1))
+            $container->expects($this->exactly(2))
                 ->method('findTaggedServiceIds')
-                ->with('pim_serializer.normalizer')
-                ->will($this->returnValue($normalizers));
-
-            $container->expects($this->at(2))
-                ->method('findTaggedServiceIds')
-                ->with('pim_serializer.encoder')
-                ->will($this->returnValue($encoders));
+                ->will(
+                    $this->returnCallback(
+                        function ($tag) use ($encoders, $normalizers) {
+                            return ('pim_serializer.encoder' == $tag)
+                                ? $encoders
+                                : $normalizers;
+                        }
+                    )
+                );
         } else {
             $container->expects($this->never())
                 ->method('getDefinition');

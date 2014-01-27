@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
 
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Compiler pass to register tagged encoders and normalizers into the pim serializer
@@ -34,18 +34,41 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
             return;
         }
 
-        $normalizerRefs = array();
-        $encoderRefs    = array();
+        $container->getDefinition('pim_serializer')->setArguments(
+            array(
+                $this->getDependencyReferences($container, 'pim_serializer.normalizer'),
+                $this->getDependencyReferences($container, 'pim_serializer.encoder')
+            )
+        );
+    }
 
-        foreach ($container->findTaggedServiceIds('pim_serializer.normalizer') as $id => $attributes) {
-            $normalizerRefs[] = $this->factory->createReference($id);
+    /**
+     * Returns an array of service references for a specified tag name
+     *
+     * @param ContainerBuilder $container
+     * @param string           $tagName
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference[]
+     */
+    protected function getDependencyReferences(ContainerBuilder $container, $tagName)
+    {
+        $priorities = array();
+        foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
+            $priority = isset($attributes[0]['priority'])
+                    ? $attributes[0]['priority']
+                    : 100;
+            if (!isset($priorities[$priority])) {
+                $priorities[$priority] = array();
+            }
+            $priorities[$priority][] = $this->factory->createReference($id);
         }
 
-        foreach ($container->findTaggedServiceIds('pim_serializer.encoder') as $id => $attributes) {
-            $encoderRefs[] = $this->factory->createReference($id);
+        krsort($priorities);
+        $sortedReferences = array();
+        foreach ($priorities as $references) {
+            $sortedReferences = array_merge($sortedReferences, $references);
         }
 
-        $serializerDef = $container->getDefinition('pim_serializer');
-        $serializerDef->setArguments(array($normalizerRefs, $encoderRefs));
+        return $sortedReferences;
     }
 }
