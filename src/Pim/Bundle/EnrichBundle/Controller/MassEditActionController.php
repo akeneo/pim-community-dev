@@ -20,9 +20,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Action\MassAction\MassActionResponse;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 
-use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
@@ -224,7 +224,7 @@ class MassEditActionController extends AbstractDoctrineController
             );
             $this->addFlash(
                 'success',
-                sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias)
+                sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
             );
 
             return $this->redirectToRoute('pim_enrich_product_index');

@@ -1,0 +1,210 @@
+services:
+    pim_enrich.form.type.product.view:
+        public: false
+        class: %pim_enrich.form.type.product.view.class%
+
+    pim_enrich.form.type.product:
+        class: %pim_enrich.form.type.product.class%
+        tags:
+            - { name: form.type, alias: pim_product }
+
+    pim_enrich.form.type.product_edit:
+        class: %pim_enrich.form.type.product_edit.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+        tags:
+            - { name: form.type, alias: pim_product_edit }
+
+    pim_enrich.form.type.product_create:
+        class: %pim_enrich.form.type.product_create.class%
+        tags:
+            - { name: form.type, alias: pim_product_create }
+
+    pim_enrich.form.type.product_value:
+        class: %pim_enrich.form.type.product_value.class%
+        arguments:
+            - %pim_catalog.entity.product_value.class%
+            - '@pim_flexibleentity.value_form.value_subscriber'
+            - '@pim_enrich.form.type.product.view'
+        tags:
+            - { name: form.type, alias: pim_product_value }
+
+    pim_enrich.form.type.attribute:
+        class: %pim_enrich.form.type.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute }
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.manager.attribute'
+            - '@pim_enrich.form.subscriber.attribute'
+
+    pim_enrich.form.type.attribute_option:
+        class: %pim_enrich.form.type.attribute_option.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_option }
+
+    pim_enrich.form.type.attribute_option_value:
+        class: %pim_enrich.form.type.attribute_option_value.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_option_value }
+
+    pim_enrich.form.type.attribute_option_create:
+        class: %pim_enrich.form.type.attribute_option_create.class%
+        tags:
+            - { name: form.type, alias: pim_attribute_option_create }
+
+    pim_enrich.form.type.attribute_group:
+        class: %pim_enrich.form.type.attribute_group.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_group }
+
+    pim_enrich.form.type.family:
+        class: %pim_enrich.form.type.family.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_family }
+        arguments:
+            - '@pim_enrich.form.subscriber.attribute_requirements'
+            - %pim_catalog.entity.attribute.class%
+    pim_enrich.form.type.attribute_requirement:
+        class: %pim_enrich.form.type.attribute_requirement.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_requirement }
+
+    pim_enrich.form.type.wysiwyg:
+        class: %pim_enrich.form.type.product_value_wysiwyg.class%
+        tags:
+            - { name: form.type, alias: pim_wysiwyg }
+
+    pim_enrich.form.type.price:
+        class: %pim_enrich.form.type.product_value_price.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_price }
+
+    pim_enrich.form.type.price_collection:
+        class: %pim_enrich.form.type.product_value_price_collection.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_price_collection }
+
+    pim_enrich.form.type.category:
+        class: %pim_enrich.form.type.category.class%
+        arguments:
+            - %pim_catalog.entity.category.class%
+            - %pim_catalog.entity.category_translation.class%
+        tags:
+            - { name: form.type, alias: pim_category }
+
+    pim_enrich.form.type.channel:
+        class: %pim_enrich.form.type.channel.class%
+        arguments:
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: form.type, alias: pim_enrich_channel }
+
+    pim_enrich.form.type.currency:
+        class: %pim_enrich.form.type.currency.class%
+        arguments:
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: form.type, alias: pim_enrich_currency }
+
+    pim_enrich.form.type.edit_common_attributes:
+        class: %pim_enrich.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
+
+    pim_enrich.form.type.add_to_groups:
+        class: %pim_enrich.form.type.add_to_groups.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_add_to_groups }
+
+    pim_enrich.form.type.localized_collection:
+        class: %pim_enrich.form.type.localized_collection.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_localized_collection }
+
+    pim_enrich.form.type.group:
+        class: %pim_enrich.form.type.group.class%
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_group }
+
+    pim_enrich.form.type.group_type:
+        class: %pim_enrich.form.type.group_type.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_group_type }
+
+    pim_enrich.form.type.association_type:
+        class: %pim_enrich.form.type.association_type.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_association_type }
+
+    pim_enrich.form.type.available_attributes:
+        class: %pim_enrich.form.type.available_attributes.class%
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_available_attributes }
+
+    pim_enrich.form.type.association:
+        class: %pim_enrich.form.type.association.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_association }
+
+    pim_enrich.form.type.conversion_units:
+        class: %pim_enrich.form.type.conversion_units.class%
+        arguments:
+            - '@oro_measure.manager'
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_conversion_units }
+
+    pim_enrich.form.type.image:
+        class: %pim_enrich.form.type.image.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_image }
+
+    # Form extensions
+    pim_enrich.extension.type.media:
+        class: %pim_enrich.extension.type.media.class%
+        tags:
+            - { name: form.type_extension, alias: oro_media }
+
+    pim_enrich.extension.type.metric:
+        class: %pim_enrich.extension.type.metric.class%
+        tags:
+            - { name: form.type_extension, alias: pim_flexibleentity_metric }
+
+    # Attribute property types
+    pim_enrich.form.type.scopable:
+        class: %pim_enrich.form.type.attribute_property_scopable.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_scopable }
+
+    pim_enrich.form.type.available_locales:
+        class: %pim_enrich.form.type.attribute_property_available_locale.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_available_locales }
+
+    pim_enrich.form.type.options:
+        class: %pim_enrich.form.type.attribute_property_options.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_options }
+
+    # Subscribers
+    pim_enrich.form.subscriber.attribute:
+        class: %pim_enrich.form.subscriber.add_attribute_type.class%
+        arguments:
+            - '@pim_catalog.manager.attribute'
+            - '@pim_flexibleentity.attributetype.factory'
+
+    pim_enrich.form.subscriber.attribute_requirements:
+        class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
+        arguments:
+            - '@pim_catalog.manager.channel'

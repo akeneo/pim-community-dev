@@ -19,7 +19,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 

@@ -17,9 +17,9 @@ class EditCommonAttributes extends Wizard
         'Available attributes button'     => array('css' => 'button:contains("Select attributes")'),
         'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Select")'),
         'Available attributes form'       => array(
-            'css' => '#pim_catalog_mass_edit_action_operation_attributesToDisplay'
+            'css' => '#pim_enrich_mass_edit_action_operation_attributesToDisplay'
         ),
-        'Locales dropdown' => array('css' => '#pim_catalog_mass_edit_action_operation_locale'),
+        'Locales dropdown' => array('css' => '#pim_enrich_mass_edit_action_operation_locale'),
     );
 
     /**

@@ -20,7 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Form\Handler\AssociationTypeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
 /**
  * Association type controller

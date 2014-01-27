@@ -21,7 +21,7 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;

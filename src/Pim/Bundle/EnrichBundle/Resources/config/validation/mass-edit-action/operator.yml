@@ -1,0 +1,4 @@
+Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator:
+    properties:
+        operation:
+            - Valid: ~

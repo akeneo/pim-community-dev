@@ -48,7 +48,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType
         arguments:
             - prices
-            - pim_catalog_price_collection
+            - pim_enrich_price_collection
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@pim_catalog.manager.currency'
         tags:
@@ -94,7 +94,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\ImageType
         arguments:
             - media
-            - pim_catalog_image
+            - pim_enrich_image
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_catalog_image, entity: %pim_catalog.entity.product.class% }

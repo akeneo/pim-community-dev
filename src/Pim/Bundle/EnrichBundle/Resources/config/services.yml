@@ -1,0 +1,48 @@
+services:
+    # Mass edit action operator
+    pim_enrich.mass_edit_action.operator:
+        class: %pim_enrich.mass_edit_action.operator.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@oro_security.security_facade'
+
+    # Mass edit actions
+    pim_enrich.mass_edit_action.change_status:
+        public: false
+        class: %pim_enrich.mass_edit_action.change_status.class%
+        tags:
+            - { name: pim_enrich.mass_edit_action, alias: change-status, acl: pim_enrich_product_change_state }
+
+    pim_enrich.mass_edit_action.edit_common_attributes:
+        public: false
+        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.currency'
+        tags:
+            - { name: pim_enrich.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
+
+    pim_enrich.mass_edit_action.classify:
+        public: false
+        class: %pim_enrich.mass_edit_action.classify.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.category'
+        tags:
+            - { name: pim_enrich.mass_edit_action, alias: classify, acl: pim_enrich_product_categories_view }
+
+    pim_enrich.mass_edit_action.change_family:
+        public: false
+        class: %pim_enrich.mass_edit_action.change_family.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+        tags:
+            - { name: pim_enrich.mass_edit_action, alias: change-family, acl: pim_enrich_product_change_family }
+
+    pim_enrich.mass_edit_action.add_to_groups:
+        class: %pim_enrich.mass_edit_action.add_to_groups.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: pim_enrich.mass_edit_action, alias: add-to-groups, acl: pim_enrich_product_add_to_groups }

@@ -35,9 +35,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $loader->load('parameters.yml');
         $loader->load('services.yml');
         $loader->load('controllers.yml');
-        $loader->load('forms.yml');
-        $loader->load('form_types.yml');
-        $loader->load('handlers.yml');
         $loader->load('managers.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');

@@ -44,7 +44,7 @@ class IdentifierType extends FlexTextType
             ),
             array(
                 'name'      => 'scopable',
-                'fieldType' => 'pim_catalog_scopable',
+                'fieldType' => 'pim_enrich_scopable',
                 'options'   => array(
                     'data'      => false,
                     'disabled'  => true,

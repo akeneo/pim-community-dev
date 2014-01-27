@@ -1,4 +1,0 @@
-Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator:
-    properties:
-        operation:
-            - Valid: ~
