@@ -15,6 +15,14 @@ use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory
  */
 class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
+    /**
+     * @staticvar int The default priority for services
+     */
+    const DEFAULT_PRIORITY = 100;
+
+    /**
+     * @var ReferenceFactory
+     */
     protected $factory;
 
     /**
@@ -56,7 +64,7 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
             $priority = isset($attributes[0]['priority'])
                     ? $attributes[0]['priority']
-                    : 100;
+                    : static::DEFAULT_PRIORITY;
             if (!isset($priorities[$priority])) {
                 $priorities[$priority] = array();
             }
