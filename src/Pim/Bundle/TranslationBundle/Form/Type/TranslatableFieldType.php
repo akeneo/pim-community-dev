@@ -108,7 +108,7 @@ class TranslatableFieldType extends AbstractType
     /**
      * Get active locales
      *
-     * @return multitype:string
+     * @return string[]
      */
     protected function getActiveLocales()
     {

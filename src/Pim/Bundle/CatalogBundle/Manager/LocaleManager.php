@@ -95,11 +95,7 @@ class LocaleManager
     }
 
     /**
-     * Get locales with criterias
-     *
-     * @param multitype:string $criterias
-     *
-     * @return \Doctrine\Common\Persistence\mixed
+     * {@inheritdoc}
      */
     public function getLocales($criterias = array())
     {

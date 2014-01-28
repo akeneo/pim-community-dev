@@ -65,8 +65,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     }
 
     /**
-     * List of subscribed events
-     * @return multitype:string
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
