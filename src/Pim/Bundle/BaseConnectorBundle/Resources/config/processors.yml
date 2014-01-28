@@ -1,110 +1,110 @@
 parameters:
-    pim_import_export.processor.csv_serializer.homogeneous.class:   Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HomogeneousProcessor
-    pim_import_export.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
-    pim_import_export.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
+    pim_base_connector.processor.csv_serializer.homogeneous.class:   Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HomogeneousProcessor
+    pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
+    pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_import_export.processor.transformer.class:                  Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_import_export.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_import_export.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.transformer.class:                  Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
 
-    pim_import_export.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
+    pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
-    pim_import_export.processor.csv_serializer:
+    pim_base_connector.processor.csv_serializer:
         abstract: true
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.locale'
 
-    pim_import_export.processor.csv_serializer.homogeneous:
-        class: %pim_import_export.processor.csv_serializer.homogeneous.class%
-        parent: pim_import_export.processor.csv_serializer
+    pim_base_connector.processor.csv_serializer.homogeneous:
+        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        parent: pim_base_connector.processor.csv_serializer
 
-    pim_import_export.processor.csv_serializer.heterogeneous:
-        class: %pim_import_export.processor.csv_serializer.heterogeneous.class%
-        parent: pim_import_export.processor.csv_serializer
+    pim_base_connector.processor.csv_serializer.heterogeneous:
+        class: %pim_base_connector.processor.csv_serializer.heterogeneous.class%
+        parent: pim_base_connector.processor.csv_serializer
 
-    pim_import_export.processor.csv_serializer.product:
-        class: %pim_import_export.processor.csv_serializer.product.class%
-        parent: pim_import_export.processor.csv_serializer
+    pim_base_connector.processor.csv_serializer.product:
+        class: %pim_base_connector.processor.csv_serializer.product.class%
+        parent: pim_base_connector.processor.csv_serializer
         arguments:
             - '@pim_catalog.manager.channel'
 
-    pim_import_export.processor.dummy:
-        class: %pim_import_export.processor.dummy.class%
+    pim_base_connector.processor.dummy:
+        class: %pim_base_connector.processor.dummy.class%
 
-    pim_import_export.processor.transformer:
-        class: %pim_import_export.processor.transformer.class%
+    pim_base_connector.processor.transformer:
+        class: %pim_base_connector.processor.transformer.class%
         abstract: true
         arguments:
             - '@pim_import_export.validator.import'
             - '@translator'
             - '@pim_transform.transformer.registry'
 
-    pim_import_export.processor.channel:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.channel:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.channel.class%
         calls:
             - [ addMapping, [ tree, category ] ]
 
-    pim_import_export.processor.group_type:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.group_type:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.group_type.class%
 
-    pim_import_export.processor.product:
-        class: %pim_import_export.processor.product.class%
+    pim_base_connector.processor.product:
+        class: %pim_base_connector.processor.product.class%
         arguments:
             - '@pim_import_export.validator.product_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
             - '%pim_catalog.entity.product.class%'
 
-    pim_import_export.processor.association:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.association:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - '%pim_catalog.entity.association.class%'
 
-    pim_import_export.processor.category:
-        class: %pim_import_export.processor.category.class%
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.category:
+        class: %pim_base_connector.processor.category.class%
+        parent: pim_base_connector.processor.transformer
         arguments:
             - '@pim_transform.cache.entity_cache'
             - %pim_catalog.entity.category.class%
 
-    pim_import_export.processor.association_type:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.association_type:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.association_type.class%
 
-    pim_import_export.processor.group:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.group:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.group.class%
 
-    pim_import_export.processor.attribute_group:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.attribute_group:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.attribute_group.class%
 
-    pim_import_export.processor.attribute:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.attribute:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.attribute.class%
 
-    pim_import_export.processor.attribute_option:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.attribute_option:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.attribute_option.class%
 
-    pim_import_export.processor.family:
-        parent: pim_import_export.processor.transformer
+    pim_base_connector.processor.family:
+        parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.family.class%
 
-    pim_import_export.processor.job_instance:
-        class: %pim_import_export.processor.transformer.class%
+    pim_base_connector.processor.job_instance:
+        class: %pim_base_connector.processor.transformer.class%
         arguments:
             - '@pim_import_export.validator.skip_import'
             - '@translator'

@@ -14,8 +14,8 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
  * An abstract processor to serialize data into csv
  *
  * Use either one of the following services given the type of data to serialize
- *   - HeterogeneousProcessor (id: pim_import_export.processor.csv_serializer.heterogeneous)
- *   - HomogeneousProcessor   (id: pim_import_export.processor.csv_serializer.homogeneous)
+ *   - HeterogeneousProcessor (id: pim_base_connector.processor.csv_serializer.heterogeneous)
+ *   - HomogeneousProcessor   (id: pim_base_connector.processor.csv_serializer.homogeneous)
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

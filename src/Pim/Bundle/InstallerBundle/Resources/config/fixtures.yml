@@ -16,86 +16,86 @@ categories:
     multiple: true
     csv:
         reader:            pim_import_export.reader.file.csv_category
-        processor:         pim_import_export.processor.category
+        processor:         pim_base_connector.processor.category
     yml:
         reader:            pim_import_export.reader.file.yaml_multiple
-        processor:         pim_import_export.processor.category
+        processor:         pim_base_connector.processor.category
 
 attribute_groups:
     order: 30
     csv:
-        processor:         pim_import_export.processor.attribute_group
+        processor:         pim_base_connector.processor.attribute_group
     yml:
-        processor:         pim_import_export.processor.attribute_group
+        processor:         pim_base_connector.processor.attribute_group
 
 channels:
     order: 30
     csv:
-        processor:         pim_import_export.processor.channel
+        processor:         pim_base_connector.processor.channel
     yml:
-        processor:         pim_import_export.processor.channel
+        processor:         pim_base_connector.processor.channel
 
 group_types:
     order: 30
     csv:
-        processor:         pim_import_export.processor.group_type
+        processor:         pim_base_connector.processor.group_type
     yml:
-        processor:         pim_import_export.processor.group_type
+        processor:         pim_base_connector.processor.group_type
 
 association_types:
     order: 40
     csv:
-        processor:         pim_import_export.processor.association_type
+        processor:         pim_base_connector.processor.association_type
     yml:
-        processor:         pim_import_export.processor.association_type
+        processor:         pim_base_connector.processor.association_type
 
 attributes:
     order: 40
     csv:
-        processor:         pim_import_export.processor.attribute
+        processor:         pim_base_connector.processor.attribute
     yml:
-        processor:         pim_import_export.processor.attribute
+        processor:         pim_base_connector.processor.attribute
 
 attribute_options:
     order: 50
     csv:
-        processor:         pim_import_export.processor.attribute_option
+        processor:         pim_base_connector.processor.attribute_option
     yml:
-        processor:         pim_import_export.processor.attribute_option
+        processor:         pim_base_connector.processor.attribute_option
 
 families:
     order: 60
     csv:
-        processor:         pim_import_export.processor.family
+        processor:         pim_base_connector.processor.family
     yml:
-        processor:         pim_import_export.processor.family
+        processor:         pim_base_connector.processor.family
 
 groups:
     order: 70
     csv:
-        processor:         pim_import_export.processor.group
+        processor:         pim_base_connector.processor.group
     yml:
-        processor:         pim_import_export.processor.group
+        processor:         pim_base_connector.processor.group
 
 products:
     order: 80
     csv:
-        processor:         pim_import_export.processor.product
+        processor:         pim_base_connector.processor.product
     yml:
         reader:            pim_import_export.reader.file.yaml_product
-        processor:         pim_import_export.processor.product
+        processor:         pim_base_connector.processor.product
 
 associations:
     order: 90
     csv:
-        processor:         pim_import_export.processor.association
+        processor:         pim_base_connector.processor.association
     yml:
         reader:            pim_import_export.reader.file.yaml_associations
-        processor:         pim_import_export.processor.association
+        processor:         pim_base_connector.processor.association
 
 jobs:
     order: 90
     csv:
-        processor:         pim_import_export.processor.job_instance
+        processor:         pim_base_connector.processor.job_instance
     yml:
-        processor:         pim_import_export.processor.job_instance
+        processor:         pim_base_connector.processor.job_instance
