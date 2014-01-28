@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Archiver;
 
-use Pim\Bundle\ImportExportBundle\Archiver\FileReaderArchiver;
+use Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver;
 
 /**
  * Test related class
@@ -21,7 +21,7 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAnArchiver()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
+        $this->assertInstanceOf('Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface', $this->archiver);
     }
 
     public function testGetName()
@@ -150,7 +150,7 @@ class FileReaderArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getFileReaderMock($filePath)
     {
         $reader = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Reader\File\FileReader')
+            ->getMockBuilder('Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader')
             ->disableOriginalConstructor()
             ->getMock();
 

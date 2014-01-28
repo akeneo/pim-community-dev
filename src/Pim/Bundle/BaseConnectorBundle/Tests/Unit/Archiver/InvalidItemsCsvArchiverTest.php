@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Archiver;
 
-use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
+use Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
  * Test related class
@@ -23,7 +23,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAnArchiver()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface', $this->archiver);
+        $this->assertInstanceOf('Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface', $this->archiver);
     }
 
     public function testGetName()
@@ -110,7 +110,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
 
     protected function getInvalidItemsCollectorMock()
     {
-        return $this->getMock('Pim\Bundle\ImportExportBundle\EventListener\InvalidItemsCollector');
+        return $this->getMock('Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector');
     }
 
     protected function getCsvEncoderMock()
