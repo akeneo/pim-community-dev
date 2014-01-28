@@ -10,7 +10,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
+use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
 
 /**
  * Test related class

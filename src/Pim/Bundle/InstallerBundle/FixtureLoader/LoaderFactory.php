@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\EntityCache;
 
 /**
  * Fixture Loader  factory
