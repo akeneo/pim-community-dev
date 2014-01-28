@@ -8,7 +8,7 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\ImportExportBundle\Converter\MetricConverter;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
