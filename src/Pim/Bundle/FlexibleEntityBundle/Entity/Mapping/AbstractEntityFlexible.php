@@ -157,18 +157,18 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Get value related to attribute code
      *
-     * @param AbstractEntityAttribute $attribute
-     * @param string                  $localeCode
-     * @param string                  $scopeCode
+     * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
      *
      * @return FlexibleValueInterface
      */
-    public function getValue(AbstractAttribute $attribute, $localeCode = null, $scopeCode = null)
+    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
         $localeCode = ($localeCode) ? $localeCode : $this->getLocale();
         $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
 
-        $valueKey = $this->buildValueKey($attribute, $localeCode, $scopeCode);
+        $valueKey = $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
 
         $values = $this->getValues();
 
@@ -185,6 +185,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected function getValueKey(AbstractFlexibleValue $value)
     {
         $attribute = $value->getAttribute();
+        $attributeCode = $attribute->getCode();
 
         $localeCode = null;
         $scopeCode = null;
@@ -196,20 +197,24 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $scope = $value->getScope();
         }
 
-        return $this->buidlValueKey($attribute, $localeCode, $scopeCode);
+        echo "Build value key: $attributeCode , $localeCode , $scopeCode\n";
+
+        return $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
     }
 
     /**
      * Get a key identifier for a value from attributeCode, localeCode and scopeCode
      *
-     * @param AbstractEntityAttribute $attribute
-     * @param string                  $localeCode
-     * @param string                  $scopeCode
+     * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
      *
      * @return string
      */
-    protected function buildValueKey(AbstractEntityAttribute $attribute, $localeCode = null, $scopeCode = null)
+    protected function buildValueKey($attributeCode, $localeCode = null, $scopeCode = null)
     {
+        $attribute = $this->allAttributes[$attributeCode];
+
         $key = $attribute->getCode();
 
         if ($attribute->isTranslatable() && $localeCode != null) {
@@ -244,17 +249,23 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Create a new value
      *
-     * @param AbstractAttribute $attributeCode
-     * @param string            $locale
-     * @param string            $scope
+     * @param string $attributeCode
+     * @param string $locale
+     * @param string $scope
      *
      * @throws \Exception
      *
      * @return AbstractFlexibleValue
      */
-    public function createValue(AbstractAttribute $attribute, $locale = null, $scope = null)
+    public function createValue($attributeCode, $locale = null, $scope = null)
     {
         $value = new $this->valueClass();
+
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+        }
+        $attribute = $this->allAttributes[$attributeCode];
+
         $value->setAttribute($attribute);
         if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
@@ -309,12 +320,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (preg_match('/get(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
 
-            if (!isset($this->allAttributes[$attributeCode])) {
-                throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-            }
-            $attribute = $this->allAttributes[$attributeCode];
-
-            return $this->getValue($attribute);
+            return $this->getValue($attributeCode);
         }
 
         $attributeCode = null;
@@ -326,11 +332,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $method        = 'addData';
         }
 
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
-
-        return $this->updateValue($attribute, $method, $arguments);
+        return $this->updateValue($attributeCode, $method, $arguments);
     }
 
     /**
@@ -346,6 +348,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     protected function updateValue(AbstractAttribute $attribute, $method, $arguments)
     {
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+        }
+        $attribute = $this->allAttributes[$attributeCode];
+
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
         $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
@@ -371,9 +378,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $methodName = "get{$attCode}";
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
-
         } else {
-            // dynamic call to get value data
             return $this->getValue($attCode);
         }
     }
