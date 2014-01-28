@@ -208,7 +208,7 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      *
-     * @param boolean $isLocalizable is translatable
+     * @param boolean $isLocalizable is localizable
      * @param boolean $isScopable    is scopable
      * @param string  $locale        locale
      * @param string  $matchLocale   locale to match
