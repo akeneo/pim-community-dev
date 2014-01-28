@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
- * Flat attribute group normalizer
+ * A normalizer to transform a group entity into a flat array
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
+class FlatGroupNormalizer extends GroupNormalizer
 {
     /**
      * @var array
@@ -21,7 +21,7 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(AttributeGroup $group)
+    protected function normalizeAttributes(Group $group)
     {
         $attributes = parent::normalizeAttributes($group);
 

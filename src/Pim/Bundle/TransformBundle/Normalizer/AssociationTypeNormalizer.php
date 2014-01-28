@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * A normalizer to transform a category entity into an array
+ * Association type normalizer
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryNormalizer implements NormalizerInterface
+class AssociationTypeNormalizer implements NormalizerInterface
 {
     /**
      * @var array
@@ -40,8 +40,7 @@ class CategoryNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         return array(
-            'code'    => $object->getCode(),
-            'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
+            'code'  => $object->getCode()
         ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
@@ -50,6 +49,6 @@ class CategoryNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AssociationType && in_array($format, $this->supportedFormats);
     }
 }

@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
- * Attribute group normalizer
+ * A normalizer to transform a group entity into an array
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupNormalizer implements NormalizerInterface
+class GroupNormalizer implements NormalizerInterface
 {
     /**
      * @var array
@@ -39,11 +39,13 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return array(
-            'code'       => $object->getCode(),
-            'sortOrder'  => $object->getSortOrder(),
+        $results = array(
+            'code' => $object->getCode(),
+            'type' => $object->getType()->getCode(),
             'attributes' => $this->normalizeAttributes($object)
         ) + $this->translationNormalizer->normalize($object, $format, $context);
+
+        return $results;
     }
 
     /**
@@ -51,22 +53,23 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeGroup && in_array($format, $this->supportedFormats);
+        return $data instanceof Group && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the attributes
      *
-     * @param AttributeGroup $group
+     * @param Group $group
      *
      * @return array
      */
-    protected function normalizeAttributes(AttributeGroup $group)
+    protected function normalizeAttributes(Group $group)
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {
             $attributes[] = $attribute->getCode();
         }
+        sort($attributes);
 
         return $attributes;
     }

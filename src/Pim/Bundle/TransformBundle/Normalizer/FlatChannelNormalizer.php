@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 

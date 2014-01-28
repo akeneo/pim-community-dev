@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
- * Association type normalizer
+ * Attribute group normalizer
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeNormalizer implements NormalizerInterface
+class AttributeGroupNormalizer implements NormalizerInterface
 {
     /**
      * @var array
@@ -40,7 +40,9 @@ class AssociationTypeNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         return array(
-            'code'  => $object->getCode()
+            'code'       => $object->getCode(),
+            'sortOrder'  => $object->getSortOrder(),
+            'attributes' => $this->normalizeAttributes($object)
         ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
@@ -49,6 +51,23 @@ class AssociationTypeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AssociationType && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeGroup && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Normalize the attributes
+     *
+     * @param AttributeGroup $group
+     *
+     * @return array
+     */
+    protected function normalizeAttributes(AttributeGroup $group)
+    {
+        $attributes = array();
+        foreach ($group->getAttributes() as $attribute) {
+            $attributes[] = $attribute->getCode();
+        }
+
+        return $attributes;
     }
 }
