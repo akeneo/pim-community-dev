@@ -63,7 +63,7 @@ class ProductRepository extends FlexibleEntityRepository implements
             $qb->expr()->eq('pCompleteness.channel', $channel->getId());
 
         $qb->innerJoin(
-            'Pim\Bundle\CatalogBundle\ModelCompleteness',
+            'Pim\Bundle\CatalogBundle\Model\Completeness',
             'pCompleteness',
             'WITH',
             $expression
