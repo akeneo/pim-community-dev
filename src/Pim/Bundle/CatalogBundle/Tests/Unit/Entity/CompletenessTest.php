@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Completeness;
+use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 class CompletenessTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Completeness $completeness
+     * @var Completeness $completeness
      */
     protected $completeness;
 
@@ -46,7 +46,7 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Completeness', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Completeness', $entity);
     }
 
     /**
@@ -67,7 +67,7 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     protected function createLocale($code)
     {
@@ -95,7 +95,7 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     protected function createChannel($code)
     {

@@ -58,7 +58,7 @@ class ProductRepository extends FlexibleEntityRepository implements
         $qb = $this->buildByScope($scope);
         $rootAlias = $qb->getRootAlias();
         $expression =
-            'pCompleteness.productId = '.$rootAlias.'.id AND '.
+            'pCompleteness.product = '.$rootAlias.' AND '.
             $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
             $qb->expr()->eq('pCompleteness.channel', $channel->getId());
 
@@ -508,7 +508,7 @@ SQL;
                 'completeness',
                 'WITH',
                 'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.productId = p.id'
+                'AND completeness.product = p.id'
             );
         $qb
             ->addSelect('completeness.ratio AS ratio');
