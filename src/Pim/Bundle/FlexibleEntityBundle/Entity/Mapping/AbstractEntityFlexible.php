@@ -267,9 +267,9 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (!isset($this->allAttributes[$attributeCode])) {
             throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
         }
+
         $attribute = $this->allAttributes[$attributeCode];
         $value = new $this->valueClass();
-
         $value->setAttribute($attribute);
         if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
