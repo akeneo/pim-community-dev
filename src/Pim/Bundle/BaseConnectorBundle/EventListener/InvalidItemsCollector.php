@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\EventListener;
+namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
