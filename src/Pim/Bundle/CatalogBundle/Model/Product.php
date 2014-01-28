@@ -167,30 +167,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     }
 
     /**
-     * Get values
-     *
-     * @return ArrayCollection
-     */
-    public function getValues()
-    {
-        $_values = new ArrayCollection();
-
-        foreach ($this->values as $value) {
-            $attribute = $value->getAttribute();
-            $key = $attribute->getCode();
-            if ($attribute->isTranslatable()) {
-                $key .= '_'.$value->getLocale();
-            }
-            if ($attribute->isScopable()) {
-                $key .= '_'.$value->getScope();
-            }
-            $_values[$key] = $value;
-        }
-
-        return $_values;
-    }
-
-    /**
      * Get ordered group
      *
      * Group with negative sort order (Other) will be put at the end

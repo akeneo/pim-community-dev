@@ -137,40 +137,88 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Get values
      *
-     * @return \ArrayAccess
+     * @return ArrayCollection
      */
     public function getValues()
     {
-        if (!isset($this->values) || !$this->values->count()) {
-            return $this->values;
-        }
+        $values = new ArrayCollection();
 
-        $collection = new ArrayCollection();
         foreach ($this->values as $value) {
-            $collection[$value->getAttribute()->getCode()] = $value;
+            $attribute = $this->getAttribute();
+            $key = $this->getValueKey($value);
+                
+            $values[$key] = $value;
         }
 
-        return $collection;
+        return $values;
     }
 
     /**
      * Get value related to attribute code
      *
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
+     * @param AbstractEntityAttribute $attribute
+     * @param string                  $localeCode
+     * @param string                  $scopeCode
      *
      * @return FlexibleValueInterface
      */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
+    public function getValue(AbstractEntityAttribute $attribute, $localeCode = null, $scopeCode = null)
     {
-        $locale = ($localeCode) ? $localeCode : $this->getLocale();
-        $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
+        $localeCode = ($localeCode) ? $localeCode : $this->getLocale();
+        $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
 
-        $values = $this->filterValues($attributeCode, $locale, $scope);
-        $value = (count($values) == 1) ? $values->first() : null;
+        $valueKey = $this->buildValueKey($attribute, $localeCode, $scopeCode);
 
-        return $value;
+        $values = $this->getValues();
+
+        return $values[$valueKey];
+    }
+
+    /**
+     * Get a key identifing uniquely the value
+     *
+     * @param AbstractFlexibleValue $value
+     *
+     * @return string
+     */
+    protected function getValueKey(AbstractFlexibleValue $value)
+    {
+        $attribute = $value->getAttribute();
+
+        $localeCode = null;
+        $scopeCode = null;
+
+        if ($attribute->isTranslatable()) {
+            $locale = $value->getLocale();
+        }
+        if ($attribute->isScopable()) {
+            $scope = $value->getScope();
+        }
+
+        return $this->buidlValueKey($attribute, $localeCode, $scopeCode);
+    }
+
+    /**
+     * Get a key identifier for a value from attributeCode, localeCode and scopeCode
+     *
+     * @param AbstractEntityAttribute $attribute
+     * @param string                  $localeCode
+     * @param string                  $scopeCode
+     *
+     * @return string
+     */
+    protected function buildValueKey(AbstractEntityAttribute $attribute, $localeCode = null, $scopeCode = null)
+    {
+        $key = $attribute->getCode();
+
+        if ($attribute->isTranslatable() && $localeCode != null) {
+            $key .= '_' . $localeCode;
+        }
+        if ($attribute->isScopable()i && $scopeCode != null) {
+            $key .= '_' . $scopeCode;
+        }
+
+        return $key;
     }
 
     /**
@@ -190,32 +238,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                 }
             )
             ->count();
-    }
-
-    /**
-     * Filter product value per attribute code
-     *
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array|boolean
-     */
-    protected function filterValues($attribute, $locale, $scope)
-    {
-        $values = $this->getValues();
-
-        if (empty($values)) {
-            return array();
-        }
-
-        $values = $values->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                return $value->isMatching($attribute, $locale, $scope);
-            }
-        );
-
-        return $values;
     }
 
     /**
