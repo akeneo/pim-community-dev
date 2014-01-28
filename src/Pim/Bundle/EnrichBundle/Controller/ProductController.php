@@ -507,7 +507,7 @@ class ProductController extends AbstractDoctrineController
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-        if (!$this->securityFacade->isGranted('pim_catalog_locale_'.$dataLocale)) {
+        if (!$this->securityFacade->isGranted('pim_enrich_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 
