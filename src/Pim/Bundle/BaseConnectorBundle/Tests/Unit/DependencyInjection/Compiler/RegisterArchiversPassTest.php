@@ -69,7 +69,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('hasDefinition')
-            ->with('pim_import_export.event_listener.archivist')
+            ->with('pim_base_connector.event_listener.archivist')
             ->will($this->returnValue(null !== $definition));
 
         if ($definition) {
