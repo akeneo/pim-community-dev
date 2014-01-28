@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer\File;
+namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;

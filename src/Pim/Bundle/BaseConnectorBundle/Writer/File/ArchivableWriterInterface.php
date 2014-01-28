@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer\File;
+namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 /**
  * Interface for file writer that supports archiving the results
