@@ -20,7 +20,6 @@ class PimImportExportBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass());
     }
 }

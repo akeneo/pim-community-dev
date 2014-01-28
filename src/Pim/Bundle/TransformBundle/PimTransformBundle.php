@@ -21,6 +21,7 @@ class PimTransformBundle extends Bundle
     {
         $container
             ->addCompilerPass(new DependencyInjection\Compiler\RegisterEntityTransformersPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
     }
 }
