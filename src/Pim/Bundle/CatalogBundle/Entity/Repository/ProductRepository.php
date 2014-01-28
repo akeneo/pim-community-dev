@@ -63,7 +63,7 @@ class ProductRepository extends FlexibleEntityRepository implements
             $qb->expr()->eq('pCompleteness.channel', $channel->getId());
 
         $qb->innerJoin(
-            'PimCatalogBundle:Completeness',
+            'Pim\Bundle\CatalogBundle\ModelCompleteness',
             'pCompleteness',
             'WITH',
             $expression
@@ -504,7 +504,7 @@ SQL;
                 'channel.code = :scopeCode'
             )
             ->leftJoin(
-                'PimCatalogBundle:Completeness',
+                'Pim\Bundle\CatalogBundle\Model\Completeness',
                 'completeness',
                 'WITH',
                 'completeness.locale = locale.id AND completeness.channel = channel.id '.
