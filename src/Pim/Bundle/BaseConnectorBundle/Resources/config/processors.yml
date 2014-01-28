@@ -39,7 +39,7 @@ services:
         arguments:
             - '@pim_import_export.validator.import'
             - '@translator'
-            - '@pim_import_export.transformer.registry'
+            - '@pim_transform.transformer.registry'
 
     pim_import_export.processor.channel:
         parent: pim_import_export.processor.transformer
@@ -58,7 +58,7 @@ services:
         arguments:
             - '@pim_import_export.validator.product_import'
             - '@translator'
-            - '@pim_import_export.transformer.registry'
+            - '@pim_transform.transformer.registry'
             - '%pim_catalog.entity.product.class%'
 
     pim_import_export.processor.association:
@@ -108,7 +108,7 @@ services:
         arguments:
             - '@pim_import_export.validator.skip_import'
             - '@translator'
-            - '@pim_import_export.transformer.registry'
+            - '@pim_transform.transformer.registry'
             - %pim_catalog.entity.job_instance.class%
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
