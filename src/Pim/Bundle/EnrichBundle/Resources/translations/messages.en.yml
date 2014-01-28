@@ -335,10 +335,8 @@ pim_title.attribute.index:                   Attributes
 pim_title.attribute.create:                  Attributes | Create
 pim_title.attribute.edit:                    Attributes %attribute.label% | Edit
 pim_title.product.index:                     Products
-pim_title.product.create:                    Products | Create
 pim_title.product.edit:                      Products %product.sku% | Edit
 pim_title.family.index:                      Families
-pim_title.family.create:                     Families | Create
 pim_title.family.edit:                       Families %family.label% | Edit
 pim_title.channel.index:                     Channels
 pim_title.channel.create:                    Channels | Create

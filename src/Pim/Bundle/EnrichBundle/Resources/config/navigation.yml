@@ -137,10 +137,8 @@ oro_titles:
     pim_enrich_attribute_create:        pim_title.attribute.create
     pim_enrich_attribute_edit:          pim_title.attribute.edit
     pim_enrich_product_index:           pim_title.product.index
-    pim_enrich_product_create:          pim_title.product.create
     pim_enrich_product_edit:            pim_title.product.edit
     pim_enrich_family_index:            pim_title.family.index
-    pim_enrich_family_create:           pim_title.family.create
     pim_enrich_family_edit:             pim_title.family.edit
     pim_enrich_channel_index:           pim_title.channel.index
     pim_enrich_channel_create:          pim_title.channel.create
