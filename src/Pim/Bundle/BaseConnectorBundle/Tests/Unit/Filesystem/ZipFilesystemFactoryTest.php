@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Filesystem;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Filesystem;
 
-use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
+use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 
 /**
  * Test related class
