@@ -100,7 +100,7 @@ class ProductFormView
         }
 
         if ($attribute->isLocalizable()) {
-            $classes['translatable'] = true;
+            $classes['localizable'] = true;
         }
 
         if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
