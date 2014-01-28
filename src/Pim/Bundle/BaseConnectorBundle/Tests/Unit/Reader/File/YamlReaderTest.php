@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\File\YamlReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
 
 /**
  * Tests related class

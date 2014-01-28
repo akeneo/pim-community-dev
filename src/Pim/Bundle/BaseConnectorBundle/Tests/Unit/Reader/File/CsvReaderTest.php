@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader;
 
 /**
  * Test related class
@@ -91,7 +91,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(3, $parameters['%totalColumnsCount%']);
             $this->assertEquals(4, $parameters['%itemColumnsCount%']);
             $this->assertStringEndsWith(
-                'src/Pim/Bundle/ImportExportBundle/Tests/fixtures/invalid_import.csv',
+                'src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import.csv',
                 $parameters['%csvPath%']
             );
             $this->assertEquals(1, $parameters['%lineno%']);
@@ -117,7 +117,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
 
     protected function getArchiverMock()
     {
-        return $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver')
+        return $this->getMockBuilder('Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver')
             ->disableOriginalConstructor()
             ->getMock();
     }

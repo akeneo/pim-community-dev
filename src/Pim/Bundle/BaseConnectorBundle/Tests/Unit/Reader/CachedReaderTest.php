@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Reader;
 
-use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 
 /**
  * Test related class

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader;
 
 /**
  * Test related class
@@ -36,7 +36,7 @@ class CsvProductReaderTest extends CsvReaderTest
      */
     public function testExtendsCsvReader()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Reader\File\CsvReader', $this->reader);
+        $this->assertInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader', $this->reader);
     }
 
     /**
@@ -123,7 +123,7 @@ class CsvProductReaderTest extends CsvReaderTest
 
     protected function getArchiverMock()
     {
-        return $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver')
+        return $this->getMockBuilder('Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver')
             ->disableOriginalConstructor()
             ->getMock();
     }

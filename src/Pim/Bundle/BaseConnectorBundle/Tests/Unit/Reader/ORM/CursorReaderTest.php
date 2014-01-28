@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Reader\ORM;
 
-use Pim\Bundle\ImportExportBundle\Reader\ORM\CursorReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\ORM\CursorReader;
 
 /**
  * Test related class
