@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 

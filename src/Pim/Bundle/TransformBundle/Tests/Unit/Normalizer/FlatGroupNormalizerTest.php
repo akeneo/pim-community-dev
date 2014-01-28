@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FlatGroupNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FlatTranslationNormalizer;
 
 /**
  * Test related class

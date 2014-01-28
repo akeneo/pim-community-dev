@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\ChannelNormalizer;
 
 /**
  * Test related class

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 /**
  * Test case for normalizer objects

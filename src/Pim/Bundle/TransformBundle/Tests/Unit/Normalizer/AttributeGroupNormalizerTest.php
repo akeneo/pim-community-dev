@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\AttributeGroupNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 

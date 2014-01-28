@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\JobInstanceNormalizer;
 
 /**
  * Test related class

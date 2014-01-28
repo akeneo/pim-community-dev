@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FlatAttributeNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FlatTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;

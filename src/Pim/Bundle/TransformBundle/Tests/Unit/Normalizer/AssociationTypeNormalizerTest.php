@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\AssociationTypeNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\AssociationTypeNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**

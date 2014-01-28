@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\FamilyNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
