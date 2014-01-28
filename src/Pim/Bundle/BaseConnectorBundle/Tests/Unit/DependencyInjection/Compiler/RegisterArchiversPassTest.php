@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterArchiversPass;
+use Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass;
 
 /**
  * Test related class
