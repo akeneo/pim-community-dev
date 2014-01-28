@@ -1,9 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Product completeness entity
@@ -51,11 +53,6 @@ class Completeness
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected $product;
-
-    /**
-     * @var string ORM or ODM productId
-     */
-    protected $productId;
 
     /**
      * Getter locale
