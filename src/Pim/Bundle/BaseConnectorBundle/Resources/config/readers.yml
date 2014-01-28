@@ -19,7 +19,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
-            - '@pim_import_export.converter.metric'
+            - '@pim_transform.converter.metric'
 
     pim_import_export.reader.orm.bulk_product:
         parent: pim_import_export.reader.orm.product
