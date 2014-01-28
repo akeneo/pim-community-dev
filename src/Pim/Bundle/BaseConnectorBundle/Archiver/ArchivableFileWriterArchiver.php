@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Gaufrette\Filesystem;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
-use Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface;
-use Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 
 /**
  * Archive job execution files into conventional directories

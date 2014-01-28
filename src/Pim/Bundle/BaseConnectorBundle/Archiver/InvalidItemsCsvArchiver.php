@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Gaufrette\Filesystem;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\ImportExportBundle\EventListener\InvalidItemsCollector;
+use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 
 /**

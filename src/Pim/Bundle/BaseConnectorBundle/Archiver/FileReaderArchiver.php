@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
-use Pim\Bundle\ImportExportBundle\Reader\File\FileReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 
 /**
  * Archive job execution files into conventional directories

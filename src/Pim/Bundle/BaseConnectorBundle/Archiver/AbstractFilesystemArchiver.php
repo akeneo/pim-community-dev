@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 

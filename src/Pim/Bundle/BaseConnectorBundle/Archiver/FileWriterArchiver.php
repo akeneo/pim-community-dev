@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Archiver;
+namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
-use Pim\Bundle\ImportExportBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Oro\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
 
