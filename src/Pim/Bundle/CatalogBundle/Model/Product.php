@@ -211,7 +211,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
                 if ($locale) {
                     $this->setLocale($locale);
                 }
-                if ($value = $this->getValue($attributeAsLabel->getCode())) {
+                if ($value = $this->getValue($attributeAsLabel)) {
                     $data = $value->getData();
                     if (!empty($data)) {
                         return (string) $data;

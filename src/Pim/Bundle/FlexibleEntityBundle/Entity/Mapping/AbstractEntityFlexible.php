@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 
@@ -144,7 +145,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $attribute = $this->getAttribute();
+            $attribute = $value->getAttribute();
             $key = $this->getValueKey($value);
                 
             $values[$key] = $value;
@@ -162,7 +163,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return FlexibleValueInterface
      */
-    public function getValue(AbstractEntityAttribute $attribute, $localeCode = null, $scopeCode = null)
+    public function getValue(AbstractAttribute $attribute, $localeCode = null, $scopeCode = null)
     {
         $localeCode = ($localeCode) ? $localeCode : $this->getLocale();
         $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
@@ -214,7 +215,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if ($attribute->isTranslatable() && $localeCode != null) {
             $key .= '_' . $localeCode;
         }
-        if ($attribute->isScopable()i && $scopeCode != null) {
+        if ($attribute->isScopable() && $scopeCode != null) {
             $key .= '_' . $scopeCode;
         }
 
@@ -228,7 +229,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return boolean
      */
-    public function hasAttribute(AbstractEntityAttribute $attribute)
+    public function hasAttribute(AbstractAttribute $attribute)
     {
         return 0 !== $this
             ->getValues()
@@ -243,21 +244,16 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Create a new value
      *
-     * @param string $attributeCode
-     * @param string $locale
-     * @param string $scope
+     * @param AbstractAttribute $attributeCode
+     * @param string            $locale
+     * @param string            $scope
      *
      * @throws \Exception
      *
      * @return AbstractFlexibleValue
      */
-    public function createValue($attributeCode, $locale = null, $scope = null)
+    public function createValue(AbstractAttribute $attribute, $locale = null, $scope = null)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
-
-        $attribute = $this->allAttributes[$attributeCode];
         $value = new $this->valueClass();
         $value->setAttribute($attribute);
         if ($attribute->isTranslatable()) {
@@ -313,7 +309,12 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (preg_match('/get(.*)/', $method, $matches)) {
             $attributeCode = Inflector::tableize($matches[1]);
 
-            return $this->getValue($attributeCode);
+            if (!isset($this->allAttributes[$attributeCode])) {
+                throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+            }
+            $attribute = $this->allAttributes[$attributeCode];
+
+            return $this->getValue($attribute);
         }
 
         $attributeCode = null;
@@ -325,7 +326,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
             $method        = 'addData';
         }
 
-        return $this->updateValue($attributeCode, $method, $arguments);
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
+        }
+
+        return $this->updateValue($attribute, $method, $arguments);
     }
 
     /**
@@ -339,18 +344,14 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return AbstractEntityFlexible
      */
-    protected function updateValue($attributeCode, $method, $arguments)
+    protected function updateValue(AbstractAttribute $attribute, $method, $arguments)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
-
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
         $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
-        $value  = $this->getValue($attributeCode, $locale, $scope);
+        $value  = $this->getValue($attribute, $locale, $scope);
         if ($value === null) {
-            $value = $this->createValue($attributeCode, $locale, $scope);
+            $value = $this->createValue($attribute, $locale, $scope);
             $this->addValue($value);
         }
         $value->$method($data);

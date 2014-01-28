@@ -35,11 +35,11 @@ interface FlexibleInterface
     public function getValues();
 
     /**
-     * Get value related to attribute code
+     * Get value related to attribute
      *
-     * @param string $attributeCode
+     * @param AbstractAttribute $attribute
      *
      * @return FlexibleValueInterface
      */
-    public function getValue($attributeCode);
+    public function getValue(AbstractAttribute $attribute);
 }
