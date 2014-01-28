@@ -25,7 +25,7 @@ services:
         class: %pim_import_export.writer.orm.product.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_import_export.entity_cache'
+            - '@pim_transform.cache.entity_cache'
             - '@pim_versioning.event_listener.addversion'
         calls:
             - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
