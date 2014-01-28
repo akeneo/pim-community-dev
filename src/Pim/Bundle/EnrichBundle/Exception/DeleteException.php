@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Exception;
+namespace Pim\Bundle\EnrichBundle\Exception;
 
 /**
  * Safe message exception for entity deletions

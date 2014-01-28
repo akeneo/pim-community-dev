@@ -15,6 +15,6 @@ fos_rest:
         default_format: json
     exception:
         codes:
-            Pim\Bundle\CatalogBundle\Exception\DeleteException: HTTP_CONFLICT
+            Pim\Bundle\EnrichBundle\Exception\DeleteException: HTTP_CONFLICT
         messages:
-            Pim\Bundle\CatalogBundle\Exception\DeleteException: true
+            Pim\Bundle\EnrichBundle\Exception\DeleteException: true
