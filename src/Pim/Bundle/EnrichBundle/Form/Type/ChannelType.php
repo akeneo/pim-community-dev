@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Helper\SortHelper;
+use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**

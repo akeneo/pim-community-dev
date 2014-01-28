@@ -21,7 +21,7 @@ use Oro\Bundle\DataGridBundle\Action\MassAction\MassActionResponse;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 

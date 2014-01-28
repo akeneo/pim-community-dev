@@ -4,7 +4,7 @@
 {% elseif completeness is null %}
     {{ 'Not yet calculated'|trans }}
 {% else %}
-    {% set titleProgressBar = 'pim_catalog.completeness.progress_bar.title'|transchoice(completeness.requiredCount, {'%ratio%': completeness.ratio|number_format(0)}) %}
+    {% set titleProgressBar = 'pim_enrich.completeness.progress_bar.title'|transchoice(completeness.requiredCount, {'%ratio%': completeness.ratio|number_format(0)}) %}
     <div class="progress" data-toggle="tooltip" data-original-title="{{ titleProgressBar }}">
         {% if channel.hasLocale(locale) == false %}
             {% set progressClass = 'bar-disabled' %}
@@ -19,7 +19,7 @@
     </div>
 
     {% if completeness.missingCount == 0 %}
-        <div class="center">{{ 'pim_catalog.completeness.subtitle'|transchoice(completeness.missingCount) }}</div>
+        <div class="center">{{ 'pim_enrich.completeness.subtitle'|transchoice(completeness.missingCount) }}</div>
     {% else %}
         {% set titleMissing %}
         <ul>
@@ -29,8 +29,8 @@
         </ul>
         {% endset %}
         <div class="center" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="hover" data-content="{{ titleMissing|raw }}"
-            data-original-title="{{ 'pim_catalog.completeness.missing_attributes'|transchoice(completeness.missingCount) }}:">
-            <span class="progress-info">{{ 'pim_catalog.completeness.subtitle'|transchoice(completeness.missingCount) }}</span>
+            data-original-title="{{ 'pim_enrich.completeness.missing_attributes'|transchoice(completeness.missingCount) }}:">
+            <span class="progress-info">{{ 'pim_enrich.completeness.subtitle'|transchoice(completeness.missingCount) }}</span>
         </div>
     {% endif %}
 
