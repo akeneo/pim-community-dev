@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
-use Pim\Bundle\ImportExportBundle\Reader\CachedReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 
 /**
  * Specialized ORMTransformer for products
