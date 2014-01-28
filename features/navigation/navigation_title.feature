@@ -39,3 +39,5 @@ Feature: Well display navigation titles
       | imports                                   | Import profiles management                      |
       | "footwear_product_import" import job      | Import profiles Footwear product import \| Show |
       | "footwear_product_import" import job edit | Import profiles Footwear product import \| Edit |
+      | import executions                         | Import executions history                       |
+      | export executions                         | Export executions history                       |
