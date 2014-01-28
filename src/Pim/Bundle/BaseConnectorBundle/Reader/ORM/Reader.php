@@ -1,41 +1,38 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
 
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
 
 /**
- * ORM cursor reader
+ * ORM reader
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CursorReader extends AbstractConfigurableStepElement implements
+class Reader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @var AbstractQuery
-     */
+    /** @var AbstractQuery */
     protected $query;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var \Doctrine\ORM\Internal\Hydration\IterableResult
-     */
-    private $cursor;
+    /** @var boolean */
+    private $executed = false;
+
+    /** @var array */
+    protected $results = array();
 
     /**
      * Set query used by the reader
@@ -51,15 +48,17 @@ class CursorReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->cursor) {
-            $this->cursor = $this->getQuery()->iterate();
+        if (!$this->executed) {
+            $this->executed = true;
+
+            $this->results = $this->getQuery()->execute();
         }
 
-        if ($data = $this->cursor->next()) {
+        if ($result = array_shift($this->results)) {
             $this->stepExecution->incrementSummaryInfo('read');
-
-            return $data;
         }
+
+        return $result;
     }
 
     /**

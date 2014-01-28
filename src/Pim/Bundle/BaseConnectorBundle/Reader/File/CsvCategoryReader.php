@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 /**
  * Csv file reader, reads the whole csv file to deal with category parents and circular references

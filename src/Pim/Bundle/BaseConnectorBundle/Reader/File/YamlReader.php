@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Symfony\Component\Yaml\Yaml;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;

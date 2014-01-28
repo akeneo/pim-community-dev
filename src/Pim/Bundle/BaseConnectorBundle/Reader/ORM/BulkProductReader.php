@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 /**
  * Reads all products at once

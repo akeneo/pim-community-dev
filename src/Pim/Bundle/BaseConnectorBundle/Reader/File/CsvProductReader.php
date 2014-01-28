@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\File;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver;
+use Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
  * Product csv reader

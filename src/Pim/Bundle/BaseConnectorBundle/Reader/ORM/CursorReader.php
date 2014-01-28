@@ -1,38 +1,41 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
-use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
+use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 
 /**
- * ORM reader
+ * ORM cursor reader
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader extends AbstractConfigurableStepElement implements
+class CursorReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
-    /** @var AbstractQuery */
+    /**
+     * @var AbstractQuery
+     */
     protected $query;
 
-    /** @var StepExecution */
+    /**
+     * @var StepExecution
+     */
     protected $stepExecution;
 
-    /** @var boolean */
-    private $executed = false;
-
-    /** @var array */
-    protected $results = array();
+    /**
+     * @var \Doctrine\ORM\Internal\Hydration\IterableResult
+     */
+    private $cursor;
 
     /**
      * Set query used by the reader
@@ -48,17 +51,15 @@ class Reader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->executed) {
-            $this->executed = true;
-
-            $this->results = $this->getQuery()->execute();
+        if (!$this->cursor) {
+            $this->cursor = $this->getQuery()->iterate();
         }
 
-        if ($result = array_shift($this->results)) {
+        if ($data = $this->cursor->next()) {
             $this->stepExecution->incrementSummaryInfo('read');
-        }
 
-        return $result;
+            return $data;
+        }
     }
 
     /**
