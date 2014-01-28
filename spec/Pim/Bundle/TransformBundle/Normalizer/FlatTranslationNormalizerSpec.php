@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
+namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -11,7 +11,7 @@ class FlatTranslationNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_translation_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer');
     }
 
     function it_supports_csv_format(TranslatableInterface $translatable)

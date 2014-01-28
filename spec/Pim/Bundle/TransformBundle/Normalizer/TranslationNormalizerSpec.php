@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
+namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

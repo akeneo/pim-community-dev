@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Converter;
+namespace spec\Pim\Bundle\TransformBundle\Converter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
