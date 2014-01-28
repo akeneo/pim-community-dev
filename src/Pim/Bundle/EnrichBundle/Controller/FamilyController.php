@@ -21,7 +21,7 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -42,9 +42,9 @@ class FamilyController extends AbstractDoctrineController
     protected $channelManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    private $localeManager;
+    private $userContext;
 
     /**
      * @var FamilyFactory
@@ -83,7 +83,7 @@ class FamilyController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param ChannelManager           $channelManager
-     * @param LocaleManager            $localeManager
+     * @param UserContext              $userContext
      * @param FamilyFactory            $factory
      * @param CompletenessManager      $completenessManager
      * @param FamilyHandler            $familyHandler
@@ -100,7 +100,7 @@ class FamilyController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         ChannelManager $channelManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
         FamilyHandler $familyHandler,
@@ -119,7 +119,7 @@ class FamilyController extends AbstractDoctrineController
         );
 
         $this->channelManager      = $channelManager;
-        $this->localeManager       = $localeManager;
+        $this->userContext         = $userContext;
         $this->factory             = $factory;
         $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
@@ -137,7 +137,7 @@ class FamilyController extends AbstractDoctrineController
     public function indexAction()
     {
         return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getUserLocale()->getCode()
         );
     }
 

@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 /**
@@ -17,9 +17,9 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 class AddParametersToProductGridListener extends AddParametersToGridListener
 {
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var ChannelManager
@@ -35,7 +35,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param array             $paramNames     Parameter name that should be binded to query
      * @param RequestParameters $requestParams  Request params
      * @param ProductManager    $productManager Product manager
-     * @param LocaleManager     $localeManager  Locale manager
+     * @param UserContext       $userContext    User context
      * @param ChannelManager    $channelManager Channel manager
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
     */
@@ -43,13 +43,14 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         $paramNames,
         RequestParameters $requestParams,
         ProductManager $productManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         ChannelManager $channelManager,
         $isEditMode = false
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
+
         $this->productManager = $productManager;
-        $this->localeManager  = $localeManager;
+        $this->userContext    = $userContext;
         $this->channelManager = $channelManager;
     }
 
@@ -81,7 +82,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
             $dataLocale = $queryParameters['dataLocale'];
         }
         if ($dataLocale == null) {
-            $dataLocale = $this->localeManager->getUserLocale()->getCode();
+            $dataLocale = $this->userContext->getUserLocale()->getCode();
         }
 
         return $dataLocale;

@@ -27,7 +27,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -54,9 +54,9 @@ class ProductController extends AbstractDoctrineController
     protected $categoryManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var AuditManager
@@ -103,7 +103,7 @@ class ProductController extends AbstractDoctrineController
      * @param RegistryInterface          $doctrine
      * @param ProductManager             $productManager
      * @param CategoryManager            $categoryManager
-     * @param LocaleManager              $localeManager
+     * @param UserContext                $userContext
      * @param AuditManager               $auditManager
      * @param SecurityFacade             $securityFacade
      * @param MassActionParametersParser $parametersParser
@@ -120,7 +120,7 @@ class ProductController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         ProductManager $productManager,
         CategoryManager $categoryManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         AuditManager $auditManager,
         SecurityFacade $securityFacade,
         MassActionParametersParser $parametersParser,
@@ -139,7 +139,7 @@ class ProductController extends AbstractDoctrineController
 
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
-        $this->localeManager        = $localeManager;
+        $this->userContext          = $userContext;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
         $this->parametersParser     = $parametersParser;
@@ -193,7 +193,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         return array(
-            'locales'    => $this->localeManager->getUserLocales(),
+            'locales'    => $this->userContext->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
@@ -317,7 +317,7 @@ class ProductController extends AbstractDoctrineController
             'trees'            => $trees,
             'created'          => $this->auditManager->getOldestLogEntry($product),
             'updated'          => $this->auditManager->getNewestLogEntry($product),
-            'locales'          => $this->localeManager->getUserLocales(),
+            'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
     }
@@ -524,21 +524,6 @@ class ProductController extends AbstractDoctrineController
         if ($this->getDataLocale() !== $locale) {
             return $locale;
         }
-    }
-
-    /**
-     * Get data currency code
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataCurrency()
-    {
-        $dataLocaleCode = $this->getDataLocale();
-        $dataLocale = $this->localeManager->getLocaleByCode($dataLocaleCode);
-
-        return $dataLocale->getDefaultCurrency();
     }
 
     /**

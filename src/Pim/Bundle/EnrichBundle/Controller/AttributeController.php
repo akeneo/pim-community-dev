@@ -28,6 +28,7 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Attribute controller
@@ -57,6 +58,11 @@ class AttributeController extends AbstractDoctrineController
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var UserContext
+     */
+    protected $userContext;
 
     /**
      * @var AuditManager
@@ -91,6 +97,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Form                      $attributeForm
      * @param AttributeManagerInterface $attributeManager
      * @param LocaleManager             $localeManager
+     * @param UserContext               $userContext
      * @param AuditManager              $auditManager
      * @param array                     $measuresConfig
      */
@@ -107,6 +114,7 @@ class AttributeController extends AbstractDoctrineController
         Form $attributeForm,
         AttributeManagerInterface $attributeManager,
         LocaleManager $localeManager,
+        UserContext $userContext,
         AuditManager $auditManager,
         $measuresConfig
     ) {
@@ -125,6 +133,7 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
         $this->localeManager    = $localeManager;
+        $this->userContext      = $userContext;
         $this->auditManager     = $auditManager;
         $this->measuresConfig   = $measuresConfig;
     }
@@ -139,7 +148,7 @@ class AttributeController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getUserLocale()->getCode()
         );
     }
 

@@ -55,7 +55,7 @@ services:
         class: %pim_enrich.controller.channel.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
 
@@ -70,7 +70,7 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
             - '@pim_enrich.form.handler.family'
@@ -91,6 +91,7 @@ services:
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_versioning.manager.audit'
             - %oro_measure.measures_config%
             - %pim_catalog.entity.attribute.class%
@@ -102,7 +103,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -114,7 +115,7 @@ services:
             - '@doctrine'
             - '@templating'
             - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.mass_edit_action:
         scope: request
@@ -134,14 +135,14 @@ services:
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.association_type:
         scope: request
         class: %pim_enrich.controller.association_type.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
 
@@ -164,7 +165,7 @@ services:
         class: %pim_enrich.controller.group_type.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
 
@@ -174,5 +175,5 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@templating'

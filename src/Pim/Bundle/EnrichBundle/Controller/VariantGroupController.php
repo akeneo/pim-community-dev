@@ -30,7 +30,7 @@ class VariantGroupController extends GroupController
     {
         return array(
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(true)),
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getUserLocale()->getCode()
         );
     }
 
@@ -84,7 +84,7 @@ class VariantGroupController extends GroupController
 
         return array(
             'form'         => $this->groupForm->createView(),
-            'dataLocale'   => $this->localeManager->getUserLocale()->getCode(),
+            'dataLocale'   => $this->userContext->getUserLocale()->getCode(),
             'currentGroup' => $group->getId()
         );
     }

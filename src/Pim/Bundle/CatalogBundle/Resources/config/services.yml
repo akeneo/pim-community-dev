@@ -74,7 +74,7 @@ services:
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
 
     # extension listener
     stof_doctrine_extensions.event_listener.locale:

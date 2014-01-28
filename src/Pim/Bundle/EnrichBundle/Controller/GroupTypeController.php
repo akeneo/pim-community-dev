@@ -19,7 +19,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler;
 
@@ -33,9 +33,9 @@ use Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler;
 class GroupTypeController extends AbstractDoctrineController
 {
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var GroupTypeHandler
@@ -58,7 +58,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param LocaleManager            $localeManager
+     * @param UserContext              $userContext
      * @param GroupTypeHandler         $groupTypeHandler
      * @param Form                     $groupTypeForm
      */
@@ -71,7 +71,7 @@ class GroupTypeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         GroupTypeHandler $groupTypeHandler,
         Form $groupTypeForm
     ) {
@@ -86,9 +86,9 @@ class GroupTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->localeManager    = $localeManager;
+        $this->userContext      = $userContext;
         $this->groupTypeHandler = $groupTypeHandler;
-        $this->groupTypeForm        = $groupTypeForm;
+        $this->groupTypeForm    = $groupTypeForm;
     }
 
     /**
@@ -103,7 +103,7 @@ class GroupTypeController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getUserLocale()->getCode()
         );
     }
 

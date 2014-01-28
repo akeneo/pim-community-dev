@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Association controller
@@ -36,9 +36,9 @@ class AssociationController
     protected $productManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * Constructor
@@ -46,18 +46,18 @@ class AssociationController
      * @param RegistryInterface $doctrine
      * @param EngineInterface   $templating
      * @param ProductManager    $productManager
-     * @param LocaleManager     $localeManager
+     * @param UserContext       $userContext
      */
     public function __construct(
         RegistryInterface $doctrine,
         EngineInterface $templating,
         ProductManager $productManager,
-        LocaleManager $localeManager
+        UserContext $userContext
     ) {
-        $this->doctrine        = $doctrine;
-        $this->templating      = $templating;
-        $this->productManager  = $productManager;
-        $this->localeManager   = $localeManager;
+        $this->doctrine       = $doctrine;
+        $this->templating     = $templating;
+        $this->productManager = $productManager;
+        $this->userContext    = $userContext;
     }
 
     /**
@@ -82,7 +82,7 @@ class AssociationController
             array(
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
-                'dataLocale'       => $this->localeManager->getDataLocale(),
+                'dataLocale'       => $this->userContext->getDataLocale(),
             )
         );
     }

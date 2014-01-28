@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Helper;
 
 use Symfony\Component\Intl;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * LocaleHelper essentially allow to translate locale code to localized locale label
@@ -19,17 +19,17 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 class LocaleHelper
 {
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * Constructor
-     * @param LocaleManager $localeManager
+     * @param UserContext $userContext
      */
-    public function __construct(LocaleManager $localeManager)
+    public function __construct(UserContext $userContext)
     {
-        $this->localeManager = $localeManager;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -43,7 +43,7 @@ class LocaleHelper
     public function getLocaleLabel($code, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->localeManager->getCurrentLocale();
+            $locale = $this->userContext->getCurrentLocale();
         }
 
         return \Locale::getDisplayName($code, $locale);
@@ -60,7 +60,7 @@ class LocaleHelper
     public function getCurrencySymbol($currency, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->localeManager->getCurrentLocale();
+            $locale = $this->userContext->getCurrentLocale();
         }
         $language = \Locale::getPrimaryLanguage();
 
@@ -78,7 +78,7 @@ class LocaleHelper
     public function getCurrencyLabel($currency, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->localeManager->getCurrentLocale();
+            $locale = $this->userContext->getCurrentLocale();
         }
         $language = \Locale::getPrimaryLanguage();
 
@@ -95,7 +95,7 @@ class LocaleHelper
     public function getCurrencyLabels($locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->localeManager->getCurrentLocale();
+            $locale = $this->userContext->getCurrentLocale();
         }
         $language = \Locale::getPrimaryLanguage($locale);
 
@@ -109,7 +109,7 @@ class LocaleHelper
      */
     public function getLocaleCurrency()
     {
-        $locale = $this->localeManager->getUserLocale();
+        $locale = $this->userContext->getUserLocale();
 
         return (null !== $locale && $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
     }
@@ -126,7 +126,7 @@ class LocaleHelper
     public function getFlag($code, $fullLabel = false, $locale = null)
     {
         if (null === $locale) {
-            $locale = $this->localeManager->getCurrentLocale();
+            $locale = $this->userContext->getCurrentLocale();
         }
         $localeLabel = $this->getLocaleLabel($code, $locale);
 

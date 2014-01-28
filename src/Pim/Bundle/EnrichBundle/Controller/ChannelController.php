@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler;
@@ -33,9 +33,9 @@ use Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler;
 class ChannelController extends AbstractDoctrineController
 {
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    private $localeManager;
+    private $userContext;
 
     /**
      * @var Form
@@ -58,7 +58,7 @@ class ChannelController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param LocaleManager            $localeManager
+     * @param UserContext              $userContext
      * @param ChannelHandler           $channelHandler
      * @param Form                     $channelForm
      */
@@ -71,7 +71,7 @@ class ChannelController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
@@ -86,7 +86,7 @@ class ChannelController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->localeManager  = $localeManager;
+        $this->userContext    = $userContext;
         $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
     }
@@ -103,7 +103,7 @@ class ChannelController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getUserLocale()->getCode()
         );
     }
 
