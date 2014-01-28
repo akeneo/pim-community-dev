@@ -115,7 +115,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
 
     protected function getCsvEncoderMock()
     {
-        return $this->getMock('Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder');
+        return $this->getMock('Pim\Bundle\TransformBundle\Encoder\CsvEncoder');
     }
 
     protected function getJobExecutionMock($jobInstance, $id)

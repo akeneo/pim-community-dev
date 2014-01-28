@@ -3,9 +3,9 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\EntityCache;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
