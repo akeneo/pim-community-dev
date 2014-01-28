@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Reference;
+namespace Pim\Bundle\TransformBundle\DependencyInjection\Reference;
 
 use Symfony\Component\DependencyInjection\Reference;
 
