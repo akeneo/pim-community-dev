@@ -39,7 +39,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_transform.cache.attribute_cache'
-            - '@pim_import_export.reader.cached_association'
+            - '@pim_base_connector.reader.cached_association'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product.class% }
 

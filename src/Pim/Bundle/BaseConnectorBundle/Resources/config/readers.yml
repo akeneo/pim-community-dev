@@ -1,116 +1,116 @@
 parameters:
-    pim_import_export.reader.orm.product.class:       Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader
-    pim_import_export.reader.orm.bulk_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\ORM\BulkProductReader
-    pim_import_export.reader.orm.entity.class:        Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
+    pim_base_connector.reader.orm.product.class:       Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader
+    pim_base_connector.reader.orm.bulk_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\ORM\BulkProductReader
+    pim_base_connector.reader.orm.entity.class:        Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
 
-    pim_import_export.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
-    pim_import_export.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
-    pim_import_export.reader.file.csv_category.class: Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
+    pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
+    pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
+    pim_base_connector.reader.file.csv_category.class: Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
 
-    pim_import_export.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
+    pim_base_connector.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
 
-    pim_import_export.reader.dummy.class:             Pim\Bundle\BaseConnectorBundle\Reader\DummyReader
-    pim_import_export.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
+    pim_base_connector.reader.dummy.class:             Pim\Bundle\BaseConnectorBundle\Reader\DummyReader
+    pim_base_connector.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
 
 services:
-    pim_import_export.reader.orm.product:
-        class: %pim_import_export.reader.orm.product.class%
+    pim_base_connector.reader.orm.product:
+        class: %pim_base_connector.reader.orm.product.class%
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
 
-    pim_import_export.reader.orm.bulk_product:
-        parent: pim_import_export.reader.orm.product
-        class: %pim_import_export.reader.orm.bulk_product.class%
+    pim_base_connector.reader.orm.bulk_product:
+        parent: pim_base_connector.reader.orm.product
+        class: %pim_base_connector.reader.orm.bulk_product.class%
 
-    pim_import_export.reader.orm.category:
-        class: %pim_import_export.reader.orm.entity.class%
+    pim_base_connector.reader.orm.category:
+        class: %pim_base_connector.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.category.class%
 
-    pim_import_export.reader.orm.attribute:
-        class: %pim_import_export.reader.orm.entity.class%
+    pim_base_connector.reader.orm.attribute:
+        class: %pim_base_connector.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.attribute.class%
 
-    pim_import_export.reader.orm.attribute_option:
-        class: %pim_import_export.reader.orm.entity.class%
+    pim_base_connector.reader.orm.attribute_option:
+        class: %pim_base_connector.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.attribute_option.class%
 
-    pim_import_export.reader.orm.association_type:
-        class: %pim_import_export.reader.orm.entity.class%
+    pim_base_connector.reader.orm.association_type:
+        class: %pim_base_connector.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.association_type.class%
 
-    pim_import_export.reader.orm.group:
-        class: %pim_import_export.reader.orm.entity.class%
+    pim_base_connector.reader.orm.group:
+        class: %pim_base_connector.reader.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.group.class%
 
-    pim_import_export.reader.file.csv:
-        class: %pim_import_export.reader.file.csv.class%
+    pim_base_connector.reader.file.csv:
+        class: %pim_base_connector.reader.file.csv.class%
         arguments:
             - '@pim_import_export.archiver.invalid_item_csv_archiver'
 
-    pim_import_export.reader.file.csv_category:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv_category.class%
+    pim_base_connector.reader.file.csv_category:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv_category.class%
 
-    pim_import_export.reader.file.csv_product:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv_product.class%
+    pim_base_connector.reader.file.csv_product:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.attribute.class%
 
-    pim_import_export.reader.file.csv_attribute_option:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv.class%
+    pim_base_connector.reader.file.csv_attribute_option:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv.class%
 
-    pim_import_export.reader.file.csv_attribute:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv.class%
+    pim_base_connector.reader.file.csv_attribute:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv.class%
 
-    pim_import_export.reader.file.csv_association_type:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv.class%
+    pim_base_connector.reader.file.csv_association_type:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv.class%
 
-    pim_import_export.reader.file.csv_group:
-        parent: pim_import_export.reader.file.csv
-        class: %pim_import_export.reader.file.csv.class%
+    pim_base_connector.reader.file.csv_group:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv.class%
 
-    pim_import_export.reader.file.yaml:
-        class: %pim_import_export.reader.file.yaml.class%
+    pim_base_connector.reader.file.yaml:
+        class: %pim_base_connector.reader.file.yaml.class%
 
-    pim_import_export.reader.file.yaml_multiple:
-        class: %pim_import_export.reader.file.yaml.class%
+    pim_base_connector.reader.file.yaml_multiple:
+        class: %pim_base_connector.reader.file.yaml.class%
         arguments:
             - true
 
-    pim_import_export.reader.file.yaml_product:
-        class: %pim_import_export.reader.file.yaml.class%
+    pim_base_connector.reader.file.yaml_product:
+        class: %pim_base_connector.reader.file.yaml.class%
         arguments:
             - false
             - true
             - false
 
-    pim_import_export.reader.file.yaml_associations:
-        class: %pim_import_export.reader.file.yaml.class%
+    pim_base_connector.reader.file.yaml_associations:
+        class: %pim_base_connector.reader.file.yaml.class%
         arguments:
             - false
             - false
             - false
 
-    pim_import_export.reader.dummy:
-        class: %pim_import_export.reader.dummy.class%
+    pim_base_connector.reader.dummy:
+        class: %pim_base_connector.reader.dummy.class%
 
-    pim_import_export.reader.cached_association:
-        class: %pim_import_export.reader.cached.class%
+    pim_base_connector.reader.cached_association:
+        class: %pim_base_connector.reader.cached.class%

@@ -3,11 +3,11 @@ default:
     order: 100
     multiple: false
     csv:
-        reader:            pim_import_export.reader.file.csv
+        reader:            pim_base_connector.reader.file.csv
         reader_options:    {}
         processor_options: {}
     yml:
-        reader:            pim_import_export.reader.file.yaml
+        reader:            pim_base_connector.reader.file.yaml
         reader_options:    {}
         processor_options: {}
 
@@ -15,10 +15,10 @@ categories:
     order: 30
     multiple: true
     csv:
-        reader:            pim_import_export.reader.file.csv_category
+        reader:            pim_base_connector.reader.file.csv_category
         processor:         pim_base_connector.processor.category
     yml:
-        reader:            pim_import_export.reader.file.yaml_multiple
+        reader:            pim_base_connector.reader.file.yaml_multiple
         processor:         pim_base_connector.processor.category
 
 attribute_groups:
@@ -82,7 +82,7 @@ products:
     csv:
         processor:         pim_base_connector.processor.product
     yml:
-        reader:            pim_import_export.reader.file.yaml_product
+        reader:            pim_base_connector.reader.file.yaml_product
         processor:         pim_base_connector.processor.product
 
 associations:
@@ -90,7 +90,7 @@ associations:
     csv:
         processor:         pim_base_connector.processor.association
     yml:
-        reader:            pim_import_export.reader.file.yaml_associations
+        reader:            pim_base_connector.reader.file.yaml_associations
         processor:         pim_base_connector.processor.association
 
 jobs:
