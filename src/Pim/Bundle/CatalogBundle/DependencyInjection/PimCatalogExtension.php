@@ -38,7 +38,6 @@ class PimCatalogExtension extends Extension
         $loader->load('attribute_constraint_guessers.yml');
         $loader->load('factory.yml');
         $loader->load('entities.yml');
-        $loader->load('datagrid_listeners.yml');
         $loader->load('repositories.yml');
 
         $this->loadStorageDriver($config, $container);

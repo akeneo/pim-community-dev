@@ -32,6 +32,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('handlers.yml');
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
+        $loader->load('datagrid_listeners.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
