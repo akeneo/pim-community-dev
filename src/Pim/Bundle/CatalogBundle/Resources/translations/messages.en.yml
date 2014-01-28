@@ -326,41 +326,33 @@ Attributes: Attributes
 Title:      Title
 
 # Page titles
-Dashboard:                                   Dashboard
-Attribute groups:                            Attribute groups
-Attribute groups | Create:                   Attribute groups | Create
-Attribute groups %group.label% | Edit:       Attribute groups %group.label% | Edit
-Attribute groups | Sort:                     Attribute groups | Sort
-Category trees:                              Category trees
-Category trees | List:                       Category trees | List
-Category trees | Manage:                     Category trees | Manage
-Category trees | View:                       Category trees | View
-Category trees | Create:                     Category trees | Create
-Category trees | Edit:                       Category trees | Edit
-Attributes:                                  Attributes
-Attributes | Create:                         Attributes | Create
-Attributes %attribute.label% | Edit:         Attributes %attribute.label% | Edit
-Products:                                    Products
-Products | Create:                           Products | Create
-Products %product.sku% | Edit:               Products %product.sku% | Edit
-Families:                                    Families
-Families | Create:                           Families | Create
-Families %family.label% | Edit:              Families %family.label% | Edit
-Channels:                                    Channels
-Channels | Create:                           Channels | Create
-Channels %channel.label% | Edit:             Channels %channel.label% | Edit
-Currencies:                                  Currencies
-Locales:                                     Locales
-Locales %locale.code% | Edit:                Locales %locale.code% | Edit
-Groups:                                      Groups
-Groups %group.label% | Edit:                 Groups %group.label% | Edit
-Variant groups:                              Variant groups
-Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
-Association types:                                 Association types
-Association types | Create:                        Association types | Create
-Association types %association type.label% | Edit: Association types %association type.label% | Edit
-Group types:                                       Group types
-Group types %group type.label% | Edit:             Group types %group type.label% | Edit
+pim_title.dashboard:                         Dashboard
+pim_title.attribute_group.create:            Attribute groups | Create
+pim_title.attribute_group.edit:              Attribute groups %group.label% | Edit
+pim_title.category.create:                   Category trees | Create
+pim_title.category.edit:                     Category trees %category.label% | Edit
+pim_title.attribute.index:                   Attributes
+pim_title.attribute.create:                  Attributes | Create
+pim_title.attribute.edit:                    Attributes %attribute.label% | Edit
+pim_title.product.index:                     Products
+pim_title.product.create:                    Products | Create
+pim_title.product.edit:                      Products %product.sku% | Edit
+pim_title.family.index:                      Families
+pim_title.family.create:                     Families | Create
+pim_title.family.edit:                       Families %family.label% | Edit
+pim_title.channel.index:                     Channels
+pim_title.channel.create:                    Channels | Create
+pim_title.channel.edit:                      Channels %channel.label% | Edit
+pim_title.currency.index:                    Currencies
+pim_title.locale.index:                      Locales
+pim_title.group.index:                       Groups
+pim_title.group.edit:                        Groups %group.label% | Edit
+pim_title.variant_group.index:               Variant groups
+pim_title.variant_group.edit:                Variant groups %group.label% | Edit
+pim_title.association_type.index:            Association types
+pim_title.association_type.edit:             Association types %association type.label% | Edit
+pim_title.group_type.index:                  Group types
+pim_title.group_type.edit:                   Group types %group type.label% | Edit
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
