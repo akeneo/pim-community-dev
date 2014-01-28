@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Cache;
+namespace Pim\Bundle\TransformBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;

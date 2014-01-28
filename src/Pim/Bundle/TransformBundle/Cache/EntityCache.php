@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Cache;
+namespace Pim\Bundle\TransformBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
