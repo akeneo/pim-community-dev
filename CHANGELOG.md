@@ -30,6 +30,7 @@
 - Move controllers, forms, routing and views from CatalogBundle to EnrichBundle (rename routes, forms, acls, services)
 - Introduce a BaseConnectorBundle and move readers, processors, writers, archivers and related configuration from ImportExportBundle
 - Introduce a TransformBundle and move cache, converters, encoders, normalizers, transformers and related configuration from ImportExportBundle
+- Renaming of services of ImportExport that have been moved (pim_transform_* and pim_base_connector_*)
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

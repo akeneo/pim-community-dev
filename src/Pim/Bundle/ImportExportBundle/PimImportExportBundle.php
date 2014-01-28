@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Oro\Bundle\BatchBundle\Connector\Connector;
 
 /**
  * The Pim Import Export Bundle
@@ -12,7 +12,7 @@ use Oro\Bundle\BatchBundle\Connector\Connector;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimImportExportBundle extends Connector
+class PimImportExportBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -20,10 +20,6 @@ class PimImportExportBundle extends Connector
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterEntityTransformersPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass());
     }
 }

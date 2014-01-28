@@ -1,23 +1,23 @@
 parameters:
-    pim_import_export.entity_cache.class:     Pim\Bundle\TransformBundle\Cache\EntityCache
-    pim_import_export.attribute_cache.class:  Pim\Bundle\TransformBundle\Cache\AttributeCache
-    pim_import_export.converter.metric.class: Pim\Bundle\TransformBundle\Converter\MetricConverter
+    pim_transform.cache.entity_cache.class:    Pim\Bundle\TransformBundle\Cache\EntityCache
+    pim_transform.cache.attribute_cache.class: Pim\Bundle\TransformBundle\Cache\AttributeCache
+    pim_transform.converter.metric.class:      Pim\Bundle\TransformBundle\Converter\MetricConverter
 
 services:
 
-    pim_import_export.entity_cache:
-        class: %pim_import_export.entity_cache.class%
+    pim_transform.cache.entity_cache:
+        class: %pim_transform.cache.entity_cache.class%
         arguments:
             - '@doctrine'
 
-    pim_import_export.attribute_cache:
-        class: %pim_import_export.attribute_cache.class%
+    pim_transform.cache.attribute_cache:
+        class: %pim_transform.cache.attribute_cache.class%
         arguments:
             - '@doctrine'
             - %pim_catalog.entity.attribute.class%
 
-    pim_import_export.converter.metric:
-        class: %pim_import_export.converter.metric.class%
+    pim_transform.converter.metric:
+        class: %pim_transform.converter.metric.class%
         arguments:
             - '@oro_measure.measure_converter'
 

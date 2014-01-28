@@ -1576,7 +1576,7 @@ class WebUser extends RawMinkContext
         $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
 
         $jobExecution = $jobInstance->getJobExecutions()->first();
-        $archivist = $this->getMainContext()->getContainer()->get('pim_import_export.event_listener.archivist');
+        $archivist = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
         $file = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
 
         $file->open(new \Gaufrette\StreamMode('r'));
