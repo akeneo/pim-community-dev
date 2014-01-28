@@ -27,6 +27,7 @@
 - ProductRepository is injected in ProductManager
 - Remove deprecated flexible entity config which is now builded by flexible manager itself (use doctrine meta)
 - Move controllers, forms, routing and views from CatalogBundle to EnrichBundle (rename routes, forms, acls, services)
+- Introduce a BaseConnectorBundle and move readers, processors, writers, archivers and related configuration from ImportExportBundle
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 
