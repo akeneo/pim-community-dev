@@ -1,11 +1,11 @@
 parameters:
-    pim_import_export.event_listener.archivist.class:                 Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist
-    pim_import_export.event_listener.invalid_items_collector.class:   Pim\Bundle\ImportExportBundle\EventListener\InvalidItemsCollector
-    pim_import_export.factory.zip_filesystem.class:                   Pim\Bundle\ImportExportBundle\Filesystem\ZipFilesystemFactory
-    pim_import_export.archiver.invalid_item_csv_archiver.class:       Pim\Bundle\ImportExportBundle\Archiver\InvalidItemsCsvArchiver
-    pim_import_export.archiver.file_reader_archiver.class:            Pim\Bundle\ImportExportBundle\Archiver\FileReaderArchiver
-    pim_import_export.archiver.file_writer_archiver.class:            Pim\Bundle\ImportExportBundle\Archiver\FileWriterArchiver
-    pim_import_export.archiver.archivable_file_writer_archiver.class: Pim\Bundle\ImportExportBundle\Archiver\ArchivableFileWriterArchiver
+    pim_import_export.event_listener.archivist.class:                 Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist
+    pim_import_export.event_listener.invalid_items_collector.class:   Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector
+    pim_import_export.factory.zip_filesystem.class:                   Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory
+    pim_import_export.archiver.invalid_item_csv_archiver.class:       Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver
+    pim_import_export.archiver.file_reader_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver
+    pim_import_export.archiver.file_writer_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver
+    pim_import_export.archiver.archivable_file_writer_archiver.class: Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver
 
 services:
     pim_import_export.event_listener.archivist:
