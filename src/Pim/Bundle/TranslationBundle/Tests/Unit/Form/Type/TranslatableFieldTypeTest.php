@@ -157,7 +157,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
      * @param string $fieldName        Entity field name
      * @param string $translationClass Translation class name
      *
-     * @return multitype:string
+     * @return string[]
      */
     protected function buildOptions($entityClass, $fieldName, $translationClass)
     {
@@ -171,7 +171,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * Data provider for options
      *
-     * @return multitype:multitype:string
+     * @return array
      */
     public static function dataOptionsProvider()
     {
