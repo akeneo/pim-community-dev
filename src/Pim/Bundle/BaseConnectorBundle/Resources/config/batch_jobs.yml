@@ -10,7 +10,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.bulk_product
                         processor: pim_base_connector.processor.csv_serializer.product
-                        writer:    pim_import_export.writer.product_file
+                        writer:    pim_base_connector.writer.product_file
         csv_category_export:
             title: pim_import_export.jobs.csv_category_export.title
             type:  export
@@ -20,7 +20,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.category
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_import_export.writer.file
+                        writer:    pim_base_connector.writer.file
         csv_attribute_export:
             title: pim_import_export.jobs.csv_attribute_export.title
             type:  export
@@ -30,7 +30,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_import_export.writer.file
+                        writer:    pim_base_connector.writer.file
         csv_attribute_option_export:
             title: pim_import_export.jobs.csv_attribute_option_export.title
             type:  export
@@ -40,7 +40,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute_option
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_import_export.writer.file
+                        writer:    pim_base_connector.writer.file
         csv_association_type_export:
             title: pim_import_export.jobs.csv_association_type_export.title
             type:  export
@@ -50,7 +50,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.association_type
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_import_export.writer.file
+                        writer:    pim_base_connector.writer.file
         csv_group_export:
             title: pim_import_export.jobs.csv_group_export.title
             type:  export
@@ -60,7 +60,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.group
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_import_export.writer.file
+                        writer:    pim_base_connector.writer.file
 
         csv_product_import:
             title: pim_import_export.jobs.csv_product_import.title
@@ -71,13 +71,13 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_import_export.writer.orm.product
+                        writer:    pim_base_connector.writer.orm.product
                 import_associations:
                     title:     pim_import_export.jobs.csv_product_import.import_associations.title
                     services:
                         reader:    pim_base_connector.reader.cached_association
                         processor: pim_base_connector.processor.association
-                        writer:    pim_import_export.writer.orm.association
+                        writer:    pim_base_connector.writer.orm.association
         csv_category_import:
             title: pim_import_export.jobs.csv_category_import.title
             type:  import
@@ -87,7 +87,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_category
                         processor: pim_base_connector.processor.category
-                        writer:    pim_import_export.writer.orm.category
+                        writer:    pim_base_connector.writer.orm.category
         csv_attribute_import:
             title: pim_import_export.jobs.csv_attribute_import.title
             type:  import
@@ -97,7 +97,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute
                         processor: pim_base_connector.processor.attribute
-                        writer:    pim_import_export.writer.orm.attribute
+                        writer:    pim_base_connector.writer.orm.attribute
         csv_attribute_option_import:
             title: pim_import_export.jobs.csv_attribute_option_import.title
             type:  import
@@ -107,7 +107,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute_option
                         processor: pim_base_connector.processor.attribute_option
-                        writer:    pim_import_export.writer.orm.attribute_option
+                        writer:    pim_base_connector.writer.orm.attribute_option
         csv_association_type_import:
             title: pim_import_export.jobs.csv_association_type_import.title
             type: import
@@ -117,7 +117,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_association_type
                         processor: pim_base_connector.processor.association_type
-                        writer:    pim_import_export.writer.orm.association_type
+                        writer:    pim_base_connector.writer.orm.association_type
         csv_group_import:
             title: pim_import_export.jobs.csv_group_import.title
             type: import
@@ -127,4 +127,4 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_group
                         processor: pim_base_connector.processor.group
-                        writer:    pim_import_export.writer.orm.group
+                        writer:    pim_base_connector.writer.orm.group
