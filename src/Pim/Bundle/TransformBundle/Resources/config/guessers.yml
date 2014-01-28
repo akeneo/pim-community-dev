@@ -1,13 +1,13 @@
 parameters:
-    pim_import_export.transformer.guesser.chained.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\ChainedGuesser
-    pim_import_export.transformer.guesser.type.class:               Pim\Bundle\ImportExportBundle\Transformer\Guesser\TypeGuesser
-    pim_import_export.transformer.guesser.relation.class:           Pim\Bundle\ImportExportBundle\Transformer\Guesser\RelationGuesser
-    pim_import_export.transformer.guesser.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser
-    pim_import_export.transformer.guesser.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Guesser\NestedTranslationGuesser
-    pim_import_export.transformer.guesser.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Guesser\DefaultGuesser
-    pim_import_export.transformer.guesser.regexp.class:             Pim\Bundle\ImportExportBundle\Transformer\Guesser\RegexpGuesser
-    pim_import_export.transformer.guesser.attribute.class:          Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser
-    pim_import_export.transformer.guesser.attribute_option.class:   Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeOptionGuesser
+    pim_import_export.transformer.guesser.chained.class:            Pim\Bundle\TransformBundle\Transformer\Guesser\ChainedGuesser
+    pim_import_export.transformer.guesser.type.class:               Pim\Bundle\TransformBundle\Transformer\Guesser\TypeGuesser
+    pim_import_export.transformer.guesser.relation.class:           Pim\Bundle\TransformBundle\Transformer\Guesser\RelationGuesser
+    pim_import_export.transformer.guesser.translation.class:        Pim\Bundle\TransformBundle\Transformer\Guesser\TranslationGuesser
+    pim_import_export.transformer.guesser.nested_translation.class: Pim\Bundle\TransformBundle\Transformer\Guesser\NestedTranslationGuesser
+    pim_import_export.transformer.guesser.default.class:            Pim\Bundle\TransformBundle\Transformer\Guesser\DefaultGuesser
+    pim_import_export.transformer.guesser.regexp.class:             Pim\Bundle\TransformBundle\Transformer\Guesser\RegexpGuesser
+    pim_import_export.transformer.guesser.attribute.class:          Pim\Bundle\TransformBundle\Transformer\Guesser\AttributeGuesser
+    pim_import_export.transformer.guesser.attribute_option.class:   Pim\Bundle\TransformBundle\Transformer\Guesser\AttributeOptionGuesser
 
 services:
     pim_import_export.transformer.guesser:

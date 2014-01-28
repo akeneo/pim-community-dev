@@ -1,22 +1,22 @@
 parameters:
-    pim_import_export.transformer.registry.class:                    Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerRegistry
-    pim_import_export.transformer.entity.class:                      Pim\Bundle\ImportExportBundle\Transformer\EntityTransformer
-    pim_import_export.transformer.product.class:                     Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer
-    pim_import_export.transformer.family.class:                      Pim\Bundle\ImportExportBundle\Transformer\FamilyTransformer
-    pim_import_export.transformer.attribute.class:                   Pim\Bundle\ImportExportBundle\Transformer\AttributeTransformer
-    pim_import_export.transformer.job_instance.class:                Pim\Bundle\ImportExportBundle\Transformer\JobInstanceTransformer
-    pim_import_export.transformer.property.translation.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
-    pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\ImportExportBundle\Transformer\Property\NestedTranslationTransformer
-    pim_import_export.transformer.property.default.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
-    pim_import_export.transformer.property.relation.class:           Pim\Bundle\ImportExportBundle\Transformer\Property\RelationTransformer
-    pim_import_export.transformer.property.media.class:              Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
-    pim_import_export.transformer.property.date.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
-    pim_import_export.transformer.property.boolean.class:            Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
-    pim_import_export.transformer.property.metric.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
-    pim_import_export.transformer.property.prices.class:             Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
-    pim_import_export.transformer.property.skip.class:               Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer
-    pim_import_export.transformer.column_info_transformer.class:     Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformer
-    pim_import_export.transformer.column_info.class:                 Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo
+    pim_import_export.transformer.registry.class:                    Pim\Bundle\TransformBundle\Transformer\EntityTransformerRegistry
+    pim_import_export.transformer.entity.class:                      Pim\Bundle\TransformBundle\Transformer\EntityTransformer
+    pim_import_export.transformer.product.class:                     Pim\Bundle\TransformBundle\Transformer\ProductTransformer
+    pim_import_export.transformer.family.class:                      Pim\Bundle\TransformBundle\Transformer\FamilyTransformer
+    pim_import_export.transformer.attribute.class:                   Pim\Bundle\TransformBundle\Transformer\AttributeTransformer
+    pim_import_export.transformer.job_instance.class:                Pim\Bundle\TransformBundle\Transformer\JobInstanceTransformer
+    pim_import_export.transformer.property.translation.class:        Pim\Bundle\TransformBundle\Transformer\Property\TranslationTransformer
+    pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\TransformBundle\Transformer\Property\NestedTranslationTransformer
+    pim_import_export.transformer.property.default.class:            Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer
+    pim_import_export.transformer.property.relation.class:           Pim\Bundle\TransformBundle\Transformer\Property\RelationTransformer
+    pim_import_export.transformer.property.media.class:              Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer
+    pim_import_export.transformer.property.date.class:               Pim\Bundle\TransformBundle\Transformer\Property\DateTransformer
+    pim_import_export.transformer.property.boolean.class:            Pim\Bundle\TransformBundle\Transformer\Property\BooleanTransformer
+    pim_import_export.transformer.property.metric.class:             Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer
+    pim_import_export.transformer.property.prices.class:             Pim\Bundle\TransformBundle\Transformer\Property\PricesTransformer
+    pim_import_export.transformer.property.skip.class:               Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer
+    pim_import_export.transformer.column_info_transformer.class:     Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformer
+    pim_import_export.transformer.column_info.class:                 Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo
 
 services:
     pim_import_export.transformer.registry:
