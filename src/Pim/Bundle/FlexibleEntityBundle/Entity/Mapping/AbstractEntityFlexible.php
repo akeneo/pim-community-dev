@@ -169,14 +169,9 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
 
         $valueKey = $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
-        echo "DEBUG attributeCode:$attributeCode\n";
-        echo "DEBUG localeCode:$localeCode\n";
-        echo "DEBUG scopeCode:$scopeCode\n";
-        echo "DEBUG valueKey:$valueKey\n";
 
         $values = $this->getValues();
 
-        print_r($values->getKeys());
         return $values[$valueKey];
     }
 
@@ -196,13 +191,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scopeCode = null;
 
         if ($attribute->isTranslatable()) {
-            $locale = $value->getLocale();
+            $localeCode = $value->getLocale();
         }
         if ($attribute->isScopable()) {
-            $scope = $value->getScope();
+            $scopeCode = $value->getScope();
         }
-
-        echo "Build value key: $attributeCode , $localeCode , $scopeCode\n";
 
         return $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
     }
@@ -218,6 +211,16 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     protected function buildValueKey($attributeCode, $localeCode = null, $scopeCode = null)
     {
+        if (!isset($this->allAttributes[$attributeCode])) {
+            throw new \Exception(
+                sprintf(
+                    'Could not find attribute "%s" in %s.',
+                    $attributeCode,
+                   print_r(array_keys($this->allAttributes), true)
+                )
+            );
+        }
+
         $attribute = $this->allAttributes[$attributeCode];
 
         $key = $attribute->getCode();
