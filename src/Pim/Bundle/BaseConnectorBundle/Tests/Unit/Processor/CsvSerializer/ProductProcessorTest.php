@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor\CsvSerializer;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor\CsvSerializer;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor;
+use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor;
 
 /**
  * Test related class
@@ -31,7 +31,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
     public function testInstanceOfHeterogeneousProcessor()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HeterogeneousProcessor',
+            'Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor',
             $this->processor
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
 /**
  * Test case for transformer based processors

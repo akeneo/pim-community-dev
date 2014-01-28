@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\ImportExportBundle\Processor\TransformerProcessor;
+use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 use Pim\Bundle\ImportExportBundle\Exception\ParametrizedException;
 
 /**

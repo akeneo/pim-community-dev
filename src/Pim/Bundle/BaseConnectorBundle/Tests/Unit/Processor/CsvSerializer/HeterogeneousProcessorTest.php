@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor\CsvSerializer;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor\CsvSerializer;
 
-use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor;
+use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
+class HeterogeneousProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('getActiveCodes')
             ->will($this->returnValue(['fr', 'de', 'it']));
 
-        $this->processor = new HomogeneousProcessor($this->serializer, $this->manager);
+        $this->processor = new HeterogeneousProcessor($this->serializer, $this->manager);
     }
 
     /**
@@ -62,7 +62,7 @@ class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
                     'delimiter'     => ';',
                     'enclosure'     => '"',
                     'withHeader'    => true,
-                    'heterogeneous' => false,
+                    'heterogeneous' => true,
                     'locales'       => ['fr', 'de', 'it'],
                 )
             )

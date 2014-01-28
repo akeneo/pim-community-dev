@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
-use Pim\Bundle\ImportExportBundle\Processor\DummyProcessor;
+use Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor;
 
 /**
  * Tests related class
