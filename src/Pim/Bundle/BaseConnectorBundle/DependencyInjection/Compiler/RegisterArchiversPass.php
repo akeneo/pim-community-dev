@@ -26,7 +26,7 @@ class RegisterArchiversPass implements CompilerPassInterface
 
         $service = $container->getDefinition('pim_import_export.event_listener.archivist');
 
-        $taggedServices = $container->findTaggedServiceIds('pim_import_export.archiver');
+        $taggedServices = $container->findTaggedServiceIds('pim_base_connector.archiver');
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('registerArchiver', array(new Reference($id)));

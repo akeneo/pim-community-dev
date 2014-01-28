@@ -79,7 +79,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
 
             $container->expects($this->any())
                 ->method('findTaggedServiceIds')
-                ->with('pim_import_export.archiver')
+                ->with('pim_base_connector.archiver')
                 ->will($this->returnValue($taggedServices));
         } else {
             $container->expects($this->never())

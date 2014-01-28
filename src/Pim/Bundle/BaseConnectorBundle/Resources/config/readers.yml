@@ -58,7 +58,7 @@ services:
     pim_base_connector.reader.file.csv:
         class: %pim_base_connector.reader.file.csv.class%
         arguments:
-            - '@pim_import_export.archiver.invalid_item_csv_archiver'
+            - '@pim_base_connector.archiver.invalid_item_csv_archiver'
 
     pim_base_connector.reader.file.csv_category:
         parent: pim_base_connector.reader.file.csv
