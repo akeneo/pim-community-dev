@@ -13,11 +13,11 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-    const FILTER_CONTAINS = 1;
+    const FILTER_CONTAINS         = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
-    const FILTER_IS_EQUAL_TO = 3;
-    const FILTER_STARTS_WITH = 4;
-    const FILTER_ENDS_WITH = 5;
+    const FILTER_IS_EQUAL_TO      = 3;
+    const FILTER_STARTS_WITH      = 4;
+    const FILTER_ENDS_WITH        = 5;
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,8 @@ class Grid extends Index
                 'Grid content'   => array('css' => 'table.grid tbody'),
                 'Filters'        => array('css' => 'div.filter-box'),
                 'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
-                'Manage filters' => array('css' => 'div.filter-list')
+                'Manage filters' => array('css' => 'div.filter-list'),
+                'Body'           => array('css' => 'body')
             ),
             $this->elements
         );
@@ -659,6 +660,50 @@ class Grid extends Index
         $actionButton->click();
         $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
 
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
+     * @param string $filterName The name of the date filter
+     * @param double $value      Value to filter
+     * @param string $operator   Type of filtering (>, >=, etc.)
+     */
+    public function filterPerDate($filterName, $value, $operator)
+    {
+        $filterDate = new \DateTime($value);
+        list($filterDay, $filterMonth, $filterYear) = [
+            $filterDate->format('d'),
+            (int) $filterDate->format('m'),
+            $filterDate->format('Y')
+        ];
+
+        $filter = $this->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $operatorElt = $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
+        $criteriaElt->find('css', 'input.hasDatepicker')->focus();
+
+        $datePicker = $this->getElement('Body')->find('css', '#ui-datepicker-div');
+        sleep(1);
+        $dateMonth = $datePicker->find('css', 'select.ui-datepicker-month')->selectOption($filterMonth-1);
+        sleep(1);
+        $datePicker->find('css', 'select.ui-datepicker-year')->selectOption($filterYear);
+        $days = $datePicker->find('css', 'table.ui-datepicker-calendar')->findAll('css', sprintf('a:contains("%d")', $filterDay));
+        $days = array_filter(
+            $days,
+            function ($day) use ($filterDay) {
+                return (int) $day->getText() === (int) $filterDay;
+            }
+        );
+        $day = current($days);
+        sleep(1);
+        $day->click();
+        sleep(1);
         $filter->find('css', 'button.filter-update')->click();
     }
 }
