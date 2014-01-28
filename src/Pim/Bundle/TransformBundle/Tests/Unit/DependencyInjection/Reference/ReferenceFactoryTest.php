@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\DependencyInjection\Reference;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\DependencyInjection\Reference;
 
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
+use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Test related class
