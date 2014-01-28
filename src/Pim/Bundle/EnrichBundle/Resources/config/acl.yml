@@ -1,4 +1,4 @@
-# Locales
+# Locale
 pim_enrich_locale_index:
     type: action
     label: pim_enrich.acl.locale.index
@@ -80,7 +80,7 @@ pim_enrich_channel_remove:
     type: action
     label: pim_enrich.acl.channel.remove
 
-#Family
+# Family
 pim_enrich_family_index:
     type: action
     label: pim_enrich.acl.family.index
@@ -140,7 +140,7 @@ pim_enrich_attribute_sort:
     type: action
     label: pim_enrich.acl.attribute.sort
 
-# Groups
+# Group
 pim_enrich_group_index:
     type: action
     label: pim_enrich.acl.group.index
@@ -154,7 +154,7 @@ pim_enrich_group_remove:
     type: action
     label: pim_enrich.acl.group.remove
 
-# Group types
+# Group type
 pim_enrich_group_type_index:
     type: action
     label: pim_enrich.acl.group_type.index
@@ -181,3 +181,635 @@ pim_enrich_association_type_edit:
 pim_enrich_association_type_remove:
     type: action
     label: pim_enrich.acl.association_type.remove
+
+# Access to locales
+pim_enrich_locale_af_ZA:
+    type: action
+    label: Access to data in locale af_ZA
+pim_enrich_locale_am_ET:
+    type: action
+    label: Access to data in locale am_ET
+pim_enrich_locale_ar_AE:
+    type: action
+    label: Access to data in locale ar_AE
+pim_enrich_locale_ar_BH:
+    type: action
+    label: Access to data in locale ar_BH
+pim_enrich_locale_ar_DZ:
+    type: action
+    label: Access to data in locale ar_DZ
+pim_enrich_locale_ar_EG:
+    type: action
+    label: Access to data in locale ar_EG
+pim_enrich_locale_ar_IQ:
+    type: action
+    label: Access to data in locale ar_IQ
+pim_enrich_locale_ar_JO:
+    type: action
+    label: Access to data in locale ar_JO
+pim_enrich_locale_ar_KW:
+    type: action
+    label: Access to data in locale ar_KW
+pim_enrich_locale_ar_LB:
+    type: action
+    label: Access to data in locale ar_LB
+pim_enrich_locale_ar_LY:
+    type: action
+    label: Access to data in locale ar_LY
+pim_enrich_locale_ar_MA:
+    type: action
+    label: Access to data in locale ar_MA
+pim_enrich_locale_arn_CL:
+    type: action
+    label: Access to data in locale arn_CL
+pim_enrich_locale_ar_OM:
+    type: action
+    label: Access to data in locale ar_OM
+pim_enrich_locale_ar_QA:
+    type: action
+    label: Access to data in locale ar_QA
+pim_enrich_locale_ar_SA:
+    type: action
+    label: Access to data in locale ar_SA
+pim_enrich_locale_ar_SY:
+    type: action
+    label: Access to data in locale ar_SY
+pim_enrich_locale_ar_TN:
+    type: action
+    label: Access to data in locale ar_TN
+pim_enrich_locale_ar_YE:
+    type: action
+    label: Access to data in locale ar_YE
+pim_enrich_locale_as_IN:
+    type: action
+    label: Access to data in locale as_IN
+pim_enrich_locale_az_Cyrl_AZ:
+    type: action
+    label: Access to data in locale az_Cyrl_AZ
+pim_enrich_locale_az_Latn_AZ:
+    type: action
+    label: Access to data in locale az_Latn_AZ
+pim_enrich_locale_ba_RU:
+    type: action
+    label: Access to data in locale ba_RU
+pim_enrich_locale_be_BY:
+    type: action
+    label: Access to data in locale be_BY
+pim_enrich_locale_bg_BG:
+    type: action
+    label: Access to data in locale bg_BG
+pim_enrich_locale_bn_BD:
+    type: action
+    label: Access to data in locale bn_BD
+pim_enrich_locale_bn_IN:
+    type: action
+    label: Access to data in locale bn_IN
+pim_enrich_locale_bo_CN:
+    type: action
+    label: Access to data in locale bo_CN
+pim_enrich_locale_br_FR:
+    type: action
+    label: Access to data in locale br_FR
+pim_enrich_locale_bs_Cyrl_BA:
+    type: action
+    label: Access to data in locale bs_Cyrl_BA
+pim_enrich_locale_bs_Latn_BA:
+    type: action
+    label: Access to data in locale bs_Latn_BA
+pim_enrich_locale_ca_ES:
+    type: action
+    label: Access to data in locale ca_ES
+pim_enrich_locale_co_FR:
+    type: action
+    label: Access to data in locale co_FR
+pim_enrich_locale_cs_CZ:
+    type: action
+    label: Access to data in locale cs_CZ
+pim_enrich_locale_cy_GB:
+    type: action
+    label: Access to data in locale cy_GB
+pim_enrich_locale_da_DK:
+    type: action
+    label: Access to data in locale da_DK
+pim_enrich_locale_de_AT:
+    type: action
+    label: Access to data in locale de_AT
+pim_enrich_locale_de_CH:
+    type: action
+    label: Access to data in locale de_CH
+pim_enrich_locale_de_DE:
+    type: action
+    label: Access to data in locale de_DE
+pim_enrich_locale_de_LI:
+    type: action
+    label: Access to data in locale de_LI
+pim_enrich_locale_de_LU:
+    type: action
+    label: Access to data in locale de_LU
+pim_enrich_locale_dsb_DE:
+    type: action
+    label: Access to data in locale dsb_DE
+pim_enrich_locale_dv_MV:
+    type: action
+    label: Access to data in locale dv_MV
+pim_enrich_locale_el_GR:
+    type: action
+    label: Access to data in locale el_GR
+pim_enrich_locale_en_029:
+    type: action
+    label: Access to data in locale en_029
+pim_enrich_locale_en_AU:
+    type: action
+    label: Access to data in locale en_AU
+pim_enrich_locale_en_BZ:
+    type: action
+    label: Access to data in locale en_BZ
+pim_enrich_locale_en_CA:
+    type: action
+    label: Access to data in locale en_CA
+pim_enrich_locale_en_GB:
+    type: action
+    label: Access to data in locale en_GB
+pim_enrich_locale_en_IE:
+    type: action
+    label: Access to data in locale en_IE
+pim_enrich_locale_en_IN:
+    type: action
+    label: Access to data in locale en_IN
+pim_enrich_locale_en_JM:
+    type: action
+    label: Access to data in locale en_JM
+pim_enrich_locale_en_MY:
+    type: action
+    label: Access to data in locale en_MY
+pim_enrich_locale_en_NZ:
+    type: action
+    label: Access to data in locale en_NZ
+pim_enrich_locale_en_PH:
+    type: action
+    label: Access to data in locale en_PH
+pim_enrich_locale_en_SG:
+    type: action
+    label: Access to data in locale en_SG
+pim_enrich_locale_en_TT:
+    type: action
+    label: Access to data in locale en_TT
+pim_enrich_locale_en_US:
+    type: action
+    label: Access to data in locale en_US
+pim_enrich_locale_en_ZA:
+    type: action
+    label: Access to data in locale en_ZA
+pim_enrich_locale_en_ZW:
+    type: action
+    label: Access to data in locale en_ZW
+pim_enrich_locale_es_AR:
+    type: action
+    label: Access to data in locale es_AR
+pim_enrich_locale_es_BO:
+    type: action
+    label: Access to data in locale es_BO
+pim_enrich_locale_es_CL:
+    type: action
+    label: Access to data in locale es_CL
+pim_enrich_locale_es_CO:
+    type: action
+    label: Access to data in locale es_CO
+pim_enrich_locale_es_CR:
+    type: action
+    label: Access to data in locale es_CR
+pim_enrich_locale_es_DO:
+    type: action
+    label: Access to data in locale es_DO
+pim_enrich_locale_es_EC:
+    type: action
+    label: Access to data in locale es_EC
+pim_enrich_locale_es_ES:
+    type: action
+    label: Access to data in locale es_ES
+pim_enrich_locale_es_GT:
+    type: action
+    label: Access to data in locale es_GT
+pim_enrich_locale_es_HN:
+    type: action
+    label: Access to data in locale es_HN
+pim_enrich_locale_es_MX:
+    type: action
+    label: Access to data in locale es_MX
+pim_enrich_locale_es_NI:
+    type: action
+    label: Access to data in locale es_NI
+pim_enrich_locale_es_PA:
+    type: action
+    label: Access to data in locale es_PA
+pim_enrich_locale_es_PE:
+    type: action
+    label: Access to data in locale es_PE
+pim_enrich_locale_es_PR:
+    type: action
+    label: Access to data in locale es_PR
+pim_enrich_locale_es_PY:
+    type: action
+    label: Access to data in locale es_PY
+pim_enrich_locale_es_SV:
+    type: action
+    label: Access to data in locale es_SV
+pim_enrich_locale_es_US:
+    type: action
+    label: Access to data in locale es_US
+pim_enrich_locale_es_UY:
+    type: action
+    label: Access to data in locale es_UY
+pim_enrich_locale_es_VE:
+    type: action
+    label: Access to data in locale es_VE
+pim_enrich_locale_et_EE:
+    type: action
+    label: Access to data in locale et_EE
+pim_enrich_locale_eu_ES:
+    type: action
+    label: Access to data in locale eu_ES
+pim_enrich_locale_fa_IR:
+    type: action
+    label: Access to data in locale fa_IR
+pim_enrich_locale_fi_FI:
+    type: action
+    label: Access to data in locale fi_FI
+pim_enrich_locale_fil_PH:
+    type: action
+    label: Access to data in locale fil_PH
+pim_enrich_locale_fo_FO:
+    type: action
+    label: Access to data in locale fo_FO
+pim_enrich_locale_fr_BE:
+    type: action
+    label: Access to data in locale fr_BE
+pim_enrich_locale_fr_CA:
+    type: action
+    label: Access to data in locale fr_CA
+pim_enrich_locale_fr_CH:
+    type: action
+    label: Access to data in locale fr_CH
+pim_enrich_locale_fr_FR:
+    type: action
+    label: Access to data in locale fr_FR
+pim_enrich_locale_fr_LU:
+    type: action
+    label: Access to data in locale fr_LU
+pim_enrich_locale_fr_MC:
+    type: action
+    label: Access to data in locale fr_MC
+pim_enrich_locale_fy_NL:
+    type: action
+    label: Access to data in locale fy_NL
+pim_enrich_locale_ga_IE:
+    type: action
+    label: Access to data in locale ga_IE
+pim_enrich_locale_gd_GB:
+    type: action
+    label: Access to data in locale gd_GB
+pim_enrich_locale_gl_ES:
+    type: action
+    label: Access to data in locale gl_ES
+pim_enrich_locale_gsw_FR:
+    type: action
+    label: Access to data in locale gsw_FR
+pim_enrich_locale_gu_IN:
+    type: action
+    label: Access to data in locale gu_IN
+pim_enrich_locale_ha_Latn_NG:
+    type: action
+    label: Access to data in locale ha_Latn_NG
+pim_enrich_locale_he_IL:
+    type: action
+    label: Access to data in locale he_IL
+pim_enrich_locale_hi_IN:
+    type: action
+    label: Access to data in locale hi_IN
+pim_enrich_locale_hr_BA:
+    type: action
+    label: Access to data in locale hr_BA
+pim_enrich_locale_hr_HR:
+    type: action
+    label: Access to data in locale hr_HR
+pim_enrich_locale_hsb_DE:
+    type: action
+    label: Access to data in locale hsb_DE
+pim_enrich_locale_hu_HU:
+    type: action
+    label: Access to data in locale hu_HU
+pim_enrich_locale_hy_AM:
+    type: action
+    label: Access to data in locale hy_AM
+pim_enrich_locale_id_ID:
+    type: action
+    label: Access to data in locale id_ID
+pim_enrich_locale_ig_NG:
+    type: action
+    label: Access to data in locale ig_NG
+pim_enrich_locale_ii_CN:
+    type: action
+    label: Access to data in locale ii_CN
+pim_enrich_locale_is_IS:
+    type: action
+    label: Access to data in locale is_IS
+pim_enrich_locale_it_CH:
+    type: action
+    label: Access to data in locale it_CH
+pim_enrich_locale_it_IT:
+    type: action
+    label: Access to data in locale it_IT
+pim_enrich_locale_iu_Cans_CA:
+    type: action
+    label: Access to data in locale iu_Cans_CA
+pim_enrich_locale_iu_Latn_CA:
+    type: action
+    label: Access to data in locale iu_Latn_CA
+pim_enrich_locale_ja_JP:
+    type: action
+    label: Access to data in locale ja_JP
+pim_enrich_locale_ka_GE:
+    type: action
+    label: Access to data in locale ka_GE
+pim_enrich_locale_kk_KZ:
+    type: action
+    label: Access to data in locale kk_KZ
+pim_enrich_locale_kl_GL:
+    type: action
+    label: Access to data in locale kl_GL
+pim_enrich_locale_km_KH:
+    type: action
+    label: Access to data in locale km_KH
+pim_enrich_locale_kn_IN:
+    type: action
+    label: Access to data in locale kn_IN
+pim_enrich_locale_kok_IN:
+    type: action
+    label: Access to data in locale kok_IN
+pim_enrich_locale_ko_KR:
+    type: action
+    label: Access to data in locale ko_KR
+pim_enrich_locale_ky_KG:
+    type: action
+    label: Access to data in locale ky_KG
+pim_enrich_locale_lb_LU:
+    type: action
+    label: Access to data in locale lb_LU
+pim_enrich_locale_lo_LA:
+    type: action
+    label: Access to data in locale lo_LA
+pim_enrich_locale_lt_LT:
+    type: action
+    label: Access to data in locale lt_LT
+pim_enrich_locale_lv_LV:
+    type: action
+    label: Access to data in locale lv_LV
+pim_enrich_locale_mi_NZ:
+    type: action
+    label: Access to data in locale mi_NZ
+pim_enrich_locale_mk_MK:
+    type: action
+    label: Access to data in locale mk_MK
+pim_enrich_locale_ml_IN:
+    type: action
+    label: Access to data in locale ml_IN
+pim_enrich_locale_mn_MN:
+    type: action
+    label: Access to data in locale mn_MN
+pim_enrich_locale_mn_Mong_CN:
+    type: action
+    label: Access to data in locale mn_Mong_CN
+pim_enrich_locale_moh_CA:
+    type: action
+    label: Access to data in locale moh_CA
+pim_enrich_locale_mr_IN:
+    type: action
+    label: Access to data in locale mr_IN
+pim_enrich_locale_ms_BN:
+    type: action
+    label: Access to data in locale ms_BN
+pim_enrich_locale_ms_MY:
+    type: action
+    label: Access to data in locale ms_MY
+pim_enrich_locale_mt_MT:
+    type: action
+    label: Access to data in locale mt_MT
+pim_enrich_locale_nb_NO:
+    type: action
+    label: Access to data in locale nb_NO
+pim_enrich_locale_ne_NP:
+    type: action
+    label: Access to data in locale ne_NP
+pim_enrich_locale_nl_BE:
+    type: action
+    label: Access to data in locale nl_BE
+pim_enrich_locale_nl_NL:
+    type: action
+    label: Access to data in locale nl_NL
+pim_enrich_locale_nn_NO:
+    type: action
+    label: Access to data in locale nn_NO
+pim_enrich_locale_nso_ZA:
+    type: action
+    label: Access to data in locale nso_ZA
+pim_enrich_locale_oc_FR:
+    type: action
+    label: Access to data in locale oc_FR
+pim_enrich_locale_or_IN:
+    type: action
+    label: Access to data in locale or_IN
+pim_enrich_locale_pa_IN:
+    type: action
+    label: Access to data in locale pa_IN
+pim_enrich_locale_pl_PL:
+    type: action
+    label: Access to data in locale pl_PL
+pim_enrich_locale_prs_AF:
+    type: action
+    label: Access to data in locale prs_AF
+pim_enrich_locale_ps_AF:
+    type: action
+    label: Access to data in locale ps_AF
+pim_enrich_locale_pt_BR:
+    type: action
+    label: Access to data in locale pt_BR
+pim_enrich_locale_pt_PT:
+    type: action
+    label: Access to data in locale pt_PT
+pim_enrich_locale_qut_GT:
+    type: action
+    label: Access to data in locale qut_GT
+pim_enrich_locale_quz_BO:
+    type: action
+    label: Access to data in locale quz_BO
+pim_enrich_locale_quz_EC:
+    type: action
+    label: Access to data in locale quz_EC
+pim_enrich_locale_quz_PE:
+    type: action
+    label: Access to data in locale quz_PE
+pim_enrich_locale_rm_CH:
+    type: action
+    label: Access to data in locale rm_CH
+pim_enrich_locale_ro_RO:
+    type: action
+    label: Access to data in locale ro_RO
+pim_enrich_locale_ru_RU:
+    type: action
+    label: Access to data in locale ru_RU
+pim_enrich_locale_rw_RW:
+    type: action
+    label: Access to data in locale rw_RW
+pim_enrich_locale_sah_RU:
+    type: action
+    label: Access to data in locale sah_RU
+pim_enrich_locale_sa_IN:
+    type: action
+    label: Access to data in locale sa_IN
+pim_enrich_locale_se_FI:
+    type: action
+    label: Access to data in locale se_FI
+pim_enrich_locale_se_NO:
+    type: action
+    label: Access to data in locale se_NO
+pim_enrich_locale_se_SE:
+    type: action
+    label: Access to data in locale se_SE
+pim_enrich_locale_si_LK:
+    type: action
+    label: Access to data in locale si_LK
+pim_enrich_locale_sk_SK:
+    type: action
+    label: Access to data in locale sk_SK
+pim_enrich_locale_sl_SI:
+    type: action
+    label: Access to data in locale sl_SI
+pim_enrich_locale_sma_NO:
+    type: action
+    label: Access to data in locale sma_NO
+pim_enrich_locale_sma_SE:
+    type: action
+    label: Access to data in locale sma_SE
+pim_enrich_locale_smj_NO:
+    type: action
+    label: Access to data in locale smj_NO
+pim_enrich_locale_smj_SE:
+    type: action
+    label: Access to data in locale smj_SE
+pim_enrich_locale_smn_FI:
+    type: action
+    label: Access to data in locale smn_FI
+pim_enrich_locale_sms_FI:
+    type: action
+    label: Access to data in locale sms_FI
+pim_enrich_locale_sq_AL:
+    type: action
+    label: Access to data in locale sq_AL
+pim_enrich_locale_sr_Cyrl_BA:
+    type: action
+    label: Access to data in locale sr_Cyrl_BA
+pim_enrich_locale_sr_Cyrl_CS:
+    type: action
+    label: Access to data in locale sr_Cyrl_CS
+pim_enrich_locale_sr_Cyrl_ME:
+    type: action
+    label: Access to data in locale sr_Cyrl_ME
+pim_enrich_locale_sr_Cyrl_RS:
+    type: action
+    label: Access to data in locale sr_Cyrl_RS
+pim_enrich_locale_sr_Latn_BA:
+    type: action
+    label: Access to data in locale sr_Latn_BA
+pim_enrich_locale_sr_Latn_CS:
+    type: action
+    label: Access to data in locale sr_Latn_CS
+pim_enrich_locale_sr_Latn_ME:
+    type: action
+    label: Access to data in locale sr_Latn_ME
+pim_enrich_locale_sr_Latn_RS:
+    type: action
+    label: Access to data in locale sr_Latn_RS
+pim_enrich_locale_sv_FI:
+    type: action
+    label: Access to data in locale sv_FI
+pim_enrich_locale_sv_SE:
+    type: action
+    label: Access to data in locale sv_SE
+pim_enrich_locale_sw_KE:
+    type: action
+    label: Access to data in locale sw_KE
+pim_enrich_locale_syr_SY:
+    type: action
+    label: Access to data in locale syr_SY
+pim_enrich_locale_ta_IN:
+    type: action
+    label: Access to data in locale ta_IN
+pim_enrich_locale_te_IN:
+    type: action
+    label: Access to data in locale te_IN
+pim_enrich_locale_tg_Cyrl_TJ:
+    type: action
+    label: Access to data in locale tg_Cyrl_TJ
+pim_enrich_locale_th_TH:
+    type: action
+    label: Access to data in locale th_TH
+pim_enrich_locale_tk_TM:
+    type: action
+    label: Access to data in locale tk_TM
+pim_enrich_locale_tn_ZA:
+    type: action
+    label: Access to data in locale tn_ZA
+pim_enrich_locale_tr_TR:
+    type: action
+    label: Access to data in locale tr_TR
+pim_enrich_locale_tt_RU:
+    type: action
+    label: Access to data in locale tt_RU
+pim_enrich_locale_tzm_Latn_DZ:
+    type: action
+    label: Access to data in locale tzm_Latn_DZ
+pim_enrich_locale_ug_CN:
+    type: action
+    label: Access to data in locale ug_CN
+pim_enrich_locale_uk_UA:
+    type: action
+    label: Access to data in locale uk_UA
+pim_enrich_locale_ur_PK:
+    type: action
+    label: Access to data in locale ur_PK
+pim_enrich_locale_uz_Cyrl_UZ:
+    type: action
+    label: Access to data in locale uz_Cyrl_UZ
+pim_enrich_locale_uz_Latn_UZ:
+    type: action
+    label: Access to data in locale uz_Latn_UZ
+pim_enrich_locale_vi_VN:
+    type: action
+    label: Access to data in locale vi_VN
+pim_enrich_locale_wo_SN:
+    type: action
+    label: Access to data in locale wo_SN
+pim_enrich_locale_xh_ZA:
+    type: action
+    label: Access to data in locale xh_ZA
+pim_enrich_locale_yo_NG:
+    type: action
+    label: Access to data in locale yo_NG
+pim_enrich_locale_zh_CN:
+    type: action
+    label: Access to data in locale zh_CN
+pim_enrich_locale_zh_HK:
+    type: action
+    label: Access to data in locale zh_HK
+pim_enrich_locale_zh_MO:
+    type: action
+    label: Access to data in locale zh_MO
+pim_enrich_locale_zh_SG:
+    type: action
+    label: Access to data in locale zh_SG
+pim_enrich_locale_zh_TW:
+    type: action
+    label: Access to data in locale zh_TW
+pim_enrich_locale_zu_ZA:
+    type: action
+    label: Access to data in locale zu_ZA

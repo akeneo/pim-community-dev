@@ -1,0 +1,2 @@
+parameters:
+    oro_navigation.title_service.class: Pim\Bundle\NavigationBundle\Provider\TitleService

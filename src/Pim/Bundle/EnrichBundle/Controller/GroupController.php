@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;

@@ -18,10 +18,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 
 /**
  * Category Tree Controller

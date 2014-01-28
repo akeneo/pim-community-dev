@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
     pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
     pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
@@ -18,11 +17,6 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_listener.progress:
-        class: %pim_catalog.event_listener.progress.class%
-        arguments:
-            - '@event_dispatcher'
 
     pim_catalog.event_listener.metric_base_values:
         class: %pim_catalog.event_listener.metric_base_values.class%

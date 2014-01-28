@@ -8,7 +8,7 @@ services:
     pim_dashboard.controller.widget:
         scope: request
         class: %pim_dashboard.controller.widget.class%
-        parent: pim_catalog.controller.abstract
+        parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_dashboard.widget.registry'
 

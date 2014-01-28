@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\AbstractController;
+namespace Pim\Bundle\EnrichBundle\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
