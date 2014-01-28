@@ -145,7 +145,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for getSubsbriberEvents method
      *
-     * @return multitype:mixed
+     * @return array
      */
     public static function getSubscriberEventsDataProvider()
     {
