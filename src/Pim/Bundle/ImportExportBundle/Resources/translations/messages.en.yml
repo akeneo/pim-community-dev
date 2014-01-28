@@ -143,13 +143,17 @@ pim_import_export:
         invalid: download invalid data
 
 # Page titles:
-pim_title.export_profile.index: Export profiles management
-pim_title.export_profile.edit:  Export profiles %job.label% | Edit
-pim_title.export_profile.show:  Export profiles %job.label% | Show
+pim_title.export_profile.index:   Export profiles management
+pim_title.export_profile.edit:    Export profiles %job.label% | Edit
+pim_title.export_profile.show:    Export profiles %job.label% | Show
+pim_title.export_execution.index: Export executions history
+pim_title.export_execution.show:  Export executions | Details
 
-pim_title.import_profile.index: Import profiles management
-pim_title.import_profile.edit:  Import profiles %job.label% | Edit
-pim_title.import_profile.show:  Import profiles %job.label% | Show
+pim_title.import_profile.index:   Import profiles management
+pim_title.import_profile.edit:    Import profiles %job.label% | Edit
+pim_title.import_profile.show:    Import profiles %job.label% | Show
+pim_title.import_execution.index: Import executions history
+pim_title.import_execution.show:  Import executions | Details
 
 # Page header titles
 export profile:

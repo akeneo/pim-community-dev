@@ -33,7 +33,11 @@ oro_titles:
     pim_importexport_export_profile_index:   pim_title.export_profile.index
     pim_importexport_export_profile_edit:    pim_title.export_profile.edit
     pim_importexport_export_profile_show:    pim_title.export_profile.show
+    pim_importexport_export_execution_index: pim_title.export_execution.index
+    pim_importexport_export_execution_show:  pim_title.export_execution.show
     
     pim_importexport_import_profile_index:   pim_title.import_profile.index
     pim_importexport_import_profile_edit:    pim_title.import_profile.edit
     pim_importexport_import_profile_show:    pim_title.import_profile.show
+    pim_importexport_import_execution_index: pim_title.import_execution.index
+    pim_importexport_import_execution_show:  pim_title.import_execution.show
