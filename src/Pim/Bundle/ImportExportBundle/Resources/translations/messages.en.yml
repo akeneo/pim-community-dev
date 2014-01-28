@@ -144,12 +144,12 @@ pim_import_export:
 
 # Page titles:
 pim_title.export_profile.index: Export profiles management
-pim_title.export_profile.edit:  Export profiles %job.name% | Edit
-pim_title.export_profile.show:  Export profiles %job.name% | Show
+pim_title.export_profile.edit:  Export profiles %job.label% | Edit
+pim_title.export_profile.show:  Export profiles %job.label% | Show
 
 pim_title.import_profile.index: Import profiles management
-pim_title.import_profile.edit:  Import profiles %job.name% | Edit
-pim_title.import_profile.show:  Import %job.name% | Show
+pim_title.import_profile.edit:  Import profiles %job.label% | Edit
+pim_title.import_profile.show:  Import profiles %job.label% | Show
 
 # Page header titles
 export profile:
