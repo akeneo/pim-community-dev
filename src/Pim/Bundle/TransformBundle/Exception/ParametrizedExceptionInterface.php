@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Exception;
+namespace Pim\Bundle\TransformBundle\Exception;
 
 /**
  * Interface for exception with parametrized messages
