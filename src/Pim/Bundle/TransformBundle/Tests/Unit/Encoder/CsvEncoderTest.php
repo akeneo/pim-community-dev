@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Encoder;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Encoder;
 
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
+use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
 
 /**
  * Test related class
