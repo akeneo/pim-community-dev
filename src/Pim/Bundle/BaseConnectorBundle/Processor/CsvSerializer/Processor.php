@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Processor\CsvSerializer;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\SerializerInterface;

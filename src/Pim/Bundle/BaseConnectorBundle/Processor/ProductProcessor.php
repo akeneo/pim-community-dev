@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 

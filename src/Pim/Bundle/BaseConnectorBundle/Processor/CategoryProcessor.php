@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
