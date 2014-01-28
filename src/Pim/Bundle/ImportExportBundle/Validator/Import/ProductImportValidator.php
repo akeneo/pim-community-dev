@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
+use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 
 /**
  * Validates an imported product

@@ -22,7 +22,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
+        $this->entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformer->expects($this->any())

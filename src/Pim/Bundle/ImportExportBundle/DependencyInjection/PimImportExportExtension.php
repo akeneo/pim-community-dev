@@ -28,13 +28,10 @@ class PimImportExportExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('serializer.yml');
         $loader->load('grid.yml');
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
         $loader->load('controllers.yml');
-        $loader->load('transformers.yml');
-        $loader->load('guessers.yml');
         $loader->load('entities.yml');
 
         // load validation files

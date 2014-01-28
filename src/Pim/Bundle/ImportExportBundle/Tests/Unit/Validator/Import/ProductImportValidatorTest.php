@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ProductTransformer;
+use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
 
 /**

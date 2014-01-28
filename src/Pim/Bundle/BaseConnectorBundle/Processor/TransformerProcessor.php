@@ -7,7 +7,7 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

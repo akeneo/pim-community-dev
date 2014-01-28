@@ -1,0 +1,127 @@
+parameters:
+    pim_import_export.transformer.registry.class:                    Pim\Bundle\TransformBundle\Transformer\EntityTransformerRegistry
+    pim_import_export.transformer.entity.class:                      Pim\Bundle\TransformBundle\Transformer\EntityTransformer
+    pim_import_export.transformer.product.class:                     Pim\Bundle\TransformBundle\Transformer\ProductTransformer
+    pim_import_export.transformer.family.class:                      Pim\Bundle\TransformBundle\Transformer\FamilyTransformer
+    pim_import_export.transformer.attribute.class:                   Pim\Bundle\TransformBundle\Transformer\AttributeTransformer
+    pim_import_export.transformer.job_instance.class:                Pim\Bundle\TransformBundle\Transformer\JobInstanceTransformer
+    pim_import_export.transformer.property.translation.class:        Pim\Bundle\TransformBundle\Transformer\Property\TranslationTransformer
+    pim_import_export.transformer.property.nested_translation.class: Pim\Bundle\TransformBundle\Transformer\Property\NestedTranslationTransformer
+    pim_import_export.transformer.property.default.class:            Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer
+    pim_import_export.transformer.property.relation.class:           Pim\Bundle\TransformBundle\Transformer\Property\RelationTransformer
+    pim_import_export.transformer.property.media.class:              Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer
+    pim_import_export.transformer.property.date.class:               Pim\Bundle\TransformBundle\Transformer\Property\DateTransformer
+    pim_import_export.transformer.property.boolean.class:            Pim\Bundle\TransformBundle\Transformer\Property\BooleanTransformer
+    pim_import_export.transformer.property.metric.class:             Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer
+    pim_import_export.transformer.property.prices.class:             Pim\Bundle\TransformBundle\Transformer\Property\PricesTransformer
+    pim_import_export.transformer.property.skip.class:               Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer
+    pim_import_export.transformer.column_info_transformer.class:     Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformer
+    pim_import_export.transformer.column_info.class:                 Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo
+
+services:
+    pim_import_export.transformer.registry:
+        class: %pim_import_export.transformer.registry.class%
+        arguments:
+            - '@service_container'
+            - pim_import_export.transformer.entity
+
+    pim_import_export.transformer.entity:
+        class: %pim_import_export.transformer.entity.class%
+        arguments:
+            - '@doctrine'
+            - '@property_accessor'
+            - '@pim_import_export.transformer.guesser'
+            - '@pim_import_export.transformer.column_info_transformer'
+
+    pim_import_export.transformer.product:
+        class: %pim_import_export.transformer.product.class%
+        parent: pim_import_export.transformer.entity
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_import_export.attribute_cache'
+            - '@pim_import_export.reader.cached_association'
+        tags:
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.product.class% }
+
+    pim_import_export.transformer.attribute:
+        class: %pim_import_export.transformer.attribute.class%
+        parent: pim_import_export.transformer.entity
+        arguments:
+            - '@pim_import_export.transformer.registry'
+            - '@pim_catalog.manager.attribute'
+            - '@pim_import_export.entity_cache'
+        tags:
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.attribute.class% }
+
+    pim_import_export.transformer.family:
+        class: %pim_import_export.transformer.family.class%
+        parent: pim_import_export.transformer.entity
+        arguments:
+            - '@pim_import_export.transformer.registry'
+            - '@pim_catalog.factory.family'
+            - %pim_catalog.entity.attribute_requirement.class%
+        tags:
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.family.class% }
+
+    pim_import_export.transformer.job_instance:
+        class: %pim_import_export.transformer.job_instance.class%
+        parent: pim_import_export.transformer.entity
+        tags:
+            - { name: pim_import_export.transformer.entity, entity: %pim_catalog.entity.job_instance.class% }
+
+    pim_import_export.transformer.column_info_transformer:
+        class: %pim_import_export.transformer.column_info_transformer.class%
+        arguments:
+            - %pim_import_export.transformer.column_info.class%
+
+    pim_import_export.transformer.property.translation:
+        class: %pim_import_export.transformer.property.translation.class%
+        arguments:
+            - '@property_accessor'
+
+    pim_import_export.transformer.property.nested_translation:
+        class: %pim_import_export.transformer.property.nested_translation.class%
+        arguments:
+            - '@property_accessor'
+
+    pim_import_export.transformer.property.default:
+        class: %pim_import_export.transformer.property.default.class%
+        public: false
+        tags:
+            - name: pim_import_export.transformer.attribute
+              backend_type: default
+
+    pim_import_export.transformer.property.relation:
+        class: %pim_import_export.transformer.property.relation.class%
+        arguments:
+            - '@pim_import_export.entity_cache'
+        public: false
+
+    pim_import_export.transformer.property.media:
+        class: %pim_import_export.transformer.property.media.class%
+        public: false
+        tags:
+            - name: pim_import_export.transformer.attribute
+              backend_type: media
+
+    pim_import_export.transformer.property.prices:
+        class: %pim_import_export.transformer.property.prices.class%
+        public: false
+        arguments:
+            - '@pim_catalog.manager.currency'
+
+    pim_import_export.transformer.property.metric:
+        class: %pim_import_export.transformer.property.metric.class%
+        public: false
+
+    pim_import_export.transformer.property.date:
+        class: %pim_import_export.transformer.property.date.class%
+        public: false
+
+    pim_import_export.transformer.property.boolean:
+        class: %pim_import_export.transformer.property.boolean.class%
+        public: false
+
+    pim_import_export.transformer.property.skip:
+        class: %pim_import_export.transformer.property.skip.class%
+        public: false

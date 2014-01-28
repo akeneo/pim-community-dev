@@ -32,6 +32,6 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $this->transformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\EntityTransformerInterface');
+        $this->transformer = $this->getMock('Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface');
     }
 }
