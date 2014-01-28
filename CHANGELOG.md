@@ -15,6 +15,7 @@
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
 - Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
+- Downgrade ICU lib to be compatible with RedHat 6 and CentOS 6
 
 ## BC breaks
 - Change some translation message keys
