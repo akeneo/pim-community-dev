@@ -5,9 +5,9 @@ namespace Pim\Bundle\UserBundle\Context;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -33,9 +33,6 @@ class UserContext
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var string */
-    protected $defaultLocale;
-
     /** @var Request */
     protected $request;
 
@@ -47,20 +44,17 @@ class UserContext
      * @param SecurityFacade           $securityFacade
      * @param LocaleManager            $localeManager
      * @param ChannelManager           $channelManager
-     * @param string                   $defaultLocale
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         SecurityFacade $securityFacade,
         LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        $defaultLocale
+        ChannelManager $channelManager
     ) {
         $this->securityContext = $securityContext;
         $this->securityFacade  = $securityFacade;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
-        $this->defaultLocale   = $defaultLocale;
     }
 
     /**
@@ -74,40 +68,55 @@ class UserContext
     }
 
     /**
-     * Returns the current locale from the request, or the default locale if no active request is found
+     * Returns the current locale from the request or the user's catalog locale
+     * or the first activated locale the user has access to
      *
-     * @return string
+     * @return Locale
+     *
+     * @throws \Exception When user doesn't have access to any activated locales
      */
     public function getCurrentLocale()
     {
-        return $this->request ? $this->request->getLocale() : $this->defaultLocale;
+        if (null !== $locale = $this->getRequestLocale()) {
+            return $locale;
+        }
+
+        if (null !== $locale = $this->getUserLocale()) {
+            return $locale;
+        }
+
+        if (null !== $locale = array_shift($this->getUserLocales())) {
+            return $locale;
+        }
+
+        throw new \Exception("User doesn't have access to any activated locales");
     }
 
     /**
-     * Get active locales for which the user has ACLs
+     * Returns active locales the user has access to
      *
      * @return Locale[]
      */
     public function getUserLocales()
     {
-        if (!isset($this->userLocales)) {
-            $this->userLocales = array();
-            foreach ($this->localeManager->getActiveLocales() as $locale) {
-                if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()))) {
-                    $this->userLocales[] = $locale;
+        if ($this->userLocales === null) {
+            $this->userLocales = array_filter(
+                $this->localeManager->getActiveLocales(),
+                function ($locale) {
+                    return $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()));
                 }
-            }
+            );
         }
 
         return $this->userLocales;
     }
 
     /**
-     * Get active locale codes for which the user has ACLs
+     * Returns the codes of active locales that the user has access to
      *
      * @return array
      */
-    public function getUserCodes()
+    public function getUserLocaleCodes()
     {
         return array_map(
             function ($locale) {
@@ -118,95 +127,34 @@ class UserContext
     }
 
     /**
-     * Get user locale code
-     *
-     * @return Locale|null
-     */
-    public function getUserLocale()
-    {
-        $user = $this->getUser();
-        if ($user === null) {
-            return null;
-        }
-
-        $locale = $user->getCatalogLocale();
-        if ($locale && $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()))) {
-            return $locale;
-        }
-
-        $locales = $this->getUserLocales();
-
-        return array_shift($locales);
-    }
-
-    /**
-     * Get data locale code
-     *
-     * @throws \Exception
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     */
-    public function getDataLocale()
-    {
-        if ($dataLocaleCode = $this->request->get(self::REQUEST_LOCALE_PARAM)) {
-            foreach ($this->getUserLocales() as $locale) {
-                if ($dataLocaleCode === $locale->getCode()) {
-                    return $locale;
-                }
-            }
-            throw new \Exception('Data locale must be activated, and accessible through ACLs');
-        } else {
-            if (null === $dataLocale = $this->getUserLocale()) {
-                throw new \Exception('User must have a catalog locale defined and access to this locale in the ACLs');
-            }
-        }
-
-        return $dataLocale;
-    }
-
-    /**
      * Get channel choices with user channel code in first
      *
      * @return string[]
      *
      * @throws \Exception
      */
-    public function getChannelChoiceWithUserChannel()
+    public function getChannelChoicesWithUserChannel()
     {
         $channelChoices  = $this->channelManager->getChannelChoices();
         $userChannelCode = $this->getUserChannelCode();
-        if (!array_key_exists($userChannelCode, $channelChoices)) {
-            throw new \Exception('User channel code is deactivated');
+
+        if (array_key_exists($userChannelCode, $channelChoices)) {
+            return [$userChannelCode => $channelChoices[$userChannelCode]] + $channelChoices;
         }
 
-        $userChannelValue = $channelChoices[$userChannelCode];
-        $newChannelChoices = array($userChannelCode => $userChannelValue);
-        unset($channelChoices[$userChannelCode]);
-
-        return array_merge($newChannelChoices, $channelChoices);
+        return $channelChoices;
     }
 
     /**
      * Get user channel
      *
      * @return Channel
-     *
-     * @throws \Exception
      */
     public function getUserChannel()
     {
-        $user = $this->getUser();
-        if (!$user) {
-            return null;
-        }
+        $catalogScope = $this->getUserOption('catalogScope');
 
-        $catalogScope = $user->getCatalogScope();
-
-        if (!$catalogScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $catalogScope;
+        return $catalogScope ?: current($this->channelManager->getChannelChoices());
     }
 
     /**
@@ -220,14 +168,73 @@ class UserContext
     }
 
     /**
-     * Get current user from security context
+     * Returns the request locale
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User|null
+     * @return Locale|null
      */
-    protected function getUser()
+    protected function getRequestLocale()
+    {
+        if ($this->request) {
+            $localeCode = $this->request->get(self::REQUEST_LOCALE_PARAM);
+            if ($localeCode) {
+                $locale = $this->localeManager->getLocaleByCode($localeCode);
+                if ($this->isLocaleAvailable($locale)) {
+                    return $locale;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the user locale
+     *
+     * @return Locale|null
+     */
+    protected function getUserLocale()
+    {
+        $locale = $this->getUserOption('catalogLocale');
+
+        return $locale && $this->isLocaleAvailable($locale) ? $locale : null;
+    }
+
+    /**
+     * Checks if a locale is activated and user has the right to access it
+     *
+     * @param Locale $locale
+     *
+     * @return boolean
+     */
+    protected function isLocaleAvailable(Locale $locale)
+    {
+        return $locale->isActivated() &&
+               $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()));
+    }
+
+    /**
+     * Get a user option
+     *
+     * @param string $optionName
+     *
+     * @return mixed|null
+     */
+    protected function getUserOption($optionName)
     {
         $token = $this->securityContext->getToken();
 
-        return $token === null ? null : $token->getUser();
+        if ($token !== null) {
+            $user   = $token->getUser();
+            $method = sprintf('get%s', ucfirst($optionName));
+
+            if ($user && is_callable(array($user, $method))) {
+                $value = $user->$method();
+                if ($value) {
+                    return $value;
+                }
+            }
+        }
+
+        return null;
     }
 }

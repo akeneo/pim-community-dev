@@ -105,7 +105,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function getLocale()
     {
-        return $this->userContext->getDataLocale();
+        return $this->userContext->getCurrentLocale();
     }
 
     /**

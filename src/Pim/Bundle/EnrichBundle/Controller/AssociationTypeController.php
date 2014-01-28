@@ -102,7 +102,7 @@ class AssociationTypeController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         return array(
-            'localeCode' => $this->userContext->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getCurrentLocale()->getCode()
         );
     }
 

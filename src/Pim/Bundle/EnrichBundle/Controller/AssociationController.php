@@ -82,7 +82,7 @@ class AssociationController
             array(
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
-                'dataLocale'       => $this->userContext->getDataLocale(),
+                'dataLocale'       => $this->userContext->getCurrentLocale(),
             )
         );
     }

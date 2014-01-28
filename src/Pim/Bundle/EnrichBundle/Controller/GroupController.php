@@ -113,7 +113,7 @@ class GroupController extends AbstractController
     {
         return array(
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(false)),
-            'localeCode' => $this->userContext->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getCurrentLocale()->getCode()
         );
     }
 
@@ -167,7 +167,7 @@ class GroupController extends AbstractController
 
         return array(
             'form'         => $this->groupForm->createView(),
-            'dataLocale'   => $this->userContext->getUserLocale()->getCode(),
+            'dataLocale'   => $this->userContext->getCurrentLocale()->getCode(),
             'currentGroup' => $group->getId()
         );
     }

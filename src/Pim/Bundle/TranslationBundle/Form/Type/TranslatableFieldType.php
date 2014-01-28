@@ -90,11 +90,11 @@ class TranslatableFieldType extends AbstractType
         $resolver->setDefaults(
             array(
                 'translation_class' => false,
-                'entity_class' => false,
-                'field' => false,
-                'locales' => $this->userContext->getUserCodes(),
-                'required_locale' => array(),
-                'widget' => 'text'
+                'entity_class'      => false,
+                'field'             => false,
+                'locales'           => $this->userContext->getUserLocaleCodes(),
+                'required_locale'   => array(),
+                'widget'            => 'text'
             )
         );
     }

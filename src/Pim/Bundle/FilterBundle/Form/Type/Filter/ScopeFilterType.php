@@ -58,7 +58,7 @@ class ScopeFilterType extends ChoiceFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $scopeChoices = $this->userContext->getChannelChoiceWithUserChannel();
+        $scopeChoices = $this->userContext->getChannelChoicesWithUserChannel();
 
         $resolver->setDefaults(
             array(

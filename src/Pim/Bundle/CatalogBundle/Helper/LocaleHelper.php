@@ -109,7 +109,7 @@ class LocaleHelper
      */
     public function getLocaleCurrency()
     {
-        $locale = $this->userContext->getUserLocale();
+        $locale = $this->userContext->getCurrentLocale();
 
         return (null !== $locale && $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
     }

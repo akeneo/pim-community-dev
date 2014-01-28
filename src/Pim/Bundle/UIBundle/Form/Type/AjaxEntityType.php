@@ -113,7 +113,7 @@ class AjaxEntityType extends AbstractType
             array(
                 'locale' => function (Options $options, $value) {
                     if (!$value) {
-                        $value = $this->userContext->getDataLocale()->getCode();
+                        $value = $this->userContext->getCurrentLocale()->getCode();
                     }
 
                     return $value;

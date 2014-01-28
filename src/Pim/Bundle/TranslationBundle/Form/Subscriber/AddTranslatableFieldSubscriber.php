@@ -229,11 +229,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * Helper method to generate field names in format : '<locale>' => '<field>|<locale>'
      *
-     * @return multitype:string
+     * @return string[]
      */
     protected function getFieldNames()
     {
-        $userLocales = $this->userContext->getUserCodes();
+        $userLocales = $this->userContext->getUserLocaleCodes();
         $collection = array();
 
         foreach ($this->getOption('locales') as $locale) {

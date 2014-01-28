@@ -137,7 +137,7 @@ class FamilyController extends AbstractDoctrineController
     public function indexAction()
     {
         return array(
-            'localeCode' => $this->userContext->getUserLocale()->getCode()
+            'localeCode' => $this->userContext->getCurrentLocale()->getCode()
         );
     }
 
