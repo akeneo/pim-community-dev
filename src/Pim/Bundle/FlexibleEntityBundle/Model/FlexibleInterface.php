@@ -37,9 +37,9 @@ interface FlexibleInterface
     /**
      * Get value related to attribute code
      *
-     * @param AbstractAttribute $attributeCode
+     * @param string $attributeCode
      *
      * @return FlexibleValueInterface
      */
-    public function getValue($attribute);
+    public function getValue($attributeCode);
 }
