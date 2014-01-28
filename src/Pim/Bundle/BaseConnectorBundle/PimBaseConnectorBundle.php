@@ -15,4 +15,12 @@ use Oro\Bundle\BatchBundle\Connector\Connector;
  */
 class PimBaseConnectorBundle extends Connector
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass());
+    }
 }

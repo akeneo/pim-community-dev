@@ -21,7 +21,6 @@ class PimImportExportBundle extends Bundle
     {
         $container
             ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
     }
 }
