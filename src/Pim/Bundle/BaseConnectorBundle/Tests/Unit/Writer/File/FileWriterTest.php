@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer\File;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Writer\File;
 
-use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
 /**
  * Test related class

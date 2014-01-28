@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer\File;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Writer\File;
 
-use Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter;
 
 /**
  * Test related class
@@ -28,7 +28,7 @@ class ProductWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAnInstanceOfFileWriter()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\File\FileWriter', $this->writer);
+        $this->assertInstanceOf('Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter', $this->writer);
     }
 
     /**
