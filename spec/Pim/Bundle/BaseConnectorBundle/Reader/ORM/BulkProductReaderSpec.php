@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Reader\ORM;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -34,7 +34,7 @@ class BulkProductReaderSpec extends ObjectBehavior
 
     function it_is_a_product_reader()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader');
     }
 
     function it_has_a_channel()
