@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Stub;
+namespace Pim\Bundle\TransformBundle\Tests\Stub;
 
-use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\Property\EntityUpdaterInterface;
+use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
  * Stub interface
