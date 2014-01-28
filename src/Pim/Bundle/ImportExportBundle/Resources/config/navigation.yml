@@ -30,9 +30,10 @@ oro_menu_config:
                         pim_report_export: ~
 
 oro_titles:
-    pim_importexport_import_profile_index: Import management
-    pim_importexport_import_profile_edit:  Import %%job.label%% | Edit
-    pim_importexport_import_profile_show:  Import %%job.label%% | Show
-    pim_importexport_export_profile_index: Export management
-    pim_importexport_export_profile_edit:  Export %%job.label%% | Edit
-    pim_importexport_export_profile_show:  Export %%job.label%% | Show
+    pim_importexport_export_profile_index:   pim_title.export_profile.index
+    pim_importexport_export_profile_edit:    pim_title.export_profile.edit
+    pim_importexport_export_profile_show:    pim_title.export_profile.show
+    
+    pim_importexport_import_profile_index:   pim_title.import_profile.index
+    pim_importexport_import_profile_edit:    pim_title.import_profile.edit
+    pim_importexport_import_profile_show:    pim_title.import_profile.show
