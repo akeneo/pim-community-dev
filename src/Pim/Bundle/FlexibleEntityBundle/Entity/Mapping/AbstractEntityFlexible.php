@@ -350,19 +350,18 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return AbstractEntityFlexible
      */
-    protected function updateValue(AbstractAttribute $attribute, $method, $arguments)
+    protected function updateValue($attributeCode, $method, $arguments)
     {
         if (!isset($this->allAttributes[$attributeCode])) {
             throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
         }
-        $attribute = $this->allAttributes[$attributeCode];
 
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
         $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();
-        $value  = $this->getValue($attribute, $locale, $scope);
+        $value  = $this->getValue($attributeCode, $locale, $scope);
         if ($value === null) {
-            $value = $this->createValue($attribute, $locale, $scope);
+            $value = $this->createValue($attributeCode, $locale, $scope);
             $this->addValue($value);
         }
         $value->$method($data);
