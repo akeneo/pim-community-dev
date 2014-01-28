@@ -196,7 +196,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * Small helper to extract all personnal translation from the entity for the field we are interested in
      * and combines it with the fields
      *
-     * @param multitype:mixed $data
+     * @param array $data
      *
      * @return mixed string
      */

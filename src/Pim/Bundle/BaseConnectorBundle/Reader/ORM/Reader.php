@@ -9,7 +9,7 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
-use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
+use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 
 /**
  * ORM reader

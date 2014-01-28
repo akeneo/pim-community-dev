@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
-use Pim\Bundle\ImportExportBundle\Exception\ParametrizedException;
+use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
 
 /**
  * Tests related class
@@ -74,7 +74,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\ParametrizedException
+     * @expectedException Pim\Bundle\TransformBundle\Exception\ParametrizedException
      * @expectedExceptionMessage exception value
      */
     public function testProcessWithTransformerException()
@@ -91,7 +91,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\ParametrizedException
+     * @expectedException Pim\Bundle\TransformBundle\Exception\ParametrizedException
      * @expectedExceptionMessage exception value
      */
     public function testProcessWithValidatorException()

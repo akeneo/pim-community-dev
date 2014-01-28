@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
-use Pim\Bundle\ImportExportBundle\Converter\MetricConverter;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;

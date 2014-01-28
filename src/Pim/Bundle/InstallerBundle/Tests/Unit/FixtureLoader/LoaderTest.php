@@ -16,7 +16,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
+        $entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
         $reader = $this->getMockBuilder('Oro\Bundle\BatchBundle\Item\ItemReaderInterface')

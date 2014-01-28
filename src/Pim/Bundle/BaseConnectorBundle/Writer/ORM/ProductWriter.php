@@ -9,7 +9,7 @@ use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\EntityCache;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
 /**

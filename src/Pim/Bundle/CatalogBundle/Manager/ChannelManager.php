@@ -38,7 +38,7 @@ class ChannelManager
     /**
      * Get channels with criterias
      *
-     * @param multitype:string $criterias
+     * @param array $criterias
      *
      * @return array
      */

@@ -27,7 +27,7 @@ class LocaleManager
     /**
      * Get active locales
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getActiveLocales()
     {
@@ -37,7 +37,7 @@ class LocaleManager
     /**
      * Get disabled locales
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getDisabledLocales()
     {
@@ -49,9 +49,9 @@ class LocaleManager
     /**
      * Get locales with criterias
      *
-     * @param multitype:string $criterias
+     * @param array $criterias
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getLocales($criterias = array())
     {

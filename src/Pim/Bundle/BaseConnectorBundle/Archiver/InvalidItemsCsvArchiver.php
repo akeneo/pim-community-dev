@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 use Gaufrette\Filesystem;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
+use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
 
 /**
  * Archiver of invalid items into a csv file
