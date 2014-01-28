@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
+use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 
 /**
  * Test related class
@@ -120,7 +120,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
 
     protected function getArchiverMock($name, array $archives = array(), $archive = null)
     {
-        $archiver = $this->getMock('Pim\Bundle\ImportExportBundle\Archiver\ArchiverInterface');
+        $archiver = $this->getMock('Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface');
 
         $archiver->expects($this->any())
             ->method('getName')

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\EventListener;
 
-use Pim\Bundle\ImportExportBundle\EventListener\InvalidItemsCollector;
+use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
 
 /**
