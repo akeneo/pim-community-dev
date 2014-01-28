@@ -22,7 +22,7 @@ class ReplacePimSerializerArgumentsPassTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->factory = $this->getMock('Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory');
+        $this->factory = $this->getMock('Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory');
         $this->pass = new ReplacePimSerializerArgumentsPass($this->factory);
     }
 
