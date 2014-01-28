@@ -169,9 +169,14 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
 
         $valueKey = $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
+        echo "DEBUG attributeCode:$attributeCode\n";
+        echo "DEBUG localeCode:$localeCode\n";
+        echo "DEBUG scopeCode:$scopeCode\n";
+        echo "DEBUG valueKey:$valueKey\n";
 
         $values = $this->getValues();
 
+        print_r($values->getKeys());
         return $values[$valueKey];
     }
 
@@ -259,12 +264,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function createValue($attributeCode, $locale = null, $scope = null)
     {
-        $value = new $this->valueClass();
-
         if (!isset($this->allAttributes[$attributeCode])) {
             throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
         }
         $attribute = $this->allAttributes[$attributeCode];
+        $value = new $this->valueClass();
 
         $value->setAttribute($attribute);
         if ($attribute->isTranslatable()) {
