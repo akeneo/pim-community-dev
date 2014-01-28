@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Encoder;
+namespace Pim\Bundle\TransformBundle\Encoder;
 
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
