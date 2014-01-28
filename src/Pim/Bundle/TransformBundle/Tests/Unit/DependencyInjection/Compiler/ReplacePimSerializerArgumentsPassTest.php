@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
+use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
 
 /**
  * Test related class
