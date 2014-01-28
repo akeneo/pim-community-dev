@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Filesystem;
+namespace Pim\Bundle\BaseConnectorBundle\Filesystem;
 
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter;
