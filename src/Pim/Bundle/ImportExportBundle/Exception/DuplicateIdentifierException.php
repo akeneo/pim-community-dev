@@ -3,6 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Exception;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;
+use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
 
 /**
  * Exception for duplicate identifiers in exports

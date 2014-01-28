@@ -192,6 +192,15 @@ class BaseFilter implements FilterInterface
             return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
         }
 
+        if ($operator == 'BETWEEN') {
+            return sprintf(
+                '%s BETWEEN %s AND %s',
+                $field,
+                $this->qb->expr()->literal($value[0]),
+                $this->qb->expr()->literal($value[1])
+            );
+        }
+
         throw new FlexibleQueryException('operator '.$operator.' is not supported');
     }
 }

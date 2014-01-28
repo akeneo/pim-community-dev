@@ -3,15 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class LocaleManagerSpec extends ObjectBehavior
 {
@@ -78,8 +74,8 @@ class LocaleManagerSpec extends ObjectBehavior
         $repository->getActivatedLocales()->willReturn([$en, $fr]);
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('en_US');
-        $securityFacade->isGranted('pim_catalog_locale_fr_FR')->willReturn(true);
-        $securityFacade->isGranted('pim_catalog_locale_en_US')->willReturn(false);
+        $securityFacade->isGranted('pim_enrich_locale_fr_FR')->willReturn(true);
+        $securityFacade->isGranted('pim_enrich_locale_en_US')->willReturn(false);
 
         $this->getUserLocales()->shouldReturn([$fr]);
     }
@@ -93,8 +89,8 @@ class LocaleManagerSpec extends ObjectBehavior
         $repository->getActivatedLocales()->willReturn([$en, $fr]);
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('en_US');
-        $securityFacade->isGranted('pim_catalog_locale_fr_FR')->willReturn(true);
-        $securityFacade->isGranted('pim_catalog_locale_en_US')->willReturn(false);
+        $securityFacade->isGranted('pim_enrich_locale_fr_FR')->willReturn(true);
+        $securityFacade->isGranted('pim_enrich_locale_en_US')->willReturn(false);
 
         $this->getUserCodes()->shouldReturn(['fr_FR']);
     }
@@ -117,7 +113,7 @@ class LocaleManagerSpec extends ObjectBehavior
         $request->get('dataLocale')->willReturn('fr_FR');
         $repository->getActivatedLocales()->willReturn([$fr]);
         $fr->getCode()->willReturn('fr_FR');
-        $securityFacade->isGranted('pim_catalog_locale_fr_FR')->willReturn(true);
+        $securityFacade->isGranted('pim_enrich_locale_fr_FR')->willReturn(true);
 
         $this->setRequest($request);
         $this->getDataLocale()->shouldReturn($fr);

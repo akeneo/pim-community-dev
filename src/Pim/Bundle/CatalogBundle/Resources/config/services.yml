@@ -1,6 +1,4 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
-    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
     pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
     pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
@@ -19,16 +17,6 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_listener.progress:
-        class: %pim_catalog.event_listener.progress.class%
-        arguments:
-            - '@event_dispatcher'
-
-    pim_catalog.event_listener.request:
-        class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
-        tags:
-            - { name: kernel.event_subscriber }
 
     pim_catalog.event_listener.metric_base_values:
         class: %pim_catalog.event_listener.metric_base_values.class%
@@ -88,26 +76,6 @@ services:
         arguments:
             - '@pim_catalog.manager.locale'
 
-    pim_catalog.twig.locale_extension:
-        class: Pim\Bundle\CatalogBundle\Twig\LocaleExtension
-        arguments:
-            - '@pim_catalog.helper.locale'
-        tags:
-            - { name: twig.extension }
-
-    pim_catalog.twig.category_extension:
-        class: Pim\Bundle\CatalogBundle\Twig\CategoryExtension
-        arguments:
-            - '@pim_catalog.manager.category'
-            - '@pim_catalog.manager.product'
-        tags:
-            - { name: twig.extension }
-
-    pim_catalog.twig.object_class_extension:
-        class: Pim\Bundle\CatalogBundle\Twig\ObjectClassExtension
-        tags:
-            - { name: twig.extension }
-
     # extension listener
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_catalog.event_listener.user_context.class%
@@ -117,12 +85,3 @@ services:
             - '@pim_catalog.manager.product'
         tags:
             - { name: kernel.event_subscriber }
-
-    # Media management
-    pim_catalog.imagine.local_dir_resolver:
-        class: %pim_catalog.imagine.local_dir_resolver.class%
-        parent: liip_imagine.cache.resolver.web_path
-        arguments:
-            - %kernel.cache_dir%/media
-        tags:
-            - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }

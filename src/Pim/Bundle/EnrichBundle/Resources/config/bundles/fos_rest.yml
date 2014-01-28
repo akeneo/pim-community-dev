@@ -1,0 +1,20 @@
+fos_rest:
+    view:
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: php
+        formats:
+            json: true
+            xml: true
+    format_listener:
+        prefer_extension: true
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.json
+            xml: fos_rest.decoder.xml
+    routing_loader:
+        default_format: json
+    exception:
+        codes:
+            Pim\Bundle\EnrichBundle\Exception\DeleteException: HTTP_CONFLICT
+        messages:
+            Pim\Bundle\EnrichBundle\Exception\DeleteException: true

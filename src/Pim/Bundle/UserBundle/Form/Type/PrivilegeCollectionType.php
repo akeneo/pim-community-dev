@@ -19,7 +19,7 @@ class PrivilegeCollectionType extends OroPrivilegeCollectionType
     /**
      * @staticvar string
      */
-    const LOCALE_ACL_PATTERN = 'action:pim_catalog_locale_';
+    const LOCALE_ACL_PATTERN = 'action:pim_enrich_locale_';
 
     /**
      * @var LocaleManager $localeManager

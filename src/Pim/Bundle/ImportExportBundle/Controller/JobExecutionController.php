@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\ImportExportBundle\EventListener\JobExecutionArchivist;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Gaufrette\StreamMode;

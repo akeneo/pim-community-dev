@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Builder;
 
 use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
+use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Entity\Version;

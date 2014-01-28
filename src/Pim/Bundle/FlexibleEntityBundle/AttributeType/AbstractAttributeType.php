@@ -186,7 +186,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @param FlexibleValueInterface $value
      *
-     * @return multitype:NULL |multitype:
+     * @return array
      */
     protected function prepareValueFormConstraints(FlexibleValueInterface $value)
     {

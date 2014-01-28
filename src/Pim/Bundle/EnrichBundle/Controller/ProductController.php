@@ -24,15 +24,15 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 
 /**
  * Product Controller
@@ -507,7 +507,7 @@ class ProductController extends AbstractDoctrineController
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-        if (!$this->securityFacade->isGranted('pim_catalog_locale_'.$dataLocale)) {
+        if (!$this->securityFacade->isGranted('pim_enrich_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 

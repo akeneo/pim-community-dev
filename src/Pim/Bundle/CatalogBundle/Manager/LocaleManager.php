@@ -75,7 +75,7 @@ class LocaleManager
     /**
      * Get active locales
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getActiveLocales()
     {
@@ -85,7 +85,7 @@ class LocaleManager
     /**
      * Get disabled locales
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getDisabledLocales()
     {
@@ -97,9 +97,9 @@ class LocaleManager
     /**
      * Get locales with criterias
      *
-     * @param multitype:string $criterias
+     * @param array $criterias
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return Locale[]
      */
     public function getLocales($criterias = array())
     {
@@ -143,7 +143,7 @@ class LocaleManager
         if (!isset($this->userLocales)) {
             $this->userLocales = array();
             foreach ($this->getActiveLocales() as $locale) {
-                if ($this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+                if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()))) {
                     $this->userLocales[] = $locale;
                 }
             }
@@ -197,7 +197,7 @@ class LocaleManager
         }
 
         $locale = $token->getUser()->getCatalogLocale();
-        if ($locale && $this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+        if ($locale && $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()))) {
             return $locale;
         }
 

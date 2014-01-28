@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Pim product bundle configuration
+ * Pim Catalog bundle configuration
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +24,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->booleanNode('record_mails')->defaultFalse()->end()
                 ->scalarNode('storage_driver')->defaultValue('doctrine/orm')->end()
             ->end()
         ->end();

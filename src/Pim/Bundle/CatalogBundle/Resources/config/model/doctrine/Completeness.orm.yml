@@ -1,0 +1,49 @@
+Pim\Bundle\CatalogBundle\Model\Completeness:
+    type: entity
+    table: pim_catalog_completeness
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - channel_id
+                - locale_id
+                - product_id
+    indexes:
+        ratio_idx:
+            columns:
+                - ratio
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        ratio:
+            type: integer
+        missingCount:
+            type: integer
+            column: missing_count
+        requiredCount:
+            type: integer
+            column: required_count
+    manyToOne:
+        locale:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            joinColumns:
+                locale_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        channel:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            joinColumns:
+                channel_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        product:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

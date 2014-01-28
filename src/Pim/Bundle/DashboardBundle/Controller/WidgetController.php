@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\DashboardBundle\Widget\Registry;
 
 /**
