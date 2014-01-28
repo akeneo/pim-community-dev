@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Cache;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Cache;
 
-use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
+use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 
 /**
  * Tests related class
@@ -271,7 +271,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
     protected function getColumnInfoMock($name, $withAttribute = true)
     {
-        $info = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $info = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $info->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));

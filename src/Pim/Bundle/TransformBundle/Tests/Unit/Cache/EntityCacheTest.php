@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Cache;
+namespace Pim\Bundle\TransformBundle\Tests\Unit\Cache;
 
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\EntityCache;
 
 /**
  * Tests EntityCache
