@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -22,11 +21,6 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     protected $userContext;
 
     /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
-
-    /**
      * @var ProductManager
      */
     protected $productManager;
@@ -36,7 +30,6 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param RequestParameters $requestParams  Request params
      * @param ProductManager    $productManager Product manager
      * @param UserContext       $userContext    User context
-     * @param ChannelManager    $channelManager Channel manager
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
     */
     public function __construct(
@@ -44,14 +37,12 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         RequestParameters $requestParams,
         ProductManager $productManager,
         UserContext $userContext,
-        ChannelManager $channelManager,
         $isEditMode = false
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
 
         $this->productManager = $productManager;
         $this->userContext    = $userContext;
-        $this->channelManager = $channelManager;
     }
 
     /**
@@ -97,7 +88,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {
-            return $this->channelManager->getUserChannelCode();
+            return $this->userContext->getUserChannelCode();
         }
     }
 }

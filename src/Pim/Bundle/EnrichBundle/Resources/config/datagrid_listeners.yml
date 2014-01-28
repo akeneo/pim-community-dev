@@ -22,7 +22,6 @@ services:
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
           - '@pim_user.context.user'
-          - '@pim_catalog.manager.channel'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
@@ -44,7 +43,6 @@ services:
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
           - '@pim_user.context.user'
-          - '@pim_catalog.manager.channel'
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
@@ -67,7 +65,6 @@ services:
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
           - '@pim_user.context.user'
-          - '@pim_catalog.manager.channel'
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-variant-group-grid, method: onBuildAfter }
@@ -104,7 +101,6 @@ services:
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'
-            - '@pim_catalog.manager.channel'
             - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }

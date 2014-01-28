@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
  */
 class UserContext
 {
-    /** @var string */
+    /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
 
     /** @var SecurityContextInterface */
@@ -162,6 +162,61 @@ class UserContext
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * Get channel choices with user channel code in first
+     *
+     * @return string[]
+     *
+     * @throws \Exception
+     */
+    public function getChannelChoiceWithUserChannel()
+    {
+        $channelChoices  = $this->channelManager->getChannelChoices();
+        $userChannelCode = $this->getUserChannelCode();
+        if (!array_key_exists($userChannelCode, $channelChoices)) {
+            throw new \Exception('User channel code is deactivated');
+        }
+
+        $userChannelValue = $channelChoices[$userChannelCode];
+        $newChannelChoices = array($userChannelCode => $userChannelValue);
+        unset($channelChoices[$userChannelCode]);
+
+        return array_merge($newChannelChoices, $channelChoices);
+    }
+
+    /**
+     * Get user channel
+     *
+     * @return Channel
+     *
+     * @throws \Exception
+     */
+    public function getUserChannel()
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return null;
+        }
+
+        $catalogScope = $user->getCatalogScope();
+
+        if (!$catalogScope) {
+            throw new \Exception('User must have a catalog scope defined');
+        }
+
+        return $catalogScope;
+    }
+
+    /**
+     * Get user channel code
+     *
+     * @return string
+     */
+    public function getUserChannelCode()
+    {
+        return $this->getUserChannel()->getCode();
     }
 
     /**

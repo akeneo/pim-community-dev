@@ -5,7 +5,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Overriding of ChoiceFilterType
@@ -22,19 +22,19 @@ class ScopeFilterType extends ChoiceFilterType
     const NAME = 'pim_type_scope_filter';
 
     /**
-     * @var ChannelManager
+     * @var UserContext
      */
-    protected $channelManager;
+    protected $userContext;
 
     /**
      * @param TranslatorInterface $translator
-     * @param ChannelManager      $channelManager
+     * @param UserContext         $userContext
      */
-    public function __construct(TranslatorInterface $translator, ChannelManager $channelManager)
+    public function __construct(TranslatorInterface $translator, UserContext $userContext)
     {
         parent::__construct($translator);
 
-        $this->channelManager = $channelManager;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -58,7 +58,7 @@ class ScopeFilterType extends ChoiceFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $scopeChoices = $this->channelManager->getChannelChoiceWithUserChannel();
+        $scopeChoices = $this->userContext->getChannelChoiceWithUserChannel();
 
         $resolver->setDefaults(
             array(
