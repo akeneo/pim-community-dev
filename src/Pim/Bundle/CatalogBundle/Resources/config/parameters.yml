@@ -17,5 +17,3 @@ parameters:
     pim_catalog.event_listener.user_preferences.class: Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
 
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-
-    pim_catalog.form.type.datagrid_configuration.class: Pim\Bundle\CatalogBundle\Form\Type\DatagridConfigurationType
