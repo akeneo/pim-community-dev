@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Pim\Bundle\CatalogBundle\EventListener\UserContextListener;
+use Pim\Bundle\EnrichBundle\EventListener\UserContextListener;
 
 /**
  * Test related class
