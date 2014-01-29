@@ -6,7 +6,7 @@
     <tbody>
         {% for element, value in config %}
             <tr>
-                <td><b>{{ 'pim_import_export.%s.%s.label'|format(jobType, element)|trans }}</b></td>
+                <td><b>{{ 'pim_base_connector.%s.%s.label'|format(jobType, element)|trans }}</b></td>
                 <td>{{ value|normalizeValue }} {{ getViolations(violations, element) }}</td>
             </tr>
         {% endfor %}

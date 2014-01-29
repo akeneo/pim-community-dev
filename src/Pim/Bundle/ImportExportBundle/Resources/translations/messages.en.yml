@@ -19,46 +19,6 @@ pim_import_export:
         7: ABANDONED
         8: UNKNOWN
 
-    ## Job titles
-    jobs:
-        csv_product_export:
-            title: Product export in CSV
-            export.title: Product export
-        csv_category_export:
-            title: Category export in CSV
-            export.title: Category export
-        csv_attribute_export:
-            title: Attribute export in CSV
-            export.title: Attribute export
-        csv_attribute_option_export:
-            title: Attribute option export in CSV
-            export.title: Attribute option export
-        csv_association_type_export:
-            title: Association type export in CSV
-            export.title: Association type export
-        csv_group_export:
-            title: Group export in CSV
-            export.title: Group export
-        csv_product_import:
-            title: Product import in CSV
-            import.title: Product import
-            import_associations.title: Association import
-        csv_category_import:
-            title: Category import in CSV
-            import.title: Category import
-        csv_attribute_import:
-            title: Attribute import in CSV
-            import.title: Attribute import
-        csv_attribute_option_import:
-            title: Attribute option import in CSV
-            import.title: Attribute option import
-        csv_association_type_import:
-            title: Association type import in CSV
-            import.title: Association type import
-        csv_group_import:
-            title: Group import in CSV
-            import.title: Group import
-
     ## Step element titles (for readers, processors, writers)
     steps:
         dummy_reader.title:                  Dummy reader
