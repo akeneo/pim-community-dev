@@ -90,6 +90,7 @@ services:
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_enrich.event_listener.user_context.class%
         arguments:
+            - '@security.context'
             - '@pim_translation.listener.add_locale'
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'

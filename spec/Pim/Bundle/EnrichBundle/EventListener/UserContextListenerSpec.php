@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
@@ -13,17 +14,19 @@ use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 class UserContextListenerSpec extends ObjectBehavior
 {
     function let(
+        SecurityContextInterface $securityContext,
         AddLocaleListener $listener,
         ProductManager $productManager,
         UserContext $userContext,
         GetResponseEvent $event
     ) {
+        $securityContext->getToken()->willReturn(true);
         $event->getRequestType()->willReturn(HttpKernel::MASTER_REQUEST);
 
         $userContext->getCurrentLocaleCode()->willReturn('de_DE');
         $userContext->getUserChannelCode()->willReturn('schmetterling');
 
-        $this->beConstructedWith($listener, $productManager, $userContext);
+        $this->beConstructedWith($securityContext, $listener, $productManager, $userContext);
     }
 
     function it_subscribes_to_kernel_request()
@@ -34,6 +37,17 @@ class UserContextListenerSpec extends ObjectBehavior
     function it_does_nothing_if_request_type_is_not_master_request($event, $listener, $productManager)
     {
         $event->getRequestType()->willReturn('foo');
+
+        $listener->setLocale()->shouldNotBeCalled();
+        $productManager->setLocale()->shouldNotBeCalled();
+        $productManager->setScope()->shouldNotBeCalled();
+
+        $this->onKernelRequest($event);
+    }
+
+    function it_does_nothing_if_no_token_is_present_in_the_security_context($securityContext, $event, $listener, $productManager)
+    {
+        $securityContext->getToken()->willReturn(null);
 
         $listener->setLocale()->shouldNotBeCalled();
         $productManager->setLocale()->shouldNotBeCalled();

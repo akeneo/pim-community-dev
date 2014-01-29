@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
@@ -21,6 +22,11 @@ use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
  */
 class UserContextListener implements EventSubscriberInterface
 {
+     /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
     /**
      * @var AddLocaleListener
      */
@@ -39,15 +45,21 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param AddLocaleListener $listener
-     * @param ProductManager    $productManager
-     * @param UserContext       $userContext
+     * @param SecurityContextInterface $securityContext
+     * @param AddLocaleListener        $listener
+     * @param ProductManager           $productManager
+     * @param UserContext              $userContext
      */
-    public function __construct(AddLocaleListener $listener, ProductManager $productManager, UserContext $userContext)
-    {
-        $this->listener       = $listener;
-        $this->productManager = $productManager;
-        $this->userContext    = $userContext;
+    public function __construct(
+        SecurityContextInterface $securityContext,
+        AddLocaleListener $listener,
+        ProductManager $productManager,
+        UserContext $userContext
+    ) {
+        $this->securityContext = $securityContext;
+        $this->listener        = $listener;
+        $this->productManager  = $productManager;
+        $this->userContext     = $userContext;
     }
 
     /**
@@ -65,7 +77,7 @@ class UserContextListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->securityContext->getToken()) {
             return;
         }
 
