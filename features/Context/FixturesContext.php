@@ -264,7 +264,7 @@ class FixturesContext extends RawMinkContext
         // Clear product transformer cache
         $this
             ->getContainer()
-            ->get('pim_import_export.transformer.product')
+            ->get('pim_transform.transformer.product')
             ->reset();
 
         $product = $this->loadFixture('products', $data);

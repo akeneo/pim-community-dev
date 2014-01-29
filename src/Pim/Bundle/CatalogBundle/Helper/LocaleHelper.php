@@ -62,7 +62,7 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
-        $language = \Locale::getPrimaryLanguage();
+        $language = \Locale::getPrimaryLanguage($locale);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
     }
@@ -80,7 +80,7 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
-        $language = \Locale::getPrimaryLanguage();
+        $language = \Locale::getPrimaryLanguage($locale);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
     }
