@@ -4,8 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -17,14 +16,9 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 class AddParametersToProductGridListener extends AddParametersToGridListener
 {
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
-
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    protected $userContext;
 
     /**
      * @var ProductManager
@@ -35,22 +29,20 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param array             $paramNames     Parameter name that should be binded to query
      * @param RequestParameters $requestParams  Request params
      * @param ProductManager    $productManager Product manager
-     * @param LocaleManager     $localeManager  Locale manager
-     * @param ChannelManager    $channelManager Channel manager
+     * @param UserContext       $userContext    User context
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
     */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
         ProductManager $productManager,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
+        UserContext $userContext,
         $isEditMode = false
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
+
         $this->productManager = $productManager;
-        $this->localeManager  = $localeManager;
-        $this->channelManager = $channelManager;
+        $this->userContext    = $userContext;
     }
 
     /**
@@ -81,7 +73,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
             $dataLocale = $queryParameters['dataLocale'];
         }
         if ($dataLocale == null) {
-            $dataLocale = $this->localeManager->getUserLocale()->getCode();
+            $dataLocale = $this->userContext->getCurrentLocaleCode();
         }
 
         return $dataLocale;
@@ -96,7 +88,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {
-            return $this->channelManager->getUserChannelCode();
+            return $this->userContext->getUserChannelCode();
         }
     }
 }

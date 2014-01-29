@@ -138,9 +138,7 @@ class AttributeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        return array();
     }
 
     /**
@@ -321,9 +319,8 @@ class AttributeController extends AbstractDoctrineController
         }
 
         return array(
-            'attribute'  => $attribute,
-            'dataLocale' => $dataLocale,
-            'form'       => $form->createView()
+            'attribute' => $attribute,
+            'form'      => $form->createView()
         );
     }
 

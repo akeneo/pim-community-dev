@@ -46,16 +46,14 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Create a channel manager
-     * @param string $userScope
      *
      * @return ChannelManager
      */
-    protected function createChannelManager($userScope = 'ecommerce')
+    protected function createChannelManager()
     {
         $objectManager = $this->getObjectManagerMock();
-        $securityContext = $this->getSecurityContextMock($userScope);
 
-        return new ChannelManager($objectManager, $securityContext);
+        return new ChannelManager($objectManager);
     }
 
     /**
@@ -123,75 +121,6 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get security context mock
-     * @param string $scope
-     *
-     * @return \Symfony\Component\Security\Core\SecurityContext
-     */
-    protected function getSecurityContextMock($scope)
-    {
-        $securityContext = $this
-            ->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $token = $this->getTokenMock($scope);
-
-        $securityContext
-            ->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token));
-
-        return $securityContext;
-    }
-
-    /**
-     * Get token mock
-     * @param string $scope
-     *
-     * @return \Symfony\Component\Security\Core\Authentication\Token\TokenInterface
-     */
-    protected function getTokenMock($scope)
-    {
-        $token = $this
-            ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $user = $this->getUserMock($scope);
-
-        $token
-            ->expects($this->any())
-            ->method('getUser')
-            ->will($this->returnValue($user));
-
-        return $token;
-    }
-
-    /**
-     * Get user mock
-     * @param string $scope
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\User
-     */
-    protected function getUserMock($scope)
-    {
-        $user = $this
-            ->getMock('Oro\Bundle\UserBundle\Entity\User', array('getCatalogScope'));
-
-        $user
-            ->expects($this->any())
-            ->method('getCatalogScope')
-            ->will(
-                $this->returnValue(
-                    $this->createChannel($scope)
-                )
-            );
-
-        return $user;
-    }
-
-    /**
      * Test related method
      */
     public function testGetChannels()
@@ -215,47 +144,5 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
 
         $channelChoices = $this->manager->getChannelChoices();
         $this->assertEquals($expectedArray, $channelChoices);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetChannelChoiceWithUserChannel()
-    {
-        $expectedArray = array(
-            'ecommerce' => 'Ecommerce',
-            'mobile'    => 'Mobile'
-        );
-
-        $channelChoices = $this->manager->getChannelChoiceWithUserChannel();
-        $this->assertEquals($expectedArray, $channelChoices);
-
-        // change the user channel
-        $expectedArray = array_reverse($expectedArray);
-        $this->createChannelManager('mobile');
-
-        $channelChoices = $this->manager->getChannelChoiceWithUserChannel();
-        $this->assertEquals($expectedArray, $channelChoices);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetUserChannelCode()
-    {
-        $userChannelCode = $this->manager->getUserChannelCode();
-        $this->assertEquals('ecommerce', $userChannelCode);
-    }
-
-    /**
-     * Test getChannelChoiceWithUserChannel when the user channel don't exist
-     *
-     * @expectedException        Exception
-     * @expectedExceptionMessage User channel code is deactivated
-     */
-    public function testExceptionWithUserChannelDeactivate()
-    {
-        $manager = $this->createChannelManager(self::NOT_EXISTING_SCOPE);
-        $manager->getChannelChoiceWithUserChannel();
     }
 }

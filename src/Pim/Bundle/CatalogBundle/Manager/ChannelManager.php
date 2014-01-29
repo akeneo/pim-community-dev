@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -20,19 +19,12 @@ class ChannelManager
     protected $objectManager;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
-     */
-    protected $securityContext;
-
-    /**
      * Constructor
-     * @param ObjectManager   $objectManager   the storage manager
-     * @param SecurityContext $securityContext the security context
+     * @param ObjectManager $objectManager the storage manager
      */
-    public function __construct(ObjectManager $objectManager, SecurityContext $securityContext)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->securityContext = $securityContext;
     }
 
     /**
@@ -99,57 +91,5 @@ class ChannelManager
         }
 
         return $choices;
-    }
-
-    /**
-     * Get channel choices with user channel code in first
-     *
-     * @return string[]
-     *
-     * @throws \Exception
-     */
-    public function getChannelChoiceWithUserChannel()
-    {
-        $channelChoices  = $this->getChannelChoices();
-        $userChannelCode = $this->getUserChannelCode();
-        if (!array_key_exists($userChannelCode, $channelChoices)) {
-            throw new \Exception('User channel code is deactivated');
-        }
-
-        $userChannelValue = $channelChoices[$userChannelCode];
-        $newChannelChoices = array($userChannelCode => $userChannelValue);
-        unset($channelChoices[$userChannelCode]);
-
-        return array_merge($newChannelChoices, $channelChoices);
-    }
-
-    /**
-     * Get user channel
-     *
-     * @return Channel
-     *
-     * @throws \Exception
-     */
-    public function getUserChannel()
-    {
-        $user = $this->securityContext->getToken()->getUser();
-
-        $catalogScope = $user->getCatalogScope();
-
-        if (!$catalogScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $catalogScope;
-    }
-
-    /**
-     * Get user channel code
-     *
-     * @return string
-     */
-    public function getUserChannelCode()
-    {
-        return $this->getUserChannel()->getCode();
     }
 }

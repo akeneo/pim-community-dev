@@ -51,11 +51,6 @@ services:
         class: %pim_catalog.manager.locale.class%
         arguments:
             - '@pim_catalog.repository.orm.locale'
-            - '@security.context'
-            - '@oro_security.security_facade'
-            - %locale%
-        calls:
-            - [ setRequest, ['@?request='] ]
 
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%
@@ -66,7 +61,6 @@ services:
         class: %pim_catalog.manager.channel.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@security.context'
 
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%

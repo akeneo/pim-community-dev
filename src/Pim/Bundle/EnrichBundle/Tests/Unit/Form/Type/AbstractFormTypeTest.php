@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
@@ -95,7 +94,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
             ->addType(
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-                    $this->getLocaleManagerMock(),
+                    $this->getUserContextMock(),
                     $this->getLocaleHelperMock()
                 )
             )
@@ -113,41 +112,21 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     }
 
     /**
-     * Create mock for locale manager
+     * Create mock for user context
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\UserBundle\Context\UserContext
      */
-    protected function getLocaleManagerMock()
+    protected function getUserContextMock()
     {
-        $manager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $userContext = $this->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager->expects($this->any())
-            ->method('getActiveCodes')
+        $userContext->expects($this->any())
+            ->method('getUserLocaleCodes')
             ->will($this->returnValue(array('en_US', 'fr_FR')));
 
-        return $manager;
-    }
-
-    /**
-     * Create a security context mock
-     *
-     * @return \Symfony\Component\Security\Core\SecurityContext
-     */
-    protected function getSecurityContextMock()
-    {
-        $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
-        $decisionManager = $this->getMock(
-            'Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface'
-        );
-
-        $securityContext = new SecurityContext($authManager, $decisionManager);
-        $securityContext->setToken(
-            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
-        );
-
-        return $securityContext;
+        return $userContext;
     }
 
     /**
