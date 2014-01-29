@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
+use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Valid category creation (or update) processor

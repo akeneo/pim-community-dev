@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Abstract processor for transformer based imports

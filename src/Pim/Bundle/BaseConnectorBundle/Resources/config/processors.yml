@@ -37,7 +37,7 @@ services:
         class: %pim_base_connector.processor.transformer.class%
         abstract: true
         arguments:
-            - '@pim_import_export.validator.import'
+            - '@pim_base_connector.validator.import'
             - '@translator'
             - '@pim_transform.transformer.registry'
 
@@ -56,7 +56,7 @@ services:
     pim_base_connector.processor.product:
         class: %pim_base_connector.processor.product.class%
         arguments:
-            - '@pim_import_export.validator.product_import'
+            - '@pim_base_connector.validator.product_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
             - '%pim_catalog.entity.product.class%'
@@ -106,7 +106,7 @@ services:
     pim_base_connector.processor.job_instance:
         class: %pim_base_connector.processor.transformer.class%
         arguments:
-            - '@pim_import_export.validator.skip_import'
+            - '@pim_base_connector.validator.skip_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
             - %pim_catalog.entity.job_instance.class%

@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
+use Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator;
 
 /**
  * Tests related class
@@ -118,7 +118,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
+     * @expectedException Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException
      * @expectedExceptionMessage The unique code "id_name_data" was already read in this file
      */
     public function testWithDuplicateIdentifiers()

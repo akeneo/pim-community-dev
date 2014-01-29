@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Exception;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Exception;
 
-use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;
+use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException;
 
 /**
  * Tests related class
