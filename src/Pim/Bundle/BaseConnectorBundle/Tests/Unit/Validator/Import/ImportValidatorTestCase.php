@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
 /**
  * Test case for import validators

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\Choice;
 

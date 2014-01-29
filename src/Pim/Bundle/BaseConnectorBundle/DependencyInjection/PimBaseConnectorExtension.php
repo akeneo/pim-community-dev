@@ -26,5 +26,6 @@ class PimBaseConnectorExtension extends Extension
         $loader->load('processors.yml');
         $loader->load('writers.yml');
         $loader->load('archiving.yml');
+        $loader->load('validators.yml');
     }
 }

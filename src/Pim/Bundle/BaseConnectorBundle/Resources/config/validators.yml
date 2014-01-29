@@ -1,0 +1,27 @@
+parameters:
+    pim_base_connector.validator.constraints.channel_validator.class: Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator
+    pim_base_connector.validator.import.class:                        Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidator
+    pim_base_connector.validator.product_import.class:                Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator
+    pim_base_connector.validator.skip_import.class:                   Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator
+
+services:
+    pim_base_connector.validator.constraints.channel_validator:
+        class: %pim_base_connector.validator.constraints.channel_validator.class%
+        arguments:
+            - '@pim_catalog.manager.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: channel_validator }
+
+    pim_base_connector.validator.import:
+        class: %pim_base_connector.validator.import.class%
+        arguments:
+            - '@validator'
+
+    pim_base_connector.validator.product_import:
+        class: %pim_base_connector.validator.product_import.class%
+        parent: pim_base_connector.validator.import
+        arguments:
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+
+    pim_base_connector.validator.skip_import:
+        class: %pim_base_connector.validator.skip_import.class%

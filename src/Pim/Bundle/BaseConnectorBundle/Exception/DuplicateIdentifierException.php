@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Exception;
+namespace Pim\Bundle\BaseConnectorBundle\Exception;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Constraints;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator;
+use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator;
 
 /**
  * Test related class
