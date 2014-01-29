@@ -20,4 +20,3 @@ services:
         class: %pim_transform.converter.metric.class%
         arguments:
             - '@oro_measure.measure_converter'
-

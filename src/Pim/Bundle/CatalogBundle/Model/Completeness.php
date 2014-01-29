@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -30,7 +29,7 @@ class Completeness
     protected $locale;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Channel $channel
+     * @var Channel $channel
      */
     protected $channel;
 
@@ -50,7 +49,7 @@ class Completeness
     protected $requiredCount = 0;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @var ProductInterface
      */
     protected $product;
 
