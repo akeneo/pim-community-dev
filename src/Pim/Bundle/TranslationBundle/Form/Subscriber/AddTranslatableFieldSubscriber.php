@@ -12,7 +12,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Define subscriber for translation fields
@@ -49,29 +49,29 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $localeHelper;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
-     * @param LocaleManager        $localeManager
+     * @param UserContext          $userContext
      * @param LocaleHelper         $localeHelper
      * @param array                $options
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         LocaleHelper $localeHelper,
         array $options
     ) {
         $this->formFactory        = $formFactory;
         $this->validator          = $validator;
-        $this->localeManager      = $localeManager;
+        $this->userContext        = $userContext;
         $this->localeHelper       = $localeHelper;
         $this->options            = $options;
 
@@ -233,7 +233,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     protected function getFieldNames()
     {
-        $userLocales = $this->localeManager->getUserCodes();
+        $userLocales = $this->userContext->getUserLocaleCodes();
         $collection = array();
 
         foreach ($this->getOption('locales') as $locale) {

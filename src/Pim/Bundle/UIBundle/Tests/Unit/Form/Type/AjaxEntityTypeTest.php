@@ -17,8 +17,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
     protected $router;
     protected $transformerFactory;
     protected $transformer;
-    protected $localeManager;
-    protected $locale;
+    protected $userContext;
     protected $type;
 
     protected $options = array(
@@ -77,17 +76,13 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $this->localeManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $this->userContext = $this->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale');
-        $this->localeManager->expects($this->any())
-            ->method('getDataLocale')
-            ->will($this->returnValue($this->locale));
-        $this->locale->expects($this->any())
-            ->method('getCode')
+        $this->userContext->expects($this->any())
+            ->method('getCurrentLocaleCode')
             ->will($this->returnValue('locale'));
-        $this->type = new AjaxEntityType($this->router, $this->transformerFactory, $this->localeManager);
+        $this->type = new AjaxEntityType($this->router, $this->transformerFactory, $this->userContext);
     }
 
     public function testBuildForm()

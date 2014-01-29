@@ -50,7 +50,7 @@
             <div class="tab-content">
                 {% set selectedTree = 0 %}
                 {% if trees %}
-                    {% if app.user.defaulttree is defined %}
+                    {% if app.user.defaulttree is defined and app.user.defaultTree.code is defined %}
                         {% for tree in trees %}
                             {% if loop.first or tree.code == app.user.defaulttree.code %}
                                 {% set selectedTree = tree.id %}

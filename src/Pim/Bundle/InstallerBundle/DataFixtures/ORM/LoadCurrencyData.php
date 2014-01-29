@@ -20,7 +20,8 @@ class LoadCurrencyData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allCurrencies = $this->container->get('pim_catalog.helper.locale')->getCurrencyLabels();
+        $locale = $this->container->getParameter('locale');
+        $allCurrencies = $this->container->get('pim_catalog.helper.locale')->getCurrencyLabels($locale);
         $currencies = Yaml::parse(realpath($this->getFilePath()));
         $activatedCurrencies = $currencies['currencies'];
         $removedCurrencies   = $currencies['removed_currencies'];

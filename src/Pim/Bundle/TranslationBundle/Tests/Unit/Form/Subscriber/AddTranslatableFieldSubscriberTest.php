@@ -349,7 +349,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return new AddTranslatableFieldSubscriber(
             $this->formFactory,
             $this->getValidatorMock(),
-            $this->getLocaleManagerMock(),
+            $this->getUserContextMock(),
             $this->getLocaleHelperMock(),
             $options
         );
@@ -373,21 +373,21 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get LocaleHelperMock
+     * Get UserContext mock
      *
-     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     * @return \Pim\Bundle\UserBundle\Context\UserContext
      */
-    protected function getLocaleManagerMock()
+    protected function getUserContextMock()
     {
-        $manager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $userContext = $this->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager->expects($this->any())
-            ->method('getUserCodes')
+        $userContext->expects($this->any())
+            ->method('getUserLocaleCodes')
             ->will($this->returnValue(array('en_US', 'fr_FR')));
 
-        return $manager;
+        return $userContext;
     }
 
     /**

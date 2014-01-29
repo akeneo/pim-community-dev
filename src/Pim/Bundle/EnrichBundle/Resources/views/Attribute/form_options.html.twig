@@ -5,7 +5,7 @@
 {% endspaceless %}
 
 {{ form_start(form, {
-    'action': path('pim_enrich_attribute_create_option', { id: attribute.id, dataLocale: dataLocale }),
+    'action': path('pim_enrich_attribute_create_option', { id: attribute.id, dataLocale: locale_code() }),
     'class': 'form-inline',
     'attr': {
         'data-title': 'popin.create.option.title'|trans,

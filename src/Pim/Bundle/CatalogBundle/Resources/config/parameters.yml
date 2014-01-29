@@ -13,7 +13,4 @@ parameters:
     pim_catalog.manager.group.class:        Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.association.class:  Pim\Bundle\CatalogBundle\Manager\AssociationManager
 
-    pim_catalog.event_listener.user_context.class:     Pim\Bundle\CatalogBundle\EventListener\UserContextListener
-    pim_catalog.event_listener.user_preferences.class: Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
-
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache

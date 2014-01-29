@@ -21,8 +21,7 @@ services:
           - [dataLocale]
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
-          - '@pim_catalog.manager.locale'
-          - '@pim_catalog.manager.channel'
+          - '@pim_user.context.user'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
@@ -43,8 +42,7 @@ services:
           - [dataLocale, currentGroup]
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
-          - '@pim_catalog.manager.locale'
-          - '@pim_catalog.manager.channel'
+          - '@pim_user.context.user'
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
@@ -66,8 +64,7 @@ services:
           - [dataLocale, currentGroup]
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.manager.product'
-          - '@pim_catalog.manager.locale'
-          - '@pim_catalog.manager.channel'
+          - '@pim_user.context.user'
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-variant-group-grid, method: onBuildAfter }
@@ -103,8 +100,7 @@ services:
             - [dataLocale, product, associationType]
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.manager.channel'
+            - '@pim_user.context.user'
             - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }

@@ -1,5 +1,6 @@
 parameters:
-    pim_enrich.imagine.local_dir_resolver.class: Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_enrich.imagine.local_dir_resolver.class:  Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_enrich.event_listener.user_context.class: Pim\Bundle\EnrichBundle\EventListener\UserContextListener
 
 services:
     # Mass edit action operator
@@ -21,7 +22,7 @@ services:
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_catalog.manager.currency'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
@@ -82,5 +83,15 @@ services:
 
     pim_enrich.event_listener.request:
         class: Pim\Bundle\EnrichBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # User context listener
+    stof_doctrine_extensions.event_listener.locale:
+        class: %pim_enrich.event_listener.user_context.class%
+        arguments:
+            - '@pim_translation.listener.add_locale'
+            - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }
