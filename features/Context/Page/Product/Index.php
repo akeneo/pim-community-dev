@@ -128,9 +128,9 @@ class Index extends BaseIndex
         );
     }
 
-    public function openConfigurationPopin()
+    public function openColumnsPopin()
     {
-        $this->grid->openConfigurationPopin();
+        $this->grid->openColumnsPopin();
     }
 
     public function hideColumn($column)

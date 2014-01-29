@@ -657,9 +657,9 @@ class Grid extends Element
         $filter->find('css', 'button.filter-update')->click();
     }
 
-    public function openConfigurationPopin()
+    public function openColumnsPopin()
     {
-        $configureBtn = $this->find('css', 'a:contains("Configure")');
+        $configureBtn = $this->find('css', 'a:contains("Columns")');
         $configureBtn->click();
     }
 }

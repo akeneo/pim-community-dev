@@ -532,7 +532,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheColumn($column)
     {
-        $this->getCurrentPage()->openConfigurationPopin();
+        $this->getCurrentPage()->openColumnsPopin();
         $this->wait();
         $this->getCurrentPage()->hideColumn($column);
         $this->wait();
@@ -543,7 +543,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iPutTheColumnBeforeTheOne($source, $target)
     {
-        $this->getCurrentPage()->openConfigurationPopin();
+        $this->getCurrentPage()->openColumnsPopin();
         $this->wait();
         $this->getCurrentPage()->moveColumn($source, $target);
         $this->wait();

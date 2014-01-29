@@ -1,11 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
-use Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -16,10 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 
 /**
  * Datagrid configuration controller
@@ -89,7 +88,7 @@ class DatagridController extends AbstractDoctrineController
                 $em->persist($configuration);
                 $em->flush();
 
-                return $this->redirectToRoute('pim_catalog_product_index');
+                return $this->redirectToRoute('pim_enrich_product_index');
             }
         }
 

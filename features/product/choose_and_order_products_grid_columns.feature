@@ -23,7 +23,3 @@ Feature: Choose and order product grids columns
   Scenario: Succesfully order some columns
     When I put the "Color" column before the "Complete" one
     Then I should see the columns Sku, Family, Status, Color, Complete, Created At, Updated At, Groups, Name, Price, Rating and Size
-
-  Scenario: Fail to hide the identifier column
-
-  Scenario: Fail to sort the identifier column

@@ -170,6 +170,11 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_image }
 
+    pim_catalog.form.type.datagrid_configuration:
+        class: %pim_catalog.form.type.datagrid_configuration.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_datagrid_configuration }
+
     # Form extensions
     pim_enrich.extension.type.media:
         class: %pim_enrich.extension.type.media.class%
