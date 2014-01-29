@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\ImportExportBundle\Validator\Import\SkipImportValidator;
+use Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator;
 
 /**
  * Tests related class

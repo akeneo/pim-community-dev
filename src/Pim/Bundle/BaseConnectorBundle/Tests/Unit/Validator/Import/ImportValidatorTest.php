@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
+use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidator;
 
 /**
  * Tests related class
@@ -86,7 +86,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
+     * @expectedException Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException
      * @expectedExceptionMessage The unique code "id" was already read in this file
      */
     public function testWithDuplicateIdentifiers()
