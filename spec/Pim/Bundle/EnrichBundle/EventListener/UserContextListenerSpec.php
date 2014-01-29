@@ -59,8 +59,8 @@ class UserContextListenerSpec extends ObjectBehavior
 
     function it_does_not_throw_an_exception_if_user_context_does_not_provide_a_locale($event, $userContext)
     {
-        $userContext->getCurrentLocaleCode()->willThrow(new \Exception());
+        $userContext->getCurrentLocaleCode()->willThrow(new \LogicException());
 
-        $this->onKernelRequest($event);
+        $this->shouldNotThrow(new \LogicException())->duringOnKernelRequest($event);
     }
 }

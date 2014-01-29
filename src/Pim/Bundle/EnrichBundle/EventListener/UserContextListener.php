@@ -73,7 +73,7 @@ class UserContextListener implements EventSubscriberInterface
         try {
             $this->configureTranslatableListener();
             $this->configureProductManager();
-        } catch (\Exception $e) {
+        } catch (\LogicException $e) {
         }
     }
 

@@ -80,7 +80,7 @@ class UserContext
      *
      * @return Locale
      *
-     * @throws \Exception When user doesn't have access to any activated locales
+     * @throws \LogicException When user doesn't have access to any activated locales
      */
     public function getCurrentLocale()
     {
@@ -96,7 +96,7 @@ class UserContext
             return $locale;
         }
 
-        throw new \Exception("User doesn't have access to any activated locales");
+        throw new \LogicException("User doesn't have access to any activated locales");
     }
 
     /**
