@@ -14,7 +14,7 @@ attributes:
             en_US: Name
         type:  pim_catalog_text
         group: info
-        translatable:        true
+        localizable:         true
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
@@ -68,7 +68,7 @@ attributes:
             en_US: Description
         type:  pim_catalog_textarea
         group: info
-        translatable:        true
+        localizable:         true
         scopable:            true
         useableAsGridColumn: false
         useableAsGridFilter: true

@@ -46,7 +46,7 @@ define(
                         'data-placement': 'right'
                     }
                 });
-                $target.find('.attribute-field.translatable').each(function () {
+                $target.find('.attribute-field.localizable').each(function () {
                     $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone());
                 });
 

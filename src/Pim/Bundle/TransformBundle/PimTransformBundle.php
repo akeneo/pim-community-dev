@@ -14,4 +14,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PimTransformBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterEntityTransformersPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
+    }
 }

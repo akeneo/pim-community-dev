@@ -62,7 +62,7 @@ class ValueJoin
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             if ($this->locale === null) {
                 throw new FlexibleQueryException('Locale must be configured');
             }

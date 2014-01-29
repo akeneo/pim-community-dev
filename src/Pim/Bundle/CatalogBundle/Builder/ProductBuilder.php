@@ -93,8 +93,8 @@ class ProductBuilder
     /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
-     * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or translatable, makes sure that a single value exists.
+     * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
+     * exist. If the attribute is not scopable or localizable, makes sure that a single value exists.
      *
      * @param ProductInterface $product
      *
@@ -254,13 +254,13 @@ class ProductBuilder
     protected function getExpectedValues(AttributeInterface $attribute)
     {
         $requiredValues = array();
-        if ($attribute->isScopable() and $attribute->isTranslatable()) {
+        if ($attribute->isScopable() and $attribute->isLocalizable()) {
             $requiredValues = $this->getScopeToLocaleRows();
 
         } elseif ($attribute->isScopable()) {
             $requiredValues = $this->getScopeRows();
 
-        } elseif ($attribute->isTranslatable()) {
+        } elseif ($attribute->isLocalizable()) {
             $requiredValues = $this->getLocaleRows();
 
         } else {

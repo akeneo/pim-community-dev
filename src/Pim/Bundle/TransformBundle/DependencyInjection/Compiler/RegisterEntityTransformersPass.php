@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\TransformBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,12 +17,12 @@ class RegisterEntityTransformersPass implements CompilerPassInterface
     /**
      * @staticvar string The registry service id
      */
-    const TRANSFORMER_REGISTRY_SERVICE = 'pim_import_export.transformer.registry';
+    const TRANSFORMER_REGISTRY_SERVICE = 'pim_transform.transformer.registry';
 
     /**
      * @staticvar string The tag for entity transformers
      */
-    const TRANSFORMER_TAG = 'pim_import_export.transformer.entity';
+    const TRANSFORMER_TAG = 'pim_transform.transformer.entity';
 
     /**
      * {@inheritdoc}

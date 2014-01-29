@@ -174,7 +174,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
         $attribute->setRequired($data['required']);
         $attribute->setUnique($data['unique']);
         $attribute->setSearchable($data['searchable']);
-        $attribute->setTranslatable($data['localizable']);
+        $attribute->setLocalizable($data['localizable']);
         $attribute->setScopable(strtolower($data['scope']) !== 'global');
         $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);

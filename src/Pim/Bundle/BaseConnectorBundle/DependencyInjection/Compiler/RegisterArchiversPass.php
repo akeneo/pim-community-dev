@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,13 +20,13 @@ class RegisterArchiversPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_import_export.event_listener.archivist')) {
+        if (!$container->hasDefinition('pim_base_connector.event_listener.archivist')) {
             return;
         }
 
-        $service = $container->getDefinition('pim_import_export.event_listener.archivist');
+        $service = $container->getDefinition('pim_base_connector.event_listener.archivist');
 
-        $taggedServices = $container->findTaggedServiceIds('pim_import_export.archiver');
+        $taggedServices = $container->findTaggedServiceIds('pim_base_connector.archiver');
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('registerArchiver', array(new Reference($id)));

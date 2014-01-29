@@ -1,16 +1,16 @@
-Translatable value
+Localizable value
 ==================
 
-A value can be translated if related attribute is defined as translatable.
+A value can be translated if related attribute is defined as localizable.
 
-By default, attribute is defined as not translatable, you have to setup as following :
+By default, attribute is defined as not localizable, you have to setup as following :
 
 ```php
 $pm = $this->container->get('product_manager');
 $attributeCode = 'name';
 $attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
-$attribute->setTranslatable(true);
+$attribute->setLocalizable(true);
 ```
 
 You can choose value locale as following and use any locale code you want (fr, fr_FR, other, no checks, depends on application, list of locales is available in Locale Component) :
@@ -34,7 +34,7 @@ If you don't choose locale of value, it's created with locale code (high to low 
 - of flexible entity manager
 - of flexible entity config (see default_locale)
 
-Base flexible entity repository is designed to deal with translated values in queries, it knows the asked locale and gets relevant value if attribute is translatable.
+Base flexible entity repository is designed to deal with translated values in queries, it knows the asked locale and gets relevant value if attribute is localizable.
 
 Base flexible entity is designed to gets relevant values too, it knows the asked locale (injected with LocalizableListener).
 
@@ -50,7 +50,7 @@ $pm = $this->container->get('product_manager');
 $attributeCode = 'description';
 $attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
-$attribute->setTranslatable(true);
+$attribute->setLocalizable(true);
 $attribute->setScopable(true);
 ```
 

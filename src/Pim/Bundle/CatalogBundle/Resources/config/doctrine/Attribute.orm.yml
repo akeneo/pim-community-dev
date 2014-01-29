@@ -119,9 +119,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         searchable:
             type: boolean
             column: is_searchable
-        translatable:
+        localizable:
             type: boolean
-            column: is_translatable
+            column: is_localizable
         scopable:
             type: boolean
             column: is_scopable

@@ -178,7 +178,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
         foreach ($this->values as $value) {
             $attribute = $value->getAttribute();
             $key = $attribute->getCode();
-            if ($attribute->isTranslatable()) {
+            if ($attribute->isLocalizable()) {
                 $key .= '_'.$value->getLocale();
             }
             if ($attribute->isScopable()) {

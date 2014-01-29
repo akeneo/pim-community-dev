@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterArchiversPass;
+use Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass;
 
 /**
  * Test related class
@@ -69,7 +69,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('hasDefinition')
-            ->with('pim_import_export.event_listener.archivist')
+            ->with('pim_base_connector.event_listener.archivist')
             ->will($this->returnValue(null !== $definition));
 
         if ($definition) {
@@ -79,7 +79,7 @@ class RegisterArchiversPassTest extends \PHPUnit_Framework_TestCase
 
             $container->expects($this->any())
                 ->method('findTaggedServiceIds')
-                ->with('pim_import_export.archiver')
+                ->with('pim_base_connector.archiver')
                 ->will($this->returnValue($taggedServices));
         } else {
             $container->expects($this->never())

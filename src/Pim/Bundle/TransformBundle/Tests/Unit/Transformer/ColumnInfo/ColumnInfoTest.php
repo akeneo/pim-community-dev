@@ -113,19 +113,19 @@ class ColumnInfoTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Pim\Bundle\TransformBundle\Exception\ColumnLabelException
      * @expectedExceptionMessage The column "label-locale" must contain a scope code
      */
-    public function testTranslatableColumnWithoutScope()
+    public function testLocalizableColumnWithoutScope()
     {
         $info = new ColumnInfo('label-locale');
         $attribute = $this->getAttributeMock(true, true);
         $info->setAttribute($attribute);
     }
 
-    protected function getAttributeMock($translatable = false, $scopable = false)
+    protected function getAttributeMock($localizable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
         $attribute->expects($this->any())
             ->method('isScopable')
             ->will($this->returnValue($scopable));

@@ -124,8 +124,8 @@ class FlatProductNormalizer implements NormalizerInterface
                     ) &&
                     (
                         (count($localeCodes) == 0) ||
-                        (!$value->getAttribute()->isTranslatable()) ||
-                        ($value->getAttribute()->isTranslatable() && in_array($value->getLocale(), $localeCodes))
+                        (!$value->getAttribute()->isLocalizable()) ||
+                        ($value->getAttribute()->isLocalizable() && in_array($value->getLocale(), $localeCodes))
 
                     )
                 );
@@ -208,7 +208,7 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $suffix = '';
 
-        if ($value->getAttribute()->isTranslatable()) {
+        if ($value->getAttribute()->isLocalizable()) {
             $suffix = sprintf('-%s', $value->getLocale());
         }
         if ($value->getAttribute()->isScopable()) {

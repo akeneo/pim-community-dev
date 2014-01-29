@@ -48,7 +48,7 @@ class TextType extends FlexTextType
                 'fieldType' => 'switch'
             ),
             array(
-                'name'      => 'translatable',
+                'name'      => 'localizable',
                 'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),

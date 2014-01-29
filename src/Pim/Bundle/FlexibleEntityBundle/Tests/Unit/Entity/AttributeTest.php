@@ -123,12 +123,12 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testTranslatable()
+    public function testLocalizable()
     {
         // false by default
-        $this->assertFalse($this->attribute->isTranslatable());
-        $this->attribute->setTranslatable(true);
-        $this->assertTrue($this->attribute->isTranslatable());
+        $this->assertFalse($this->attribute->isLocalizable());
+        $this->attribute->setLocalizable(true);
+        $this->assertTrue($this->attribute->isLocalizable());
     }
 
     /**

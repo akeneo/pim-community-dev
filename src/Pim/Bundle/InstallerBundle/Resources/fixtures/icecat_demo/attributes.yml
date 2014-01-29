@@ -28,7 +28,7 @@ attributes:
             de_DE: Beschreibung
         type: pim_catalog_textarea
         group: marketing
-        translatable: true
+        localizable: true
         scopable: true
         sortOrder: 3
         wysiwyg_enabled: true

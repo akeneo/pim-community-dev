@@ -11,8 +11,8 @@
         {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
     {% endif %}
 
-    {% if form.translatable is defined %}
-        {{ form_row(form.translatable, { 'label': 'Localizable'|trans }) }}
+    {% if form.localizable is defined %}
+        {{ form_row(form.localizable, { 'label': 'Localizable'|trans }) }}
     {% endif %}
 
     {% if form.unique is defined %}

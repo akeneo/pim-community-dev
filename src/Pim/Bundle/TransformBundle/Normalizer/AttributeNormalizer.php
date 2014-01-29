@@ -72,8 +72,8 @@ class AttributeNormalizer implements NormalizerInterface
             $results = array_merge(
                 $results,
                 array(
-                    'translatable' => (int) $object->isTranslatable(),
-                    'scopable'     => (int) $object->isScopable(),
+                    'localizable' => (int) $object->isLocalizable(),
+                    'scopable'    => (int) $object->isScopable(),
                 )
             );
         }
@@ -104,7 +104,7 @@ class AttributeNormalizer implements NormalizerInterface
         return array(
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
             'searchable'          => $attribute->isSearchable(),
-            'localizable'         => $attribute->isTranslatable(),
+            'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
             'default_options'     => $this->normalizeDefaultOptions($attribute),

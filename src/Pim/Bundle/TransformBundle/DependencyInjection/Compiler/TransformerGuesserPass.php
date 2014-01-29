@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\TransformBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,12 +18,12 @@ class TransformerGuesserPass implements CompilerPassInterface
     /**
      * @staticvar string The id of the product reader service
      */
-    const CHAINED_TRANSFORMER_SERVICE = 'pim_import_export.transformer.guesser';
+    const CHAINED_TRANSFORMER_SERVICE = 'pim_transform.transformer.guesser';
 
     /**
      * @staticvar string The tag for FixtureBuilder services
      */
-    const TRANSFORMER_TAG = 'pim_import_export.transformer.guesser';
+    const TRANSFORMER_TAG = 'pim_transform.transformer.guesser';
 
     /**
      * @staticvar default priority applied on guesser

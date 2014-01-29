@@ -20,7 +20,7 @@ attributes:
             de_DE: Name
         type:  pim_catalog_text
         group: general
-        translatable:        true
+        localizable:         true
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
@@ -32,7 +32,7 @@ attributes:
             de_DE: Beschreibung
         type:  pim_catalog_textarea
         group: general
-        translatable:        true
+        localizable:         true
         scopable:            true
         useableAsGridColumn: false
         useableAsGridFilter: true
@@ -68,7 +68,7 @@ attributes:
             de_DE: Legende
         type:  pim_catalog_text
         group: media
-        translatable:        true
+        localizable:         true
         useableAsGridColumn: false
         useableAsGridFilter: false
         sortOrder:           3
@@ -600,7 +600,7 @@ attributes:
             de_DE: Pflegehinweise
         type:  pim_catalog_textarea
         group: additional
-        translatable:        true
+        localizable:         true
         scopable:            true
         useableAsGridColumn: false
         useableAsGridFilter: false
@@ -779,7 +779,7 @@ attributes:
             de_DE: Zollsteuer
         type:  pim_catalog_price_collection
         group: internal
-        translatable:        true
+        localizable:         true
         availableLocales:
             - de_DE
         useableAsGridColumn: true
