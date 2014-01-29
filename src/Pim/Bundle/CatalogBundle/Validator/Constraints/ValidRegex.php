@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for attribute not being translatable and scopable when unique
+ * Constraint for attribute not being localizable and scopable when unique
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

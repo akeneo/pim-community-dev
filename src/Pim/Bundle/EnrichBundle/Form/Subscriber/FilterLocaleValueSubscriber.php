@@ -57,7 +57,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
         foreach ($data as $name => $value) {
             if ($this->currentLocale
-                && $this->isTranslatable($value->getAttribute())
+                && $this->isLocalizable($value->getAttribute())
                 && !$this->isInCurrentLocale($value)
                 && !$this->isInComparisonLocale($value)
             ) {
@@ -84,9 +84,9 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    protected function isTranslatable($attribute)
+    protected function isLocalizable($attribute)
     {
-        return $attribute && $attribute->isTranslatable();
+        return $attribute && $attribute->isLocalizable();
     }
 
     /**

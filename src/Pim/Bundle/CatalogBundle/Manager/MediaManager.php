@@ -126,7 +126,7 @@ class MediaManager
             $attribute->getCode()
         );
 
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             $target .= '/' . $value->getLocale();
         }
         if ($attribute->isScopable()) {

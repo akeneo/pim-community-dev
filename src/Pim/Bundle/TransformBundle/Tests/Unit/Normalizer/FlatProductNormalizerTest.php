@@ -365,13 +365,13 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string  $code
-     * @param boolean $translatable
+     * @param boolean $localizable
      * @param boolean $scopable
      * @param string  $type
      *
      * @return Attribute
      */
-    protected function getAttributeMock($code, $translatable = false, $scopable = false, $type = 'pim_catalog_text')
+    protected function getAttributeMock($code, $localizable = false, $scopable = false, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -380,8 +380,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         $attribute->expects($this->any())
             ->method('isScopable')

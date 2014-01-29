@@ -63,7 +63,7 @@ class DateType extends FlexDateType
                 'fieldType' => 'switch'
             ),
             array(
-                'name'      => 'translatable',
+                'name'      => 'localizable',
                 'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),

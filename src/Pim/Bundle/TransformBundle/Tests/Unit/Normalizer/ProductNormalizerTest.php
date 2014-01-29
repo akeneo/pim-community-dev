@@ -229,11 +229,11 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get an attribute mock
      * @param string  $code
-     * @param boolean $translatable
+     * @param boolean $localizable
      *
      * @return ProductValue
      */
-    private function getAttributeMock($code, $translatable = false)
+    private function getAttributeMock($code, $localizable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -242,8 +242,8 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         return $attribute;
     }

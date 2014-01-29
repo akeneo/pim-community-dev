@@ -99,8 +99,8 @@ class ProductFormView
             $classes['scopable'] = true;
         }
 
-        if ($attribute->isTranslatable()) {
-            $classes['translatable'] = true;
+        if ($attribute->isLocalizable()) {
+            $classes['localizable'] = true;
         }
 
         if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {

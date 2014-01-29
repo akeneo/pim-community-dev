@@ -32,15 +32,15 @@ require(
                     updateForm();
                 });
 
-                // Enable/disable scope and translatable fields according to unique field value
+                // Enable/disable scope and localizable fields according to unique field value
                 $(formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
                     if (data.value) {
                         $(formName+'_scopable').select2('val', 0).select2('enable', false);
-                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
-                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
+                        $(formName+'_localizable').closest('.has-switch').bootstrapSwitch('setState', false);
+                        $(formName+'_localizable').closest('.has-switch').bootstrapSwitch('setActive', false);
                     } else {
                         $(formName+'_scopable').select2('enable');
-                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', true);
+                        $(formName+'_localizable').closest('.has-switch').bootstrapSwitch('setActive', true);
                     }
                 });
 

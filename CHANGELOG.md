@@ -23,6 +23,7 @@
 - Change filters implementations in FilterBundle
 - Update all PIM grids to use the new implementation (extensions for filter, sorter, pager, custom datasource, custom cell formatters)
 - Rename TranslatableInterface and TranslatableListener by Localizable one in FlexibleEntityBundle
+- Rename translatable attribute property by localizable
 - FlexibleQueryBuilder has been rewritten to prepare the MongoDB support (add filters and sorters in FlexibleEntityBundle/Doctrine/ORM)
 - FlexibleQueryBuilder is injected to ProductRepository
 - ProductRepository is injected in ProductManager

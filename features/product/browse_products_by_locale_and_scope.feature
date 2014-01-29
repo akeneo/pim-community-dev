@@ -10,10 +10,10 @@ Feature: Browse products by locale and scope
       | code      |
       | furniture |
     And the following attributes:
-      | label       | translatable | scopable | useable as grid column |
-      | name        | yes          | no       | yes                    |
-      | image       | no           | yes      | yes                    |
-      | description | yes          | yes      | yes                    |
+      | label       | localizable | scopable | useable as grid column |
+      | name        | yes         | no       | yes                    |
+      | image       | no          | yes      | yes                    |
+      | description | yes         | yes      | yes                    |
     And the following product:
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |

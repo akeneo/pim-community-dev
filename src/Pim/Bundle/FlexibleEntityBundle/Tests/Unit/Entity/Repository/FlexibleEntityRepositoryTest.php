@@ -46,14 +46,14 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
         $attributeName->setCode('name');
         $attributeName->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         $this->entityManager->persist($attributeName);
-        $attributeName->setTranslatable(true);
+        $attributeName->setLocalizable(true);
         // attribute desc
         $attributeDesc = new Attribute();
         $attributeDesc->setId(2);
         $attributeDesc->setCode('description');
         $attributeDesc->setBackendType(AbstractAttributeType::BACKEND_TYPE_TEXT);
         $this->entityManager->persist($attributeDesc);
-        $attributeDesc->setTranslatable(true);
+        $attributeDesc->setLocalizable(true);
         $attributeDesc->setScopable(true);
         // method return
         $return = array($attributeName->getCode() => $attributeName, $attributeDesc->getCode() => $attributeDesc);

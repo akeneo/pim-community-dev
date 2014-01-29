@@ -167,7 +167,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $values = $values->filter(
             function ($value) use ($localeCodes) {
-                return (!$value->getAttribute()->isTranslatable() || in_array($value->getLocale(), $localeCodes));
+                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $localeCodes));
             }
         );
 

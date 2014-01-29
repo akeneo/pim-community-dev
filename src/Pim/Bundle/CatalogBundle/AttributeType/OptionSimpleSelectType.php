@@ -51,7 +51,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
                 'fieldType' => 'pim_enrich_options'
             ),
             array(
-                'name'      => 'translatable',
+                'name'      => 'localizable',
                 'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
