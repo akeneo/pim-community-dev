@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Controller for completeness
