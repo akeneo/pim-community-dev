@@ -17,7 +17,7 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->validator = $this->getMock('Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface');
+        $this->validator = $this->getMock('Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface');
         $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->translator
             ->expects($this->any())

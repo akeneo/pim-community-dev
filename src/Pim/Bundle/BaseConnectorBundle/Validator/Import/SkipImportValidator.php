@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Import;
+namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 /**
  * Empty validator

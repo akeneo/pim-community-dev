@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Import;
+namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;

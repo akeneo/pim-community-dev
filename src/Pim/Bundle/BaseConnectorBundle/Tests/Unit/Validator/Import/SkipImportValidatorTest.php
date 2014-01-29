@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
+namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
 use Pim\Bundle\ImportExportBundle\Validator\Import\SkipImportValidator;
 
