@@ -92,7 +92,7 @@ class DatagridController extends AbstractDoctrineController
             }
         }
 
-        return $this->render('PimCatalogBundle:Datagrid:edit.html.twig', [
+        return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
