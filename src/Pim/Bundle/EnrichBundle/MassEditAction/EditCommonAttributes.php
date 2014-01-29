@@ -31,6 +31,11 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $values;
 
     /**
+     * @var Locale
+     */
+    protected $locale;
+
+    /**
      * @var ProductManager
      */
     protected $productManager;
@@ -99,12 +104,30 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
+     * Set locale
+     *
+     * @param Locale $locale
+     *
+     * @return EditCommonAttributes
+     */
+    public function setLocale(Locale $locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
      * Get locale
      *
      * @return Locale
      */
     public function getLocale()
     {
+        if ($this->locale instanceof Locale) {
+            return $this->locale;
+        }
+
         return $this->userContext->getCurrentLocale();
     }
 
