@@ -20,8 +20,7 @@ class Grid extends Element
     const FILTER_STARTS_WITH = 4;
     const FILTER_ENDS_WITH = 5;
 
-    protected $selector = ['css' => 'table.grid'];
-
+    protected $selector = ['css' => 'div[data-type="datagrid"]'];
     /**
      * Returns the currently visible grid, if there is one
      *
@@ -656,5 +655,11 @@ class Grid extends Element
         $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
 
         $filter->find('css', 'button.filter-update')->click();
+    }
+
+    public function openConfigurationPopin()
+    {
+        $configureBtn = $this->find('css', 'a:contains("Configure")');
+        $configureBtn->click();
     }
 }

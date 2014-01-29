@@ -528,6 +528,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I hide the "([^"]*)" column$/
+     */
+    public function iHideTheColumn($column)
+    {
+        $this->getCurrentPage()->openConfigurationPopin();
+        $this->wait();
+        $this->getCurrentPage()->hideColumn($column);
+        $this->wait();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message

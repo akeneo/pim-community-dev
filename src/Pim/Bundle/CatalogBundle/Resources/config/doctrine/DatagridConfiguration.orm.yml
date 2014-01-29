@@ -1,0 +1,22 @@
+Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration:
+    type: entity
+    table: pim_catalog_datagrid_configuration
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        datagridAlias:
+            type: string
+            column: datagrid_alias
+        columns:
+            type: array
+    manyToOne:
+        user:
+            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            inversedBy: datagridConfigurations
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+                    onDelete: 'CASCADE'

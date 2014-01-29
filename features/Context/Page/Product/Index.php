@@ -128,4 +128,13 @@ class Index extends BaseIndex
         );
     }
 
+    public function openConfigurationPopin()
+    {
+        $this->grid->openConfigurationPopin();
+    }
+
+    public function hideColumn($column)
+    {
+        $this->getElement('Configuration Popin')->hideColumn($column);
+    }
 }

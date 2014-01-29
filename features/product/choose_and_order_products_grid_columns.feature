@@ -4,7 +4,7 @@ Feature: Choose and order product grids columns
   As Julia
   I need to be able to choose and order product grids columns
 
-  Scenario: Succesfully display all columns by default
+  Background:
     Given a "footwear" catalog configuration
     And the following products:
       | sku     |
@@ -12,9 +12,13 @@ Feature: Choose and order product grids columns
       | basket  |
     And I am logged in as "Julia"
     And I am on the products page
+
+  Scenario: Succesfully display all columns by default
     Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups, Color, Name, Price, Rating and Size
 
   Scenario: Succesfully hide some columns
+    When I hide the "Color" column
+    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups, Name, Price, Rating and Size
 
   Scenario: Succesfully order some columns
 
