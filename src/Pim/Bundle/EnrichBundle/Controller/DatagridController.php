@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration;
+use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 
 /**
@@ -127,7 +127,7 @@ class DatagridController extends AbstractDoctrineController
     protected function getDatagridConfiguration($alias, User $user)
     {
         return $this
-            ->getRepository('PimCatalogBundle:DatagridConfiguration')
+            ->getRepository('PimEnrichBundle:DatagridConfiguration')
             ->findOneBy(
                 [
                     'datagridAlias' => $alias,

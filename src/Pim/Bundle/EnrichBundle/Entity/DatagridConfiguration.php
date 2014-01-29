@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Pim\Bundle\EnrichBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\User;
 

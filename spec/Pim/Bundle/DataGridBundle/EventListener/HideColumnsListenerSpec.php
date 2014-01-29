@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Datagrid\Common;
-use Pim\Bundle\CatalogBundle\Entity;
+use Pim\Bundle\EnrichBundle\Entity;
 
 class HideColumnsListenerSpec extends ObjectBehavior
 {

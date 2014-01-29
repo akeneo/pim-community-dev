@@ -27,4 +27,4 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration]
+        arguments: [Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration]

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Entity;
+namespace spec\Pim\Bundle\EnrichBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

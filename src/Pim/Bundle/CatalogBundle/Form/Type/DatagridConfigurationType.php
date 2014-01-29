@@ -39,7 +39,7 @@ class DatagridConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\DatagridConfiguration',
+                'data_class' => 'Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration',
                 'columns'    => [],
             ]
         );
