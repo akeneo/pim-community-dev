@@ -1,8 +1,9 @@
 parameters:
-    oro_user.form.type.user.class:           Pim\Bundle\UserBundle\Form\Type\UserType
-    oro_user.form.handler.acl_role.class:    Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
-    pim_user.form.type.acl_collection.class: Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
-    pim_user.context.user.class:             Pim\Bundle\UserBundle\Context\UserContext
+    oro_user.form.type.user.class:                  Pim\Bundle\UserBundle\Form\Type\UserType
+    oro_user.form.handler.acl_role.class:           Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
+    pim_user.form.type.acl_collection.class:        Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
+    pim_user.context.user.class:                    Pim\Bundle\UserBundle\Context\UserContext
+    pim_user.event_listener.user_preferences.class: Pim\Bundle\UserBundle\EventListener\UserPreferencesListener
 
 services:
     pim_user.form.type.acl_collection:
@@ -22,3 +23,10 @@ services:
             - '@pim_catalog.manager.category'
         calls:
             - [ setRequest, ['@?request='] ]
+
+    pim_user.event_listener.user_preferences:
+        class: %pim_user.event_listener.user_preferences.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
