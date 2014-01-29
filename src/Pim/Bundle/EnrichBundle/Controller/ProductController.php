@@ -497,21 +497,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getDataLocale()
     {
-        $dataLocale = $this->getRequest()->get('dataLocale');
-        if ($dataLocale === null) {
-            $catalogLocale = $this->getUser()->getCatalogLocale();
-            if ($catalogLocale) {
-                $dataLocale = $catalogLocale->getCode();
-            }
-        }
-        if (!$dataLocale) {
-            throw new \Exception('User must have a catalog locale defined');
-        }
-        if (!$this->securityFacade->isGranted('pim_enrich_locale_'.$dataLocale)) {
-            throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
-        }
-
-        return $dataLocale;
+        return $this->userContext->getCurrentLocaleCode();
     }
 
     /**
@@ -524,29 +510,6 @@ class ProductController extends AbstractDoctrineController
         if ($this->getDataLocale() !== $locale) {
             return $locale;
         }
-    }
-
-    /**
-     * Get data scope
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataScope()
-    {
-        $dataScope = $this->getRequest()->get('dataScope');
-        if ($dataScope === null) {
-            $catalogScope = $this->getUser()->getCatalogScope();
-            if ($catalogScope) {
-                $dataScope = $catalogScope->getCode();
-            }
-        }
-        if (!$dataScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $dataScope;
     }
 
     /**

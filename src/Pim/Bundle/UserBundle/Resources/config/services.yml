@@ -19,5 +19,6 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.category'
         calls:
             - [ setRequest, ['@?request='] ]

@@ -33,36 +33,42 @@ class LocaleHelper
     }
 
     /**
-     * Initialized the locales list (if needed) and get the localized label
-     *
-     * @param string $code   the code of the local's label
-     * @param string $locale the locale in which the label should be translated
+     * Returns the current locale
      *
      * @return string
      */
-    public function getLocaleLabel($code, $locale = null)
+    public function getCurrentLocale()
     {
-        if (is_null($locale)) {
-            $locale = $this->userContext->getCurrentLocale();
-        }
+        return $this->userContext->getCurrentLocale();
+    }
 
-        return \Locale::getDisplayName($code, $locale);
+    /**
+     * Returns the label of a locale in the specified language
+     *
+     * @param string $code       the code of the locale to translate
+     * @param string $localeCode the locale in which the label should be translated
+     *
+     * @return string
+     */
+    public function getLocaleLabel($code, $localeCode = null)
+    {
+        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+
+        return \Locale::getDisplayName($code, $localeCode);
     }
 
     /**
      * Returns the symbol for a currency
      *
      * @param string $currency
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function getCurrencySymbol($currency, $locale = null)
+    public function getCurrencySymbol($currency, $localeCode = null)
     {
-        if (is_null($locale)) {
-            $locale = $this->userContext->getCurrentLocale();
-        }
-        $language = \Locale::getPrimaryLanguage($locale);
+        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
     }
@@ -71,16 +77,14 @@ class LocaleHelper
      * Returns the label for a currency
      *
      * @param string $currency
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function getCurrencyLabel($currency, $locale = null)
+    public function getCurrencyLabel($currency, $localeCode = null)
     {
-        if (is_null($locale)) {
-            $locale = $this->userContext->getCurrentLocale();
-        }
-        $language = \Locale::getPrimaryLanguage($locale);
+        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
     }
@@ -88,16 +92,14 @@ class LocaleHelper
     /**
      * Returns an array of all known currency names, indexed by code
      *
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function getCurrencyLabels($locale = null)
+    public function getCurrencyLabels($localeCode = null)
     {
-        if (is_null($locale)) {
-            $locale = $this->userContext->getCurrentLocale();
-        }
-        $language = \Locale::getPrimaryLanguage($locale);
+        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
     }
@@ -109,7 +111,7 @@ class LocaleHelper
      */
     public function getLocaleCurrency()
     {
-        $locale = $this->userContext->getCurrentLocale();
+        $locale = $this->getCurrentLocale();
 
         return (null !== $locale && $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
     }
@@ -119,21 +121,18 @@ class LocaleHelper
      *
      * @param string  $code
      * @param boolean $fullLabel
-     * @param string  $locale
+     * @param string  $localeCode
      *
      * @return string
      */
-    public function getFlag($code, $fullLabel = false, $locale = null)
+    public function getFlag($code, $fullLabel = false, $localeCode = null)
     {
-        if (null === $locale) {
-            $locale = $this->userContext->getCurrentLocale();
-        }
-        $localeLabel = $this->getLocaleLabel($code, $locale);
+        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
 
         return sprintf(
             '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',
             strtolower(\Locale::getRegion($code)),
-            $fullLabel ? $localeLabel : \Locale::getPrimaryLanguage($code)
+            $fullLabel ? $this->getLocaleLabel($code, $localeCode) : \Locale::getPrimaryLanguage($code)
         );
     }
 }

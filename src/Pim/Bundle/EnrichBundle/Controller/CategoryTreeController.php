@@ -22,6 +22,7 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Category Tree Controller
@@ -38,6 +39,11 @@ class CategoryTreeController extends AbstractDoctrineController
     protected $categoryManager;
 
     /**
+     * @var UserContext
+     */
+    protected $userContext;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -49,6 +55,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param CategoryManager          $categoryManager
+     * @param UserContext              $userContext
      */
     public function __construct(
         Request $request,
@@ -59,7 +66,8 @@ class CategoryTreeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -73,6 +81,7 @@ class CategoryTreeController extends AbstractDoctrineController
         );
 
         $this->categoryManager = $categoryManager;
+        $this->userContext     = $userContext;
     }
 
     /**
@@ -91,7 +100,7 @@ class CategoryTreeController extends AbstractDoctrineController
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->getDefaultTree();
+            $selectNode = $this->userContext->getUserTree();
         }
 
         return array(
@@ -301,24 +310,6 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $category;
-    }
-
-    /**
-     * Get default tree
-     *
-     * @throws \Exception
-     *
-     * @return Category
-     */
-    protected function getDefaultTree()
-    {
-        $defaultTree = $this->getUser()->getDefaultTree();
-
-        if (!$defaultTree) {
-            throw new \Exception('User must have a default tree defined');
-        }
-
-        return $defaultTree;
     }
 
     /**

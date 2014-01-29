@@ -83,5 +83,6 @@ services:
             - '@security.context'
             - '@pim_translation.listener.add_locale'
             - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }

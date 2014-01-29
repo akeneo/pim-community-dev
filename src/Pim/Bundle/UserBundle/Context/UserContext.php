@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
@@ -33,6 +34,9 @@ class UserContext
     /** @var ChannelManager */
     protected $channelManager;
 
+    /** @var CategoryManager */
+    protected $categoryManager;
+
     /** @var Request */
     protected $request;
 
@@ -44,17 +48,20 @@ class UserContext
      * @param SecurityFacade           $securityFacade
      * @param LocaleManager            $localeManager
      * @param ChannelManager           $channelManager
+     * @param CategoryManager          $categoryManager
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         SecurityFacade $securityFacade,
         LocaleManager $localeManager,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        CategoryManager $categoryManager
     ) {
         $this->securityContext = $securityContext;
         $this->securityFacade  = $securityFacade;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
+        $this->categoryManager = $categoryManager;
     }
 
     /**
@@ -85,11 +92,21 @@ class UserContext
             return $locale;
         }
 
-        if (null !== $locale = array_shift($this->getUserLocales())) {
+        if ($locale = current($this->getUserLocales())) {
             return $locale;
         }
 
         throw new \Exception("User doesn't have access to any activated locales");
+    }
+
+    /**
+     * Returns the current locale code
+     *
+     * @return string
+     */
+    public function getCurrentLocaleCode()
+    {
+        return $this->getCurrentLocale()->getCode();
     }
 
     /**
@@ -127,11 +144,31 @@ class UserContext
     }
 
     /**
-     * Get channel choices with user channel code in first
+     * Get user channel
+     *
+     * @return Channel
+     */
+    public function getUserChannel()
+    {
+        $catalogScope = $this->getUserOption('catalogScope');
+
+        return $catalogScope ?: current($this->channelManager->getChannels());
+    }
+
+    /**
+     * Get user channel code
+     *
+     * @return string
+     */
+    public function getUserChannelCode()
+    {
+        return $this->getUserChannel()->getCode();
+    }
+
+    /**
+     * Get channel choices with user channel code first
      *
      * @return string[]
-     *
-     * @throws \Exception
      */
     public function getChannelChoicesWithUserChannel()
     {
@@ -146,25 +183,15 @@ class UserContext
     }
 
     /**
-     * Get user channel
+     * Get user category tree
      *
-     * @return Channel
+     * @return Category
      */
-    public function getUserChannel()
+    public function getUserTree()
     {
-        $catalogScope = $this->getUserOption('catalogScope');
+        $defaultTree = $this->getUserOption('defaultTree');
 
-        return $catalogScope ?: current($this->channelManager->getChannelChoices());
-    }
-
-    /**
-     * Get user channel code
-     *
-     * @return string
-     */
-    public function getUserChannelCode()
-    {
-        return $this->getUserChannel()->getCode();
+        return $defaultTree ?: current($this->categoryManager->getTrees());
     }
 
     /**

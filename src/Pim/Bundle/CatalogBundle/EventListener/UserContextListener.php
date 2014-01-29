@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 
 /**
@@ -23,19 +24,24 @@ use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 class UserContextListener implements EventSubscriberInterface
 {
     /**
-     * @var SecurityContextInterface $securityContext
+     * @var SecurityContextInterface
      */
     protected $securityContext;
 
     /**
-     * @var AddLocaleListener $listener
+     * @var AddLocaleListener
      */
     protected $listener;
 
     /**
-     * @var ProductManager $productManager
+     * @var ProductManager
      */
     protected $productManager;
+
+    /**
+     * @var UserContext
+     */
+    protected $userContext;
 
     /**
      * Constructor
@@ -43,15 +49,18 @@ class UserContextListener implements EventSubscriberInterface
      * @param SecurityContextInterface $securityContext
      * @param AddLocaleListener        $listener
      * @param ProductManager           $productManager
+     * @param UserContext              $userContext
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         AddLocaleListener $listener,
-        ProductManager $productManager
+        ProductManager $productManager,
+        UserContext $userContext
     ) {
         $this->securityContext = $securityContext;
         $this->listener        = $listener;
         $this->productManager  = $productManager;
+        $this->userContext     = $userContext;
     }
 
     /**
@@ -73,95 +82,33 @@ class UserContextListener implements EventSubscriberInterface
             return;
         }
 
-        $request = $event->getRequest();
-
-        $this->configureTranslatableListener($request);
-        $this->configureProductManager($request);
+        // If user doesn't have access to any activated locales, skip configuring the listener and productmanager
+        try {
+            $this->configureTranslatableListener();
+            $this->configureProductManager();
+        } catch (\Exception $e) {
+        }
     }
 
     /**
      * Configure gedmo translatable locale
-     *
-     * @param Request $request
      */
-    protected function configureTranslatableListener(Request $request)
+    protected function configureTranslatableListener()
     {
-        $this->listener->setLocale($this->getDataLocale($request));
+        $this->listener->setLocale($this->userContext->getCurrentLocaleCode());
     }
 
     /**
      * Define locale and scope in ProductManager
-     *
-     * @param Request $request
      */
-    protected function configureProductManager(Request $request)
+    protected function configureProductManager()
     {
-        $this->productManager->setLocale($this->getDataLocale($request));
-        $this->productManager->setScope($this->getDataScope($request));
+        $this->productManager->setLocale($this->userContext->getCurrentLocaleCode());
+        $this->productManager->setScope($this->userContext->getUserChannelCode());
     }
 
     /**
-     * Get data locale from request or user property
-     *
-     * @param Request $request
-     *
-     * @return string
-     *
-     * @throws \Exception
-     */
-    protected function getDataLocale(Request $request = null)
-    {
-        $dataLocale = $request->get('dataLocale');
-        if ($dataLocale === null) {
-            $dataLocale = $this->getCatalogLocale();
-        }
-
-        if (!$dataLocale) {
-            throw new \Exception('User must have a catalog locale defined');
-        }
-
-        return $dataLocale;
-    }
-
-    /**
-     * Get data scope from request or user property
-     *
-     * @param Request $request
-     *
-     * @return string
-     *
-     * @throws \Exception
-     */
-    protected function getDataScope(Request $request)
-    {
-        $dataScope = $request->get('dataScope');
-        if ($dataScope === null) {
-            $catalogScope = $this->getUser()->getCatalogScope();
-            if ($catalogScope) {
-                $dataScope = $catalogScope->getCode();
-            }
-        }
-        if (!$dataScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $dataScope;
-    }
-
-    /**
-     * Get user catalog locale
-     *
-     * @return string
-     */
-    protected function getCatalogLocale()
-    {
-        $catalogLocale = $this->getUser()->getCatalogLocale();
-
-        return $catalogLocale ? $catalogLocale->getCode() : null;
-    }
-
-    /**
-     * Get the authenticate user
+     * Get the authenticated user
      *
      * @return NULL|Oro\Bundle\UserBundle\Entity\User
      */

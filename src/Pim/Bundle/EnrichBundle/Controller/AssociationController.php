@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Association controller
@@ -36,28 +35,20 @@ class AssociationController
     protected $productManager;
 
     /**
-     * @var UserContext
-     */
-    protected $userContext;
-
-    /**
      * Constructor
      *
      * @param RegistryInterface $doctrine
      * @param EngineInterface   $templating
      * @param ProductManager    $productManager
-     * @param UserContext       $userContext
      */
     public function __construct(
         RegistryInterface $doctrine,
         EngineInterface $templating,
-        ProductManager $productManager,
-        UserContext $userContext
+        ProductManager $productManager
     ) {
         $this->doctrine       = $doctrine;
         $this->templating     = $templating;
         $this->productManager = $productManager;
-        $this->userContext    = $userContext;
     }
 
     /**
@@ -82,7 +73,6 @@ class AssociationController
             array(
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
-                'dataLocale'       => $this->userContext->getCurrentLocale(),
             )
         );
     }

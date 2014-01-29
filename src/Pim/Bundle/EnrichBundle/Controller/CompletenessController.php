@@ -88,10 +88,10 @@ class CompletenessController
         return $this->templating->renderResponse(
             'PimEnrichBundle:Completeness:_completeness.html.twig',
             array(
-                'product'           => $product,
-                'channels'          => $channels,
-                'locales'           => $locales,
-                'completenesses'    => $completenesses
+                'product'        => $product,
+                'channels'       => $channels,
+                'locales'        => $locales,
+                'completenesses' => $completenesses
             )
         );
     }

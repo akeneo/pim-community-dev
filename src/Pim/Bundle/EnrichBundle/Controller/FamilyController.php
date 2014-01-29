@@ -21,7 +21,6 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -40,11 +39,6 @@ class FamilyController extends AbstractDoctrineController
      * @var ChannelManager
      */
     protected $channelManager;
-
-    /**
-     * @var UserContext
-     */
-    private $userContext;
 
     /**
      * @var FamilyFactory
@@ -83,7 +77,6 @@ class FamilyController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param ChannelManager           $channelManager
-     * @param UserContext              $userContext
      * @param FamilyFactory            $factory
      * @param CompletenessManager      $completenessManager
      * @param FamilyHandler            $familyHandler
@@ -100,7 +93,6 @@ class FamilyController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         ChannelManager $channelManager,
-        UserContext $userContext,
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
         FamilyHandler $familyHandler,
@@ -119,7 +111,6 @@ class FamilyController extends AbstractDoctrineController
         );
 
         $this->channelManager      = $channelManager;
-        $this->userContext         = $userContext;
         $this->factory             = $factory;
         $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
@@ -136,9 +127,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        return array(
-            'localeCode' => $this->userContext->getCurrentLocale()->getCode()
-        );
+        return array();
     }
 
     /**
