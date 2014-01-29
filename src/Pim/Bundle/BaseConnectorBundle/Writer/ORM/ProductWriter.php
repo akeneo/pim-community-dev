@@ -106,8 +106,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             'realTimeVersioning' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_import_export.import.realTimeVersioning.label',
-                    'help'  => 'pim_import_export.import.realTimeVersioning.help'
+                    'label' => 'pim_base_connector.import.realTimeVersioning.label',
+                    'help'  => 'pim_base_connector.import.realTimeVersioning.help'
                 )
             )
         );

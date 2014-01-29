@@ -128,26 +128,26 @@ class ProductProcessor extends TransformerProcessor
             'enabled' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_import_export.import.enabled.label',
-                    'help'  => 'pim_import_export.import.enabled.help'
+                    'label' => 'pim_base_connector.import.enabled.label',
+                    'help'  => 'pim_base_connector.import.enabled.help'
                 )
             ),
             'categoriesColumn' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.categoriesColumn.label',
-                    'help'  => 'pim_import_export.import.categoriesColumn.help'
+                    'label' => 'pim_base_connector.import.categoriesColumn.label',
+                    'help'  => 'pim_base_connector.import.categoriesColumn.help'
                 )
             ),
             'familyColumn' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.familyColumn.label',
-                    'help'  => 'pim_import_export.import.familyColumn.help'
+                    'label' => 'pim_base_connector.import.familyColumn.label',
+                    'help'  => 'pim_base_connector.import.familyColumn.help'
                 )
             ),
             'groupsColumn' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.groupsColumn.label',
-                    'help'  => 'pim_import_export.import.groupsColumn.help'
+                    'label' => 'pim_base_connector.import.groupsColumn.label',
+                    'help'  => 'pim_base_connector.import.groupsColumn.help'
                 )
             ),
         );

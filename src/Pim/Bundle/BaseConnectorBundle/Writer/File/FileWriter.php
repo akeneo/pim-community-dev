@@ -113,8 +113,8 @@ class FileWriter extends AbstractConfigurableStepElement implements
         return array(
             'filePath' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.export.filePath.label',
-                    'help'  => 'pim_import_export.export.filePath.help'
+                    'label' => 'pim_base_connector.export.filePath.label',
+                    'help'  => 'pim_base_connector.export.filePath.help'
                 )
             )
         );

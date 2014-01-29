@@ -67,8 +67,7 @@ pim_import_export:
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
         csv_reader:
-            title:                      CSV reader
-            invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
+            title: CSV reader
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
         product_processor.title:             Product creation
@@ -85,57 +84,6 @@ pim_import_export:
         category_writer.title:               Category storage
         writer.title:                        Entity storage
 
-    ## Import/export configuration fields (for readers, processors, writers)
-    import:
-        filePath:
-            label: File
-            help: The csv file to import
-        uploadAllowed:
-            label: Allow file upload
-            help: Whether or not to allow uploading the file directly
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        escape:
-            label: Escape
-            help: One character used to set the field escape
-        enabled:
-            label: Enable the product
-            help: Whether or not imported product should be enabled
-        categoriesColumn:
-            label: Categories column
-            help: Name of the categories column
-        familyColumn:
-            label: Family column
-            help: Name of the family column
-        groupsColumn:
-            label: Groups column
-            help: Name of the groups column
-        realTimeVersioning:
-            label: Real time history update
-            help: Means that the product history is automatically updated, can be switched off to improve performances
-        circularRefsChecked:
-            label: Check circular references
-            help: If yes, data will be processed to make sure that there are no circular references between the categories
-    export:
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        channel:
-            label: Channel
-            help: The channel you want to export
-        filePath:
-            label: File path
-            help: Where to write the generated file on the file system
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
     download_archive:
         archive: download generated file
         output:  download generated file
