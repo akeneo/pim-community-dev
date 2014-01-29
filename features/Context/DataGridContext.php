@@ -539,6 +539,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I put the "([^"]*)" column before the "([^"]*)" one$/
+     */
+    public function iPutTheColumnBeforeTheOne($source, $target)
+    {
+        $this->getCurrentPage()->openConfigurationPopin();
+        $this->wait();
+        $this->getCurrentPage()->moveColumn($source, $target);
+        $this->wait();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message

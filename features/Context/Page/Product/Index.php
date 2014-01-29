@@ -137,4 +137,9 @@ class Index extends BaseIndex
     {
         $this->getElement('Configuration Popin')->hideColumn($column);
     }
+
+    public function moveColumn($source, $target)
+    {
+        $this->getElement('Configuration Popin')->moveColumn($source, $target);
+    }
 }

@@ -24,7 +24,13 @@ class ConfigurationPopin extends Element
     public function hideColumn($label)
     {
         $this->getColumn($label)->dragTo($this->getBucket());
-        $this->find('css', '.btn.ok')->click();
+        $this->apply();
+    }
+
+    public function moveColumn($source, $target)
+    {
+        $this->getColumn($source)->dragTo($this->getColumn($target));
+        $this->apply();
     }
 
     /**
@@ -74,5 +80,10 @@ class ConfigurationPopin extends Element
         }
 
         return $bucket;
+    }
+
+    protected function apply()
+    {
+        $this->find('css', '.btn.ok')->click();
     }
 }

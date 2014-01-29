@@ -45,7 +45,11 @@ class HideColumnsListener
         }
         $config->offsetSetByPath('[availableColumns]', $availableColumns);
         if ($datagridConfig) {
-            $config->offsetSetByPath('[columns]', $columns);
+            $sortedColumns = [];
+            foreach ($datagridConfig->getColumns() as $column) {
+                $sortedColumns[$column] = $columns[$column];
+            }
+            $config->offsetSetByPath('[columns]', $sortedColumns);
             $config->offsetSetByPath('[sorters][columns]', $sorters);
         }
     }

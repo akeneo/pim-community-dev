@@ -44,8 +44,6 @@ class HideColumnsListenerSpec extends ObjectBehavior
         $datagridConfigRepo,
         $user
     ) {
-        $config->offsetGetByPath('[name]')->willReturn('foobar-grid');
-
         $datagridConfigRepo->findOneBy([
             'datagridAlias' => 'foobar-grid',
             'user'          => $user,
@@ -80,6 +78,56 @@ class HideColumnsListenerSpec extends ObjectBehavior
 
         $config->offsetSetByPath('[sorters][columns]', [
             'sku'         => 'sku_sorter_config',
+            'description' => 'description_sorter_config',
+        ])->shouldBeCalled();
+
+        $this->onBuildAfter($event);
+    }
+
+    function it_sorts_columns_by_the_order_specified_by_the_user(
+        Entity\DatagridConfiguration $datagridConfig,
+        $config,
+        $event,
+        $datagridConfigRepo,
+        $user
+    ) {
+        $datagridConfigRepo->findOneBy([
+            'datagridAlias' => 'foobar-grid',
+            'user'          => $user,
+        ])->willReturn($datagridConfig);
+
+        $datagridConfig->getColumns()->willReturn(['name', 'description', 'sku']);
+
+        $config->offsetGetByPath('[columns]')->willReturn([
+            'sku'         => ['label' => 'SKU'],
+            'name'        => ['label' => 'Name'],
+            'description' => ['label' => 'Description'],
+        ]);
+
+        $config->offsetGetByPath('[sorters][columns][sku]')->willReturn('sku_sorter_config');
+        $config->offsetGetByPath('[sorters][columns][name]')->willReturn('name_sorter_config');
+        $config->offsetGetByPath('[sorters][columns][description]')->willReturn('description_sorter_config');
+
+        $config->offsetGetByPath('[sorters][columns]')->willReturn([
+            'sku'         => 'sku_sorter_config',
+            'description' => 'description_sorter_config',
+        ]);
+
+        $config->offsetSetByPath('[availableColumns]', [
+            'sku'         => 'SKU',
+            'name'        => 'Name',
+            'description' => 'Description',
+        ])->shouldBeCalled();
+
+        $config->offsetSetByPath('[columns]', [
+            'name'        => ['label' => 'Name'],
+            'description' => ['label' => 'Description'],
+            'sku'         => ['label' => 'SKU'],
+        ])->shouldBeCalled();
+
+        $config->offsetSetByPath('[sorters][columns]', [
+            'sku'         => 'sku_sorter_config',
+            'name'        => 'name_sorter_config',
             'description' => 'description_sorter_config',
         ])->shouldBeCalled();
 
