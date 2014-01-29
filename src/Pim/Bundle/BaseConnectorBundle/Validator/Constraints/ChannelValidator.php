@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class ChannelValidator extends ChoiceValidator
 {
+    /**
+     * @var ChannelManager $manager
+     */
     protected $manager;
 
     /**
