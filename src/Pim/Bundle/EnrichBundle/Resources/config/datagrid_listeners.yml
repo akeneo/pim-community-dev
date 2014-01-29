@@ -130,6 +130,6 @@ services:
         class: %pim_catalog.event_listener.hide_columns_listener.class%
         arguments:
             - '@security.context'
-            - '@pim_catalog.repository.orm.datagrid_configuration'
+            - '@pim_enrich.repository.orm.datagrid_configuration'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
