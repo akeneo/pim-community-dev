@@ -12,9 +12,9 @@ define(
          */
         var ConfigureColumnsAction = Backbone.View.extend({
 
-            label: __('Configure'),
+            label: __('Columns'),
 
-            icon: 'edit',
+            icon: 'th',
 
             target: 'div.grid-toolbar .actions-panel .btn-group',
 
