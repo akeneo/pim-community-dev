@@ -76,8 +76,9 @@ class DatagridController extends AbstractDoctrineController
             $configuration->setColumns(array_keys($columns));
         }
 
+
         $form = $this->createForm('pim_catalog_datagrid_configuration', $configuration, [
-            'columns' => $columns,
+            'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
             'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
         ]);
 
@@ -95,6 +96,18 @@ class DatagridController extends AbstractDoctrineController
         return $this->render('PimCatalogBundle:Datagrid:edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    protected function sortArrayByArray($array, $orderArray)
+    {
+        $ordered = [];
+        foreach ($orderArray as $key) {
+            if (array_key_exists($key, $array)) {
+                $ordered[$key] = $array[$key];
+                unset($array[$key]);
+            }
+        }
+        return $ordered + $array;
     }
 
     protected function getColumnChoices($alias)
