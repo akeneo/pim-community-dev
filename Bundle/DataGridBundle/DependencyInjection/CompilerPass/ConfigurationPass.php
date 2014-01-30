@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\Config\Resource\FileResource;
 
 class ConfigurationPass implements CompilerPassInterface
 {
@@ -47,6 +48,7 @@ class ConfigurationPass implements CompilerPassInterface
                     if (isset($bundleConfig[self::ROOT_PARAMETER]) && is_array($bundleConfig[self::ROOT_PARAMETER])) {
                         $config = array_merge_recursive($config, $bundleConfig[self::ROOT_PARAMETER]);
                     }
+                    $container->addResource(new FileResource($file));
                 }
             }
 
