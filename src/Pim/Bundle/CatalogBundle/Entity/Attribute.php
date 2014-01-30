@@ -59,7 +59,7 @@ class Attribute extends AbstractEntityAttribute implements
     protected $availableLocales;
 
     /**
-     * @var $families ArrayCollection
+     * @var ArrayCollection $families
      */
     protected $families;
 
@@ -468,7 +468,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getFamilies()
     {
-        return $this->families->isEmpty() ? null : $this->families;
+        return $this->families;
     }
 
     /**
