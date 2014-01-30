@@ -152,15 +152,21 @@ define(
                     small:      this.currencies.length > this.inputThreshold
                 }));
                 $header.insertAfter($label);
-                this.$el.find('.icons-container:first').insertAfter($header);
+                var $iconsContainer = this.$el.find('.icons-container:first');
+                $iconsContainer.insertAfter($header);
 
                 var $targets = this.$el.find('div.controls');
 
                 $targets.each(this._renderTarget.bind(this));
 
+
                 if (this.scopable) {
+                    $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
+                    this.$el.find('div.first .controls').css('margin-left', 10);
                     this._collapse();
                     mediator.trigger('scopablefield:rendered', this.$el);
+                } else {
+                    $iconsContainer.appendTo(this.$el.find('.controls'));
                 }
 
                 return this;
