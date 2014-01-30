@@ -78,7 +78,7 @@ class DatagridController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $em = $this->getEntityManager();
+                $em = $this->getManager();
                 $em->persist($configuration);
                 $em->flush();
 
@@ -91,7 +91,15 @@ class DatagridController extends AbstractDoctrineController
         ]);
     }
 
-    protected function sortArrayByArray($array, $orderArray)
+    /**
+     * Sort an array by key given an other array values
+     *
+     * @param array $array
+     * @param array $orderArray
+     *
+     * @return array
+     */
+    protected function sortArrayByArray(array $array, array $orderArray)
     {
         $ordered = [];
         foreach ($orderArray as $key) {
@@ -104,6 +112,13 @@ class DatagridController extends AbstractDoctrineController
         return $ordered + $array;
     }
 
+    /**
+     * Get datagrid columns as choices
+     *
+     * @param string $alias
+     *
+     * @return array
+     */
     protected function getColumnChoices($alias)
     {
         return $this
@@ -114,11 +129,14 @@ class DatagridController extends AbstractDoctrineController
             ->offsetGetByPath('[availableColumns]');
     }
 
-    protected function getEntityManager()
-    {
-        return $this->doctrine->getEntityManager();
-    }
-
+    /**
+     * Retrieve datagrid configuration from datagrid alias and user
+     *
+     * @param string $alias
+     * @param User   $user
+     *
+     * @return null|DatagridConfiguration
+     */
     protected function getDatagridConfiguration($alias, User $user)
     {
         return $this

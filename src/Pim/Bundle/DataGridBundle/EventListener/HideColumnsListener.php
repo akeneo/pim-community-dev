@@ -21,12 +21,21 @@ class HideColumnsListener
     /** @var EntityRepository */
     protected $repository;
 
+    /**
+     * @param SecurityContextInterface $securityContext
+     * @param EntityRepository         $repository
+     */
     public function __construct(SecurityContextInterface $securityContext, EntityRepository $repository)
     {
         $this->securityContext = $securityContext;
         $this->repository      = $repository;
     }
 
+    /**
+     * Remove columns hidden by current user from datagrid metadata
+     *
+     * @param BuildAfter $event
+     */
     public function onBuildAfter(BuildAfter $event)
     {
         $config = $event->getDatagrid()->getAcceptor()->getConfig();
@@ -68,7 +77,7 @@ class HideColumnsListener
             ->findOneBy(
                 [
                     'datagridAlias' => $alias,
-                    'user'  => $this->getUser(),
+                    'user'          => $this->getUser(),
                 ]
             );
     }
