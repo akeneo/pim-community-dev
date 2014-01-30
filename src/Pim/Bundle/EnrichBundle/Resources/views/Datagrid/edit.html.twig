@@ -1,0 +1,50 @@
+{{ form_start(form) }}
+
+<div class="row-fluid">
+    <div class="span6">
+        <h2>{{ 'Available Columns'|trans }}</h2>
+        <ul id="bucket" class="connectedSortable">
+            {% for column in form.columns if not column.vars.checked %}
+            <li>
+                <i class="icon-reorder"></i> {{ column.vars.label }}
+                {{ form_widget(column) }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="span6">
+        <h2>{{ 'Displayed Columns'|trans }}</h2>
+        <ul id="columns" class="connectedSortable">
+            {% for column in form.columns if column.vars.checked %}
+            <li>
+                <i class="icon-reorder"></i> {{ column.vars.label }}
+                {{ form_widget(column) }}
+            </li>
+            {% endfor %}
+        </ul>
+        {{ form_widget(form.order) }}
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<script type="text/javascript">
+    require(['jquery', 'jquery-ui-full'], function($){
+        $(function() {
+            $('#columns, #bucket')
+                .sortable({
+                    connectWith: '.connectedSortable',
+                    cursor: 'move',
+                    stop: function() {
+                        var values = [];
+                        $('#columns input[type="checkbox"]').each(function() {
+                            values.push($(this).val());
+                        });
+                        $('#{{ form.order.vars.id }}').val(values.join(','));
+                    }
+                })
+                .disableSelection();
+        });
+    });
+</script>

@@ -228,6 +228,7 @@ datagrid:
             entityHint: product
             requireJSModules:
                 - pim/datagrid/export-action
+                - pim/datagrid/configure-columns-action
                 - pim/datagrid/state-listener
             exportAction:
                 label: Export CSV
@@ -340,6 +341,7 @@ datagrid:
             columns:
                 family:
                     type:      entity
+                    label:     Family
                     data_name: productFamily
                     options:
                         field_options:

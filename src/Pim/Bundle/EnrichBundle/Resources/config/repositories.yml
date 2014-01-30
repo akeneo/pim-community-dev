@@ -1,0 +1,6 @@
+services:
+    pim_enrich.repository.orm.datagrid_configuration:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration]

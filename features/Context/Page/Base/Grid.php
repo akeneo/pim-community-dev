@@ -27,13 +27,14 @@ class Grid extends Index
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
-            array(
-                'Grid'           => array('css' => 'table.grid'),
-                'Grid content'   => array('css' => 'table.grid tbody'),
-                'Filters'        => array('css' => 'div.filter-box'),
-                'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
-                'Manage filters' => array('css' => 'div.filter-list')
-            ),
+            [
+                'Grid'              => ['css' => 'table.grid'],
+                'Grid content'      => ['css' => 'table.grid tbody'],
+                'Filters'           => ['css' => 'div.filter-box'],
+                'Grid toolbar'      => ['css' => 'div.grid-toolbar'],
+                'Manage filters'    => ['css' => 'div.filter-list'],
+                'Configure columns' => ['css' => 'a:contains("Columns")'],
+            ],
             $this->elements
         );
     }
@@ -190,7 +191,7 @@ class Grid extends Index
      */
     public function getColumnValue($column, $row)
     {
-        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column))->getText();
+        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true))->getText();
     }
 
     /**
@@ -222,9 +223,9 @@ class Grid extends Index
      *
      * @return integer
      */
-    public function getColumnPosition($column)
+    public function getColumnPosition($column, $withHeader = false)
     {
-        $headers = $this->getColumnHeaders();
+        $headers = $this->getColumnHeaders(false, $withHeader);
         foreach ($headers as $position => $header) {
             if (strtolower($column) === strtolower($header->getText())) {
                 return $position;
@@ -660,5 +661,19 @@ class Grid extends Index
         $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
 
         $filter->find('css', 'button.filter-update')->click();
+    }
+    public function openColumnsPopin()
+    {
+        return $this->getElement('Configure columns')->click();
+    }
+
+    public function hideColumn($column)
+    {
+        return $this->getElement('Configuration Popin')->hideColumn($column);
+    }
+
+    public function moveColumn($source, $target)
+    {
+        return $this->getElement('Configuration Popin')->moveColumn($source, $target);
     }
 }

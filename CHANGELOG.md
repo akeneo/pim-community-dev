@@ -4,6 +4,7 @@
 - Created the completenesses over channels and locales widget
 - Create command to install the PIM
 - Allow price attributes to be scopable
+- Added popin to configure product datagrid columns
 
 ## Improvements
 - Add some missing translations

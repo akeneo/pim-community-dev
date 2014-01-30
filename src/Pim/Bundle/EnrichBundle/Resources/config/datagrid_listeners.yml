@@ -121,3 +121,11 @@ services:
             - [objectClass, objectId]
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
+
+    pim_catalog.event_listener.hide_columns_listener:
+        class: %pim_catalog.event_listener.hide_columns_listener.class%
+        arguments:
+            - '@security.context'
+            - '@pim_enrich.repository.orm.datagrid_configuration'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
