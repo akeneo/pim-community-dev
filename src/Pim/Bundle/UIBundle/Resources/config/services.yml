@@ -25,7 +25,7 @@ services:
         arguments:
             - '@router'
             - '@pim_ui.form.transformer.ajax_entity.factory'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
         tags:
             - { name: form.type, alias: pim_ajax_entity }
 

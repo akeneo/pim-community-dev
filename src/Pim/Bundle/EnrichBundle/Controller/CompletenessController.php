@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Controller for completeness
@@ -34,9 +34,9 @@ class CompletenessController
     protected $channelManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var EngineInterface
@@ -49,21 +49,21 @@ class CompletenessController
      * @param CompletenessManager $completenessManager
      * @param ProductManager      $productManager
      * @param ChannelManager      $channelManager
-     * @param LocaleManager       $localeManager
+     * @param UserContext         $userContext
      * @param EngineInterface     $templating
      */
     public function __construct(
         CompletenessManager $completenessManager,
         ProductManager $productManager,
         ChannelManager $channelManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         EngineInterface $templating
     ) {
         $this->completenessManager = $completenessManager;
-        $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
-        $this->localeManager = $localeManager;
-        $this->templating = $templating;
+        $this->productManager      = $productManager;
+        $this->channelManager      = $channelManager;
+        $this->userContext         = $userContext;
+        $this->templating          = $templating;
     }
 
     /**
@@ -77,22 +77,22 @@ class CompletenessController
     {
         $product = $this->productManager->getFlexibleRepository()->getFullProduct($id);
         $channels = $this->channelManager->getFullChannels();
-        $locales = $this->localeManager->getUserLocales();
+        $locales = $this->userContext->getUserLocales();
 
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
             $locales,
-            $this->localeManager->getCurrentLocale()
+            $this->userContext->getCurrentLocale()
         );
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Completeness:_completeness.html.twig',
             array(
-                'product'           => $product,
-                'channels'          => $channels,
-                'locales'           => $locales,
-                'completenesses'    => $completenesses
+                'product'        => $product,
+                'channels'       => $channels,
+                'locales'        => $locales,
+                'completenesses' => $completenesses
             )
         );
     }

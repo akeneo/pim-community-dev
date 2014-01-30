@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
@@ -27,7 +27,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
  *   - route_parameters:        Extra parameters for this route
  *   - minimum_input_length:    The minimum query length before a search is run
  *   - url:                     URL for the list action (optional, resolved from route and route_parameters)
- *   - locale:                  The locale of the results (optional, queried through the LocaleManager)
+ *   - locale:                  The locale of the results (optional, queried through the UserContext)
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -46,25 +46,25 @@ class AjaxEntityType extends AbstractType
     protected $transformerFactory;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * Constructor
      *
      * @param RouterInterface              $router
      * @param AjaxEntityTransformerFactory $transformerFactory
-     * @param LocaleManager                $localeManager
+     * @param UserContext                  $userContext
      */
     public function __construct(
         RouterInterface $router,
         AjaxEntityTransformerFactory $transformerFactory,
-        LocaleManager $localeManager
+        UserContext $userContext
     ) {
-        $this->router = $router;
+        $this->router             = $router;
         $this->transformerFactory = $transformerFactory;
-        $this->localeManager = $localeManager;
+        $this->userContext        = $userContext;
     }
 
     /**
@@ -113,7 +113,7 @@ class AjaxEntityType extends AbstractType
             array(
                 'locale' => function (Options $options, $value) {
                     if (!$value) {
-                        $value = $this->localeManager->getDataLocale()->getCode();
+                        $value = $this->userContext->getCurrentLocaleCode();
                     }
 
                     return $value;

@@ -4,13 +4,6 @@ parameters:
 
 services:
     # Subscribers
-    pim_catalog.event_listener.user_preferences:
-        class: %pim_catalog.event_listener.user_preferences.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pim_catalog.event_listener.create_attribute_requirement:
         class: %pim_catalog.event_listener.create_attribute_requirement.class%
         arguments:
@@ -74,14 +67,4 @@ services:
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
-            - '@pim_catalog.manager.locale'
-
-    # extension listener
-    stof_doctrine_extensions.event_listener.locale:
-        class: %pim_catalog.event_listener.user_context.class%
-        arguments:
-            - '@security.context'
-            - '@pim_translation.listener.add_locale'
-            - '@pim_catalog.manager.product'
-        tags:
-            - { name: kernel.event_subscriber }
+            - '@pim_user.context.user'

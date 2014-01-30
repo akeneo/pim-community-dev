@@ -12,7 +12,7 @@ services:
         class: %pim_filter.form.type.filter.scope_class%
         arguments:
             - '@translator'
-            - '@pim_catalog.manager.channel'
+            - '@pim_user.context.user'
         tags:
             - { name: form.type, alias: pim_type_scope_filter }
 

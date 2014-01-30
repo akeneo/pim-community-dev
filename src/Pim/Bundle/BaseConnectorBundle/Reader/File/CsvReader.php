@@ -72,9 +72,9 @@ class CsvReader extends FileReader implements
     protected $stepExecution;
 
     /**
-     * @var string $file
+     * @var string $extractedPath
      */
-    protected $file;
+    protected $extractedPath;
 
     /**
      * @var SplFileObject
@@ -97,9 +97,9 @@ class CsvReader extends FileReader implements
      */
     public function __destruct()
     {
-        if ($this->file !== $this->filePath) {
+        if ($this->extractedPath) {
             $fileSystem = new Filesystem();
-            $fileSystem->remove(dirname($this->file));
+            $fileSystem->remove($this->extractedPath);
         }
     }
 
@@ -260,11 +260,9 @@ class CsvReader extends FileReader implements
         if (null === $this->csv) {
             if (mime_content_type($this->filePath) === 'application/zip') {
                 $this->extractZipArchive();
-            } else {
-                $this->file = $this->filePath;
             }
 
-            $this->csv = new \SplFileObject($this->file);
+            $this->csv = new \SplFileObject($this->filePath);
             $this->csv->setFlags(
                 \SplFileObject::READ_CSV   |
                 \SplFileObject::READ_AHEAD |
@@ -288,7 +286,7 @@ class CsvReader extends FileReader implements
 
             if (count($this->fieldNames) !== count($data)) {
                 throw new InvalidItemException(
-                    'pim_import_export.steps.csv_reader.invalid_item_columns_count',
+                    'pim_base_connector.steps.csv_reader.invalid_item_columns_count',
                     $data,
                     array(
                         '%totalColumnsCount%' => count($this->fieldNames),
@@ -315,33 +313,33 @@ class CsvReader extends FileReader implements
         return array(
             'filePath' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.filePath.label',
-                    'help'  => 'pim_import_export.import.filePath.help'
+                    'label' => 'pim_base_connector.import.filePath.label',
+                    'help'  => 'pim_base_connector.import.filePath.help'
                 )
             ),
             'uploadAllowed' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_import_export.import.uploadAllowed.label',
-                    'help'  => 'pim_import_export.import.uploadAllowed.help'
+                    'label' => 'pim_base_connector.import.uploadAllowed.label',
+                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
                 )
             ),
             'delimiter' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.delimiter.label',
-                    'help'  => 'pim_import_export.import.delimiter.help'
+                    'label' => 'pim_base_connector.import.delimiter.label',
+                    'help'  => 'pim_base_connector.import.delimiter.help'
                 )
             ),
             'enclosure' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.enclosure.label',
-                    'help'  => 'pim_import_export.import.enclosure.help'
+                    'label' => 'pim_base_connector.import.enclosure.label',
+                    'help'  => 'pim_base_connector.import.enclosure.help'
                 )
             ),
             'escape' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.escape.label',
-                    'help'  => 'pim_import_export.import.escape.help'
+                    'label' => 'pim_base_connector.import.escape.label',
+                    'help'  => 'pim_base_connector.import.escape.help'
                 )
             ),
         );
@@ -382,6 +380,7 @@ class CsvReader extends FileReader implements
             }
 
             $archive->close();
+            $this->extractedPath = $targetDir;
 
             $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
 
@@ -395,7 +394,7 @@ class CsvReader extends FileReader implements
                 );
             }
 
-            $this->file = reset($csvFiles);
+            $this->filePath = current($csvFiles);
         }
     }
 }
