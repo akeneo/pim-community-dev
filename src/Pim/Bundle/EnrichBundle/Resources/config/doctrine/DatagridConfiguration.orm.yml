@@ -15,7 +15,6 @@ Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration:
     manyToOne:
         user:
             targetEntity: Oro\Bundle\UserBundle\Entity\User
-            inversedBy: datagridConfigurations
             joinColumns:
                 user_id:
                     referencedColumnName: id
