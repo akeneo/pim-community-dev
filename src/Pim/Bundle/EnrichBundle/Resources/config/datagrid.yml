@@ -233,7 +233,6 @@ datagrid:
             exportAction:
                 label: Export CSV
                 icon: download
-            configureColumns: true
         source:
             acl_resource: pim_enrich_product_index
             type: pim_orm

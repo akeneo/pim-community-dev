@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/dialogform', 'routing', 'oro/loading-mask', 'backbone/bootstrap-modal'],
-    function($, _, Backbone, __, DialogForm, Routing, LoadingMask) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/loading-mask', 'backbone/bootstrap-modal'],
+    function($, _, Backbone, __, Routing, LoadingMask) {
         'use strict';
 
         /**
@@ -94,9 +94,9 @@ define(
         ConfigureColumnsAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var options = metadata.options || {};
-            if (options.configureColumns) {
-                new ConfigureColumnsAction(_.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.configureColumns));
-            }
+            new ConfigureColumnsAction(
+                _.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.configureColumns)
+            );
         };
 
         return ConfigureColumnsAction;
