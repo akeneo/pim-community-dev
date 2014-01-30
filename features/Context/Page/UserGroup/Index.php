@@ -13,8 +13,15 @@ use Context\Page\Base\Grid;
  */
 class Index extends Grid
 {
+    use \Context\Page\Base\WithGrid;
+
     /**
      * @var string
      */
     protected $path = '/user/group';
+
+    public function __construct()
+    {
+        $this->grid = $this->getElement('Grid');
+    }
 }

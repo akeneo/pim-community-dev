@@ -2,8 +2,6 @@
 
 namespace Context\Page\Channel;
 
-use Context\Page\Base\Grid;
-
 /**
  * Channel index page
  *
@@ -11,10 +9,17 @@ use Context\Page\Base\Grid;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends Grid
+class Index
 {
+    use \Context\Page\Base\WithGrid;
+
     /**
      * @var string
      */
     protected $path = '/configuration/channel/';
+
+    public function __construct()
+    {
+        $this->grid = $this->getElement('Grid');
+    }
 }

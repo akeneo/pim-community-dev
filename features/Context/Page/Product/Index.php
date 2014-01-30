@@ -13,6 +13,8 @@ use Context\Page\Base\Index as BaseIndex;
  */
 class Index extends BaseIndex
 {
+    use \Context\Page\Base\WithGrid;
+
     /**
      * @var string $path
      */
@@ -104,11 +106,6 @@ class Index extends BaseIndex
     public function massDelete()
     {
         $this->pressButton('Delete');
-    }
-
-    public function getGridColumnsCount()
-    {
-        return $this->grid->countColumns();
     }
 
     /**

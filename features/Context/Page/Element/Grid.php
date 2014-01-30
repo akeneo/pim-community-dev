@@ -330,7 +330,7 @@ class Grid extends Element
         if (strtolower($filterName) === 'channel') {
             $filter = $this->GridToolbar()->find('css', 'div.filter-item');
         } else {
-            $filter = $this-getFilters()->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+            $filter = $this->getFilters()->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
         }
 
         if (!$filter) {
@@ -398,79 +398,9 @@ class Grid extends Element
         $refreshBtn->click();
     }
 
-    /**
-     * Activate a filter
-     * @param string $filterName
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function activateFilter($filterName)
-    {
-        if (!$this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
-
-        if (!$this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is not visible', $filterName)
-            );
-        }
-    }
-
-    /**
-     * Deactivate filter
-     * @param string $filterName
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function deactivateFilter($filterName)
-    {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
-
-        if ($this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is visible', $filterName)
-            );
-        }
-    }
-
-
     public function getManageFilters()
     {
         return $this->find('css', 'div.filter-list');
-    }
-
-    /**
-     * Click on a filter in filter management list
-     * @param string $filterName
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function clickOnFilterToManage($filterName)
-    {
-        try {
-            $this
-                ->getManageFilters()
-                ->find('css', sprintf('label:contains("%s")', $filterName))
-                ->click();
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to activate filter "%s"', $filterName)
-            );
-        }
-    }
-
-    /**
-     * Open/close filters list
-     */
-    private function clickFiltersList()
-    {
-        $this
-            ->getFilters()
-            ->find('css', 'a#add-filter-button')
-            ->click();
     }
 
     /**
@@ -494,55 +424,6 @@ class Grid extends Element
         $checkbox->check();
 
         return $checkbox;
-    }
-    /**
-     * @param NodeElement $row
-     * @param string      $position
-     *
-     * @return NodeElement
-     */
-    protected function getRowCell($row, $position)
-    {
-        $cells = $row->findAll('css', 'td');
-
-        $visibleCells = array();
-        foreach ($cells as $cell) {
-            $style = $cell->getAttribute('style');
-            if (!$style || !preg_match('/display: ?none;/', $style)) {
-                $visibleCells[] = $cell;
-            }
-        }
-
-        $cells = $visibleCells;
-
-        if (!isset($cells[$position])) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Trying to access cell %d of a row which has %d cell(s).',
-                    $position + 1,
-                    count($cells)
-                )
-            );
-        }
-
-        return $cells[$position];
-    }
-
-    /**
-     * Open the filter
-     * @param NodeElement $filter
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function openFilter(NodeElement $filter)
-    {
-        if ($element = $filter->find('css', 'button')) {
-            $element->click();
-        } else {
-            throw new \InvalidArgumentException(
-                'Impossible to open filter or maybe its type is not yet implemented'
-            );
-        }
     }
 
     /**
@@ -579,16 +460,6 @@ class Grid extends Element
         }
 
         return $visibleHeaders;
-    }
-
-    /**
-     * Get rows
-     *
-     * @return \Behat\Mink\Element\Element
-     */
-    protected function getRows()
-    {
-        return $this->getGridContent()->findAll('css', 'tr');
     }
 
     /**
@@ -661,5 +532,134 @@ class Grid extends Element
     {
         $configureBtn = $this->find('css', 'a:contains("Columns")');
         $configureBtn->click();
+    }
+
+    /**
+     * Get rows
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    protected function getRows()
+    {
+        return $this->getGridContent()->findAll('css', 'tr');
+    }
+
+    /**
+     * @param NodeElement $row
+     * @param string      $position
+     *
+     * @return NodeElement
+     */
+    protected function getRowCell($row, $position)
+    {
+        $cells = $row->findAll('css', 'td');
+
+        $visibleCells = array();
+        foreach ($cells as $cell) {
+            $style = $cell->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleCells[] = $cell;
+            }
+        }
+
+        $cells = $visibleCells;
+
+        if (!isset($cells[$position])) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Trying to access cell %d of a row which has %d cell(s).',
+                    $position + 1,
+                    count($cells)
+                )
+            );
+        }
+
+        return $cells[$position];
+    }
+
+    /**
+     * Open the filter
+     * @param NodeElement $filter
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function openFilter(NodeElement $filter)
+    {
+        if ($element = $filter->find('css', 'button')) {
+            $element->click();
+        } else {
+            throw new \InvalidArgumentException(
+                'Impossible to open filter or maybe its type is not yet implemented'
+            );
+        }
+    }
+
+    /**
+     * Activate a filter
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function activateFilter($filterName)
+    {
+        if (!$this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
+
+        if (!$this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is not visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Deactivate filter
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function deactivateFilter($filterName)
+    {
+        if ($this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
+
+        if ($this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Click on a filter in filter management list
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function clickOnFilterToManage($filterName)
+    {
+        try {
+            $this
+                ->getManageFilters()
+                ->find('css', sprintf('label:contains("%s")', $filterName))
+                ->click();
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to activate filter "%s"', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Open/close filters list
+     */
+    private function clickFiltersList()
+    {
+        $this
+            ->getFilters()
+            ->find('css', 'a#add-filter-button')
+            ->click();
     }
 }
