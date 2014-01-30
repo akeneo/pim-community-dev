@@ -51,13 +51,27 @@ class DatagridController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridManager $manager
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->manager = $manager;
     }
 
     /**
-     * {@inheritdoc}
+     * Display or save datagrid configuration
+     *
+     * @param Request $request
+     * @param string  $alias
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $alias)
     {

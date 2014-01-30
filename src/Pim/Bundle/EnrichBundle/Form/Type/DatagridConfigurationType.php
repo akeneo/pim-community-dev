@@ -27,7 +27,6 @@ class DatagridConfigurationType extends AbstractType
                 'choices'  => $options['columns'],
             ])
             ->add('order', 'hidden');
-        ;
     }
 
     /**
@@ -43,6 +42,9 @@ class DatagridConfigurationType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_catalog_datagrid_configuration';

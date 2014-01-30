@@ -24,6 +24,11 @@ class DatagridConfiguration
     /** @var User */
     protected $user;
 
+    /**
+     * Get the id
+     *
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
@@ -89,11 +94,21 @@ class DatagridConfiguration
         return join(',', $this->columns);
     }
 
+    /**
+     * Set the user
+     *
+     * @param User $user
+     */
     public function setUser(User $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * Get the user
+     *
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
