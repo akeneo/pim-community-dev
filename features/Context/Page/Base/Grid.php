@@ -191,7 +191,7 @@ class Grid extends Index
      */
     public function getColumnValue($column, $row)
     {
-        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column))->getText();
+        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true))->getText();
     }
 
     /**
@@ -223,9 +223,9 @@ class Grid extends Index
      *
      * @return integer
      */
-    public function getColumnPosition($column)
+    public function getColumnPosition($column, $withHeader = false)
     {
-        $headers = $this->getColumnHeaders(false, false);
+        $headers = $this->getColumnHeaders(false, $withHeader);
         foreach ($headers as $position => $header) {
             if (strtolower($column) === strtolower($header->getText())) {
                 return $position;
