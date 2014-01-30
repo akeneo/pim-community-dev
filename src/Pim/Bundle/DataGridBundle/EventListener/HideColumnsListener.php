@@ -6,6 +6,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 /**
  * Hide columns the user configured
@@ -43,7 +45,7 @@ class HideColumnsListener
     {
         $config = $event->getDatagrid()->getAcceptor()->getConfig();
 
-        $datagridConfig = $this->getDatagridConfig($config->offsetGetByPath('[name]'));
+        $datagridConfig = $this->getDatagridConfig($config->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY)));
 
         $availableColumns = [];
         $columns = [];
@@ -52,7 +54,7 @@ class HideColumnsListener
             $availableColumns[$key] = $metadata['label'];
             if ($datagridConfig && in_array($key, $datagridConfig->getColumns())) {
                 $columns[$key] = $metadata;
-                $sorters[$key] = $config->offsetGetByPath(sprintf('[sorters][columns][%s]', $key));
+                $sorters[$key] = $config->offsetGetByPath(sprintf('%s[%s]', SorterConfiguration::COLUMNS_PATH, $key));
             }
         }
         $config->offsetSetByPath(sprintf('[%s]', self::AVAILABLE_COLUMNS), $availableColumns);
@@ -62,7 +64,7 @@ class HideColumnsListener
                 $sortedColumns[$column] = $columns[$column];
             }
             $config->offsetSetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY), $sortedColumns);
-            $config->offsetSetByPath(sprintf('[sorters][%s]', FormatterConfiguration::COLUMNS_KEY), $sorters);
+            $config->offsetSetByPath(sprintf('%s', SorterConfiguration::COLUMNS_PATH), $sorters);
         }
     }
 
