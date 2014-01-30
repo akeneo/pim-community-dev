@@ -81,6 +81,11 @@ class DatagridConfiguration
      */
     public function setOrder($order)
     {
+        if (empty($order)) {
+            $this->columns = [];
+
+            return;
+        }
         $this->columns = explode(',', $order);
     }
 

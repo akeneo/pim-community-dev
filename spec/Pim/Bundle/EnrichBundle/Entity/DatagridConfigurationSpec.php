@@ -28,6 +28,12 @@ class DatagridConfigurationSpec extends ObjectBehavior
         $this->getColumns()->shouldReturn(['foo', 'bar', 'baz']);
     }
 
+    function it_does_not_have_any_columns_if_order_is_empty()
+    {
+        $this->setOrder('');
+        $this->getColumns()->shouldHaveCount(0);
+    }
+
     function it_has_a_user(User $user)
     {
         $this->setUser($user);
