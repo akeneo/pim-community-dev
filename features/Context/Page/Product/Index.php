@@ -15,11 +15,15 @@ class Index extends BaseIndex
 {
     use \Context\Page\Base\WithGrid;
 
-    /**
-     * @var string $path
-     */
+    /** @var string $path */
     protected $path = '/enrich/product/';
 
+    /** @var array */
+    protected $elements = [
+        'Categories tree'  => array('css' => '#tree'),
+        'Tree select'      => array('css' => '#tree_select'),
+        'Locales dropdown' => array('css' => '#locale-switcher'),
+    ];
     /**
      * {@inheritdoc}
      */
