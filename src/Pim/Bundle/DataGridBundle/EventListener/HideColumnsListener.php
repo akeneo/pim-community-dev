@@ -90,7 +90,7 @@ class HideColumnsListener
     /**
      * Get the user from the security context
      *
-     * @return mixed
+     * @return null|User
      */
     protected function getUser()
     {
