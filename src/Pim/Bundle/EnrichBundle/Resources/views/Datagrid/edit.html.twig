@@ -7,7 +7,7 @@
             {% for column in form.columns if not column.vars.checked %}
             <li>
                 <i class="icon-reorder"></i> {{ column.vars.label }}
-                {{ form_widget(column) }}
+                {{ form_widget(column, {'attr': {'class': 'hide'}}) }}
             </li>
             {% endfor %}
         </ul>
@@ -19,7 +19,7 @@
             {% for column in form.columns if column.vars.checked %}
             <li>
                 <i class="icon-reorder"></i> {{ column.vars.label }}
-                {{ form_widget(column) }}
+                {{ form_widget(column, {'attr': {'class': 'hide'}}) }}
             </li>
             {% endfor %}
         </ul>
