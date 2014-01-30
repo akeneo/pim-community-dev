@@ -6,17 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 
@@ -75,7 +70,6 @@ class DatagridController extends AbstractDoctrineController
             $configuration->setColumns(array_keys($columns));
         }
 
-
         $form = $this->createForm('pim_catalog_datagrid_configuration', $configuration, [
             'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
             'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
@@ -106,6 +100,7 @@ class DatagridController extends AbstractDoctrineController
                 unset($array[$key]);
             }
         }
+
         return $ordered + $array;
     }
 
