@@ -14,6 +14,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\DataGridBundle\EventListener\HideColumnsListener;
 
 /**
  * Datagrid configuration controller
@@ -126,7 +127,7 @@ class DatagridController extends AbstractDoctrineController
             ->getDatagrid($alias)
             ->getAcceptor()
             ->getConfig()
-            ->offsetGetByPath('[availableColumns]');
+            ->offsetGetByPath(sprintf('[%s]', HideColumnsListener::AVAILABLE_COLUMNS));
     }
 
     /**
