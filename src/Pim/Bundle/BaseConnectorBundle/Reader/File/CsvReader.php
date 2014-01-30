@@ -72,9 +72,9 @@ class CsvReader extends FileReader implements
     protected $stepExecution;
 
     /**
-     * @var string $file
+     * @var string $extractedPath
      */
-    protected $file;
+    protected $extractedPath;
 
     /**
      * @var SplFileObject
@@ -97,9 +97,9 @@ class CsvReader extends FileReader implements
      */
     public function __destruct()
     {
-        if ($this->file !== $this->filePath) {
+        if ($this->extractedPath) {
             $fileSystem = new Filesystem();
-            $fileSystem->remove(dirname($this->file));
+            $fileSystem->remove($this->extractedPath);
         }
     }
 
@@ -260,11 +260,9 @@ class CsvReader extends FileReader implements
         if (null === $this->csv) {
             if (mime_content_type($this->filePath) === 'application/zip') {
                 $this->extractZipArchive();
-            } else {
-                $this->file = $this->filePath;
             }
 
-            $this->csv = new \SplFileObject($this->file);
+            $this->csv = new \SplFileObject($this->filePath);
             $this->csv->setFlags(
                 \SplFileObject::READ_CSV   |
                 \SplFileObject::READ_AHEAD |
@@ -382,6 +380,7 @@ class CsvReader extends FileReader implements
             }
 
             $archive->close();
+            $this->extractedPath = $targetDir;
 
             $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
 
@@ -395,7 +394,7 @@ class CsvReader extends FileReader implements
                 );
             }
 
-            $this->file = reset($csvFiles);
+            $this->filePath = current($csvFiles);
         }
     }
 }
