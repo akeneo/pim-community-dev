@@ -75,10 +75,6 @@ class DatagridController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $alias)
     {
-        if (!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
-        }
-
         $user    = $this->getUser();
         $columns = $this->getColumnChoices($alias);
 
@@ -97,7 +93,7 @@ class DatagridController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             $violations = $this->validator->validate($configuration);
-            if ($violations) {
+            if ($violations->count()) {
                 foreach ($violations as $violation) {
                     $this->addFlash('error', $violation->getMessage());
                 }
