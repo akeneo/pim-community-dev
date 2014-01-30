@@ -342,6 +342,7 @@ datagrid:
             columns:
                 family:
                     type:      entity
+                    label:     Family
                     data_name: productFamily
                     options:
                         field_options:
