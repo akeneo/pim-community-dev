@@ -513,6 +513,7 @@ pim_enrich:
             create: Create an association type
             edit: Edit an association type
             remove: Remove an association type
+    datagrid_configuration.columns.min_message: You must select at least one datagrid column to display
 
 # Menu entries
 pim_menu:

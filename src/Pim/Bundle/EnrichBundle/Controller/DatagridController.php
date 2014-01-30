@@ -96,13 +96,18 @@ class DatagridController extends AbstractDoctrineController
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            if ($form->isValid()) {
+            $violations = $this->validator->validate($configuration);
+            if ($violations) {
+                foreach ($violations as $violation) {
+                    $this->addFlash('error', $violation->getMessage());
+                }
+            } else {
                 $em = $this->getManager();
                 $em->persist($configuration);
                 $em->flush();
-
-                return $this->redirectToRoute('pim_enrich_product_index');
             }
+
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', [
