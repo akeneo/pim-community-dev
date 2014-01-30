@@ -192,8 +192,12 @@ Known issues
 `xdebug.max_nesting_level=500`
 
  - not enough memory can cause the JS routing bundle to fail with a segmentation fault. Please check with `php -i | grep memory` that you have enough memory according to the requirements
+
  - some segmentation fault can be caused as well by the circular references collector. You can disable it with the following setting in your php.ini files:
 `zend.enable_gc = 0`
+
+ - When installing with `php composer.phar create-project...` command, error about `Unable to parse file "<path>/Resources/config/web.xml".`. It seems an external issue related to libxml, you can downgrade to `libxml2.x86_64 0:2.6.26-2.1.21.el5_9.1`. Look at: http://www.akeneo.com/topic/erreur-with-php-composer-phar-beta4/ for more informations.
+
 
 [1]:  http://symfony.com/doc/2.1/book/installation.html
 [2]:  http://getcomposer.org/
