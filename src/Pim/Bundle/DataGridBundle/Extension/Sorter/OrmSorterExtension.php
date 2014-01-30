@@ -18,7 +18,7 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 class OrmSorterExtension extends OroOrmSorterExtension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {

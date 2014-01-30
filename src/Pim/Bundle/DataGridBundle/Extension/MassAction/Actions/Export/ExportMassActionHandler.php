@@ -43,7 +43,7 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
