@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Context\Page\Base\Index as BaseIndex;
+use Context\Page\Base\Grid;
 
 /**
  * Product index page
@@ -11,19 +11,13 @@ use Context\Page\Base\Index as BaseIndex;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends BaseIndex
+class Index extends Grid
 {
-    use \Context\Page\Base\WithGrid;
-
-    /** @var string $path */
+    /**
+     * @var string $path
+     */
     protected $path = '/enrich/product/';
 
-    /** @var array */
-    protected $elements = [
-        'Categories tree'  => array('css' => '#tree'),
-        'Tree select'      => array('css' => '#tree_select'),
-        'Locales dropdown' => array('css' => '#locale-switcher'),
-    ];
     /**
      * {@inheritdoc}
      */
@@ -31,7 +25,14 @@ class Index extends BaseIndex
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->grid = $this->getElement('Grid');
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Categories tree'  => array('css' => '#tree'),
+                'Tree select'      => array('css' => '#tree_select'),
+                'Locales dropdown' => array('css' => '#locale-switcher'),
+            )
+        );
     }
 
     /**
@@ -110,37 +111,5 @@ class Index extends BaseIndex
     public function massDelete()
     {
         $this->pressButton('Delete');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColumnPosition($column)
-    {
-        $headers = $this->grid->getColumnHeaders(false, false);
-        foreach ($headers as $position => $header) {
-            if (strtolower($column) === strtolower($header->getText())) {
-                return $position;
-            }
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('Couldn\'t find a column "%s"', $column)
-        );
-    }
-
-    public function openColumnsPopin()
-    {
-        $this->grid->openColumnsPopin();
-    }
-
-    public function hideColumn($column)
-    {
-        $this->getElement('Configuration Popin')->hideColumn($column);
-    }
-
-    public function moveColumn($source, $target)
-    {
-        $this->getElement('Configuration Popin')->moveColumn($source, $target);
     }
 }

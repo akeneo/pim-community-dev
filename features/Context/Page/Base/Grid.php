@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\Element;
+namespace Context\Page\Base;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -12,7 +12,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Grid extends Element
+class Grid extends Index
 {
     const FILTER_CONTAINS = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
@@ -20,7 +20,25 @@ class Grid extends Element
     const FILTER_STARTS_WITH = 4;
     const FILTER_ENDS_WITH = 5;
 
-    protected $selector = ['css' => 'div[data-type="datagrid"]'];
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            array(
+                'Grid'           => array('css' => 'table.grid'),
+                'Grid content'   => array('css' => 'table.grid tbody'),
+                'Filters'        => array('css' => 'div.filter-box'),
+                'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
+                'Manage filters' => array('css' => 'div.filter-list')
+            ),
+            $this->elements
+        );
+    }
+
     /**
      * Returns the currently visible grid, if there is one
      *
