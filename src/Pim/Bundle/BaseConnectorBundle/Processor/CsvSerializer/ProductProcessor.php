@@ -114,8 +114,8 @@ class ProductProcessor extends HeterogeneousProcessor
                         'choices'  => $this->channelManager->getChannelChoices(),
                         'required' => true,
                         'select2'  => true,
-                        'label'    => 'pim_import_export.export.channel.label',
-                        'help'     => 'pim_import_export.export.channel.help'
+                        'label'    => 'pim_base_connector.export.channel.label',
+                        'help'     => 'pim_base_connector.export.channel.help'
                     )
                 )
             )

@@ -78,8 +78,8 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             'circularRefsChecked' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_import_export.import.circularRefsChecked.label',
-                    'help'  => 'pim_import_export.import.circularRefsChecked.help'
+                    'label' => 'pim_base_connector.import.circularRefsChecked.label',
+                    'help'  => 'pim_base_connector.import.circularRefsChecked.help'
                 )
             ),
         );

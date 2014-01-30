@@ -286,7 +286,7 @@ class CsvReader extends FileReader implements
 
             if (count($this->fieldNames) !== count($data)) {
                 throw new InvalidItemException(
-                    'pim_import_export.steps.csv_reader.invalid_item_columns_count',
+                    'pim_base_connector.steps.csv_reader.invalid_item_columns_count',
                     $data,
                     array(
                         '%totalColumnsCount%' => count($this->fieldNames),
@@ -313,33 +313,33 @@ class CsvReader extends FileReader implements
         return array(
             'filePath' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.filePath.label',
-                    'help'  => 'pim_import_export.import.filePath.help'
+                    'label' => 'pim_base_connector.import.filePath.label',
+                    'help'  => 'pim_base_connector.import.filePath.help'
                 )
             ),
             'uploadAllowed' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_import_export.import.uploadAllowed.label',
-                    'help'  => 'pim_import_export.import.uploadAllowed.help'
+                    'label' => 'pim_base_connector.import.uploadAllowed.label',
+                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
                 )
             ),
             'delimiter' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.delimiter.label',
-                    'help'  => 'pim_import_export.import.delimiter.help'
+                    'label' => 'pim_base_connector.import.delimiter.label',
+                    'help'  => 'pim_base_connector.import.delimiter.help'
                 )
             ),
             'enclosure' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.enclosure.label',
-                    'help'  => 'pim_import_export.import.enclosure.help'
+                    'label' => 'pim_base_connector.import.enclosure.label',
+                    'help'  => 'pim_base_connector.import.enclosure.help'
                 )
             ),
             'escape' => array(
                 'options' => array(
-                    'label' => 'pim_import_export.import.escape.label',
-                    'help'  => 'pim_import_export.import.escape.help'
+                    'label' => 'pim_base_connector.import.escape.label',
+                    'help'  => 'pim_base_connector.import.escape.help'
                 )
             ),
         );

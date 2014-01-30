@@ -76,7 +76,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         try {
             $this->reader->read();
         } catch (\Oro\Bundle\BatchBundle\Item\InvalidItemException $e) {
-            $this->assertSame('pim_import_export.steps.csv_reader.invalid_item_columns_count', $e->getMessage());
+            $this->assertSame('pim_base_connector.steps.csv_reader.invalid_item_columns_count', $e->getMessage());
             $parameters = $e->getMessageParameters();
             $this->assertEquals(
                 array(
