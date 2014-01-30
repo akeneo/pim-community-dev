@@ -1,14 +1,8 @@
-{{ form_start(form, {
-    'attr': {
-        'data-title':         'Datagrid Configuration'|trans,
-        'data-button-submit': 'Apply'|trans,
-        'data-button-cancel': 'Cancel'|trans
-    }
-}) }}
+{{ form_start(form) }}
 
-<div class="row">
-    <div class="span4">
-        <h2>Available Columns</h2>
+<div class="row-fluid">
+    <div class="span6">
+        <h2>{{ 'Available Columns'|trans }}</h2>
         <ul id="bucket" class="connectedSortable">
             {% for column in form.columns if not column.vars.checked %}
             <li>
@@ -19,8 +13,8 @@
         </ul>
     </div>
 
-    <div class="span4">
-        <h2>Displayed Columns</h2>
+    <div class="span6">
+        <h2>{{ 'Displayed Columns'|trans }}</h2>
         <ul id="columns" class="connectedSortable">
             {% for column in form.columns if column.vars.checked %}
             <li>
@@ -41,6 +35,7 @@
             $('#columns, #bucket')
                 .sortable({
                     connectWith: '.connectedSortable',
+                    cursor: 'move',
                     stop: function() {
                         var values = [];
                         $('#columns input[type="checkbox"]').each(function() {

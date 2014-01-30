@@ -1272,11 +1272,15 @@ table#progress-table {
 /** datagrid columns configuration ***********************************************************************************/
 .connectedSortable {
   border: 1px solid #ccc;
+  &#bucket {
+    border-style: dashed;
+  }
   margin-left: 0;
   padding: 10px;
   min-height: 15px;
   list-style-type: none;
   li {
+    cursor: pointer;
     padding: 5px 0;
     font-size: 13px;
     input[type="checkbox"] {

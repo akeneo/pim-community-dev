@@ -81,7 +81,10 @@ define(
                     loadingMask.$el.remove();
 
                     modal.open();
-                    modal.$el.css('width', '700px');
+                    modal.$el.css({
+                        'width': '700px',
+                        'margin-left': '-350px'
+                    });
 
                     modal.on('cancel', this.subscribe.bind(this));
                     modal.on('ok', function() {
