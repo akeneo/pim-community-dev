@@ -1,9 +1,17 @@
 parameters:
+    pim_datagrid.mass_action.dispatcher.class:               Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.action.type.tab_redirect.class:   Pim\Bundle\DataGridBundle\Extension\Action\Actions\TabRedirectAction
     pim_datagrid.extension.mass_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionHandler
     pim_datagrid.extension.mass_action.type.export.class:    Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
 
 services:
+    oro_datagrid.mass_action.dispatcher:
+        class: %pim_datagrid.mass_action.dispatcher.class%
+        arguments:
+            - @service_container
+            - @oro_datagrid.datagrid.manager
+            - @oro_datagrid.datagrid.request_params
+
     pim_datagrid.extension.action.type.tab_redirect:
         class: %pim_datagrid.extension.action.type.tab_redirect.class%
         scope: prototype
@@ -13,7 +21,6 @@ services:
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
         arguments:
-            - @doctrine.orm.entity_manager
             - @pim_serializer
 
     pim_datagrid.extension.mass_action.type.export:
