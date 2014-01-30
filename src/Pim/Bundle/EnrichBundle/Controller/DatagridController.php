@@ -61,6 +61,10 @@ class DatagridController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $alias)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         $user    = $this->getUser();
         $columns = $this->getColumnChoices($alias);
 
