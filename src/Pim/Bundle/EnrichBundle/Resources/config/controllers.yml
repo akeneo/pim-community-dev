@@ -106,6 +106,7 @@ services:
             - '@oro_security.security_facade'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@oro_datagrid.mass_action.dispatcher'
+            - '@pim_serializer'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%

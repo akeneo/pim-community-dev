@@ -15,6 +15,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+
+use Doctrine\ORM\QueryBuilder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -79,6 +82,11 @@ class ProductController extends AbstractDoctrineController
     protected $massActionDispatcher;
 
     /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -108,6 +116,7 @@ class ProductController extends AbstractDoctrineController
      * @param SecurityFacade             $securityFacade
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,
@@ -124,7 +133,8 @@ class ProductController extends AbstractDoctrineController
         AuditManager $auditManager,
         SecurityFacade $securityFacade,
         MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher
+        MassActionDispatcher $massActionDispatcher,
+        SerializerInterface $serializer
     ) {
         parent::__construct(
             $request,
@@ -144,6 +154,7 @@ class ProductController extends AbstractDoctrineController
         $this->securityFacade       = $securityFacade;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
+        $this->serializer           = $serializer;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -167,7 +178,7 @@ class ProductController extends AbstractDoctrineController
             $parameters  = $this->parametersParser->parse($request);
             $requestData = array_merge($request->query->all(), $request->request->all());
 
-            $result = $this->massActionDispatcher->dispatch(
+            $qb = $this->massActionDispatcher->dispatch(
                 $requestData['gridName'],
                 $requestData['actionName'],
                 $parameters,
@@ -187,7 +198,7 @@ class ProductController extends AbstractDoctrineController
             $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
             $response->headers->set('Content-Type', 'text/csv');
             $response->headers->set('Content-Disposition', $attachment);
-            $response->setCallback($this->quickExportCallback($result));
+            $response->setCallback($this->quickExportCallback($qb));
 
             return $response->send();
         }
@@ -201,14 +212,32 @@ class ProductController extends AbstractDoctrineController
     /**
      * Quick export callback
      *
-     * @param string $result
+     * @param QueryBuilder $qb
      *
      * @return \Closure
      */
-    protected function quickExportCallback($result)
+    protected function quickExportCallback(QueryBuilder $qb)
     {
-        return function () use ($result) {
-            echo $result;
+        return function () use ($qb) {
+            flush();
+
+            $format  = 'csv';
+            $context = [
+                'withHeader'    => true,
+                'heterogeneous' => true
+            ];
+
+            $results = $qb->getQuery()->execute();
+
+            $entities = array_map(
+                function ($result) {
+                    return current($result);
+                },
+                $results
+            );
+
+            echo $this->serializer->serialize($entities, $format, $context);
+
             flush();
         };
     }

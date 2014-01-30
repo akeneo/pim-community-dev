@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
-use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 
@@ -16,39 +15,14 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 class ExportMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
-    /**
-     * @param SerializerInterface $serializer
-     */
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
-    }
-
-    /**
-     * {@inheritDoc}
+     * Return the datagrid QueryBuilder to use for quick export
+     *
+     * @param MassActionMediatorInterface $mediator
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
-        $qb = $mediator->getResults()->getSource();
-
-        $results = $qb->getQuery()->execute();
-
-        $context = array(
-            'withHeader'    => true,
-            'heterogeneous' => true
-        );
-
-        $entities = array_map(
-            function ($result) {
-                return $result[0];
-            },
-            $results
-        );
-
-        return $this->serializer->serialize($entities, 'csv', $context);
+        return $mediator->getResults()->getSource();
     }
 }

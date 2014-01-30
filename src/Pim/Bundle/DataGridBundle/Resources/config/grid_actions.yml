@@ -20,8 +20,6 @@ services:
 
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
-        arguments:
-            - @pim_serializer
 
     pim_datagrid.extension.mass_action.type.export:
         class: %pim_datagrid.extension.mass_action.type.export.class%
