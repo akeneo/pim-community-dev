@@ -45,7 +45,9 @@ class HideColumnsListener
     {
         $config = $event->getDatagrid()->getAcceptor()->getConfig();
 
-        $datagridConfig = $this->getDatagridConfig($config->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY)));
+        $datagridConfig = $this->getDatagridConfig(
+            $config->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY))
+        );
 
         $availableColumns = [];
         $columns = [];

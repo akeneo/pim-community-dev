@@ -38,6 +38,7 @@ class DatagridController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param RegistryInterface        $doctrine
      * @param DatagridManager          $manager
      */
     public function __construct(
@@ -85,10 +86,13 @@ class DatagridController extends AbstractDoctrineController
             $configuration->setColumns(array_keys($columns));
         }
 
-        $form = $this->createForm('pim_catalog_datagrid_configuration', $configuration, [
-            'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
-            'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
-        ]);
+        $form = $this->createForm(
+            'pim_catalog_datagrid_configuration',
+            $configuration, [
+                'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
+                'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
+            ]
+        );
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -106,9 +110,7 @@ class DatagridController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**

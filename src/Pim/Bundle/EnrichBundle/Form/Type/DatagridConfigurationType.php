@@ -21,11 +21,15 @@ class DatagridConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('columns', 'choice', [
-                'multiple' => true,
-                'expanded' => true,
-                'choices'  => $options['columns'],
-            ])
+            ->add(
+                'columns',
+                'choice',
+                [
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices'  => $options['columns'],
+                ]
+            )
             ->add('order', 'hidden');
     }
 
