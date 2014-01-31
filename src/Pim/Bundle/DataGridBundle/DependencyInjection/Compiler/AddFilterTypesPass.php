@@ -26,7 +26,7 @@ class AddFilterTypesPass implements CompilerPassInterface
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

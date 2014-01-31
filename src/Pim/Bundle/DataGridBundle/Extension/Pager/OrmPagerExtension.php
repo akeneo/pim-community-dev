@@ -19,7 +19,7 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 class OrmPagerExtension extends OroOrmPagerExtension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {
@@ -37,7 +37,7 @@ class OrmPagerExtension extends OroOrmPagerExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {

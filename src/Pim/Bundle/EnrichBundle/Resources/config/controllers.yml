@@ -15,6 +15,7 @@ parameters:
     pim_enrich.controller.variant_group.class:        Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:           Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:         Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.datagrid.class:             Pim\Bundle\EnrichBundle\Controller\DatagridController
 
 services:
     pim_enrich.controller.abstract:
@@ -172,3 +173,10 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_user.context.user'
             - '@templating'
+
+    pim_enrich.controller.datagrid:
+        scope: request
+        class: %pim_enrich.controller.datagrid.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@oro_datagrid.datagrid.manager'

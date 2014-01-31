@@ -39,7 +39,7 @@ class LocalDirResolver extends WebPathResolver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolve(Request $request, $path, $filter)
     {
@@ -52,7 +52,7 @@ class LocalDirResolver extends WebPathResolver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBrowserPath($targetPath, $filter, $absolute = false)
     {
@@ -62,7 +62,7 @@ class LocalDirResolver extends WebPathResolver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clear($cachePrefix)
     {
@@ -82,7 +82,7 @@ class LocalDirResolver extends WebPathResolver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getFilePath($path, $filter)
     {

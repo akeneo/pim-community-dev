@@ -50,7 +50,7 @@ class ScopeFilter extends ChoiceFilter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function init($name, array $params)
     {

@@ -39,7 +39,7 @@ class CategoryFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -47,7 +47,7 @@ class CategoryFilterType extends NumberFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

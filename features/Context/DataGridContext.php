@@ -227,7 +227,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($columns as $column) {
             $position = $this->datagrid->getColumnPosition($column);
             if ($expectedPosition++ !== $position) {
-                throw $this->createExpectationException("The columns are not well ordered");
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Column "%s" was expected in position %d, but was at %d',
+                        $column,
+                        $expectedPosition,
+                        $position
+                    )
+                );
             }
         }
     }
@@ -518,6 +525,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickBackToGrid()
     {
         $this->getSession()->getPage()->clickLink('Back to grid');
+        $this->wait();
+    }
+
+    /**
+     * @When /^I hide the "([^"]*)" column$/
+     */
+    public function iHideTheColumn($column)
+    {
+        $this->datagrid->openColumnsPopin();
+        $this->wait();
+        $this->datagrid->hideColumn($column);
+        $this->wait();
+    }
+
+    /**
+     * @When /^I put the "([^"]*)" column before the "([^"]*)" one$/
+     */
+    public function iPutTheColumnBeforeTheOne($source, $target)
+    {
+        $this->datagrid->openColumnsPopin();
+        $this->wait();
+        $this->datagrid->moveColumn($source, $target);
         $this->wait();
     }
 

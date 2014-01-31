@@ -19,7 +19,7 @@ class MediaTest extends \PHPUnit_Framework_TestCase
     protected $media;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

@@ -53,3 +53,7 @@ media:
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
+
+datagrid:
+    resource: '@PimEnrichBundle/Resources/config/routing/datagrid.yml'
+    prefix: /datagrid
