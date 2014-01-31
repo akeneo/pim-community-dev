@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Entity;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
+ * Datagrid column configuration
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
