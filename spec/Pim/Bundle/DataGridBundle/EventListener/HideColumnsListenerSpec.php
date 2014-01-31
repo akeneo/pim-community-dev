@@ -162,4 +162,49 @@ class HideColumnsListenerSpec extends ObjectBehavior
 
         $this->onBuildAfter($event);
     }
+
+    function it_ignores_configured_columns_that_does_not_exist_anymore(
+        Entity\DatagridConfiguration $datagridConfig,
+        $config,
+        $event,
+        $datagridConfigRepo,
+        $user
+    ) {
+        $datagridConfigRepo->findOneBy([
+            'datagridAlias' => 'foobar-grid',
+            'user'          => $user,
+        ])->willReturn($datagridConfig);
+
+        $datagridConfig->getColumns()->willReturn(['name', 'description', 'sku']);
+
+        $config->offsetGetByPath('[columns]')->willReturn([
+            'sku'         => ['label' => 'SKU'],
+            'description' => ['label' => 'Description'],
+        ]);
+
+        $config->offsetGetByPath('[sorters][columns][sku]')->willReturn('sku_sorter_config');
+        $config->offsetGetByPath('[sorters][columns][description]')->willReturn('description_sorter_config');
+
+        $config->offsetGetByPath('[sorters][columns]')->willReturn([
+            'sku'         => 'sku_sorter_config',
+            'description' => 'description_sorter_config',
+        ]);
+
+        $config->offsetSetByPath('[availableColumns]', [
+            'sku'         => 'SKU',
+            'description' => 'Description',
+        ])->shouldBeCalled();
+
+        $config->offsetSetByPath('[columns]', [
+            'description' => ['label' => 'Description'],
+            'sku'         => ['label' => 'SKU'],
+        ])->shouldBeCalled();
+
+        $config->offsetSetByPath('[sorters][columns]', [
+            'sku'         => 'sku_sorter_config',
+            'description' => 'description_sorter_config',
+        ])->shouldBeCalled();
+
+        $this->onBuildAfter($event);
+    }
 }

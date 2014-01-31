@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 
 /**
  * A context for creating entities
@@ -1128,6 +1129,27 @@ class FixturesContext extends RawMinkContext
     public function getUser($username)
     {
         return $this->getEntityOrException('User', array('username' => $username));
+    }
+
+    /**
+     * @Given /^I\'ve displayed the columns (.*)$/
+    */
+    public function iVeDisplayedTheColumns($columns)
+    {
+        $config = new DatagridConfiguration();
+        $config->setColumns($this->listToArray($columns));
+        $config->setDatagridAlias('product-grid');
+        $config->setUser($this->getUser('Julia'));
+
+        $this->persist($config);
+    }
+
+    /**
+     * @Given /^I\'ve removed the "([^"]*)" attribute$/
+     */
+    public function iVeRemovedTheAttribute($attribute)
+    {
+        $this->remove($this->getAttribute($attribute));
     }
 
     /**

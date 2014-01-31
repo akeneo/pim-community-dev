@@ -63,7 +63,9 @@ class HideColumnsListener
         if ($datagridConfig) {
             $sortedColumns = [];
             foreach ($datagridConfig->getColumns() as $column) {
-                $sortedColumns[$column] = $columns[$column];
+                if (array_key_exists($column, $columns)) {
+                    $sortedColumns[$column] = $columns[$column];
+                }
             }
             $config->offsetSetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY), $sortedColumns);
             $config->offsetSetByPath(sprintf('%s', SorterConfiguration::COLUMNS_PATH), $sorters);
