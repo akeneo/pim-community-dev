@@ -2,7 +2,7 @@
 
 <div class="row-fluid">
     <div class="span6">
-        <h2>{{ 'Available Columns'|trans }}</h2>
+        <h4>{{ 'Available Columns'|trans }}</h4>
         <ul id="bucket" class="connectedSortable">
             {% for column in form.columns if not column.vars.checked %}
             <li>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="span6">
-        <h2>{{ 'Displayed Columns'|trans }}</h2>
+        <h4>{{ 'Displayed Columns'|trans }}</h4>
         <ul id="columns" class="connectedSortable">
             {% for column in form.columns if column.vars.checked %}
             <li>
