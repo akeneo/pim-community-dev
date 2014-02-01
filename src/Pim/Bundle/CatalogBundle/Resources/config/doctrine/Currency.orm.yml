@@ -15,7 +15,3 @@ Pim\Bundle\CatalogBundle\Entity\Currency:
         activated:
             type: boolean
             column: is_activated
-    oneToMany:
-        locales:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
-            mappedBy: defaultCurrency

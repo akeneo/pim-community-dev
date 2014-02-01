@@ -307,7 +307,6 @@ Negative allowed:        Allow negative values
 Date type:               Date type
 Date min:                Min date
 Date max:                Max date
-Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
 Max file size:           Max file size (MB)

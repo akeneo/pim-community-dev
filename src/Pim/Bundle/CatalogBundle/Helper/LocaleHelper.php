@@ -105,18 +105,6 @@ class LocaleHelper
     }
 
     /**
-     * Returns the catalog locale currency
-     *
-     * @return string
-     */
-    public function getLocaleCurrency()
-    {
-        $locale = $this->getCurrentLocale();
-
-        return (null !== $locale && $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
-    }
-
-    /**
      * Returns the flag icon for a locale
      *
      * @param string  $code
