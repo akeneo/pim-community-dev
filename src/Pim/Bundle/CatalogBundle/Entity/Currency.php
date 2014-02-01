@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -36,17 +35,11 @@ class Currency implements ReferableInterface
     protected $activated;
 
     /**
-     * @var ArrayCollection $locales
-     */
-    protected $locales;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->activated = true;
-        $this->locales = new ArrayCollection();
     }
 
     /**
@@ -135,30 +128,6 @@ class Currency implements ReferableInterface
     public function setActivated($activated)
     {
         $this->activated = $activated;
-
-        return $this;
-    }
-
-    /**
-     * Get locales
-     *
-     * @return ArrayCollection
-     */
-    public function getLocales()
-    {
-        return $this->locales;
-    }
-
-    /**
-     * Set locales
-     *
-     * @param array $locales
-     *
-     * @return Currency
-     */
-    public function setLocales($locales = array())
-    {
-        $this->locales = new ArrayCollection($locales);
 
         return $this;
     }
