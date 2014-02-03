@@ -122,8 +122,8 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_enrich.mass_edit_action.operator'
-            - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - '@oro_datagrid.mass_action.dispatcher'
             - '@pim_catalog.manager.product'
 
     pim_enrich.controller.group:
