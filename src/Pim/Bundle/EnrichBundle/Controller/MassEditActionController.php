@@ -12,6 +12,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormError;
 
+use Doctrine\ORM\AbstractQuery;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -264,15 +266,8 @@ class MassEditActionController extends AbstractDoctrineController
     {
         if (null === $this->productIds) {
             $qb = $this->getGridQB($request);
-
-            $results = $qb->getQuery()->getResult();
-
-            $this->productIds = array_map(
-                function ($result) {
-                    return $result[0]->getId();
-                },
-                $results
-            );
+            $results = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
+            $this->productIds = array_keys($results);
         }
 
         return $this->productIds;
@@ -287,7 +282,16 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getProductCount(Request $request)
     {
-        return count($this->getProductIds($request));
+        if (null === $this->productIds) {
+            $qb = $this->getGridQB($request);
+
+            $qb->resetDQLPart('select');
+            $qb->select('COUNT (p.id)');
+
+            return (int) $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+        }
+
+        return count($this->productIds);
     }
 
     /**
@@ -320,11 +324,22 @@ class MassEditActionController extends AbstractDoctrineController
         $parameters  = $this->parametersParser->parse($request);
         $requestData = array_merge($request->query->all(), $request->request->all());
 
-        return $this->massActionDispatcher->dispatch(
+        $qb = $this->massActionDispatcher->dispatch(
             $requestData['gridName'],
             'export',
             $parameters,
             $requestData
         );
+
+        $identifier = sprintf('%s.id', $qb->getRootAlias());
+
+        $qb->resetDQLPart('select');
+        $qb->select($identifier);
+
+        $from = current($qb->getDQLPart('from'));
+        $qb->resetDQLPart('from');
+        $qb->from($from->getFrom(), $from->getAlias(), $identifier);
+
+        return $qb;
     }
 }
