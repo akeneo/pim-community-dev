@@ -137,6 +137,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $this->values[] = $value;
         $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
         $this->indexedValuesCount++;
+        $this->allAttributes[$value->getAttribute()->getCode()] = $value->getAttribute();
         $value->setEntity($this);
 
         return $this;
