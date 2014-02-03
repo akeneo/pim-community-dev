@@ -162,14 +162,12 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected function removeIndexedValue(FlexibleValueInterface $value)
     {
         $attributeCode = $value->getAttribute()->getCode();
-        $values =& $this->indexedValues[$attributeCode];
-        $valueFound = false;
-        $valuesCount = count($value);
-        for ($i = 0; ($i < $valuesCount && !$valueFound); $i++) {
-            if ($value === $values[$i]) {
-                unset($values[$i]);
-                $valueFound = true;
+        $possibleValues =& $this->indexedValues[$attributeCode];
+        foreach($possibleValues as $key => $possibleValue) {
+            if ($value === $possibleValue) {
+                unset($possibleValues[$key]);
                 $this->indexedValuesCount--;
+                break;
             }
         }
     }

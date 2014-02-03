@@ -7,6 +7,7 @@ use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -22,8 +23,13 @@ class ProductValueUpdateGuesserTest extends AbstractUpdateGuesserTest
      */
     public function testGuessUpdates()
     {
-        $product  = new Product();
-        $value    = new ProductValue();
+        $attribute = new Attribute();
+        $attribute->setCode('my_attribute');
+
+        $value = new ProductValue();
+        $value->setAttribute($attribute);
+
+        $product = new Product();
         $product->addValue($value);
 
         $guesser   = new ProductValueUpdateGuesser();
@@ -32,13 +38,18 @@ class ProductValueUpdateGuesserTest extends AbstractUpdateGuesserTest
         $this->assertEquals(1, count($updates));
         $this->assertEquals($product, $updates[0]);
 
-        $product  = new Product();
-        $value    = new ProductValue();
-        $price    = new ProductPrice();
+        $attribute = new Attribute();
+        $attribute->setCode('my_price');
+
+        $price = new ProductPrice();
+        $value = new ProductValue();
+        $value->setAttribute($attribute);
         $value->addPrice($price);
+
+        $product = new Product();
         $product->addValue($value);
 
-        $updates   = $guesser->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
+        $updates = $guesser->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($product, $updates[0]);
 
