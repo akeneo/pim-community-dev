@@ -47,6 +47,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var integer[] */
+    protected $productIds;
+
     /**
      * Constructor
      *
@@ -104,8 +107,8 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction(Request $request)
     {
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -116,18 +119,15 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    array(
-                        'operationAlias' => $this->operator->getOperationAlias(),
-                        'actionId'       => $request->get('actionId')
-                    )
+                    $this->getQueryParams($request) + ['operationAlias' => $this->operator->getOperationAlias()]
                 );
             }
         }
 
         return array(
             'form'         => $form->createView(),
-            'productCount' => count($productIds),
-            'actionId'     => $request->get('actionId')
+            'productCount' => $productCount,
+            'queryParams'  => $this->getQueryParams($request)
         );
     }
 
@@ -147,17 +147,17 @@ class MassEditActionController extends AbstractDoctrineController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($productIds);
+        $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $this->operator->initializeOperation($productIds);
+            $this->operator->initializeOperation($this->getProductIds($request));
             $form = $this->getOperatorForm();
         }
 
@@ -166,8 +166,8 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => count($productIds),
-                'actionId'     => $request->get('actionId')
+                'productCount' => $productCount,
+                'queryParams'  => $this->getQueryParams($request)
             )
         );
     }
@@ -188,24 +188,24 @@ class MassEditActionController extends AbstractDoctrineController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         // Hacky hack for the edit common attribute operation to work
         // first time is to set diplayed attributes and locale
-        $this->operator->initializeOperation($productIds);
+        $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
         $form->submit($request);
 
         //second time is to set values
-        $this->operator->initializeOperation($productIds);
+        $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
         $form->submit($request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($productIds);
+        $this->operator->performOperation($this->getProductIds($request));
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -219,7 +219,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($form->isValid()) {
             $this->productManager->saveAll(
-                $this->productManager->findByIds($productIds),
+                $this->productManager->findByIds($this->getProductIds($request)),
                 false
             );
             $this->addFlash(
@@ -235,8 +235,8 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => count($productIds),
-                'actionId'     => $request->get('actionId')
+                'productCount' => $productCount,
+                'queryParams'  => $this->getQueryParams($request)
             )
         );
     }
@@ -254,7 +254,7 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * Get the product ids stored in the session or extract from the grid and store in the session
+     * Get the product ids to perform the mass action on
      *
      * @param Request $request
      *
@@ -262,34 +262,63 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getProductIds(Request $request)
     {
-        if (null !== $actionId = $request->get('actionId')) {
-            return $request->getSession()->get($actionId, array());
+        if (null === $this->productIds) {
+            $qb = $this->getGridQB($request);
+
+            $results = $qb->getQuery()->getResult();
+
+            $this->productIds = array_map(
+                function ($result) {
+                    return $result[0]->getId();
+                },
+                $results
+            );
         }
 
-        $actionId = rand();
+        return $this->productIds;
+    }
 
-        $parameters  = $this->parametersParser->parse($request);
+    /**
+     * Get the count of products to perform the mass action on
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function getProductCount(Request $request)
+    {
+        return count($this->getProductIds($request));
+    }
+
+    /**
+     * Get the datagrid query parameters
+     *
+     * @param Request $request
+     *
+     * @return QueryBuilder
+     */
+    protected function getQueryParams(Request $request)
+    {
+        return $this->parametersParser->parse($request) + ['gridName' => $request->get('gridName')];
+    }
+
+    /**
+     * Get the query builder with grid parameters applied
+     *
+     * @param Request $request
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getGridQB(Request $request)
+    {
+        $parameters  = $this->getQueryParams($request);
         $requestData = array_merge($request->query->all(), $request->request->all());
 
-        $qb = $this->massActionDispatcher->dispatch(
+        return $this->massActionDispatcher->dispatch(
             $requestData['gridName'],
             'export',
             $parameters,
             $requestData
         );
-
-        $results = $qb->getQuery()->execute();
-
-        $ids = array_map(
-            function ($result) {
-                return $result[0]->getId();
-            },
-            $results
-        );
-
-        $request->getSession()->set($actionId, $ids);
-        $request->query->set('actionId', $actionId);
-
-        return $ids;
     }
 }

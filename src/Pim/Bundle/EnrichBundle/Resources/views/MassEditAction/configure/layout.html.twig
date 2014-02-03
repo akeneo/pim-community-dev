@@ -7,7 +7,7 @@
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', { 'operationAlias': operator.operationAlias, 'actionId': actionId }) }) }}
+    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operator.operationAlias })) }) }}
 
         <div class="row">
             <div class="offset1 span12">
@@ -38,7 +38,7 @@
         </div>
 
         <div class="row offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', { 'actionId': actionId })) }}
+            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
             {{ elements.link('btn.next', '#', {'class': ['next', 'btn-primary']}) }}
         </div>
 
@@ -54,7 +54,7 @@
     {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set action = path('pim_enrich_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'actionId': actionId }) %}
+    {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operator.operationAlias })) %}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
