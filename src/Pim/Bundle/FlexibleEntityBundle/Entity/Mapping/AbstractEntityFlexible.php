@@ -221,6 +221,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
+        $this->indexValuesIfNeeded();
+
         if (!isset($this->indexedValues[$attributeCode])) {
             return null;
         }
@@ -247,6 +249,20 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         }
 
         return $value;
+    }
+
+    /**
+     * Build the indexed values if needed
+     */
+    protected function indexValuesIfNeeded()
+    {
+        if (count($this->values) != $this->indexedValuesCount) {
+            $this->indexedValues = array();
+            foreach ($this->values as $value) {
+                $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
+                $this->indexedValuesCount++;
+            }
+        }
     }
 
     /**
@@ -381,9 +397,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     protected function updateValue($attributeCode, $method, $arguments)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
+        $attribute = $this->getAttribute($attributeCode);
 
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
