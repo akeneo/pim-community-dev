@@ -50,6 +50,20 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected $values;
 
     /**
+     * @var array
+     *
+     * Values indexed by attribute_code
+     */
+    protected $indexedValues;
+
+    /**
+     * @var int
+     *
+     * Number of values indexed by attribute_code
+     */
+    protected $indexedValuesCount = 0;
+
+    /**
      * Associative array of defined attributes
      *
      * @var array
@@ -70,6 +84,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $this->allAttributes = array();
         $this->values        = new ArrayCollection();
+        $this->indexedValues = array();
     }
 
     /**
@@ -120,6 +135,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     public function addValue(FlexibleValueInterface $value)
     {
         $this->values[] = $value;
+        $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
+        $this->indexedValuesCount++;
         $value->setEntity($this);
 
         return $this;
@@ -132,8 +149,40 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function removeValue(FlexibleValueInterface $value)
     {
+        $this->removeIndexedValue($value);
         $this->values->removeElement($value);
+
     }
+
+    /**
+     * Remove a value from the indexedValues array
+     *
+     * @param FlexibleValueInterface $value
+     */
+    protected function removeIndexedValue(FlexibleValueInterface $value)
+    {
+        $attributeCode = $value->getAttribute()->getCode();
+        $candidateValues =& $this->indexedValues[$attributecode];
+        $valueFound = false;
+        for ($i = 0; ($i < $count && !$valueFound); $i++) {
+            if ($value === $candidateValues[$i]) {
+                unset($candidateValues[$i]);
+                $valueFound = true;
+                $this->indexedValuesCount--;
+            }
+        }
+    }
+
+    /**
+     * Get the list of used attribute code from the indexed values
+     *
+     * @return array
+     */
+    public function getUsedAttributeCodes()
+    {
+        return array_keys($this->getIndexedValues());
+    }
+
 
     /**
      * Get values
@@ -142,16 +191,24 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValues()
     {
-        $values = new ArrayCollection();
+        return $this->values;
+    }
 
-        foreach ($this->values as $value) {
-            $attribute = $value->getAttribute();
-            $key = $this->getValueKey($value);
-                
-            $values[$key] = $value;
+    /**
+     * Build the values indexed by attribute code array
+     *
+     */
+    protected function getIndexedValues()
+    {
+        if (count($this->values) != $this->indexedValuesCount) {
+            $this->indexedValuesCount = array();
+            foreach($this->values as $value) {
+                $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
+                $this->indexedValuesCount++;
+            }
         }
 
-        return $values;
+        return $this->indexedValues;
     }
 
     /**
@@ -165,54 +222,52 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $localeCode = ($localeCode) ? $localeCode : $this->getLocale();
-        $scopeCode  = ($scopeCode) ? $scopeCode : $this->getScope();
+        $indexedValues = $this->getIndexedValues();
 
-        $valueKey = $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
+        $attribute = $this->getAttribute($attributeCode);
 
-        $values = $this->getValues();
-
-        return $values[$valueKey];
-    }
-
-    /**
-     * Get a key identifing uniquely the value
-     *
-     * @param AbstractFlexibleValue $value
-     *
-     * @return string
-     */
-    protected function getValueKey(AbstractFlexibleValue $value)
-    {
-        $attribute = $value->getAttribute();
-        $attributeCode = $attribute->getCode();
-
-        $localeCode = null;
-        $scopeCode = null;
+        $valueLocale = null;
+        $valueScope = null;
 
         if ($attribute->isTranslatable()) {
-            $localeCode = $value->getLocale();
-        }
-        if ($attribute->isScopable()) {
-            $scopeCode = $value->getScope();
+            $valueLocale = ($localeCode) ? $localeCode : $this->getLocale();
         }
 
-        return $this->buildValueKey($attributeCode, $localeCode, $scopeCode);
+        if ($attribute->isScopable()) {
+            $valueScope = ($scopeCode) ? $scopeCode : $this->getScope();
+        }
+
+        $value = null;
+
+        if (isset($this->indexedValues[$attributeCode])) {
+            $candidateValues = $this->indexedValues[$attributeCode];
+            $valueFound = false;
+
+            for ($i = 0; ($i < count($candidateValues) && !$valueFound); $i++) {
+                $candidateValue = $candidateValues[$i];
+                if ($candidateValue->getLocale() === $valueLocale && $candidateValue->getScope() === $valueScope) {
+                    $value = $candidateValue;
+                    $valueFound = true;
+                }
+            }
+        }
+
+        return $value;
     }
 
     /**
-     * Get a key identifier for a value from attributeCode, localeCode and scopeCode
+     * Get attribute from its code by using the cache integrated to the product
      *
      * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
      *
-     * @return string
+     * @return AbstractAttribute
+     * @throws InvalidParameterException
      */
-    protected function buildValueKey($attributeCode, $localeCode = null, $scopeCode = null)
-    {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(
+    protected function getAttribute($attributeCode) {
+        if (isset($this->allAttributes[$attributeCode])) {
+            return $this->allAttributes[$attributeCode];
+        } else {
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find attribute "%s" in %s.',
                     $attributeCode,
@@ -220,19 +275,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                 )
             );
         }
-
-        $attribute = $this->allAttributes[$attributeCode];
-
-        $key = $attribute->getCode();
-
-        if ($attribute->isTranslatable() && $localeCode != null) {
-            $key .= '_' . $localeCode;
-        }
-        if ($attribute->isScopable() && $scopeCode != null) {
-            $key .= '_' . $scopeCode;
-        }
-
-        return $key;
     }
 
     /**
