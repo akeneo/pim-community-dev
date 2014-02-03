@@ -25,7 +25,7 @@ class Immutable extends Constraint
      *
      * @var string
      */
-    public $message = 'This property may not be changed.';
+    public $message = 'This property cannot be changed.';
 
     /**
      * {@inheritdoc}
