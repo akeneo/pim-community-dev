@@ -42,7 +42,7 @@ class CurrencyManager
     /**
      * Get currencies with criterias
      *
-     * @param multitype:string $criterias
+     * @param array $criterias
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
@@ -54,7 +54,7 @@ class CurrencyManager
     /**
      * Get active codes
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getActiveCodes()
     {

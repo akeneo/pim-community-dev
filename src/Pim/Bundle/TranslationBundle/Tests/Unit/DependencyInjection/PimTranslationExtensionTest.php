@@ -21,7 +21,7 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
     protected $extension;
 
     /**
-     * @var multitype:mixed
+     * @var array
      */
     protected $configs = array();
 

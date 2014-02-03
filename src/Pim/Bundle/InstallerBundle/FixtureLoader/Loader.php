@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\EntityCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 
 /**

@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 
 /**
  * A context for creating entities
@@ -264,7 +265,7 @@ class FixturesContext extends RawMinkContext
         // Clear product transformer cache
         $this
             ->getContainer()
-            ->get('pim_import_export.transformer.product')
+            ->get('pim_transform.transformer.product')
             ->reset();
 
         $product = $this->loadFixture('products', $data);
@@ -505,7 +506,7 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['translatable'] == 1), $attribute->isTranslatable());
+            assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
             assertEquals(($data['scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
@@ -1128,6 +1129,27 @@ class FixturesContext extends RawMinkContext
     public function getUser($username)
     {
         return $this->getEntityOrException('User', array('username' => $username));
+    }
+
+    /**
+     * @Given /^I\'ve displayed the columns (.*)$/
+    */
+    public function iVeDisplayedTheColumns($columns)
+    {
+        $config = new DatagridConfiguration();
+        $config->setColumns($this->listToArray($columns));
+        $config->setDatagridAlias('product-grid');
+        $config->setUser($this->getUser('Julia'));
+
+        $this->persist($config);
+    }
+
+    /**
+     * @Given /^I\'ve removed the "([^"]*)" attribute$/
+     */
+    public function iVeRemovedTheAttribute($attribute)
+    {
+        $this->remove($this->getAttribute($attribute));
     }
 
     /**

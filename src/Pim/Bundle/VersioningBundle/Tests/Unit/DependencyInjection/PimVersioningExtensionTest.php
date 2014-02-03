@@ -15,17 +15,17 @@ use Pim\Bundle\VersioningBundle\DependencyInjection\PimVersioningExtension;
 class PimVersioningExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\HttpKernel\DependencyInjection\Extension
+     * @var \Symfony\Component\HttpKernel\DependencyInjection\Extension $extension
      */
     protected $extension;
 
     /**
-     * @var multitype:mixed
+     * @var array $configs
      */
     protected $configs = array();
 
     /**
-     * @var ContainerBuilder
+     * @var ContainerBuilder $containerBuilder
      */
     protected $containerBuilder;
 

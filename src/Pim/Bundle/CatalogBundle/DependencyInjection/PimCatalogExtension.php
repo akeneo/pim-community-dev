@@ -32,13 +32,11 @@ class PimCatalogExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
         $loader->load('services.yml');
-        $loader->load('controllers.yml');
         $loader->load('managers.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
         $loader->load('factory.yml');
         $loader->load('entities.yml');
-        $loader->load('datagrid_listeners.yml');
         $loader->load('repositories.yml');
 
         $this->loadStorageDriver($config, $container);

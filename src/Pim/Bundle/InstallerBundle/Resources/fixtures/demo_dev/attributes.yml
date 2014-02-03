@@ -16,7 +16,7 @@ attributes:
             fr_FR: Nom
         type:  pim_catalog_text
         group: general
-        translatable:        true
+        localizable:         true
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
@@ -32,14 +32,14 @@ attributes:
         numberMax:           500
         sortOrder:           1
         decimalsAllowed:     true
-        translatable:        true
+        localizable:         true
     short_description:
         labels:
             en_US: Short Description
             fr_FR: Description courte
         type:  pim_catalog_textarea
         group: general
-        translatable:        true
+        localizable:         true
         scopable:            true
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -51,7 +51,7 @@ attributes:
             fr_FR: Description longue
         type:  pim_catalog_textarea
         group: general
-        translatable:        true
+        localizable:         true
         scopable:            true
         useableAsGridColumn: false
         useableAsGridFilter: true
@@ -84,7 +84,7 @@ attributes:
             fr_FR: Image téléchargée
         type:  pim_catalog_image
         group: seo
-        translatable:      true
+        localizable:       true
         maxFileSize:       2000
         sortOrder:         2
         allowedExtensions: 'gif,jpeg,png'
@@ -128,7 +128,7 @@ attributes:
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
-        translatable:        true
+        localizable:         true
         options:
             Red:
                 labels:
@@ -159,7 +159,7 @@ attributes:
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           10
-        translatable:        true
+        localizable:         true
         options:
             MyMug:
                 labels:
@@ -223,7 +223,7 @@ attributes:
         metricFamily:        Weight
         defaultMetricUnit:   GRAM
         decimalsAllowed:     true
-        translatable:        true
+        localizable:         true
     washing_temperature:
         labels:
             en_US: Washing Temperature

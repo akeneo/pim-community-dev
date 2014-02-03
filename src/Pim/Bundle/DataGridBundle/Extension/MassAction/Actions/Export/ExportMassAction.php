@@ -18,7 +18,7 @@ class ExportMassAction extends WidgetMassAction
     protected $requiredOptions = ['route', 'frontend_type', 'handler'];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOptions(ActionConfiguration $options)
     {

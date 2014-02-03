@@ -25,7 +25,7 @@ class AddAttributeTypesPass implements CompilerPassInterface
     const PARAM_PREFIX = 'pim_datagrid.flexible.attribute_type.';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

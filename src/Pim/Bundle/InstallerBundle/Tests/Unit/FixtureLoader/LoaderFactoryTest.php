@@ -15,7 +15,7 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
-        $entityCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\EntityCache')
+        $entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
         $configurationRegistry = $this->getMock(

@@ -5,9 +5,8 @@ parameters:
     pim_import_export.controller.export_execution.class: Pim\Bundle\ImportExportBundle\Controller\ExportExecutionController
 
 services:
-
     pim_import_export.controller.export_profile:
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.export_profile.class%
         arguments:
@@ -18,7 +17,7 @@ services:
             - '@pim_import_export.form.type.job_instance'
 
     pim_import_export.controller.import_profile:
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.import_profile.class%
         arguments:
@@ -29,19 +28,19 @@ services:
             - '@pim_import_export.form.type.job_instance'
 
     pim_import_export.controller.export_execution:
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.export_execution.class%
         arguments:
             - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.event_listener.archivist'
+            - '@pim_base_connector.event_listener.archivist'
             - export
 
     pim_import_export.controller.import_execution:
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.import_execution.class%
         arguments:
             - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.event_listener.archivist'
+            - '@pim_base_connector.event_listener.archivist'
             - import

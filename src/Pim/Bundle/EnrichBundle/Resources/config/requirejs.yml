@@ -3,14 +3,19 @@ config:
         jquery.wizard:
             deps:
                 - jquery
-        jstree/jquery.jstree.nested_switch:
+        jstree/nested_switch:
             deps:
                 - jquery.jstree
 
     paths:
-        jquery.wizard:                      pimenrich/js/jquery.wizard
-        jstree/jquery.jstree.nested_switch: pimenrich/js/lib/jstree/jquery.jstree.nested_switch
-        pim/tree/view:                      pimenrich/js/tree-view.jstree
-        pim/tree/associate:                 pimenrich/js/tree-associate.jstree
-        pim/tree/mass-associate:            pimenrich/js/tree-mass-associate.jstree
-        pim/tree/manage:                    pimenrich/js/tree-manage.jstree
+        jquery.wizard:           pimenrich/js/jquery.wizard
+        jstree/nested_switch:    pimenrich/js/lib/jstree/jquery.jstree.nested_switch
+        pim/init:                pimenrich/js/pim-init
+        pim/asynctab:            pimenrich/js/pim-async-tab
+        pim/popinform:           pimenrich/js/pim-popinform
+        pim/scopable:            pimenrich/js/pim-scopable
+        pim/currencyfield:       pimenrich/js/pim-currencyfield
+        pim/tree/view:           pimenrich/js/tree-view.jstree
+        pim/tree/associate:      pimenrich/js/tree-associate.jstree
+        pim/tree/mass-associate: pimenrich/js/tree-mass-associate.jstree
+        pim/tree/manage:         pimenrich/js/tree-manage.jstree

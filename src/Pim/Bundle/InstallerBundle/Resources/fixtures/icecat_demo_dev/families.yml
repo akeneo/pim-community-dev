@@ -453,7 +453,6 @@ families:
                 - name
                 - description
                 - price
-                - picture
             mobile:
                 - sku
                 - name
@@ -466,7 +465,6 @@ families:
                 - description
                 - main_color
                 - price
-                - picture
                 - container_material
         attributes:
             - sku
@@ -484,7 +482,6 @@ families:
                 - name
                 - description
                 - price
-                - picture
             mobile:
                 - sku
                 - name
@@ -499,8 +496,6 @@ families:
                 - description
                 - main_color
                 - secondary_color
-                - price
-                - picture
                 - tshirt_materials
                 - clothing_size
         attributes:

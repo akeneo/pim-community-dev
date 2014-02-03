@@ -41,7 +41,7 @@ Feature: Edit common attributes of many products at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Price attribute
-    And I change the "US$ Price" to "100"
+    And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
     Then the prices "Price" of products boots and sandals should be:

@@ -17,8 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
@@ -31,11 +30,6 @@ use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
  */
 class AssociationTypeController extends AbstractDoctrineController
 {
-    /**
-     * @var LocaleManager
-     */
-    private $localeManager;
-
     /**
      * @var AssociationTypeHandler
      */
@@ -57,7 +51,6 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param LocaleManager            $localeManager
      * @param AssociationTypeHandler   $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
@@ -70,7 +63,6 @@ class AssociationTypeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        LocaleManager $localeManager,
         AssociationTypeHandler $assocTypeHandler,
         Form $assocTypeForm
     ) {
@@ -85,7 +77,6 @@ class AssociationTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->localeManager    = $localeManager;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
     }
@@ -101,9 +92,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array(
-            'localeCode' => $this->localeManager->getUserLocale()->getCode()
-        );
+        return array();
     }
 
     /**

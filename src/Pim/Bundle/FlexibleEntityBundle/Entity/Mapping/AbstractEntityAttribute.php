@@ -95,9 +95,9 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
     protected $searchable;
 
     /**
-     * @ORM\Column(name="is_translatable", type="boolean")
+     * @ORM\Column(name="is_localizable", type="boolean")
      */
-    protected $translatable;
+    protected $localizable;
 
     /**
      * @ORM\Column(name="is_scopable", type="boolean")
@@ -126,7 +126,7 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
         $this->unique       = false;
         $this->defaultValue = null;
         $this->searchable   = false;
-        $this->translatable = false;
+        $this->localizable  = false;
         $this->scopable     = false;
     }
 

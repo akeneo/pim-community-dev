@@ -17,10 +17,10 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given the following attributes:
-      | type   | label             | scopable | translatable |
-      | prices | Price             | no       | no           |
-      | text   | Color             | no       | yes          |
-      | text   | Short description | yes      | yes          |
+      | type   | label             | scopable | localizable |
+      | prices | Price             | no       | no          |
+      | text   | Color             | no       | yes         |
+      | text   | Short description | yes      | yes         |
     And the following product:
       | sku | price                | color-en_US | color-fr_FR |
       | Car | 10000 EUR, 15000 USD | red         | rouge       |

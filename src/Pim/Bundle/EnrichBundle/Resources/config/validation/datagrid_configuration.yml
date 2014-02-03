@@ -1,0 +1,6 @@
+Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration:
+    properties:
+        columns:
+            - Count:
+                minMessage: pim_enrich.datagrid_configuration.columns.min_message
+                min: 1

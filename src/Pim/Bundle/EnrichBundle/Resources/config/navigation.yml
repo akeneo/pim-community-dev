@@ -128,36 +128,28 @@ oro_menu_config:
                         pim_enrich_channel: ~
 
 oro_titles:
-    oro_default:                         Dashboard
-    pim_enrich_attributegroup_create:   Attribute groups | Create
-    pim_enrich_attributegroup_edit:     Attribute groups %%group.label%% | Edit
-    pim_enrich_categorytree_listtree:   Category trees | List
-    pim_enrich_categorytree_create:     Category trees | Create
-    pim_enrich_categorytree_edit:       Category trees %%category.label%% | Edit
-    pim_enrich_attribute_index:         Attributes
-    pim_enrich_attribute_create:        Attributes | Create
-    pim_enrich_attribute_edit:          Attributes %%attribute.label%% | Edit
-    pim_enrich_product_index:           Products
-    pim_enrich_product_create:          Products | Create
-    pim_enrich_product_edit:            Products %%product.sku%% | Edit
-    pim_enrich_family_index:            Families
-    pim_enrich_family_create:           Families | Create
-    pim_enrich_family_edit:             Families %%family.label%% | Edit
-    pim_enrich_channel_index:           Channels
-    pim_enrich_channel_create:          Channels | Create
-    pim_enrich_channel_edit:            Channels %%channel.label%% | Edit
-    pim_enrich_currency_index:          Currencies
-    pim_enrich_locale_index:            Locales
-    pim_enrich_locale_edit:             Locales %%locale.code%% | Edit
-    pim_enrich_group_index:             Groups
-    pim_enrich_group_create:            Groups | Create
-    pim_enrich_group_edit:              Groups %%group.label%% | Edit
-    pim_enrich_variant_group_index:     Variant groups
-    pim_enrich_variant_group_create:    Variant groups | Create
-    pim_enrich_variant_group_edit:      Variant groups %%group.label%% | Edit
-    pim_enrich_association_type_index:  Association types
-    pim_enrich_association_type_create: Association types | Create
-    pim_enrich_association_type_edit:   Association types %%association type.label%% | Edit
-    pim_enrich_group_type_index:        Group types
-    pim_enrich_group_type_create:       Group types | Create
-    pim_enrich_group_type_edit:         Group types %%group type.label%% | Edit
+    oro_default:                        pim_title.dashboard
+    pim_enrich_attributegroup_create:   pim_title.attribute_group.create
+    pim_enrich_attributegroup_edit:     pim_title.attribute_group.edit
+    pim_enrich_categorytree_create:     pim_title.category.create
+    pim_enrich_categorytree_edit:       pim_title.category.edit
+    pim_enrich_attribute_index:         pim_title.attribute.index
+    pim_enrich_attribute_create:        pim_title.attribute.create
+    pim_enrich_attribute_edit:          pim_title.attribute.edit
+    pim_enrich_product_index:           pim_title.product.index
+    pim_enrich_product_edit:            pim_title.product.edit
+    pim_enrich_family_index:            pim_title.family.index
+    pim_enrich_family_edit:             pim_title.family.edit
+    pim_enrich_channel_index:           pim_title.channel.index
+    pim_enrich_channel_create:          pim_title.channel.create
+    pim_enrich_channel_edit:            pim_title.channel.edit
+    pim_enrich_currency_index:          pim_title.currency.index
+    pim_enrich_locale_index:            pim_title.locale.index
+    pim_enrich_group_index:             pim_title.group.index
+    pim_enrich_group_edit:              pim_title.group.edit
+    pim_enrich_variant_group_index:     pim_title.variant_group.index
+    pim_enrich_variant_group_edit:      pim_title.variant_group.edit
+    pim_enrich_association_type_index:  pim_title.association_type.index
+    pim_enrich_association_type_edit:   pim_title.association_type.edit
+    pim_enrich_group_type_index:        pim_title.group_type.index
+    pim_enrich_group_type_edit:         pim_title.group_type.edit

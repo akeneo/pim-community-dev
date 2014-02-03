@@ -7,9 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
@@ -28,14 +27,9 @@ class TranslatableFieldType extends AbstractType
     protected $validator;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
-
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected $userContext;
 
     /**
      * @var LocaleHelper
@@ -44,13 +38,13 @@ class TranslatableFieldType extends AbstractType
 
     /**
      * @param ValidatorInterface $validator
-     * @param LocaleManager      $localeManager
+     * @param UserContext        $userContext
      * @param LocaleHelper       $localeHelper
      */
-    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, LocaleHelper $localeHelper)
+    public function __construct(ValidatorInterface $validator, UserContext $userContext, LocaleHelper $localeHelper)
     {
-        $this->validator     = $validator;
-        $this->localeManager = $localeManager;
+        $this->validator    = $validator;
+        $this->userContext  = $userContext;
         $this->localeHelper = $localeHelper;
     }
 
@@ -79,7 +73,7 @@ class TranslatableFieldType extends AbstractType
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),
             $this->validator,
-            $this->localeManager,
+            $this->userContext,
             $this->localeHelper,
             $options
         );
@@ -96,25 +90,13 @@ class TranslatableFieldType extends AbstractType
         $resolver->setDefaults(
             array(
                 'translation_class' => false,
-                'entity_class' => false,
-                'field' => false,
-                'locales' => $this->getActiveLocales(),
-                'required_locale' => array(),
-                'widget' => 'text'
+                'entity_class'      => false,
+                'field'             => false,
+                'locales'           => $this->userContext->getUserLocaleCodes(),
+                'required_locale'   => array(),
+                'widget'            => 'text'
             )
         );
-    }
-
-    /**
-     * Get active locales
-     *
-     * @return multitype:string
-     */
-    protected function getActiveLocales()
-    {
-        $locales = $this->localeManager->getActiveCodes();
-
-        return $locales;
     }
 
     /**
@@ -123,15 +105,5 @@ class TranslatableFieldType extends AbstractType
     public function getName()
     {
         return 'pim_translatable_field';
-    }
-
-    /**
-     * Returns the request locale, or the default locale if no request exists
-     *
-     * @return string
-     */
-    protected function getDefaultLocale()
-    {
-        return $this->request ? $this->request->getLocale() : $this->defaultLocale;
     }
 }

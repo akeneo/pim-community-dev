@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
@@ -65,7 +64,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
             ->addType(
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-                    $this->getLocaleManagerMock(),
+                    $this->getUserContextMock(),
                     $this->getLocaleHelperMock()
                 )
             )
@@ -74,7 +73,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         // Create form type
         $this->type = new TranslatableFieldType(
             $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-            $this->getLocaleManagerMock(),
+            $this->getUserContextMock(),
             $this->getLocaleHelperMock()
         );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
@@ -83,42 +82,22 @@ class TranslatableFieldTypeTest extends TypeTestCase
     }
 
     /**
-     * Create mock for locale manager
+     * Create mock for user context
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\UserBundle\Context\UserContext
      */
-    protected function getLocaleManagerMock()
+    protected function getUserContextMock()
     {
-        $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $userContext = $this
+            ->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager->expects($this->any())
-            ->method('getActiveCodes')
+        $userContext->expects($this->any())
+            ->method('getUserLocaleCodes')
             ->will($this->returnValue(array('en_US', 'fr_FR')));
 
-        return $manager;
-    }
-
-    /**
-     * Create a security context mock
-     *
-     * @return \Symfony\Component\Security\Core\SecurityContext
-     */
-    protected function getSecurityContextMock()
-    {
-        $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
-        $decisionManager = $this->getMock(
-            'Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface'
-        );
-
-        $securityContext = new SecurityContext($authManager, $decisionManager);
-        $securityContext->setToken(
-            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
-        );
-
-        return $securityContext;
+        return $userContext;
     }
 
     /**
@@ -157,7 +136,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
      * @param string $fieldName        Entity field name
      * @param string $translationClass Translation class name
      *
-     * @return multitype:string
+     * @return string[]
      */
     protected function buildOptions($entityClass, $fieldName, $translationClass)
     {
@@ -171,7 +150,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * Data provider for options
      *
-     * @return multitype:multitype:string
+     * @return array
      */
     public static function dataOptionsProvider()
     {

@@ -21,7 +21,7 @@ class OrmDatasource extends OroOrmDatasource
     const TYPE = 'pim_orm';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
     {
@@ -42,7 +42,7 @@ class OrmDatasource extends OroOrmDatasource
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getResults()
     {

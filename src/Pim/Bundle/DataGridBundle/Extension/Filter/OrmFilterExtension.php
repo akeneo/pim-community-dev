@@ -18,7 +18,7 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 class OrmFilterExtension extends OroOrmFilterExtension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {

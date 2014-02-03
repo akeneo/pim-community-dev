@@ -55,7 +55,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 message: This code is not available.
         searchable:
             - Type: bool
-        translatable:
+        localizable:
             - Type: bool
         scopable:
             - NotNull: ~

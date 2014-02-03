@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -41,9 +41,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $productManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var CurrencyManager
@@ -64,16 +64,16 @@ class EditCommonAttributes extends AbstractMassEditAction
      * Constructor
      *
      * @param ProductManager  $productManager
-     * @param LocaleManager   $localeManager
+     * @param UserContext     $userContext
      * @param CurrencyManager $currencyManager
      */
     public function __construct(
         ProductManager $productManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         CurrencyManager $currencyManager
     ) {
         $this->productManager      = $productManager;
-        $this->localeManager       = $localeManager;
+        $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
         $this->attributesToDisplay = new ArrayCollection();
@@ -128,9 +128,7 @@ class EditCommonAttributes extends AbstractMassEditAction
             return $this->locale;
         }
 
-        return $this->localeManager->getLocaleByCode(
-            $this->productManager->getLocale()
-        );
+        return $this->userContext->getCurrentLocale();
     }
 
     /**
@@ -197,7 +195,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     public function getFormOptions()
     {
         return array(
-            'locales'          => $this->localeManager->getUserLocales(),
+            'locales'          => $this->userContext->getUserLocales(),
             'commonAttributes' => $this->commonAttributes,
         );
     }
@@ -330,7 +328,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         return $product->getValue(
             $value->getAttribute()->getCode(),
-            $value->getAttribute()->isTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->isLocalizable() ? $this->getLocale()->getCode() : null,
             $value->getAttribute()->isScopable() ? $value->getScope() : null
         );
     }
@@ -367,7 +365,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
 
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             $value->setLocale($locale);
         }
 

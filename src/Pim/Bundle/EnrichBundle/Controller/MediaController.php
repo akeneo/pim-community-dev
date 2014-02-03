@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Response;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Imagine\Image\ImagineInterface;

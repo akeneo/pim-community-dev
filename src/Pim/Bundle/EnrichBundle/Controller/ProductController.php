@@ -15,6 +15,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+
+use Doctrine\ORM\QueryBuilder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,15 +27,15 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 
 /**
  * Product Controller
@@ -54,9 +57,9 @@ class ProductController extends AbstractDoctrineController
     protected $categoryManager;
 
     /**
-     * @var LocaleManager
+     * @var UserContext
      */
-    protected $localeManager;
+    protected $userContext;
 
     /**
      * @var AuditManager
@@ -77,6 +80,11 @@ class ProductController extends AbstractDoctrineController
      * @var MassActionDispatcher
      */
     protected $massActionDispatcher;
+
+    /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
 
     /**
      * Constant used to redirect to the datagrid when save edit form
@@ -103,11 +111,12 @@ class ProductController extends AbstractDoctrineController
      * @param RegistryInterface          $doctrine
      * @param ProductManager             $productManager
      * @param CategoryManager            $categoryManager
-     * @param LocaleManager              $localeManager
+     * @param UserContext                $userContext
      * @param AuditManager               $auditManager
      * @param SecurityFacade             $securityFacade
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,
@@ -120,11 +129,12 @@ class ProductController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         ProductManager $productManager,
         CategoryManager $categoryManager,
-        LocaleManager $localeManager,
+        UserContext $userContext,
         AuditManager $auditManager,
         SecurityFacade $securityFacade,
         MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher
+        MassActionDispatcher $massActionDispatcher,
+        SerializerInterface $serializer
     ) {
         parent::__construct(
             $request,
@@ -139,11 +149,12 @@ class ProductController extends AbstractDoctrineController
 
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
-        $this->localeManager        = $localeManager;
+        $this->userContext          = $userContext;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
+        $this->serializer           = $serializer;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -167,7 +178,7 @@ class ProductController extends AbstractDoctrineController
             $parameters  = $this->parametersParser->parse($request);
             $requestData = array_merge($request->query->all(), $request->request->all());
 
-            $result = $this->massActionDispatcher->dispatch(
+            $qb = $this->massActionDispatcher->dispatch(
                 $requestData['gridName'],
                 $requestData['actionName'],
                 $parameters,
@@ -187,13 +198,13 @@ class ProductController extends AbstractDoctrineController
             $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
             $response->headers->set('Content-Type', 'text/csv');
             $response->headers->set('Content-Disposition', $attachment);
-            $response->setCallback($this->quickExportCallback($result));
+            $response->setCallback($this->quickExportCallback($qb));
 
             return $response->send();
         }
 
         return array(
-            'locales'    => $this->localeManager->getUserLocales(),
+            'locales'    => $this->userContext->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
@@ -201,14 +212,32 @@ class ProductController extends AbstractDoctrineController
     /**
      * Quick export callback
      *
-     * @param string $result
+     * @param QueryBuilder $qb
      *
      * @return \Closure
      */
-    protected function quickExportCallback($result)
+    protected function quickExportCallback(QueryBuilder $qb)
     {
-        return function () use ($result) {
-            echo $result;
+        return function () use ($qb) {
+            flush();
+
+            $format  = 'csv';
+            $context = [
+                'withHeader'    => true,
+                'heterogeneous' => true
+            ];
+
+            $results = $qb->getQuery()->execute();
+
+            $entities = array_map(
+                function ($result) {
+                    return current($result);
+                },
+                $results
+            );
+
+            echo $this->serializer->serialize($entities, $format, $context);
+
             flush();
         };
     }
@@ -317,7 +346,7 @@ class ProductController extends AbstractDoctrineController
             'trees'            => $trees,
             'created'          => $this->auditManager->getOldestLogEntry($product),
             'updated'          => $this->auditManager->getNewestLogEntry($product),
-            'locales'          => $this->localeManager->getUserLocales(),
+            'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
     }
@@ -497,21 +526,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getDataLocale()
     {
-        $dataLocale = $this->getRequest()->get('dataLocale');
-        if ($dataLocale === null) {
-            $catalogLocale = $this->getUser()->getCatalogLocale();
-            if ($catalogLocale) {
-                $dataLocale = $catalogLocale->getCode();
-            }
-        }
-        if (!$dataLocale) {
-            throw new \Exception('User must have a catalog locale defined');
-        }
-        if (!$this->securityFacade->isGranted('pim_catalog_locale_'.$dataLocale)) {
-            throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
-        }
-
-        return $dataLocale;
+        return $this->userContext->getCurrentLocaleCode();
     }
 
     /**
@@ -524,44 +539,6 @@ class ProductController extends AbstractDoctrineController
         if ($this->getDataLocale() !== $locale) {
             return $locale;
         }
-    }
-
-    /**
-     * Get data currency code
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataCurrency()
-    {
-        $dataLocaleCode = $this->getDataLocale();
-        $dataLocale = $this->localeManager->getLocaleByCode($dataLocaleCode);
-
-        return $dataLocale->getDefaultCurrency();
-    }
-
-    /**
-     * Get data scope
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataScope()
-    {
-        $dataScope = $this->getRequest()->get('dataScope');
-        if ($dataScope === null) {
-            $catalogScope = $this->getUser()->getCatalogScope();
-            if ($catalogScope) {
-                $dataScope = $catalogScope->getCode();
-            }
-        }
-        if (!$dataScope) {
-            throw new \Exception('User must have a catalog scope defined');
-        }
-
-        return $dataScope;
     }
 
     /**

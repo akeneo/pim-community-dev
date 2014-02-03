@@ -15,12 +15,30 @@ parameters:
     pim_enrich.controller.variant_group.class:        Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:           Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:         Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.datagrid.class:             Pim\Bundle\EnrichBundle\Controller\DatagridController
 
 services:
+    pim_enrich.controller.abstract:
+        abstract: true
+        arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@security.context'
+            - '@form.factory'
+            - '@validator'
+            - '@translator'
+
+    pim_enrich.controller.abstract_doctrine:
+        abstract: true
+        parent: pim_enrich.controller.abstract
+        arguments:
+            - '@doctrine'
+
     pim_enrich.controller.attribute_group:
         scope: request
         class: %pim_enrich.controller.attribute_group.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_enrich.form.handler.attribute_group'
             - '@pim_enrich.form.attribute_group'
@@ -29,31 +47,30 @@ services:
     pim_enrich.controller.category_tree:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.channel:
         scope: request
         class: %pim_enrich.controller.channel.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
 
     pim_enrich.controller.currency:
         scope: request
         class: %pim_enrich.controller.currency.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
 
     pim_enrich.controller.family:
         scope: request
         class: %pim_enrich.controller.family.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
             - '@pim_enrich.form.handler.family'
@@ -63,12 +80,12 @@ services:
     pim_enrich.controller.locale:
         scope: request
         class: %pim_enrich.controller.locale.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
 
     pim_enrich.controller.attribute:
         scope: request
         class: %pim_enrich.controller.attribute.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
@@ -81,15 +98,16 @@ services:
     pim_enrich.controller.product:
         scope: request
         class: %pim_enrich.controller.product.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@oro_datagrid.mass_action.dispatcher'
+            - '@pim_serializer'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -97,12 +115,11 @@ services:
             - '@doctrine'
             - '@templating'
             - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.locale'
 
     pim_enrich.controller.mass_edit_action:
         scope: request
         class: %pim_enrich.controller.mass_edit_action.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_enrich.mass_edit_action.operator'
             - '@oro_datagrid.datagrid.manager'
@@ -112,26 +129,24 @@ services:
     pim_enrich.controller.group:
         scope: request
         class: %pim_enrich.controller.group.class%
-        parent: pim_catalog.controller.abstract
+        parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
-            - '@pim_catalog.manager.locale'
 
     pim_enrich.controller.association_type:
         scope: request
         class: %pim_enrich.controller.association_type.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
 
     pim_enrich.controller.media:
         scope: request
         class: %pim_enrich.controller.media.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@liip_imagine'
             - '@liip_imagine.filter.manager'
@@ -145,9 +160,8 @@ services:
     pim_enrich.controller.group_type:
         scope: request
         class: %pim_enrich.controller.group_type.class%
-        parent: pim_catalog.controller.abstract_doctrine
+        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.locale'
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
 
@@ -157,5 +171,12 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
+            - '@pim_user.context.user'
             - '@templating'
+
+    pim_enrich.controller.datagrid:
+        scope: request
+        class: %pim_enrich.controller.datagrid.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@oro_datagrid.datagrid.manager'

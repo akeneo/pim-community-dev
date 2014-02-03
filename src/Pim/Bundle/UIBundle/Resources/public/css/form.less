@@ -681,6 +681,9 @@ table i {
 
 .attribute-field.currency {
   max-width: inherit;
+  &>label.control-label {
+    padding-top: 26px;
+  }
   .control-group {
     max-width: inherit;
   }
@@ -1266,5 +1269,22 @@ table#progress-table {
     background-color: lighten(@color-light_grey, 2%);
     border-top: 1px solid lighten(@color-light_grey, 5%);
     border-bottom: 1px solid lighten(@color-light_grey, 4%);
+  }
+}
+
+/** datagrid columns configuration ***********************************************************************************/
+.connectedSortable {
+  border: 1px solid #ccc;
+  &#bucket {
+    border-style: dashed;
+  }
+  margin-left: 0;
+  padding: 10px;
+  min-height: 15px;
+  list-style-type: none;
+  li {
+    cursor: pointer;
+    padding: 5px 0;
+    font-size: 13px;
   }
 }

@@ -20,7 +20,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
 class AttributeCacheListener implements EventSubscriber
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {

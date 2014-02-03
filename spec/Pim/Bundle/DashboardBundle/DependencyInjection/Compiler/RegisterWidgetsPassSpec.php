@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
+use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 
 class RegisterWidgetsPassSpec extends ObjectBehavior
 {

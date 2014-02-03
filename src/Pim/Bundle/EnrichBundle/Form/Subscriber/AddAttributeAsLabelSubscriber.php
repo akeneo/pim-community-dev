@@ -40,7 +40,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return multitype:string
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

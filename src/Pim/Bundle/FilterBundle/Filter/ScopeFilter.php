@@ -8,7 +8,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Scope filter
@@ -25,9 +25,9 @@ class ScopeFilter extends ChoiceFilter
     protected $productManager;
 
     /**
-     * @var ChannelManager $channelManager
+     * @var UserContext $userContext
      */
-    protected $channelManager;
+    protected $userContext;
 
     /**
      * Constructor
@@ -35,27 +35,27 @@ class ScopeFilter extends ChoiceFilter
      * @param FormFactoryInterface $factory
      * @param FilterUtility        $util
      * @param ProductManager       $productManager
-     * @param ChannelManager       $channelManager
+     * @param UserContext          $userContext
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         ProductManager $productManager,
-        ChannelManager $channelManager
+        UserContext $userContext
     ) {
         parent::__construct($factory, $util);
 
         $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
+        $this->userContext    = $userContext;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function init($name, array $params)
     {
         parent::init($name, $params);
-        $this->productManager->setScope($this->channelManager->getUserChannelCode());
+        $this->productManager->setScope($this->userContext->getUserChannelCode());
     }
 
     /**
@@ -65,7 +65,7 @@ class ScopeFilter extends ChoiceFilter
     {
         $channelCode = $this->parseData($data);
         if (!$channelCode) {
-            $channelCode = $this->channelManager->getUserChannelCode();
+            $channelCode = $this->userContext->getUserChannelCode();
         }
 
         $this->productManager->setScope($channelCode);
@@ -80,7 +80,7 @@ class ScopeFilter extends ChoiceFilter
     {
         $metadata = parent::getMetadata();
 
-        $defaultScope = $this->channelManager->getUserChannel();
+        $defaultScope = $this->userContext->getUserChannel();
 
         $metadata['populateDefault'] = true;
         $metadata['placeholder']     = $defaultScope->getLabel();

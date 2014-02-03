@@ -1,28 +1,15 @@
 parameters:
-    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
     pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
     pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
 
 services:
     # Subscribers
-    pim_catalog.event_listener.user_preferences:
-        class: %pim_catalog.event_listener.user_preferences.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pim_catalog.event_listener.create_attribute_requirement:
         class: %pim_catalog.event_listener.create_attribute_requirement.class%
         arguments:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_listener.progress:
-        class: %pim_catalog.event_listener.progress.class%
-        arguments:
-            - '@event_dispatcher'
 
     pim_catalog.event_listener.metric_base_values:
         class: %pim_catalog.event_listener.metric_base_values.class%
@@ -80,14 +67,4 @@ services:
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
-            - '@pim_catalog.manager.locale'
-
-    # extension listener
-    stof_doctrine_extensions.event_listener.locale:
-        class: %pim_catalog.event_listener.user_context.class%
-        arguments:
-            - '@security.context'
-            - '@pim_translation.listener.add_locale'
-            - '@pim_catalog.manager.product'
-        tags:
-            - { name: kernel.event_subscriber }
+            - '@pim_user.context.user'

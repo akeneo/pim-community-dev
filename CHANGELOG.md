@@ -4,6 +4,7 @@
 - Created the completenesses over channels and locales widget
 - Create command to install the PIM
 - Allow price attributes to be scopable
+- Added popin to configure product datagrid columns
 
 ## Improvements
 - Add some missing translations
@@ -15,6 +16,7 @@
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
 - Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
+- Downgrade ICU lib to be compatible with RedHat 6 and CentOS 6
 
 ## BC breaks
 - Change some translation message keys
@@ -22,11 +24,16 @@
 - Change filters implementations in FilterBundle
 - Update all PIM grids to use the new implementation (extensions for filter, sorter, pager, custom datasource, custom cell formatters)
 - Rename TranslatableInterface and TranslatableListener by Localizable one in FlexibleEntityBundle
+- Rename translatable attribute property by localizable
 - FlexibleQueryBuilder has been rewritten to prepare the MongoDB support (add filters and sorters in FlexibleEntityBundle/Doctrine/ORM)
 - FlexibleQueryBuilder is injected to ProductRepository
 - ProductRepository is injected in ProductManager
 - Remove deprecated flexible entity config which is now builded by flexible manager itself (use doctrine meta)
 - Move controllers, forms, routing and views from CatalogBundle to EnrichBundle (rename routes, forms, acls, services)
+- Introduce a BaseConnectorBundle and move readers, processors, writers, archivers and related configuration from ImportExportBundle
+- Introduce a TransformBundle and move cache, converters, encoders, normalizers, transformers and related configuration from ImportExportBundle
+- Renaming of services of ImportExport that have been moved (pim_transform_* and pim_base_connector_*)
+- Move functionality related to user preferences from LocaleManager and ChannelManager to a dedicated UserContext
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

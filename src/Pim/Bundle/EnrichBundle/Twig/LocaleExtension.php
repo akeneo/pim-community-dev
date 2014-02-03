@@ -34,7 +34,8 @@ class LocaleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'locale_label' => new \Twig_Function_Method($this, 'localeLabel'),
+            'locale_code'     => new \Twig_Function_Method($this, 'currentLocaleCode'),
+            'locale_label'    => new \Twig_Function_Method($this, 'localeLabel'),
             'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
             'locale_currency' => new \Twig_Function_Method($this, 'localeCurrency'),
             'currency_label'  => new \Twig_Function_Method($this, 'currencyLabel')
@@ -52,29 +53,39 @@ class LocaleExtension extends \Twig_Extension
     }
 
     /**
-     * Get displayed locale from locale code
-     *
-     * @param string $code
-     * @param string $locale
+     * Get current locale code
      *
      * @return string
      */
-    public function localeLabel($code, $locale = null)
+    public function currentLocaleCode()
     {
-        return $this->localeHelper->getLocaleLabel($code, $locale);
+        return $this->localeHelper->getCurrentLocale()->getCode();
+    }
+
+    /**
+     * Get displayed locale from locale code
+     *
+     * @param string $code
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    public function localeLabel($code, $localeCode = null)
+    {
+        return $this->localeHelper->getLocaleLabel($code, $localeCode);
     }
 
     /**
      * Returns the symbol for a currency
      *
      * @param string $code
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function currencySymbol($code, $locale = null)
+    public function currencySymbol($code, $localeCode = null)
     {
-        return $this->localeHelper->getCurrencySymbol($code, $locale);
+        return $this->localeHelper->getCurrencySymbol($code, $localeCode);
     }
 
     /**
@@ -91,26 +102,26 @@ class LocaleExtension extends \Twig_Extension
      * Returns the currency label
      *
      * @param string $code
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function currencyLabel($code, $locale = null)
+    public function currencyLabel($code, $localeCode = null)
     {
-        return $this->localeHelper->getCurrencyLabel($code, $locale);
+        return $this->localeHelper->getCurrencyLabel($code, $localeCode);
     }
 
     /**
      * Returns the flag icon for a locale
      *
      * @param string $code
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return string
      */
-    public function flag($code, $locale = null)
+    public function flag($code, $localeCode = null)
     {
-        return $this->localeHelper->getFlag($code, $locale);
+        return $this->localeHelper->getFlag($code, $localeCode);
     }
 
     /**

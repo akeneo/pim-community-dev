@@ -24,12 +24,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->locale              = $this->getLocaleMock();
 
         $this->productManager      = $this->getProductManagerMock($this->objectManager, $this->attributeRepository);
-        $this->localeManager       = $this->getLocaleManagerMock($this->locale);
+        $this->userContext         = $this->getUserContextMock($this->locale);
         $this->currencyManager     = $this->getCurrencyManagerMock(array('EUR', 'USD'));
 
         $this->action              = new EditCommonAttributes(
             $this->productManager,
-            $this->localeManager,
+            $this->userContext,
             $this->currencyManager
         );
     }
@@ -218,7 +218,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormOptions()
     {
-        $this->localeManager
+        $this->userContext
             ->expects($this->any())
             ->method('getUserLocales')
             ->will($this->returnValue(array('fr', 'en', 'pl')));
@@ -287,11 +287,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param string  $code
      * @param string  $type
      * @param boolean $scopable
-     * @param boolean $translatable
+     * @param boolean $localizable
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
      */
-    protected function getAttributeMock($code, $type = 'text', $scopable = false, $translatable = false)
+    protected function getAttributeMock($code, $type = 'text', $scopable = false, $localizable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -308,8 +308,8 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
-            ->method('isTranslatable')
-            ->will($this->returnValue($translatable));
+            ->method('isLocalizable')
+            ->will($this->returnValue($localizable));
 
         $attribute->expects($this->any())
             ->method('getVirtualGroup')
@@ -321,17 +321,17 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\UserBundle\Context\UserContext
      */
-    protected function getLocaleManagerMock($locale)
+    protected function getUserContextMock($locale)
     {
         $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
 
         $manager->expects($this->any())
-            ->method('getLocaleByCode')
+            ->method('getCurrentLocale')
             ->will($this->returnValue($locale));
 
         return $manager;
