@@ -1207,13 +1207,9 @@ class FixturesContext extends RawMinkContext
 
         $this->getEntityManager()->refresh($product);
 
-        $values = $product->getValues()->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                return $value->isMatching($attribute, $locale, $scope);
-            }
-        );
+        $value = $product->getValue($attribute, $locale, $scope);
 
-        if (!$values->count()) {
+        if (null === $value) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
@@ -1224,20 +1220,7 @@ class FixturesContext extends RawMinkContext
             );
         }
 
-        if ($values->count() > 1) {
-            throw new \Exception(
-                sprintf(
-                    '"%s": expecting to see only one value for attribute "%s" in locale "%s" for scope "%s", found %d',
-                    $identifier,
-                    $attribute,
-                    $locale,
-                    $scope,
-                    $values->count()
-                )
-            );
-        }
-
-        return $values->first();
+        return $value;
     }
 
     /**
