@@ -221,7 +221,10 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $indexedValues = $this->getIndexedValues();
+        if (!isset($this->indexedValues[$attributeCode])) {
+            return null;
+        }
+
         $attribute = $this->getAttribute($attributeCode);
 
         $valueLocale = null;
@@ -234,14 +237,12 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         }
 
         $value = null;
-        if (isset($this->indexedValues[$attributeCode])) {
-            $possibleValues = $this->indexedValues[$attributeCode];
+        $possibleValues = $this->indexedValues[$attributeCode];
 
-            foreach ($possibleValues as $possibleValue) {
-                if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
-                    $value = $possibleValue;
-                    break;
-                }
+        foreach ($possibleValues as $possibleValue) {
+            if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
+                $value = $possibleValue;
+                break;
             }
         }
 
@@ -280,14 +281,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function hasAttribute(AbstractAttribute $attribute)
     {
-        return 0 !== $this
-            ->getValues()
-            ->filter(
-                function ($value) use ($attribute) {
-                    return $value->getAttribute() === $attribute;
-                }
-            )
-            ->count();
+        return isset($this->indexedValues[$attribute->getCode()]);
     }
 
     /**
@@ -303,11 +297,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function createValue($attributeCode, $locale = null, $scope = null)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
-
-        $attribute = $this->allAttributes[$attributeCode];
+        $attribute = $this->getAttribute($attributeCode);
         $value = new $this->valueClass();
         $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
