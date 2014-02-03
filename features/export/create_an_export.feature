@@ -21,10 +21,18 @@ Feature: Create an export
     And the grid should contain 1 element
     And I should see export profile PRODUCT_EXPORT
 
-  Scenario: Fail to create a job export
+  Scenario: Fail to create a job export without code
+    Given I create a new export
+    When I fill in the following information in the popin:
+      | Label | Products export |
+    And I press the "Save" button
+    Then I should see validation error "This value should not be blank."
+
+  Scenario: Fail to create a job export without job
     Given I create a new export
     When I fill in the following information in the popin:
       | Code  | PRODUCT_EXPORT  |
       | Label | Products export |
     And I press the "Save" button
-    Then I should see "Failed to create an \"export\" with an unknown job definition"
+    Then I should see validation error "Failed to create an export with an unknown job definition"
+
