@@ -297,6 +297,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function hasAttribute(AbstractAttribute $attribute)
     {
+        $this->indexValuesIfNeeded();
         return isset($this->indexedValues[$attribute->getCode()]);
     }
 
