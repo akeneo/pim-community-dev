@@ -162,11 +162,12 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected function removeIndexedValue(FlexibleValueInterface $value)
     {
         $attributeCode = $value->getAttribute()->getCode();
-        $candidateValues =& $this->indexedValues[$attributecode];
+        $values =& $this->indexedValues[$attributeCode];
         $valueFound = false;
-        for ($i = 0; ($i < $count && !$valueFound); $i++) {
-            if ($value === $candidateValues[$i]) {
-                unset($candidateValues[$i]);
+        $valuesCount = count($value);
+        for ($i = 0; ($i < $valuesCount && !$valueFound); $i++) {
+            if ($value === $values[$i]) {
+                unset($values[$i]);
                 $valueFound = true;
                 $this->indexedValuesCount--;
             }
@@ -223,31 +224,25 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
         $indexedValues = $this->getIndexedValues();
-
         $attribute = $this->getAttribute($attributeCode);
 
         $valueLocale = null;
         $valueScope = null;
-
-        if ($attribute->isTranslatable()) {
+        if ($attribute->isLocalizable()) {
             $valueLocale = ($localeCode) ? $localeCode : $this->getLocale();
         }
-
         if ($attribute->isScopable()) {
             $valueScope = ($scopeCode) ? $scopeCode : $this->getScope();
         }
 
         $value = null;
-
         if (isset($this->indexedValues[$attributeCode])) {
-            $candidateValues = $this->indexedValues[$attributeCode];
-            $valueFound = false;
+            $possibleValues = $this->indexedValues[$attributeCode];
 
-            for ($i = 0; ($i < count($candidateValues) && !$valueFound); $i++) {
-                $candidateValue = $candidateValues[$i];
-                if ($candidateValue->getLocale() === $valueLocale && $candidateValue->getScope() === $valueScope) {
-                    $value = $candidateValue;
-                    $valueFound = true;
+            foreach($possibleValues as $possibleValue) {
+                if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
+                    $value = $possibleValue;
+                    break;
                 }
             }
         }
