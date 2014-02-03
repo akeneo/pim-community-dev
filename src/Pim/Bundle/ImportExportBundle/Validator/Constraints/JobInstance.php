@@ -20,6 +20,11 @@ class JobInstance extends Constraint
     public $message = 'Failed to create an "{{ job_type }}" with an unknown job definition';
 
     /**
+     * @var string
+     */
+    public $property = 'alias';
+
+    /**
      * {@inheritdoc}
      */
     public function validatedBy()
