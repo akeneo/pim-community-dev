@@ -2,7 +2,7 @@
 
 {% block content %}
     {% set title = 'pim_enrich.mass_edit_action.page_title'|trans %}
-    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
+    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
@@ -10,11 +10,11 @@
     <div class="row">
         <div class="offset1">
             <h3>{{ 'pim_enrich.mass_edit_action.title'|trans }}</h3>
-            <h4>{{ 'pim_enrich.mass_edit_action.subtitle'|transchoice(productIds|length) }}</h4>
+            <h4>{{ 'pim_enrich.mass_edit_action.subtitle'|transchoice(productCount) }}</h4>
         </div>
     </div>
 
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_choose', { 'products': productIds }) }) }}
+    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_choose', queryParams ) }) }}
 
         <div class="row">
             <div class="offset1">
