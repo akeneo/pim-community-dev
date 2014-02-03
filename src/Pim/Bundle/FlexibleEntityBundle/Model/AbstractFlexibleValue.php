@@ -108,7 +108,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
      */
     public function setAttribute(AbstractAttribute $attribute = null)
     {
-        if (is_object($this->attribute) && ($attribute != $this->attribute) ) {
+        if (is_object($this->attribute) && ($attribute != $this->attribute)) {
             throw new \LogicException(
                 sprintf('An attribute (%s) has already been set for this value', $this->attribute->getCode())
             );

@@ -170,55 +170,44 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testValuesWithScopeLocale()
     {
-        $attribute = new Attribute();
-        $attribute->setCode($this->attributeCodeText);
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $attr= new Attribute();
+        $attr->setCode($this->attributeCodeText);
+        $attr->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
-        $localeAttribute = new Attribute();
-        $localeAttribute->setLocalizable(true);
-        $localeAttribute->setCode($this->attributeCodeText.'Localizable');
-        $localeAttribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $lAttr = new Attribute();
+        $lAttr->setLocalizable(true);
+        $lAttr->setCode($this->attributeCodeText.'Localizable');
+        $lAttr->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
-        $scopeAttribute = new Attribute();
-        $scopeAttribute->setScopable(true);
-        $scopeAttribute->setCode($this->attributeCodeText.'Scopable');
-        $scopeAttribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $sAttr = new Attribute();
+        $sAttr->setScopable(true);
+        $sAttr->setCode($this->attributeCodeText.'Scopable');
+        $sAttr->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
-        $localeScopeAttribute = new Attribute();
-        $localeScopeAttribute->setLocalizable(true);
-        $localeScopeAttribute->setScopable(true);
-        $localeScopeAttribute->setCode($this->attributeCodeText.'LocalizableScopable');
-        $localeScopeAttribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
-
-        $this->flexible->setAllAttributes(
-            array_merge(
-                $this->flexible->getAllAttributes(),
-                array(
-                    $localeAttribute->getCode() => $localeAttribute,
-                    $scopeAttribute->getCode()  => $scopeAttribute,
-                    $localeScopeAttribute->getCode() => $localeScopeAttribute
-                )
-            )
-        );
+        $lsAttr = new Attribute();
+        $lsAttr->setLocalizable(true);
+        $lsAttr->setScopable(true);
+        $lsAttr->setCode($this->attributeCodeText.'LocalizableScopable');
+        $lsAttr->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
         $valuesData = array(
-            array('attr' => $attribute, 'locale' => null, 'scope' => null, 'data' => 'My non localizable non scopable value'),
-            array('attr' => $localeAttribute, 'locale' => 'en_US', 'scope' => null, 'data' => 'My en_US value'),
-            array('attr' => $localeAttribute, 'locale' => 'fr_FR', 'scope' => null, 'data' => 'My fr_FR value'),
-            array('attr' => $scopeAttribute, 'locale' => null, 'scope' => 'ecommerce', 'data' => 'My ecommerce value'),
-            array('attr' => $scopeAttribute, 'locale' => null, 'scope' => 'mobile', 'data' => 'My mobile value'),
-            array('attr' => $localeScopeAttribute, 'locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'My en_US ecommerce value'),
-            array('attr' => $localeScopeAttribute, 'locale' => 'en_US', 'scope' => 'mobile', 'data' => 'My en_US mobile value'),
-            array('attr' => $localeScopeAttribute, 'locale' => 'fr_FR', 'scope' => 'ecommerce', 'data' => 'My fr_FR ecommerce value'),
-            array('attr' => $localeScopeAttribute, 'locale' => 'fr_FR', 'scope' => 'mobile', 'data' => 'My fr_FR mobile value'),
-            array('attr' => $localeScopeAttribute, 'locale' => null, 'scope' => 'ecommerce', 'data' => 'My no locale ecommerce value'),
-            array('attr' => $localeScopeAttribute, 'locale' => 'en_US', 'scope' => null, 'data' => 'My en_US no scope value'),
-            array('attr' => $localeScopeAttribute, 'locale' => null, 'scope' => null, 'data' => 'My no locale no scope value'),
+            array('attr' => $attr, 'locale' => null, 'scope' => null, 'data' => 'Non localizable non scopable value'),
+            array('attr' => $lAttr, 'locale' => 'en_US', 'scope' => null, 'data' => 'en_US value'),
+            array('attr' => $lAttr, 'locale' => 'fr_FR', 'scope' => null, 'data' => 'fr_FR value'),
+            array('attr' => $sAttr, 'locale' => null, 'scope' => 'ecommerce', 'data' => 'ecommerce value'),
+            array('attr' => $sAttr, 'locale' => null, 'scope' => 'mobile', 'data' => 'mobile value'),
+            array('attr' => $lsAttr, 'locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'en_US ecommerce value'),
+            array('attr' => $lsAttr, 'locale' => 'en_US', 'scope' => 'mobile', 'data' => 'en_US mobile value'),
+            array('attr' => $lsAttr, 'locale' => 'fr_FR', 'scope' => 'ecommerce', 'data' => 'fr_FR ecommerce value'),
+            array('attr' => $lsAttr, 'locale' => 'fr_FR', 'scope' => 'mobile', 'data' => 'fr_FR mobile value'),
+            array('attr' => $lsAttr, 'locale' => null, 'scope' => 'ecommerce', 'data' => 'no locale ecommerce value'),
+            array('attr' => $lsAttr, 'locale' => 'en_US', 'scope' => null, 'data' => 'en_US no scope value'),
+            array('attr' => $lsAttr, 'locale' => null, 'scope' => null, 'data' => 'no locale no scope value'),
         );
 
         $values = array();
 
-        foreach($valuesData as $valueData) {
+        foreach ($valuesData as $valueData) {
             $value = new FlexibleValue();
             $value->setAttribute($valueData['attr']);
             $value->setLocale($valueData['locale']);
@@ -228,7 +217,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
             $values[] = array('value' => $value, 'data' => $valueData);
         }
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $attribute = $value['data']['attr'];
             $locale = $value['data']['locale'];
             $scope = $value['data']['scope'];
@@ -249,7 +238,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->flexible->setLocale('en_US');
         $this->flexible->setScope('ecommerce');
 
-        foreach($enEcomValues as $value) {
+        foreach ($enEcomValues as $value) {
             $attribute = $value['data']['attr'];
 
             $this->assertEquals(

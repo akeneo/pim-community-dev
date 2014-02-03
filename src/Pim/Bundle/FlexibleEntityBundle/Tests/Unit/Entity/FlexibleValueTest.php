@@ -220,5 +220,4 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
         $this->value->setAttribute($attribute);
         $this->value->setScope('ecommerce');
     }
-
 }

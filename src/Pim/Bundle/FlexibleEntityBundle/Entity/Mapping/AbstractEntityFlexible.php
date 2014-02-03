@@ -151,7 +151,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $this->removeIndexedValue($value);
         $this->values->removeElement($value);
-
     }
 
     /**
@@ -203,7 +202,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         if (count($this->values) != $this->indexedValuesCount) {
             $this->indexedValuesCount = array();
-            foreach($this->values as $value) {
+            foreach ($this->values as $value) {
                 $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
                 $this->indexedValuesCount++;
             }
@@ -239,7 +238,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if (isset($this->indexedValues[$attributeCode])) {
             $possibleValues = $this->indexedValues[$attributeCode];
 
-            foreach($possibleValues as $possibleValue) {
+            foreach ($possibleValues as $possibleValue) {
                 if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
                     $value = $possibleValue;
                     break;
@@ -258,7 +257,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @return AbstractAttribute
      * @throws InvalidParameterException
      */
-    protected function getAttribute($attributeCode) {
+    protected function getAttribute($attributeCode)
+    {
         if (isset($this->allAttributes[$attributeCode])) {
             return $this->allAttributes[$attributeCode];
         } else {
@@ -266,7 +266,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                 sprintf(
                     'Could not find attribute "%s" in %s.',
                     $attributeCode,
-                   print_r(array_keys($this->allAttributes), true)
+                    print_r(array_keys($this->allAttributes), true)
                 )
             );
         }
