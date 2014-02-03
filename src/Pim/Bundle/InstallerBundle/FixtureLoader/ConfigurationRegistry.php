@@ -83,9 +83,21 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrder($name)
+    public function getFixtures(array $filePaths)
     {
-        return $this->getConfigProperty($name, 'order');
+        $ordered = array();
+
+        foreach ($filePaths as $filePath) {
+            $this->setFixtures($ordered, $filePath);
+        }
+
+        ksort($ordered);
+        $returned = array();
+        foreach ($ordered as $fixtures) {
+            $returned = array_merge($returned, $fixtures);
+        }
+
+        return $returned;
     }
 
     /**
@@ -118,6 +130,40 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     public function getReader($name, $extension)
     {
         return $this->getFixtureService('reader', $name, $extension);
+    }
+
+    /**
+     * Adds fixtures in an array for given file path
+     *
+     * @param array  $ordered
+     * @param string $filePath
+     */
+    protected function setFixtures(array &$ordered, $filePath)
+    {
+        $parts = explode('.', basename($filePath));
+        $extension = array_pop($parts);
+        $fileName = implode('.', $parts);
+
+        foreach ($this->getConfiguration() as $fixtureName => $fixtureConfig) {
+            if (!isset($fixtureConfig[$extension])) {
+                continue;
+            }
+
+            $fixtureFileName = isset($fixtureConfig['file_name']) ? $fixtureConfig['file_name'] : $fixtureName;
+            if ($fixtureFileName != $fileName) {
+                continue;
+            }
+
+            $order = $this->getConfigProperty($fixtureName, 'order');
+            if (!isset($ordered[$order])) {
+                $ordered[$order] = array();
+            }
+            $ordered[$order][] = array(
+                'path'      => $filePath,
+                'name'      => $fixtureName,
+                'extension' => $extension
+            );
+        }
     }
 
     /**

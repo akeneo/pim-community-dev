@@ -21,13 +21,20 @@ interface ConfigurationRegistryInterface
     public function contains($name);
 
     /**
-     * Returns the fixture loading order for an entity
+     * Returns an array of fixture infos for an array of file paths
      *
-     * @param string $name
+     * Each member of the returned array contains the following members :
+     *   - name:       the name of the fixture
+     *   - extension:  the extension of the fixture file
+     *   - path:       the full path for the fixture file
      *
-     * @return int
+     * The returned fixture infos are ordered.
+     *
+     * @param string[] $filePaths
+     *
+     * @return array[]
      */
-    public function getOrder($name);
+    public function getFixtures(array $filePaths);
 
     /**
      * Returns the loader class for the entity
