@@ -205,7 +205,7 @@ class UserContext
             $localeCode = $this->request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
                 $locale = $this->localeManager->getLocaleByCode($localeCode);
-                if ($this->isLocaleAvailable($locale)) {
+                if ($locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
             }
