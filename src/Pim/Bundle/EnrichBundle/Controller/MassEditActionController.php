@@ -299,7 +299,13 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getQueryParams(Request $request)
     {
-        return $this->parametersParser->parse($request) + ['gridName' => $request->get('gridName')];
+        $params = $this->parametersParser->parse($request);
+
+        $params['gridName'] = $request->get('gridName');
+        $params['values']   = implode(',', $params['values']);
+        $params['filters']  = json_encode($params['filters']);
+
+        return $params;
     }
 
     /**
@@ -311,7 +317,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getGridQB(Request $request)
     {
-        $parameters  = $this->getQueryParams($request);
+        $parameters  = $this->parametersParser->parse($request);
         $requestData = array_merge($request->query->all(), $request->request->all());
 
         return $this->massActionDispatcher->dispatch(
