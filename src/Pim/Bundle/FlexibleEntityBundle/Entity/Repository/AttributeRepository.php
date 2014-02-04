@@ -25,6 +25,15 @@ class AttributeRepository extends EntityRepository
     const CODE_ATTRIBUTES_PREFIX = 'ATTR_CODE_';
 
     /**
+     * Cache attributes per entity type.
+     * Note: this cache will not survive between request, but the
+     * used result cache will do, without providing hydration
+     *
+     * @var array
+     */
+    protected static $attributesCache;
+
+    /**
      * Get the attribute by code and entity type
      *
      * @param string $entity
@@ -46,21 +55,44 @@ class AttributeRepository extends EntityRepository
      */
     public function getCodeToAttributes($entityType)
     {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('att')->from($this->_entityName, 'att')
-            ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
+        $cacheId = self::getAttributesListCacheId($entityType);
 
-        $query = $qb->getQuery();
-        $query->useResultCache(true, null, self::getAttributesListCacheId($entityType));
+        if (!isset($this->attributesCache[$cacheId])) {
+            $qb = $this->_em->createQueryBuilder()
+                ->select('att')->from($this->_entityName, 'att')
+                ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
 
-        // index parameter into from call not works with simple object hydratation
-        $result = $query->execute(array(), AbstractQuery::HYDRATE_SIMPLEOBJECT);
-        $associative = array();
-        foreach ($result as $row) {
-            $associative[$row->getCode()] = $row;
+            $query = $qb->getQuery();
+            $query->useResultCache(true, null, self::getAttributesListCacheId($entityType));
+
+            $result = $query->execute(array(), AbstractQuery::HYDRATE_SIMPLEOBJECT);
+            $associative = array();
+            foreach ($result as $row) {
+                $associative[$row->getCode()] = $row;
+            }
+
+            $this->attributesCache[$cacheId] = $associative;
         }
 
-        return $associative;
+        return $this->attributesCache[$cacheId];
+    }
+
+    /**
+     * Clear the attributes cache for the provided entity type
+     * or for all entities if no entityType provided
+     *
+     * @param string $entityType
+     */
+    public static function clearAttributesCache($entityType = null)
+    {
+        if (null == $entityType) {
+            unset($this->attributesCache);
+        } else {
+            $cacheId = self::getAttributesListCacheId($entityType);
+            if (isset($this->attributesCache[$cacheId])) {
+                unset($this->attributesCache[$cacheId]);
+            }
+        }
     }
 
     /**
@@ -73,10 +105,6 @@ class AttributeRepository extends EntityRepository
      */
     public static function getAttributesListCacheId($entityType)
     {
-        if (is_object($entityType)) {
-            echo(get_class($entityType));
-        }
-
         return self::CODE_ATTRIBUTES_PREFIX.$entityType;
     }
 }
