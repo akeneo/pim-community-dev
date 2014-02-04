@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,7 +24,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 {
     /**
      * Attribute manager
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -43,13 +43,11 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Constructor
      *
-     * @param AttributeManagerInterface $attributeManager Attribute manager
-     * @param AttributeTypeFactory      $attTypeFactory   Attribute type factory
+     * @param AttributeManager     $attributeManager Attribute manager
+     * @param AttributeTypeFactory $attTypeFactory   Attribute type factory
      */
-    public function __construct(
-        AttributeManagerInterface $attributeManager = null,
-        AttributeTypeFactory $attTypeFactory = null
-    ) {
+    public function __construct(AttributeManager $attributeManager = null, AttributeTypeFactory $attTypeFactory = null)
+    {
         $this->attributeManager = $attributeManager;
         $this->attTypeFactory   = $attTypeFactory;
     }

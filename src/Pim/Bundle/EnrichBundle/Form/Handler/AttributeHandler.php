@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
  * Form handler for attribute
@@ -35,26 +35,26 @@ class AttributeHandler
     protected $manager;
 
     /**
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
     /**
      * Constructor for handler
-     * @param FormInterface             $form             Form called
-     * @param Request                   $request          Web request
-     * @param ObjectManager             $manager          Storage manager
-     * @param AttributeManagerInterface $attributeManager Attribute type manager
+     * @param FormInterface    $form             Form called
+     * @param Request          $request          Web request
+     * @param ObjectManager    $manager          Storage manager
+     * @param AttributeManager $attributeManager Attribute manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        AttributeManagerInterface $attributeManager
+        AttributeManager $attributeManager
     ) {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+        $this->form             = $form;
+        $this->request          = $request;
+        $this->manager          = $manager;
         $this->attributeManager = $attributeManager;
     }
 

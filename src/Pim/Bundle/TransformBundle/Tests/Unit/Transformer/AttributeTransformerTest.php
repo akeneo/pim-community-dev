@@ -23,7 +23,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
     {
         parent::setUp();
         $this->attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
-        $this->attributeManager = $this->getMock('Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface');
+        $this->attributeManager = $this->getMock('Pim\Bundle\CatalogBundle\Manager\AttributeManager');
         $this->attributeManager->expects($this->any())
             ->method('getAttributeClass')
             ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\Attribute'));
