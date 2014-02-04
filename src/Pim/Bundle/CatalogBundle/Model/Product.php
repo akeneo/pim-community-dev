@@ -512,5 +512,4 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     {
         return $this->getIdentifier()->getData();
     }
-
 }
