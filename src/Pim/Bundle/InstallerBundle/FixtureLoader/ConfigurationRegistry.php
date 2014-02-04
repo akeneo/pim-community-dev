@@ -140,17 +140,14 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function setFixtures(array &$ordered, $filePath)
     {
-        $parts = explode('.', basename($filePath));
-        $extension = array_pop($parts);
-        $fileName = implode('.', $parts);
-
+        $pathInfo = pathinfo($filePath);
         foreach ($this->getConfiguration() as $fixtureName => $fixtureConfig) {
-            if (!isset($fixtureConfig[$extension])) {
+            if (!isset($fixtureConfig[$pathInfo['extension']])) {
                 continue;
             }
 
             $fixtureFileName = isset($fixtureConfig['file_name']) ? $fixtureConfig['file_name'] : $fixtureName;
-            if ($fixtureFileName != $fileName) {
+            if ($fixtureFileName != $pathInfo['filename']) {
                 continue;
             }
 
@@ -161,7 +158,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
             $ordered[$order][] = array(
                 'path'      => $filePath,
                 'name'      => $fixtureName,
-                'extension' => $extension
+                'extension' => $pathInfo['extension']
             );
         }
     }
