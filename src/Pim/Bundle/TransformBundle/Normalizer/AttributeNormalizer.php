@@ -4,11 +4,11 @@ namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
- * A normalizer to transform a AttributeInterface entity into array
+ * A normalizer to transform an AbstractAttribute entity into array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -86,17 +86,17 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AbstractAttribute && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Get extra data to store in version
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function getVersionedData(AttributeInterface $attribute)
+    protected function getVersionedData(AbstractAttribute $attribute)
     {
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
@@ -131,11 +131,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize available locales
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function normalizeAvailableLocales($attribute)
+    protected function normalizeAvailableLocales(AbstractAttribute $attribute)
     {
         $locales = array();
         foreach ($attribute->getAvailableLocales() as $locale) {
@@ -148,11 +148,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize options
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function normalizeOptions($attribute)
+    protected function normalizeOptions(AbstractAttribute $attribute)
     {
         $data = array();
         $options = $attribute->getOptions();
@@ -169,11 +169,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize default value
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function normalizeDefaultValue(AttributeInterface $attribute)
+    protected function normalizeDefaultValue(AbstractAttribute $attribute)
     {
         $defaultValue = $attribute->getDefaultValue();
 
@@ -189,11 +189,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize default options
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function normalizeDefaultOptions($attribute)
+    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
     {
         $data = array();
         $options = $attribute->getDefaultOptions();

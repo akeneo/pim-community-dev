@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\View;
 use Symfony\Component\Form\FormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Custom form view for Product form
@@ -88,11 +88,11 @@ class ProductFormView
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
-    protected function getAttributeClasses(AttributeInterface $attribute)
+    protected function getAttributeClasses(AbstractAttribute $attribute)
     {
         $classes = array();
         if ($attribute->isScopable()) {
@@ -147,12 +147,12 @@ class ProductFormView
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $locale
+     * @param AbstractAttribute $attribute
+     * @param string            $locale
      *
      * @return ArrayCollection
      */
-    protected function getAttributeValues(AttributeInterface $attribute, $locale)
+    protected function getAttributeValues(AbstractAttribute $attribute, $locale)
     {
         $group = $attribute->getVirtualGroup();
         if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {

@@ -214,7 +214,7 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
     /**
      * @param string $attributeType
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($attributeType)
     {

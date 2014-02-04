@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
@@ -60,7 +60,7 @@ class AttributeHandler
 
     /**
      * Preprocess method
-     * @param AttributeInterface $data
+     * @param array $data
      */
     public function preProcess($data)
     {
@@ -75,11 +75,11 @@ class AttributeHandler
 
     /**
      * Process method for handler
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      *
      * @return boolean
      */
-    public function process(AttributeInterface $entity)
+    public function process(AbstractAttribute $entity)
     {
         $this->addMissingOptionValues($entity);
         $this->form->setData($entity);
@@ -100,9 +100,9 @@ class AttributeHandler
     /**
      * Add missing attribute option values
      *
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function addMissingOptionValues(AttributeInterface $entity)
+    protected function addMissingOptionValues(AbstractAttribute $entity)
     {
         $this->ensureOneOption($entity);
 
@@ -128,9 +128,9 @@ class AttributeHandler
     /**
      * Ensure at least one option for the attribute
      *
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function ensureOneOption(AttributeInterface $entity)
+    protected function ensureOneOption(AbstractAttribute $entity)
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
@@ -159,9 +159,9 @@ class AttributeHandler
 
     /**
      * Call when form is valid
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function onSuccess(AttributeInterface $entity)
+    protected function onSuccess(AbstractAttribute $entity)
     {
         foreach ($entity->getOptions() as $option) {
             // Setting translatable to true for now - option not implemented in UI

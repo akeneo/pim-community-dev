@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\TransformBundle\Normalizer\AttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -154,7 +155,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      *
-     * @return Attribute
+     * @return AbstractAttribute
      */
     protected function createEntity(array $data)
     {
@@ -205,10 +206,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addLabels($attribute, $data)
+    protected function addLabels(AbstractAttribute $attribute, $data)
     {
         foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);
@@ -217,10 +218,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addAvailableLocales($attribute, $data)
+    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
     {
         foreach ($data['available_locales'] as $code) {
             $locale = new Locale();
@@ -232,10 +233,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * Create attribute options
      *
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addOptions(Attribute $attribute, $data)
+    protected function addOptions(AbstractAttribute $attribute, $data)
     {
         if (count($data['options']) === 1) {
             $attribute->setBackendType('option');
@@ -258,10 +259,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * Add attribute default options
      *
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addDefaultOptions(Attribute $attribute, $data)
+    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
     {
         $defaultOptions = array_keys($data['default_options']);
         foreach ($defaultOptions as $code) {

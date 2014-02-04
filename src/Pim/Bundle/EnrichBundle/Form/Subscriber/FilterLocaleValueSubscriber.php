@@ -5,6 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Filter locale value subscriber
@@ -80,31 +82,31 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param Attribute $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return boolean
      */
-    protected function isLocalizable($attribute)
+    protected function isLocalizable(AbstractAttribute $attribute = null)
     {
         return $attribute && $attribute->isLocalizable();
     }
 
     /**
-     * @param Value $value
+     * @param ProductValueInterface $value
      *
      * @return boolean
      */
-    protected function isInCurrentLocale($value)
+    protected function isInCurrentLocale(ProductValueInterface $value)
     {
         return $value->getLocale() && $value->getLocale() === $this->currentLocale;
     }
 
     /**
-     * @param Value $value
+     * @param ProductValueInterface $value
      *
      * @return boolean
      */
-    protected function isInComparisonLocale($value)
+    protected function isInComparisonLocale(ProductValueInterface $value)
     {
         return $value->getLocale() && $value->getLocale() === $this->comparisonLocale;
     }

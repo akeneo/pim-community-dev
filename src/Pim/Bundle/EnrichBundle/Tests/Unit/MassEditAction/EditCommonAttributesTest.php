@@ -289,7 +289,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param boolean $scopable
      * @param boolean $localizable
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($code, $type = 'text', $scopable = false, $localizable = false)
     {

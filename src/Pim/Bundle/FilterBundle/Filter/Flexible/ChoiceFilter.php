@@ -5,8 +5,6 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -73,12 +71,12 @@ class ChoiceFilter extends OroChoiceFilter
     {
         if (null === $this->valueOptions) {
             $filedName       = $this->get(FilterUtility::DATA_NAME_KEY);
-            /** @var FlexibleManager $flexibleManager */
+            /** @var FlexibleManager */
             $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
 
-            /** @var $attributeRepository ObjectRepository */
+            /** @var ObjectRepository */
             $attributeRepository = $flexibleManager->getAttributeRepository();
-            /** @var $attribute Attribute */
+            /** @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute */
             $attribute = $attributeRepository->findOneBy(
                 ['entityType' => $flexibleManager->getFlexibleName(), 'code' => $filedName]
             );
@@ -86,11 +84,11 @@ class ChoiceFilter extends OroChoiceFilter
                 throw new \LogicException('There is no flexible attribute with name ' . $filedName . '.');
             }
 
-            /** @var $optionsRepository ObjectRepository */
+            /** @var ObjectRepository */
             $optionsRepository  = $flexibleManager->getAttributeOptionRepository();
             $options            = $optionsRepository->findAllForAttributeWithValues($attribute);
             $this->valueOptions = [];
-            /** @var $option AttributeOption */
+            /** @var AttributeOption */
             foreach ($options as $option) {
                 $optionValue = $option->getOptionValue();
                 if ($optionValue) {

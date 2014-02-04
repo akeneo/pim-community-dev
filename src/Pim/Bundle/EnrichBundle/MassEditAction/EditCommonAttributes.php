@@ -4,13 +4,13 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -336,9 +336,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Add all the values required by the given attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      */
-    protected function addValues(AttributeInterface $attribute)
+    protected function addValues(AbstractAttribute $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->isScopable()) {
@@ -354,13 +354,13 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Create a value
      *
-     * @param AttributeInterface $attribute
-     * @param Locale             $locale
-     * @param Channel            $channel
+     * @param AbstractAttribute $attribute
+     * @param Locale            $locale
+     * @param Channel           $channel
      *
      * @return ProductValueInterface
      */
-    protected function createValue(AttributeInterface $attribute, Locale $locale, Channel $channel = null)
+    protected function createValue(AbstractAttribute $attribute, Locale $locale, Channel $channel = null)
     {
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);

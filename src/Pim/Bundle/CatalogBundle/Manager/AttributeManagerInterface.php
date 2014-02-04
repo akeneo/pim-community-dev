@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 
@@ -49,11 +49,11 @@ interface AttributeManagerInterface
     public function getAttributeOptionClass();
 
     /**
-     * Create a AttributeInterface object from data in the form
+     * Create an AbstractAttribute object from data in the form
      *
      * @param array $data Form data
      *
-     * @return AttributeInterface $attribute | null
+     * @return AbstractAttribute $attribute | null
      */
     public function createAttributeFromFormData($data);
 
@@ -74,11 +74,11 @@ interface AttributeManagerInterface
     public function getAttributeTypes();
 
     /**
-     * Make sure the AttributeInterface entity has the right backend properties
+     * Make sure the AbstractAttribute entity has the right backend properties
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
-     * @return AttributeInterface $attribute
+     * @return AbstractAttribute $attribute
      */
-    public function prepareBackendProperties(AttributeInterface $attribute);
+    public function prepareBackendProperties(AbstractAttribute $attribute);
 }

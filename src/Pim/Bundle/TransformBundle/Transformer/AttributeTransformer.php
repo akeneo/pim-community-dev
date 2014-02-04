@@ -4,10 +4,10 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
 
 /**
@@ -74,11 +74,11 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param string             $class
-     * @param AttributeInterface $attribute
-     * @param array              $optionsData
+     * @param string            $class
+     * @param AbstractAttribute $attribute
+     * @param array             $optionsData
      */
-    protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
+    protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
     {
         $this->entityCache->setReference($attribute);
         $optionClass = $this->attributeManager->getAttributeOptionClass();

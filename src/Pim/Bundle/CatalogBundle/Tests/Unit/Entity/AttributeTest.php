@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attribute;
 
@@ -488,7 +488,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert entity
-     * @param Pim\Bundle\CatalogBundle\Entity\Attribute $entity
+     * @param \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $entity
      */
     protected function assertEntity($entity)
     {

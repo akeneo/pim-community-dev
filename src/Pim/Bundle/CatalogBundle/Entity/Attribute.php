@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -26,7 +26,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 class Attribute extends AbstractEntityAttribute implements
     TranslatableInterface,
     GroupSequenceProviderInterface,
-    AttributeInterface,
     ReferableInterface
 {
     /**
@@ -235,7 +234,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param mixed $defaultValue
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDefaultValue($defaultValue)
     {
@@ -318,7 +317,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param AttributeGroup $group
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setGroup(AttributeGroup $group = null)
     {
@@ -342,7 +341,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param boolean $useableAsGridColumn
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setUseableAsGridColumn($useableAsGridColumn)
     {
@@ -366,7 +365,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param boolean $useableAsGridFilter
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setUseableAsGridFilter($useableAsGridFilter)
     {
@@ -380,7 +379,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param Locale $availableLocale
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function addAvailableLocale(Locale $availableLocale)
     {
@@ -394,7 +393,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param Locale $availableLocale
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function removeAvailableLocale(Locale $availableLocale)
     {
@@ -418,7 +417,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param ArrayCollection $availableLocales
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setAvailableLocales($availableLocales)
     {
@@ -442,7 +441,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param integer $maxCharacters
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setMaxCharacters($maxCharacters)
     {
@@ -466,7 +465,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $validationRule
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setValidationRule($validationRule)
     {
@@ -490,7 +489,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $validationRegexp
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setValidationRegexp($validationRegexp)
     {
@@ -514,7 +513,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param boolean $wysiwygEnabled
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setWysiwygEnabled($wysiwygEnabled)
     {
@@ -538,7 +537,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param mixed $numberMin
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setNumberMin($numberMin)
     {
@@ -562,7 +561,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param mixed $numberMax
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setNumberMax($numberMax)
     {
@@ -586,7 +585,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param boolean $decimalsAllowed
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDecimalsAllowed($decimalsAllowed)
     {
@@ -610,7 +609,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param boolean $negativeAllowed
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setNegativeAllowed($negativeAllowed)
     {
@@ -634,7 +633,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $dateType
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDateType($dateType)
     {
@@ -658,7 +657,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param datetime $dateMin
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDateMin($dateMin)
     {
@@ -682,7 +681,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param datetime $dateMax
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDateMax($dateMax)
     {
@@ -706,7 +705,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $metricFamily
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setMetricFamily($metricFamily)
     {
@@ -730,7 +729,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $defaultMetricUnit
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setDefaultMetricUnit($defaultMetricUnit)
     {
@@ -754,7 +753,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param decimal $maxFileSize
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setMaxFileSize($maxFileSize)
     {
@@ -778,7 +777,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param string $allowedExtensions
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setAllowedExtensions($allowedExtensions)
     {
@@ -804,7 +803,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param integer $minimumInputLength
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setMinimumInputLength($minimumInputLength)
     {
@@ -828,7 +827,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param number $sortOrder
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setSortOrder($sortOrder)
     {
@@ -842,7 +841,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param array $parameters
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      *
      * @throws \Exception
      */
