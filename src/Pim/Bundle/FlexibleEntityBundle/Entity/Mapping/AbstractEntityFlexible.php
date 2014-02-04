@@ -57,11 +57,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected $indexedValues;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * Number of values indexed by attribute_code
+     * States that the indexedValues are outdated
      */
-    protected $indexedValuesCount = 0;
+    protected $indexedValuesOutdated = true;
 
     /**
      * Associative array of defined attributes
@@ -84,7 +84,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $this->allAttributes = array();
         $this->values        = new ArrayCollection();
-        $this->indexedValues = array();
     }
 
     /**
@@ -136,7 +135,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $this->values[] = $value;
         $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-        $this->indexedValuesCount++;
         $this->allAttributes[$value->getAttribute()->getCode()] = $value->getAttribute();
         $value->setEntity($this);
 
@@ -147,17 +145,23 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * Remove value
      *
      * @param FlexibleValueInterface $value
+     *
+     * @return AbstractEntityFlexible
      */
     public function removeValue(FlexibleValueInterface $value)
     {
         $this->removeIndexedValue($value);
         $this->values->removeElement($value);
+
+        return $this;
     }
 
     /**
      * Remove a value from the indexedValues array
      *
      * @param FlexibleValueInterface $value
+     *
+     * @return AbstractEntityFlexible
      */
     protected function removeIndexedValue(FlexibleValueInterface $value)
     {
@@ -166,10 +170,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         foreach($possibleValues as $key => $possibleValue) {
             if ($value === $possibleValue) {
                 unset($possibleValues[$key]);
-                $this->indexedValuesCount--;
                 break;
             }
         }
+
+        return $this;
     }
 
     /**
@@ -181,7 +186,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         return array_keys($this->getIndexedValues());
     }
-
 
     /**
      * Get values
@@ -196,18 +200,44 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Build the values indexed by attribute code array
      *
+     * @return array indexedValues
      */
     protected function getIndexedValues()
     {
-        if (count($this->values) != $this->indexedValuesCount) {
-            $this->indexedValuesCount = array();
+        $this->indexValuesIfNeeded();
+        return $this->indexedValues;
+    }
+
+    /**
+     * Mark the indexed as outdated
+     *
+     * @return AbstractEntityFlexible
+     */
+    public function markIndexedValuesOutdated()
+    {
+        $this->indexedValuesOutdated = true;
+
+        return $this;
+    }
+
+    /**
+     * Build the indexed values if needed. First step
+     * is to make sure that the values are initialized
+     * (loaded from DB)
+     *
+     * @return AbstractEntityFlexible
+     */
+    protected function indexValuesIfNeeded()
+    {
+        if ($this->indexedValuesOutdated) {
+            $this->indexedValues = array();
             foreach ($this->values as $value) {
                 $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-                $this->indexedValuesCount++;
             }
+            $this->indexedValuesOutdated = false;
         }
 
-        return $this->indexedValues;
+        return $this;
     }
 
     /**
@@ -221,9 +251,9 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $this->indexValuesIfNeeded();
+        $indexedValues = $this->getIndexedValues();
 
-        if (!isset($this->indexedValues[$attributeCode])) {
+        if (!isset($indexedValues[$attributeCode])) {
             return null;
         }
 
@@ -239,7 +269,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         }
 
         $value = null;
-        $possibleValues = $this->indexedValues[$attributeCode];
+        $possibleValues = $indexedValues[$attributeCode];
 
         foreach ($possibleValues as $possibleValue) {
             if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
@@ -252,26 +282,13 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * Build the indexed values if needed
-     */
-    protected function indexValuesIfNeeded()
-    {
-        if (count($this->values) != $this->indexedValuesCount) {
-            $this->indexedValues = array();
-            foreach ($this->values as $value) {
-                $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-                $this->indexedValuesCount++;
-            }
-        }
-    }
-
-    /**
      * Get attribute from its code by using the cache integrated to the product
      *
      * @param string $attributeCode
      *
-     * @return AbstractAttribute
      * @throws InvalidParameterException
+     *
+     * @return AbstractAttribute
      */
     protected function getAttribute($attributeCode)
     {
@@ -297,8 +314,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function hasAttribute(AbstractAttribute $attribute)
     {
-        $this->indexValuesIfNeeded();
-        return isset($this->indexedValues[$attribute->getCode()]);
+        $indexedValues = $this->getIndexedValues();
+        return isset($indexedValues[$attribute->getCode()]);
     }
 
     /**
