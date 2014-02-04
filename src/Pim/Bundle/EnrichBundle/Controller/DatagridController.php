@@ -91,7 +91,13 @@ class DatagridController extends AbstractDoctrineController
             $configuration,
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
-                'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
+                'action'  => $this->generateUrl(
+                    'pim_catalog_datagrid_edit',
+                    [
+                        'alias'      => $alias,
+                        'dataLocale' => $request->get('dataLocale')
+                    ]
+                ),
             ]
         );
 
@@ -108,7 +114,7 @@ class DatagridController extends AbstractDoctrineController
                 $em->flush();
             }
 
-            return $this->redirectToRoute('pim_enrich_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
         }
 
         return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
