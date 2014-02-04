@@ -206,7 +206,7 @@ info:
         disable:                 Disable
         disabled:                Disabled
     group:
-        axis:                Variation axis: %attributes%
+        axis:                'Variation axis: %attributes%'
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
     association type:
