@@ -51,3 +51,6 @@
         {% include 'PimEnrichBundle:CategoryTree:_tab-panes.html.twig' %}
     </div>
 {{ form_end(form) }}
+<script type="text/javascript">
+    document.title = '{{ "pim_title.category.edit"|trans({ "%category.label%": form.vars.value.label }) }}';
+</script>
