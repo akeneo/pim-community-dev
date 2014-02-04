@@ -40,7 +40,7 @@ class OutdateIndexedValuesListener implements EventSubscriber
             if (is_object($flexibleEntity)) {
                 $flexibleEntity->markIndexedValuesOutdated();
             }
-        } else if ($entity instanceof FlexibleInterface) {
+        } elseif ($entity instanceof FlexibleInterface) {
             $entity->markIndexedValuesOutdated();
         }
     }

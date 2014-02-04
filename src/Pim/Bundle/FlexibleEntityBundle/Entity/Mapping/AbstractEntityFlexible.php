@@ -167,7 +167,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $attributeCode = $value->getAttribute()->getCode();
         $possibleValues =& $this->indexedValues[$attributeCode];
-        foreach($possibleValues as $key => $possibleValue) {
+        foreach ($possibleValues as $key => $possibleValue) {
             if ($value === $possibleValue) {
                 unset($possibleValues[$key]);
                 break;
