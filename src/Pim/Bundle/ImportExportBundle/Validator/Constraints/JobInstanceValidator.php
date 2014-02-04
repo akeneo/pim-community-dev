@@ -38,11 +38,14 @@ class JobInstanceValidator extends ConstraintValidator
     {
         if ($entity instanceof \Oro\Bundle\BatchBundle\Entity\JobInstance) {
             if (!$this->connectorRegistry->getJob($entity)) {
-                $this->context->addViolationAt(
-                    $constraint->property,
-                    $constraint->message,
-                    array('{{ job_type }}' => $entity->getType())
-                );
+                $violations = $this->context->getViolations();
+                if (count($violations) === 0) {
+                    $this->context->addViolationAt(
+                        $constraint->property,
+                        $constraint->message,
+                        array('{{ job_type }}' => $entity->getType())
+                    );
+                }
             }
         }
     }
