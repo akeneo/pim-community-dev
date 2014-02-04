@@ -20,7 +20,7 @@
         "php": ">=5.4.4",
         "oro/platform": "dev-maintenance/pim_beta5",
         "apy/jsfv-bundle": "dev-master#ecd74cfce030aeb1812277250318aacdd5483631",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "dev-master#171844b400e50d66f6fab6aa7aea820407fc74a3",
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/icu": "1.1.*"
     },
