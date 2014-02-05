@@ -7,6 +7,7 @@
 
     {{ parent() }}
 
+    {{ JSFV(form) }}
     {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operator.operationAlias })) }) }}
 
         <div class="row">
@@ -30,9 +31,7 @@
                 <div class="errors">
                     {{ elements.form_errors(form) }}
                 </div>
-                {{ JSFV(form) }}
                 {% block formContent %}
-
                 {% endblock %}
             </div>
         </div>
