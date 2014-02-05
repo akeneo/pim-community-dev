@@ -433,7 +433,12 @@ class EditCommonAttributes extends AbstractMassEditAction
             $media = new Media();
             $productValue->setMedia($media);
         }
-        $media->setFile($value->getMedia()->getFile());
+        $file = $value->getMedia()->getFile();
+        if ($file) {
+            $media->setFile($file);
+        } else {
+            $media->setRemoved(true);
+        }
     }
 
     /**
