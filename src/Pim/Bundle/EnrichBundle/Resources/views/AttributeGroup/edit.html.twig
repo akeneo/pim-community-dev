@@ -85,7 +85,7 @@
                                         <a {{ elements.deleteLinkAttributes(
                                             path('pim_enrich_attributegroup_removeattribute', {'groupId': group.id, 'attributeId': attribute.id}),
                                             path('pim_enrich_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
-                                            'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
+                                            'confirmation.attribute group.remove attribute'|trans({'%name%': attribute.label}),
                                             'flash.attribute group.attribute removed'|trans
                                         ) }} class="remove-attribute">
                                             <i class="icon-trash"></i>
