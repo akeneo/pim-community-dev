@@ -32,18 +32,6 @@ services:
         tags:
             - { name: pim.attribute_constraint_guesser }
 
-    pim.attribute_constraint_guesser.time:
-        public: false
-        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\TimeGuesser
-        tags:
-            - { name: pim.attribute_constraint_guesser }
-
-    pim.attribute_constraint_guesser.datetime:
-        public: false
-        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateTimeGuesser
-        tags:
-            - { name: pim.attribute_constraint_guesser }
-
     pim.attribute_constraint_guesser.numeric:
         public: false
         class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NumericGuesser

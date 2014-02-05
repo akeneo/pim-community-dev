@@ -99,11 +99,6 @@ class Attribute extends AbstractEntityAttribute implements
     protected $negativeAllowed;
 
     /**
-     * @var string $dateType
-     */
-    protected $dateType;
-
-    /**
      * @var datetime $dateMin
      */
     protected $dateMin;
@@ -615,30 +610,6 @@ class Attribute extends AbstractEntityAttribute implements
     public function setNegativeAllowed($negativeAllowed)
     {
         $this->negativeAllowed = $negativeAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get dateType
-     *
-     * @return string $dateType
-     */
-    public function getDateType()
-    {
-        return $this->dateType;
-    }
-
-    /**
-     * Set dateType
-     *
-     * @param string $dateType
-     *
-     * @return AttributeInterface
-     */
-    public function setDateType($dateType)
-    {
-        $this->dateType = $dateType;
 
         return $this;
     }
