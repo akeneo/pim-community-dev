@@ -595,7 +595,7 @@ class FixturesContext extends RawMinkContext
 
             if ($group->getType()->isVariant()) {
                 $attributes = array();
-                foreach($group->getAttributes() as $attribute) {
+                foreach ($group->getAttributes() as $attribute) {
                     $attributes[] = $attribute->getCode();
                 }
                 asort($attributes);
