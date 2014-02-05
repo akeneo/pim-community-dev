@@ -1,52 +1,34 @@
 ---
+export profile:
+  overview: Export-Profilübersicht
+  create: Exportprofil anlegen
+  edit: Exportprofil bearbeiten
+import profile:
+  overview: Import-Profilübersicht
+  create: Importprofil anlegen
+  edit: Importprofil bearbeiten
+Job: Auftrag
+Connector: Konnektor
 pim_import_export:
   status:
     - Bereit
-  jobs:
-    csv_product_export:
-      title: Produkt-Export als CSV-Datei
-      export.title: Produkt export
-    csv_category_export:
-      title: Kategorie-Export als CSV-Datei
-      export.title: Kategorie export
-    csv_attribute_export:
-      title: Attribut-Export als CSV-Datei
-      export.title: Attribut export
-    csv_attribute_option_export:
-      title: Attribut-Option in CSV-Datei exportieren
-      export.title: Attribut-Option export
-    csv_association_type_export:
-      title: Verbindungstyp-Export als CSV-Datei
-      export.title: Verbindungstyp-Export
-    csv_group_export:
-      title: Gruppen-Export in CSV-Datei
-      export.title: Gruppen-Export
-    csv_product_import:
-      title: Produkt-Export als CSV-Datei
-      import.title: Produkt import
-      import_associations.title: Produktverbindungen-Import
-    csv_category_import:
-      title: Kategorie-Import aus CSV-Datei
-      import.title: Kategorie-Import
-    csv_attribute_import:
-      title: Attribut-Import aus CSV-Datei
-      import.title: Attribut-Import
-    csv_attribute_option_import:
-      title: Attribut-Optionen aus CSV-Datei importieren
-      import.title: Attribut-Option import
-    csv_association_type_import:
-      title: Verbindungstyp-Import als CSV-Datei
-      import.title: Verbindungstyp-Import
-    csv_group_import:
-      title: Gruppen-Import aus CSV-Datei
-      import.title: Gruppen-Import
+  batch_status:
+    1: ABGESCHLOSSEN
+    2: STARTEN
+    3: GESTARTET
+    4: STOPPEN
+    5: GESTOPPT
+    6: FEHLGESCHLAGEN
+    7: AUFGEGEBEN
+    8: UNBEKANNT
   steps:
     dummy_reader.title: Dummy reader
     dummy_processor.title: Dummy Processor
     dummy_writer.title: Dummy Writer
     product_reader.title: Produkt Auszug
     entity_reader.title: Entitäten Auszug
-    csv_reader.title: CSV-Reader
+    csv_reader:
+      title: CSV-Reader
     csv_product_reader.title: CSV Produkt Reader
     csv_category_reader.title: CSV Kategorie Reader
     product_processor.title: Produktanlage
@@ -55,91 +37,31 @@ pim_import_export:
     group_processor.title: Gruppenerstellung
     attribute_processor.title: Attributerstellung
     attribute_option_processor.title: Attribut-Optionserstellung
-    product_association_processor.title: Produkt-Zuweisungserstellung
     heterogeneous_processor.title: CSV Produkt Serialisierer
     homogeneous_processor.title: CSV Entitäten Serialisierer
     file_writer.title: Ausgabe
     product_writer.title: Produkt-Speicher
     category_writer.title: Kategorie-Speicher
     writer.title: Entitäten-Speicher
-  import:
-    filePath:
-      label: Datei
-      help: Die zu importierende CSV-Datei
-    uploadAllowed:
-      label: Datei-Upload erlauben
-      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    escape:
-      label: Escape
-      help: Zeichen mit dem das Feld escaped wird
-    enabled:
-      label: Produkt aktivieren
-      help: Auswahl, ob importierte Produkte aktiviert werden sollen oder nicht
-    categoriesColumn:
-      label: Kategorie-Spalte
-      help: Name der Kategorie-Spalte
-    familyColumn:
-      label: Produktfamilien-Spalte
-      help: Name der Produktfamilien-Spalte
-    groupsColumn:
-      label: Gruppen-Spalte
-      help: Name der Gruppen-Spalte
-    realTimeVersioning:
-      label: Echtzeit Änderungsverfolgung
-      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern kann diese Funktion ausgeschaltet werden.
-    circularRefsChecked:
-      label: Prüfen Sie auf Zirkelbezüge
-      help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
-  export:
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    channel:
-      label: Ausgabekanal
-      help: Der Ausgabekanal, den Sie exportieren möchten
-    filePath:
-      label: Datei
-      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
-    withHeader:
-      label: Mit Kopfzeile
-      help: Soll die Spaltenüberschrift ausgegeben werden
-oro_batch:
-  dummy_reader.title: Dummy reader
-  dummy_processor.title: Dummy Processor
-  dummy_writer.title: Dummy Writer
-  product_reader.title: Produkt Auszug
-  entity_reader.title: Entitäten Auszug
-  csv_reader.title: CSV-Reader
-  csv_product_reader.title: CSV Produkt Reader
-  csv_category_reader.title: CSV Category Reader
-  product_processor.title: Produktanlage
-  category_processor.title: Kategorieanlage
-  association_processor.title: Zuweisungserstellung
-  group_processor.title: Gruppenerstellung
-  attribute_processor.title: Attributerstellung
-  attribute_option_processor.title: Attribut-Optionserstellung
-  product_association_processor.title: Produkt-Zuweisungserstellung
-  heterogeneous_processor.title: Produkt CSV serialisierung
-  homogeneous_processor.title: CSV Entitäten serialisierung
-  file_writer.title: Ausgabe
-  product_writer.title: Produkt-Speicherung
-  category_writer.title: Kategorie-Speicher
-  writer.title: Entitäten-Speicher
-Import management: Import-Verwaltung
-Import %job.name% | Edit: Import %job.name% | Bearbeiten
-Import %job.name% | Show: Import %job.name% | Anzeigen
-Export management: Export-Verwaltung
-Export %job.name% | Edit: Export %job.name% | Bearbeiten
-Export %job.name% | Show: Export %job.name% | Anzeigen
+  download_archive:
+    archive: Erstellte Datei herunterladen
+    output: Erstellte Datei herunterladen
+    input: Eingelesene Datei herunterladen
+    invalid: Ungültige Daten herunterladen
+pim_title.export_profile.index: Verwaltung der Export-Profile
+pim_title.export_profile.edit: 'Export-Profile %job.label% | Bearbeiten'
+pim_title.export_profile.show: 'Export-Profile %job.label% | Anzeigen'
+pim_title.export_execution.index: Historie der ausgeführten Exporte
+pim_title.export_execution.show: Ausgeführte Exporte | Details
+pim_title.import_profile.index: Verwaltung der Import-Profile
+pim_title.import_profile.edit: 'Import-Profile %job.label% | Bearbeiten'
+pim_title.import_profile.show: 'Import-Profile %job.label% | Anzeigen'
+pim_title.import_execution.index: Historie der ausgeführten Importe
+pim_title.import_execution.show: Ausgeführte Importe | Details
+export report:
+  overview: Export-Berichte
+import report:
+  overview: Import-Berichte
 pim_importexport:
   acl:
     export_profile:
@@ -166,3 +88,35 @@ pim_importexport:
       show: Import-Reportdetails anzeigen
       dl_log: Import-Report Logdatei herunterladen
       dl_files: Importierte Dateien herunterladen
+btn:
+  create:
+    export profile: Exportprofil anlegen
+    import profile: Importprofil anlegen
+Upload and import: Hochladen und importieren
+confirmation:
+  remove:
+    export profile: 'Sind Sie sicher, dass Sie das Export-Profil %name% löschen möchten?'
+    import profile: 'Sind Sie sicher, dass Sie das Import-Profil %name% löschen möchten?'
+flash:
+  export:
+    created: Der Export wurde erfolgreich erstellt
+    removed: Der Export wurde entfernt
+    updated: Der Export wurde erfolgreich aktualisiert
+  import:
+    created: Der Import wurde erfolgreich erstellt
+    removed: Der Import wurde entfernt
+    updated: Der Import wurde erfolgreich aktualisiert
+pim_menu:
+  item:
+    export_history: Export Historie
+    export_profile: Export-Profile
+    import_history: Import Historie
+    import_profile: Import-Profile
+General properties: Allgemeine Eigenschaften
+History: Historie
+pane.accordion:
+  properties: Eigenschaften
+  global_settings: Globale Einstellungen
+popin.create:
+  export_profile.title: Ein neues Exportprofil anlegen
+  import_profile.title: Ein neues Importprofil anlegen
