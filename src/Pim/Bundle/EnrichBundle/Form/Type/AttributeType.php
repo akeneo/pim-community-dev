@@ -200,7 +200,7 @@ class AttributeType extends AbstractType
      *
      * @return array
      */
-    public function getAttributeTypeChoices()
+    protected function getAttributeTypeChoices()
     {
         return $this->attributeManager->getAttributeTypes();
     }
