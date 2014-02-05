@@ -7,6 +7,8 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+use Doctrine\Common\Cache\Cache;
+
 use Escape\WSSEAuthenticationBundle\Security\Core\Authentication\Provider\Provider;
 use Escape\WSSEAuthenticationBundle\Security\Core\Authentication\Token\Token;
 
@@ -24,16 +26,16 @@ class WsseUserProvider extends Provider
      *
      * @param UserProviderInterface    $userProvider    An UserProviderInterface instance
      * @param PasswordEncoderInterface $encoder         A PasswordEncoderInterface instance
-     * @param string                   $nonceDir        The nonce dir
+     * @param Cache                    $nonceCache      Cache instance
      * @param int                      $lifetime        The lifetime, in seconds
      */
     public function __construct(
         UserProviderInterface $userProvider,
         PasswordEncoderInterface $encoder,
-        $nonceDir = null,
+        Cache $nonceCache,
         $lifetime = 300
     ) {
-        parent::__construct($userProvider, $encoder, $nonceDir, $lifetime);
+        parent::__construct($userProvider, $encoder, $nonceCache, $lifetime);
 
         $this->userProvider = $userProvider;
     }
@@ -51,11 +53,11 @@ class WsseUserProvider extends Provider
 
         if ($user && $user->getApi()) {
             if ($this->validateDigest(
-                $user,
                 $token->getAttribute('digest'),
                 $token->getAttribute('nonce'),
                 $token->getAttribute('created'),
-                $user->getApi()->getApiKey()
+                $user->getApi()->getApiKey(),
+                $user->getSalt()
             )) {
                 $authToken = new Token($user->getRoles());
 
