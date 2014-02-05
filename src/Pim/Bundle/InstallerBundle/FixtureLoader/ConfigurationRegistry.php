@@ -88,7 +88,9 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         $ordered = array();
 
         foreach ($filePaths as $filePath) {
-            $this->setFixtures($ordered, $filePath);
+            if (!is_dir($filePath)) {
+                $this->setFixtures($ordered, $filePath);
+            }
         }
 
         ksort($ordered);
@@ -135,7 +137,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * Adds fixtures in an array for given file path
      *
-     * @param array  $ordered
+     * @param array  &$ordered
      * @param string $filePath
      */
     protected function setFixtures(array &$ordered, $filePath)
