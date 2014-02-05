@@ -1,3 +1,14 @@
+# 1.0.0- -
+
+## Features
+
+## Improvements
+- Fix the versions of dependencies in composer.json
+
+## Bug fixes
+
+## BC breaks
+
 # 1.0.0-rc-1 -
 
 ## Features
