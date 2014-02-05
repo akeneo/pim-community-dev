@@ -19,3 +19,9 @@ pim_dashboard:
       export_report: Export Historie
       attribute: Attribute verwalten
       family: Produktfamilien verwalten
+  quick_launchpad: Schnellstartseite
+  widget:
+    error:
+      title: Fehler beim Laden des Widgets
+      message: 'Widget "%alias%" ist nicht vorhanden'
+    completeness: Vollständigkeit über Ausgabekanäle und Gebietsschemata
