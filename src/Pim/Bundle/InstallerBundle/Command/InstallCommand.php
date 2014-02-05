@@ -232,6 +232,8 @@ class InstallCommand extends ContainerAwareCommand
             ->loadFixturesStep($input, $output)
             ->launchCommands($input, $output);
 
+        $this->clearCache();
+
         return $this;
     }
 
@@ -393,22 +395,6 @@ class InstallCommand extends ContainerAwareCommand
             ->addRole($role)
             ->setOwner($businessUnit)
             ->addBusinessUnit($businessUnit);
-
-        // Define catalog locale
-        $localeCode = $this->getContainer()->getParameter('locale');
-        $localeManager = $this->getContainer()->get('pim_catalog.manager.locale');
-        $locale = $localeManager->getLocaleByCode($localeCode);
-        $user->setCatalogLocale($locale);
-
-        // Define catalog scope
-        $channelManager = $this->getContainer()->get('pim_catalog.manager.channel');
-        $channel = current($channelManager->getChannels());
-        $user->setCatalogScope($channel);
-
-        // Define catalog tree
-        $categoryManager = $this->getContainer()->get('pim_catalog.manager.category');
-        $tree = current($categoryManager->getTrees());
-        $user->setDefaultTree($tree);
 
         return $user;
     }
