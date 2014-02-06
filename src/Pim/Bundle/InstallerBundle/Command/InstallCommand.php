@@ -121,8 +121,6 @@ class InstallCommand extends ContainerAwareCommand
 
         $this->updateInstalledFlag($input, $output, date('c'));
 
-        $this->commandExecutor->runCommand('cache:clear');
-
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
     }
