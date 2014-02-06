@@ -16,7 +16,10 @@ class BooleanTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
-        if ('0' === $value) {
+        $value = trim($value);
+        if (empty($value)) {
+            return null;
+        } elseif ('0' === $value) {
             return false;
         } elseif ('1' === $value) {
             return true;
