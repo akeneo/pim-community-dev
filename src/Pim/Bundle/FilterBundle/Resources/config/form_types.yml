@@ -1,10 +1,11 @@
 parameters:
-    pim_filter.form.type.filter.scope_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
-    pim_filter.form.type.filter.category_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType
-    pim_filter.form.type.filter.metric_class:   Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType
-    pim_filter.form.type.filter.price_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType
+    pim_filter.form.type.filter.scope_class:       Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
+    pim_filter.form.type.filter.category_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType
+    pim_filter.form.type.filter.metric_class:      Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType
+    pim_filter.form.type.filter.price_class:       Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType
+    pim_filter.form.type.filter.ajax_choice_class: Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType
 
-    pim_filter.form.type.category_class:        Pim\Bundle\FilterBundle\Form\Type\CategoryType
+    pim_filter.form.type.category_class:           Pim\Bundle\FilterBundle\Form\Type\CategoryType
 
 services:
 
@@ -34,6 +35,13 @@ services:
             - '@pim_catalog.manager.currency'
         tags:
             - { name: form.type, alias: pim_type_price_filter }
+
+    pim_filter.form.type.filter.ajax_choice:
+        class: %pim_filter.form.type.filter.ajax_choice_class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_type_ajax_choice_filter }
 
     pim_filter.form.type.category:
         class: %pim_filter.form.type.category_class%
