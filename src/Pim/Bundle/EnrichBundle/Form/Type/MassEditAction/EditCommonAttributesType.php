@@ -75,7 +75,7 @@ class EditCommonAttributesType extends AbstractType
                 )
             )
             ->add(
-                'attributesToDisplay',
+                'displayedAttributes',
                 'entity',
                 array(
                     'class'    => $this->attributeClass,

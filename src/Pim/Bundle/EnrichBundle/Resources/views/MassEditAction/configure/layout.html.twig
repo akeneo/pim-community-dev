@@ -7,6 +7,7 @@
 
     {{ parent() }}
 
+    {{ JSFV(form) }}
     {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operator.operationAlias })) }) }}
 
         <div class="row">
@@ -30,20 +31,18 @@
                 <div class="errors">
                     {{ elements.form_errors(form) }}
                 </div>
-                {{ JSFV(form) }}
                 {% block formContent %}
-
                 {% endblock %}
             </div>
         </div>
 
         <div class="row offset1 buffer-top configuration">
             {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
-            {{ elements.link('btn.next', '#', {'class': ['next', 'btn-primary']}) }}
+            {{ elements.link('btn.next', null, {'class': ['next', 'btn-primary']}) }}
         </div>
 
         <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', '#', {'class': 'cancel'}) }}
+            {{ elements.link('btn.cancel', null, {'class': 'cancel'}) }}
             {{ elements.submitBtn('btn.confirm') }}
         </div>
 
@@ -117,18 +116,14 @@
                     /**
                      * Confirmation
                      */
-                    $('a.next').on('click', function(event) {
-                        event.preventDefault();
-
+                    $('a.next').on('click', function() {
                         $('.wizard').wizard({ currentStep: 4});
                         disableForm();
                         $('.configuration').addClass('hide');
                         $('.confirmation').removeClass('hide');
                     });
 
-                    $('a.cancel').on('click', function(event) {
-                        event.preventDefault();
-
+                    $('a.cancel').on('click', function() {
                         $('.wizard').wizard({ currentStep: 3});
                         enableForm();
                         $('.configuration').removeClass('hide');

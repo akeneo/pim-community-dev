@@ -195,13 +195,6 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        // Hacky hack for the edit common attribute operation to work
-        // first time is to set diplayed attributes and locale
-        $this->operator->initializeOperation($this->getProductIds($request));
-        $form = $this->getOperatorForm();
-        $form->submit($request);
-
-        //second time is to set values
         $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
         $form->submit($request);
