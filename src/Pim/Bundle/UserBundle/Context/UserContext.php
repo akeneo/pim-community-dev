@@ -41,7 +41,10 @@ class UserContext
     protected $request;
 
     /** @var array */
-    private $userLocales;
+    protected $userLocales;
+
+    /** @var string */
+    protected $defaultLocale;
 
     /**
      * @param SecurityContextInterface $securityContext
@@ -49,19 +52,22 @@ class UserContext
      * @param LocaleManager            $localeManager
      * @param ChannelManager           $channelManager
      * @param CategoryManager          $categoryManager
+     * @param string                   $defaultLocale
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        $defaultLocale
     ) {
         $this->securityContext = $securityContext;
         $this->securityFacade  = $securityFacade;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
         $this->categoryManager = $categoryManager;
+        $this->defaultLocale   = $defaultLocale;
     }
 
     /**
@@ -90,6 +96,17 @@ class UserContext
 
         if (null !== $locale = $this->getUserLocale()) {
             return $locale;
+        }
+
+        $defaultLocales = array_filter(
+            $this->localeManager->getActiveLocales(),
+            function ($locale) {
+                return $locale->getCode() === $this->defaultLocale;
+            }
+        );
+
+        if (count($defaultLocales) > 0) {
+            return current($defaultLocales);
         }
 
         if ($locale = current($this->getUserLocales())) {
