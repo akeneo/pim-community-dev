@@ -232,7 +232,7 @@ class JobProfileController extends AbstractDoctrineController
         }
 
         if (null === $template = $jobInstance->getJob()->getEditTemplate()) {
-            $template = sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType()));
+            $template = sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType()));
         }
 
         return $this->render(
