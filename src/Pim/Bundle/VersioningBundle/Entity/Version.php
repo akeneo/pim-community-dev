@@ -73,7 +73,7 @@ class Version
     public function __construct($resourceName, $resourceId, $numVersion, $data, User $user)
     {
         $this->resourceName = $resourceName;
-        $this->resourceId    = $resourceId;
+        $this->resourceId   = $resourceId;
         $this->data         = $data;
         $this->version      = $numVersion;
         $this->user         = $user;
