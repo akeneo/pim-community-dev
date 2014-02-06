@@ -19,6 +19,10 @@ class BooleanTransformerTest extends \PHPUnit_Framework_TestCase
     public function testTransform()
     {
         $transformer = new BooleanTransformer();
+        $this->assertEquals(true, $transformer->transform(1));
+        $this->assertEquals(false, $transformer->transform(0));
+        $this->assertEquals(true, $transformer->transform((float) 1));
+        $this->assertEquals(false, $transformer->transform((float) 0));
         $this->assertEquals(true, $transformer->transform(true));
         $this->assertEquals(false, $transformer->transform(false));
         $this->assertEquals(true, $transformer->transform('1'));
