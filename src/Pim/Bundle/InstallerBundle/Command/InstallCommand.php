@@ -232,7 +232,7 @@ class InstallCommand extends ContainerAwareCommand
             ->loadFixturesStep($input, $output)
             ->launchCommands($input, $output);
 
-        $this->clearCache();
+        $this->commandExecutor->runCommand('cache:clear');
 
         return $this;
     }
