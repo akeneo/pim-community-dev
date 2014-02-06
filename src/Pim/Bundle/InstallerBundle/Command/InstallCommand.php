@@ -410,9 +410,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('verbose')) {
-            $defaultParams = array('--verbose' => true);
-        }
+        $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
             ->runCommand('oro:search:create-index')
