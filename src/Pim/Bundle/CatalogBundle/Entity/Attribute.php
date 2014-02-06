@@ -59,6 +59,11 @@ class Attribute extends AbstractEntityAttribute implements
     protected $availableLocales;
 
     /**
+     * @var $families ArrayCollection
+     */
+    protected $families;
+
+    /**
      * @var integer $maxCharacters
      */
     protected $maxCharacters;
@@ -179,6 +184,7 @@ class Attribute extends AbstractEntityAttribute implements
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
+        $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
     }
@@ -410,7 +416,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getAvailableLocales()
     {
-        return $this->availableLocales->isEmpty() ? null : $this->availableLocales;
+        return $this->availableLocales;
     }
 
     /**
@@ -423,6 +429,58 @@ class Attribute extends AbstractEntityAttribute implements
     public function setAvailableLocales($availableLocales)
     {
         $this->availableLocales = $availableLocales;
+
+        return $this;
+    }
+
+    /**
+     * Add family
+     *
+     * @param Family $family
+     *
+     * @return AttributeInterface
+     */
+    public function addFamily(Family $family)
+    {
+        $this->families[] = $family;
+
+        return $this;
+    }
+
+    /**
+     * Remove family
+     *
+     * @param Family $family
+     *
+     * @return AttributeInterface
+     */
+    public function removeFamily(Family $family)
+    {
+        $this->families->removeElement($family);
+
+        return $this;
+    }
+
+    /**
+     * Get families
+     *
+     * @return ArrayCollection|null
+     */
+    public function getFamilies()
+    {
+        return $this->families;
+    }
+
+    /**
+     * Set families
+     *
+     * @param ArrayCollection $families
+     *
+     * @return AttributeInterface
+     */
+    public function setFamilies($families)
+    {
+        $this->families = $families;
 
         return $this;
     }
