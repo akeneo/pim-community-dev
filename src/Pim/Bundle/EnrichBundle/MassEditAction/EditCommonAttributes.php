@@ -58,7 +58,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * @var ArrayCollection
      */
-    protected $attributesToDisplay;
+    protected $displayedAttributes;
 
     /**
      * Constructor
@@ -76,7 +76,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
-        $this->attributesToDisplay = new ArrayCollection();
+        $this->displayedAttributes = new ArrayCollection();
     }
 
     /**
@@ -156,27 +156,27 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Set attributes to display
+     * Set displayed attributes
      *
-     * @param Collection $attributesToDisplay
+     * @param Collection $displayedAttributes
      *
      * @return EditCommonAttributes
      */
-    public function setAttributesToDisplay(Collection $attributesToDisplay)
+    public function setDisplayedAttributes(Collection $displayedAttributes)
     {
-        $this->attributesToDisplay = $attributesToDisplay;
+        $this->displayedAttributes = $displayedAttributes;
 
         return $this;
     }
 
     /**
-     * Get attributes to display
+     * Get displayed attributes
      *
      * @return Collection
      */
-    public function getAttributesToDisplay()
+    public function getDisplayedAttributes()
     {
-        return $this->attributesToDisplay;
+        return $this->displayedAttributes;
     }
 
     /**
@@ -209,9 +209,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->skipUneditableAttributes($products);
 
         foreach ($this->commonAttributes as $attribute) {
-            if ($this->attributesToDisplay->contains($attribute)) {
-                $this->addValues($attribute);
-            }
+            $this->addValues($attribute);
         }
     }
 
@@ -279,7 +277,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-            $this->setProductValue($product, $value);
+            if ($this->displayedAttributes->contains($value->getAttribute())) {
+                $this->setProductValue($product, $value);
+            }
         }
     }
 
@@ -433,7 +433,12 @@ class EditCommonAttributes extends AbstractMassEditAction
             $media = new Media();
             $productValue->setMedia($media);
         }
-        $media->setFile($value->getMedia()->getFile());
+        $file = $value->getMedia()->getFile();
+        if ($file) {
+            $media->setFile($file);
+        } else {
+            $media->setRemoved(true);
+        }
     }
 
     /**

@@ -23,7 +23,7 @@ parameters:
             type: flexible_field
         filter:
             type:        flexible_choice
-            parent_type: choice
+            parent_type: ajax_choice
             options:
                 field_options:
                     multiple: true
@@ -32,7 +32,7 @@ parameters:
             type: flexible_field
         filter:
             type:        flexible_choice
-            parent_type: choice
+            parent_type: ajax_choice
             options:
                 field_options:
                     multiple: true

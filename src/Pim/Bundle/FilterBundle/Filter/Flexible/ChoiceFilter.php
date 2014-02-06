@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
+use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Flexible filter
@@ -14,10 +14,36 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChoiceFilter extends OroChoiceFilter
+class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var array */
-    protected $valueOptions;
+    /** @var integer */
+    protected $attributeId;
+
+    /** @var string */
+    protected $optionRepositoryClass;
+
+    /** @var UserContext */
+    protected $userContext;
+
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface $factory
+     * @param FilterUtility        $util
+     * @param UserContext          $userContext
+     * @param string               $optionRepositoryClass
+     */
+    public function __construct(
+        FormFactoryInterface $factory,
+        FilterUtility $util,
+        UserContext $userContext,
+        $optionRepositoryClass
+    ) {
+        parent::__construct($factory, $util);
+
+        $this->userContext           = $userContext;
+        $this->optionRepositoryClass = $optionRepositoryClass;
+    }
 
     /**
      * {@inheritdoc}
@@ -53,8 +79,9 @@ class ChoiceFilter extends OroChoiceFilter
             ['csrf_protection' => false]
         );
 
-        $options['field_options']            = isset($options['field_options']) ? $options['field_options'] : [];
-        $options['field_options']['choices'] = $this->getValueOptions();
+        $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
+        $options['choice_url']        = 'pim_ui_ajaxentity_list';
+        $options['choice_url_params'] = $this->getChoiceUrlParams();
 
         if (!$this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $options);
@@ -67,38 +94,27 @@ class ChoiceFilter extends OroChoiceFilter
      * @return array
      * @throws \LogicException
      */
-    protected function getValueOptions()
+    protected function getChoiceUrlParams()
     {
-        if (null === $this->valueOptions) {
+        if (null === $this->attributeId) {
             $filedName       = $this->get(FilterUtility::DATA_NAME_KEY);
-            /** @var FlexibleManager */
             $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
 
-            /** @var ObjectRepository */
-            $attributeRepository = $flexibleManager->getAttributeRepository();
-            /** @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute */
-            $attribute = $attributeRepository->findOneBy(
+            $attribute = $flexibleManager->getAttributeRepository()->findOneBy(
                 ['entityType' => $flexibleManager->getFlexibleName(), 'code' => $filedName]
             );
+
             if (!$attribute) {
-                throw new \LogicException('There is no flexible attribute with name ' . $filedName . '.');
+                throw new \LogicException(sprintf('There is no flexible attribute with name %s.', $filedName));
             }
 
-            /** @var ObjectRepository */
-            $optionsRepository  = $flexibleManager->getAttributeOptionRepository();
-            $options            = $optionsRepository->findAllForAttributeWithValues($attribute);
-            $this->valueOptions = [];
-            /** @var AttributeOption */
-            foreach ($options as $option) {
-                $optionValue = $option->getOptionValue();
-                if ($optionValue) {
-                    $this->valueOptions[$option->getId()] = $optionValue->getValue();
-                } else {
-                    $this->valueOptions[$option->getId()] = '[' . $option->getCode() . ']';
-                }
-            }
+            $this->attributeId = $attribute->getId();
         }
 
-        return $this->valueOptions;
+        return [
+            'class'        => $this->optionRepositoryClass,
+            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+            'collectionId' => $this->attributeId
+        ];
     }
 }
