@@ -101,7 +101,8 @@ class UserContext
         $defaultLocales = array_filter(
             $this->localeManager->getActiveLocales(),
             function ($locale) {
-                return $locale->getCode() === $this->defaultLocale;
+                return $locale->getCode() === $this->defaultLocale
+                    && $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale));
             }
         );
 
