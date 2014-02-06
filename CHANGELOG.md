@@ -1,4 +1,4 @@
-# 1.0.0-rc-1 -
+# 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
 ## Features
 - Created the completenesses over channels and locales widget
