@@ -25,6 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
     manyToMany:
         attributes:
             targetEntity: Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+            inversedBy: families
             cascade:
                 - persist
             joinTable:
