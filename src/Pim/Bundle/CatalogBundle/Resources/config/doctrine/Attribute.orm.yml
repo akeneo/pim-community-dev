@@ -184,7 +184,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     locale_id:
                         referencedColumnName: id
                         onDelete: CASCADE
-    manyToMany:
         families:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
             mappedBy: attributes

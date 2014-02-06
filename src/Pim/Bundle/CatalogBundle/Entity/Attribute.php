@@ -416,7 +416,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getAvailableLocales()
     {
-        return $this->availableLocales;
+        return $this->availableLocales->isEmpty() ? null : $this->availableLocales;
     }
 
     /**
@@ -426,7 +426,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @return AttributeInterface
      */
-    public function setAvailableLocales($availableLocales)
+    public function setAvailableLocales(ArrayCollection $availableLocales)
     {
         $this->availableLocales = $availableLocales;
 
@@ -468,7 +468,7 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getFamilies()
     {
-        return $this->families;
+        return $this->families->isEmpty() ? null : $this->families;
     }
 
     /**
@@ -478,7 +478,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @return AttributeInterface
      */
-    public function setFamilies($families)
+    public function setFamilies(ArrayCollection $families)
     {
         $this->families = $families;
 
