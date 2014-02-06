@@ -44,8 +44,8 @@ class AttributeType extends AbstractType
      */
     public function __construct(
         $attributeClass,
-        AttributeManagerInterface $manager = null,
-        AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
+        AttributeManagerInterface $manager,
+        AddAttributeTypeRelatedFieldsSubscriber $subscriber
     ) {
         $this->attributeClass   = $attributeClass;
         $this->attributeManager = $manager;
@@ -200,7 +200,7 @@ class AttributeType extends AbstractType
      *
      * @return array
      */
-    public function getAttributeTypeChoices()
+    protected function getAttributeTypeChoices()
     {
         return $this->attributeManager->getAttributeTypes();
     }
