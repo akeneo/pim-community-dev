@@ -437,7 +437,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param Family $family
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function addFamily(Family $family)
     {
@@ -451,7 +451,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param Family $family
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function removeFamily(Family $family)
     {
@@ -475,7 +475,7 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @param ArrayCollection $families
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function setFamilies(ArrayCollection $families)
     {
