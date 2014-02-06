@@ -5,6 +5,7 @@
 ## Improvements
 - Load choices for grid filters asynchronously
 - Allow adding/removing attributes to mass edit attributes view without a page reload
+- Propagate -v option to subcommands of install command
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
