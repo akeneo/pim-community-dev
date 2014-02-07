@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Group repository
@@ -55,11 +55,11 @@ class GroupRepository extends ReferableEntityRepository
 
     /**
      * Return the number of groups containing the provided attribute
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return interger
      */
-    public function countForAttribute(AttributeInterface $attribute)
+    public function countForAttribute(AbstractAttribute $attribute)
     {
         $qb = $this->createQueryBuilder('g');
 

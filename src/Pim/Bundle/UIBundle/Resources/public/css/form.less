@@ -162,9 +162,14 @@ a.accordion-toggle {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 20px;
-  label.control-label:after {
-    content: '';
+  margin-bottom: 10px;
+  label.control-label {
+    &:not(.add-on) {
+      max-height: 25px;
+    }
+    &:after {
+      content: '';
+    }
   }
 }
 
@@ -240,6 +245,7 @@ a.add-attribute-option {
 /* bootstrapSwitch */
 .has-switch {
   margin-right: 3px;
+  margin-bottom: -6px;
   span {
     padding: 4px 7px;
     font-size: 12px;
@@ -686,6 +692,9 @@ table i {
   }
   .control-group {
     max-width: inherit;
+    .control-group {
+      margin-bottom: 0;
+    }
   }
   .currency-header {
     display: inline-block;
@@ -740,7 +749,7 @@ table.comparison .no-label .attribute-field.currency.scopable .currency-header {
 }
 
 .attribute-field.scopable {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   max-width: inherit;
   >div {
     &:first-of-type .controls {
@@ -1181,6 +1190,7 @@ button.pimmultiselect {
 }
 .controls.metric.input-append {
   margin-left: 10px;
+  margin-bottom: -12px;
   .icons-container {
     margin-left: 95px;
   }

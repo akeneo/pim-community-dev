@@ -75,11 +75,11 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $metricFamily
      * @param string $defaultMetricUnit
      *
-     * @return Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function createAttribute($metricFamily, $defaultMetricUnit = '')
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AttributeInterface');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $this->propertyAccessor->expects($this->any())
             ->method('getValue')

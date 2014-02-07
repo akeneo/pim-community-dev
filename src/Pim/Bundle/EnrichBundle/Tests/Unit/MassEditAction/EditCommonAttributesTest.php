@@ -100,7 +100,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->method('createFlexibleValue')
             ->will($this->returnValue($this->getProductValueMock(null, null)));
 
-        $this->action->setAttributesToDisplay(new ArrayCollection(array($name, $description, $price)));
+        $this->action->setDisplayedAttributes(new ArrayCollection(array($name, $description, $price)));
         $this->action->initialize(array($foo, $bar));
 
         $this->assertEquals(array(1 => $name, 3 => $description, 4 => $price), $this->action->getCommonAttributes());
@@ -157,6 +157,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             )
         );
         $this->action->setLocale($this->getLocaleMock('en_US'));
+        $this->action->setDisplayedAttributes(new ArrayCollection(array($name, $description, $price)));
 
         $foo->expects($this->any())
             ->method('getValue')
@@ -289,7 +290,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param boolean $scopable
      * @param boolean $localizable
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($code, $type = 'text', $scopable = false, $localizable = false)
     {

@@ -515,7 +515,6 @@ class FixturesContext extends RawMinkContext
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
-            assertEquals($data['date_type'], $attribute->getDateType());
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
         }
@@ -591,6 +590,17 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
+            assertEquals($data['type'], $group->getType()->getCode());
+
+            if ($group->getType()->isVariant()) {
+                $attributes = array();
+                foreach ($group->getAttributes() as $attribute) {
+                    $attributes[] = $attribute->getCode();
+                }
+                asort($attributes);
+                $attributes = implode(',', $attributes);
+                assertEquals($data['attributes'], $attributes);
+            }
         }
     }
 

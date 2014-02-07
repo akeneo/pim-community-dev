@@ -115,6 +115,12 @@ confirmation:
         variant group:    Are you sure you want to delete the variant group %name%?
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
+    attribute group:
+        remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
+    family:
+        remove attribute: Are you sure you want to remove the attribute %name% from this family?
+    product:
+        remove attribute: Are you sure you want to remove the attribute %name% from this product?
 
 # Flash messages
 flash:
@@ -304,7 +310,6 @@ Number min:              Min number
 Number max:              Max number
 Decimals allowed:        Allow decimals
 Negative allowed:        Allow negative values
-Date type:               Date type
 Date min:                Min date
 Date max:                Max date
 Metric family:           Metric family

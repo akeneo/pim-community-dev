@@ -165,7 +165,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     private function getAttributeMock($code, $type = null)
     {
@@ -209,7 +209,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $requirements
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     * @return Family
      */
     protected function getFamilyMock(array $requirements)
     {

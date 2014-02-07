@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attribute;
 
@@ -305,19 +305,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for dateType property
-     */
-    public function testGetSetDateType()
-    {
-        $this->assertNull($this->attribute->getDateType());
-
-        // Change value and assert new
-        $dateType = 'datetime';
-        $this->assertEntity($this->attribute->setDateType($dateType));
-        $this->assertEquals($dateType, $this->attribute->getDateType());
-    }
-
-    /**
      * Test getter/setter for dateMin property
      */
     public function testGetSetDateMin()
@@ -488,7 +475,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert entity
-     * @param Pim\Bundle\CatalogBundle\Entity\Attribute $entity
+     * @param \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $entity
      */
     protected function assertEntity($entity)
     {

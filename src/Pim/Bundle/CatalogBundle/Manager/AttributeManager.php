@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Attribute manager
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements AttributeManagerInterface
+class AttributeManager
 {
     /**
      * @var string
@@ -140,7 +140,7 @@ class AttributeManager implements AttributeManagerInterface
      */
     public function createAttributeFromFormData($data)
     {
-        if ($data instanceof AttributeInterface) {
+        if ($data instanceof AbstractAttribute) {
             return $data;
         }
 
@@ -217,7 +217,7 @@ class AttributeManager implements AttributeManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareBackendProperties(AttributeInterface $attribute)
+    public function prepareBackendProperties(AbstractAttribute $attribute)
     {
         $baseAttribute = $this->createAttribute($attribute->getAttributeType());
 

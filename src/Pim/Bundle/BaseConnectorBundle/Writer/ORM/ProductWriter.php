@@ -34,7 +34,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $addVersionListener;
 
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $identifierAttribute;
 

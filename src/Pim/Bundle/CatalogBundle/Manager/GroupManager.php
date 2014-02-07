@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Group manager
@@ -47,7 +46,7 @@ class GroupManager
     /**
      * Get available axis
      *
-     * @return AttributeInterface[]
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute[]
      */
     public function getAvailableAxis()
     {

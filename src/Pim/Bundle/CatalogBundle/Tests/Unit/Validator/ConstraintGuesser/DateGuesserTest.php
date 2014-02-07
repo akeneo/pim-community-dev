@@ -45,28 +45,28 @@ class DateGuesserTest extends ConstraintGuesserTest
     }
 
     /**
+     * Test supportAttribute method with an unsupported attribute
+     */
+    public function testDoNotSupportAttribute()
+    {
+        $this->assertFalse(
+            $this->target->supportAttribute(
+                $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
+            )
+        );
+    }
+
+    /**
      * Test guessConstraints method
      */
     public function testGuessDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_catalog_date', 'dateType' => 'date')
+                array('attributeType' => 'pim_catalog_date')
             )
         );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Date', $constraints);
-    }
-
-    /**
-     * Test guessConstraints method with an unsupported attribute
-     */
-    public function testDoNotGuessDateConstraint()
-    {
-        $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
-        );
-
-        $this->assertEquals(0, count($constraints));
     }
 }

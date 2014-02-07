@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
@@ -288,11 +288,11 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Add attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return Group
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function addAttribute(AbstractAttribute $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes[] = $attribute;
@@ -304,13 +304,13 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Remove attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return Group
      *
      * @throws \InvalidArgumentException
      */
-    public function removeAttribute(AttributeInterface $attribute)
+    public function removeAttribute(AbstractAttribute $attribute)
     {
         $this->attributes->removeElement($attribute);
 
@@ -345,7 +345,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Setter for attributes property
      *
-     * @param AttributeInterface[] $attributes
+     * @param AbstractAttribute[] $attributes
      *
      * @return Group
      */

@@ -4,13 +4,13 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -58,7 +58,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * @var ArrayCollection
      */
-    protected $attributesToDisplay;
+    protected $displayedAttributes;
 
     /**
      * Constructor
@@ -76,7 +76,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
-        $this->attributesToDisplay = new ArrayCollection();
+        $this->displayedAttributes = new ArrayCollection();
     }
 
     /**
@@ -156,27 +156,27 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Set attributes to display
+     * Set displayed attributes
      *
-     * @param Collection $attributesToDisplay
+     * @param Collection $displayedAttributes
      *
      * @return EditCommonAttributes
      */
-    public function setAttributesToDisplay(Collection $attributesToDisplay)
+    public function setDisplayedAttributes(Collection $displayedAttributes)
     {
-        $this->attributesToDisplay = $attributesToDisplay;
+        $this->displayedAttributes = $displayedAttributes;
 
         return $this;
     }
 
     /**
-     * Get attributes to display
+     * Get displayed attributes
      *
      * @return Collection
      */
-    public function getAttributesToDisplay()
+    public function getDisplayedAttributes()
     {
-        return $this->attributesToDisplay;
+        return $this->displayedAttributes;
     }
 
     /**
@@ -209,9 +209,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->skipUneditableAttributes($products);
 
         foreach ($this->commonAttributes as $attribute) {
-            if ($this->attributesToDisplay->contains($attribute)) {
-                $this->addValues($attribute);
-            }
+            $this->addValues($attribute);
         }
     }
 
@@ -279,7 +277,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-            $this->setProductValue($product, $value);
+            if ($this->displayedAttributes->contains($value->getAttribute())) {
+                $this->setProductValue($product, $value);
+            }
         }
     }
 
@@ -336,9 +336,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Add all the values required by the given attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      */
-    protected function addValues(AttributeInterface $attribute)
+    protected function addValues(AbstractAttribute $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->isScopable()) {
@@ -354,13 +354,13 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Create a value
      *
-     * @param AttributeInterface $attribute
-     * @param Locale             $locale
-     * @param Channel            $channel
+     * @param AbstractAttribute $attribute
+     * @param Locale            $locale
+     * @param Channel           $channel
      *
      * @return ProductValueInterface
      */
-    protected function createValue(AttributeInterface $attribute, Locale $locale, Channel $channel = null)
+    protected function createValue(AbstractAttribute $attribute, Locale $locale, Channel $channel = null)
     {
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
@@ -433,7 +433,12 @@ class EditCommonAttributes extends AbstractMassEditAction
             $media = new Media();
             $productValue->setMedia($media);
         }
-        $media->setFile($value->getMedia()->getFile());
+        $file = $value->getMedia()->getFile();
+        if ($file) {
+            $media->setFile($file);
+        } else {
+            $media->setRemoved(true);
+        }
     }
 
     /**

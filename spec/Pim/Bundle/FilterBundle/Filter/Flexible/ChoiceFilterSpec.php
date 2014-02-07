@@ -7,21 +7,19 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
 use Symfony\Component\Form\Form;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+Use Pim\Bundle\UserBundle\Context\UserContext;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility)
+    function let(FormFactoryInterface $factory, FilterUtility $utility, UserContext $userContext)
     {
-        $this->beConstructedWith($factory, $utility);
+        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass');
 
         $this->init(
             'foo',
@@ -52,7 +50,7 @@ class ChoiceFilterSpec extends ObjectBehavior
             $datasource,
             [
                 'value' => ['foo', 'bar'],
-                'type'  => ChoiceFilterType::TYPE_CONTAINS,
+                'type'  => AjaxChoiceFilterType::TYPE_CONTAINS,
             ]
         );
     }
@@ -70,7 +68,7 @@ class ChoiceFilterSpec extends ObjectBehavior
             $datasource,
             [
                 'value' => $collection,
-                'type'  => ChoiceFilterType::TYPE_CONTAINS,
+                'type'  => AjaxChoiceFilterType::TYPE_CONTAINS,
             ]
         );
     }
@@ -85,7 +83,7 @@ class ChoiceFilterSpec extends ObjectBehavior
             $datasource,
             [
                 'value' => ['foo', 'bar'],
-                'type'  => ChoiceFilterType::TYPE_NOT_CONTAINS,
+                'type'  => AjaxChoiceFilterType::TYPE_NOT_CONTAINS,
             ]
         );
     }
@@ -112,36 +110,24 @@ class ChoiceFilterSpec extends ObjectBehavior
         Form $form,
         FlexibleManager $flexibleManager,
         AttributeRepository $attributeRepository,
-        AttributeOptionRepository $attributeOptionRepository,
         Attribute $attribute,
-        AttributeOption $optionAlpha,
-        AttributeOption $optionBeta,
-        AttributeOptionValue $optionValueAlpha,
         $utility,
         $factory
     ) {
         $utility->getFlexibleManager('fen_key')->willReturn($flexibleManager);
         $flexibleManager->getAttributeRepository()->willReturn($attributeRepository);
-        $flexibleManager->getAttributeOptionRepository()->willReturn($attributeOptionRepository);
         $flexibleManager->getFlexibleName()->willReturn('foo');
 
         $attributeRepository->findOneBy(['entityType' => 'foo', 'code' => 'data_name_key'])->willReturn($attribute);
-        $attributeOptionRepository->findAllForAttributeWithValues($attribute)->willReturn([$optionAlpha, $optionBeta]);
 
-        $optionAlpha->getOptionValue()->willReturn($optionValueAlpha);
-        $optionBeta->getOptionValue()->willReturn(null);
-        $optionAlpha->getId()->willReturn(1);
-        $optionValueAlpha->getValue()->willReturn('alpha');
-        $optionBeta->getId()->willReturn(2);
-        $optionBeta->getCode()->willReturn('beta');
-
-        $factory->create(ChoiceFilterType::NAME, [], [
+        $factory->create(AjaxChoiceFilterType::NAME, [], [
             'csrf_protection' => false,
-            'field_options' => [
-                'choices' => [
-                    1 => 'alpha',
-                    2 => '[beta]'
-                ]
+            'field_options' => [],
+            'choice_url' => 'pim_ui_ajaxentity_list',
+            'choice_url_params' => [
+                'class' => 'attributeOptionClass',
+                'dataLocale' => null,
+                'collectionId' => null
             ]
         ])->willReturn($form);
 

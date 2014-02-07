@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
@@ -188,13 +188,13 @@ class CompletenessManager
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
+     * @param AbstractAttribute $attribute
+     * @param string            $locale
+     * @param string            $scope
      *
      * @return string
      */
-    protected function getValueCode(AttributeInterface $attribute, $locale, $scope)
+    protected function getValueCode(AbstractAttribute $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {

@@ -28,7 +28,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
     protected $attributeCodeText;
 
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attributeText;
 
@@ -38,7 +38,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
     protected $attributeCodeSelect;
 
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attributeSelect;
 

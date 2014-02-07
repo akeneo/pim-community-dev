@@ -41,7 +41,10 @@ class UserContext
     protected $request;
 
     /** @var array */
-    private $userLocales;
+    protected $userLocales;
+
+    /** @var string */
+    protected $defaultLocale;
 
     /**
      * @param SecurityContextInterface $securityContext
@@ -49,19 +52,22 @@ class UserContext
      * @param LocaleManager            $localeManager
      * @param ChannelManager           $channelManager
      * @param CategoryManager          $categoryManager
+     * @param string                   $defaultLocale
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        $defaultLocale
     ) {
         $this->securityContext = $securityContext;
         $this->securityFacade  = $securityFacade;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
         $this->categoryManager = $categoryManager;
+        $this->defaultLocale   = $defaultLocale;
     }
 
     /**
@@ -89,6 +95,10 @@ class UserContext
         }
 
         if (null !== $locale = $this->getUserLocale()) {
+            return $locale;
+        }
+
+        if (null !== $locale = $this->getDefaultLocale()) {
             return $locale;
         }
 
@@ -224,6 +234,20 @@ class UserContext
         $locale = $this->getUserOption('catalogLocale');
 
         return $locale && $this->isLocaleAvailable($locale) ? $locale : null;
+    }
+
+    /**
+     * Returns the default application locale if user has access to it
+     *
+     * @return Locale|null
+     */
+    protected function getDefaultLocale()
+    {
+        if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale))) {
+            return $this->localeManager->getLocaleByCode($this->defaultLocale);
+        }
+
+        return null;
     }
 
     /**
