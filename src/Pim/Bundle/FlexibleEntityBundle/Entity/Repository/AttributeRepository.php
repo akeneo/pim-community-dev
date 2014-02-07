@@ -15,11 +15,6 @@ use Doctrine\ORM\AbstractQuery;
 class AttributeRepository extends EntityRepository
 {
     /**
-     * @var integer
-     */
-    const CODE_ATTRIBUTES_TTL = 120;
-
-    /**
      * @var string
      */
     const CODE_ATTRIBUTES_PREFIX = 'ATTR_CODE_';

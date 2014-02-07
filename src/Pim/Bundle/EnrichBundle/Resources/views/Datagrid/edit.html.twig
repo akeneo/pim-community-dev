@@ -30,21 +30,25 @@
 {{ form_end(form) }}
 
 <script type="text/javascript">
-    require(['jquery', 'jquery-ui-full'], function($){
-        $(function() {
-            $('#columns, #bucket')
-                .sortable({
-                    connectWith: '.connectedSortable',
-                    cursor: 'move',
-                    stop: function() {
-                        var values = [];
-                        $('#columns input[type="checkbox"]').each(function() {
-                            values.push($(this).val());
-                        });
-                        $('#{{ form.order.vars.id }}').val(values.join(','));
-                    }
-                })
-                .disableSelection();
-        });
-    });
+    require(
+        ['jquery', 'jquery-ui-full'],
+        function ($) {
+            $(function() {
+                $('#columns, #bucket')
+                    .sortable({
+                        connectWith: '.connectedSortable',
+                        containment: $('#columns').closest('.row-fluid'),
+                        tolerance: 'pointer',
+                        cursor: 'move',
+                        stop: function() {
+                            var values = _.map($('#columns input[type="checkbox"]'), function (el) {
+                                return $(el).val();
+                            });
+                            $('#{{ form.order.vars.id }}').val(values.join(','));
+                        }
+                    })
+                    .disableSelection();
+            });
+        }
+    );
 </script>

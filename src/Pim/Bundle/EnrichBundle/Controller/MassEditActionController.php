@@ -10,15 +10,15 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
+
+use Doctrine\ORM\AbstractQuery;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Oro\Bundle\DataGridBundle\Action\MassAction\MassActionResponse;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -37,17 +37,20 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditActionOperator */
     protected $operator;
 
-    /** @var Manager */
-    protected $manager;
-
     /** @var MassActionParametersParser */
     protected $parametersParser;
+
+    /** @var MassActionDispatcher */
+    protected $massActionDispatcher;
 
     /** @var ProductManager */
     protected $productManager;
 
     /** @var ValidatorInterface */
     protected $validator;
+
+    /** @var integer[] */
+    protected $productIds;
 
     /**
      * Constructor
@@ -61,8 +64,8 @@ class MassEditActionController extends AbstractDoctrineController
      * @param TranslatorInterface        $translator
      * @param RegistryInterface          $doctrine
      * @param MassEditActionOperator     $operator
-     * @param Manager                    $manager
      * @param MassActionParametersParser $parametersParser
+     * @param MassActionDispatcher       $massActionDispatcher
      * @param ProductManager             $productManager
      */
     public function __construct(
@@ -75,8 +78,8 @@ class MassEditActionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         MassEditActionOperator $operator,
-        Manager $manager,
         MassActionParametersParser $parametersParser,
+        MassActionDispatcher $massActionDispatcher,
         ProductManager $productManager
     ) {
         parent::__construct(
@@ -90,11 +93,11 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator        = $validator;
-        $this->operator         = $operator;
-        $this->manager          = $manager;
-        $this->parametersParser = $parametersParser;
-        $this->productManager   = $productManager;
+        $this->validator            = $validator;
+        $this->operator             = $operator;
+        $this->parametersParser     = $parametersParser;
+        $this->massActionDispatcher = $massActionDispatcher;
+        $this->productManager       = $productManager;
     }
 
     /**
@@ -106,8 +109,8 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction(Request $request)
     {
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -118,17 +121,15 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    array(
-                        'products'       => $productIds,
-                        'operationAlias' => $this->operator->getOperationAlias(),
-                    )
+                    $this->getQueryParams($request) + ['operationAlias' => $this->operator->getOperationAlias()]
                 );
             }
         }
 
         return array(
-            'form'       => $form->createView(),
-            'productIds' => $productIds,
+            'form'         => $form->createView(),
+            'productCount' => $productCount,
+            'queryParams'  => $this->getQueryParams($request)
         );
     }
 
@@ -148,26 +149,27 @@ class MassEditActionController extends AbstractDoctrineController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($productIds);
+        $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $this->operator->initializeOperation($productIds);
+            $this->operator->initializeOperation($this->getProductIds($request));
             $form = $this->getOperatorForm();
         }
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
-                'form'       => $form->createView(),
-                'operator'   => $this->operator,
-                'productIds' => $productIds,
+                'form'         => $form->createView(),
+                'operator'     => $this->operator,
+                'productCount' => $productCount,
+                'queryParams'  => $this->getQueryParams($request)
             )
         );
     }
@@ -188,24 +190,17 @@ class MassEditActionController extends AbstractDoctrineController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productIds = $this->getProductIds($request);
-        if (!$productIds) {
+        $productCount = $this->getProductCount($request);
+        if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        // Hacky hack for the edit common attribute operation to work
-        // first time is to set diplayed attributes and locale
-        $this->operator->initializeOperation($productIds);
-        $form = $this->getOperatorForm();
-        $form->submit($request);
-
-        //second time is to set values
-        $this->operator->initializeOperation($productIds);
+        $this->operator->initializeOperation($this->getProductIds($request));
         $form = $this->getOperatorForm();
         $form->submit($request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($productIds);
+        $this->operator->performOperation($this->getProductIds($request));
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -219,7 +214,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($form->isValid()) {
             $this->productManager->saveAll(
-                $this->productManager->findByIds($productIds),
+                $this->productManager->findByIds($this->getProductIds($request)),
                 false
             );
             $this->addFlash(
@@ -233,42 +228,12 @@ class MassEditActionController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
-                'form'       => $form->createView(),
-                'operator'   => $this->operator,
-                'productIds' => $productIds,
+                'form'         => $form->createView(),
+                'operator'     => $this->operator,
+                'productCount' => $productCount,
+                'queryParams'  => $this->getQueryParams($request)
             )
         );
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     * @throws \LogicException
-     */
-    public function deleteAction(Request $request)
-    {
-        $productIds = $this->getProductIds($request);
-        $this->productManager->removeAll($productIds);
-        $entitiesCount = count($productIds);
-        $options = array('count' => $entitiesCount);
-
-        $response = new MassActionResponse(
-            true,
-            $this->getTranslator()->transChoice(
-                'oro.grid.mass_action.delete.success_message',
-                $entitiesCount,
-                array('%count%' => $entitiesCount)
-            ),
-            $options
-        );
-
-        $data = array(
-            'successful' => $response->isSuccessful(),
-            'message'    => $response->getMessage(),
-        );
-
-        return new JsonResponse(array_merge($data, $response->getOptions()));
     }
 
     /**
@@ -284,7 +249,7 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * Get the product ids stored in the query string
+     * Get the product ids to perform the mass action on
      *
      * @param Request $request
      *
@@ -292,45 +257,82 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getProductIds(Request $request)
     {
-        $parameters = $this->parametersParser->parse($request);
-
-        if ($parameters['inset'] === false) {
-            $datagrid = $this->manager->getDatagrid('product-grid');
-            $qb       = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            // Remove 'entityIds' from the querybuilder to be able to get all results
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-            $qb->setParameters(
-                $qb->getParameters()->filter(
-                    function ($parameter) {
-                        return $parameter->getName() !== 'entityIds';
-                    }
-                )
-            );
-
-            $results = $qb->getQuery()->execute();
-
-            $ids = array_map(
-                function ($result) {
-                    return $result[0]->getId();
-                },
-                $results
-            );
-
-            return array_unique(array_diff($ids, $parameters['values']));
-
-        } elseif (!empty($parameters['values'])) {
-            return $parameters['values'];
-
-        } else {
-            return $request->query->get('products');
+        if (null === $this->productIds) {
+            $qb = $this->getGridQB($request);
+            $results = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
+            $this->productIds = array_keys($results);
         }
+
+        return $this->productIds;
+    }
+
+    /**
+     * Get the count of products to perform the mass action on
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function getProductCount(Request $request)
+    {
+        if (null === $this->productIds) {
+            $qb = $this->getGridQB($request);
+
+            $qb->resetDQLPart('select');
+            $qb->select('COUNT (p.id)');
+
+            return (int) $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+        }
+
+        return count($this->productIds);
+    }
+
+    /**
+     * Get the datagrid query parameters
+     *
+     * @param Request $request
+     *
+     * @return QueryBuilder
+     */
+    protected function getQueryParams(Request $request)
+    {
+        $params = $this->parametersParser->parse($request);
+
+        $params['gridName'] = $request->get('gridName');
+        $params['values']   = implode(',', $params['values']);
+        $params['filters']  = json_encode($params['filters']);
+
+        return $params;
+    }
+
+    /**
+     * Get the query builder with grid parameters applied
+     *
+     * @param Request $request
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getGridQB(Request $request)
+    {
+        $parameters  = $this->parametersParser->parse($request);
+        $requestData = array_merge($request->query->all(), $request->request->all());
+
+        $qb = $this->massActionDispatcher->dispatch(
+            $requestData['gridName'],
+            'export',
+            $parameters,
+            $requestData
+        );
+
+        $identifier = sprintf('%s.id', $qb->getRootAlias());
+
+        $qb->resetDQLPart('select');
+        $qb->select($identifier);
+
+        $from = current($qb->getDQLPart('from'));
+        $qb->resetDQLPart('from');
+        $qb->from($from->getFrom(), $from->getAlias(), $identifier);
+
+        return $qb;
     }
 }

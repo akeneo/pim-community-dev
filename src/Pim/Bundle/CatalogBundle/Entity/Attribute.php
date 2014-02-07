@@ -59,6 +59,11 @@ class Attribute extends AbstractEntityAttribute implements
     protected $availableLocales;
 
     /**
+     * @var $families ArrayCollection
+     */
+    protected $families;
+
+    /**
      * @var integer $maxCharacters
      */
     protected $maxCharacters;
@@ -97,11 +102,6 @@ class Attribute extends AbstractEntityAttribute implements
      * @var boolean $negativeAllowed
      */
     protected $negativeAllowed;
-
-    /**
-     * @var string $dateType
-     */
-    protected $dateType;
 
     /**
      * @var datetime $dateMin
@@ -179,6 +179,7 @@ class Attribute extends AbstractEntityAttribute implements
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
+        $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
     }
@@ -420,9 +421,61 @@ class Attribute extends AbstractEntityAttribute implements
      *
      * @return AttributeInterface
      */
-    public function setAvailableLocales($availableLocales)
+    public function setAvailableLocales(ArrayCollection $availableLocales)
     {
         $this->availableLocales = $availableLocales;
+
+        return $this;
+    }
+
+    /**
+     * Add family
+     *
+     * @param Family $family
+     *
+     * @return AttributeInterface
+     */
+    public function addFamily(Family $family)
+    {
+        $this->families[] = $family;
+
+        return $this;
+    }
+
+    /**
+     * Remove family
+     *
+     * @param Family $family
+     *
+     * @return AttributeInterface
+     */
+    public function removeFamily(Family $family)
+    {
+        $this->families->removeElement($family);
+
+        return $this;
+    }
+
+    /**
+     * Get families
+     *
+     * @return ArrayCollection|null
+     */
+    public function getFamilies()
+    {
+        return $this->families->isEmpty() ? null : $this->families;
+    }
+
+    /**
+     * Set families
+     *
+     * @param ArrayCollection $families
+     *
+     * @return AttributeInterface
+     */
+    public function setFamilies(ArrayCollection $families)
+    {
+        $this->families = $families;
 
         return $this;
     }
@@ -615,30 +668,6 @@ class Attribute extends AbstractEntityAttribute implements
     public function setNegativeAllowed($negativeAllowed)
     {
         $this->negativeAllowed = $negativeAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get dateType
-     *
-     * @return string $dateType
-     */
-    public function getDateType()
-    {
-        return $this->dateType;
-    }
-
-    /**
-     * Set dateType
-     *
-     * @param string $dateType
-     *
-     * @return AttributeInterface
-     */
-    public function setDateType($dateType)
-    {
-        $this->dateType = $dateType;
 
         return $this;
     }

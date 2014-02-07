@@ -120,7 +120,7 @@ class OroRequirements extends SymfonyRequirements
             'app/import',
             'app/export',
             'app/emails',
-            'web/bundles',
+            'app/archive',
             'app/uploads/product'
         );
         foreach ($directories as $directory) {

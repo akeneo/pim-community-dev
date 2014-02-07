@@ -12,6 +12,8 @@ define(
          */
         var ConfigureColumnsAction = Backbone.View.extend({
 
+            locale: null,
+
             label: __('Columns'),
 
             icon: 'th',
@@ -39,6 +41,7 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
+                this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
@@ -63,7 +66,7 @@ define(
 
             execute: function(event) {
                 event.preventDefault();
-                var url = Routing.generate('pim_catalog_datagrid_edit', {alias: this.gridName});
+                var url = Routing.generate('pim_catalog_datagrid_edit', { alias: this.gridName, dataLocale: this.locale });
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
@@ -98,7 +101,7 @@ define(
             var metadata = $gridContainer.data('metadata');
             var options = metadata.options || {};
             new ConfigureColumnsAction(
-                _.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.configureColumns)
+                _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
             );
         };
 

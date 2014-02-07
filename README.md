@@ -64,7 +64,7 @@ Due to some limitations of Oro Platform, you **MUST** create your database befor
 Note that using the "--prefer-dist" option can speed up
 the installation by looking into your local Composer cache.
 
-### Add translation packs
+### Add translation packs (optional)
 
 You can download translation packs from crowdin:
 - http://crowdin.net/project/akeneo
@@ -77,15 +77,15 @@ For Oro Platform, the archive contains the same directories tree except the vers
 
 ### Initialize data and assets
 
-    $ php app/console pim:install --env=prod
+    $ php app/console pim:install --env=dev
 
 Note: This script can be executed several times if you need to reinit your db or redeploy your assets.
 You just have to use the `--force` option.
 By default, this script initializes the dev environment.
 
-In case of problems with the menu, you can try to remove your cache by hand:
+### Clear the cache to finalize the installation
 
-    $ rm -rf app/cache/*
+    $ php app/console cache:clear --env=dev
 
 Create the Apache Virtual host
 ------------------------------

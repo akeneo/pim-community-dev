@@ -17,7 +17,12 @@ class JobInstance extends Constraint
     /**
      * @var string
      */
-    public $message = 'Failed to create an "{{ job_type }}" with an unknown job definition';
+    public $message = 'Failed to create an {{ job_type }} with an unknown job definition';
+
+    /**
+     * @var string
+     */
+    public $property = 'alias';
 
     /**
      * {@inheritdoc}

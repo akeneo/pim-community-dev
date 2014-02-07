@@ -16,11 +16,13 @@ Feature: Choose and order product grids columns
     Given I am on the products page
     Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups, Color, Name, Price, Rating and Size
 
+  @skip
   Scenario: Succesfully hide some columns
     Given I am on the products page
     When I hide the "Color" column
     Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups, Name, Price, Rating and Size
 
+  @skip
   Scenario: Succesfully order some columns
     Given I am on the products page
     When I put the "Color" column before the "Complete" one

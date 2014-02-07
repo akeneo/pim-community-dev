@@ -45,12 +45,6 @@ class Locale implements ReferableInterface
     protected $fallback;
 
     /**
-     * @var Currency $defaultCurrency
-     * TODO : must be removed
-     */
-    protected $defaultCurrency;
-
-    /**
      * @var boolean $activated
      */
     protected $activated = false;
@@ -158,34 +152,6 @@ class Locale implements ReferableInterface
     public function isActivated()
     {
         return $this->channels->count() > 0;
-    }
-
-    /**
-     * Get default currency
-     *
-     * @return Currency
-     *
-     * TODO : Must be removed
-     */
-    public function getDefaultCurrency()
-    {
-        return $this->defaultCurrency;
-    }
-
-    /**
-     * Set currencies
-     *
-     * @param Currency $currency
-     *
-     * @return Locale
-     *
-     * @TODO : must be removed
-     */
-    public function setDefaultCurrency(Currency $currency)
-    {
-        $this->defaultCurrency = $currency;
-
-        return $this;
     }
 
     /**

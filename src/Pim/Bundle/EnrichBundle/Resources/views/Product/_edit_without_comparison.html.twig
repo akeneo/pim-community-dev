@@ -15,7 +15,7 @@
             <i {{ elements.deleteLinkAttributes(
                 path('pim_enrich_product_removeattribute', { 'productId': product.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
                 path('pim_enrich_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
-                'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
+                'confirmation.product.remove attribute'|trans({'%name%': attributeView.label}),
                 'flash.product.attribute removed'|trans
             )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
         {% endif %}

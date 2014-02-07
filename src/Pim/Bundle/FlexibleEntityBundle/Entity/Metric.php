@@ -115,7 +115,7 @@ class Metric
 
     /**
      * Get used unit
-
+     *
      * @return string $unit
      */
     public function getUnit()

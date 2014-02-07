@@ -72,7 +72,7 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->context
             ->expects($this->never())
-            ->method('addViolation');
+            ->method('addViolationAt');
 
         $this->validator->validate(
             new JobInstance(null, null, null),
@@ -93,7 +93,7 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
         $constraint = new JobInstanceConstraint();
         $this->context
             ->expects($this->once())
-            ->method('addViolation')
+            ->method('addViolationAt')
             ->will($this->returnValue($constraint->message));
 
         $this->validator->validate(
