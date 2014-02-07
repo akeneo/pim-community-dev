@@ -62,6 +62,11 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Type: bool
         useableAsGridFilter:
             - Type: bool
+            - 'False':
+                message: This attribute type can't be used as a grid filter
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
         wysiwygEnabled:
             - Type: bool
         decimalsAllowed:
