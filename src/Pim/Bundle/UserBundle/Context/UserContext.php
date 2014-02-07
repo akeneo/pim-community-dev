@@ -98,16 +98,8 @@ class UserContext
             return $locale;
         }
 
-        $defaultLocales = array_filter(
-            $this->localeManager->getActiveLocales(),
-            function ($locale) {
-                return $locale->getCode() === $this->defaultLocale
-                    && $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale));
-            }
-        );
-
-        if (count($defaultLocales) > 0) {
-            return current($defaultLocales);
+        if (null !== $locale = $this->getDefaultLocale()) {
+            return $locale;
         }
 
         if ($locale = current($this->getUserLocales())) {
@@ -242,6 +234,20 @@ class UserContext
         $locale = $this->getUserOption('catalogLocale');
 
         return $locale && $this->isLocaleAvailable($locale) ? $locale : null;
+    }
+
+    /**
+     * Returns the default application locale if user has access to it
+     *
+     * @return Locale|null
+     */
+    protected function getDefaultLocale()
+    {
+        if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale))) {
+            return $this->localeManager->getLocaleByCode($this->defaultLocale);
+        }
+
+        return null;
     }
 
     /**

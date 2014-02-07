@@ -16,23 +16,38 @@
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
 ## Features
-- Created the completenesses over channels and locales widget
-- Create command to install the PIM
-- Allow price attributes to be scopable
-- Added popin to configure product datagrid columns
+- Completenesses over channels and locales widget
+- New command to install the PIM
+- Price attributes can be scopable
+- Popin to configure product datagrid columns
 
 ## Improvements
-- Add some missing translations
+- Add missing translations
+- New grid implementation
+- Grids performances
 - Quick export of selected products in the grid
-- Performance of grids
-- Add a status column in the product grid
-- Add a thumbnail in product grid for attribute of type image
+- Status column in the product grid
+- Thumbnail in product grid for attribute of type image
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
 - Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
 - Downgrade ICU lib to be compatible with RedHat 6 and CentOS 6
 - Fix an issue with excessive url length when mass editing many products
+- Products grid loaded twice the first time the screen is displayed
+- The first tree is not displayed in the mass edit wizard
+- When no group type exist, it's not possible to add Variant Group
+- Job validation is applied twice (create import/export) 
+- Validation messages not visible in job creation popin (create import/export)
+- Lose hashnav when I create a tree
+- Fix completeness calculation on icecat demo dev data
+- Application crash on some product validation fail
+- In create product popin, no way to search for family (in select 2 field)
+- Attribute export in csv shift columns instead of putting blank values
+- Error with field_catalogLocale on first load
+- Missing translations in page titles
+- When adding a new option from product form, the new option is not in the select
+- Category edit and page title not updated
 
 ## BC breaks
 - Change some translation message keys
