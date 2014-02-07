@@ -63,7 +63,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                     $data->getAttributeAsLabel(),
                     array(
                         'required'        => false,
-                        'empty_value'     => 'Id',
+                        'empty_value'     => $data->getEmptyAttributeAsLabelLabel(),
                         'label'           => 'Attribute used as label',
                         'class'           => $this->attributeClass,
                         'choices'         => $data->getAttributeAsLabelChoices(),
