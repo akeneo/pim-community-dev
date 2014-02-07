@@ -53,7 +53,6 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'pim_catalog_date',
                 array(
                     'defaultValue' => new \DateTime('+1 month'),
-                    'dateType'     => 'datetime',
                     'dateMin'      => new \DateTime('now'),
                     'dateMax'      => new \DateTime('+1 year')
                 )

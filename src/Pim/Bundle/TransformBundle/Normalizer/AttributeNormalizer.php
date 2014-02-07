@@ -61,7 +61,6 @@ class AttributeNormalizer implements NormalizerInterface
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
-                'date_type'               => $object->getDateType(),
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit()
             )
@@ -121,7 +120,6 @@ class AttributeNormalizer implements NormalizerInterface
             'negative_allowed'    => (string) $attribute->isNegativeAllowed(),
             'date_min'            => $dateMin,
             'date_max'            => $dateMax,
-            'date_type'           => (string) $attribute->getDateType(),
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),

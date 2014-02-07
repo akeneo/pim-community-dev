@@ -49,8 +49,8 @@ class InstallCommand extends ContainerAwareCommand
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
             ->addOption('user-name', null, InputOption::VALUE_REQUIRED, 'User name', 'admin')
             ->addOption('user-email', null, InputOption::VALUE_OPTIONAL, 'User email', 'admin@akeneo.com')
-            ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name', '')
-            ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name', '')
+            ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name', 'Peter')
+            ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name', 'Doe')
             ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password', 'admin')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption(
@@ -491,7 +491,6 @@ class InstallCommand extends ContainerAwareCommand
      * Get default params
      *
      * @param InputInterface $input
-     * @param OutputInterface $output
      *
      * @return array
      */

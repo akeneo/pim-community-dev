@@ -12,6 +12,7 @@
 - Fix attribute group form state not being saved
 
 ## BC breaks
+- Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

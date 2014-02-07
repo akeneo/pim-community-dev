@@ -305,19 +305,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for dateType property
-     */
-    public function testGetSetDateType()
-    {
-        $this->assertNull($this->attribute->getDateType());
-
-        // Change value and assert new
-        $dateType = 'datetime';
-        $this->assertEntity($this->attribute->setDateType($dateType));
-        $this->assertEquals($dateType, $this->attribute->getDateType());
-    }
-
-    /**
      * Test getter/setter for dateMin property
      */
     public function testGetSetDateMin()
