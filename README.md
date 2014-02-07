@@ -8,6 +8,7 @@ Allows to :
 - Add more unit to a family (group of measure units)
 - Create new families
 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/badges/quality-score.png?s=7ff7ab49c67825534d025a08146ff2b5ea35da1b)](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/)
 
 General operation
 =================
