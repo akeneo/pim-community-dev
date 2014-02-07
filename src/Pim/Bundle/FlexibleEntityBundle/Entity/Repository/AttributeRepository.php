@@ -57,7 +57,7 @@ class AttributeRepository extends EntityRepository
     {
         $cacheId = self::getAttributesListCacheId($entityType);
 
-        if (!isset($this->attributesCache[$cacheId])) {
+        if (!isset(self::$attributesCache[$cacheId])) {
             $qb = $this->_em->createQueryBuilder()
                 ->select('att')->from($this->_entityName, 'att')
                 ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
@@ -71,10 +71,10 @@ class AttributeRepository extends EntityRepository
                 $associative[$row->getCode()] = $row;
             }
 
-            $this->attributesCache[$cacheId] = $associative;
+            self::$attributesCache[$cacheId] = $associative;
         }
 
-        return $this->attributesCache[$cacheId];
+        return self::$attributesCache[$cacheId];
     }
 
     /**
