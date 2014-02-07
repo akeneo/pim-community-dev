@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Family;
+namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
  * Power measures constants

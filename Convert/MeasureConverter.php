@@ -1,9 +1,9 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Convert;
+namespace Akeneo\Bundle\MeasureBundle\Convert;
 
-use Oro\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-use Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException;
 
 /**
  * Aims to convert measures
@@ -36,7 +36,7 @@ class MeasureConverter
      *
      * @return MeasureConverter
      *
-     * @throws Oro\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException
+     * @throws UnknownFamilyMeasureException
      */
     public function setFamily($family)
     {
@@ -73,8 +73,8 @@ class MeasureConverter
      *
      * @return float
      *
-     * @throws Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
-     * @throws Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
+     * @throws UnknownOperatorException
+     * @throws UnknownMeasureException
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
@@ -124,8 +124,8 @@ class MeasureConverter
      *
      * @return double
      *
-     * @throws Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
-     * @throws Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
+     * @throws UnknownOperatorException
+     * @throws UnknownMeasureException
      */
     public function convertStandardToResult($finalUnit, $value)
     {

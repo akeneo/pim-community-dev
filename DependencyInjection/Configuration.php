@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\MeasureBundle\DependencyInjection;
+namespace Akeneo\Bundle\MeasureBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('oro_measure');
+        $rootNode = $treeBuilder->root('akeneo_measure');
 
         $rootNode->children()
             ->arrayNode('measures_config')

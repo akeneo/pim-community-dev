@@ -1,19 +1,19 @@
 {
-    "name": "oro/measure-bundle",
+    "name": "akeneo/measure-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Measure Bundle",
-    "keywords": ["BAP", "Measure", "Convert"],
-    "homepage": "https://github.com/laboro/MeasureBundle",
+    "description": "Akeneo Measure Bundle",
+    "keywords": ["Akeneo", "Measure", "Convert"],
+    "homepage": "https://github.com/akeneo/MeasureBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\MeasureBundle": "" }
+        "psr-0": { "Akeneo\\Bundle\\MeasureBundle": "" }
     },
-    "target-dir": "Oro/Bundle/MeasureBundle",
-    "minimum-stability": "dev",
+    "target-dir": "Akeneo/Bundle/MeasureBundle",
+    "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"

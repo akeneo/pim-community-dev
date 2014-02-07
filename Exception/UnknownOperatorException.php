@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Exception;
+namespace Akeneo\Bundle\MeasureBundle\Exception;
 
 /**
  * Unkown Operator exception during a measure conversion

@@ -1,31 +1,19 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Tests\Convert;
+namespace Akeneo\Bundle\MeasureBundle\Tests\Unit\Convert;
 
-use Oro\Bundle\MeasureBundle\Family\WeightFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\VolumeFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\TemperatureFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\SpeedFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\PowerFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\FrequencyFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\BinaryFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\AreaFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Family\LengthFamilyInterface;
-
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
-
-use Oro\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-
-use Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-
-use Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException;
+use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\VolumeFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\TemperatureFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\SpeedFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\PowerFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\FrequencyFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\BinaryFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\AreaFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,7 +39,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         // get measures configuration
-        $configFile = realpath(dirname(__FILE__) .'/../../Resources/config/measure.yml');
+        $configFile = realpath(dirname(__FILE__) .'/../../../Resources/config/measure.yml');
         $config = $this->initializeConfig($configFile);
 
         // initialize converter
@@ -69,7 +57,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
     protected function initializeConfig($filepath)
     {
         if (!file_exists($filepath)) {
-            throw new \Exception('Config file not exists');
+            throw new \Exception("Config file $filepath not exists");
         }
 
         return Yaml::parse($filepath);
@@ -81,7 +69,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @throws \Exception
      *
-     * @return \Oro\Bundle\MeasureBundle\Convert\MeasureConverter
+     * @return \Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter
      */
     protected function initializeConverter($config)
     {
@@ -224,7 +212,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
             // Temperature tests
             array(
                 TemperatureFamilyInterface::FAMILY,
-                TemperatureFamilyInterface::CELCIUS,
+                TemperatureFamilyInterface::CELSIUS,
                 TemperatureFamilyInterface::FAHRENHEIT,
                 20,
                 68
@@ -288,7 +276,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related exception
-     * @expectedException Oro\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException
+     * @expectedException Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException
      */
     public function testUnknownFamilyMeasureException()
     {
@@ -297,7 +285,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related exception in base to standard method
-     * @expectedException Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
+     * @expectedException Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException
      */
     public function testUnknownMeasureExceptionBaseToStandard()
     {
@@ -307,7 +295,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related exception in standard to final method
-     * @expectedException Oro\Bundle\MeasureBundle\Exception\UnknownMeasureException
+     * @expectedException Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException
      */
     public function testUnknownMeasureExceptionStandardToFinal()
     {
@@ -317,7 +305,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related exception in base to standard method
-     * @expectedException Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
+     * @expectedException Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException
      */
     public function testUnknownOperatorExceptionBaseToStandard()
     {
@@ -331,7 +319,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related exception in standard to final method
-     * @expectedException Oro\Bundle\MeasureBundle\Exception\UnknownOperatorException
+     * @expectedException Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException
      */
     public function testUnknownOperatorExceptionStandardToFinal()
     {

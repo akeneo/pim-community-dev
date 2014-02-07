@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Family;
+namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
  * Temperature measures constants
@@ -18,7 +18,7 @@ interface TemperatureFamilyInterface
     /**
      * @staticvar string
      */
-    const CELCIUS    = 'CELCIUS';
+    const CELSIUS    = 'CELSIUS';
 
     /**
      * @staticvar string

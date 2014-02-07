@@ -1,7 +1,8 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\Tests\DependencyInjection;
+namespace Akeneo\Bundle\MeasureBundle\Tests\Unit\DependencyInjection;
 
-use Oro\Bundle\MeasureBundle\DependencyInjection\Configuration;
+use Akeneo\Bundle\MeasureBundle\DependencyInjection\Configuration;
+
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**

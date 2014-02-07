@@ -1,10 +1,10 @@
 parameters:
-    oro_measure.measures_config: ~
+    akeneo_measure.measures_config: ~
 
 services:
-    oro_measure.measure_converter:
-        class: Oro\Bundle\MeasureBundle\Convert\MeasureConverter
-        arguments: [%oro_measure.measures_config%]
+    akeneo_measure.measure_converter:
+        class: Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter
+        arguments: [%akeneo_measure.measures_config%]
 
-    oro_measure.manager:
+    akeneo_measure.manager:
         class: Oro\Bundle\MeasureBundle\Manager\MeasureManager

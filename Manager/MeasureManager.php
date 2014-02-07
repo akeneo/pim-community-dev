@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\MeasureBundle\Manager;
+namespace Akeneo\Bundle\MeasureBundle\Manager;
 
 class MeasureManager
 {
@@ -28,9 +28,12 @@ class MeasureManager
      */
     public function getUnitSymbolsForFamily($family)
     {
-        return array_map(function ($unit) {
-            return $unit['symbol'];
-        }, $this->getFamilyConfig($family)['units']);
+        return array_map(
+            function ($unit) {
+                return $unit['symbol'];
+            },
+            $this->getFamilyConfig($family)['units']
+        );
     }
 
     /**
