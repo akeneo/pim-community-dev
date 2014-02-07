@@ -63,7 +63,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Initialize converter
-     * @param multitype $config
+     * @param array $config
      *
      * @throws \Exception
      *
@@ -99,7 +99,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
      * Data provider
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
-     * @return multitype:multitype:number string
+     * @return array
      *
      * @static
      */
