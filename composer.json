@@ -13,5 +13,5 @@
         "psr-0": { "Akeneo\\Bundle\\MeasureBundle": "" }
     },
     "target-dir": "Akeneo/Bundle/MeasureBundle",
-    "minimum-stability": "stable",
+    "minimum-stability": "stable"
 }
