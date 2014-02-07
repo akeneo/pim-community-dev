@@ -18,7 +18,6 @@ parameters:
     session_handler:   ~
 
     locale:            en_US
-    default_locale:    en_US
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     upload_dir:        %kernel.root_dir%/uploads/product
@@ -28,3 +27,5 @@ parameters:
 
     installer_data:    PimInstallerBundle:icecat_demo_dev
     # use PimInstallerBundle:minimal for minimal data set
+
+    uservoice_key: 'VuTQAMdehvLUshGkqiwVyQ'

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 
@@ -47,6 +48,20 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @ORM\OneToMany(targetEntity="AbstractEntityFlexibleValue", mappedBy="entity", cascade={"persist", "remove"})
      */
     protected $values;
+
+    /**
+     * @var array
+     *
+     * Values indexed by attribute_code
+     */
+    protected $indexedValues;
+
+    /**
+     * @var boolean
+     *
+     * States that the indexedValues are outdated
+     */
+    protected $indexedValuesOutdated = true;
 
     /**
      * Associative array of defined attributes
@@ -119,6 +134,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     public function addValue(FlexibleValueInterface $value)
     {
         $this->values[] = $value;
+        $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
+        $this->allAttributes[$value->getAttribute()->getCode()] = $value->getAttribute();
         $value->setEntity($this);
 
         return $this;
@@ -128,29 +145,100 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * Remove value
      *
      * @param FlexibleValueInterface $value
+     *
+     * @return AbstractEntityFlexible
      */
     public function removeValue(FlexibleValueInterface $value)
     {
+        $this->removeIndexedValue($value);
         $this->values->removeElement($value);
+
+        return $this;
+    }
+
+    /**
+     * Remove a value from the indexedValues array
+     *
+     * @param FlexibleValueInterface $value
+     *
+     * @return AbstractEntityFlexible
+     */
+    protected function removeIndexedValue(FlexibleValueInterface $value)
+    {
+        $attributeCode = $value->getAttribute()->getCode();
+        $possibleValues =& $this->indexedValues[$attributeCode];
+        foreach ($possibleValues as $key => $possibleValue) {
+            if ($value === $possibleValue) {
+                unset($possibleValues[$key]);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the list of used attribute code from the indexed values
+     *
+     * @return array
+     */
+    public function getUsedAttributeCodes()
+    {
+        return array_keys($this->getIndexedValues());
     }
 
     /**
      * Get values
      *
-     * @return \ArrayAccess
+     * @return ArrayCollection
      */
     public function getValues()
     {
-        if (!isset($this->values) || !$this->values->count()) {
-            return $this->values;
+        return $this->values;
+    }
+
+    /**
+     * Build the values indexed by attribute code array
+     *
+     * @return array indexedValues
+     */
+    protected function getIndexedValues()
+    {
+        $this->indexValuesIfNeeded();
+
+        return $this->indexedValues;
+    }
+
+    /**
+     * Mark the indexed as outdated
+     *
+     * @return AbstractEntityFlexible
+     */
+    public function markIndexedValuesOutdated()
+    {
+        $this->indexedValuesOutdated = true;
+
+        return $this;
+    }
+
+    /**
+     * Build the indexed values if needed. First step
+     * is to make sure that the values are initialized
+     * (loaded from DB)
+     *
+     * @return AbstractEntityFlexible
+     */
+    protected function indexValuesIfNeeded()
+    {
+        if ($this->indexedValuesOutdated) {
+            $this->indexedValues = array();
+            foreach ($this->values as $value) {
+                $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
+            }
+            $this->indexedValuesOutdated = false;
         }
 
-        $collection = new ArrayCollection();
-        foreach ($this->values as $value) {
-            $collection[$value->getAttribute()->getCode()] = $value;
-        }
-
-        return $collection;
+        return $this;
     }
 
     /**
@@ -164,13 +252,58 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $locale = ($localeCode) ? $localeCode : $this->getLocale();
-        $scope  = ($scopeCode) ? $scopeCode : $this->getScope();
+        $indexedValues = $this->getIndexedValues();
 
-        $values = $this->filterValues($attributeCode, $locale, $scope);
-        $value = (count($values) == 1) ? $values->first() : null;
+        if (!isset($indexedValues[$attributeCode])) {
+            return null;
+        }
+
+        $attribute = $this->getAttribute($attributeCode);
+
+        $valueLocale = null;
+        $valueScope = null;
+        if ($attribute->isLocalizable()) {
+            $valueLocale = ($localeCode) ? $localeCode : $this->getLocale();
+        }
+        if ($attribute->isScopable()) {
+            $valueScope = ($scopeCode) ? $scopeCode : $this->getScope();
+        }
+
+        $value = null;
+        $possibleValues = $indexedValues[$attributeCode];
+
+        foreach ($possibleValues as $possibleValue) {
+            if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
+                $value = $possibleValue;
+                break;
+            }
+        }
 
         return $value;
+    }
+
+    /**
+     * Get attribute from its code by using the cache integrated to the product
+     *
+     * @param string $attributeCode
+     *
+     * @throws InvalidParameterException
+     *
+     * @return AbstractAttribute
+     */
+    protected function getAttribute($attributeCode)
+    {
+        if (isset($this->allAttributes[$attributeCode])) {
+            return $this->allAttributes[$attributeCode];
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find attribute "%s" in %s.',
+                    $attributeCode,
+                    print_r(array_keys($this->allAttributes), true)
+                )
+            );
+        }
     }
 
     /**
@@ -180,42 +313,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return boolean
      */
-    public function hasAttribute(AbstractEntityAttribute $attribute)
+    public function hasAttribute(AbstractAttribute $attribute)
     {
-        return 0 !== $this
-            ->getValues()
-            ->filter(
-                function ($value) use ($attribute) {
-                    return $value->getAttribute() === $attribute;
-                }
-            )
-            ->count();
-    }
+        $indexedValues = $this->getIndexedValues();
 
-    /**
-     * Filter product value per attribute code
-     *
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array|boolean
-     */
-    protected function filterValues($attribute, $locale, $scope)
-    {
-        $values = $this->getValues();
-
-        if (empty($values)) {
-            return array();
-        }
-
-        $values = $values->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                return $value->isMatching($attribute, $locale, $scope);
-            }
-        );
-
-        return $values;
+        return isset($indexedValues[$attribute->getCode()]);
     }
 
     /**
@@ -231,11 +333,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     public function createValue($attributeCode, $locale = null, $scope = null)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
-
-        $attribute = $this->allAttributes[$attributeCode];
+        $attribute = $this->getAttribute($attributeCode);
         $value = new $this->valueClass();
         $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
@@ -319,9 +417,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     protected function updateValue($attributeCode, $method, $arguments)
     {
-        if (!isset($this->allAttributes[$attributeCode])) {
-            throw new \Exception(sprintf('Could not find attribute "%s".', $attributeCode));
-        }
+        $attribute = $this->getAttribute($attributeCode);
 
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
@@ -348,9 +444,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $methodName = "get{$attCode}";
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
-
         } else {
-            // dynamic call to get value data
             return $this->getValue($attCode);
         }
     }

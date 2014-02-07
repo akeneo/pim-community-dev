@@ -40,6 +40,7 @@ class AttributeCacheListener implements EventSubscriber
 
         foreach ($unitOfWork->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof AbstractAttribute) {
+                AttributeRepository::clearAttributesCache($entity->getEntityType());
                 $cacheDriver->delete(AttributeRepository::getAttributesListCacheId($entity->getEntityType()));
 
                 return;
@@ -48,6 +49,7 @@ class AttributeCacheListener implements EventSubscriber
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
             if ($entity instanceof AbstractAttribute) {
+                AttributeRepository::clearAttributesCache($entity->getEntityType());
                 $cacheDriver->delete(AttributeRepository::getAttributesListCacheId($entity->getEntityType()));
 
                 return;
