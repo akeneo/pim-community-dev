@@ -14,9 +14,4 @@
     },
     "target-dir": "Akeneo/Bundle/MeasureBundle",
     "minimum-stability": "stable",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    }
 }
