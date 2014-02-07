@@ -10,6 +10,8 @@ Allows to :
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/badges/quality-score.png?s=7ff7ab49c67825534d025a08146ff2b5ea35da1b)](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/)
 
+[![Code Coverage](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/badges/coverage.png?s=3ad7d541f469ab7984879589b3e294aeee52da39)](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/)
+
 General operation
 =================
 
