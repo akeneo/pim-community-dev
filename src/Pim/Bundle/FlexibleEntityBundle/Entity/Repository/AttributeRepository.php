@@ -81,11 +81,11 @@ class AttributeRepository extends EntityRepository
     public static function clearAttributesCache($entityType = null)
     {
         if (null == $entityType) {
-            unset($this->attributesCache);
+            unset(self:$attributesCache);
         } else {
             $cacheId = self::getAttributesListCacheId($entityType);
-            if (isset($this->attributesCache[$cacheId])) {
-                unset($this->attributesCache[$cacheId]);
+            if (isset(self::$attributesCache[$cacheId])) {
+                unset(self::$attributesCache[$cacheId]);
             }
         }
     }
