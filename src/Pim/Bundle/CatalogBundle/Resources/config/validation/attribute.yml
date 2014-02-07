@@ -51,7 +51,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 max: 255
             - Regex:
                 pattern: /^(?!(associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|(.)*_(products|groups))$)/
-                message: This code is not available.
+                message: This code is not available
         searchable:
             - Type: bool
         localizable:
@@ -88,6 +88,26 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Type: numeric
             - GreaterThanOrEqual:
                 value: 0
+        required:
+            - Type: bool
+            - 'True':
+                message: This attribute type must be required
+                groups:
+                    - pim_catalog_identifier
+            - 'False':
+                message: This attribute type can't be required
+                groups:
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
         unique:
             - Type: bool
             - 'False':

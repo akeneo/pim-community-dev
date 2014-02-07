@@ -275,7 +275,7 @@ class AssertionContext extends RawMinkContext
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
             $steps[] = new Then(sprintf('I save the %s', $entity));
-            $steps[] = new Then('I should see validation error "This code is not available."');
+            $steps[] = new Then('I should see validation error "This code is not available"');
         }
 
         return $steps;
