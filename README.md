@@ -33,7 +33,7 @@ In MeasureBundle :
 - Convert/ contains the converter service.
 - DependencyInjection/
 * Configuration : define how to check configuration measure files
-* OroMeasureExtension : define the recovery of the configuration (config files browse and merge configuration).
+* AkeneoMeasureExtension : define the recovery of the configuration (config files browse and merge configuration).
 - Exception/ contains the exception classes used in converter.
 - Family/ contains a list of family measure interfaces. Each define a family and must contains a constant named FAMILY.
 - Resources/config/
@@ -42,15 +42,15 @@ In MeasureBundle :
 
 ```yaml
 parameters:
-    oro_measure.measures_config: ~
+    akeneo_measure.measures_config: ~
 
 services:
-    oro_measure.measure_converter:
-        class: Oro\Bundle\MeasureBundle\Convert\MeasureConverter
-        arguments: [%oro_measure.measures_config%]
+    akeneo_measure.measure_converter:
+        class: Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter
+        arguments: [%akeneo_measure.measures_config%]
 ```
 
-Configuration file can be seen https://github.com/laboro/MeasureBundle/blob/master/Resources/config/measure.yml
+Configuration file can be seen https://github.com/akeneo/MeasureBundle/blob/master/Resources/config/measure.yml
 
 
 Install and run unit tests
@@ -71,7 +71,7 @@ A service is defined to use converter. You must call it and define the family to
 In the example below, we convert a value in kilometers to miles.
 
 ```php
-$converter = $this->container->get('oro_measure.measure_converter');
+$converter = $this->container->get('akeneo_measure.measure_converter');
 $converter->setFamily(LengthFamilyInterface::FAMILY);
 $result = $converter->convert(LengthFamilyInterface::KILOMETER, LengthFamilyInterface::MILE, 1);
 ```
@@ -80,7 +80,7 @@ Get the whole list of families and units
 ========================================
 
 ```php
-$this->container->getParameter('oro_measure.measures_config');
+$this->container->getParameter('akeneo_measure.measures_config');
 ```
 
 Add unit to an existing family
@@ -104,7 +104,7 @@ Optionally but recommended, a new class extending family class can be created. I
 Here we created "MyLengthMeasure" new class extending LengthMeasure to add "Dong" unit constant.
 
 ```php
-use Oro\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 
 /**
  * Override LengthFamily interface to add Dong measure constant
@@ -123,7 +123,7 @@ class MyLengthFamilyInterface extends LengthFamilyInterface
 Then, you can call a conversion to your new unit like this :
 
 ```php
-$converter = $this->container->get('oro_measure.measure_converter');
+$converter = $this->container->get('akeneo_measure.measure_converter');
 $converter->setFamily(LengthFamilyInterface::FAMILY);
 $result = $converter->convert(LengthFamilyInterface::KILOMETER, MyLengthFamilyInterface::DONG, 1);
 ```
