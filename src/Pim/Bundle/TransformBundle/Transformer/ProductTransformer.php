@@ -49,7 +49,7 @@ class ProductTransformer extends EntityTransformer
     protected $attributes;
 
     /**
-     * @var AttributeInterface
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $identifierAttribute;
 

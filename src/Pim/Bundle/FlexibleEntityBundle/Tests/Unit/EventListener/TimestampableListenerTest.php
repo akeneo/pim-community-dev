@@ -24,7 +24,7 @@ class TimestampableListenerTest extends OrmTestCase
     protected $em;
 
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attribute;
 

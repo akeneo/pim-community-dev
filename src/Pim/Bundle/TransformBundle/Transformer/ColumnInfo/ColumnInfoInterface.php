@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Interface for column info
@@ -16,11 +16,11 @@ interface ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @throws \Pim\Bundle\TransformBundle\Exception\ColumnLabelException
      */
-    public function setAttribute(AttributeInterface $attribute = null);
+    public function setAttribute(AbstractAttribute $attribute = null);
 
     /**
      * Get the full label
@@ -67,7 +67,7 @@ interface ColumnInfoInterface
     /**
      * Returns the associated attribute
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function getAttribute();
 }

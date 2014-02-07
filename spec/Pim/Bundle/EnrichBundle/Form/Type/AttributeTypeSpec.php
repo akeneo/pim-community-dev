@@ -6,14 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 
 class AttributeTypeSpec extends ObjectBehavior
 {
     function let(
-        AttributeManagerInterface $manager,
+        AttributeManager $manager,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber,
         FormBuilderInterface $builder
     ) {

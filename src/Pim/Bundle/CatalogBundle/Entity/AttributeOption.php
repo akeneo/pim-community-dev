@@ -26,7 +26,7 @@ class AttributeOption extends AbstractEntityAttributeOption implements Referable
     /**
      * Overrided to change target entity name
      *
-     * @var Attribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      */
     protected $attribute;
 

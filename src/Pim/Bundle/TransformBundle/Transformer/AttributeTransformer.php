@@ -4,10 +4,10 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
 
 /**
@@ -20,7 +20,7 @@ use Pim\Bundle\TransformBundle\Cache\EntityCache;
 class AttributeTransformer extends NestedEntityTransformer
 {
     /**
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -37,7 +37,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
-     * @param AttributeManagerInterface      $attributeManager
+     * @param AttributeManager               $attributeManager
      * @param EntityCache                    $entityCache
      */
     public function __construct(
@@ -46,7 +46,7 @@ class AttributeTransformer extends NestedEntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
-        AttributeManagerInterface $attributeManager,
+        AttributeManager $attributeManager,
         EntityCache $entityCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry);
@@ -74,11 +74,11 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param string             $class
-     * @param AttributeInterface $attribute
-     * @param array              $optionsData
+     * @param string            $class
+     * @param AbstractAttribute $attribute
+     * @param array             $optionsData
      */
-    protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
+    protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
     {
         $this->entityCache->setReference($attribute);
         $optionClass = $this->attributeManager->getAttributeOptionClass();

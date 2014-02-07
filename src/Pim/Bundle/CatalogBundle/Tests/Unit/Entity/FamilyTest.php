@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Family
+     * @var Family
      */
     protected $family;
 
@@ -139,7 +139,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert entity
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Family $entity
+     * @param Family $entity
      */
     protected function assertEntity($entity)
     {
@@ -299,7 +299,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($type = 'pim_catalog_text', $code = null)
     {

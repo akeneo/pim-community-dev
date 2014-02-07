@@ -79,7 +79,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CustomerValue extends AbstractEntityFlexibleValue
 {
     /**
-     * @var Attribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      */

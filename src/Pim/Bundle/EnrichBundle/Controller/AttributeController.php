@@ -19,12 +19,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
@@ -79,20 +79,20 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                   $request
-     * @param EngineInterface           $templating
-     * @param RouterInterface           $router
-     * @param SecurityContextInterface  $securityContext
-     * @param FormFactoryInterface      $formFactory
-     * @param ValidatorInterface        $validator
-     * @param TranslatorInterface       $translator
-     * @param RegistryInterface         $doctrine
-     * @param AttributeHandler          $attributeHandler
-     * @param Form                      $attributeForm
-     * @param AttributeManagerInterface $attributeManager
-     * @param LocaleManager             $localeManager
-     * @param AuditManager              $auditManager
-     * @param array                     $measuresConfig
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param RegistryInterface        $doctrine
+     * @param AttributeHandler         $attributeHandler
+     * @param Form                     $attributeForm
+     * @param AttributeManager         $attributeManager
+     * @param LocaleManager            $localeManager
+     * @param AuditManager             $auditManager
+     * @param array                    $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -105,7 +105,7 @@ class AttributeController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         AttributeHandler $attributeHandler,
         Form $attributeForm,
-        AttributeManagerInterface $attributeManager,
+        AttributeManager $attributeManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
         $measuresConfig
@@ -241,7 +241,7 @@ class AttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Edit AttributeInterface sort order
+     * Edit AbstractAttribute sort order
      *
      * @param Request $request
      *
@@ -354,7 +354,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
@@ -365,13 +365,13 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Check if the attribute is removable, otherwise throw an exception or redirect
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
      * @return RedirectResponse|null
      */
-    protected function validateRemoval(AttributeInterface $attribute)
+    protected function validateRemoval(AbstractAttribute $attribute)
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';

@@ -25,7 +25,7 @@ class AttributeRepository extends EntityRepository
      * @param string $entity
      * @param string $code
      *
-     * @return Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function findOneByEntityAndCode($entity, $code)
     {

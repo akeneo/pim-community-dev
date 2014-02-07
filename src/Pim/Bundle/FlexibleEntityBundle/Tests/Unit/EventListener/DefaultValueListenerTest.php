@@ -19,7 +19,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 class DefaultValueListenerTest extends AbstractOrmTest
 {
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $attribute;
 
