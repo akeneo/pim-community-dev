@@ -5,6 +5,7 @@ namespace Context;
 use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 /**
  * Provides custom web API methods
@@ -15,9 +16,6 @@ use Behat\Gherkin\Node\TableNode;
  */
 class WebApiContext extends BehatWebApiContext
 {
-    /** Default Nonce */
-    const NONCE = 'd36e316282959a9ed4c89851497a717f';
-
     protected $url;
 
     /**
@@ -39,7 +37,9 @@ class WebApiContext extends BehatWebApiContext
      */
     public function iAmAuthenticatingWithApiKey($username, $apiKey)
     {
-        $this->generateWsseHeader($username, $apiKey);
+        $user = $this->getFixturesContext()->getUser($username);
+        $salt = $user->getSalt();
+        $this->generateWsseHeader($username, $apiKey, $salt);
     }
 
     /**
@@ -86,12 +86,15 @@ class WebApiContext extends BehatWebApiContext
      *
      * @param string $username
      * @param string $apiKey
-     * @param string $nonce
+     * @param string $salt
      */
-    private function generateWsseHeader($username, $apiKey, $nonce = self::NONCE)
+    private function generateWsseHeader($username, $apiKey, $salt)
     {
+        $nonce   = uniqid();
         $created = date('c');
-        $digest  = base64_encode(sha1(base64_decode($nonce) . $created . $apiKey, true));
+        $raw = sprintf('%s%s%s', base64_decode($nonce), $created, $apiKey);
+        $encoder = new MessageDigestPasswordEncoder('sha1', true, 1);
+        $digest = $encoder->encodePassword($raw, $salt);
         $this->addHeader('CONTENT_TYPE: application/json');
         $this->addHeader('Authorization: WSSE profile="UsernameToken"');
         $this->addHeader(

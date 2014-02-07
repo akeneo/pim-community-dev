@@ -19,8 +19,8 @@
     "require": {
         "php": ">=5.4.4",
         "oro/platform": "dev-maintenance/pim_beta5",
-        "apy/jsfv-bundle": "dev-master#ecd74cfce030aeb1812277250318aacdd5483631",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "apy/jsfv-bundle": "2.1.*",
+        "knplabs/knp-gaufrette-bundle": "0.2.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/icu": "1.1.*"
     },
