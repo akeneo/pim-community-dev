@@ -38,11 +38,9 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // get measures configuration
         $configFile = realpath(dirname(__FILE__) .'/../../../Resources/config/measure.yml');
         $config = $this->initializeConfig($configFile);
 
-        // initialize converter
         $this->converter = $this->initializeConverter($config);
     }
 
@@ -88,14 +86,11 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConvert($family, $baseUnit, $convertedUnit, $baseValue, $expectedValue)
     {
-        // define family
         $this->converter->setFamily($family);
 
-        // convert to a final value
         $convertedValue = $this->converter->convert($baseUnit, $convertedUnit, $baseValue);
         $this->assertEquals($expectedValue, $convertedValue);
 
-        // convert to the initial value
         $resultValue = $this->converter->convert($convertedUnit, $baseUnit, $convertedValue);
         $this->assertEquals($baseValue, $resultValue);
     }
