@@ -137,7 +137,6 @@ attributes:
             de_DE: Erscheinungsdatum
         type:  pim_catalog_date
         group: sales
-        dateType:            date
         scopable:            true
         useableAsGridColumn: true
         useableAsGridFilter: true

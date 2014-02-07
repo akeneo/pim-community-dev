@@ -65,7 +65,6 @@ attributes:
         group: general
         useableAsGridColumn: true
         useableAsGridFilter: true
-        dateType:            'date'
         dateMin:             '2012-01-01'
         dateMax:             '2014-01-01'
         sortOrder:           5

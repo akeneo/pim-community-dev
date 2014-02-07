@@ -19,41 +19,24 @@ class DateType extends FlexDateType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $fieldType = $attribute->getDateType() ?: 'datetime';
-
         $properties = array(
             array(
                 'name'      => 'defaultValue',
-                'fieldType' => $fieldType,
+                'fieldType' => 'date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
-                'name'      => 'dateType',
-                'fieldType' => 'choice',
-                'options'   => array(
-                    'required' => true,
-                    'choices'  => array(
-                        'date'     => 'Date',
-                        'time'     => 'Time',
-                        'datetime' => 'Datetime'
-                    ),
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId(),
-                    'select2'   => true
-                ),
-            ),
-            array(
                 'name'      => 'dateMin',
-                'fieldType' => $fieldType,
+                'fieldType' => 'date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
                 'name'      => 'dateMax',
-                'fieldType' => $fieldType,
+                'fieldType' => 'date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )

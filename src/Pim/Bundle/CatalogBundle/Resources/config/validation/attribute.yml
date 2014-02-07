@@ -8,7 +8,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - attributeType
                 - scopable
                 - localizable
-                - dateType
                 - metricFamily
                 - unique
         - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric:
@@ -97,10 +96,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
-        dateType:
-            - Choice:
-                choices: [date, time, datetime]
-                groups: [pim_catalog_date]
         maxFileSize:
             - Range:
                 min: 0.01

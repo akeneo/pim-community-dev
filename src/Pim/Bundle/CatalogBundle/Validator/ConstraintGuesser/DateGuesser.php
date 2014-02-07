@@ -33,11 +33,7 @@ class DateGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
-
-        if ($attribute->getDateType() === 'date') {
-            $constraints[] = new Date();
-        }
+        $constraints = [new Date()];
 
         return $constraints;
     }
