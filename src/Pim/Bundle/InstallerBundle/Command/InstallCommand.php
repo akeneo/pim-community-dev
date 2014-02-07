@@ -213,19 +213,20 @@ class InstallCommand extends ContainerAwareCommand
     protected function databaseStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Prepare database schema</info>');
+        $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
-            ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
-            ->runCommand('doctrine:schema:create')
-            ->runCommand('oro:entity-config:init')
-            ->runCommand('oro:entity-extend:init')
+            ->runCommand('doctrine:schema:drop', $defaultParams + array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:create', $defaultParams)
+            ->runCommand('oro:entity-config:init', $defaultParams)
+            ->runCommand('oro:entity-extend:init', $defaultParams)
             ->runCommand(
                 'oro:entity-extend:update-config',
-                array('--process-isolation' => true)
+                $defaultParams + array('--process-isolation' => true)
             )
             ->runCommand(
                 'doctrine:schema:update',
-                array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
+                $defaultParams + array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
             );
 
         $this
@@ -269,11 +270,13 @@ class InstallCommand extends ContainerAwareCommand
         if ($input->getOption('env') === 'behat') {
             $input->setOption('fixtures', self::LOAD_ORO);
         }
+        $defaultParams = $this->getDefaultParams($input);
 
         $output->writeln('<info>Load fixtures.</info>');
 
         $params =
-            array(
+            $defaultParams
+            + array(
                 '--process-isolation' => true,
                 '--no-interaction' => true,
                 '--append' => true,
@@ -394,22 +397,6 @@ class InstallCommand extends ContainerAwareCommand
             ->setOwner($businessUnit)
             ->addBusinessUnit($businessUnit);
 
-        // Define catalog locale
-        $localeCode = $this->getContainer()->getParameter('locale');
-        $localeManager = $this->getContainer()->get('pim_catalog.manager.locale');
-        $locale = $localeManager->getLocaleByCode($localeCode);
-        $user->setCatalogLocale($locale);
-
-        // Define catalog scope
-        $channelManager = $this->getContainer()->get('pim_catalog.manager.channel');
-        $channel = current($channelManager->getChannels());
-        $user->setCatalogScope($channel);
-
-        // Define catalog tree
-        $categoryManager = $this->getContainer()->get('pim_catalog.manager.category');
-        $tree = current($categoryManager->getTrees());
-        $user->setDefaultTree($tree);
-
         return $user;
     }
 
@@ -423,14 +410,16 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
+        $defaultParams = $this->getDefaultParams($input);
+
         $this->commandExecutor
             ->runCommand('oro:search:create-index')
             ->runCommand(
                 'pim:search:reindex',
-                array('locale' => $this->getContainer()->getParameter('locale'))
+                $defaultParams + array('locale' => $this->getContainer()->getParameter('locale'))
             )
-            ->runCommand('pim:versioning:refresh')
-            ->runCommand('pim:completeness:calculate');
+            ->runCommand('pim:versioning:refresh', $defaultParams)
+            ->runCommand('pim:completeness:calculate', $defaultParams);
 
         return $this;
     }
@@ -446,15 +435,16 @@ class InstallCommand extends ContainerAwareCommand
     protected function assetsStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Preparing application.</info>');
+        $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
-            ->runCommand('oro:navigation:init')
-            ->runCommand('fos:js-routing:dump', array('--target' => 'web/js/routes.js'))
-            ->runCommand('oro:localization:dump')
-            ->runCommand('assets:install')
-            ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
-            ->runCommand('oro:translation:dump');
+            ->runCommand('oro:navigation:init', $defaultParams)
+            ->runCommand('fos:js-routing:dump', $defaultParams + array('--target' => 'web/js/routes.js'))
+            ->runCommand('oro:localization:dump', $defaultParams)
+            ->runCommand('assets:install', $defaultParams)
+            ->runCommand('assetic:dump', $defaultParams)
+            ->runCommand('oro:assetic:dump', $defaultParams)
+            ->runCommand('oro:translation:dump', $defaultParams);
 
         $output->writeln('');
 
@@ -483,13 +473,36 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Run clear cache command
      *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
      * @return CommandExecutor
      */
-    protected function clearCache()
+    protected function clearCache(InputInterface $input, OutputInterface $output)
     {
+        $defaultParams = $this->getDefaultParams($input);
+
         return $this->commandExecutor
-            ->runCommand('oro:entity-extend:clear')
-            ->runCommand('cache:clear');
+            ->runCommand('oro:entity-extend:clear', $defaultParams)
+            ->runCommand('cache:clear', $defaultParams);
+    }
+
+    /**
+     * Get default params
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return array
+     */
+    protected function getDefaultParams(InputInterface $input)
+    {
+        $defaultParams = array();
+        if ($input->getOption('verbose')) {
+            $defaultParams = array('--verbose' => true);
+        }
+
+        return $defaultParams;
     }
 
     /**

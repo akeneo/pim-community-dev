@@ -1,4 +1,19 @@
-# 1.0.0-rc-1 -
+# 1.0.0-
+
+## Features
+
+## Improvements
+- Load choices for grid filters asynchronously
+- Allow adding/removing attributes to mass edit attributes view without a page reload
+- Propagate -v option to subcommands of install command
+
+## Bug fixes
+- Fix non-updated values being displayed in the the audit history
+- Fix attribute group form state not being saved
+
+## BC breaks
+
+# 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
 ## Features
 - Created the completenesses over channels and locales widget

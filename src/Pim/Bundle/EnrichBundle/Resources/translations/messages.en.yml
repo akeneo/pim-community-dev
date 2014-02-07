@@ -115,6 +115,12 @@ confirmation:
         variant group:    Are you sure you want to delete the variant group %name%?
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
+    attribute group:
+        remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
+    family:
+        remove attribute: Are you sure you want to remove the attribute %name% from this family?
+    product:
+        remove attribute: Are you sure you want to remove the attribute %name% from this product?
 
 # Flash messages
 flash:

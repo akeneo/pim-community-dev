@@ -366,6 +366,19 @@ class Grid extends Index
     }
 
     /**
+     * Make sure a filter is visible
+     * @param string $filterName
+     */
+    public function assertFilterVisible($filterName)
+    {
+        if (!$this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is not visible', $filterName)
+            );
+        }
+    }
+
+    /**
      * Hide a filter from the management list
      * @param string $filterName
      */
@@ -420,12 +433,6 @@ class Grid extends Index
     {
         if (!$this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
-        }
-
-        if (!$this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is not visible', $filterName)
-            );
         }
     }
 

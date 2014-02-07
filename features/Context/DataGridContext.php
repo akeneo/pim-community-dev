@@ -191,6 +191,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         if (strtolower($filterName) !== 'category') {
             $this->datagrid->showFilter($filterName);
+            $this->wait();
+            $this->datagrid->assertFilterVisible($filterName);
         }
     }
 

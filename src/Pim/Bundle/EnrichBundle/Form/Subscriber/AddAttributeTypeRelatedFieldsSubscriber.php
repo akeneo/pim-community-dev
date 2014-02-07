@@ -46,10 +46,8 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      * @param AttributeManagerInterface $attributeManager Attribute manager
      * @param AttributeTypeFactory      $attTypeFactory   Attribute type factory
      */
-    public function __construct(
-        AttributeManagerInterface $attributeManager = null,
-        AttributeTypeFactory $attTypeFactory = null
-    ) {
+    public function __construct(AttributeManagerInterface $attributeManager, AttributeTypeFactory $attTypeFactory)
+    {
         $this->attributeManager = $attributeManager;
         $this->attTypeFactory   = $attTypeFactory;
     }
