@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
 /**
  * Pim Catalog Bundle
