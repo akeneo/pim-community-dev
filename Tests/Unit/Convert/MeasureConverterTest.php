@@ -52,7 +52,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @throws \Exception
      *
-     * @return multitype
+     * @return array
      */
     protected function initializeConfig($filepath)
     {
