@@ -67,6 +67,7 @@
 - Introduce a TransformBundle and move cache, converters, encoders, normalizers, transformers and related configuration from ImportExportBundle
 - Renaming of services of ImportExport that have been moved (pim_transform_* and pim_base_connector_*)
 - Move functionality related to user preferences from LocaleManager and ChannelManager to a dedicated UserContext
+- Remove AbstractFlexibleValue::isMatching() method
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

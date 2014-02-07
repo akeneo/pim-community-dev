@@ -5,7 +5,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
-use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
@@ -33,18 +32,14 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        // create flexible
-        $this->flexible = new Flexible();
-        // create attribute
         $this->attribute = new Attribute();
         $this->attribute->setCode('mycode');
         $this->attribute->setLocalizable(true);
         $this->attribute->setScopable(true);
         $this->attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
-        // create value
+
         $this->value = new FlexibleValue();
         $this->value->setAttribute($this->attribute);
-        $this->value->setEntity($this->flexible);
     }
 
     /**
@@ -60,6 +55,23 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAttribute()
     {
+        $this->assertEquals($this->value->getAttribute(), $this->attribute);
+    }
+
+    /**
+     * Test related method
+     * @expectedException LogicException
+     */
+    public function testSetAttributeTwice()
+    {
+        $value = new FlexibleValue();
+        $value->setAttribute($this->attribute);
+
+        $attribute = new Attribute();
+        $attribute->setCode('myotherattribute');
+
+        $value->setAttribute($attribute);
+
         $this->assertEquals($this->value->getAttribute(), $this->attribute);
     }
 
@@ -182,55 +194,30 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider
-     *
-     * @return array
+     * @expectedException Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException
      */
-    public static function valueMatchingProvider()
+    public function testSetLocaleOnNonLocalizable()
     {
-        return array(
-            array(true, true, 'en_US', 'en_US', 'mobile', 'mobile', true),
-            array(true, true, 'en_US', 'fr_FR', 'mobile', 'mobile', false),
-            array(true, true, 'en_US', 'en_US', 'mobile', 'commerce', false),
-            array(true, true, 'en_US', 'fr_FR', 'mobile', 'commerce', false),
-            array(true, false, 'en_US', 'en_US', null, null, true),
-            array(true, false, 'en_US', 'fr_FR', null, null, false),
-            array(true, false, 'en_US', 'en_US', null, 'mobile', true),
-            array(false, true, null, null, 'mobile', 'mobile', true),
-            array(false, true, null, null, 'mobile', 'ecommerce', false),
-            array(false, true, null, 'en_US', 'mobile', 'mobile', true),
-            array(false, false, null, null, null, null, true),
-            array(false, false, null, 'en_US', null, null, true),
-            array(false, false, null, null, null, 'ecommerce', true),
-        );
+        $attribute = new Attribute();
+        $attribute->setCode('non_localizable_attr');
+        $this->attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+
+        $this->value = new FlexibleValue();
+        $this->value->setAttribute($attribute);
+        $this->value->setLocale('en_US');
     }
 
     /**
-     * Test related method
-     *
-     * @param boolean $isLocalizable is localizable
-     * @param boolean $isScopable    is scopable
-     * @param string  $locale        locale
-     * @param string  $matchLocale   locale to match
-     * @param string  $scope         scope
-     * @param string  $matchScope    scope to match
-     * @param boolean $expected      expected result
-     *
-     * @dataProvider valueMatchingProvider
+     * @expectedException Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException
      */
-    public function testIsMatching($isLocalizable, $isScopable, $locale, $matchLocale, $scope, $matchScope, $expected)
+    public function testSetScopeOnNonScopable()
     {
         $attribute = new Attribute();
-        $attribute->setCode('mycode');
-        $attribute->setLocalizable($isLocalizable);
-        $attribute->setScopable($isScopable);
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $attribute->setCode('non_scopable_attr');
+        $this->attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
-        $value = new FlexibleValue();
-        $value->setAttribute($attribute);
-        $value->setLocale($locale);
-        $value->setScope($scope);
-
-        $this->assertEquals($value->isMatching($attribute->getCode(), $matchLocale, $matchScope), $expected);
+        $this->value = new FlexibleValue();
+        $this->value->setAttribute($attribute);
+        $this->value->setScope('ecommerce');
     }
 }
