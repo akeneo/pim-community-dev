@@ -491,7 +491,6 @@ class InstallCommand extends ContainerAwareCommand
      * Get default params
      *
      * @param InputInterface $input
-     * @param OutputInterface $output
      *
      * @return array
      */
