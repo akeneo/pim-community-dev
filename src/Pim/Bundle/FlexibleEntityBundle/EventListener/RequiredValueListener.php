@@ -96,7 +96,7 @@ class RequiredValueListener implements EventSubscriber
 
                 $repo = $flexibleManager->getAttributeRepository();
                 $attributes = $repo->findBy(array('entityType' => $entityClass, 'required' => true));
-                
+
                 foreach ($attributes as $attribute) {
                     if (null === $entity->getValue($attribute->getCode())) {
                         throw new HasRequiredValueException('attribute '.$attribute->getCode().' is required');
