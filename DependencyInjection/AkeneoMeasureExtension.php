@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\MeasureBundle\DependencyInjection;
+namespace Akeneo\Bundle\MeasureBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  *
  */
-class OroMeasureExtension extends Extension
+class AkeneoMeasureExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -53,10 +53,10 @@ class OroMeasureExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         // set measures config
-        $container->setParameter('oro_measure.measures_config', $config);
+        $container->setParameter('akeneo_measure.measures_config', $config);
 
         $container
-            ->getDefinition('oro_measure.manager')
+            ->getDefinition('akeneo_measure.manager')
             ->addMethodCall('setMeasureConfig', $config);
     }
 }
