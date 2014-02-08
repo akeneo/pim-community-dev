@@ -179,7 +179,7 @@ just change the following config line in app/config/parameters.yml:
     installer_data: PimInstallerBundle:minimal
 ```
 
-Then relaunch the install.sh script with the db option:
+Then relaunch the install with the db option:
 
 $ php app/console pim:install --force --env=dev --task=db
 
