@@ -104,7 +104,7 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Set wether or not to print a header row into the csv
+     * Set whether or not to print a header row into the csv
      *
      * @param boolean $withHeader
      */
@@ -114,7 +114,7 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Get wether or not to print a header row into the csv
+     * Get whether or not to print a header row into the csv
      *
      * @return boolean
      */

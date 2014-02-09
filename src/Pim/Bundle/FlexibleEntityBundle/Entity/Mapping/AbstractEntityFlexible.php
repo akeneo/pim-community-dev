@@ -312,7 +312,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * Get wether or not an attribute is part of a product
+     * Get whether or not an attribute is part of a product
      *
      * @param AbstractEntityAttribute $attribute
      *
