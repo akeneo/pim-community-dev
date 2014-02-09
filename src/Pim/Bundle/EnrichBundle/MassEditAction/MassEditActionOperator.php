@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\Annotation\Exclude;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
@@ -150,44 +151,25 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param QueryBuilder $qb
      */
-    public function initializeOperation($productIds)
+    public function initializeOperation(QueryBuilder $qb)
     {
         if ($this->operation) {
-            $this->operation->initialize($this->getProducts($productIds));
+            $this->operation->initialize($qb);
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param QueryBuilder $qb
      */
-    public function performOperation(array $productIds)
+    public function performOperation(QueryBuilder $qb)
     {
         if ($this->operation) {
-            $this->operation->perform($this->getProducts($productIds));
+            $this->operation->perform($qb);
         }
-    }
-
-    /**
-     * Get the product matching the stored product ids
-     *
-     * @param integer[] $productIds
-     *
-     * @return ProductInterface[]
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function getProducts(array $productIds)
-    {
-        $products = $this->manager->findByIds($productIds);
-        if (!$products) {
-            throw new \InvalidArgumentException(sprintf('No product were found with ids %s', join(', ', $productIds)));
-        }
-
-        return $products;
     }
 
     /**

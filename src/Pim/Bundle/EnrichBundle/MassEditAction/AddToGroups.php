@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
@@ -78,8 +79,9 @@ class AddToGroups extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(QueryBuilder $qb)
     {
+        $products = $qb->getQuery()->getResult();
         foreach ($this->groups as $group) {
             $this->addProductsToGroup($products, $group);
         }

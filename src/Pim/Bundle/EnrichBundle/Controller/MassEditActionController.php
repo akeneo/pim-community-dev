@@ -154,12 +154,12 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getProductIds($request));
+        $this->operator->initializeOperation($this->getGridQB($request));
         $form = $this->getOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $this->operator->initializeOperation($this->getProductIds($request));
+            $this->operator->initializeOperation($this->getGridQB($request));
             $form = $this->getOperatorForm();
         }
 
@@ -195,12 +195,12 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getProductIds($request));
+        $this->operator->initializeOperation($this->getGridQB($request));
         $form = $this->getOperatorForm();
         $form->submit($request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($this->getProductIds($request));
+        $this->operator->performOperation($this->getGridQB($request));
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -278,8 +278,9 @@ class MassEditActionController extends AbstractDoctrineController
         if (null === $this->productIds) {
             $qb = $this->getGridQB($request);
 
+            $rootAlias = $qb->getRootAlias();
             $qb->resetDQLPart('select');
-            $qb->select('COUNT (p.id)');
+            $qb->select(sprintf('COUNT (%s.id)', $rootAlias));
 
             return (int) $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
         }
@@ -324,12 +325,13 @@ class MassEditActionController extends AbstractDoctrineController
             $requestData
         );
 
-        $identifier = sprintf('%s.id', $qb->getRootAlias());
+        $rootAlias = $qb->getRootAlias();
 
         $qb->resetDQLPart('select');
-        $qb->select($identifier);
+        $qb->select($rootAlias);
 
-        $from = current($qb->getDQLPart('from'));
+        $from       = current($qb->getDQLPart('from'));
+        $identifier = sprintf('%s.id', $rootAlias);
         $qb->resetDQLPart('from');
         $qb->from($from->getFrom(), $from->getAlias(), $identifier);
 
