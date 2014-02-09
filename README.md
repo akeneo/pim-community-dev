@@ -49,7 +49,7 @@ http://getcomposer.org/ or just run the following command:
 
 ### Clone Akeneo PIM project with:
 
-    git clone git@github.com:akeneo/pim-community-dev.git
+    $ git clone git@github.com:akeneo/pim-community-dev.git
 
 Now, you can go to your pim project directory.
 
@@ -153,7 +153,7 @@ configured for a Symfony application.
 
 Execute the `check.php` script from the command line:
 
-    php app/console pim:install --force --task=check
+    $ php app/console pim:install --force --task=check
 
 If you get any warnings or recommendations, fix them before moving on.
 
@@ -181,7 +181,7 @@ just change the following config line in app/config/parameters.yml:
 
 Then relaunch the install with the db option:
 
-$ php app/console pim:install --force --env=dev --task=db
+    $ php app/console pim:install --force --env=dev --task=db
 
 Known issues
 ------------
