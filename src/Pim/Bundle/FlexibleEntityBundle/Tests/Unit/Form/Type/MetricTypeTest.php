@@ -21,7 +21,7 @@ class MetricTypeTest extends AbstractFormTypeTest
     {
         parent::setUp();
 
-        $this->measureManager = $this->getMock('Oro\Bundle\MeasureBundle\Manager\MeasureManager');
+        $this->measureManager = $this->getMock('Akeneo\Bundle\MeasureBundle\Manager\MeasureManager');
         $this->type = new MetricType('', '', $this->measureManager);
         $this->form = $this->factory->create($this->type);
     }
