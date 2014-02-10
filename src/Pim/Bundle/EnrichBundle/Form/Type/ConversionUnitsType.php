@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\ORM\EntityManager;
 
 /**

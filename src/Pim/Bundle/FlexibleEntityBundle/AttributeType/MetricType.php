@@ -3,7 +3,7 @@
 namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
