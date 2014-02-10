@@ -25,9 +25,9 @@ class PimSearchExtension extends Extension
         $loader->load('services.yml');
 
         $entitiesConfig = $container->getParameter('oro_search.entities_config');
-        if (isset($entitiesConfig['Oro\Bundle\TagBundle\Entity\Tag'])) {
-            unset($entitiesConfig['Oro\Bundle\TagBundle\Entity\Tag']);
-        }
+//         if (isset($entitiesConfig['Oro\Bundle\TagBundle\Entity\Tag'])) {
+//             unset($entitiesConfig['Oro\Bundle\TagBundle\Entity\Tag']);
+//         }
         if (isset($entitiesConfig['Oro\Bundle\EmailBundle\Entity\Email'])) {
             unset($entitiesConfig['Oro\Bundle\EmailBundle\Entity\Email']);
         }
