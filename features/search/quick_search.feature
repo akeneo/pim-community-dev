@@ -25,3 +25,17 @@ Feature: Search in Akeneo PIM
     And I press the "Go" button
     Then I should see "product_test"
     And I should not see "Peter Doe"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-2011
+  Scenario: Only display Category, User and Product types for search
+    Given I am on the search page
+    When I open the quick search popin
+    Then I can search by the following types:
+      | type     |
+      | Category |
+      | Product  |
+      | User     |
+    And I can not search by the following types:
+      | type     |
+      | Email |
+      | Tag   |

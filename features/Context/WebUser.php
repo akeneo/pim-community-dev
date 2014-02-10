@@ -718,6 +718,34 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @When /^I can search by the following types:$/
+     */
+    public function iCanSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can not search by the following types:$/
+     */
+    public function iCanNotSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list, false);
+    }
+
+    /**
      * @param string $permission
      * @param string $resources
      *

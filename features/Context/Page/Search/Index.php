@@ -84,4 +84,23 @@ class Index extends Base
         $typeSearchFieldList = $this->getQuickSearchPopin()->find('css', 'button#search-bar-button');
         $typeSearchFieldList->click();
     }
+
+    /**
+     * Check if the list is in (or not) the type search field list
+     * @param array   $list
+     * @param boolean $in
+     */
+    public function checkTypeSearchFieldList(array $list, $in = true)
+    {
+        $this->openTypeSearchFieldList();
+        $typeSearchList = $this->getQuickSearchPopin()->findAll('css', 'ul#search-bar-dropdown li');
+
+        foreach ($list as $typeSearch) {
+            if (!in_array($typeSearch, $list) && $in) {
+                throw new \InvalidArgumentException(sprintf('Element %s must be in the search list', $typeSearch));
+            } elseif (in_array($typeSearch, $list) && !$in) {
+                throw new \InvalidArgumentException(sprintf('Element %s must not be in the search list', $typeSearch));
+            }
+        }
+    }
 }
