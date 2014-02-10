@@ -561,6 +561,7 @@ popin.create:
     group_type.title: Create a new group type
     product.title: Create a new product
     variant_group.title: Create a new variant group
+    option.title: Create a new option
 
 # Datagrid contents
 Has product: Has product
