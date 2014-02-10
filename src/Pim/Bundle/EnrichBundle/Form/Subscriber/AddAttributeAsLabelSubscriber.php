@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Add useable attributes as labels
@@ -36,7 +37,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
     public function __construct($attributeClass, FormFactoryInterface $factory)
     {
         $this->attributeClass = $attributeClass;
-        $this->factory = $factory;
+        $this->factory        = $factory;
     }
 
     /**
@@ -44,18 +45,18 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return array(FormEvents::PRE_SET_DATA => 'addAttributeAsLabelField');
     }
 
     /**
      * @param FormEvent $event
      */
-    public function preSetData(FormEvent $event)
+    public function addAttributeAsLabelField(FormEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
-        if ($data && $data->getId()) {
+        if ($data instanceof Family && $data->getId()) {
+            $form = $event->getForm();
             $form->add(
                 $this->factory->createNamed(
                     'attributeAsLabel',
