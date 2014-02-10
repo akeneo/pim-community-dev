@@ -380,14 +380,14 @@ SQL;
         // TODO : idealy, we add a join only if a filter is applied, the filter should contains that query part
 
         $qb
-            ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->leftJoin('p.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin('p.groups', 'groups')
             ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $qb
             ->addSelect('p')
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
@@ -404,12 +404,12 @@ SQL;
         $qb = $this->createQueryBuilder('p');
 
         $qb
-            ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+            ->leftJoin('p.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $hasProductExpr =
             "CASE WHEN " .
             "(:currentGroup MEMBER OF p.groups ".
@@ -431,12 +431,12 @@ SQL;
         $qb = $this->createQueryBuilder('p');
 
         $qb
-            ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+            ->leftJoin('p.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $hasProductExpr =
             "CASE WHEN " .
             "(:currentGroup MEMBER OF p.groups ".
@@ -460,8 +460,8 @@ SQL;
         $qb = $this->createQueryBuilder('p');
 
         $qb
-            ->leftJoin('p.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->leftJoin('p.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin(
                 'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
@@ -473,7 +473,7 @@ SQL;
 
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
-        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
+        $familyExpr = '(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)';
         $hasProductExpr =
             'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
             'THEN true ELSE false END';
