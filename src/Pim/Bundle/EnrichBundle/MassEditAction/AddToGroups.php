@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Adds many products to many groups
