@@ -270,6 +270,7 @@ class FixturesContext extends RawMinkContext
 
         $product = $this->loadFixture('products', $data);
 
+        $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->save($product);
 
         return $product;
@@ -458,6 +459,7 @@ class FixturesContext extends RawMinkContext
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
+            $this->getProductBuilder()->addMissingProductValues($product);
             $this->getProductManager()->save($product);
         }
 
@@ -1722,6 +1724,14 @@ class FixturesContext extends RawMinkContext
     private function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+     */
+    private function getProductBuilder()
+    {
+        return $this->getContainer()->get('pim_catalog.builder.product');
     }
 
     /**
