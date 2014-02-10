@@ -11,6 +11,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -120,6 +121,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isScopable()->willReturn(false);
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
+        $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
         $attributeRepository->findAll()->willReturn([$name]);
 
@@ -188,6 +190,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isScopable()->willReturn(false);
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
+        $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
         $color->setLocale(Argument::any())->willReturn($color);
         $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
@@ -195,6 +198,12 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $color->isScopable()->willReturn(false);
         $color->isLocalizable()->willReturn(false);
         $color->getCode()->willReturn('color');
+        $color->getVirtualGroup()->willReturn(new AttributeGroup());
+
+        $price->setLocale(Argument::any())->willReturn($price);
+        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->isUnique()->willReturn(false);
+        $price->getVirtualGroup()->willReturn(new AttributeGroup());
 
         $attributeRepository->findAll()->willReturn([$name, $color, $price]);
 
@@ -225,6 +234,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('attribute');
+        $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
         $attributeRepository->findAll()->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
