@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.select2'],
-        function ($, _, Scopable, CurrencyField, Dialog, DialogForm) {
+        ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        function ($, _, Scopable, CurrencyField, Dialog, DialogForm, mediator) {
             'use strict';
             $(function () {
                 _.each($('form div.scopable:not(.currency)'), function (field) {
@@ -11,6 +11,8 @@
                 _.each($('form div.currency'), function (field) {
                     new CurrencyField({ el: $(field) });
                 });
+
+                mediator.trigger('pim:reinit');
 
                 {% if resource_granted('pim_enrich_product_change_family') %}
                     {% set familyWidget %}

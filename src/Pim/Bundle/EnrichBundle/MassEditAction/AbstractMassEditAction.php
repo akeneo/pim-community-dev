@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 /**
- * Class that Batch operations might extends for convenience purpose
+ * Class that Batch operations might extend for convenience purposes
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -32,8 +32,6 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
      * @param string $key
      * @param array  $parameters
      * @param mixed  $default
-     *
-     * @throw InvalidArgumentException
      *
      * @return mixed
      */

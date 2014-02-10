@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType;
 class ChangeStatus extends AbstractMassEditAction
 {
     /**
-     * @var boolean Wether or not to enable products
+     * @var boolean Whether or not to enable products
      */
     protected $toEnable = true;
 

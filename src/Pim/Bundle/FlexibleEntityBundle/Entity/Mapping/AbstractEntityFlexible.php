@@ -167,10 +167,13 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     {
         $attributeCode = $value->getAttribute()->getCode();
         $possibleValues =& $this->indexedValues[$attributeCode];
-        foreach ($possibleValues as $key => $possibleValue) {
-            if ($value === $possibleValue) {
-                unset($possibleValues[$key]);
-                break;
+
+        if (is_array($possibleValues)) {
+            foreach ($possibleValues as $key => $possibleValue) {
+                if ($value === $possibleValue) {
+                    unset($possibleValues[$key]);
+                    break;
+                }
             }
         }
 
@@ -272,10 +275,12 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $value = null;
         $possibleValues = $indexedValues[$attributeCode];
 
-        foreach ($possibleValues as $possibleValue) {
-            if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
-                $value = $possibleValue;
-                break;
+        if (is_array($possibleValues)) {
+            foreach ($possibleValues as $possibleValue) {
+                if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
+                    $value = $possibleValue;
+                    break;
+                }
             }
         }
 
@@ -307,7 +312,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
-     * Get wether or not an attribute is part of a product
+     * Get whether or not an attribute is part of a product
      *
      * @param AbstractEntityAttribute $attribute
      *
@@ -417,8 +422,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      */
     protected function updateValue($attributeCode, $method, $arguments)
     {
-        $attribute = $this->getAttribute($attributeCode);
-
         $data   = $arguments[0];
         $locale = (isset($arguments[1])) ? $arguments[1] : $this->getLocale();
         $scope  = (isset($arguments[2])) ? $arguments[2] : $this->getScope();

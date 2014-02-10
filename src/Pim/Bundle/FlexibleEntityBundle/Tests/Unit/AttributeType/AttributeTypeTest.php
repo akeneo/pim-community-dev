@@ -77,10 +77,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         );
 
         $value = $this->getMock(
-            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
-            array(
-                'getAttribute', 'getData'
-            )
+            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface'
         );
 
         $value->expects($this->any())

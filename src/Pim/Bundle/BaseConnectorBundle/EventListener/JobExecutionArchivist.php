@@ -35,7 +35,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @param ArchiveInterface $archiver
      *
-     * @throw \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function registerArchiver(ArchiverInterface $archiver)
     {
@@ -93,7 +93,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @return \Gaufrette\Stream
      *
-     * @throw \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {
