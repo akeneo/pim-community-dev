@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta5#4ca6f74941f90568ea30f108d0a78bddd0220164",
+        "oro/platform": "dev-maintenance/pim_beta5#3d9ed156046b9475e5b227e2dd9ff0682ce30291",
         "apy/jsfv-bundle": "2.1.*",
         "knplabs/knp-gaufrette-bundle": "0.2.*",
         "incenteev/composer-parameter-handler": "~2.0",
