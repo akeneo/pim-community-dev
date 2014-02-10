@@ -4,16 +4,17 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -203,10 +204,10 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $products)
+    public function initialize(QueryBuilder $qb)
     {
-        $this->initializeCommonAttributes();
-        $this->skipUneditableAttributes($products);
+        $products = $qb->getQuery()->getResult();
+        $this->initializeCommonAttributes($products);
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
@@ -216,19 +217,25 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(QueryBuilder $qb)
     {
+        $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {
             $this->setProductValues($product);
         }
         $this->productManager->handleAllMedia($products);
-        $this->productManager->saveAll($products, false);
     }
 
     /**
      * Initializes self::commonAtributes with values from the repository
+     * Attribute is not available for mass editing if:
+     *   - it is an identifier
+     *   - it is unique
+     *   - it isn't set on one of the selected products
+     *
+     * @param array $products
      */
-    protected function initializeCommonAttributes()
+    protected function initializeCommonAttributes(array $products)
     {
         $attributes = $this->productManager->getAttributeRepository()->findAll();
 
@@ -238,31 +245,17 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->productManager->setLocale($currentLocaleCode);
 
         foreach ($attributes as $attribute) {
-            $attribute->setLocale($currentLocaleCode);
+            if ('pim_catalog_identifier' !== $attribute->getAttributeType() && !$attribute->isUnique()) {
+                $attribute->setLocale($currentLocaleCode);
+                $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
 
-            $attribute
-                ->getVirtualGroup()
-                ->setLocale($currentLocaleCode);
-
-            $this->commonAttributes[] = $attribute;
+                $this->commonAttributes[] = $attribute;
+            }
         }
-    }
 
-    /**
-     * Attribute is not available for mass editing if:
-     *   - it is an identifier
-     *   - it is unique
-     *   - it isn't set on one of the selected products
-     *
-     * @param array $products
-     */
-    protected function skipUneditableAttributes(array $products)
-    {
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
-                if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->isUnique() ||
-                    !$product->hasAttribute($attribute)) {
+                if (!$product->hasAttribute($attribute)) {
                     unset($this->commonAttributes[$key]);
                 }
             }
@@ -362,7 +355,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function createValue(AbstractAttribute $attribute, Locale $locale, Channel $channel = null)
     {
-        $value = $this->productManager->createFlexibleValue();
+        $value = $this->productManager->createProductValue();
         $value->setAttribute($attribute);
 
         if ($attribute->isLocalizable()) {
