@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * A batch operation operator
- * Contains a list of products and a batch operation to apply on them
+ * Applies batch operations to products passed in the form of QueryBuilder
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -167,9 +167,22 @@ class MassEditActionOperator
      */
     public function performOperation(QueryBuilder $qb)
     {
+        set_time_limit(0);
         if ($this->operation) {
             $this->operation->perform($qb);
         }
+    }
+
+    /**
+     * Finalize the batch operation - flush the products
+     *
+     * @param QueryBuilder $qb
+     */
+    public function finalizeOperation(QueryBuilder $qb)
+    {
+        set_time_limit(0);
+        $products = $qb->getQuery()->getResult();
+        $this->manager->saveAll($products, false);
     }
 
     /**

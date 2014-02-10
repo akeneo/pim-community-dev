@@ -82,21 +82,10 @@ class AddToGroups extends AbstractMassEditAction
     public function perform(QueryBuilder $qb)
     {
         $products = $qb->getQuery()->getResult();
-        foreach ($this->groups as $group) {
-            $this->addProductsToGroup($products, $group);
-        }
-    }
-
-    /**
-     * Add products to a group
-     *
-     * @param ProductInterface[] $products
-     * @param Group              $group
-     */
-    protected function addProductsToGroup(array $products, Group $group)
-    {
         foreach ($products as $product) {
-            $group->addProduct($product);
+            foreach ($this->getGroups() as $group) {
+                $group->addProduct($product);
+            }
         }
     }
 }
