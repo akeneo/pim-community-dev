@@ -340,14 +340,13 @@ datagrid:
         filters:
             columns:
                 family:
-                    type:      entity
+                    type:      choice
                     label:     Family
-                    data_name: productFamily
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices: @pim_catalog.manager.family->getChoices
                 groups:
                     type:      choice
                     label:     Groups
@@ -464,13 +463,13 @@ datagrid:
                     data_name: has_product
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices: @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -568,13 +567,13 @@ datagrid:
                     data_name: has_product
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices: @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -968,13 +967,13 @@ datagrid:
                     data_name:        has_association
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class:    %pim_catalog.entity.family.class%
-                            property: label
+                            choices: @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
