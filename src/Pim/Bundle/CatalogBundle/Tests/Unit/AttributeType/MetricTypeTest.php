@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\AttributeType\MetricType;
 
 /**

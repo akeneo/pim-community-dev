@@ -105,6 +105,6 @@ services:
             - metric
             - pim_flexibleentity_metric
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
-            - '@oro_measure.manager'
+            - '@akeneo_measure.manager'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }

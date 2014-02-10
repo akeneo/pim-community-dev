@@ -159,7 +159,7 @@ services:
     pim_enrich.form.type.conversion_units:
         class: %pim_enrich.form.type.conversion_units.class%
         arguments:
-            - '@oro_measure.manager'
+            - '@akeneo_measure.manager'
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.attribute.class%
         tags:

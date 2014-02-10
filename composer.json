@@ -22,7 +22,8 @@
         "apy/jsfv-bundle": "2.1.*",
         "knplabs/knp-gaufrette-bundle": "0.2.*",
         "incenteev/composer-parameter-handler": "~2.0",
-        "symfony/icu": "1.1.*"
+        "symfony/icu": "1.1.*",
+        "akeneo/measure-bundle": "0.1.0"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
