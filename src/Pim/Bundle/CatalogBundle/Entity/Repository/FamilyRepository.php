@@ -44,6 +44,27 @@ class FamilyRepository extends ReferableEntityRepository
     }
 
     /**
+     * Get families
+     *
+     * @return array
+     */
+    public function getChoices()
+    {
+        $families = $this
+            ->buildAll()
+            ->addOrderBy($this->getAlias() .'.code', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $choices = array();
+        foreach ($families as $family) {
+            $choices[$family->getId()] = $family->getLabel();
+        }
+
+        return $choices;
+    }
+
+    /**
      * @param integer $id
      *
      * @return \Doctrine\ORM\QueryBuilder
