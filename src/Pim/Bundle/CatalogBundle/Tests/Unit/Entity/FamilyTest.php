@@ -185,6 +185,21 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
     }
 
+    public function testGetEmptyAttributeAsLabelLabel()
+    {
+        $name    = $this->getAttributeMock();
+        $address = $this->getAttributeMock();
+        $phone   = $this->getAttributeMock('phone');
+        $sku     = $this->getAttributeMock('pim_catalog_identifier', 'sku', 'SKU');
+
+        $this->family->addAttribute($name);
+        $this->family->addAttribute($address);
+        $this->family->addAttribute($phone);
+        $this->family->addAttribute($sku);
+
+        $this->assertEquals('SKU', $this->family->getEmptyAttributeAsLabelLabel());
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */
@@ -301,7 +316,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
-    protected function getAttributeMock($type = 'pim_catalog_text', $code = null)
+    protected function getAttributeMock($type = 'pim_catalog_text', $code = null, $label = null)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -312,6 +327,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
                   ->method('getCode')
                   ->will($this->returnValue($code));
+
+        $attribute->expects($this->any())
+                  ->method('getLabel')
+                  ->will($this->returnValue($label));
 
         return $attribute;
     }

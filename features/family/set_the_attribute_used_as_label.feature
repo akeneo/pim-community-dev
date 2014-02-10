@@ -19,7 +19,7 @@ Feature: Set the attribute used as label
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page
-    Then eligible attributes as label should be Id, SKU, Brand and Model
+    Then eligible attributes as label should be SKU, Brand and Model
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page

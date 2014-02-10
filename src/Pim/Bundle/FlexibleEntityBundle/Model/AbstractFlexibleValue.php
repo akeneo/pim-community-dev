@@ -66,11 +66,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
     }
 
     /**
-     * Set data
-     *
-     * @param string $data
-     *
-     * @return AbstractFlexibleValue
+     * {@inheritdoc}
      */
     public function setData($data)
     {
@@ -80,19 +76,16 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
     }
 
     /**
-     * Get data
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getData()
     {
         return $this->data;
     }
 
-     /**
-      * Has data
-      * @return boolean
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function hasData()
     {
         return !is_null($this->getData());
