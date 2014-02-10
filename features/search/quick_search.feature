@@ -4,13 +4,24 @@ Feature: Search in Akeneo PIM
   As a user
   I need to be able to search what I want
 
-  Scenario: Use the search form
+  Background:
     Given the "default" catalog configuration
-    And a "product_test" product
     And I am logged in as "admin"
-    When I am on the search page
-    And I fill in the following information:
+    And a "product_test" product
+
+  Scenario: Use the search form
+    Given I am on the search page
+    When I fill in the following information:
       | search | p |
     And I press the "Search" button
     Then I should see "Peter Doe"
     And I should see "product_test"
+
+  Scenario: Use the quick search form
+    Given I am on the search page
+    When I fill in the following information in the quick search popin:
+      | search | p |
+      | type   | Product |
+    And I press the "Go" button
+    Then I should see "product_test"
+    And I should not see "Peter Doe"
