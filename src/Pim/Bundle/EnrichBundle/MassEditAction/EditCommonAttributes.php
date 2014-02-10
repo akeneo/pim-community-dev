@@ -247,6 +247,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         foreach ($attributes as $attribute) {
             if ('pim_catalog_identifier' !== $attribute->getAttributeType() && !$attribute->isUnique()) {
                 $attribute->setLocale($currentLocaleCode);
+                $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
 
                 $this->commonAttributes[] = $attribute;
             }

@@ -863,7 +863,10 @@ class FixturesContext extends RawMinkContext
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
             foreach ($table->getHash() as $price) {
-                assertEquals($price['amount'], $productValue->getPrice($price['currency'])->getData());
+                $productPrice = $productValue->getPrice($price['currency']);
+                $this->getEntityManager()->refresh($productPrice);
+
+                assertEquals($price['amount'], $productPrice->getData());
             }
         }
     }
@@ -1209,6 +1212,8 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($product);
 
         $value = $product->getValue($attribute, $locale, $scope);
+
+        $this->getEntityManager()->refresh($value);
 
         if (null === $value) {
             throw new \InvalidArgumentException(
