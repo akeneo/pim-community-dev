@@ -270,15 +270,18 @@ class Family implements TranslatableInterface, ReferableInterface
     {
         return $this->attributes->filter(
             function ($attribute) {
-                return in_array(
-                    $attribute->getAttributeType(),
-                    array(
-                        'pim_catalog_text',
-                        'pim_catalog_identifier'
-                    )
-                );
+                return 'pim_catalog_text' === $attribute->getAttributeType();
             }
         )->toArray();
+    }
+
+    public function getEmptyAttributeAsLabelLabel()
+    {
+        foreach ($this->attributes as $attribute) {
+            if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+                return $attribute->getLabel();
+            }
+        }
     }
 
     /**

@@ -24,4 +24,20 @@ interface FlexibleValueInterface
      * @return mixed
      */
     public function getData();
+
+    /**
+     * Get wether or not value has data
+     *
+     * @return Boolean
+     */
+    public function hasData();
+
+    /**
+     * Set value data
+     *
+     * @param mixed $data
+     *
+     * @return FlexibleValueInterface
+     */
+    public function setData($data);
 }
