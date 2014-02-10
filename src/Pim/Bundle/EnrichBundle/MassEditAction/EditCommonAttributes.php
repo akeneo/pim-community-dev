@@ -354,7 +354,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function createValue(AbstractAttribute $attribute, Locale $locale, Channel $channel = null)
     {
-        $value = $this->productManager->createFlexibleValue();
+        $value = $this->productManager->createProductValue();
         $value->setAttribute($attribute);
 
         if ($attribute->isLocalizable()) {

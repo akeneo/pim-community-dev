@@ -26,14 +26,14 @@ class AddToGroupsSpec extends ObjectBehavior
     {
         $groups = $this->getGroups();
         $groups->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-        $groups->isEmpty()->shouldReturn(true);
+        $groups->shouldBeEmpty();
 
         $this->setGroups([$shirts, $pants]);
 
         $groups = $this->getGroups();
         $groups->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
 
-        $groups->count()->shouldReturn(2);
+        $groups->shouldHaveCount(2);
         $groups->first()->shouldReturn($shirts);
         $groups->last()->shouldReturn($pants);
     }
