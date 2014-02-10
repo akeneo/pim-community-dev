@@ -7,4 +7,4 @@ services:
         arguments: [%akeneo_measure.measures_config%]
 
     akeneo_measure.manager:
-        class: Oro\Bundle\MeasureBundle\Manager\MeasureManager
+        class: Akeneo\Bundle\MeasureBundle\Manager\MeasureManager
