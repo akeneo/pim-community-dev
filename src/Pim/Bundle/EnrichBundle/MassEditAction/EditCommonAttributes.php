@@ -207,8 +207,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     public function initialize(QueryBuilder $qb)
     {
         $products = $qb->getQuery()->getResult();
-        $this->initializeCommonAttributes();
-        $this->skipUneditableAttributes($products);
+        $this->initializeCommonAttributes($products);
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
@@ -230,8 +229,14 @@ class EditCommonAttributes extends AbstractMassEditAction
 
     /**
      * Initializes self::commonAtributes with values from the repository
+     * Attribute is not available for mass editing if:
+     *   - it is an identifier
+     *   - it is unique
+     *   - it isn't set on one of the selected products
+     *
+     * @param array $products
      */
-    protected function initializeCommonAttributes()
+    protected function initializeCommonAttributes(array $products)
     {
         $attributes = $this->productManager->getAttributeRepository()->findAll();
 
@@ -241,31 +246,16 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->productManager->setLocale($currentLocaleCode);
 
         foreach ($attributes as $attribute) {
-            $attribute->setLocale($currentLocaleCode);
+            if ('pim_catalog_identifier' !== $attribute->getAttributeType() && !$attribute->isUnique()) {
+                $attribute->setLocale($currentLocaleCode);
 
-            $attribute
-                ->getVirtualGroup()
-                ->setLocale($currentLocaleCode);
-
-            $this->commonAttributes[] = $attribute;
+                $this->commonAttributes[] = $attribute;
+            }
         }
-    }
 
-    /**
-     * Attribute is not available for mass editing if:
-     *   - it is an identifier
-     *   - it is unique
-     *   - it isn't set on one of the selected products
-     *
-     * @param array $products
-     */
-    protected function skipUneditableAttributes(array $products)
-    {
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
-                if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->isUnique() ||
-                    !$product->hasAttribute($attribute)) {
+                if (!$product->hasAttribute($attribute)) {
                     unset($this->commonAttributes[$key]);
                 }
             }
