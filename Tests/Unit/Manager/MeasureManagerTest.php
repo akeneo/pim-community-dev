@@ -12,6 +12,7 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
         $this->measureManager->setMeasureConfig(
             array(
                 'WEIGHT' => array(
+                    'standard' => 'KILOGRAM',
                     'units' => array(
                         'KILOGRAM' => array('symbol' => 'kg'),
                         'GRAM'     => array('symbol' => 'g')
@@ -42,5 +43,13 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('An InvalidArgumentException has not been raised.');
+    }
+
+    public function testGetStandardUnitForFamily()
+    {
+        $this->assertEquals(
+            'KILOGRAM',
+            $this->measureManager->getStandardUnitForFamily('WEIGHT')
+        );
     }
 }
