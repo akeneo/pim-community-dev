@@ -200,18 +200,22 @@ class FlexibleEntityRepository extends EntityRepository implements
     }
 
     /**
-     * Load a flexible entity with its attributes sorted by sortOrder
+     * Load a flexible entity with its attribute values
      *
      * @param integer $id
      *
      * @return AbstractFlexible|null
      * @throws NonUniqueResultException
      */
-    public function findWithSortedAttribute($id)
+    public function findByWithValues($id)
     {
-        return $this
-            ->findByWithAttributesQB(array(), array('id' => $id))
-            ->addOrderBy('Attribute.sortOrder')
+        $qb = $this->findByWithAttributesQB(array(), array('id' => $id));
+        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+        $qb->addSelect('Value');
+        $qb->addSelect('Attribute');
+        $qb->addSelect('AttributeTranslations');
+
+        return $qb
             ->getQuery()
             ->getOneOrNullResult();
     }

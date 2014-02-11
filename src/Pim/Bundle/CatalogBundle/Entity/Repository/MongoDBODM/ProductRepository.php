@@ -194,7 +194,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function findWithSortedAttribute($id)
+    public function findByWithValues($id)
     {
         // FIXME_MONGO Shortcut, but must do the same thing
         // than the parent

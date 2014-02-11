@@ -50,12 +50,12 @@ interface FlexibleEntityRepositoryInterface extends LocalizableInterface, Scopab
     );
 
     /**
-     * Load a flexible entity with its attributes sorted by sortOrder
+     * Load a flexible entity with related attribute values
      *
      * @param integer $id
      *
      * @return AbstractFlexible|null
      * @throws NonUniqueResultException
      */
-    public function findWithSortedAttribute($id);
+    public function findByWithValues($id);
 }
