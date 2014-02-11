@@ -20,7 +20,7 @@ define(
                     {
                         _format:        'json',
                         dataLocale:     dataLocale,
-                        select_node_id: activeNode,
+                        select_node_id: activeNode > 0 ? activeNode : selectedTree,
                         include_sub:    +includeSub
                     }
                 );
@@ -38,6 +38,10 @@ define(
 
             selectNode = function(nodeId) {
                 $el.jstree('select_node', '#node_'+nodeId);
+            },
+
+            clearSelection = function() {
+                $el.jstree('deselect_all');
             },
 
             createNode = function(id, target, title) {
@@ -143,6 +147,9 @@ define(
                 if (root_node_id && selectedTree !== +root_node_id) {
                     selectedTree = +root_node_id;
                     activeNode   = 0;
+                } else if (!activeNode) {
+                    activeNode = +root_node_id;
+                    selectNode(activeNode);
                 }
                 if (!$('#node_0').length) {
                     createNode(0, null, 'jstree.all');
@@ -202,6 +209,13 @@ define(
 
             refresh: function() {
                 initTree();
+            },
+
+            reset: function() {
+                if ($el) {
+                    clearSelection();
+                    selectNode(0);
+                }
             }
         };
     }

@@ -165,6 +165,14 @@ define(
              */
             hide: function() {
                 return this;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            reset: function() {
+                TreeView.reset();
+                NumberFilter.prototype.reset.apply(this, arguments);
             }
         });
     }
