@@ -166,27 +166,45 @@ class MeasureConverter
         // calculate result with conversion config (calculs must be reversed and operation inversed)
         foreach (array_reverse($conversionConfig) as $operation) {
             foreach ($operation as $operator => $operand) {
-                switch ($operator) {
-                    case "div":
-                        $convertedValue = $convertedValue * $operand;
-                        break;
-                    case "mul":
-                        if ($operand !== 0) {
-                            $convertedValue = $convertedValue / $operand;
-                        }
-                        break;
-                    case "add":
-                        $convertedValue = $convertedValue - $operand;
-                        break;
-                    case "sub":
-                        $convertedValue = $convertedValue + $operand;
-                        break;
-                    default:
-                        throw new UnknownOperatorException();
-                }
+                $convertedValue = $this->applyReversedOperation($convertedValue, $operator, $operand);
             }
         }
 
         return $convertedValue;
+    }
+
+    /**
+     * Apply reversed operation between value and operand by using operator
+     *
+     * @param double $value    Value to convert
+     * @param string $operator Operator to apply
+     * @param double $operand  Operand to use
+     *
+     * return double
+     */
+    protected function applyReversedOperation($value, $operator, $operand)
+    {
+        $processedValue = $value;
+
+        switch ($operator) {
+            case "div":
+                $processedValue = $processedValue * $operand;
+                break;
+            case "mul":
+                if ($operand !== 0) {
+                    $processedValue = $processedValue / $operand;
+                }
+                break;
+            case "add":
+                $processedValue = $processedValue - $operand;
+                break;
+            case "sub":
+                $processedValue = $processedValue + $operand;
+                break;
+            default:
+                throw new UnknownOperatorException();
+        }
+
+        return $processedValue;
     }
 }
