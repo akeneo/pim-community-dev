@@ -2,7 +2,7 @@ define(
     ['jquery', 'jquery.slimbox'],
     function($) {
         var maxFilenameLength = 20;
-        return function(id) {
+        init = function(id) {
             var $el = $('#' + id);
             if (!$el.length) {
                 return;
@@ -63,6 +63,10 @@ define(
                     return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
                 });
             }
+        };
+
+        return {
+            init: init
         };
     }
 );

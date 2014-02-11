@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
-    function ($, Backbone, _, mediator, wysiwyg) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    function ($, Backbone, _, mediator, wysiwyg, fileinput) {
         'use strict';
         /**
          * Allow expanding/collapsing scopable fields
@@ -101,7 +101,7 @@ define(
             expandIcon:   'icon-caret-right',
             collapseIcon: 'icon-caret-down',
 
-            skipWysiwygInit: false,
+            skipUIInit: false,
 
             template: _.template(
                 '<label class="control-label"><%= label %></label>'
@@ -179,7 +179,7 @@ define(
                 if (!this.expanded) {
                     this.expanded = true;
 
-                    this._destroyWysiwyg();
+                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -188,7 +188,7 @@ define(
                         first = false;
                     }, this);
 
-                    this._initWysiwyg();
+                    this._initUI();
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -199,7 +199,7 @@ define(
                 if (this.expanded) {
                     this.expanded = false;
 
-                    this._destroyWysiwyg();
+                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -212,7 +212,7 @@ define(
                         }
                     }, this);
 
-                    this._initWysiwyg();
+                    this._initUI();
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
@@ -224,7 +224,7 @@ define(
             },
 
             _changeDefault: function (scope) {
-                this.skipWysiwygInit = true;
+                this.skipUIInit = true;
                 this._toggle();
 
                 _.each(this.fields, function (field) {
@@ -233,7 +233,7 @@ define(
                     }
                 }, this);
 
-                this.skipWysiwygInit = false;
+                this.skipUIInit = false;
                 this._toggle();
 
                 return this;
@@ -273,7 +273,7 @@ define(
                 $(field).hide().find('.field-toggle').addClass('hide');
             },
 
-            _destroyWysiwyg: function () {
+            _destroyUI: function () {
                 _.each(this.fields, function (field) {
                     var $textarea = $(field).find('textarea.wysiwyg');
                     if ($textarea.length) {
@@ -284,12 +284,17 @@ define(
                 return this;
             },
 
-            _initWysiwyg: function () {
-                if (!this.skipWysiwygInit) {
+            _initUI: function () {
+                if (!this.skipUIInit) {
                     _.each(this.fields, function (field) {
                         var $textarea = $(field).find('textarea.wysiwyg');
                         if ($textarea.length) {
                             wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
+                        }
+
+                        var $fileInput = $(field).find('input[type=file][id]');
+                        if ($fileInput.length) {
+                            fileinput.init($fileInput.attr('id'));
                         }
                     });
                 }
