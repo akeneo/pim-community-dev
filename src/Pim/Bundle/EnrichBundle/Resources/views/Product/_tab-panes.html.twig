@@ -12,7 +12,7 @@
     </div>
 {% endif %}
 
-<div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id }) }}">
+<div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
 </div>
 
 <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">
