@@ -8,6 +8,7 @@
 - Propagate -v option to subcommands of install command
 - Fix the versions of dependencies in composer.json
 - Undisplay unwanted searchable elements in quick search
+- Add icons for category and product in search view
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history

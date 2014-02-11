@@ -1,6 +1,12 @@
-/* FontAwesome */
-[class^="icon-"] {
-  margin: 0 3px;
+// FontAwesome
+[class^="icon-"],
+[class^='icon-'].hide-text:after,
+[class^='icon-'].hide-text:before {
+  padding:0;
+  text-indent:0;
+  font-size:14px;
+  line-height:1.3em;
+  color:#666;
 }
 
 .validation-tooltip {
@@ -10,4 +16,18 @@
     &:before {
         margin: 0;
     }
+}
+
+.icon-category {
+  background-image: url("../images/small-icon-category.png");
+  width: 16px;
+  height: 16px;
+  margin-left: -1px;
+}
+
+.icon-product {
+  background-image: url("../images/small-icon-product.png");
+  width: 16px;
+  height: 16px;
+  margin-left: -1px;
 }
