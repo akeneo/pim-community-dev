@@ -12,11 +12,12 @@ define(
         var ScopableField = Backbone.View.extend({
             field:    null,
             rendered: false,
+            isMetric: false,
 
             template: _.template(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
-                    '<div class="controls input-prepend">' +
+                    '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>">' +
                             '<span class="field-toggle">' +
                                 '<i class="icon-caret-down"></i>' +
@@ -64,6 +65,14 @@ define(
                     }
 
                     field.input = $field.get(0).outerHTML;
+
+                    _.each($field.siblings('input, select'), function(el) {
+                        field.input += el.outerHTML;
+                    });
+
+                    if (this.$el.find('.controls.metric').length) {
+                        this.isMetric = true;
+                    }
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -79,7 +88,8 @@ define(
                     this.$el.empty();
                     this.$el.append(
                         this.template({
-                            field: this.field
+                            field:    this.field,
+                            isMetric: this.isMetric
                         })
                     );
 
