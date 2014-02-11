@@ -39,7 +39,6 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
         $event->getData()->willReturn($family);
         $family->getId()->willReturn(1337);
         $family->getAttributeAsLabel()->willReturn('name');
-        $family->getEmptyAttributeAsLabelLabel()->willReturn('SKU');
         $family->getAttributeAsLabelChoices()->willReturn([
             'name'        => 'Name',
             'description' => 'Description',
@@ -47,8 +46,7 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
 
 
         $factory->createNamed('attributeAsLabel', 'entity', 'name', [
-            'required'        => false,
-            'empty_value'     => 'SKU',
+            'required'        => true,
             'label'           => 'Attribute used as label',
             'class'           => 'Acme\\Foo\\Bar',
             'choices'         => ['name' => 'Name', 'description' => 'Description'],

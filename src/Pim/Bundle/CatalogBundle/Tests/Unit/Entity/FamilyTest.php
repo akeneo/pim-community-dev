@@ -176,28 +176,15 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     {
         $name    = $this->getAttributeMock();
         $address = $this->getAttributeMock();
+        $sku     = $this->getAttributeMock('pim_catalog_identifier');
         $phone   = $this->getAttributeMock('phone');
 
         $this->family->addAttribute($name);
         $this->family->addAttribute($address);
-        $this->family->addAttribute($phone);
-
-        $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
-    }
-
-    public function testGetEmptyAttributeAsLabelLabel()
-    {
-        $name    = $this->getAttributeMock();
-        $address = $this->getAttributeMock();
-        $phone   = $this->getAttributeMock('phone');
-        $sku     = $this->getAttributeMock('pim_catalog_identifier', 'sku', 'SKU');
-
-        $this->family->addAttribute($name);
-        $this->family->addAttribute($address);
-        $this->family->addAttribute($phone);
         $this->family->addAttribute($sku);
+        $this->family->addAttribute($phone);
 
-        $this->assertEquals('SKU', $this->family->getEmptyAttributeAsLabelLabel());
+        $this->assertEquals([$name, $address, $sku], $this->family->getAttributeAsLabelChoices());
     }
 
     /**

@@ -13,12 +13,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric:
             groups:
                 - pim_catalog_metric
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueMatrix:
-            groups:
-                - pim_catalog_identifier
-                - pim_catalog_text
-                - pim_catalog_number
-                - pim_catalog_date
         - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDateRange:
             groups:
                 - pim_catalog_date
@@ -56,8 +50,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Type: bool
         localizable:
             - Type: bool
+            - 'False':
+                message: An unique attribute can not be localizable
+                groups: [unique]
         scopable:
             - NotNull: ~
+            - 'False':
+                message: An unique attribute can not be scopable
+                groups: [unique]
         useableAsGridColumn:
             - Type: bool
         useableAsGridFilter:

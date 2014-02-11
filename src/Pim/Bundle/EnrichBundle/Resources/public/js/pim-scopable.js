@@ -86,10 +86,6 @@ define(
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
                     this.$el.find('.switch').bootstrapSwitch();
                     this.$el.find('select').select2();
-                    var $textarea = this.$el.find('textarea.wysiwyg');
-                    if ($textarea.length) {
-                        wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
-                    }
                 }
 
                 return this;
@@ -104,6 +100,8 @@ define(
             rendered:     false,
             expandIcon:   'icon-caret-right',
             collapseIcon: 'icon-caret-down',
+
+            skipWysiwygInit: false,
 
             template: _.template(
                 '<label class="control-label"><%= label %></label>'
@@ -181,6 +179,7 @@ define(
                 if (!this.expanded) {
                     this.expanded = true;
 
+                    this._destroyWysiwyg();
                     this._reindexFields();
 
                     var first = true;
@@ -189,6 +188,7 @@ define(
                         first = false;
                     }, this);
 
+                    this._initWysiwyg();
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -199,6 +199,7 @@ define(
                 if (this.expanded) {
                     this.expanded = false;
 
+                    this._destroyWysiwyg();
                     this._reindexFields();
 
                     var first = true;
@@ -211,6 +212,7 @@ define(
                         }
                     }, this);
 
+                    this._initWysiwyg();
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
@@ -222,13 +224,16 @@ define(
             },
 
             _changeDefault: function (scope) {
+                this.skipWysiwygInit = true;
+                this._toggle();
+
                 _.each(this.fields, function (field) {
                     if ($(field).data('scope') === scope) {
                         this._setFieldFirst(field);
                     }
                 }, this);
 
-                this._toggle();
+                this.skipWysiwygInit = false;
                 this._toggle();
 
                 return this;
@@ -262,14 +267,34 @@ define(
                     this._setFieldFirst(field);
                 }
                 $(field).show();
-                var $textarea = $(field).find('textarea.wysiwyg');
-                if ($textarea.length) {
-                    wysiwyg.reinit($textarea.attr('id'));
-                }
             },
 
             _hideField: function (field) {
                 $(field).hide().find('.field-toggle').addClass('hide');
+            },
+
+            _destroyWysiwyg: function () {
+                _.each(this.fields, function (field) {
+                    var $textarea = $(field).find('textarea.wysiwyg');
+                    if ($textarea.length) {
+                        wysiwyg.destroy($textarea.attr('id'));
+                    }
+                });
+
+                return this;
+            },
+
+            _initWysiwyg: function () {
+                if (!this.skipWysiwygInit) {
+                    _.each(this.fields, function (field) {
+                        var $textarea = $(field).find('textarea.wysiwyg');
+                        if ($textarea.length) {
+                            wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
+                        }
+                    });
+                }
+
+                return this;
             },
 
             events: {
