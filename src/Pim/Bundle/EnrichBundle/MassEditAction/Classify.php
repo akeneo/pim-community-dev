@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType;
 
 /**
  * Batch operation to classify products
@@ -86,8 +87,9 @@ class Classify extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(QueryBuilder $qb)
     {
+        $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {
             foreach ($this->getCategories() as $category) {
                 $product->addCategory($category);

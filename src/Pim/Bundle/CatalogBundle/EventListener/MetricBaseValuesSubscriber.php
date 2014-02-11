@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 
 use Pim\Bundle\CatalogBundle\Model\Metric;
 

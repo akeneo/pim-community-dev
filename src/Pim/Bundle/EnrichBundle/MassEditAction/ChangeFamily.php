@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType;
 
 /**
  * Batch operation to change the family of products
@@ -48,8 +49,9 @@ class ChangeFamily extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(QueryBuilder $qb)
     {
+        $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {
             $product->setFamily($this->family);
         }

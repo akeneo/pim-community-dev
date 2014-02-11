@@ -14,8 +14,8 @@ services:
     pim_catalog.event_listener.metric_base_values:
         class: %pim_catalog.event_listener.metric_base_values.class%
         arguments:
-            - '@oro_measure.measure_converter'
-            - '@oro_measure.manager'
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -24,7 +24,7 @@ services:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
         arguments:
             - '@property_accessor'
-            - %oro_measure.measures_config%
+            - %akeneo_measure.measures_config%
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 

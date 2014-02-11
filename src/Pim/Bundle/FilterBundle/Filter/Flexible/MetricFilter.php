@@ -7,8 +7,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
 

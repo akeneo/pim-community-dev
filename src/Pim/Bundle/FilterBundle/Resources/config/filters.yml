@@ -122,8 +122,8 @@ services:
             - @form.factory
             - @pim_filter.flexible_utility
             - @translator
-            - @oro_measure.manager
-            - @oro_measure.measure_converter
+            - @akeneo_measure.manager
+            - @akeneo_measure.measure_converter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
 

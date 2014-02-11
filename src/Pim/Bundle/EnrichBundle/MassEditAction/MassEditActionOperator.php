@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\Annotation\Exclude;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * A batch operation operator
- * Contains a list of products and a batch operation to apply on them
+ * Applies batch operations to products passed in the form of QueryBuilder
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -150,44 +151,38 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param QueryBuilder $qb
      */
-    public function initializeOperation($productIds)
+    public function initializeOperation(QueryBuilder $qb)
     {
         if ($this->operation) {
-            $this->operation->initialize($this->getProducts($productIds));
+            $this->operation->initialize($qb);
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param QueryBuilder $qb
      */
-    public function performOperation(array $productIds)
+    public function performOperation(QueryBuilder $qb)
     {
+        set_time_limit(0);
         if ($this->operation) {
-            $this->operation->perform($this->getProducts($productIds));
+            $this->operation->perform($qb);
         }
     }
 
     /**
-     * Get the product matching the stored product ids
+     * Finalize the batch operation - flush the products
      *
-     * @param integer[] $productIds
-     *
-     * @return ProductInterface[]
-     *
-     * @throws InvalidArgumentException
+     * @param QueryBuilder $qb
      */
-    protected function getProducts(array $productIds)
+    public function finalizeOperation(QueryBuilder $qb)
     {
-        $products = $this->manager->findByIds($productIds);
-        if (!$products) {
-            throw new \InvalidArgumentException(sprintf('No product were found with ids %s', join(', ', $productIds)));
-        }
-
-        return $products;
+        set_time_limit(0);
+        $products = $qb->getQuery()->getResult();
+        $this->manager->saveAll($products, false);
     }
 
     /**

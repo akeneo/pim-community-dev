@@ -92,7 +92,7 @@ services:
             - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
-            - %oro_measure.measures_config%
+            - %akeneo_measure.measures_config%
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.product:
@@ -124,7 +124,7 @@ services:
             - '@pim_enrich.mass_edit_action.operator'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@oro_datagrid.mass_action.dispatcher'
-            - '@pim_catalog.manager.product'
+            - %mass_edit_limit%
 
     pim_enrich.controller.group:
         scope: request

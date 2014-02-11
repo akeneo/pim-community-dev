@@ -270,6 +270,7 @@ class FixturesContext extends RawMinkContext
 
         $product = $this->loadFixture('products', $data);
 
+        $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->save($product);
 
         return $product;
@@ -458,6 +459,7 @@ class FixturesContext extends RawMinkContext
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
+            $this->getProductBuilder()->addMissingProductValues($product);
             $this->getProductManager()->save($product);
         }
 
@@ -861,7 +863,10 @@ class FixturesContext extends RawMinkContext
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
             foreach ($table->getHash() as $price) {
-                assertEquals($price['amount'], $productValue->getPrice($price['currency'])->getData());
+                $productPrice = $productValue->getPrice($price['currency']);
+                $this->getEntityManager()->refresh($productPrice);
+
+                assertEquals($price['amount'], $productPrice->getData());
             }
         }
     }
@@ -1207,6 +1212,8 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($product);
 
         $value = $product->getValue($attribute, $locale, $scope);
+
+        $this->getEntityManager()->refresh($value);
 
         if (null === $value) {
             throw new \InvalidArgumentException(
@@ -1722,6 +1729,14 @@ class FixturesContext extends RawMinkContext
     private function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+     */
+    private function getProductBuilder()
+    {
+        return $this->getContainer()->get('pim_catalog.builder.product');
     }
 
     /**
