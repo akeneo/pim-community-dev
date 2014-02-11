@@ -76,7 +76,7 @@ class MeasureConverter
      * @param string $baseUnit Base unit for value
      * @param double $value    Value to convert
      *
-     * @return float
+     * @return double
      *
      * @throws UnknownOperatorException
      * @throws UnknownMeasureException
@@ -95,31 +95,48 @@ class MeasureConverter
         $conversionConfig = $this->config[$this->family]['units'][$baseUnit]['convert'];
         $convertedValue = $value;
 
-        // calculate result with conversion config
         foreach ($conversionConfig as $operation) {
             foreach ($operation as $operator => $operand) {
-                switch ($operator) {
-                    case "div":
-                        if ($operand !== 0) {
-                            $convertedValue = $convertedValue / $operand;
-                        }
-                        break;
-                    case "mul":
-                        $convertedValue = $convertedValue * $operand;
-                        break;
-                    case "add":
-                        $convertedValue = $convertedValue + $operand;
-                        break;
-                    case "sub":
-                        $convertedValue = $convertedValue - $operand;
-                        break;
-                    default:
-                        throw new UnknownOperatorException();
-                }
+                $convertedValue = $this->applyOperation($convertedValue, $operator, $operand);
             }
         }
 
         return $convertedValue;
+    }
+
+    /**
+     * Apply operation between value and operand by using operator
+     *
+     * @param double $value    Value to convert
+     * @param string $operator Operator to apply
+     * @param double $operand  Operand to use
+     *
+     * return double
+     */
+    protected function applyOperation($value, $operator, $operand)
+    {
+        $processedValue = $value;
+
+        switch ($operator) {
+            case "div":
+                if ($operand !== 0) {
+                    $processedValue = $processedValue / $operand;
+                }
+                break;
+            case "mul":
+                $processedValue = $processedValue * $operand;
+                break;
+            case "add":
+                $processedValue = $processedValue + $operand;
+                break;
+            case "sub":
+                $processedValue = $processedValue - $operand;
+                break;
+            default:
+                throw new UnknownOperatorException();
+        }
+
+        return $processedValue;
     }
 
     /**
