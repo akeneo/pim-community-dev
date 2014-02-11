@@ -83,7 +83,7 @@ class CompletenessController
             $product,
             $channels,
             $locales,
-            $this->userContext->getCurrentLocale()
+            $this->userContext->getCurrentLocale()->getCode()
         );
 
         return $this->templating->renderResponse(
