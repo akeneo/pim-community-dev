@@ -36,7 +36,7 @@ class MeasureManager
     public function getUnitSymbolsForFamily($family)
     {
         return array_map(
-            function ($unit) {
+            static function ($unit) {
                 return $unit['symbol'];
             },
             $this->getFamilyConfig($family)['units']
