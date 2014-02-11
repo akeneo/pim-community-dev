@@ -128,7 +128,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findByWithValues($id);
+        $product = $this->getFlexibleRepository()->findOneByWithValues($id);
 
         if ($product) {
             $this->builder->addMissingProductValues($product);

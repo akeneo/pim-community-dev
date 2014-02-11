@@ -57,5 +57,5 @@ interface FlexibleEntityRepositoryInterface extends LocalizableInterface, Scopab
      * @return AbstractFlexible|null
      * @throws NonUniqueResultException
      */
-    public function findByWithValues($id);
+    public function findOneByWithValues($id);
 }

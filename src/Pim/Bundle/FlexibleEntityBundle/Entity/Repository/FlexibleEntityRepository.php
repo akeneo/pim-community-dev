@@ -209,7 +209,7 @@ class FlexibleEntityRepository extends EntityRepository implements
      * @return AbstractFlexible|null
      * @throws NonUniqueResultException
      */
-    public function findByWithValues($id)
+    public function findOneByWithValues($id)
     {
         $qb = $this->findByWithAttributesQB(array(), array('id' => $id));
         $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
