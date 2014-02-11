@@ -191,6 +191,15 @@ class Attribute extends AbstractEntityAttribute implements
     {
         $groups = array('Default', $this->getAttributeType());
 
+        if ($this->isUnique()) {
+            $groups[] = 'unique';
+        }
+        if ($this->isScopable()) {
+            $groups[] = 'scopable';
+        }
+        if ($this->isScopable()) {
+            $groups[] = 'localizable';
+        }
         if ($rule = $this->getValidationRule()) {
             $groups[] = $rule;
         }
