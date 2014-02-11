@@ -377,11 +377,12 @@ Disable:   Disable
 
 # Batch operations
 pim_enrich.mass_edit_action:
-    page_title:    Products
-    page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
-    title:         Choose operation
-    subtitle:      Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-    confirm:       You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+    page_title:     Products
+    page_subtitle:  Mass Edit (1 product)|Mass Edit (%count% products)
+    title:          Choose operation
+    subtitle:       Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+    confirm:        You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+    limit_exceeded: Please choose less than %limit% products to edit
 
     change-status:
         label:         Change status (enable / disable)

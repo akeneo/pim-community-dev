@@ -45,6 +45,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var integer */
+    protected $massEditLimit;
+
     /** @var \Doctrine\ORM\QueryBuilder */
     protected $gridQB;
 
@@ -62,6 +65,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassEditActionOperator     $operator
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
+     * @param integer                    $massEditLimit
      */
     public function __construct(
         Request $request,
@@ -74,7 +78,8 @@ class MassEditActionController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         MassEditActionOperator $operator,
         MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher
+        MassActionDispatcher $massActionDispatcher,
+        $massEditLimit
     ) {
         parent::__construct(
             $request,
@@ -91,6 +96,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->operator             = $operator;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
+        $this->massEditLimit        = $massEditLimit;
     }
 
     /**
@@ -103,6 +109,10 @@ class MassEditActionController extends AbstractDoctrineController
     public function chooseAction(Request $request)
     {
         $productCount = $this->getProductCount($request);
+        if ($productCount > $this->massEditLimit) {
+            $productCount = false;
+            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+        }
         if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
@@ -143,6 +153,10 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         $productCount = $this->getProductCount($request);
+        if ($productCount > $this->massEditLimit) {
+            $productCount = false;
+            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+        }
         if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
@@ -184,6 +198,10 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         $productCount = $this->getProductCount($request);
+        if ($productCount > $this->massEditLimit) {
+            $productCount = false;
+            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+        }
         if (!$productCount) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }

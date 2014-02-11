@@ -28,4 +28,5 @@ parameters:
     installer_data:    PimInstallerBundle:icecat_demo_dev
     # use PimInstallerBundle:minimal for minimal data set
 
-    uservoice_key: 'VuTQAMdehvLUshGkqiwVyQ'
+    uservoice_key: VuTQAMdehvLUshGkqiwVyQ
+    mass_edit_limit: 1000

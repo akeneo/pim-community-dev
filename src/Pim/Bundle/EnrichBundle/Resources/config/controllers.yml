@@ -124,6 +124,7 @@ services:
             - '@pim_enrich.mass_edit_action.operator'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@oro_datagrid.mass_action.dispatcher'
+            - %mass_edit_limit%
 
     pim_enrich.controller.group:
         scope: request
