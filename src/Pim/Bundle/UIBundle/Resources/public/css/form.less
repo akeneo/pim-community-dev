@@ -1176,7 +1176,40 @@ button.pimmultiselect {
   }
 }
 
-/* Selectize UI for metric attribute field */
+/* UI for metric attribute field */
+.controls.metric.input-append {
+  &:not(.input-prepend) {
+    margin-left: 10px;
+  }
+  select.select2-offscreen {
+    display: none;
+  }
+  div.select2-container {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    &>a {
+      height: 28px;
+      line-height: 28px;
+      .select2-arrow {
+        top: 5px;
+      }
+    }
+    .select2-focusser {
+      display: none;
+    }
+  }
+  .scopable-input {
+    input[type=text] {
+      height: 20px;
+    }
+  }
+}
+
+.product-edit #attributes .metric .select2-container {
+  width: 160px !important;
+}
+
 .selectize-control.input-small {
   display: inline-block;
   .selectize-input {
@@ -1189,21 +1222,6 @@ button.pimmultiselect {
     border-left: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-}
-.controls.metric.input-append {
-  margin-left: 10px;
-  margin-bottom: -12px;
-  .icons-container {
-    margin-left: 95px;
-  }
-}
-.selectize-dropdown {
-  [data-selectable].active {
-     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  }
-  .active {
-    background-color: @color-purple_light;
   }
 }
 
