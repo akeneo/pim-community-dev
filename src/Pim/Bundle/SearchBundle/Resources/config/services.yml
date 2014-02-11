@@ -1,4 +1,6 @@
 parameters:
+    oro_search.mapper.class: Pim\Bundle\SearchBundle\Engine\ObjectMapper
+
     pim_search.index_value_listener.class: Pim\Bundle\SearchBundle\EventListener\IndexValueListener
 
 services:
