@@ -58,6 +58,7 @@ class FamilyFactory
         $identifier = $this->productManager->getIdentifierAttribute();
 
         $family->addAttribute($identifier);
+        $family->setAttributeAsLabel($identifier);
 
         foreach ($this->getChannels() as $channel) {
             $family->addAttributeRequirement(
