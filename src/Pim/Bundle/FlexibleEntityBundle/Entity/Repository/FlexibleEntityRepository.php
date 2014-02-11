@@ -164,10 +164,11 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
     {
-        $codeToAttribute = $this->getCodeToAttributes(array());
-        $attributeCodes = array_keys($codeToAttribute);
-        if (in_array($attributeCode, $attributeCodes)) {
-            $attribute = $codeToAttribute[$attributeCode];
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $attribute = $attributeRepo->findOneBy(array('code' => $attributeCode));
+
+        if ($attribute) {
             $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
 
         } else {
@@ -189,10 +190,11 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
     {
-        $codeToAttribute = $this->getCodeToAttributes(array());
-        $attributeCodes = array_keys($codeToAttribute);
-        if (in_array($attributeCode, $attributeCodes)) {
-            $attribute = $codeToAttribute[$attributeCode];
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $attribute = $attributeRepo->findOneBy(array('code' => $attributeCode));
+
+        if ($attribute) {
             $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
         } else {
             $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
@@ -214,51 +216,14 @@ class FlexibleEntityRepository extends EntityRepository implements
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
         $qb->addSelect('AttributeTranslations');
+        $qb->leftJoin('Attribute.group', 'AttributeGroup');
+        $qb->addSelect('AttributeGroup');
+        $qb->leftJoin('AttributeGroup.translations', 'AttributeGroupTrans');
+        $qb->addSelect('AttributeGroupTrans');
 
         return $qb
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    /**
-     * Finds attributes
-     *
-     * @param array $attributeCodes attribute codes
-     *
-     * @throws UnknownAttributeException
-     *
-     * @return array The objects.
-     */
-    protected function getCodeToAttributes(array $attributeCodes)
-    {
-        // prepare entity attributes query
-        $attributeAlias = 'Attribute';
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $qb = $attributeRepo->createQueryBuilder($attributeAlias);
-        $qb->andWhere('Attribute.entityType = :type')->setParameter('type', $this->_entityName);
-
-        // filter by code
-        if (!empty($attributeCodes)) {
-            $qb->andWhere($qb->expr()->in('Attribute.code', $attributeCodes));
-        }
-
-        // prepare associative array
-        $attributes = $qb->getQuery()->getResult();
-        $codeToAttribute = array();
-        foreach ($attributes as $attribute) {
-            $codeToAttribute[$attribute->getCode()] = $attribute;
-        }
-
-        // raise exception
-        if (!empty($attributeCodes) and count($attributeCodes) != count($codeToAttribute)) {
-            $missings = array_diff($attributeCodes, array_keys($codeToAttribute));
-            throw new UnknownAttributeException(
-                'Attribute(s) with code '.implode(', ', $missings).' not exists for entity '.$this->_entityName
-            );
-        }
-
-        return $codeToAttribute;
     }
 
     /**
@@ -313,8 +278,6 @@ class FlexibleEntityRepository extends EntityRepository implements
     ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
-        $codeToAttribute = $this->getCodeToAttributes($attributes);
-        $attributes = array_keys($codeToAttribute);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
