@@ -695,6 +695,57 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @When /^I fill in the following information in the quick search popin:$/
+     */
+    public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
+    {
+        $fields = $table->getRowsHash();
+        if (!isset($fields['type'])) {
+            $fields['type'] = null;
+        }
+
+        $this->getCurrentPage()->fillQuickSearch($fields['search'], $fields['type']);
+    }
+
+    /**
+     * @When /^I open the quick search popin$/
+     */
+    public function iOpenTheQuickSearchPopin()
+    {
+        $this->getCurrentPage()->openQuickSearchPopin();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can search by the following types:$/
+     */
+    public function iCanSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can not search by the following types:$/
+     */
+    public function iCanNotSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list, false);
+    }
+
+    /**
      * @param string $permission
      * @param string $resources
      *
