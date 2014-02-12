@@ -159,8 +159,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      * @param string       $attributeCode  attribute code
      * @param string|array $attributeValue value(s) used to filter
      * @param string       $operator       operator to use
-     *
-     * @deprecated Deprecated since version beta-4, to be removed in rc-1
      */
     public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
     {
@@ -185,8 +183,6 @@ class FlexibleEntityRepository extends EntityRepository implements
      * @param QueryBuilder $qb            query builder to update
      * @param string       $attributeCode attribute code
      * @param string       $direction     direction to use
-     *
-     * @deprecated Deprecated since version beta-4, to be removed in rc-1
      */
     public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
     {
@@ -218,8 +214,8 @@ class FlexibleEntityRepository extends EntityRepository implements
         $qb->addSelect('AttributeTranslations');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AttributeGroupTrans');
-        $qb->addSelect('AttributeGroupTrans');
+        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
+        $qb->addSelect('AGroupTranslations');
 
         return $qb
             ->getQuery()
