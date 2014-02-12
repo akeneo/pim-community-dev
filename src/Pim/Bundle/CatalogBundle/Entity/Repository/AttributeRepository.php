@@ -30,36 +30,39 @@ class AttributeRepository extends FlexibleAttributeRepository implements
      * Get the query builder to find all attributes except the ones
      * defined in arguments
      *
-     * @param array   $attributes       The attributes to exclude from the results set
-     * @param boolean $withTranslations Join the translations
+     * @param array  $ids        The attribute ids to exclude from the results set
+     * @param string $localeCode The locale to use to translate labels
      *
-     * @return Doctrine\ORM\QueryBuilder
+     * @return array
      */
-    public function getFindAllExceptQB(array $attributes, $withTranslations = false)
+    public function getAvailableAttributeChoices(array $ids, $localeCode)
     {
-        $qb = $this->createQueryBuilder('a')
-            ->addSelect('agroup')->leftJoin('a.group', 'agroup')
-            ->orderBy('a.group');
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('a.id')
+            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
+            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
+            ->orderBy('a.group')
+            ->setParameter('localeCode', $localeCode);
 
-        if ($withTranslations) {
-            $qb->addSelect('translation')->leftJoin('a.translations', 'translation');
-            $qb->addSelect('gtranslation')->leftJoin('agroup.translations', 'gtranslation');
-        }
-
-        if (!empty($attributes)) {
-            $ids = array_map(
-                function ($attribute) {
-                    return $attribute->getId();
-                },
-                $attributes
-            );
-
+        if (!empty($ids)) {
             $qb->andWhere(
                 $qb->expr()->notIn('a.id', $ids)
             );
         }
 
-        return $qb;
+        $result = $qb->getQuery()->getArrayResult();
+
+        $attributes = [];
+        foreach ($result as $key => $attribute) {
+            $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
+            unset($result[$key]);
+        }
+
+        return $attributes;
     }
 
     /**

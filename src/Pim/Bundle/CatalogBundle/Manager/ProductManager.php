@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -181,14 +182,17 @@ class ProductManager extends FlexibleManager
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
+     * @param ProductInterface    $product
+     * @param AvailableAttributes $availableAttributes
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, AbstractAttribute $attribute)
+    public function addAttributesToProduct(ProductInterface $product, AvailableAttributes $availableAttributes)
     {
-        $this->builder->addAttributeToProduct($product, $attribute);
+        $attributes = $this->getAttributeRepository()->findBy(['id' => $availableAttributes->getAttributeIds()]);
+        foreach ($attributes as $attribute) {
+            $this->builder->addAttributeToProduct($product, $attribute);
+        }
     }
 
     /**

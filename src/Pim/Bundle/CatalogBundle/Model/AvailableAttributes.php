@@ -13,35 +13,26 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AvailableAttributes
 {
-    protected $attributes;
+    /** @var array */
+    protected $attributeIds = [];
 
     /**
-     * Constructor
+     * Set attribute ids
+     *
+     * @param array $attributeIds
      */
-    public function __construct()
+    public function setAttributeIds(array $attributeIds)
     {
-        $this->attributes = new ArrayCollection();
+        $this->attributeIds = $attributeIds;
     }
 
     /**
-     * Set attributes to add
+     * Get attribute ids
      *
-     * @param ArrayCollection $attributes The attributes to add
-     *
-     * @return null
+     * @return array
      */
-    public function setAttributes(ArrayCollection $attributes)
+    public function getAttributeIds()
     {
-        $this->attributes = $attributes;
-    }
-
-    /**
-     * Get the attributes to add
-     *
-     * @return ArrayCollection
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
+        return $this->attributeIds;
     }
 }
