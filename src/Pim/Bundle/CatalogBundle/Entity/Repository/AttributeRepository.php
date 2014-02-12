@@ -37,10 +37,13 @@ class AttributeRepository extends FlexibleAttributeRepository implements
      */
     public function getFindAllExceptQB(array $attributes, $withTranslations = false)
     {
-        $qb = $this->createQueryBuilder('a')->orderBy('a.group');
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('agroup')->leftJoin('a.group', 'agroup')
+            ->orderBy('a.group');
 
         if ($withTranslations) {
             $qb->addSelect('translation')->leftJoin('a.translations', 'translation');
+            $qb->addSelect('gtranslation')->leftJoin('agroup.translations', 'gtranslation');
         }
 
         if (!empty($attributes)) {
