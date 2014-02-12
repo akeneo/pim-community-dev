@@ -164,7 +164,7 @@ class FlexibleEntityRepository extends EntityRepository implements
     {
         $attributeName = $this->flexibleConfig['attribute_class'];
         $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneBy(array('code' => $attributeCode));
+        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
 
         if ($attribute) {
             $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
@@ -188,7 +188,7 @@ class FlexibleEntityRepository extends EntityRepository implements
     {
         $attributeName = $this->flexibleConfig['attribute_class'];
         $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneBy(array('code' => $attributeCode));
+        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
 
         if ($attribute) {
             $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
