@@ -240,7 +240,11 @@ class FamilyController extends AbstractDoctrineController
 
         $attributesForm->submit($this->getRequest());
 
-        foreach ($availableAttributes->getAttributes() as $attribute) {
+        $attributes = $this
+            ->getRepository('PimCatalogBundle:Attribute')
+            ->findBy(['id' => $availableAttributes->getAttributeIds()]);
+
+        foreach ($attributes as $attribute) {
             $family->addAttribute($attribute);
         }
 

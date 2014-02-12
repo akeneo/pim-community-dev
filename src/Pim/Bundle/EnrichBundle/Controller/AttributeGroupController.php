@@ -244,7 +244,11 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $attributesForm->bind($request);
 
-        foreach ($availableAttributes->getAttributes() as $attribute) {
+        $attributes = $this
+            ->getRepository('PimCatalogBundle:Attribute')
+            ->findBy(['id' => $availableAttributes->getAttributeIds()]);
+
+        foreach ($attributes as $attribute) {
             $attribute->setSortOrder(++$maxOrder);
             $group->addAttribute($attribute);
         }

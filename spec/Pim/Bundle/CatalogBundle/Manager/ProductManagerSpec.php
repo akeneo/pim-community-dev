@@ -14,6 +14,8 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 
 class ProductManagerSpec extends ObjectBehavior
 {
@@ -82,7 +84,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getScope()->shouldReturn('ecommerce');
     }
 
-    function it_creates_a_product(EntityManager $entityManager, AttributeRepository $attRepository, Attribute $sku)
+    function it_creates_a_product($entityManager, AttributeRepository $attRepository, Attribute $sku)
     {
         $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
         $attRepository->getCodeToAttributes(self::PRODUCT_CLASS)->willReturn(['sku' => $sku]);
@@ -99,5 +101,26 @@ class ProductManagerSpec extends ObjectBehavior
         $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
         $attRepository->findOneBy(Argument::any())->willReturn($sku);
         $this->getIdentifierAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
+    }
+
+    function it_adds_attributes_to_product(
+        $entityManager,
+        $builder,
+        AttributeRepository $attRepository,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        Attribute $sku,
+        Attribute $name,
+        Attribute $size
+    ) {
+        $attributes->getAttributeIds()->willReturn([1, 2, 3]);
+        $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
+        $attRepository->findBy(['id' => [1, 2, 3]])->willReturn([$sku, $name, $size]);
+
+        $builder->addAttributeToProduct($product, $sku)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
+
+        $this->addAttributesToProduct($product, $attributes);
     }
 }
