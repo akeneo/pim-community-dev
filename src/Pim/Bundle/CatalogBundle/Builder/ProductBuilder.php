@@ -167,7 +167,12 @@ class ProductBuilder
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
-        $attributes = $product->getAttributes();
+        $attributes = array();
+        $productAttributes = $product->getAttributes();
+        foreach ($productAttributes as $attribute) {
+            $attributes[$attribute->getCode()] = $attribute;
+        }
+
         if ($family = $product->getFamily()) {
             foreach ($family->getAttributes() as $attribute) {
                 $attributes[$attribute->getCode()] = $attribute;
