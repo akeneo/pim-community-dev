@@ -5,7 +5,9 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\OptionsResolver\Options;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Type for available attributes
@@ -16,19 +18,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class AvailableAttributesType extends AbstractType
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
+
+    /** @var AttributeRepository */
+    protected $repository;
+
+    /** @var UserContext */
+    protected $userContext;
 
     /**
      * Constructor
      *
      * @param string $attributeClass
      */
-    public function __construct($attributeClass)
+    public function __construct($attributeClass, AttributeRepository $repository, UserContext $userContext)
     {
         $this->attributeClass = $attributeClass;
+        $this->repository     = $repository;
+        $this->userContext    = $userContext;
     }
 
     /**
@@ -37,17 +45,16 @@ class AvailableAttributesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'attributes',
-            'entity',
-            array(
-                'class' => $this->attributeClass,
-                'query_builder' => function (EntityRepository $repository) use ($options) {
-                    return $repository->getFindAllExceptQB($options['attributes'], true);
-                },
+            'attributeIds',
+            'choice',
+            [
+                'choices' => $this->repository->getAvailableAttributeChoices(
+                    $options['attributes'],
+                    $this->userContext->getCurrentLocaleCode()
+                ),
                 'multiple' => true,
                 'expanded' => false,
-                'group_by' => 'virtualGroup.label',
-            )
+            ]
         );
     }
 
@@ -61,6 +68,27 @@ class AvailableAttributesType extends AbstractType
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
                 'attributes' => array(),
             )
+        );
+
+        $resolver->setNormalizers(
+            [
+                'attributes' => function (Options $options, $value) {
+                    foreach ($value as $key => $attribute) {
+                        if (!$attribute instanceof $this->attributeClass) {
+                            throw new \InvalidArgumentException(
+                                sprintf(
+                                    'Option "attributes" must only contains instances of "%s", got "%s"',
+                                    $this->attributeClass,
+                                    get_class($attribute)
+                                )
+                            );
+                        }
+                        $value[$key] = $attribute->getId();
+                    }
+
+                    return $value;
+                }
+            ]
         );
     }
 

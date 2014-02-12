@@ -32,9 +32,7 @@ class Base extends Page
         $field = $this->findField($locator);
 
         if (null === $field) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field', 'id|name|label|value', $locator
-            );
+            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
         }
 
         if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {

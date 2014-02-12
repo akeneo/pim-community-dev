@@ -37,7 +37,7 @@ var jsfv = new function () {
                     return;
                 }
 
-                if ($(target).find('.validation-error').length) {
+                if ($(target).find('.validation-tooltip').length) {
                     if (!$(this).find('.validation-tooltip').length) {
                         $(this).append($error.tooltip());
                     }
@@ -61,7 +61,7 @@ var jsfv = new function () {
                     return;
                 }
 
-                if ($(target).find('.validation-error').length) {
+                if ($(target).find('.validation-tooltip').length) {
                     $(this).addClass('error');
                 } else {
                     $(this).removeClass('error');
@@ -71,12 +71,12 @@ var jsfv = new function () {
     }
 
     function showFirstTabWithErrors() {
-        $errors = $('.validation-error');
+        $errors = $('.validation-tooltip');
         if (!$errors.length || $errors.filter(':visible').length) {
             return;
         }
 
-        $error = $('.validation-tooltip').first();
+        $error = $errors.first();
         $('a[href="#'+$error.closest('.tab-pane').attr('id')+'"]').click();
     }
 
