@@ -56,6 +56,35 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
+     * @Then /^the "([^"]*)" tab should (?:be red|have errors)$/
+     */
+    public function theTabShouldHaveErrors($tab)
+    {
+        $links = $this->getCurrentPage()->getTabs();
+
+        foreach ($links as $link) {
+            if ($link->getText() != $tab) {
+                $link->click();
+                break;
+            }
+        }
+        $this->getMainContext()->wait();
+
+        foreach ($links as $link) {
+            if ($link->getText() == $tab) {
+                assertEquals(
+                    $link->getAttribute('class'),
+                    'error',
+                    sprintf('Expecting tab %s to have class "error", not found.', $tab)
+                );
+                break;
+            }
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
