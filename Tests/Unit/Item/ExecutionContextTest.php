@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Oro\Bundle\BatchBundle\Item\ExecutionContext;
+use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
 
 /**
  * Tests related to the ExecutionContext class
@@ -75,6 +75,6 @@ class ExecutionContextTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ExecutionContext', $entity);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\ExecutionContext', $entity);
     }
 }

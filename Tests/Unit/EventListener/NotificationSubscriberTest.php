@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\EventListener;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\BatchBundle\EventListener\NotificationSubscriber;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Test related class
@@ -62,13 +62,13 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function getNotifierMock()
     {
-        return $this->getMock('Oro\Bundle\BatchBundle\Notification\Notifier');
+        return $this->getMock('Akeneo\Bundle\BatchBundle\Notification\Notifier');
     }
 
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -82,7 +82,7 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

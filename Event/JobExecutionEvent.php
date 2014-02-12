@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Event;
+namespace Akeneo\Bundle\BatchBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Event triggered during job execution

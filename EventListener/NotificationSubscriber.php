@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\EventListener;
+namespace Akeneo\Bundle\BatchBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Notification\Notifier;
-use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Notification\Notifier;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 
 /**
  * Job execution notifier

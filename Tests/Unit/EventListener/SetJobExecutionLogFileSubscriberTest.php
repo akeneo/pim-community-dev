@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\EventListener;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber;
 
 /**
  * Test related class
@@ -50,7 +50,7 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getLoggerMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -58,7 +58,7 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -72,7 +72,7 @@ class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

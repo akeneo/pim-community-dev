@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item;
+namespace Akeneo\Bundle\BatchBundle\Item;
 
 /**
  * Interface for item transformation.  Given an item as input, this interface provides

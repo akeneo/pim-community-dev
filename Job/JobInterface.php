@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Job;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Batch domain object representing a job. Job is an explicit abstraction

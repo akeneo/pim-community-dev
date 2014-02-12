@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,6 +23,6 @@ class PushBatchLogHandlerPass implements CompilerPassInterface
 
         $container
             ->getDefinition('monolog.logger.batch')
-            ->addMethodCall('pushHandler', array(new Reference('oro_batch.logger.batch_log_handler')));
+            ->addMethodCall('pushHandler', array(new Reference('akeneo_batch.logger.batch_log_handler')));
     }
 }

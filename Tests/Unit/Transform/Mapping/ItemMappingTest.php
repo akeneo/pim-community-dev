@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
 
-use Oro\Bundle\BatchBundle\Transform\Mapping\ItemMapping;
+use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping;
 
 /**
  * Test related class
@@ -19,7 +19,7 @@ class ItemMappingTest extends \PHPUnit_Framework_TestCase
     /**
      * Create an Item Mapping
      *
-     * @return \Oro\Bundle\BatchBundle\Model\Mapping\ItemMapping
+     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\ItemMapping
      */
     protected function createItemMapping()
     {

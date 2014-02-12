@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Job;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Tests related to the ExitStatus class

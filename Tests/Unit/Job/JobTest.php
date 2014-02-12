@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Job;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Oro\Bundle\BatchBundle\Step\ItemStep;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Job\Job;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
-use Oro\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Job\Job;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
+use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
 
 /**
  * Tests related to the Job class
@@ -28,7 +28,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->jobRepository   = $this->getMock('Oro\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $this->job = new Job(self::JOB_TEST_NAME);
@@ -89,7 +89,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $jobExecution = new JobExecution($jobInstance);
 
         $mockStep = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step')
         );
 
@@ -149,7 +149,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
             'Exit status code stopped'
         );
         $this->assertStringStartsWith(
-            'Oro\Bundle\BatchBundle\Job\JobInterruptedException',
+            'Akeneo\Bundle\BatchBundle\Job\JobInterruptedException',
             $jobExecution->getExitStatus()->getExitDescription(),
             'Exit description'
         );
@@ -235,11 +235,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testAddStep()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
@@ -252,11 +252,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testSetSteps()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
@@ -268,11 +268,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testGetStepNames()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
@@ -295,7 +295,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private function getReaderMock(array $configuration, array $fields = array())
     {
         $reader = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -313,7 +313,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private function getProcessorMock(array $configuration, array $fields = array())
     {
         $processor = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -331,7 +331,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private function getWriterMock(array $configuration, array $fields = array())
     {
         $writer = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
             ->getMock();
 
         $writer->expects($this->any())

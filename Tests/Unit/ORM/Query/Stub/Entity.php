@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\ORM\Query\Stub;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\ORM\Query\Stub;
 
 class Entity
 {

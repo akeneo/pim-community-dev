@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\Support\EchoWriter;
+use Akeneo\Bundle\BatchBundle\Item\Support\EchoWriter;
 
 /**
  * Tests related to the EchoWriter class

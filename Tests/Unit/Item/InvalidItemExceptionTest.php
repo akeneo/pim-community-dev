@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Test related class

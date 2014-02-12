@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Entity;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ExecutionContext;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Test related class
@@ -272,6 +272,6 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Entity\JobExecution', $entity);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Entity\JobExecution', $entity);
     }
 }

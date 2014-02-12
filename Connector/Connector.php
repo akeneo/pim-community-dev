@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Connector;
+namespace Akeneo\Bundle\BatchBundle\Connector;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

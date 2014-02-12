@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item;
+namespace Akeneo\Bundle\BatchBundle\Item;
 
 /**
  * Exception throw during step execution when an item is invalid

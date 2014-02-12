@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Connector;
+namespace Akeneo\Bundle\BatchBundle\Connector;
 
-use Oro\Bundle\BatchBundle\Job\JobInterface;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\BatchBundle\Job\JobFactory;
-use Oro\Bundle\BatchBundle\Step\StepFactory;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Job\Job;
+use Akeneo\Bundle\BatchBundle\Job\JobInterface;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Job\JobFactory;
+use Akeneo\Bundle\BatchBundle\Step\StepFactory;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Job\Job;
 
 /**
  * Aims to register all connectors

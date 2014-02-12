@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
-use Oro\Bundle\BatchBundle\DependencyInjection\Configuration;
+use Akeneo\Bundle\BatchBundle\DependencyInjection\Configuration;
 
 /**
  * Test related class
@@ -37,7 +37,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = $processor->process(
             $configuration->getConfigTreeBuilder()->buildTree(),
             array(
-                'oro_batch' => array(
+                'akeneo_batch' => array(
                     'sender_email' => 'foo@example.com'
                 )
             )

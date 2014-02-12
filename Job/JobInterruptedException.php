@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Job;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
 /**
  * Exception to indicate the the job has been interrupted. The exception state

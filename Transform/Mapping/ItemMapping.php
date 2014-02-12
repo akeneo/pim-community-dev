@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Transform\Mapping;
+namespace Akeneo\Bundle\BatchBundle\Transform\Mapping;
 
 /**
  * Item Mapping
@@ -21,7 +21,7 @@ class ItemMapping
      * @param string  $destination  destination field name
      * @param boolean $isIdentifier define is field is an identifier
      *
-     * @return \Oro\Bundle\BatchBundle\Model\Mapping\ItemMapping
+     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\ItemMapping
      */
     public function add($source, $destination, $isIdentifier = false)
     {
@@ -39,7 +39,7 @@ class ItemMapping
      * Remove a field from list
      * @param FieldMapping $field
      *
-     * @return \Oro\Bundle\BatchBundle\Model\Mapping\ItemMapping
+     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\ItemMapping
      */
     public function remove(FieldMapping $field)
     {
@@ -53,7 +53,7 @@ class ItemMapping
     /**
      * Get fields list
      *
-     * @return multitype:\Oro\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return multitype:\Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
      */
     public function getFields()
     {

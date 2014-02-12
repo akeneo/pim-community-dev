@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Notification;
+namespace Akeneo\Bundle\BatchBundle\Notification;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Notify Job execution result by mail
@@ -91,8 +91,8 @@ class MailNotifier implements Notifier
             'log'          => $this->logger->getFilename(),
         );
 
-        $txtBody  = $this->twig->render('OroBatchBundle:Mails:notification.txt.twig', $parameters);
-        $htmlBody = $this->twig->render('OroBatchBundle:Mails:notification.html.twig', $parameters);
+        $txtBody  = $this->twig->render('AkeneoBatchBundle:Mails:notification.txt.twig', $parameters);
+        $htmlBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.html.twig', $parameters);
 
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');

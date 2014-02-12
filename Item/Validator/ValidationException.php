@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item\Validator;
+namespace Akeneo\Bundle\BatchBundle\Item\Validator;
 
 /**
  * This exception should be thrown when there are validation errors.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Command;
+namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Batch command
@@ -28,7 +28,7 @@ class BatchCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('oro:batch:job')
+            ->setName('akeneo:batch:job')
             ->setDescription('Launch a registered job instance')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
@@ -37,7 +37,7 @@ class BatchCommand extends ContainerAwareCommand
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'Override job configuration (formatted as json. ie: ' .
-                'php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' ' .
+                'php app/console akeneo:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' ' .
                 'acme_product_import)'
             )
             ->addOption(
@@ -61,7 +61,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
-        $jobInstance = $this->getJobManager()->getRepository('OroBatchBundle:JobInstance')->findOneByCode($code);
+        $jobInstance = $this->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode($code);
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
@@ -105,7 +105,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $executionId = $input->getArgument('execution');
         if ($executionId) {
-            $jobExecution = $this->getJobManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
+            $jobExecution = $this->getJobManager()->getRepository('AkeneoBatchBundle:JobExecution')->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
             }
@@ -121,7 +121,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $this
             ->getContainer()
-            ->get('oro_batch.logger.batch_log_handler')
+            ->get('akeneo_batch.logger.batch_log_handler')
             ->setSubDirectory($jobExecution->getId());
 
         $job->execute($jobExecution);
@@ -154,7 +154,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getJobManager()
     {
-        return $this->getContainer()->get('oro_batch.job_repository')->getJobManager();
+        return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
     }
 
     /**
@@ -178,15 +178,15 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getMailNotifier()
     {
-        return $this->getContainer()->get('oro_batch.mail_notifier');
+        return $this->getContainer()->get('akeneo_batch.mail_notifier');
     }
 
     /**
-     * @return \Oro\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * @return \Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
      */
     protected function getConnectorRegistry()
     {
-        return $this->getContainer()->get('oro_batch.connectors');
+        return $this->getContainer()->get('akeneo_batch.connectors');
     }
 
     private function getErrorMessages(ConstraintViolationList $errors)

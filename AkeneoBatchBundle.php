@@ -1,16 +1,16 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle;
+namespace Akeneo\Bundle\BatchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Oro\Bundle\BatchBundle\DependencyInjection\Compiler;
+use Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 /**
  * Batch Bundle
  *
  */
-class OroBatchBundle extends Bundle
+class AkeneoBatchBundle extends Bundle
 {
     /**
      * {@inheritdoc}

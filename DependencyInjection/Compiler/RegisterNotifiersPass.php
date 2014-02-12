@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,12 +17,12 @@ class RegisterNotifiersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('oro_batch.notification_subscriber')) {
+        if (!$container->has('akeneo_batch.notification_subscriber')) {
             return;
         }
 
-        $def = $container->getDefinition('oro_batch.notification_subscriber');
-        foreach (array_keys($container->findTaggedServiceIds('oro_batch.notifier')) as $id) {
+        $def = $container->getDefinition('akeneo_batch.notification_subscriber');
+        foreach (array_keys($container->findTaggedServiceIds('akeneo_batch.notifier')) as $id) {
             $def->addMethodCall('registerNotifier', array(new Reference($id)));
         }
     }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 
 /**
  * Test helpers class needed as there is no way to create a mock from

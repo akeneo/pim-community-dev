@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 
 /**
  * Simple ItemReaderInterface implementations that echoes

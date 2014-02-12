@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Entity;
+namespace Akeneo\Bundle\BatchBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\BatchBundle\Item\ExecutionContext;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -17,7 +17,7 @@ use Oro\Bundle\BatchBundle\Job\RuntimeErrorException;
  * Inspired by Spring Batch  org.springframework.batch.core.StepExecution
  *
  *
- * @ORM\Table(name="oro_batch_step_execution")
+ * @ORM\Table(name="akeneo_batch_step_execution")
  * @ORM\Entity()
  */
 class StepExecution
@@ -556,7 +556,7 @@ class StepExecution
      *
      * @param array $summary
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
      */
     public function setSummary($summary)
     {

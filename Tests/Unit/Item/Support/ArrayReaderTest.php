@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\Support\ArrayReader;
+use Akeneo\Bundle\BatchBundle\Item\Support\ArrayReader;
 
 /**
  * Tests related to the ArrayReader class
@@ -48,13 +48,13 @@ class ArrayReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\Support\ArrayReader', $entity);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\Support\ArrayReader', $entity);
     }
 
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

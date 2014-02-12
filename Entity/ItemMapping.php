@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Entity;
+namespace Akeneo\Bundle\BatchBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
+use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
 
 /**
  * Entity ItemMapping
  *
  *
- * @ORM\Table(name="oro_batch_mapping_item")
+ * @ORM\Table(name="akeneo_batch_mapping_item")
  * @ORM\Entity
  */
 class ItemMapping extends ItemMappingModel
@@ -51,11 +51,11 @@ class ItemMapping extends ItemMappingModel
     /**
      * Add fields
      *
-     * @param \Oro\Bundle\BatchBundle\Entity\FieldMapping $fields
+     * @param \Akeneo\Bundle\BatchBundle\Entity\FieldMapping $fields
      *
      * @return ItemMapping
      */
-    public function addField(\Oro\Bundle\BatchBundle\Entity\FieldMapping $fields)
+    public function addField(\Akeneo\Bundle\BatchBundle\Entity\FieldMapping $fields)
     {
         $this->fields[] = $fields;
 
@@ -65,9 +65,9 @@ class ItemMapping extends ItemMappingModel
     /**
      * Remove fields
      *
-     * @param \Oro\Bundle\BatchBundle\Entity\FieldMapping $fields
+     * @param \Akeneo\Bundle\BatchBundle\Entity\FieldMapping $fields
      */
-    public function removeField(\Oro\Bundle\BatchBundle\Entity\FieldMapping $fields)
+    public function removeField(\Akeneo\Bundle\BatchBundle\Entity\FieldMapping $fields)
     {
         $this->fields->removeElement($fields);
     }

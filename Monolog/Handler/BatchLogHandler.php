@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Monolog\Handler;
+namespace Akeneo\Bundle\BatchBundle\Monolog\Handler;
 
 use Monolog\Handler\StreamHandler;
 

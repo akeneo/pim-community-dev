@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item;
+namespace Akeneo\Bundle\BatchBundle\Item;
 
 /**
  * if there is an uncategorised problem

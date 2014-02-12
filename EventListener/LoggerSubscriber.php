@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\EventListener;
+namespace Akeneo\Bundle\BatchBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Psr\Log\LoggerInterface;
-use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
-use Oro\Bundle\BatchBundle\Event\InvalidItemEvent;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

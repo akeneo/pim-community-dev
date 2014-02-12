@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Oro\Bundle\BatchBundle\DependencyInjection\Compiler\PushBatchLogHandlerPass;
+use Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler\PushBatchLogHandlerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,7 +30,7 @@ class PushBatchLogHandlerPassTest extends \PHPUnit_Framework_TestCase
         $calls = $logger->getMethodCalls();
         $this->assertEquals('pushHandler', $calls[0][0]);
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $calls[0][1][0]);
-        $this->assertAttributeEquals('oro_batch.logger.batch_log_handler', 'id', $calls[0][1][0]);
+        $this->assertAttributeEquals('akeneo_batch.logger.batch_log_handler', 'id', $calls[0][1][0]);
     }
 
     public function testProcessWithoutBatchChannel()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,7 +40,7 @@ class RegisterJobsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->getDefinition('oro_batch.connectors');
+        $registry = $container->getDefinition('akeneo_batch.connectors');
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflClass = new \ReflectionClass($bundle);
@@ -151,7 +151,7 @@ class RegisterJobsPass implements CompilerPassInterface
                                     ->children()
                                         ->scalarNode('title')->end()
                                         ->scalarNode('class')
-                                            ->defaultValue('Oro\Bundle\BatchBundle\Step\ItemStep')
+                                            ->defaultValue('Akeneo\Bundle\BatchBundle\Step\ItemStep')
                                         ->end()
                                         ->arrayNode('services')
                                             ->prototype('scalar')->end()

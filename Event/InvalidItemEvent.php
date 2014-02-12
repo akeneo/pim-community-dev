@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Event;
+namespace Akeneo\Bundle\BatchBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

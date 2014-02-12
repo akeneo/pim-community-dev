@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Job;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
 /**
  * Exception that stops the job execution

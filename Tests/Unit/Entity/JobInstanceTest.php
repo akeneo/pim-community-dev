@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Entity;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Tests related to the JobInstance
@@ -130,7 +130,7 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
 
         $expectedConfiguration = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
-        $mockJob = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Job\\Job')
+        $mockJob = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Job\\Job')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -150,6 +150,6 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Entity\JobInstance', $entity);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Entity\JobInstance', $entity);
     }
 }

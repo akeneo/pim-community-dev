@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Entity;
+namespace Akeneo\Bundle\BatchBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\Exclude;
-use Oro\Bundle\BatchBundle\Job\Job;
+use Akeneo\Bundle\BatchBundle\Job\Job;
 
 /**
  * Entity job
  *
  *
- * @ORM\Table(name="oro_batch_job_instance")
+ * @ORM\Table(name="akeneo_batch_job_instance")
  * @ORM\Entity()
  * @UniqueEntity(fields="code", message="This code is already taken")
  */
@@ -151,7 +151,7 @@ class JobInstance
      *
      * @param string $code
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setCode($code)
     {
@@ -175,7 +175,7 @@ class JobInstance
      *
      * @param string $label
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setLabel($label)
     {
@@ -229,7 +229,7 @@ class JobInstance
      *
      * @param integer $status
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setStatus($status)
     {
@@ -243,7 +243,7 @@ class JobInstance
      *
      * @param string $type
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setType($type)
     {
@@ -267,7 +267,7 @@ class JobInstance
      *
      * @param array $configuration
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setRawConfiguration($configuration)
     {
@@ -291,7 +291,7 @@ class JobInstance
      *
      * @param Job $job
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setJob($job)
     {
@@ -367,7 +367,7 @@ class JobInstance
      *
      * @throws \LogicException
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setAlias($alias)
     {
@@ -388,7 +388,7 @@ class JobInstance
      *
      * @throws \LogicException
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\JobInstance
+     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
      */
     public function setConnector($connector)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item\Validator;
+namespace Akeneo\Bundle\BatchBundle\Item\Validator;
 
 /**
  * Interface to validate objects

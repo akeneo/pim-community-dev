@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\ORM\Query;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\ORM\Query;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Configuration;
@@ -11,7 +11,7 @@ use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 
 use Doctrine\ORM\UnitOfWork;
-use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
+use Akeneo\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 
 class QueryCountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -83,7 +83,7 @@ class QueryCountCalculatorTest extends \PHPUnit_Framework_TestCase
     {
         $configuration = new Configuration();
 
-        $configuration->addEntityNamespace('Stub', 'Oro\Bundle\BatchBundle\Tests\Unit\ORM\Query\Stub');
+        $configuration->addEntityNamespace('Stub', 'Akeneo\Bundle\BatchBundle\Tests\Unit\ORM\Query\Stub');
 
         $classMetadata = new ClassMetadata('Entity');
         $classMetadata->mapField(array('fieldName' => 'a', 'columnName' => 'a'));

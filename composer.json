@@ -1,22 +1,19 @@
 {
-    "name": "oro/batch-bundle",
+    "name": "akeneo/batch-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Batch Bundle",
-    "keywords": ["BAP", "Batch", "Job", "Reader", "Writer", "Processor"],
+    "description": "Akeneo Batch Bundle",
+    "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1",
-        "oro/form-bundle": "dev-master"
+        "doctrine/orm": ">=2.1.3",
+        "monolog/monolog": ">=1.1.0",
+        "swiftmailer/swiftmailer": ">=4.1.3"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\BatchBundle": "" }
+        "psr-0": { "Akeneo\\Bundle\\BatchBundle": "" }
     },
-    "target-dir": "Oro/Bundle/BatchBundle",
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    }
+    "target-dir": "Akeneo/Bundle/BatchBundle",
+    "minimum-stability": "stable"
 }

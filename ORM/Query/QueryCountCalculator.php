@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\ORM\Query;
+namespace Akeneo\Bundle\BatchBundle\ORM\Query;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parser;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Entity;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\BatchBundle\Entity\ItemMapping;
-use Oro\Bundle\BatchBundle\Entity\FieldMapping;
+use Akeneo\Bundle\BatchBundle\Entity\ItemMapping;
+use Akeneo\Bundle\BatchBundle\Entity\FieldMapping;
 
 /**
  * Test related class

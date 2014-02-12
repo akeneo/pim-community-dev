@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\ORM\Query;
+namespace Akeneo\Bundle\BatchBundle\ORM\Query;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;

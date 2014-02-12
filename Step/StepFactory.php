@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Step;
+namespace Akeneo\Bundle\BatchBundle\Step;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Util\Inflector;
-use Oro\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 
 /**
  * Step instance factory

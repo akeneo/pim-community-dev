@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\EventListener;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\BatchBundle\EventListener\LoggerSubscriber;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Test related class
@@ -218,12 +218,12 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warning')
             ->with(
-                'The Oro\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'The Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
                 'to handle the following item: [foo => bar] (REASON: This is a valid reason.)'
             );
 
         $event = $this->getInvalidItemEventMock(
-            'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface',
             'batch.invalid_item_reason',
             array('item' => 'foobar'),
             array('foo' => 'bar')
@@ -239,7 +239,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -253,7 +253,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionEventMock($stepExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\StepExecutionEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -267,7 +267,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -275,7 +275,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -290,7 +290,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getInvalidItemEventMock($class, $reason, array $reasonParameters, $item)
     {
-        $invalidItem = $this->getMockBuilder('Oro\Bundle\BatchBundle\Event\InvalidItemEvent')
+        $invalidItem = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent')
             ->disableOriginalConstructor()
             ->getMock();
 

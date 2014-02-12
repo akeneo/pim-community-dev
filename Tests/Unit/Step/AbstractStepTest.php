@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Job;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Oro\Bundle\BatchBundle\Job\Job;
-use Oro\Bundle\BatchBundle\Job\JobInterruptedException;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Job\Job;
+use Akeneo\Bundle\BatchBundle\Job\JobInterruptedException;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Tests related to the AbstractStep class
@@ -25,10 +25,10 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Oro\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->step = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array(self::STEP_NAME)
         );
 
@@ -39,7 +39,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
     public function testGetSetJobRepository()
     {
         $this->step = $this->getMockForAbstractClass(
-            'Oro\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array(self::STEP_NAME)
         );
 
@@ -57,7 +57,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -78,7 +78,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithTerminate()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -104,7 +104,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo(
                     new ExitStatus(
                         ExitStatus::STOPPED,
-                        'Oro\\Bundle\\BatchBundle\\Job\\JobInterruptedException'
+                        'Akeneo\\Bundle\\BatchBundle\\Job\\JobInterruptedException'
                     )
                 )
             );
@@ -120,7 +120,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
             ->method('doExecute')
             ->will($this->throwException($exception));
 
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -146,6 +146,6 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\AbstractStep', $entity);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Step\AbstractStep', $entity);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
+use Akeneo\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
 
 /**
  * Tests related to the UcfirstProcessor class

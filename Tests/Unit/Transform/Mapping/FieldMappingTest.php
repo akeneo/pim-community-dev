@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Model\Mapping;
 
-use Oro\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
+use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
 
 /**
  * Test related class
@@ -19,7 +19,7 @@ class FieldMappingTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a Field Mapping
      *
-     * @return \Oro\Bundle\BatchBundle\Model\Mapping\FieldMappping
+     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\FieldMappping
      */
     protected function createFieldMapping()
     {

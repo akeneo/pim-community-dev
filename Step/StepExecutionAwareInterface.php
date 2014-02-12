@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Step;
+namespace Akeneo\Bundle\BatchBundle\Step;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Interface is used to receive StepExecution instance inside reader, processor or writer

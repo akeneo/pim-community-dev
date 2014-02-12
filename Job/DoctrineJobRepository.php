@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Job;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Class peristing JobExecution and StepExecution states.

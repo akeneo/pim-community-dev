@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Entity;
+namespace Akeneo\Bundle\BatchBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\BatchBundle\Transform\Mapping\FieldMapping as FieldMappingModel;
+use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping as FieldMappingModel;
 
 /**
  * Entity field mapping
  *
  *
- * @ORM\Table(name="oro_batch_mapping_field")
+ * @ORM\Table(name="akeneo_batch_mapping_field")
  * @ORM\Entity
  */
 class FieldMapping extends FieldMappingModel
@@ -144,11 +144,11 @@ class FieldMapping extends FieldMappingModel
     /**
      * Set item
      *
-     * @param \Oro\Bundle\BatchBundle\Entity\ItemMapping $item
+     * @param \Akeneo\Bundle\BatchBundle\Entity\ItemMapping $item
      *
      * @return FieldMapping
      */
-    public function setItem(\Oro\Bundle\BatchBundle\Entity\ItemMapping $item = null)
+    public function setItem(\Akeneo\Bundle\BatchBundle\Entity\ItemMapping $item = null)
     {
         $this->item = $item;
 
@@ -158,7 +158,7 @@ class FieldMapping extends FieldMappingModel
     /**
      * Get item
      *
-     * @return \Oro\Bundle\BatchBundle\Entity\ItemMapping
+     * @return \Akeneo\Bundle\BatchBundle\Entity\ItemMapping
      */
     public function getItem()
     {

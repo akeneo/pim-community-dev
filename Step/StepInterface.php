@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Step;
+namespace Akeneo\Bundle\BatchBundle\Step;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Batch domain interface representing the configuration of a step. As with the

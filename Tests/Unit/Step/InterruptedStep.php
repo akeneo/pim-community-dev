@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Step;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Oro\Bundle\BatchBundle\Step\AbstractStep;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Step used for test and always declared a stopped execution

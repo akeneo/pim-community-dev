@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Simple reader that provides data from an array

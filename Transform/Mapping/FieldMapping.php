@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Transform\Mapping;
+namespace Akeneo\Bundle\BatchBundle\Transform\Mapping;
 
 /**
  * Field mapping
@@ -32,7 +32,7 @@ class FieldMapping
      *
      * @param string $source
      *
-     * @return \Oro\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
      */
     public function setSource($source)
     {
@@ -55,7 +55,7 @@ class FieldMapping
      * Set destination
      * @param param $destination
      *
-     * @return \Oro\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
      */
     public function setDestination($destination)
     {
@@ -79,7 +79,7 @@ class FieldMapping
      *
      * @param boolean $identifier
      *
-     * @return \Oro\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
      */
     public function setIdentifier($identifier)
     {

@@ -1,17 +1,17 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Step;
+namespace Akeneo\Bundle\BatchBundle\Step;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\Event;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Job\JobRepositoryInterface;
-use Oro\Bundle\BatchBundle\Job\JobInterruptedException;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
-use Oro\Bundle\BatchBundle\Event\InvalidItemEvent;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Bundle\BatchBundle\Job\JobInterruptedException;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling

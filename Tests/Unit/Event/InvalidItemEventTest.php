@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Event;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Event;
 
-use Oro\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
 
 /**
  * Test related class

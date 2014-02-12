@@ -1,37 +1,37 @@
 parameters:
-    oro_batch.connectors.class:                            Oro\Bundle\BatchBundle\Connector\ConnectorRegistry
-    oro_batch.job_repository.class:                        Oro\Bundle\BatchBundle\Job\DoctrineJobRepository
-    oro_batch.job_factory.class:                           Oro\Bundle\BatchBundle\Job\JobFactory
-    oro_batch.step_factory.class:                          Oro\Bundle\BatchBundle\Step\StepFactory
-    oro_batch.logger_subscriber.class:                     Oro\Bundle\BatchBundle\EventListener\LoggerSubscriber
-    oro_batch.notification_subscriber.class:               Oro\Bundle\BatchBundle\EventListener\NotificationSubscriber
-    oro_batch.logger.batch_log_handler.class:              Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
-    oro_batch.mail_notifier.class:                         Oro\Bundle\BatchBundle\Notification\MailNotifier
-    oro_batch.set_job_execution_log_file_subscriber.class: Oro\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
-    oro_batch.connectors_config:                           ~
-    oro_batch.jobs_config:                                 ~
+    akeneo_batch.connectors.class:                            Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
+    akeneo_batch.job_repository.class:                        Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job_factory.class:                           Akeneo\Bundle\BatchBundle\Job\JobFactory
+    akeneo_batch.step_factory.class:                          Akeneo\Bundle\BatchBundle\Step\StepFactory
+    akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
+    akeneo_batch.logger.batch_log_handler.class:              Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    akeneo_batch.mail_notifier.class:                         Akeneo\Bundle\BatchBundle\Notification\MailNotifier
+    akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
+    akeneo_batch.connectors_config:                           ~
+    akeneo_batch.jobs_config:                                 ~
 
 services:
     # connectors registry
-    oro_batch.connectors:
-        class: %oro_batch.connectors.class%
+    akeneo_batch.connectors:
+        class: %akeneo_batch.connectors.class%
         arguments:
-            - @oro_batch.job_factory
-            - @oro_batch.step_factory
+            - @akeneo_batch.job_factory
+            - @akeneo_batch.step_factory
 
-    oro_batch.job_repository:
-        class: %oro_batch.job_repository.class%
+    akeneo_batch.job_repository:
+        class: %akeneo_batch.job_repository.class%
         arguments:
             - @doctrine.orm.entity_manager
 
-    oro_batch.job_factory:
-        class: %oro_batch.job_factory.class%
+    akeneo_batch.job_factory:
+        class: %akeneo_batch.job_factory.class%
         arguments:
             - @event_dispatcher
-            - @oro_batch.job_repository
+            - @akeneo_batch.job_repository
 
-    oro_batch.logger_subscriber:
-        class: %oro_batch.logger_subscriber.class%
+    akeneo_batch.logger_subscriber:
+        class: %akeneo_batch.logger_subscriber.class%
         arguments:
             - @logger
             - @translator
@@ -39,34 +39,34 @@ services:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: batch }
 
-    oro_batch.notification_subscriber:
-        class: %oro_batch.notification_subscriber.class%
+    akeneo_batch.notification_subscriber:
+        class: %akeneo_batch.notification_subscriber.class%
         tags:
             - { name: kernel.event_subscriber }
 
-    oro_batch.mail_notifier:
-        class: %oro_batch.mail_notifier.class%
+    akeneo_batch.mail_notifier:
+        class: %akeneo_batch.mail_notifier.class%
         arguments:
-            - @oro_batch.logger.batch_log_handler
+            - @akeneo_batch.logger.batch_log_handler
             - @security.context
             - @twig
             - @mailer
-            - %oro_batch.mail_notifier.sender_email%
+            - %akeneo_batch.mail_notifier.sender_email%
 
-    oro_batch.step_factory:
-        class: %oro_batch.step_factory.class%
+    akeneo_batch.step_factory:
+        class: %akeneo_batch.step_factory.class%
         arguments:
             - @event_dispatcher
-            - @oro_batch.job_repository
+            - @akeneo_batch.job_repository
 
-    oro_batch.logger.batch_log_handler:
-        class: %oro_batch.logger.batch_log_handler.class%
+    akeneo_batch.logger.batch_log_handler:
+        class: %akeneo_batch.logger.batch_log_handler.class%
         arguments:
             - %kernel.logs_dir%/batch
 
-    oro_batch.set_job_execution_log_file_subscriber:
-        class: %oro_batch.set_job_execution_log_file_subscriber.class%
+    akeneo_batch.set_job_execution_log_file_subscriber:
+        class: %akeneo_batch.set_job_execution_log_file_subscriber.class%
         arguments:
-            - @oro_batch.logger.batch_log_handler
+            - @akeneo_batch.logger.batch_log_handler
         tags:
             - { name: kernel.event_subscriber }

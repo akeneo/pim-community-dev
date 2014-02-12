@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Step;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Oro\Bundle\BatchBundle\Step\ItemStep;
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Tests related to the ItemStep class
@@ -36,7 +36,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Oro\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->itemStep = new ItemStep(self::STEP_NAME);
 
@@ -95,14 +95,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
 
-        $reader = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
+        $reader = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
             ->setMethods(array('setStepExecution', 'read'))
             ->getMock();
         $reader->expects($this->once())
@@ -112,7 +112,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('read')
             ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7, null));
 
-        $processor = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
+        $processor = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
             ->setMethods(array('setStepExecution', 'process'))
             ->getMock();
         $processor->expects($this->once())
@@ -122,7 +122,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('process')
             ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7));
 
-        $writer = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
+        $writer = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
             ->setMethods(array('setStepExecution', 'write'))
             ->getMock();
         $writer->expects($this->once())
@@ -140,7 +140,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchReadInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -156,13 +156,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The read item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
+        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -175,11 +175,11 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('stub_reader'));
 
-        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->never())
             ->method('process');
 
-        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -202,7 +202,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchProcessInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -218,13 +218,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The processed item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
+        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -234,7 +234,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
@@ -246,7 +246,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('stub_processor'));
 
-        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -269,7 +269,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchWriteInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -285,13 +285,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The written item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -301,14 +301,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
                 $this->returnValue(array('foo' => 'bar'))
             );
 
-        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->exactly(1))
             ->method('write')
             ->will(
@@ -344,13 +344,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\\Bundle\\BatchBundle\\Step\\ItemStep', $entity);
+        $this->assertInstanceOf('Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep', $entity);
     }
 
     private function getReaderMock(array $configuration, array $fields = array())
     {
         $reader = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -368,7 +368,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     private function getProcessorMock(array $configuration, array $fields = array())
     {
         $processor = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -386,7 +386,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     private function getWriterMock(array $configuration, array $fields = array())
     {
         $writer = $this
-            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
+            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 

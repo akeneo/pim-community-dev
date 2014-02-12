@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\BatchBundle\Job;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

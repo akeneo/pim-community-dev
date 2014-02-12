@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Step\Stub;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step\Stub;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 class ProcessorStub implements ItemProcessorInterface, StepExecutionAwareInterface
 {

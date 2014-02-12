@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Tests\Unit\Job;
+namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Oro\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Tests related to the BatchStatus class

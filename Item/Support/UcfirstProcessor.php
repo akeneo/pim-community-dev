@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item\Support;
+namespace Akeneo\Bundle\BatchBundle\Item\Support;
 
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 
 /**
  * Very basic sample transformer that will put the first letter of each item in uppercase
