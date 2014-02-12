@@ -50,21 +50,6 @@ class ProductBuilder
     protected $currencyManager;
 
     /**
-     * @var array
-     */
-    protected $scopeRows = null;
-
-    /**
-     * @var array
-     */
-    protected $localeRows = null;
-
-    /**
-     * @var array
-     */
-    protected $scopeToLocaleRows = null;
-
-    /**
      * Constructor
      *
      * @param string          $productClass      Product class name
@@ -277,7 +262,6 @@ class ProductBuilder
             } else {
                 $requiredValues[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null);
             }
-
             $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
         }
 
@@ -337,15 +321,13 @@ class ProductBuilder
      */
     protected function getLocaleRows(AbstractAttribute $attribute)
     {
-        if (!$this->localeRows) {
-            $locales = $this->localeManager->getActiveLocales();
-            $this->localeRows = array();
-            foreach ($locales as $locale) {
-                $this->localeRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null);
-            }
+        $locales = $this->localeManager->getActiveLocales();
+        $localeRows = array();
+        foreach ($locales as $locale) {
+            $localeRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null);
         }
 
-        return $this->localeRows;
+        return $localeRows;
     }
 
     /**
@@ -357,15 +339,13 @@ class ProductBuilder
      */
     protected function getScopeRows(AbstractAttribute $attribute)
     {
-        if (!$this->scopeRows) {
-            $channels = $this->channelManager->getChannels();
-            $this->scopeRows = array();
-            foreach ($channels as $channel) {
-                $this->scopeRows[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode());
-            }
+        $channels = $this->channelManager->getChannels();
+        $scopeRows = array();
+        foreach ($channels as $channel) {
+            $scopeRows[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode());
         }
 
-        return $this->scopeRows;
+        return $scopeRows;
     }
 
     /**
@@ -377,16 +357,14 @@ class ProductBuilder
      */
     protected function getScopeToLocaleRows(AbstractAttribute $attribute)
     {
-        if (!$this->scopeToLocaleRows) {
-            $channels = $this->channelManager->getChannels();
-            $this->scopeToLocaleRows = array();
-            foreach ($channels as $channel) {
-                foreach ($channel->getLocales() as $locale) {
-                    $this->scopeToLocaleRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => $channel->getCode());
-                }
+        $channels = $this->channelManager->getChannels();
+        $scopeToLocaleRows = array();
+        foreach ($channels as $channel) {
+            foreach ($channel->getLocales() as $locale) {
+                $scopeToLocaleRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => $channel->getCode());
             }
         }
 
-        return $this->scopeToLocaleRows;
+        return $scopeToLocaleRows;
     }
 }
