@@ -175,6 +175,8 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                     break;
                 }
             }
+        } else {
+            unset($this->indexedValues[$attributeCode]);
         }
 
         return $this;
