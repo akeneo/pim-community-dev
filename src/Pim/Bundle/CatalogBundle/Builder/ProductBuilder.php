@@ -238,7 +238,8 @@ class ProductBuilder
     protected function getExistingValues(ProductInterface $product, AbstractAttribute $attribute)
     {
         $existingValues = array();
-        foreach ($product->getValues() as $value) {
+        $values = $product->getValues();
+        foreach ($values as $value) {
             if ($value->getAttribute() === $attribute) {
                 $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
             }
