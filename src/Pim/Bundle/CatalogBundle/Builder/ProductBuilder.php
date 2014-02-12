@@ -172,11 +172,11 @@ class ProductBuilder
         $attributes = $product->getAttributes();
         if ($family = $product->getFamily()) {
             foreach ($family->getAttributes() as $attribute) {
-                $attributes[] = $attribute;
+                $attributes[$attribute->getCode()] = $attribute;
             }
         }
 
-        return array_unique($attributes);
+        return $attributes;
     }
 
     /**
