@@ -1,0 +1,17 @@
+channels:
+    et:
+        code: et
+        label: illum
+        tree: default
+        locales:
+            - de_DE
+        currencies:
+            - USD
+    reiciendis:
+        code: reiciendis
+        label: cum
+        tree: default
+        locales:
+            - fr_FR
+        currencies:
+            - USD
