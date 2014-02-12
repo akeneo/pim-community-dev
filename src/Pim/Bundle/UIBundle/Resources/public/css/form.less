@@ -241,6 +241,9 @@ i.remove-attribute {
 a.add-attribute-option {
   margin-left: 5px;
 }
+.input-prepend a.add-attribute-option {
+  border-radius: 3px;
+}
 
 /* bootstrapSwitch */
 .has-switch {
@@ -1170,6 +1173,25 @@ button.pimmultiselect {
   }
 }
 
+/* UI for select2 inside a scopable field */
+.attribute-field.scopable {
+  &>div:not(.first) {
+    .controls div.select2-container {
+      border-top-right-radius: 0;
+    }
+    &:not(:last-of-type) .controls div.select2-container {
+      border-bottom-right-radius: 0;
+    }
+  }
+  &:not(.collapsed)>div.first .controls div.select2-container {
+    border-bottom-right-radius: 0;
+  }
+  .controls.input-prepend div.select2-container {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
 /* UI for metric attribute field */
 .controls.metric.input-append {
   &:not(.input-prepend) {
@@ -1193,33 +1215,14 @@ button.pimmultiselect {
       display: none;
     }
   }
-  .scopable-input {
-    input[type=text] {
-      height: 20px;
-      margin-left: -1px;
-      border-radius: 0;
-    }
+  .scopable-input input[type=text] {
+    height: 20px;
+    margin-left: -1px;
+    border-radius: 0;
   }
 }
-.attribute-field.scopable {
-  &>div:not(.first) {
-    .controls.metric {
-      input {
-        height: 21px;
-      }
-      div.select2-container {
-        border-top-right-radius: 0;
-      }
-    }
-    &:not(:last-of-type) .controls.metric div.select2-container {
-      border-bottom-right-radius: 0;
-    }
-  }
-  &:not(.collapsed)>div.first .controls.metric {
-    div.select2-container {
-      border-bottom-right-radius: 0;
-    }
-  }
+.attribute-field.scopable>div:not(.first) .controls.metric input {
+  height: 21px;
 }
 .product-edit #attributes .metric .select2-container {
   width: 160px !important;

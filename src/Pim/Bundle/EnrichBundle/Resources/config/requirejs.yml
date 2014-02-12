@@ -13,6 +13,7 @@ config:
         pim/init:                pimenrich/js/pim-init
         pim/asynctab:            pimenrich/js/pim-async-tab
         pim/popinform:           pimenrich/js/pim-popinform
+        pim/optionform:          pimenrich/js/pim-optionform
         pim/scopable:            pimenrich/js/pim-scopable
         pim/currencyfield:       pimenrich/js/pim-currencyfield
         pim/tree/view:           pimenrich/js/tree-view.jstree
