@@ -4,10 +4,10 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 

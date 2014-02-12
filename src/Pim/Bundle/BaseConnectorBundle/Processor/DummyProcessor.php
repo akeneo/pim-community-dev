@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation

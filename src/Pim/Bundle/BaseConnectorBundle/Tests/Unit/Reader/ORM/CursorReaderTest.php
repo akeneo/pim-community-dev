@@ -29,9 +29,9 @@ class CursorReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAConfigurableStepExecutionAwareReader()
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', $this->reader);
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->reader);
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->reader);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface', $this->reader);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->reader);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->reader);
     }
 
     /**
@@ -93,12 +93,12 @@ class CursorReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
      */
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

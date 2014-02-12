@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 

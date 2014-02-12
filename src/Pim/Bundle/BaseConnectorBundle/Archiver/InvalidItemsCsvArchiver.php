@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Gaufrette\Filesystem;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
 
