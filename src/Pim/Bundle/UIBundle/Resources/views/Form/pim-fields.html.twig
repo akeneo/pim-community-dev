@@ -190,7 +190,13 @@
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone file empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
@@ -249,7 +255,13 @@
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone image empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
@@ -290,20 +302,12 @@
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
         <div class="controls metric input-append">
-            {{ form_widget(form.data, { 'attr': { 'class': 'input-small pull-left' }}) }}
-            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small append pull-left' }}) }}
+            {{ form_widget(form.data, { 'attr': { 'class': 'input-small' }}) }}
+            {{ form_widget(form.unit, { 'attr': { 'class': 'select2 input-small append' }}) }}
             {{ form_widget(form.family) }}
             {{ block('form_info') }}
         </div>
     </div>
-    <script type="text/javascript">
-        require(
-            ['jquery', 'selectize'],
-            function ($) {
-                $('#{{ form.unit.vars.id }}').selectize();
-            }
-        );
-    </script>
 {% endspaceless %}
 {% endblock pim_flexibleentity_metric_row %}
 

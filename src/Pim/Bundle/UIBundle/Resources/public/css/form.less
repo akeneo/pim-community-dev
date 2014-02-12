@@ -241,6 +241,9 @@ i.remove-attribute {
 a.add-attribute-option {
   margin-left: 5px;
 }
+.input-prepend a.add-attribute-option {
+  border-radius: 3px;
+}
 
 /* bootstrapSwitch */
 .has-switch {
@@ -742,12 +745,6 @@ table.comparison .no-label .attribute-field.currency.scopable .currency-header {
   padding-left: 165px;
 }
 
-.metric {
-  .selectize-input {
-    width: 180px;
-  }
-}
-
 .attribute-field.scopable {
   margin-bottom: 20px;
   max-width: inherit;
@@ -1176,35 +1173,59 @@ button.pimmultiselect {
   }
 }
 
-/* Selectize UI for metric attribute field */
-.selectize-control.input-small {
-  display: inline-block;
-  .selectize-input {
-    padding: 4px 10px 4px 10px;
-    &> * {
-      float: left;
+/* UI for select2 inside a scopable field */
+.attribute-field.scopable {
+  &>div:not(.first) {
+    .controls div.select2-container {
+      border-top-right-radius: 0;
+    }
+    &:not(:last-of-type) .controls div.select2-container {
+      border-bottom-right-radius: 0;
     }
   }
-  &.append .selectize-input {
-    border-left: 0;
+  &:not(.collapsed)>div.first .controls div.select2-container {
+    border-bottom-right-radius: 0;
+  }
+  .controls.input-prepend div.select2-container {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 }
+
+/* UI for metric attribute field */
 .controls.metric.input-append {
-  margin-left: 10px;
-  margin-bottom: -12px;
-  .icons-container {
-    margin-left: 95px;
+  &:not(.input-prepend) {
+    margin-left: 10px;
+  }
+  select.select2-offscreen {
+    display: none;
+  }
+  div.select2-container {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    &>a {
+      height: 28px;
+      line-height: 28px;
+      .select2-arrow {
+        top: 5px;
+      }
+    }
+    .select2-focusser {
+      display: none;
+    }
+  }
+  .scopable-input input[type=text] {
+    height: 20px;
+    margin-left: -1px;
+    border-radius: 0;
   }
 }
-.selectize-dropdown {
-  [data-selectable].active {
-     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  }
-  .active {
-    background-color: @color-purple_light;
-  }
+.attribute-field.scopable>div:not(.first) .controls.metric input {
+  height: 21px;
+}
+.product-edit #attributes .metric .select2-container {
+  width: 160px !important;
 }
 
 /** Product completeness *******************************************************************************/

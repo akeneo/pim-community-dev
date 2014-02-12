@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
-    function ($, Backbone, _, mediator, wysiwyg, fileinput) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
         /**
          * Allow expanding/collapsing scopable fields
@@ -12,11 +12,12 @@ define(
         var ScopableField = Backbone.View.extend({
             field:    null,
             rendered: false,
+            isMetric: false,
 
             template: _.template(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
-                    '<div class="controls input-prepend">' +
+                    '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>">' +
                             '<span class="field-toggle">' +
                                 '<i class="icon-caret-down"></i>' +
@@ -64,6 +65,18 @@ define(
                     }
 
                     field.input = $field.get(0).outerHTML;
+
+                    _.each($field.siblings('input, select'), function(el) {
+                        field.input += el.outerHTML;
+                    });
+
+                    if (this.$el.find('.controls.metric').length) {
+                        this.isMetric = true;
+                    }
+
+                    if ($field.siblings('a.add-attribute-option').length) {
+                        field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
+                    }
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -79,7 +92,8 @@ define(
                     this.$el.empty();
                     this.$el.append(
                         this.template({
-                            field: this.field
+                            field:    this.field,
+                            isMetric: this.isMetric
                         })
                     );
 
@@ -163,6 +177,11 @@ define(
 
                     this._collapse();
 
+                    var $optionLink = this.$el.find('a.add-attribute-option');
+                    if ($optionLink.length) {
+                        optionform.init('#' + $optionLink.attr('id'));
+                    }
+
                     mediator.trigger('scopablefield:rendered', this.$el);
                 }
 
@@ -229,7 +248,10 @@ define(
 
                 _.each(this.fields, function (field) {
                     if ($(field).data('scope') === scope) {
+                        $(field).addClass('first');
                         this._setFieldFirst(field);
+                    } else {
+                        $(field).removeClass('first');
                     }
                 }, this);
 
@@ -264,7 +286,10 @@ define(
 
             _showField: function (field, first) {
                 if (first) {
+                    $(field).addClass('first');
                     this._setFieldFirst(field);
+                } else {
+                    $(field).removeClass('first');
                 }
                 $(field).show();
             },

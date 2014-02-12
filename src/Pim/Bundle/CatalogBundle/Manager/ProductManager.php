@@ -128,7 +128,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
+        $product = $this->getFlexibleRepository()->findOneByWithValues($id);
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
@@ -168,7 +168,7 @@ class ProductManager extends FlexibleManager
     {
         $code = $this->getIdentifierAttribute()->getCode();
 
-        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $products = $this->getFlexibleRepository()->findAllByAttributes(array(), array($code => $identifier));
         $product = reset($products);
 
         if ($product) {

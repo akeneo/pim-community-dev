@@ -30,13 +30,21 @@ class AttributeRepository extends FlexibleAttributeRepository implements
      * Get the query builder to find all attributes except the ones
      * defined in arguments
      *
-     * @param array $attributes The attributes to exclude from the results set
+     * @param array   $attributes       The attributes to exclude from the results set
+     * @param boolean $withTranslations Join the translations
      *
      * @return Doctrine\ORM\QueryBuilder
      */
-    public function getFindAllExceptQB(array $attributes)
+    public function getFindAllExceptQB(array $attributes, $withTranslations = false)
     {
-        $qb = $this->createQueryBuilder('a')->orderBy('a.group');
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('agroup')->leftJoin('a.group', 'agroup')
+            ->orderBy('a.group');
+
+        if ($withTranslations) {
+            $qb->addSelect('translation')->leftJoin('a.translations', 'translation');
+            $qb->addSelect('gtranslation')->leftJoin('agroup.translations', 'gtranslation');
+        }
 
         if (!empty($attributes)) {
             $ids = array_map(

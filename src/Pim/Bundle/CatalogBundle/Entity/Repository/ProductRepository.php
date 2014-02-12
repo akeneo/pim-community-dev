@@ -32,7 +32,7 @@ class ProductRepository extends FlexibleEntityRepository implements
      */
     public function buildByScope($scope)
     {
-        $qb = $this->findByWithAttributesQB();
+        $qb = $this->findAllByAttributesQB();
         $qb
             ->andWhere(
                 $qb->expr()->eq('Entity.enabled', ':enabled')
@@ -99,7 +99,7 @@ class ProductRepository extends FlexibleEntityRepository implements
      */
     public function findByIds(array $ids)
     {
-        $qb = $this->findByWithAttributesQB();
+        $qb = $this->findAllByAttributesQB();
         $qb->andWhere(
             $qb->expr()->in('Entity.id', $ids)
         );
