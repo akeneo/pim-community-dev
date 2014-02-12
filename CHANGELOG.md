@@ -18,6 +18,7 @@
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
 - Remove unnecessary AttributeManagerInterface and AttributeInterface in favor of AbstractAttribute
 - Rename findByWithSortedAttribute to findOneByWithValues, add pre-select attributes and related translations to reduce number of lazy loaded queries when edit a product
+- Rename findByWithAttributes to findAllByAttributes
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
