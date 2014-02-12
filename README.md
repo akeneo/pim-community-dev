@@ -70,7 +70,7 @@ You can download translation packs from crowdin:
 - http://crowdin.net/project/akeneo
 - http://crowdin.net/project/oro-platform
 
-The Akeneo PIM archive contains the following directories tree: <locale>/<version>/<translation_directories>
+The Akeneo PIM archive contains the following directories tree: `<locale>/<version>/<translation_directories>`
 You just have to paste the <translation_directories> in your app/Resources/ directory.
 
 For Oro Platform, the archive contains the same directories tree except the version directory which is removed.
