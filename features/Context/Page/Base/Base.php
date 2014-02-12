@@ -29,7 +29,19 @@ class Base extends Page
      */
     public function fillField($locator, $value)
     {
-        parent::fillField($locator, $value);
+        $field = $this->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form field', 'id|name|label|value', $locator
+            );
+        }
+
+        if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
+            $this->getSession()->executeScript(sprintf("$('#%s').val('%s');", $field->getAttribute('id'), $value));
+        } else {
+            $field->setValue($value);
+        }
 
         try {
             $this->getSession()->executeScript(
