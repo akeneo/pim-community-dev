@@ -1,9 +1,14 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
-        function ($, _, Scopable, CurrencyField, Dialog, DialogForm, mediator) {
+        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        function ($, _, optionform, Scopable, CurrencyField, Dialog, DialogForm, mediator) {
             'use strict';
+
             $(function () {
+                _.each($('a.add-attribute-option'), function(optionLink) {
+                    optionform.init('#' + optionLink.getAttribute('id'));
+                });
+
                 _.each($('form div.scopable:not(.currency)'), function (field) {
                     new Scopable({ el: $(field) });
                 });

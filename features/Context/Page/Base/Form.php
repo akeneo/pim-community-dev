@@ -61,6 +61,21 @@ class Form extends Base
     }
 
     /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+
+        return $tabs->findAll('css', 'a');
+    }
+
+    /**
      * Visit the specified group
      * @param string $group
      */
@@ -255,7 +270,13 @@ class Form extends Base
                     if ($field->getTagName() === 'select') {
                         $field->selectOption($value);
                     } else {
-                        $field->setValue($value);
+                        if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
+                            $this->getSession()->executeScript(
+                                sprintf("$('#%s').val('%s');", $field->getAttribute('id'), $value)
+                            );
+                        } else {
+                            $field->setValue($value);
+                        }
                     }
                 }
             } else {

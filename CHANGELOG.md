@@ -23,6 +23,7 @@
 - Remove unnecessary AttributeManagerInterface and AttributeInterface in favor of AbstractAttribute
 - Rename findByWithSortedAttribute to findOneByWithValues, add pre-select attributes and related translations to reduce number of lazy loaded queries when edit a product
 - Rename findByWithAttributes to findAllByAttributes
+- MeasureBundle has been moved from the BAP to an external repository (akeneo/measure-bundle).
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

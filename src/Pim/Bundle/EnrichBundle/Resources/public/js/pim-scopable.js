@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
-    function ($, Backbone, _, mediator, wysiwyg, fileinput) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
         /**
          * Allow expanding/collapsing scopable fields
@@ -72,6 +72,10 @@ define(
 
                     if (this.$el.find('.controls.metric').length) {
                         this.isMetric = true;
+                    }
+
+                    if ($field.siblings('a.add-attribute-option').length) {
+                        field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
                     }
                 }
 
@@ -172,6 +176,11 @@ define(
                     }, this);
 
                     this._collapse();
+
+                    var $optionLink = this.$el.find('a.add-attribute-option');
+                    if ($optionLink.length) {
+                        optionform.init('#' + $optionLink.attr('id'));
+                    }
 
                     mediator.trigger('scopablefield:rendered', this.$el);
                 }
