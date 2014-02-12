@@ -104,7 +104,7 @@ class ProductBuilder
     {
         $attributes     = $this->getExpectedAttributes($product);
         $requiredValues = $this->getExpectedValues($attributes);
-        $existingValues = $this->getExistingValues($product, $attributes);
+        $existingValues = $this->getExistingValues($product);
 
         $missingValues = array_filter(
             $requiredValues,
@@ -226,27 +226,22 @@ class ProductBuilder
     }
 
     /**
-     * Returns an array of product values for the passed attributes
+     * Returns an array of product values identifiers
      *
      * @param ProductInterface  $product
-     * @param array             $attributes
      *
      * @return array:array
      */
-    protected function getExistingValues(ProductInterface $product, array $attributes)
+    protected function getExistingValues(ProductInterface $product)
     {
         $existingValues = array();
         $values = $product->getValues();
         foreach ($values as $value) {
-            foreach ($attributes as $attribute) {
-                if ($value->getAttribute() === $attribute) {
-                    $existingValues[] = array(
-                        'attribute' => $attribute->getCode(),
-                        'locale' => $value->getLocale(),
-                        'scope' => $value->getScope()
-                    );
-                }
-            }
+            $existingValues[] = array(
+                'attribute' => $value->getAttribute()->getCode(),
+                'locale' => $value->getLocale(),
+                'scope' => $value->getScope()
+            );
         }
 
         return $existingValues;
