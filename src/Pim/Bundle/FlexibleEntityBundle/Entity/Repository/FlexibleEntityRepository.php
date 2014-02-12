@@ -139,7 +139,7 @@ class FlexibleEntityRepository extends EntityRepository implements
      *
      * @return array The objects.
      */
-    public function findByWithAttributes(
+    public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,
@@ -147,7 +147,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         $offset = null
     ) {
         return $this
-            ->findByWithAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
+            ->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
             ->getQuery()
             ->getResult();
     }
@@ -207,7 +207,7 @@ class FlexibleEntityRepository extends EntityRepository implements
      */
     public function findOneByWithValues($id)
     {
-        $qb = $this->findByWithAttributesQB(array(), array('id' => $id));
+        $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
         $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
@@ -265,7 +265,7 @@ class FlexibleEntityRepository extends EntityRepository implements
      *
      * @return array The objects.
      */
-    protected function findByWithAttributesQB(
+    protected function findAllByAttributesQB(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,

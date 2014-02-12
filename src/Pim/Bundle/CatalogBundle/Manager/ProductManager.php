@@ -168,7 +168,7 @@ class ProductManager extends FlexibleManager
     {
         $code = $this->getIdentifierAttribute()->getCode();
 
-        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $products = $this->getFlexibleRepository()->findAllByAttributes(array(), array($code => $identifier));
         $product = reset($products);
 
         if ($product) {

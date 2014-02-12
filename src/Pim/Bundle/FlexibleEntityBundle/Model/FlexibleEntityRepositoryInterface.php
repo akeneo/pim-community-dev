@@ -41,7 +41,7 @@ interface FlexibleEntityRepositoryInterface extends LocalizableInterface, Scopab
      *
      * @return array The objects.
      */
-    public function findByWithAttributes(
+    public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,
