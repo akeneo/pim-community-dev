@@ -155,6 +155,10 @@ define(
                 var $iconsContainer = this.$el.find('.icons-container:first');
                 $iconsContainer.insertAfter($header);
 
+                _.each(this.$el.find('.validation-tooltip'), function(tooltip) {
+                    $(tooltip).appendTo($iconsContainer);
+                });
+
                 var $targets = this.$el.find('div.controls');
 
                 $targets.each(this._renderTarget.bind(this));
