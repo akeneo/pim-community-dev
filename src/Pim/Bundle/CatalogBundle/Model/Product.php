@@ -180,10 +180,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
             $attribute = $value->getAttribute();
             $key = $attribute->getCode();
             if ($attribute->isLocalizable()) {
-                $key .= '-'.$value->getLocale();
+                $key .= '_'.$value->getLocale();
             }
             if ($attribute->isScopable()) {
-                $key .= '-'.$value->getScope();
+                $key .= '_'.$value->getScope();
             }
             $_values[$key] = $value;
         }

@@ -102,21 +102,19 @@ class ProductBuilder
      */
     public function addMissingProductValues(ProductInterface $product)
     {
-        $attributes = $this->getExpectedAttributes($product);
+        $attributes     = $this->getExpectedAttributes($product);
+        $requiredValues = $this->getExpectedValues($attributes);
+        $existingValues = $this->getExistingValues($product, $attributes);
 
-        foreach ($attributes as $attribute) {
-            $requiredValues = $this->getExpectedValues($attribute);
-            $existingValues = $this->getExistingValues($product, $attribute);
-
-            $missingValues = array_filter(
-                $requiredValues,
-                function ($value) use ($existingValues) {
-                    return !in_array($value, $existingValues);
-                }
-            );
-            foreach ($missingValues as $value) {
-                $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+        $missingValues = array_filter(
+            $requiredValues,
+            function ($value) use ($existingValues) {
+                return !in_array($value, $existingValues);
             }
+        );
+
+        foreach ($missingValues as $value) {
+            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
         }
 
         $this->addMissingPrices($product);
@@ -132,7 +130,7 @@ class ProductBuilder
      */
     public function addAttributeToProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
-        $requiredValues = $this->getExpectedValues($attribute);
+        $requiredValues = $this->getExpectedValues(array($attribute));
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -228,20 +226,26 @@ class ProductBuilder
     }
 
     /**
-     * Returns an array of product values for the passed attribute
+     * Returns an array of product values for the passed attributes
      *
      * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
+     * @param array             $attributes
      *
      * @return array:array
      */
-    protected function getExistingValues(ProductInterface $product, AbstractAttribute $attribute)
+    protected function getExistingValues(ProductInterface $product, array $attributes)
     {
         $existingValues = array();
         $values = $product->getValues();
         foreach ($values as $value) {
-            if ($value->getAttribute() === $attribute) {
-                $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
+            foreach ($attributes as $attribute) {
+                if ($value->getAttribute() === $attribute) {
+                    $existingValues[] = array(
+                        'attribute' => $attribute->getCode(),
+                        'locale' => $value->getLocale(),
+                        'scope' => $value->getScope()
+                    );
+                }
             }
         }
 
@@ -252,27 +256,32 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param AbstractAttribute $attribute
+     * @param AbstractAttribute[] $attributes
      *
      * @return array:array
      */
-    protected function getExpectedValues(AbstractAttribute $attribute)
+    protected function getExpectedValues(array $attributes)
     {
-        $requiredValues = array();
-        if ($attribute->isScopable() and $attribute->isLocalizable()) {
-            $requiredValues = $this->getScopeToLocaleRows();
+        $values = array();
+        foreach ($attributes as $attribute) {
+            $requiredValues = array();
+            if ($attribute->isScopable() and $attribute->isLocalizable()) {
+                $requiredValues = $this->getScopeToLocaleRows($attribute);
 
-        } elseif ($attribute->isScopable()) {
-            $requiredValues = $this->getScopeRows();
+            } elseif ($attribute->isScopable()) {
+                $requiredValues = $this->getScopeRows($attribute);
 
-        } elseif ($attribute->isLocalizable()) {
-            $requiredValues = $this->getLocaleRows();
+            } elseif ($attribute->isLocalizable()) {
+                $requiredValues = $this->getLocaleRows($attribute);
 
-        } else {
-            $requiredValues[] = array('locale' => null, 'scope' => null);
+            } else {
+                $requiredValues[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null);
+            }
+
+            $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
         }
 
-        return $this->filterExpectedValues($attribute, $requiredValues);
+        return $values;
     }
 
     /**
@@ -322,15 +331,17 @@ class ProductBuilder
     /**
      * Return rows for available locales
      *
+     * @param AbstractAttribute $attribute
+     *
      * @return array
      */
-    protected function getLocaleRows()
+    protected function getLocaleRows(AbstractAttribute $attribute)
     {
         if (!$this->localeRows) {
             $locales = $this->localeManager->getActiveLocales();
             $this->localeRows = array();
             foreach ($locales as $locale) {
-                $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
+                $this->localeRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null);
             }
         }
 
@@ -340,15 +351,17 @@ class ProductBuilder
     /**
      * Return rows for available channels
      *
+     * @param AbstractAttribute $attribute
+     *
      * @return array
      */
-    protected function getScopeRows()
+    protected function getScopeRows(AbstractAttribute $attribute)
     {
         if (!$this->scopeRows) {
             $channels = $this->channelManager->getChannels();
             $this->scopeRows = array();
             foreach ($channels as $channel) {
-                $this->scopeRows[] = array('locale' => null, 'scope' => $channel->getCode());
+                $this->scopeRows[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode());
             }
         }
 
@@ -358,16 +371,18 @@ class ProductBuilder
     /**
      * Return rows for available channels and theirs locales
      *
+     * @param AbstractAttribute $attribute
+     *
      * @return array
      */
-    protected function getScopeToLocaleRows()
+    protected function getScopeToLocaleRows(AbstractAttribute $attribute)
     {
         if (!$this->scopeToLocaleRows) {
             $channels = $this->channelManager->getChannels();
             $this->scopeToLocaleRows = array();
             foreach ($channels as $channel) {
                 foreach ($channel->getLocales() as $locale) {
-                    $this->scopeToLocaleRows[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                    $this->scopeToLocaleRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => $channel->getCode());
                 }
             }
         }
