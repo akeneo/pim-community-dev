@@ -5,7 +5,7 @@ namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Akeneo\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
 
 /**
  * Iterates query result with elements of ResultRecord type
