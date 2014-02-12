@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Pager\Orm;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager as OroPager;
-use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
+use Akeneo\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 
 /**
  * Our custom pager to disable the use of acl helper
