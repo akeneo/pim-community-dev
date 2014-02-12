@@ -190,7 +190,13 @@
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone file empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
@@ -249,7 +255,13 @@
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone image empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
