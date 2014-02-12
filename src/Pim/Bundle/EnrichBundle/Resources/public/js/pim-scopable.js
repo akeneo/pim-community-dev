@@ -239,7 +239,10 @@ define(
 
                 _.each(this.fields, function (field) {
                     if ($(field).data('scope') === scope) {
+                        $(field).addClass('first');
                         this._setFieldFirst(field);
+                    } else {
+                        $(field).removeClass('first');
                     }
                 }, this);
 
@@ -274,7 +277,10 @@ define(
 
             _showField: function (field, first) {
                 if (first) {
+                    $(field).addClass('first');
                     this._setFieldFirst(field);
+                } else {
+                    $(field).removeClass('first');
                 }
                 $(field).show();
             },
