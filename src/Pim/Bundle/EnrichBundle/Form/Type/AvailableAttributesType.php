@@ -42,7 +42,7 @@ class AvailableAttributesType extends AbstractType
             array(
                 'class' => $this->attributeClass,
                 'query_builder' => function (EntityRepository $repository) use ($options) {
-                    return $repository->getFindAllExceptQB($options['attributes']);
+                    return $repository->getFindAllExceptQB($options['attributes'], true);
                 },
                 'multiple' => true,
                 'expanded' => false,

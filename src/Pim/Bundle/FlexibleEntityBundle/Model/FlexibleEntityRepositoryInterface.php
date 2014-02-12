@@ -41,7 +41,7 @@ interface FlexibleEntityRepositoryInterface extends LocalizableInterface, Scopab
      *
      * @return array The objects.
      */
-    public function findByWithAttributes(
+    public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,
         array $orderBy = null,
@@ -50,12 +50,12 @@ interface FlexibleEntityRepositoryInterface extends LocalizableInterface, Scopab
     );
 
     /**
-     * Load a flexible entity with its attributes sorted by sortOrder
+     * Load a flexible entity with related attribute values
      *
      * @param integer $id
      *
      * @return AbstractFlexible|null
      * @throws NonUniqueResultException
      */
-    public function findWithSortedAttribute($id);
+    public function findOneByWithValues($id);
 }

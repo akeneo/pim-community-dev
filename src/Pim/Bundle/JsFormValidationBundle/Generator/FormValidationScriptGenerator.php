@@ -88,12 +88,6 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
             $asset = new AssetCollection();
             $asset->setContent($template);
 
-            $yui = new JsCompressorFilter(
-                $this->container->getParameter('assetic.filter.yui_js.jar'),
-                $this->container->getParameter('assetic.java.bin')
-            );
-            $yui->filterDump($asset);
-
             return $asset->getContent();
         }
 

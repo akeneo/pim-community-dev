@@ -13,7 +13,7 @@ We can use classic findBy() method of repository to retrieve entity collection (
 $products = $this->container->get('product_manager')->getFlexibleRepository()->findBy(array());
 
 ```
-We have added a findByWithAttributes() in flexible repository which have the same signature, just attribute codes to select as first param.
+We have added a findAllByAttributes() in flexible repository which have the same signature, just attribute codes to select as first param.
 
 This method cover the same features than findBy, add basic criterias, order by, limit on field or attribute.
 
@@ -21,20 +21,20 @@ This method cover the same features than findBy, add basic criterias, order by, 
 $productManager = $this->container->get('product_manager');
 $productRepository = $productManager->getFlexibleRepository();
 // get all entity fields and values (no lazy loading)
-$products = $productRepository->findByWithAttributes();
+$products = $productRepository->findAllByAttributes();
 // select few attributes
-$products = $productRepository->findByWithAttributes(array('name'));
+$products = $productRepository->findAllByAttributes(array('name'));
 // filter on field and attribute values
-$products = $productRepository->findByWithAttributes(array(), array('sku' => 'sku-2'));
-$products = $productRepository->findByWithAttributes(array('description', 'size'), array('size' => 175));
+$products = $productRepository->findAllByAttributes(array(), array('sku' => 'sku-2'));
+$products = $productRepository->findAllByAttributes(array('description', 'size'), array('size' => 175));
 // use order
-$products = $productRepository->findByWithAttributes(
+$products = $productRepository->findAllByAttributes(
     array('name', 'description'), null, array('description' => 'desc', 'id' => 'asc')
 );
 // use limit
-$products = $productRepository->findByWithAttributes(array('name', 'description'), null, null, 10, 0);
+$products = $productRepository->findAllByAttributes(array('name', 'description'), null, null, 10, 0);
 // force locale to get french values
-$productManager->setLocale('fr')->getFlexibleRepository()->findByWithAttributes(array('name', 'description'));
+$productManager->setLocale('fr')->getFlexibleRepository()->findAllByAttributes(array('name', 'description'));
 ```
 
 There is also a method to load a flexible entity and all values without lazy loading :

@@ -1,0 +1,32 @@
+{% spaceless %}
+{#
+    Get page unique hash
+    If we have entity object (view page) or form (edit page), return md5 of serialized object
+    Othewise return md5 of full page content
+#}
+{% set is_entity = false %}
+{% set md5_string = 'e7c714f84f25c28eb3f9e4f6ef82d52d' %}
+{% if (app.request.get('hash-navigation-md5')) %}
+    {% set data = {
+        'content_md5': md5_string
+    } %}
+{% else %}
+    {% set data = {
+    'title': oro_title_render(),
+    'titleSerialized': oro_title_render_serialized(),
+    'titleShort': oro_title_render_short(),
+    'scripts': script,
+    'mainMenu': menu,
+    'userMenu': userMenu,
+    'breadcrumb': breadcrumb,
+    'flashMessages': app.session.flashbag.all,
+    'history': oro_menu_render('history'),
+    'mostviewed': oro_menu_render('mostviewed'),
+    'content': content,
+    'showPinButton': (app.request.attributes.get('_route') != bap.start_route),
+    'is_entity_page': is_entity,
+    'content_md5': md5_string
+    } %}
+{% endif %}
+    {{ data|json_encode|raw }}
+{% endspaceless %}
