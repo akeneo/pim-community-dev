@@ -305,6 +305,7 @@
             {{ form_widget(form.data, { 'attr': { 'class': 'input-small' }}) }}
             {{ form_widget(form.unit, { 'attr': { 'class': 'select2 input-small append' }}) }}
             {{ form_widget(form.family) }}
+            {{ form_errors(form.data) }}
             {{ block('form_info') }}
         </div>
     </div>
