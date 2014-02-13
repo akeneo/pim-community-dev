@@ -45,13 +45,14 @@ class AvailableAttributesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'attributeIds',
-            'choice',
+            'attributes',
+            'light_entity',
             [
-                'choices' => $this->repository->getAvailableAttributeChoices(
-                    $options['attributes'],
-                    $this->userContext->getCurrentLocaleCode()
-                ),
+                'repository' => $this->repository,
+                'repository_options' => [
+                    'excluded_attribute_ids' => $options['attributes'],
+                    'localeCode'             => $this->userContext->getCurrentLocaleCode()
+                ],
                 'multiple' => true,
                 'expanded' => false,
             ]

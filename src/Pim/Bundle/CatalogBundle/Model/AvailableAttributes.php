@@ -12,25 +12,25 @@ namespace Pim\Bundle\CatalogBundle\Model;
 class AvailableAttributes
 {
     /** @var array */
-    protected $attributeIds = [];
+    protected $attributes = [];
 
     /**
-     * Set attribute ids
+     * Set attribute
      *
-     * @param array $attributeIds
+     * @param array $attributes
      */
-    public function setAttributeIds(array $attributeIds)
+    public function setAttributes(array $attributes)
     {
-        $this->attributeIds = $attributeIds;
+        $this->attributes = $attributes;
     }
 
     /**
-     * Get attribute ids
+     * Get attribute
      *
      * @return array
      */
-    public function getAttributeIds()
+    public function getAttributes()
     {
-        return $this->attributeIds;
+        return $this->attributes;
     }
 }

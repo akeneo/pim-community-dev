@@ -40,7 +40,7 @@ class LightEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(
-            new EntityToIdentifierTransformer($options['repository']),
+            new EntityToIdentifierTransformer($options['repository'], $options['multiple']),
             true
         );
     }

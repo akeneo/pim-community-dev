@@ -6,6 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
  * Transforms entity into its identifier and the opposite
@@ -19,6 +20,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     /** @var ObjectRepository */
     protected $repository;
 
+    /** @var Boolean */
+    protected $multiple;
+
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
@@ -26,11 +30,16 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * Constructor
      *
      * @param ObjectRepository          $repository
+     * @param Boolean                   $multiple
      * @param PropertyAccessorInterface $propertyAccessor
      */
-    public function __construct(ObjectRepository $repository, PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        ObjectRepository $repository,
+        $multiple,
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->repository       = $repository;
+        $this->multiple         = $multiple;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
@@ -39,6 +48,27 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        if (null === $value) {
+            return null;
+        }
+
+        if ($this->multiple) {
+            if (!is_array($value)) {
+                throw new UnexpectedTypeException($value, 'array');
+            }
+
+            return array_map(
+                function ($val) {
+                    return $this->propertyAccessor->getValue($val, 'id');
+                },
+                $value
+            );
+        }
+
+        if (!is_object($value)) {
+            throw new UnexpectedTypeException($value, 'object');
+        }
+
         return $this->propertyAccessor->getValue($value, 'id');
     }
 
@@ -47,6 +77,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if ($this->multiple) {
+            return $this->repository->findBy(['id' => $value]);
+        }
+
         return $this->repository->find($value);
     }
 }

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository for attribute entity
@@ -12,7 +13,8 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as Fle
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeRepository extends FlexibleAttributeRepository implements
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    ChoicesProviderInterface
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -27,16 +29,18 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
-     * Get the query builder to find all attributes except the ones
-     * defined in arguments
-     *
-     * @param array  $ids        The attribute ids to exclude from the results set
-     * @param string $localeCode The locale to use to translate labels
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getAvailableAttributeChoices(array $ids, $localeCode)
+    public function getChoices(array $options)
     {
+        if (!isset($options['excluded_attribute_ids'])) {
+            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
+        }
+
+        if (!isset($options['localeCode'])) {
+            throw new \InvalidArgumentException('Option "localeCode" is required');
+        }
+
         $qb = $this
             ->createQueryBuilder('a')
             ->select('a.id')
@@ -46,11 +50,11 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->orderBy('a.group')
-            ->setParameter('localeCode', $localeCode);
+            ->setParameter('localeCode', $options['localeCode']);
 
-        if (!empty($ids)) {
+        if (!empty($options['excluded_attribute_ids'])) {
             $qb->andWhere(
-                $qb->expr()->notIn('a.id', $ids)
+                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
             );
         }
 

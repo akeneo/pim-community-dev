@@ -189,8 +189,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributesToProduct(ProductInterface $product, AvailableAttributes $availableAttributes)
     {
-        $attributes = $this->getAttributeRepository()->findBy(['id' => $availableAttributes->getAttributeIds()]);
-        foreach ($attributes as $attribute) {
+        foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->builder->addAttributeToProduct($product, $attribute);
         }
     }
