@@ -30,15 +30,15 @@ Feature: Browse products by locale and scope
       | name        | Post it                  |
       | image       | large.jpeg               |
       | description | My ecommerce description |
-      | family      | furniture                |
+      | family      | [furniture]              |
     When I filter by "Channel" with value "Mobile"
     Then the row "postit" should contain:
-      | column      | value      |
-      | SKU         | postit     |
-      | name        | Post it    |
-      | image       | small.jpeg |
-      | description |            |
-      | family      | furniture  |
+      | column      | value       |
+      | SKU         | postit      |
+      | name        | Post it     |
+      | image       | small.jpeg  |
+      | description |             |
+      | family      | [furniture] |
 
   Scenario: Successfully display french data on products page
     Given I switch the locale to "French (France)"
@@ -50,7 +50,7 @@ Feature: Browse products by locale and scope
       | [name]        | Etiquette                |
       | [image]       | large.jpeg               |
       | [description] | Ma description ecommerce |
-      | family        | furniture                |
+      | family        | [furniture]              |
     When I filter by "Channel" with value "Mobile"
     Then the row "postit" should contain:
       | column        | value                 |
@@ -58,4 +58,4 @@ Feature: Browse products by locale and scope
       | [name]        | Etiquette             |
       | [image]       | small.jpeg            |
       | [description] | Ma description mobile |
-      | family        | furniture             |
+      | family        | [furniture]           |
