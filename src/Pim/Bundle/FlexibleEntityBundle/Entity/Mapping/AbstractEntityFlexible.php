@@ -360,25 +360,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      *
      * @return boolean
      */
-    public function __isset($name)
+    public function __isset($attributeCode)
     {
-        // to authorize call to dynamic __get by twig, should be filter on existing attributes
-        // cf http://twig.sensiolabs.org/doc/recipes.html#using-dynamic-object-properties
-        $values = $this->getValues();
+        $indexedValues = $this->getIndexedValues();
 
-        if (empty($values)) {
-            return false;
-        }
-
-        $values = $values->filter(
-            function ($value) use ($name) {
-                if ($value->getAttribute()->getCode() == $name) {
-                    return true;
-                }
-            }
-        );
-
-        return (count($values) >= 1);
+        return isset($indexedValues[$attributeCode]);
     }
 
     /**
