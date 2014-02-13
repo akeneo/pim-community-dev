@@ -5,7 +5,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Pager\Orm;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
-use Akeneo\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
+use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
