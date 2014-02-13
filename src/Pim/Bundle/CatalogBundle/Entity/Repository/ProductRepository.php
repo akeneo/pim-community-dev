@@ -387,10 +387,9 @@ SQL;
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $qb
             ->addSelect('p')
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect('groups');
 
         return $qb;
@@ -409,7 +408,6 @@ SQL;
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $hasProductExpr =
             "CASE WHEN " .
             "(:currentGroup MEMBER OF p.groups ".
@@ -417,7 +415,7 @@ SQL;
             "THEN true ELSE false END";
 
         $qb
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($hasProductExpr.' AS has_product');
 
         return $qb;
@@ -436,7 +434,6 @@ SQL;
 
         $this->addCompleteness($qb);
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)";
         $hasProductExpr =
             "CASE WHEN " .
             "(:currentGroup MEMBER OF p.groups ".
@@ -444,7 +441,7 @@ SQL;
             "THEN true ELSE false END";
 
         $qb
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr))
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($hasProductExpr.' AS has_product');
 
         $qb->andWhere($qb->expr()->in('p.id', ':productIds'));
@@ -473,13 +470,12 @@ SQL;
 
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
-        $familyExpr = '(CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END)';
         $hasProductExpr =
             'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
             'THEN true ELSE false END';
 
         $qb
-            ->addSelect(sprintf('%s AS familyLabel', $familyExpr))
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($hasProductExpr.' AS has_association');
 
         return $qb;
