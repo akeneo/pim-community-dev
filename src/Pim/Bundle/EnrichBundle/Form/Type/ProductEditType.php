@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 /**
  * Product edit form type
@@ -19,21 +20,24 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
  */
 class ProductEditType extends AbstractType
 {
-    /**
-     * Storage of the product form fields in order to use its frontend manipulation
-     *
-     * @var ProductFormView $productFormView
-     */
+    /** @var ProductFormView $productFormView */
     protected $productFormView;
+
+    /** @var FamilyRepository */
+    protected $repository;
 
     /**
      * Constructor
      *
-     * @param \Pim\Bundle\EnrichBundle\Form\View\ProductFormView $productFormView
+     * @param ProductFormView   $productFormView
+     * @param ProductRepository $repository
      */
-    public function __construct(ProductFormView $productFormView)
-    {
+    public function __construct(
+        ProductFormView $productFormView,
+        FamilyRepository $repository
+    ) {
         $this->productFormView = $productFormView;
+        $this->repository      = $repository;
     }
 
     /**
@@ -74,13 +78,14 @@ class ProductEditType extends AbstractType
         if ($options['enable_family']) {
             $builder->add(
                 'family',
-                'entity',
-                array(
-                    'class'       => 'PimCatalogBundle:Family',
-                    'empty_value' => ''
-                )
+                'light_entity',
+                [
+                    'repository'         => $this->repository,
+                    'repository_options' => ['localCode' => $options['currentLocale']],
+                ]
             );
         }
+
         $builder
             ->add(
                 'categories',
