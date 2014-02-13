@@ -215,6 +215,7 @@ info:
         axis:                'Variation axis: %attributes%'
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
+        no group types:      No group types exist, please create one
     association type:
         show products:        Show products
         show groups:          Show groups
