@@ -324,7 +324,9 @@ class ProductBuilder
         $locales = $this->localeManager->getActiveLocales();
         $localeRows = array();
         foreach ($locales as $locale) {
-            $localeRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null);
+            $localeRows[] = array(
+                'attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null
+            );
         }
 
         return $localeRows;
@@ -342,7 +344,9 @@ class ProductBuilder
         $channels = $this->channelManager->getChannels();
         $scopeRows = array();
         foreach ($channels as $channel) {
-            $scopeRows[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode());
+            $scopeRows[] = array(
+                'attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode()
+            );
         }
 
         return $scopeRows;
@@ -361,7 +365,11 @@ class ProductBuilder
         $scopeToLocaleRows = array();
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {
-                $scopeToLocaleRows[] = array('attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                $scopeToLocaleRows[] = array(
+                    'attribute' => $attribute->getCode(),
+                    'locale' => $locale->getCode(),
+                    'scope' => $channel->getCode()
+                );
             }
         }
 
