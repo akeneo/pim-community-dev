@@ -35,8 +35,15 @@ class Base extends Page
             throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
         }
 
-        if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
-            $this->getSession()->executeScript(sprintf("$('#%s').val('%s');", $field->getAttribute('id'), $value));
+        $class = $field->getAttribute('class');
+        if (strpos($class, 'wysiwyg') !== false || strpos($class, 'datepicker') !== false) {
+            $this->getSession()->executeScript(
+                sprintf(
+                    "$('#%s').val('%s').trigger('change');",
+                    $field->getAttribute('id'),
+                    $value
+                )
+            );
         } else {
             $field->setValue($value);
         }

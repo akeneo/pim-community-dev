@@ -271,7 +271,7 @@ class Form extends Base
                     $field->selectOption($value);
                 } elseif (preg_match('/_date$/', $for)) {
                     $this->getSession()->executeScript(
-                        sprintf("$('#%s').val('%s');", $for, $value)
+                        sprintf("$('#%s').val('%s').trigger('change');", $for, $value)
                     );
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
