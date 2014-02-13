@@ -375,7 +375,9 @@ SQL;
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->_em->createQueryBuilder()
+            ->select('p')
+            ->from($this->_entityName, 'p', 'p.id');
 
         // TODO : idealy, we add a join only if a filter is applied, the filter should contains that query part
 
@@ -383,14 +385,18 @@ SQL;
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin('p.groups', 'groups')
-            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
+            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
+            ->leftJoin('p.values', 'values')
+            ->leftJoin('values.attribute', 'attribute');
 
         $this->addCompleteness($qb);
 
         $qb
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect('groups');
+            ->addSelect('groups.code, gt.label')
+            ->addSelect('values')
+            ->addSelect('attribute');
 
         return $qb;
     }

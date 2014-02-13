@@ -18,6 +18,11 @@ class FlexibleFieldProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
+        $backend = $value['attribute']['backendType'];
+
+        return $value[$backend];
+
+        // TODO : to refactor to add different backend type support
         if (is_object($value) && is_callable([$value, '__toString'])) {
             $value = $value->__toString();
         } elseif (false === $value) {

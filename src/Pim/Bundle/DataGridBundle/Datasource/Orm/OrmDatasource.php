@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -48,9 +49,27 @@ class OrmDatasource extends OroOrmDatasource
     {
         $query = $this->qb->getQuery();
 
-        $results = $query->execute();
+        if (false) {
+            $results = $query->execute();
+            $rows    = [];
+            foreach ($results as $result) {
+                $rows[] = new ResultRecord($result);
+            }
+
+            return $rows;
+        }
+
+        // HYDRATE AS ARRAY
+        $results = $query->getArrayResult();
         $rows    = [];
-        foreach ($results as $result) {
+        foreach ($results as $id => $result) {
+            $result = current($result);
+            $values = $result['values'];
+            foreach ($values as $value) {
+                $result[$value['attribute']['code']]= $value;
+            }
+            unset($result['values']);
+            // TODO : clean result
             $rows[] = new ResultRecord($result);
         }
 

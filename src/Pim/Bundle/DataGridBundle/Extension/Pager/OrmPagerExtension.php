@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -64,8 +65,7 @@ class OrmPagerExtension extends OroOrmPagerExtension
         $this->pager->init();
 
         // get entity ids
-        $results = $cloneQb->getQuery()
-            ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $results = $cloneQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
         $ids = array_keys($results);
 
         // update query selection
