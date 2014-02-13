@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraint;
 use Assetic\Asset\AssetCollection;
-use Assetic\Filter\Yui\JsCompressorFilter;
 
 use APY\JsFormValidationBundle\Generator\PostProcessEvent;
 use APY\JsFormValidationBundle\JsfvEvents;

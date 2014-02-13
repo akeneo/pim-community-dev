@@ -7,7 +7,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;

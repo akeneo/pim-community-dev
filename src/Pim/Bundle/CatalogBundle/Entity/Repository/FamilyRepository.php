@@ -29,7 +29,6 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
             ->orderBy('ft.label')
             ->setParameter('localeCode', $options['localeCode']);
 
-
         $result  = $qb->getQuery()->getArrayResult();
         $choices = [];
 
