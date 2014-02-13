@@ -78,6 +78,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if ($this->multiple) {
+            if (!is_array($value)) {
+                throw new UnexpectedTypeException($value, 'array');
+            }
+
             return $this->repository->findBy(['id' => $value]);
         }
 
