@@ -305,6 +305,7 @@
             {{ form_widget(form.data, { 'attr': { 'class': 'input-small' }}) }}
             {{ form_widget(form.unit, { 'attr': { 'class': 'select2 input-small append' }}) }}
             {{ form_widget(form.family) }}
+            {{ form_errors(form.data) }}
             {{ block('form_info') }}
         </div>
     </div>
@@ -318,6 +319,7 @@
 {% block pim_enrich_price_collection_widget %}
     {% for child in form.children %}
         {{ form_widget(child) }}
+        {{ form_errors(child.data) }}
     {% endfor %}
     {{ block('form_info') }}
 {% endblock pim_enrich_price_collection_widget %}

@@ -77,6 +77,10 @@ define(
                     if ($field.siblings('a.add-attribute-option').length) {
                         field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
                     }
+
+                    _.each($field.siblings('.validation-tooltip'), function(icon) {
+                        $(icon).appendTo(this.$el.find('.icons-container'));
+                    }, this);
                 }
 
                 field.scope       = this.$el.data('scope');
