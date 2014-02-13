@@ -193,6 +193,10 @@ class Form extends Base
             throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
         }
 
+        if ($field->getAttribute('type') !== 'file') {
+            $field = $field->getParent()->find('css', 'input[type="file"]');
+        }
+
         $field->attachFile($path);
     }
 
