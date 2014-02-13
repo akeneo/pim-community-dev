@@ -21,10 +21,10 @@ function Range(field, params)
         var valid = Boolean(date.getTime());
         if (valid) {
             // TODO: Compensate for timezone offset and print errors in the right format
-            if (date < new window.Date(params.min.date)) {
+            if (params.min && params.min.date && date < new window.Date(params.min.date)) {
                 return getComputeMessage(params.minMessage, { 'limit' : params.min.date }, params.min.date);
             }
-            if (date > new window.Date(params.max.date)) {
+            if (params.max && params.max.date && date > new window.Date(params.max.date)) {
                 return getComputeMessage(params.maxMessage, { 'limit' : params.max.date }, params.max.date);
             }
 

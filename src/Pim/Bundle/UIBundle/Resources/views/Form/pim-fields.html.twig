@@ -359,3 +359,9 @@
 {% block pim_ajax_entity_row %}
     {{ block('form_row_field') }}
 {% endblock %}
+
+{% block oro_date_widget %}
+    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker', 'placeholder': placeholder|trans }) %}
+
+    {{ block('date_widget') }}
+{% endblock oro_date_widget %}
