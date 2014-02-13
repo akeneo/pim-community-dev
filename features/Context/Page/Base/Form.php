@@ -269,6 +269,10 @@ class Form extends Base
                     // We are playing with a select2 widget
                     $field = $label->getParent()->find('css', 'select');
                     $field->selectOption($value);
+                } elseif (preg_match('/_date$/', $for)) {
+                    $this->getSession()->executeScript(
+                        sprintf("$('#%s').val('%s');", $for, $value)
+                    );
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
                     if ($field->getTagName() === 'select') {
@@ -276,7 +280,7 @@ class Form extends Base
                     } else {
                         if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
                             $this->getSession()->executeScript(
-                                sprintf("$('#%s').val('%s');", $field->getAttribute('id'), $value)
+                                sprintf("$('#%s').val('%s');", $for, $value)
                             );
                         } else {
                             $field->setValue($value);
