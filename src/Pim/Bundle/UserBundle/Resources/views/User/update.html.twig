@@ -107,10 +107,6 @@
 
         {% set tabs = tabs|merge(['Business units', 'Email synchronization settings']) %}
 
-        {% if form.vars.value.id %}
-            {% set tabs = tabs|merge(['History']) %}
-        {% endif %}
-
         {{ elements.form_navbar(tabs) }}
 
         <div class="row-fluid tab-content buffer-top">
@@ -164,14 +160,6 @@
             <div class="tab-pane" id="email-synchronization-settings">
                 {{ form_widget(form.imapConfiguration) }}
             </div>
-
-            {% if form.vars.value.id %}
-                <div class="tab-pane" id="history">
-                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-                </div>
-            {% endif %}
-
         </div>
     {{ form_end(form) }}
 
