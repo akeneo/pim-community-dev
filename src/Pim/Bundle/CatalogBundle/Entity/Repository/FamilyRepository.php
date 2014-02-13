@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Repository
@@ -17,16 +18,18 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     /**
      * {@inheritdoc}
      */
-    public function getChoices(array $options = array())
+    public function getChoices(array $options)
     {
-        // BC FIX: Some calls to this method are still made without arguments
-        $options = array_merge(['localeCode' => 'en_US'], $options);
+        if (!isset($options['localeCode'])) {
+            throw new \InvalidArgumentException('Option "localeCode" is required');
+        }
 
         $qb = $this->_em->createQueryBuilder()
-            ->select('f.id', 'ft.label')
+            ->select('f.id')
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
             ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
             ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->orderBy('ft.label')
+            ->orderBy('label')
             ->setParameter('localeCode', $options['localeCode']);
 
         $result  = $qb->getQuery()->getArrayResult();

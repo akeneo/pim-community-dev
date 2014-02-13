@@ -72,7 +72,8 @@ services:
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.repository.orm.family'
+            - '@pim_user.context.user'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%

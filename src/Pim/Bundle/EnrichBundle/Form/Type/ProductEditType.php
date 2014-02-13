@@ -81,7 +81,7 @@ class ProductEditType extends AbstractType
                 'light_entity',
                 [
                     'repository'         => $this->repository,
-                    'repository_options' => ['localCode' => $options['currentLocale']],
+                    'repository_options' => ['localeCode' => $options['currentLocale']],
                 ]
             );
         }
