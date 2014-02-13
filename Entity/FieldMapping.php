@@ -8,6 +8,9 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping as FieldMappingMode
 /**
  * Entity field mapping
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="akeneo_batch_mapping_field")
  * @ORM\Entity

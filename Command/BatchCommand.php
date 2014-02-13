@@ -19,6 +19,9 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 /**
  * Batch command
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class BatchCommand extends ContainerAwareCommand
 {

@@ -19,6 +19,9 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
  *
  * Inspired by Spring Batch org.springframework.batch.core.step.AbstractStep;
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 abstract class AbstractStep implements StepInterface
 {

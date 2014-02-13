@@ -9,6 +9,9 @@ use Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 /**
  * Batch Bundle
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class AkeneoBatchBundle extends Bundle
 {

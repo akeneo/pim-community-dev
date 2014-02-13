@@ -14,6 +14,9 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 /**
  * Basic step implementation that read items, process them and write them
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class ItemStep extends AbstractStep
 {

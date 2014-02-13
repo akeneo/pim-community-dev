@@ -13,6 +13,9 @@ use Akeneo\Bundle\BatchBundle\Job\Job;
 /**
  * Entity job
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="akeneo_batch_job_instance")
  * @ORM\Entity()

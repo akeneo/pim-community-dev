@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class InvalidItemExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -8,6 +8,9 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
 /**
  * Entity ItemMapping
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="akeneo_batch_mapping_item")
  * @ORM\Entity

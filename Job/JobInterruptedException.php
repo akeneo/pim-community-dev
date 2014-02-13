@@ -9,6 +9,9 @@ namespace Akeneo\Bundle\BatchBundle\Job;
  * in a runtime exception (usually UnexpectedJobExecutionException} before
  * reaching the client.
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class JobInterruptedException extends \Exception
 {

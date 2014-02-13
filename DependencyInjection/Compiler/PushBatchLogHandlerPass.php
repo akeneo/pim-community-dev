@@ -9,6 +9,9 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Push the batch handler into the symfony logger
  *
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class PushBatchLogHandlerPass implements CompilerPassInterface
 {

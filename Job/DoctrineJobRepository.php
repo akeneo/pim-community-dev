@@ -16,6 +16,10 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
  * batch.
  *
  * Inspired by Spring Batch org.springframework.batch.core.job.JobRepository
+ *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class DoctrineJobRepository implements JobRepositoryInterface
 {

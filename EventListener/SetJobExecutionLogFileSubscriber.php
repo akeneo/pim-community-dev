@@ -10,6 +10,9 @@ use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 /**
  * Set the job execution log file into the job execution instance
  *
+ * @author    Gildas Quemener <gildas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
 {

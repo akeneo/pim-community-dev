@@ -5,6 +5,9 @@ namespace Akeneo\Bundle\BatchBundle\Event;
 /**
  * Interface of the batch bundle events
  *
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 interface EventInterface
 {

@@ -14,6 +14,10 @@ use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * Read the batch_jobs.yml file of the connectors to register the jobs
+ *
+ * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class RegisterJobsPass implements CompilerPassInterface
 {

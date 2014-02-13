@@ -8,6 +8,9 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 /**
  * Simple reader that provides data from an array
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class ArrayReader implements ItemReaderInterface
 {

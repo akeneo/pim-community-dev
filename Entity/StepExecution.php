@@ -16,6 +16,9 @@ use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
  *
  * Inspired by Spring Batch  org.springframework.batch.core.StepExecution
  *
+ * @author    Benoit Jacquemont <benoit@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
  *
  * @ORM\Table(name="akeneo_batch_step_execution")
  * @ORM\Entity()
