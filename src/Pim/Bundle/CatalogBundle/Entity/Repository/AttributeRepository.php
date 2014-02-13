@@ -49,7 +49,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('a.group')
+            ->orderBy('attribute_label, group_label')
             ->setParameter('localeCode', $options['localeCode']);
 
         if (!empty($options['excluded_attribute_ids'])) {
