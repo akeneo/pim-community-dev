@@ -71,7 +71,7 @@ class OrmPagerExtension extends OroOrmPagerExtension
         // update query selection
         if (count($ids) > 0) {
 
-            $attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59);
+            $attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59, 1305, 1306, 1307);
 
             $datasource->getQueryBuilder()
 
@@ -79,17 +79,53 @@ class OrmPagerExtension extends OroOrmPagerExtension
                     'p.values',
                     'values',
                     'WITH',
-                    'values.attribute IN (:attributeIds)'
+                    'values.attribute IN (:attributeIds) '
+                    .'AND (values.locale = :dataLocale OR values.locale IS NULL) '
+                    .'AND (values.scope = :scopeCode OR values.scope IS NULL)'
                 )
-
                 ->leftJoin('values.attribute', 'attribute')
                 ->addSelect('values')
                 ->addSelect('attribute')
- 
+
+                ->leftJoin(
+                    'values.prices',
+                    'prices',
+                    '(prices.locale = :dataLocale OR prices.locale IS NULL) '
+                    .'AND (prices.scope = :scopeCode OR prices.scope IS NULL)'
+                )
+                ->addSelect('prices')
+
+                ->leftJoin(
+                    'values.option',
+                    'option',
+                    '(option.locale = :dataLocale OR option.locale IS NULL) '
+                    .'AND (option.scope = :scopeCode OR option.scope IS NULL)'
+                )
+                ->addSelect('option')
+                ->leftJoin(
+                    'option.optionValues',
+                    'optionValues',
+                    'optionValues.locale = :dataLocale'
+                )
+                ->addSelect('optionValues')
+
+                ->leftJoin(
+                    'values.options',
+                    'options',
+                    '(options.locale = :dataLocale OR options.locale IS NULL) '
+                    .'AND (options.scope = :scopeCode OR options.scope IS NULL)'
+                )
+                ->addSelect('options')
+                ->leftJoin(
+                    'options.optionValues',
+                    'optionsValues',
+                    'optionsValues.locale = :dataLocale'
+                )
+                ->addSelect('optionsValues')
+
                 ->andWhere($rootField.' IN (:entityIds)')
                 ->setParameter('entityIds', $ids)
-                ->setParameter('attributeIds', $attributeIds)
-                ;
+                ->setParameter('attributeIds', $attributeIds);
         }
     }
 
