@@ -10,7 +10,7 @@ channels:
             - USD
         tree: default
         conversionUnits:
-            WEIGHT: KILOGRAM
+            weight: KILOGRAM
     mobile:
         code:  mobile
         label: Mobile
