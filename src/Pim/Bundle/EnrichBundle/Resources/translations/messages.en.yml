@@ -115,6 +115,7 @@ confirmation:
         variant group:    Are you sure you want to delete the variant group %name%?
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
+        user:             Are you sure you want to delete the user %name%?
     attribute group:
         remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
     family:
@@ -192,6 +193,8 @@ flash:
         created: Association type successfully created
         updated: Association type successfully updated
         removed: Association type successfully removed
+    user:
+        removed: User successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -215,6 +218,7 @@ info:
         axis:                'Variation axis: %attributes%'
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
+        no group types:      No group types exist, please create one
     association type:
         show products:        Show products
         show groups:          Show groups

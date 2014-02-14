@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Family manager
@@ -13,19 +14,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class FamilyManager
 {
-    /**
-     * @var RegistryInterface
-     */
-    protected $doctrine;
+    /** @var FamilyRepository */
+    protected $repository;
+
+    /** @var UserContext */
+    protected $userContext;
 
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
+     * @param FamilyRepository $repository
+     * @param UserContext      $userContext
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(FamilyRepository $repository, UserContext $userContext)
     {
-        $this->doctrine = $doctrine;
+        $this->repository  = $repository;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -35,19 +39,8 @@ class FamilyManager
      */
     public function getChoices()
     {
-        $choices = $this->getRepository()->getChoices();
-        asort($choices);
-
-        return $choices;
-    }
-
-    /**
-     * Returns the entity repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    public function getRepository()
-    {
-        return $this->doctrine->getRepository('PimCatalogBundle:Family');
+        return $this->repository->getChoices(
+            ['localeCode' => $this->userContext->getCurrentLocaleCode()]
+        );
     }
 }

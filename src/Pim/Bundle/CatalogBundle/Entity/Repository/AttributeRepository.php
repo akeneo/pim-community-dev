@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository for attribute entity
@@ -12,7 +13,8 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as Fle
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeRepository extends FlexibleAttributeRepository implements
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    ChoicesProviderInterface
 {
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -27,39 +29,44 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
-     * Get the query builder to find all attributes except the ones
-     * defined in arguments
-     *
-     * @param array   $attributes       The attributes to exclude from the results set
-     * @param boolean $withTranslations Join the translations
-     *
-     * @return Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
-    public function getFindAllExceptQB(array $attributes, $withTranslations = false)
+    public function getChoices(array $options)
     {
-        $qb = $this->createQueryBuilder('a')
-            ->addSelect('agroup')->leftJoin('a.group', 'agroup')
-            ->orderBy('a.group');
-
-        if ($withTranslations) {
-            $qb->addSelect('translation')->leftJoin('a.translations', 'translation');
-            $qb->addSelect('gtranslation')->leftJoin('agroup.translations', 'gtranslation');
+        if (!isset($options['excluded_attribute_ids'])) {
+            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
         }
 
-        if (!empty($attributes)) {
-            $ids = array_map(
-                function ($attribute) {
-                    return $attribute->getId();
-                },
-                $attributes
-            );
+        if (!isset($options['localeCode'])) {
+            throw new \InvalidArgumentException('Option "localeCode" is required');
+        }
 
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('a.id')
+            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
+            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
+            ->orderBy('attribute_label, group_label')
+            ->setParameter('localeCode', $options['localeCode']);
+
+        if (!empty($options['excluded_attribute_ids'])) {
             $qb->andWhere(
-                $qb->expr()->notIn('a.id', $ids)
+                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
             );
         }
 
-        return $qb;
+        $result = $qb->getQuery()->getArrayResult();
+
+        $attributes = [];
+        foreach ($result as $key => $attribute) {
+            $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
+            unset($result[$key]);
+        }
+
+        return $attributes;
     }
 
     /**

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
-        function ($, _, optionform, Scopable, CurrencyField, Dialog, DialogForm, mediator) {
+        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
             'use strict';
 
             $(function () {
@@ -15,6 +15,10 @@
 
                 _.each($('form div.currency'), function (field) {
                     new CurrencyField({ el: $(field) });
+                });
+
+                _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
                 });
 
                 mediator.trigger('pim:reinit');

@@ -471,7 +471,7 @@ class WebUser extends RawMinkContext
             }
         }
 
-        $value = $value ?: $this->getInvalidValueFor(
+        $value = $value !== null ? $value : $this->getInvalidValueFor(
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 

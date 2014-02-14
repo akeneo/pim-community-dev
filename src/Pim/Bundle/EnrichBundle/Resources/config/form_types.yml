@@ -12,6 +12,7 @@ services:
         class: %pim_enrich.form.type.product_edit.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.repository.orm.family'
         tags:
             - { name: form.type, alias: pim_product_edit }
 
@@ -148,6 +149,8 @@ services:
         class: %pim_enrich.form.type.available_attributes.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.orm.attribute'
+            - '@pim_user.context.user'
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
@@ -174,6 +177,11 @@ services:
         class: %pim_catalog.form.type.datagrid_configuration.class%
         tags:
             - { name: form.type, alias: pim_catalog_datagrid_configuration }
+
+    pim_catalog.form.type.light_entity:
+        class: %pim_catalog.form.type.light_entity.class%
+        tags:
+            - { name: form.type, alias: light_entity }
 
     # Form extensions
     pim_enrich.extension.type.media:

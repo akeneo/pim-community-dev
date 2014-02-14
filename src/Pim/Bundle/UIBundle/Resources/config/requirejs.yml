@@ -19,6 +19,7 @@ config:
         bootstrap.bootstrapswitch: oroui/lib/bootstrap/js/bootstrap.switch
         tinymce:                   pimui/lib/tinymce/tinymce.min
         wysiwyg:                   pimui/js/pim-wysiwyg
+        datepicker:                pimui/js/pim-datepicker
         jquery.sidebarize:         pimui/js/jquery.sidebarize
         pim/ui:                    pimui/js/pim-ui
         pim/initselect2:           pimui/js/pim-initselect2
