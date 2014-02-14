@@ -18,6 +18,8 @@
         require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
         function ($, initSelect2, datepicker) {
             $(function() {
+                $('.navbar-content.pull-left').css('width', '80%')
+
                 $('#business_units_tree').jstree({
                     "checkbox": {
                         real_checkboxes: true,
@@ -84,8 +86,10 @@
 
         {% set left %}
             {% if form.vars.value.id %}
-                <div class="visual pull-left buffer-right">
-                    <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+                <div class="customer-info well-small">
+                    <div class="visual">
+                        <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+                    </div>
                 </div>
                 <ul class="inline">
                     <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|oro_format_datetime : 'N/A' }}</li>
