@@ -49,6 +49,7 @@ class OrmDatasource extends OroOrmDatasource
     {
         $query = $this->qb->getQuery();
 
+        // HYDRATE OBJECTS
         if (false) {
             $results = $query->execute();
             $rows    = [];
@@ -64,11 +65,13 @@ class OrmDatasource extends OroOrmDatasource
         $rows    = [];
         foreach ($results as $id => $result) {
             $result = current($result);
+
             $values = $result['values'];
             foreach ($values as $value) {
                 $result[$value['attribute']['code']]= $value;
             }
             unset($result['values']);
+
             // TODO : clean result
             $rows[] = new ResultRecord($result);
         }

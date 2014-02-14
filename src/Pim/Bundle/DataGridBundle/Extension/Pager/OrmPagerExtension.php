@@ -70,9 +70,26 @@ class OrmPagerExtension extends OroOrmPagerExtension
 
         // update query selection
         if (count($ids) > 0) {
+
+            $attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59);
+
             $datasource->getQueryBuilder()
+
+                ->leftJoin(
+                    'p.values',
+                    'values',
+                    'WITH',
+                    'values.attribute IN (:attributeIds)'
+                )
+
+                ->leftJoin('values.attribute', 'attribute')
+                ->addSelect('values')
+                ->addSelect('attribute')
+ 
                 ->andWhere($rootField.' IN (:entityIds)')
-                ->setParameter('entityIds', $ids);
+                ->setParameter('entityIds', $ids)
+                ->setParameter('attributeIds', $attributeIds)
+                ;
         }
     }
 

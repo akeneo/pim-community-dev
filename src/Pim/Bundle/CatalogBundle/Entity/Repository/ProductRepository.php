@@ -385,9 +385,8 @@ SQL;
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin('p.groups', 'groups')
-            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale')
-            ->leftJoin('p.values', 'values')
-            ->leftJoin('values.attribute', 'attribute');
+            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
+
 
         $this->addCompleteness($qb);
 
@@ -395,9 +394,7 @@ SQL;
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect('groups.code, gt.label')
-            ->addSelect('values')
-            ->addSelect('attribute');
-
+;
         return $qb;
     }
 
