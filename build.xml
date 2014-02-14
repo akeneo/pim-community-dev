@@ -37,6 +37,8 @@
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/coverage-parts"/>
         <mkdir dir="${basedir}/app/build/logs"/>
+        <mkdir dir="${basedir}/app/build/logs/phpunit"/>
+        <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
         <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
