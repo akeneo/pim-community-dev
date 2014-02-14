@@ -2,6 +2,7 @@
 
 {% block head %}
     {{ parent() }}
+    <link rel="stylesheet" media="all" href="{{ asset('/css/oro.css') }}" />
     {% stylesheets
         'bundles/pimui/css/pim.less'
 
@@ -9,9 +10,9 @@
         filter='cssrewrite,lessphp'
         output='css/pim_all.css'
     %}
-    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
     {% endstylesheets %}
-    <script>
+    <script type="text/javascript">
         if (sessionStorage) {
             sessionStorage.clear()
         }
@@ -37,11 +38,11 @@
         </div>
         <fieldset>
             <div class="input-prepend">
-                <label for="prependedInput" class="add-on">{{ 'Username'|trans }}</label>
+                <label for="prependedInput" class="add-on" title="{{ 'Username or Email'|trans }}"><i class="icon-user"></i></label>
                 <input type="text" id="prependedInput" autofocus="autofocus" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
             </div>
             <div class="input-prepend">
-                <label for="prependedInput2" class="add-on">{{ 'Password'|trans }}</label>
+                <label for="prependedInput2" class="add-on" title="{{ 'Password'|trans }}"><i class="icon-lock"></i></label>
                 <input type="password" id="prependedInput2" class="span2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" />
             </div>
             <div class="form-row">
