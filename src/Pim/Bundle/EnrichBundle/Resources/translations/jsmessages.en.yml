@@ -1,0 +1,60 @@
+# Grid action messages
+confirmation:
+    remove:
+        item:             Are you sure you want to delete this item?
+        association type: Are you sure you want to delete this association type?
+        attribute:        Are you sure you want to delete this attribute?
+        family:           Are you sure you want to delete this family?
+        product:          Are you sure you want to delete this product?
+        channel:          Are you sure you want to delete this channel?
+        group:            Are you sure you want to delete this group?
+        variant group:    Are you sure you want to delete this variant group?
+        group type:       Are you sure you want to delete this group type?
+        import profile:   Are you sure you want to delete this import profile?
+        export profile:   Are you sure you want to delete this export profile?
+        user:             Are you sure you want to delete this user?
+        role:             Are you sure you want to delete this role?
+
+flash:
+    item:
+        removed: Item successfully removed
+    association type:
+        removed: Association type successfully removed
+    attribute:
+        removed: Attribute successfully removed
+    family:
+        removed: Family successfully removed
+    product:
+        removed: Product successfully removed
+    channel:
+        removed: Channel successfully removed
+    group:
+        removed: Group successfully removed
+    variant group:
+        removed: Variant group successfully removed
+    group type:
+        removed: Group type successfully removed
+    import profile:
+        removed: Import profile successfully removed
+    export profile:
+        removed: Export profile successfully removed
+    user:
+        removed: User successfully removed
+    role:
+        removed: Role successfully removed
+
+error:
+    removing:
+        item:             Cannot delete this item
+        association type: Cannot delete this association type
+        attribute:        Cannot delete this attribute
+        family:           Cannot delete this family
+        product:          Cannot delete this product
+        channel:          Cannot delete this channel
+        group:            Cannot delete this group
+        variant group:    Cannot delete this variant group
+        group type:       Cannot delete this group type
+        import profile:   Cannot delete this import profile
+        export profile:   Cannot delete this export profile
+        user:             Cannot delete this user
+        role:             Cannot delete this role
