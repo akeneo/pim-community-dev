@@ -26,7 +26,7 @@ monolog:
             type:    buffer
             handler: swift
         swift:
-            type:       swift_mailer
+            type:       native_mailer
             from_email: techteam@akeneo.com
             to_email:   techteam@akeneo.com
             subject:    An Error Occurred!
