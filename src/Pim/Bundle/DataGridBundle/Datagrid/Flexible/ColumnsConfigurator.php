@@ -55,8 +55,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $attributesColumns = array();
 
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showColumn        = $attribute->isUseableAsGridColumn();
-            $attributeType     = $attribute->getAttributeType();
+            $showColumn        = $attribute['useableAsGridColumn'];
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {
@@ -73,7 +73,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    'label' => $attribute->getLabel(),
+                    'label' => $attribute['label'],
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {

@@ -59,8 +59,8 @@ class FiltersConfigurator implements ConfiguratorInterface
     public function configure()
     {
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $showFilter        = $attribute->isUseableAsGridFilter();
-            $attributeType     = $attribute->getAttributeType();
+            $showFilter        = $attribute['useableAsGridFilter'];
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($showFilter && (!$attributeTypeConf || !isset($attributeTypeConf['filter']))) {
@@ -79,12 +79,12 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig = $filterConfig + array(
                     FilterUtility::FEN_KEY       => $this->flexibleEntity,
                     FilterUtility::DATA_NAME_KEY => $attributeCode,
-                    'label'                      => $attribute->getLabel(),
+                    'label'                      => $attribute['label'],
                     'enabled'                    => ($attributeType === 'pim_catalog_identifier')
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {
-                    $filterConfig['family'] = $attribute->getMetricFamily();
+                    $filterConfig['family'] = $attribute['metricFamily'];
                 }
 
                 $this->configuration->offsetSetByPath(

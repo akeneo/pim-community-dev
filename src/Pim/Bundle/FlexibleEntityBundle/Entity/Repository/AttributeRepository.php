@@ -73,6 +73,33 @@ class AttributeRepository extends EntityRepository
     }
 
     /**
+     * Get associative array of code to attribute
+     *
+     * @param string $entityType
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getAttributesGridConfig($entityType, $locale = 'fr_FR')
+    {
+        // TODO : pass current locale
+
+        $labelExpr = '(CASE WHEN trans.label IS NULL THEN att.code ELSE trans.label END)';
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id,att.code,att.attributeType,att.useableAsGridColumn,att.useableAsGridFilter,att.metricFamily')
+            ->from($this->_entityName, 'att', 'att.code')
+            ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->addSelect(sprintf('%s as label', $labelExpr))
+            ->where('att.entityType = :entityType')
+            ->setParameter('entityType', $entityType);
+
+        $result = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+
+        return $result;
+    }
+
+    /**
      * Clear the attributes cache for the provided entity type
      * or for all entities if no entityType provided
      *

@@ -89,6 +89,7 @@ class ConfigureFlexibleGridListener
         $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
 
         if ($flexibleEntity) {
+            $flexManager = $this->getFlexibleManager($flexibleEntity);
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
             $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
             $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
@@ -144,14 +145,8 @@ class ConfigureFlexibleGridListener
     protected function getFlexibleAttributes($entityFQCN)
     {
         $flexManager = $this->getFlexibleManager($entityFQCN);
-
         $attributeRepository = $flexManager->getAttributeRepository();
-        $attributeEntities   = $attributeRepository->findBy(['entityType' => $flexManager->getFlexibleName()]);
-        $attributes          = [];
-
-        foreach ($attributeEntities as $attribute) {
-            $attributes[$attribute->getCode()] = $attribute;
-        }
+        $attributes = $attributeRepository->getAttributesGridConfig($entityFQCN);
 
         return $attributes;
     }
