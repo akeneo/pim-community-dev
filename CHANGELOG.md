@@ -1,6 +1,7 @@
 # 1.0.0-
 
 ## Features
+- Uservoice integration
 
 ## Improvements
 - Load choices for grid filters asynchronously
