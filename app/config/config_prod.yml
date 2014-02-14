@@ -13,8 +13,15 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: error
-            handler:      buffered
+            action_level: critical
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, buffered]
+       streamed:
+           type:  stream
+           path:  "%kernel.logs_dir%/%kernel.environment%.log"
+           level: debug
         buffered:
             type:    buffer
             handler: swift
