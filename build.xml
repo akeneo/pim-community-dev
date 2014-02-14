@@ -177,12 +177,11 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec">
-        <exec executable="bin/phpspec" failonerror="true">
+        <exec executable="bin/phpspec" output="app/build/logs/phpspec/junit.xml">
             <arg value="run" />
             <arg value="--ansi" />
-            <arg value="-fpretty" />
+            <arg value="-fjunit" />
             <arg value="--no-interaction" />
-            <arg value="--verbose" />
         </exec>
     </target>
 
