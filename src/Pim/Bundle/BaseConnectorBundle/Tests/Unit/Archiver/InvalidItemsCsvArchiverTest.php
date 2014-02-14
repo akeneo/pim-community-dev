@@ -121,7 +121,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getJobExecutionMock($jobInstance, $id)
     {
         $jobExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -139,7 +139,7 @@ class InvalidItemsCsvArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getJobInstanceMock($type, $alias)
     {
         $jobInstance = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobInstance')
             ->disableOriginalConstructor()
             ->getMock();
 

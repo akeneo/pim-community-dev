@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\VersioningBundle\EventListener\AddContextListener;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 
@@ -26,7 +26,7 @@ class AddContextListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new AddContextListener($builder);
         $this->assertEquals(
             $listener->getSubscribedEvents(),
-            array('oro_batch.before_job_execution' => 'addContext')
+            array('akeneo_batch.before_job_execution' => 'addContext')
         );
     }
 

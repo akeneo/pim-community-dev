@@ -7,7 +7,7 @@ use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -64,7 +64,7 @@ class FixturesContext extends RawMinkContext
         'Family'          => 'PimCatalogBundle:Family',
         'Category'        => 'PimCatalogBundle:Category',
         'AssociationType' => 'PimCatalogBundle:AssociationType',
-        'JobInstance'     => 'OroBatchBundle:JobInstance',
+        'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'Locale'          => 'PimCatalogBundle:Locale',
@@ -687,7 +687,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('oro_batch.connectors');
+        $registry = $this->getContainer()->get('akeneo_batch.connectors');
 
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);

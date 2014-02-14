@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 
 /**
@@ -140,7 +140,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
     protected function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -148,7 +148,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
     protected function getJobExecutionEventMock($jobExecution)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 

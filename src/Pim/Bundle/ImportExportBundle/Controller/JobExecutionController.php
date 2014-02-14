@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
@@ -108,7 +108,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function showAction($id)
     {
-        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
@@ -129,7 +129,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
         $response = new BinaryFileResponse($jobExecution->getLogFile());
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
@@ -148,7 +148,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadFilesAction($id, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
         $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
         return new StreamedResponse(

@@ -5,9 +5,9 @@
     {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
     {% set subtitle = execution.jobInstance.label  %}
     {% set isRunning = execution.exitStatus.exitCode not in [
-            constant('Oro\\Bundle\\BatchBundle\\Job\\ExitStatus::COMPLETED'),
-            constant('Oro\\Bundle\\BatchBundle\\Job\\ExitStatus::STOPPED'),
-            constant('Oro\\Bundle\\BatchBundle\\Job\\ExitStatus::FAILED')
+            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::COMPLETED'),
+            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::STOPPED'),
+            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::FAILED')
         ]
     %}
 

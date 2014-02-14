@@ -75,7 +75,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $this->reader->read();
-        } catch (\Oro\Bundle\BatchBundle\Item\InvalidItemException $e) {
+        } catch (\Akeneo\Bundle\BatchBundle\Item\InvalidItemException $e) {
             $this->assertSame('pim_base_connector.steps.csv_reader.invalid_item_columns_count', $e->getMessage());
             $parameters = $e->getMessageParameters();
             $this->assertEquals(
@@ -110,7 +110,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     protected function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product import processor

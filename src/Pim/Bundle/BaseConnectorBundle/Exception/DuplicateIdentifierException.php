@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Exception;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
 

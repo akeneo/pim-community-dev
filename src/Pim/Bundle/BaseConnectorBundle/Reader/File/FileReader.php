@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * File reader

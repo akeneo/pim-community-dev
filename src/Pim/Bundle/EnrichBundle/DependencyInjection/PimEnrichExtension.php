@@ -65,7 +65,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'JMSDiExtraBundle'               => 'jms_di_extra',
             'OroEntityExtendBundle'          => 'oro_entity_extend',
             'OroFilterBundle'                => 'oro_filter',
-            'OroBatchBundle'                 => 'oro_batch',
+            'AkeneoBatchBundle'              => 'akeneo_batch',
             'KnpGaufretteBundle'             => 'knp_gaufrette',
         );
 

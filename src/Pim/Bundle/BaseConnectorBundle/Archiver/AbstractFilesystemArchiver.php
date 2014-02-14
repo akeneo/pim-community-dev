@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Base archiver

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\EventListener;
 
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Test related class
@@ -57,7 +57,7 @@ class InvalidItemsCollectorTest extends \PHPUnit_Framework_TestCase
     protected function getInvalidItemEventMock(array $item)
     {
         $event = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Event\InvalidItemEvent')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
