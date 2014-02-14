@@ -4,12 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Model;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 class AvailableAttributesSpec extends ObjectBehavior
 {
-    function it_has_attribute_ids()
+    function it_has_attributes(AbstractAttribute $sku, AbstractAttribute $name)
     {
-        $this->setAttributeIds([1, 2, 3]);
-        $this->getAttributeIds()->shouldReturn([1, 2, 3]);
+        $this->setAttributes([$sku, $name]);
+        $this->getAttributes()->shouldReturn([$sku, $name]);
     }
 }

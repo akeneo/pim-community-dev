@@ -218,7 +218,7 @@ class ProductBuilder
     /**
      * Returns an array of product values identifiers
      *
-     * @param ProductInterface  $product
+     * @param ProductInterface $product
      *
      * @return array:array
      */

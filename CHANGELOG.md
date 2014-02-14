@@ -9,6 +9,8 @@
 - Fix the versions of dependencies in composer.json
 - Undisplay unwanted searchable elements in quick search
 - Add icons for category and product in search view
+- Prevent hydrating all attributes in the available attributes addition form
+- Prevent hydrating all families in the product edition form
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
