@@ -113,9 +113,7 @@ class ProductManagerSpec extends ObjectBehavior
         Attribute $name,
         Attribute $size
     ) {
-        $attributes->getAttributeIds()->willReturn([1, 2, 3]);
-        $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
-        $attRepository->findBy(['id' => [1, 2, 3]])->willReturn([$sku, $name, $size]);
+        $attributes->getAttributes()->willReturn([$sku, $name, $size]);
 
         $builder->addAttributeToProduct($product, $sku)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
