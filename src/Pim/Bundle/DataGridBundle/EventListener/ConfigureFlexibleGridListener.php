@@ -14,8 +14,6 @@ use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 /**
  * Grid listener to configure column, filter and sorter based on attributes and business rules
@@ -37,9 +35,9 @@ class ConfigureFlexibleGridListener
     const ENTITY_PATH = '[source][entity]';
 
     /**
-     * @var FlexibleManagerRegistry
+     * @var FlexibleManager
      */
-    protected $flexRegistry;
+    protected $flexibleManager;
 
     /**
      * @var ConfigurationRegistry
@@ -59,18 +57,18 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManagerRegistry $flexRegistry  flexible manager registry
-     * @param ConfigurationRegistry   $confRegistry  attribute type configuration registry
-     * @param RequestParameters       $requestParams request parameters
+     * @param FlexibleManager       $flexibleManager flexible manager
+     * @param ConfigurationRegistry $confRegistry    attribute type configuration registry
+     * @param RequestParameters     $requestParams   request parameters
      */
     public function __construct(
-        FlexibleManagerRegistry $flexRegistry,
+        FlexibleManager $flexibleManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams
     ) {
-        $this->flexRegistry  = $flexRegistry;
-        $this->confRegistry  = $confRegistry;
-        $this->requestParams = $requestParams;
+        $this->flexibleManager = $flexibleManager;
+        $this->confRegistry    = $confRegistry;
+        $this->requestParams   = $requestParams;
     }
 
     /**
@@ -94,9 +92,8 @@ class ConfigureFlexibleGridListener
         $isFlexibleGrid = $datagridConfig->offsetGetByPath(self::IS_FLEXIBLE_ENTITY_PATH);
 
         if ($isFlexibleGrid) {
-            $flexibleEntity = $this->getEntity($datagridConfig);
-            $flexManager    = $this->getFlexibleManager($flexibleEntity);
-            $attributes     = $this->getFlexibleAttributes($flexibleEntity);
+            $this->prepareFlexibleManager();
+            $attributes = $this->getAttributesConfig();
             $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
             $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
             $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
@@ -115,7 +112,7 @@ class ConfigureFlexibleGridListener
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
+     * @param array()               $attributes
      *
      * @return ConfiguratorInterface
      */
@@ -126,21 +123,20 @@ class ConfigureFlexibleGridListener
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
+     * @param array                 $attributes
      *
      * @return ConfiguratorInterface
      */
     protected function getSortersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
     {
-        $flexibleEntity = $this->getEntity($datagridConfig);
-        $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
+        $sorterCallback = $this->getFlexibleSorterApplyCallback();
 
         return new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
+     * @param array                 $attributes
      *
      * @return ConfiguratorInterface
      */
@@ -152,45 +148,34 @@ class ConfigureFlexibleGridListener
     }
 
     /**
-     * Prepares attributes array for given entity
+     * Get attributes configuration
      *
-     * @param string $entityFQCN
-     *
-     * @return AbstractAttribute[]
+     * @return array
      */
-    protected function getFlexibleAttributes($entityFQCN)
+    protected function getAttributesConfig()
     {
-        $flexManager = $this->getFlexibleManager($entityFQCN);
-        $attributeRepository = $flexManager->getAttributeRepository();
-        $attributes = $attributeRepository->getAttributesGridConfig($entityFQCN);
+        $attributeRepository = $this->flexibleManager->getAttributeRepository();
+        $attributes = $attributeRepository->getAttributesGridConfig($this->flexibleManager->getFlexibleName());
 
         return $attributes;
     }
 
     /**
-     * @param string $entityFQCN
-     *
-     * @return FlexibleManager
+     * Prepare flexible manager
      */
-    protected function getFlexibleManager($entityFQCN)
+    protected function prepareFlexibleManager()
     {
-        $flexManager = $this->flexRegistry->getManager($entityFQCN);
-
-        $flexManager->setLocale($this->requestParams->getLocale());
-
-        return $flexManager;
+        $this->flexibleManager->setLocale($this->requestParams->getLocale());
     }
 
     /**
      * Creates sorter apply callback
      *
-     * @param string $entityFQCN
-     *
      * @return callable
      */
-    protected function getFlexibleSorterApplyCallback($entityFQCN)
+    protected function getFlexibleSorterApplyCallback()
     {
-        $flexManager = $this->getFlexibleManager($entityFQCN);
+        $flexManager = $this->flexibleManager;
 
         return function (OrmDatasource $datasource, $attributeCode, $direction) use ($flexManager) {
             $qb = $datasource->getQueryBuilder();
