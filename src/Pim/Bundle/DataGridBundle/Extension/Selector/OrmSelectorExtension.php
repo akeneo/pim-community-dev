@@ -79,7 +79,7 @@ class OrmSelectorExtension extends AbstractExtension
         if ($isFlexible) {
 
             //$attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59, 1305, 1306, 1307);
-            $attributeIds = array(1, 1142, 1051, 359, 55, 586);
+            $attributeIds = array(1, 1142, 1051, 359, 55, 586, 1302);
 
             $datasource->getQueryBuilder()
 
