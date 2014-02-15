@@ -30,7 +30,9 @@ class AvailableAttributesType extends AbstractType
     /**
      * Constructor
      *
-     * @param string $attributeClass
+     * @param string              $attributeClass
+     * @param AttributeRepository $repository
+     * @param UserContext         $userContext
      */
     public function __construct($attributeClass, AttributeRepository $repository, UserContext $userContext)
     {
