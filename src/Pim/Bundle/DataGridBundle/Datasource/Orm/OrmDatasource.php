@@ -22,6 +22,11 @@ class OrmDatasource extends OroOrmDatasource
     const TYPE = 'pim_orm';
 
     /**
+     * @var boolean
+     */
+    protected $isFlexible = false;
+
+    /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
@@ -39,6 +44,8 @@ class OrmDatasource extends OroOrmDatasource
             $this->qb = $repository->createQueryBuilder('o');
         }
 
+        $this->isFlexible = isset($config['is_flexible']) ? (bool) $config['is_flexible'] : false;
+
         $grid->setDatasource(clone $this);
     }
 
@@ -49,8 +56,23 @@ class OrmDatasource extends OroOrmDatasource
     {
         $query = $this->qb->getQuery();
 
-        // HYDRATE OBJECTS
-        if (false) {
+        if ($this->isFlexible) {
+            $results = $query->getArrayResult();
+            $rows    = [];
+            foreach ($results as $result) {
+                $result = current($result);
+
+                $values = $result['values'];
+                foreach ($values as $value) {
+                    $result[$value['attribute']['code']]= $value;
+                }
+                unset($result['values']);
+
+                // TODO : clean result
+                $rows[] = new ResultRecord($result);
+            }
+
+        } else {
             $results = $query->execute();
             $rows    = [];
             foreach ($results as $result) {
@@ -58,22 +80,6 @@ class OrmDatasource extends OroOrmDatasource
             }
 
             return $rows;
-        }
-
-        // HYDRATE AS ARRAY
-        $results = $query->getArrayResult();
-        $rows    = [];
-        foreach ($results as $id => $result) {
-            $result = current($result);
-
-            $values = $result['values'];
-            foreach ($values as $value) {
-                $result[$value['attribute']['code']]= $value;
-            }
-            unset($result['values']);
-
-            // TODO : clean result
-            $rows[] = new ResultRecord($result);
         }
 
         return $rows;

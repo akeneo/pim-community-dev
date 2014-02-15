@@ -63,17 +63,20 @@ class OrmSelectorExtension extends AbstractExtension
     {
         // TODO : check no result
         // TODO: check filters
-
         $entityIds = $this->getEntityIds($datasource);
-
         $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
         $rootField = $rootAlias.'.id';
 
-        $datasource->getQueryBuilder()
-            ->setFirstResult(null)
-            ->setMaxResults(null);
-
+        // filter by entity ids and reset limits
         if (count($entityIds) > 0) {
+            $datasource->getQueryBuilder()
+                ->andWhere($rootField.' IN (:entityIds)')->setParameter('entityIds', $entityIds);
+
+            $datasource->getQueryBuilder()->setFirstResult(null)->setMaxResults(null);
+        }
+
+        $isFlexible = $config->offsetGetByPath('[source][is_flexible]');
+        if ($isFlexible) {
 
             //$attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59, 1305, 1306, 1307);
             $attributeIds = array(1, 1142, 1051, 359, 55, 586);
