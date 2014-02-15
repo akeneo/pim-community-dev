@@ -29,7 +29,12 @@ class ConfigureFlexibleGridListener
     /**
      * @var string
      */
-    const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
+    const IS_FLEXIBLE_ENTITY_PATH = '[source][is_flexible]';
+
+    /**
+     * @var string
+     */
+    const ENTITY_PATH = '[source][entity]';
 
     /**
      * @var FlexibleManagerRegistry
@@ -86,15 +91,26 @@ class ConfigureFlexibleGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $isFlexibleGrid = $datagridConfig->offsetGetByPath(self::IS_FLEXIBLE_ENTITY_PATH);
 
-        if ($flexibleEntity) {
-            $flexManager = $this->getFlexibleManager($flexibleEntity);
-            $attributes = $this->getFlexibleAttributes($flexibleEntity);
+        if ($isFlexibleGrid) {
+            $flexibleEntity = $this->getEntity($datagridConfig);
+            $flexManager    = $this->getFlexibleManager($flexibleEntity);
+            $attributes     = $this->getFlexibleAttributes($flexibleEntity);
             $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
             $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
             $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
         }
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     *
+     * @return string
+     */
+    protected function getEntity(DatagridConfiguration $datagridConfig)
+    {
+        return $datagridConfig->offsetGetByPath(self::ENTITY_PATH);
     }
 
     /**
@@ -116,7 +132,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getSortersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
     {
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $flexibleEntity = $this->getEntity($datagridConfig);
         $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
 
         return new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
@@ -130,7 +146,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
     {
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $flexibleEntity = $this->getEntity($datagridConfig);
 
         return new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
     }
