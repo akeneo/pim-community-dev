@@ -57,7 +57,6 @@ class ConfigurationPopin extends Element
         return $column;
     }
 
-
     /**
      * Get the whole bucket container or a specific item
      *
