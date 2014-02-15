@@ -104,12 +104,12 @@ class ProductWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
      */
     protected function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

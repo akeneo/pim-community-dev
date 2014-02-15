@@ -1,4 +1,4 @@
-Oro\Bundle\BatchBundle\Entity\JobInstance:
+Akeneo\Bundle\BatchBundle\Entity\JobInstance:
     constraints:
         - Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance:
             property: alias

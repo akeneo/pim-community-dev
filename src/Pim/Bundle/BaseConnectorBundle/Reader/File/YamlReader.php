@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Symfony\Component\Yaml\Yaml;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * Yaml reader

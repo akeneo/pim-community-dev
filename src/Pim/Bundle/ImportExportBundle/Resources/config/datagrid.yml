@@ -15,7 +15,7 @@ datagrid:
                     - j.connector
                     - CONCAT('pim_import_export.status.', j.status) as statusLabel
                 from:
-                    - { table: OroBatchBundle:JobInstance, alias: j }
+                    - { table: AkeneoBatchBundle:JobInstance, alias: j }
         columns:
             code:
                 label: Code
@@ -173,7 +173,7 @@ datagrid:
                     - j.label as jobLabel
                     - j.alias as jobAlias
                 from:
-                    - { table: OroBatchBundle:JobExecution, alias: e }
+                    - { table: AkeneoBatchBundle:JobExecution, alias: e }
                 join:
                     inner:
                         jobInstance:
@@ -249,7 +249,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: %oro_batch.job.batch_status.class%::getAllLabels()
+                            choices: %akeneo_batch.job.batch_status.class%::getAllLabels()
 
     export-execution-grid:
         extend: job-execution-grid

@@ -14,7 +14,7 @@ Feature: Delete export
 
   Scenario: Successfully delete an export job
     Given I confirm the deletion
-    Then I should see flash message "Item deleted"
+    Then I should see flash message "Export profile successfully removed"
     And the grid should contain 5 elements
     And I should not see export profile "footwear_product_export"
 

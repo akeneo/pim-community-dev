@@ -53,7 +53,7 @@ datagrid:
     association-type-grid:
         extend: translatable-entity-grid
         options:
-            entityHint: association
+            entityHint: association type
         source:
             acl_resource: pim_enrich_association_type_index
             entity: %pim_catalog.entity.association_type.class%

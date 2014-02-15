@@ -127,7 +127,6 @@ confirmation:
 flash:
     entity:
         removed: Item was deleted
-        removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
@@ -188,7 +187,6 @@ flash:
         removed: Group type successfully removed
         cant remove variant: Group type variant can't be removed
         cant remove used: Group type is used by some groups and can't be removed
-
     association type:
         created: Association type successfully created
         updated: Association type successfully updated

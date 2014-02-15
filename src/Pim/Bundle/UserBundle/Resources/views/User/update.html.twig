@@ -15,9 +15,11 @@
     {# TODO: Find a better way to handle such dependencies in https://magecore.atlassian.net/browse/BAP-1971 #}
     {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
     <script type="text/javascript">
-        require(['jquery', 'pim/initselect2', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function($, initSelect2){
+        require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function ($, initSelect2, datepicker) {
             $(function() {
+                $('.navbar-content.pull-left').css('width', '80%')
+
                 $('#business_units_tree').jstree({
                     "checkbox": {
                         real_checkboxes: true,
@@ -31,20 +33,27 @@
                 $('#{{ form.vars.id }}').find('select').addClass('select2');
                 initSelect2.init($('#{{ form.vars.id }}'));
 
-                var checkRoles = function() {
-                    var $roles = $('#oro_user_user_form_rolesCollection');
-                    if ($roles.find('input:checked').length) {
-                        $('a[href="#groups-and-roles"]').removeClass('error');
-                        $roles.parent().removeClass('validation-error');
-                    } else {
-                        $('a[href="#groups-and-roles"]').addClass('error');
-                        $roles.parent().addClass('validation-error');
-                    }
-                };
+                _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
 
-                $('#oro_user_user_form_rolesCollection').on('change', 'input', checkRoles);
+                {% if form.rolesCollection is defined %}
+                    var $roles = $('#{{ form.rolesCollection.vars.id }}');
 
-                checkRoles();
+                    var checkRoles = function() {
+                        if ($roles.find('input:checked').length) {
+                            $('a[href="#groups-and-roles"]').removeClass('error');
+                            $roles.parent().removeClass('validation-error');
+                        } else {
+                            $('a[href="#groups-and-roles"]').addClass('error');
+                            $roles.addClass('error').parent().addClass('validation-error');
+                        }
+                    };
+
+                    $roles.on('change', 'input', checkRoles);
+
+                    checkRoles();
+                {% endif %}
             });
         });
     </script>
@@ -77,8 +86,10 @@
 
         {% set left %}
             {% if form.vars.value.id %}
-                <div class="visual pull-left buffer-right">
-                    <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+                <div class="customer-info well-small">
+                    <div class="visual">
+                        <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+                    </div>
                 </div>
                 <ul class="inline">
                     <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|oro_format_datetime : 'N/A' }}</li>
@@ -98,14 +109,14 @@
         {% endif %}
 
         {% if form.groups is defined or form.rolesCollection is defined %}
-            {% set tabs = tabs|merge(['Groups and roles']) %}
+            {% set tabs = tabs|merge(['Groups and Roles']) %}
         {% endif %}
 
         {% if form.change_password is defined %}
             {% set tabs = tabs|merge(['Password']) %}
         {% endif %}
 
-        {% set tabs = tabs|merge(['Business units', 'Email synchronization settings']) %}
+        {% set tabs = tabs|merge(['Business Units', 'Email synchronization settings']) %}
 
         {{ elements.form_navbar(tabs) }}
 

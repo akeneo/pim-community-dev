@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Oro\Bundle\BatchBundle\Connector\Connector;
+use Akeneo\Bundle\BatchBundle\Connector\Connector;
 
 /**
  * Base connector bundle

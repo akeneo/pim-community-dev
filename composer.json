@@ -18,12 +18,13 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta5#3d9ed156046b9475e5b227e2dd9ff0682ce30291",
+        "oro/platform": "dev-maintenance/pim_beta5#76a329c819a7ba0c1df8b0b0ea2e4b3dbf75048b",
         "apy/jsfv-bundle": "2.1.*",
         "knplabs/knp-gaufrette-bundle": "0.2.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/icu": "1.1.*",
-        "akeneo/measure-bundle": "0.1.0"
+        "akeneo/measure-bundle": "0.1.0",
+        "akeneo/batch-bundle": "0.1.0"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",

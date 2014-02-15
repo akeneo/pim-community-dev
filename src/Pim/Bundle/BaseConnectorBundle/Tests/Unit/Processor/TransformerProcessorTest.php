@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
 
@@ -162,7 +162,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
         );
 
         $stepExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $processor->setStepExecution($stepExecution);
