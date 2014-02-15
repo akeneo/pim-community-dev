@@ -19,7 +19,12 @@ class Pager extends OroPager
      */
     public function computeNbResult()
     {
-        $qb    = clone $this->getQueryBuilder();
+        $qb = clone $this->getQueryBuilder();
+
+        $rootAlias  = $qb->getRootAlias();
+        $rootField  = $rootAlias.'.id';
+        $qb->groupBy($rootField);
+
         $query = $qb->setFirstResult(null)
             ->setMaxResults(null)
             ->resetDQLPart('orderBy')
