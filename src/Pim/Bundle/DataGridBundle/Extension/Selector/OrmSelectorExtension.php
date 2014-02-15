@@ -61,8 +61,6 @@ class OrmSelectorExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        // TODO : check no result
-        // TODO: check filters
         $entityIds = $this->getEntityIds($datasource);
         $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
         $rootField = $rootAlias.'.id';
@@ -80,8 +78,7 @@ class OrmSelectorExtension extends AbstractExtension
 
             $attributeIds = $config->offsetGetByPath('[source][displayed_attributes]');
 
-            // TODO: execute($parameters !) to avoid unbound issue
-
+            // TODO: execute($parameters !) to avoid unbound issue ?
             $datasource->getQueryBuilder()
 
                 ->leftJoin(
@@ -92,45 +89,29 @@ class OrmSelectorExtension extends AbstractExtension
                     .'AND (values.locale = :dataLocale OR values.locale IS NULL) '
                     .'AND (values.scope = :scopeCode OR values.scope IS NULL)'
                 )
-                ->leftJoin('values.attribute', 'attribute')
                 ->addSelect('values')
+
+                ->leftJoin('values.attribute', 'attribute')
                 ->addSelect('attribute')
 
-                ->leftJoin(
-                    'values.prices',
-                    'prices',
-                    '(prices.locale = :dataLocale OR prices.locale IS NULL) '
-                    .'AND (prices.scope = :scopeCode OR prices.scope IS NULL)'
-                )
+                ->leftJoin('values.prices', 'prices')
                 ->addSelect('prices')
+
+                ->leftJoin('values.metric', 'metric')
+                ->addSelect('metric')
 
                 ->leftJoin(
                     'values.option',
-                    'option',
-                    '(option.locale = :dataLocale OR option.locale IS NULL) '
-                    .'AND (option.scope = :scopeCode OR option.scope IS NULL)'
+                    'simpleoption'
                 )
-                ->addSelect('option')
-                ->leftJoin(
-                    'option.optionValues',
-                    'optionValues',
-                    'optionValues.locale = :dataLocale'
-                )
-                ->addSelect('optionValues')
+                ->addSelect('simpleoption')
 
                 ->leftJoin(
                     'values.options',
-                    'options',
-                    '(options.locale = :dataLocale OR options.locale IS NULL) '
-                    .'AND (options.scope = :scopeCode OR options.scope IS NULL)'
+                    'multioptions'
                 )
-                ->addSelect('options')
-                ->leftJoin(
-                    'options.optionValues',
-                    'optionsValues',
-                    'optionsValues.locale = :dataLocale'
-                )
-                ->addSelect('optionsValues')
+                ->addSelect('multioptions')
+
                 ->setParameter('attributeIds', $attributeIds);
         }
     }

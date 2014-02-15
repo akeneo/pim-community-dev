@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Flexible field property, able to render majority of flexible attribute values
@@ -19,16 +20,32 @@ class FlexibleFieldProperty extends FieldProperty
     protected function convertValue($value)
     {
         $backend = $value['attribute']['backendType'];
+        $value   = $value[$backend];
 
-        return $value[$backend];
+        if ($backend === AbstractAttributeType::BACKEND_TYPE_PRICE) {
+            $prices = [];
+            foreach ($value as $price) {
+                $prices[]= $price['data'].' '.$price['currency'];
+            }
+            $result = implode(', ', $prices);
 
-        // TODO : to refactor to add different backend type support
-        if (is_object($value) && is_callable([$value, '__toString'])) {
-            $value = $value->__toString();
-        } elseif (false === $value) {
-            return null;
+        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+            $result= $value['data'].' '.$value['unit'];
+
+        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_OPTION) {
+             $result= '['.$value['code'].']';
+
+        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
+            $optionValues = [];
+            foreach ($value as $option) {
+                $optionValues[]= '['.$option['code'].']';
+            }
+            $result = implode(', ', $optionValues);
+
+        } else {
+            $result = $value;
         }
 
-        return parent::convertValue($value);
+        return parent::convertValue($result);
     }
 }
