@@ -12,6 +12,7 @@
 - Add icons for category and product in search view
 - Prevent hydrating all attributes in the available attributes addition form
 - Prevent hydrating all families in the product edition form
+- Product grid loading performance
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
@@ -28,6 +29,8 @@
 - Rename findByWithAttributes to findAllByAttributes
 - MeasureBundle has been moved from the BAP to an external repository (akeneo/measure-bundle).
 - AkeneoBundle has been moved from the BAP to an external repository (akeneo/batch-bundle).
+- Product datagrid, hydrate rows as arrays (in place of objects) to reduce the loading time
+- Datagrid configuration, replace [flexible_entity] config by a [source][is_flexible] config to avoid to define the used entity twice
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
