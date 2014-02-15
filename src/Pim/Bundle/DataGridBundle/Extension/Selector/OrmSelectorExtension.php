@@ -78,8 +78,9 @@ class OrmSelectorExtension extends AbstractExtension
         $isFlexible = $config->offsetGetByPath('[source][is_flexible]');
         if ($isFlexible) {
 
-            //$attributeIds = array(1, 5, 18, 29, 32, 36, 37, 45, 51, 55, 59, 1305, 1306, 1307);
-            $attributeIds = array(1, 1142, 1051, 359, 55, 586, 1302);
+            $attributeIds = $config->offsetGetByPath('[source][displayed_attributes]');
+
+            // TODO: execute($parameters !) to avoid unbound issue
 
             $datasource->getQueryBuilder()
 
@@ -130,9 +131,6 @@ class OrmSelectorExtension extends AbstractExtension
                     'optionsValues.locale = :dataLocale'
                 )
                 ->addSelect('optionsValues')
-
-                ->andWhere($rootField.' IN (:entityIds)')
-                ->setParameter('entityIds', $entityIds)
                 ->setParameter('attributeIds', $attributeIds);
         }
     }

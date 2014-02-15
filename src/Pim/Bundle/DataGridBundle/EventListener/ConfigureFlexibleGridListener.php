@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -35,6 +36,11 @@ class ConfigureFlexibleGridListener
     const ENTITY_PATH = '[source][entity]';
 
     /**
+     * @var string
+     */
+    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attributes]';
+
+    /**
      * @var FlexibleManager
      */
     protected $flexibleManager;
@@ -50,6 +56,11 @@ class ConfigureFlexibleGridListener
     protected $requestParams;
 
     /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
      * @var Request
      */
     protected $request;
@@ -57,18 +68,21 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManager       $flexibleManager flexible manager
-     * @param ConfigurationRegistry $confRegistry    attribute type configuration registry
-     * @param RequestParameters     $requestParams   request parameters
+     * @param FlexibleManager          $flexibleManager flexible manager
+     * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
+     * @param RequestParameters        $requestParams   request parameters
+     * @param SecurityContextInterface $securityContext the security context
      */
     public function __construct(
         FlexibleManager $flexibleManager,
         ConfigurationRegistry $confRegistry,
-        RequestParameters $requestParams
+        RequestParameters $requestParams,
+        SecurityContextInterface $securityContext
     ) {
         $this->flexibleManager = $flexibleManager;
         $this->confRegistry    = $confRegistry;
         $this->requestParams   = $requestParams;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -92,8 +106,8 @@ class ConfigureFlexibleGridListener
         $isFlexibleGrid = $datagridConfig->offsetGetByPath(self::IS_FLEXIBLE_ENTITY_PATH);
 
         if ($isFlexibleGrid) {
-            $this->prepareFlexibleManager();
-            $attributes = $this->getAttributesConfig();
+            $this->addAttributesIds($datagridConfig);
+            $attributes = $this->getAttributesConfig($datagridConfig);
             $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
             $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
             $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
@@ -148,24 +162,36 @@ class ConfigureFlexibleGridListener
     }
 
     /**
-     * Get attributes configuration
+     * Inject attribute ids in datagrid configuration
      *
-     * @return array
+     * @param DatagridConfiguration $datagridConfig
      */
-    protected function getAttributesConfig()
+    protected function addAttributesIds(DatagridConfiguration $datagridConfig)
     {
-        $attributeRepository = $this->flexibleManager->getAttributeRepository();
-        $attributes = $attributeRepository->getAttributesGridConfig($this->flexibleManager->getFlexibleName());
+        $userConfig     = $this->getUserConfig($datagridConfig);
+        $attributeCodes = $userConfig ? $userConfig->getColumns() : null;
+        $repository     = $this->flexibleManager->getAttributeRepository();
+        $flexibleEntity = $this->flexibleManager->getFlexibleName();
+        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
 
-        return $attributes;
+        $datagridConfig->offsetSetByPath(self::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
     }
 
     /**
-     * Prepare flexible manager
+     * Get attributes configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     *
+     * @return array
      */
-    protected function prepareFlexibleManager()
+    protected function getAttributesConfig(DatagridConfiguration $datagridConfig)
     {
-        $this->flexibleManager->setLocale($this->requestParams->getLocale());
+        $repository     = $this->flexibleManager->getAttributeRepository();
+        $flexibleEntity = $this->flexibleManager->getFlexibleName();
+        $currentLocale  = $this->requestParams->get('dataLocale', null);
+        $attConfig      = $repository->getAttributesGridConfig($flexibleEntity, $currentLocale);
+
+        return $attConfig;
     }
 
     /**
@@ -184,5 +210,41 @@ class ConfigureFlexibleGridListener
             $entityRepository = $flexManager->getFlexibleRepository();
             $entityRepository->applySorterByAttribute($qb, $attributeCode, $direction);
         };
+    }
+
+    /**
+     * Get user datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     *
+     * @return null|DatagridConfiguration
+     */
+    protected function getUserConfig(DatagridConfiguration $datagridConfig)
+    {
+        $alias = $datagridConfig->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
+
+        $repository = $this->flexibleManager
+            ->getEntityManager()
+            ->getRepository('PimEnrichBundle:DatagridConfiguration');
+
+        return $repository->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
+    }
+
+    /**
+     * Get the user from the security context
+     *
+     * @return null|User
+     */
+    protected function getUser()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return;
+        }
+
+        return $user;
     }
 }
