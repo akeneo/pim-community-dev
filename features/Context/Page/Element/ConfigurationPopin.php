@@ -27,6 +27,12 @@ class ConfigurationPopin extends Element
         $this->apply();
     }
 
+    /**
+     * Move a column
+     *
+     * @param string $source
+     * @param string $target
+     */
     public function moveColumn($source, $target)
     {
         $this->getColumn($source)->dragTo($this->getColumn($target));
@@ -81,6 +87,9 @@ class ConfigurationPopin extends Element
         return $bucket;
     }
 
+    /**
+     * Apply the configuration
+     */
     protected function apply()
     {
         $this->find('css', '.btn.ok')->click();

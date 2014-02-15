@@ -1304,6 +1304,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function completenessOfShouldBe($channel, $ratio)
@@ -1322,6 +1325,10 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function localizedCompletenessOfShouldBe($lang, $channel, $ratio)
@@ -1620,6 +1627,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string       $code
+     * @param PyStringNode $data
+     *
      * @Given /^the invalid data file of "([^"]*)" should contain:$/
      */
     public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
