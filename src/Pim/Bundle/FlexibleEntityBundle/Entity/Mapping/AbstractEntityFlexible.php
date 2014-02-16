@@ -356,7 +356,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Check if a field or attribute exists
      *
-     * @param string $name
+     * @param string $attributeCode
      *
      * @return boolean
      */
