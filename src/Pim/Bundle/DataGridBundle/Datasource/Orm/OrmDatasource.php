@@ -60,15 +60,15 @@ class OrmDatasource extends OroOrmDatasource
             $results = $query->getArrayResult();
             $rows    = [];
             foreach ($results as $result) {
-                $result = current($result);
-
+                $entityFields = $result[0];
+                unset($result[0]);
+                $otherFields = $result;
+                $result = $entityFields + $otherFields;
                 $values = $result['values'];
                 foreach ($values as $value) {
                     $result[$value['attribute']['code']]= $value;
                 }
                 unset($result['values']);
-
-                // TODO : clean result
                 $rows[] = new ResultRecord($result);
             }
 
