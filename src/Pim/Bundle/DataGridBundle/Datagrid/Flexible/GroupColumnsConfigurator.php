@@ -67,20 +67,20 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $axisColumns = array();
 
         foreach ($this->attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute->getAttributeType();
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 if ($attributeType === 'pim_catalog_identifier') {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
+                        'label' => $attribute['label'],
                     );
                     $identifierColumn[$attributeCode] = $columnConfig;
                 } elseif (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
+                        'label' => $attribute['label'],
                     );
                     $axisColumns[$attributeCode] = $columnConfig;
                 }
