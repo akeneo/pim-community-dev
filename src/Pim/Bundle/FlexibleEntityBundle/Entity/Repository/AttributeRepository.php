@@ -125,6 +125,27 @@ class AttributeRepository extends EntityRepository
     }
 
     /**
+     * Get ids of attributes useable as columns
+     *
+     * @param string $entityType the entity type
+     *
+     * @return array
+     */
+    public function getAttributeIdsUseableAsGridColumns($entityType)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id')
+            ->where('att.entityType = :entityType')
+            ->andWhere('att.useableAsGridColumn = 1');
+
+        $parameters = ['entityType' => $entityType];
+        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
      * Clear the attributes cache for the provided entity type
      * or for all entities if no entityType provided
      *
