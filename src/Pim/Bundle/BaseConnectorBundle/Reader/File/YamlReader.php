@@ -22,11 +22,6 @@ class YamlReader extends FileReader implements ItemReaderInterface
     /**
      * @var boolean
      */
-    protected $homogenize = false;
-
-    /**
-     * @var boolean
-     */
     protected $multiple = false;
 
     /**
@@ -38,14 +33,12 @@ class YamlReader extends FileReader implements ItemReaderInterface
      * Constructor
      *
      * @param boolean $multiple
-     * @param boolean $homogenize
      * @param string  $codeField
      */
-    public function __construct($multiple = false, $homogenize = false, $codeField = 'code')
+    public function __construct($multiple = false, $codeField = 'code')
     {
         $this->codeField = $codeField;
         $this->multiple = $multiple;
-        $this->homogenize = $homogenize;
     }
 
     /**
@@ -128,34 +121,7 @@ class YamlReader extends FileReader implements ItemReaderInterface
             }
         }
 
-        if ($this->homogenize) {
-            $fileData = $this->homogenizeData($fileData);
-        }
-
         return $this->multiple ? array($fileData) : $fileData;
-    }
-
-    /**
-     * Homogenize the read data
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function homogenizeData($data)
-    {
-        $labels = array();
-        foreach ($data as $row) {
-            $labels = array_unique(array_merge($labels, array_keys($row)));
-        }
-        foreach ($data as $key => $row) {
-            $data[$key] += array_fill_keys(
-                array_diff($labels, array_keys($row)),
-                null
-            );
-        }
-
-        return $data;
     }
 
     /**

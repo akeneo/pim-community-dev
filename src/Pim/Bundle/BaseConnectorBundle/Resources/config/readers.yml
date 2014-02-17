@@ -99,13 +99,11 @@ services:
         class: %pim_base_connector.reader.file.yaml.class%
         arguments:
             - false
-            - true
             - false
 
     pim_base_connector.reader.file.yaml_associations:
         class: %pim_base_connector.reader.file.yaml.class%
         arguments:
-            - false
             - false
             - false
 

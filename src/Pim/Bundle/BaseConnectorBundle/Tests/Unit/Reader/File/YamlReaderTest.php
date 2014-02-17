@@ -16,28 +16,26 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
     public function getReadData()
     {
         return array(
-            'simple'                   => array(),
-            'simple_homogenize'        => array(false, true),
-            'simple_homogenize_code'   => array(false, true, 'code'),
-            'multiple'                 => array(true),
-            'multiple_homogenize'      => array(true, true),
-            'multiple_homogenize_code' => array(true, true, 'code'),
+            'simple'        => array(),
+            'simple_code'   => array(false, 'code'),
+            'multiple'      => array(true),
+            'multiple_code' => array(true, true, 'code'),
         );
     }
 
     /**
      * @dataProvider getReadData
      */
-    public function testRead($multiple = false, $homogenize = false, $codeField = false)
+    public function testRead($multiple = false, $codeField = false)
     {
-        $reader = $this->createReader($multiple, $homogenize, $codeField);
+        $reader = $this->createReader($multiple, $codeField);
         if ($multiple) {
-            $this->assertEquals($this->getExpectedData($homogenize, $codeField), $reader->read());
+            $this->assertEquals($this->getExpectedData($codeField), $reader->read());
             $this->assertNull($reader->read());
         } else {
             $index = 0;
             while ($row = $reader->read()) {
-                $this->assertEquals($this->getExpectedData($homogenize, $codeField, $index), $row);
+                $this->assertEquals($this->getExpectedData($codeField, $index), $row);
                 $index++;
             }
         }
@@ -52,25 +50,21 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('entity5' => array('key1' => 'value5')), $reader->read());
     }
 
-    protected function createReader($multiple = false, $homogenize = false, $codeField = false)
+    protected function createReader($multiple = false, $codeField = false)
     {
-        $reader = new YamlReader($multiple, $homogenize, $codeField);
+        $reader = new YamlReader($multiple, $codeField);
         $reader->setFilePath(__DIR__ . '/../../../fixtures/fixture.yml');
 
         return $reader;
     }
 
-    protected function getExpectedData($homogenize = false, $codeField = false, $index = false)
+    protected function getExpectedData($codeField = false, $index = false)
     {
         $expected = array(
             'entity1' => array('key1' => 'value1'),
             'entity2' => array('key1' => 'value2', 'key2' => 'value3'),
             'entity3' => array('key1' => 'value4')
         );
-        if ($homogenize) {
-            $expected['entity1']['key2'] = null;
-            $expected['entity3']['key2'] = null;
-        }
         if ($codeField) {
             foreach (array_keys($expected) as $code) {
                 $expected[$code][$codeField] = $code;
