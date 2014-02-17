@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\MeasureBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +14,6 @@ use Symfony\Component\Yaml\Yaml;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class AkeneoMeasureExtension extends Extension
 {
@@ -41,13 +41,13 @@ class AkeneoMeasureExtension extends Extension
                                     $familyConfig['units']
                                 );
                         } else {
-                            $measuresConfig['measures_config'][$family]= $familyConfig;
+                            $measuresConfig['measures_config'][$family] = $familyConfig;
                         }
                     }
                 }
             }
         }
-        $configs[]= $measuresConfig;
+        $configs[] = $measuresConfig;
         // process configurations to validate and merge
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

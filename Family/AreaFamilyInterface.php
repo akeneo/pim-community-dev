@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
@@ -6,12 +7,10 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT M
- *
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 interface AreaFamilyInterface
 {
-
     /**
      * Family measure name
      * @staticvar string

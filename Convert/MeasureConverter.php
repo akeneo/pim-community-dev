@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\MeasureBundle\Convert;
 
 use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
@@ -11,7 +12,6 @@ use Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class MeasureConverter
 {
@@ -111,7 +111,7 @@ class MeasureConverter
      * @param string $operator Operator to apply
      * @param double $operand  Operand to use
      *
-     * return double
+     * @return double
      */
     protected function applyOperation($value, $operator, $operand)
     {
@@ -180,7 +180,7 @@ class MeasureConverter
      * @param string $operator Operator to apply
      * @param double $operand  Operand to use
      *
-     * return double
+     * @return double
      */
     protected function applyReversedOperation($value, $operator, $operand)
     {

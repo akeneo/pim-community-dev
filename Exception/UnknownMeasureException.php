@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\MeasureBundle\Exception;
 
 /**
@@ -7,7 +8,6 @@ namespace Akeneo\Bundle\MeasureBundle\Exception;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class UnknownMeasureException extends MeasureException
 {

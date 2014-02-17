@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\MeasureBundle\Tests\Unit\Convert;
 
 use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
@@ -19,12 +20,9 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Test related class
- *
- *
  */
 class MeasureConverterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Converter service
      * @var MeasureConverter
