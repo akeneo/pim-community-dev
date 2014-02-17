@@ -88,7 +88,7 @@ btn:
     edit:            edit
     save:            save
     save and back:   save and back to grid
-    save and create: save and create
+    save and create: save and create new
     remove:          remove
     delete:          delete
     cancel:          cancel

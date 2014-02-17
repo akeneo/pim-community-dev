@@ -1,6 +1,7 @@
 parameters:
     pim_transform.transformer.guesser.chained.class:            Pim\Bundle\TransformBundle\Transformer\Guesser\ChainedGuesser
     pim_transform.transformer.guesser.type.class:               Pim\Bundle\TransformBundle\Transformer\Guesser\TypeGuesser
+    pim_transform.transformer.guesser.array.class:              Pim\Bundle\TransformBundle\Transformer\Guesser\ArrayGuesser
     pim_transform.transformer.guesser.relation.class:           Pim\Bundle\TransformBundle\Transformer\Guesser\RelationGuesser
     pim_transform.transformer.guesser.translation.class:        Pim\Bundle\TransformBundle\Transformer\Guesser\TranslationGuesser
     pim_transform.transformer.guesser.nested_translation.class: Pim\Bundle\TransformBundle\Transformer\Guesser\NestedTranslationGuesser
@@ -94,6 +95,15 @@ services:
         arguments:
             - '@pim_transform.transformer.property.date'
             - date
+        tags:
+            - { name: pim_transform.transformer.guesser, priority: 50 }
+
+    pim_transform.transformer.guesser.array:
+        class: %pim_transform.transformer.guesser.array.class%
+        public: false
+        arguments:
+            - '@pim_transform.transformer.property.array'
+            - array
         tags:
             - { name: pim_transform.transformer.guesser, priority: 50 }
 
