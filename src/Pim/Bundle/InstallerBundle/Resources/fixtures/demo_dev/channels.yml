@@ -9,6 +9,8 @@ channels:
             - EUR
             - USD
         tree: default
+        conversionUnits:
+            weight: KILOGRAM
     mobile:
         code:  mobile
         label: Mobile
@@ -18,3 +20,5 @@ channels:
         currencies:
             - EUR
         tree: default
+        conversionUnits-weight: KILOGRAM
+
