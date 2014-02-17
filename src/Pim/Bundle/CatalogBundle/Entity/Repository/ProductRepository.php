@@ -403,7 +403,9 @@ SQL;
      */
     public function createGroupDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->_em->createQueryBuilder()
+            ->select('p')
+            ->from($this->_entityName, 'p', 'p.id');
 
         $qb
             ->leftJoin('p.family', 'family')
@@ -429,7 +431,9 @@ SQL;
      */
     public function createVariantGroupDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->_em->createQueryBuilder()
+            ->select('p')
+            ->from($this->_entityName, 'p', 'p.id');
 
         $qb
             ->leftJoin('p.family', 'family')
@@ -457,7 +461,9 @@ SQL;
      */
     public function createAssociationDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->_em->createQueryBuilder()
+            ->select('p')
+            ->from($this->_entityName, 'p', 'p.id');
 
         $qb
             ->leftJoin('p.family', 'family')
