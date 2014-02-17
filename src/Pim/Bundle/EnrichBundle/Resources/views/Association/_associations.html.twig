@@ -1,5 +1,14 @@
 {% if associationTypes is empty %}
-    <div>{{ 'No association types'|trans }}</div>
+    <div class="buffer-top buffer-left">
+        <span class="buffer-small-right">
+            {{ 'info.association type.none exist'|trans }}
+        </span>
+        {% if resource_granted('pim_enrich_association_type_index') %}
+            <a href="{{ path('pim_enrich_association_type_index') }}">
+                <span class="label link-label">{{ 'info.association type.create one'|trans }}</span>
+            </a>
+        {% endif %}
+    </div>
 {% else %}
     {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 

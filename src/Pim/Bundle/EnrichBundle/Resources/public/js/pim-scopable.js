@@ -122,7 +122,7 @@ define(
             skipUIInit: false,
 
             template: _.template(
-                '<label class="control-label"><%= label %></label>'
+                '<%= label %>'
             ),
 
             initialize: function () {
@@ -137,7 +137,7 @@ define(
                     this._addField(field);
                 }, this);
 
-                this.label = this.$el.find('.control-label').first().html();
+                this.label = this.$el.find('.control-label').first().get(0).outerHTML;
 
                 this.render();
 

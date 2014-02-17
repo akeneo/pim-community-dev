@@ -1,4 +1,4 @@
-# 1.0.0-
+y# 1.0.0-
 
 ## Features
 - Uservoice integration
@@ -12,6 +12,7 @@
 - Add icons for category and product in search view
 - Prevent hydrating all attributes in the available attributes addition form
 - Prevent hydrating all families in the product edition form
+- Import conversion units for channels
 - Product grid loading performance
 
 ## Bug fixes
