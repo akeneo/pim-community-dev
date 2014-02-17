@@ -57,7 +57,7 @@ class CategoryManager extends SegmentManager
         $trees = $this->getTrees();
         $choices = array();
         foreach ($trees as $tree) {
-            $choices[$tree->getId()]= $tree;
+            $choices[$tree->getId()] = $tree;
         }
 
         return $choices;
@@ -73,7 +73,6 @@ class CategoryManager extends SegmentManager
     public function getCategoriesByIds($categoriesIds)
     {
         return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
-
     }
 
     /**
@@ -104,6 +103,5 @@ class CategoryManager extends SegmentManager
         $parentsIds = array_unique($parentsIds);
 
         return $this->getEntityRepository()->getTreeFromParents($parentsIds);
-
     }
 }
