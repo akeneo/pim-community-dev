@@ -37,8 +37,8 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
         }
 
-        if (!isset($options['localeCode'])) {
-            throw new \InvalidArgumentException('Option "localeCode" is required');
+        if (!isset($options['locale_code'])) {
+            throw new \InvalidArgumentException('Option "locale_code" is required');
         }
 
         if (!isset($options['other_group_label'])) {
@@ -54,7 +54,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['localeCode']);
+            ->setParameter('localeCode', $options['locale_code'])
             ->setParameter('otherGroupLabel', $options['other_group_label']);
 
         if (!empty($options['excluded_attribute_ids'])) {
