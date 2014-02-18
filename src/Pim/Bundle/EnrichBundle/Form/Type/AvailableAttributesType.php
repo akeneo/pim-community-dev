@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\OptionsResolver\Options;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Type for available attributes
@@ -27,16 +28,27 @@ class AvailableAttributesType extends AbstractType
     /** @var UserContext */
     protected $userContext;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * Constructor
      *
-     * @param string $attributeClass
+     * @param string              $attributeClass
+     * @param AttributeRepository $repository
+     * @param UserContext         $userContext
+     * @param TranslatorInterface $translator
      */
-    public function __construct($attributeClass, AttributeRepository $repository, UserContext $userContext)
-    {
+    public function __construct(
+        $attributeClass,
+        AttributeRepository $repository,
+        UserContext $userContext,
+        TranslatorInterface $translator
+    ) {
         $this->attributeClass = $attributeClass;
         $this->repository     = $repository;
         $this->userContext    = $userContext;
+        $this->translator     = $translator;
     }
 
     /**
@@ -52,7 +64,12 @@ class AvailableAttributesType extends AbstractType
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
-                    'other_group_label'      => $options['other_group_label'],
+                    'other_group_label'      => $this->translator->trans(
+                        'Other',
+                        array(),
+                        null,
+                        $this->userContext->getCurrentLocaleCode()
+                    ),
                 ],
                 'multiple' => true,
                 'expanded' => false,
@@ -67,9 +84,8 @@ class AvailableAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class'        => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'attributes'        => array(),
-                'other_group_label' => 'Other',
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
+                'attributes' => array(),
             )
         );
 
