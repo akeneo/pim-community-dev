@@ -41,21 +41,21 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             throw new \InvalidArgumentException('Option "locale_code" is required');
         }
 
-        if (!isset($options['other_group_label'])) {
-            throw new \InvalidArgumentException('Option "other_group_label" is required');
+        if (!isset($options['default_group_label'])) {
+            throw new \InvalidArgumentException('Option "default_group_label" is required');
         }
 
         $qb = $this
             ->createQueryBuilder('a')
             ->select('a.id')
             ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :otherGroupLabel) as group_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :defaultGroupLabel) as group_label')
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->orderBy('g.sortOrder, a.sortOrder')
             ->setParameter('localeCode', $options['locale_code'])
-            ->setParameter('otherGroupLabel', $options['other_group_label']);
+            ->setParameter('defaultGroupLabel', $options['default_group_label']);
 
         if (!empty($options['excluded_attribute_ids'])) {
             $qb->andWhere(
@@ -72,11 +72,11 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             unset($result[$key]);
         }
 
-        // Move other group to the end
-        if (isset($attributes[$options['other_group_label']])) {
-            $other = $attributes[$options['other_group_label']];
-            unset($attributes[$options['other_group_label']]);
-            $attributes[$options['other_group_label']] = $other;
+        // Move default group to the end
+        if (isset($attributes[$options['default_group_label']])) {
+            $default = $attributes[$options['default_group_label']];
+            unset($attributes[$options['default_group_label']]);
+            $attributes[$options['default_group_label']] = $default;
         }
 
         return $attributes;
