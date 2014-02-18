@@ -100,6 +100,9 @@ class OrmSelectorExtension extends AbstractExtension
                 ->leftJoin('values.metric', 'metric')
                 ->addSelect('metric')
 
+                ->leftJoin('values.media', 'media')
+                ->addSelect('media')
+
                 ->leftJoin(
                     'values.option',
                     'simpleoption'

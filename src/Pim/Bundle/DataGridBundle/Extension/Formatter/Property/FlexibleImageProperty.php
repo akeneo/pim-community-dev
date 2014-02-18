@@ -16,11 +16,14 @@ class FlexibleImageProperty extends FlexibleTwigProperty
      */
     protected function convertValue($value)
     {
-        if ($value->getMedia() && $fileName = $value->getMedia()->getFileName()) {
+        $backend = $value['attribute']['backendType'];
+        $value   = $value[$backend];
+
+        if ($fileName = $value['filename']) {
             return $this->getTemplate()->render(
                 array(
-                    'value' => $fileName,
-                    'title' => $value->getMedia()->getOriginalFilename()
+                    'filename' => $fileName,
+                    'title'    => $value['originalFilename']
                 )
             );
         }
