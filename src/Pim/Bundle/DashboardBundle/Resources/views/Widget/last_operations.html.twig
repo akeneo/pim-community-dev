@@ -1,0 +1,30 @@
+<div class="widget-header">
+    {{ 'pim_dashboard.widget.last_operations.title'|trans }}
+</div>
+
+<table id="last-operations-widget" class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>{{ 'pim_dashboard.widget.last_operations.date'|trans }}</th>
+            <th>{{ 'pim_dashboard.widget.last_operations.type'|trans }}</th>
+            <th>{{ 'pim_dashboard.widget.last_operations.profile name'|trans }}</th>
+            <th>{{ 'pim_dashboard.widget.last_operations.status'|trans }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for operation in widget.params %}
+            <tr>
+                <td>{{ operation.date|date("Y-m-d h:i:s") }}</td>
+                <td>{{ operation.type }}</td>
+                <td>{{ operation.label }}</td>
+                <td>{{ operation.status|trans }}</td>
+                <td>
+                    <a href="{{ path('pim_importexport_' ~ operation.type ~ '_execution_show', { id: operation.id }) }}">
+                        {{ 'pim_dashboard.widget.last_operations.details'|trans }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
