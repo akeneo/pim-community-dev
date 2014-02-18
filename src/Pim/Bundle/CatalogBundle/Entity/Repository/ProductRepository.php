@@ -393,8 +393,9 @@ SQL;
         $qb
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect('groups.code')
             ->addSelect('groups')
+            ->addSelect('gt')
+
 ;
         return $qb;
     }

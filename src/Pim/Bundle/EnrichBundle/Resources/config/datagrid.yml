@@ -262,9 +262,9 @@ datagrid:
                 label: Updated At
                 frontend_type: date
             groups:
-                label: Groups
-                type: twig
-                template: PimDataGridBundle:Property:options.html.twig
+                label:         Groups
+                type:          flexible_twig
+                template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
                 frontend_type: html
         properties:
             id: ~
