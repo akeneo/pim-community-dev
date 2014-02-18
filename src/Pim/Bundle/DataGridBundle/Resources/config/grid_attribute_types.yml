@@ -1,5 +1,4 @@
 parameters:
-    pim_datagrid.datagrid.flexible.configuration_registry.class: Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry
     pim_datagrid.flexible.attribute_type.pim_catalog_identifier:
         column:
             type: flexible_field
@@ -20,7 +19,7 @@ parameters:
             parent_type: string
     pim_datagrid.flexible.attribute_type.pim_catalog_simpleselect:
         column:
-            type: flexible_field
+            type: flexible_option
         filter:
             type:        flexible_choice
             parent_type: ajax_choice
@@ -29,7 +28,7 @@ parameters:
                     multiple: true
     pim_datagrid.flexible.attribute_type.pim_catalog_multiselect:
         column:
-            type: flexible_field
+            type: flexible_options
         filter:
             type:        flexible_choice
             parent_type: ajax_choice
@@ -62,13 +61,13 @@ parameters:
         sorter: ~
     pim_datagrid.flexible.attribute_type.pim_catalog_image:
         column:
-            type: flexible_image
+            type:          flexible_image
             frontend_type: html
-            template: PimDataGridBundle:Property:pim_catalog_image.html.twig
+            template:      PimDataGridBundle:Property:pim_catalog_image.html.twig
         sorter: ~
     pim_datagrid.flexible.attribute_type.pim_catalog_price_collection:
         column:
-            type: flexible_field
+            type: flexible_price
         filter:
             type:        flexible_price
             parent_type: price
@@ -76,13 +75,9 @@ parameters:
 
     pim_datagrid.flexible.attribute_type.pim_catalog_metric:
         column:
-            type: flexible_twig
+            type:          flexible_metric
             frontend_type: html
-            template: PimDataGridBundle:Property:pim_catalog_metric.html.twig
+            template:      PimDataGridBundle:Property:pim_catalog_metric.html.twig
         filter:
             type:        flexible_metric
             parent_type: metric
-
-services:
-    pim_datagrid.datagrid.flexible.configuration_registry:
-        class: %pim_datagrid.datagrid.flexible.configuration_registry.class%
