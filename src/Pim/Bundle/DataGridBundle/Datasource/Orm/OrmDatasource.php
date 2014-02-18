@@ -27,6 +27,11 @@ class OrmDatasource extends OroOrmDatasource
     protected $isFlexible = false;
 
     /**
+     * @var string
+     */
+    protected $localeCode = null;
+
+    /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
@@ -45,6 +50,7 @@ class OrmDatasource extends OroOrmDatasource
         }
 
         $this->isFlexible = isset($config['is_flexible']) ? (bool) $config['is_flexible'] : false;
+        $this->localeCode = isset($config['locale_code']) ? $config['locale_code'] : null;
 
         $grid->setDatasource(clone $this);
     }
@@ -69,6 +75,8 @@ class OrmDatasource extends OroOrmDatasource
                     $result[$value['attribute']['code']]= $value;
                 }
                 unset($result['values']);
+                $result['dataLocale']= $this->localeCode;
+
                 $rows[] = new ResultRecord($result);
             }
 

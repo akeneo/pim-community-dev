@@ -273,6 +273,7 @@ datagrid:
                 route: pim_enrich_product_edit
                 params:
                     - id
+                    - dataLocale
             delete_link:
                 type: url
                 route: pim_enrich_product_remove

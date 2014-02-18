@@ -41,6 +41,11 @@ class ConfigureFlexibleGridListener
     const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attributes]';
 
     /**
+     * @var string
+     */
+    const DISPLAYED_LOCALE_PATH = '[source][locale_code]';
+
+    /**
      * @var FlexibleManager
      */
     protected $flexibleManager;
@@ -107,6 +112,7 @@ class ConfigureFlexibleGridListener
 
         if ($isFlexibleGrid) {
             $this->addAttributesIds($datagridConfig);
+            $this->addLocaleCode($datagridConfig);
             $attributes = $this->getAttributesConfig($datagridConfig);
             $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
             $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
@@ -162,7 +168,7 @@ class ConfigureFlexibleGridListener
     }
 
     /**
-     * Inject attribute ids in datagrid configuration
+     * Inject the displayed attribute ids in the datagrid configuration
      *
      * @param DatagridConfiguration $datagridConfig
      */
@@ -182,6 +188,25 @@ class ConfigureFlexibleGridListener
     }
 
     /**
+     * Inject current locale code in the datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     */
+    protected function addLocaleCode(DatagridConfiguration $datagridConfig)
+    {
+        $localeCode = $this->getCurrentLocaleCode();
+        $datagridConfig->offsetSetByPath(self::DISPLAYED_LOCALE_PATH, $localeCode);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCurrentLocaleCode()
+    {
+        return $this->requestParams->get('dataLocale', null);
+    }
+
+    /**
      * Get attributes configuration
      *
      * @param DatagridConfiguration $datagridConfig
@@ -192,7 +217,7 @@ class ConfigureFlexibleGridListener
     {
         $repository     = $this->flexibleManager->getAttributeRepository();
         $flexibleEntity = $this->flexibleManager->getFlexibleName();
-        $currentLocale  = $this->requestParams->get('dataLocale', null);
+        $currentLocale  = $this->getCurrentLocaleCode();
         $attConfig      = $repository->getAttributesGridConfig($flexibleEntity, $currentLocale);
 
         return $attConfig;
