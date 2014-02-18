@@ -81,6 +81,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    pim_enrich.twig.version_extension:
+        class: Pim\Bundle\EnrichBundle\Twig\VersionExtension
+        tags:
+            - { name: twig.extension }
+
     pim_enrich.event_listener.request:
         class: Pim\Bundle\EnrichBundle\EventListener\RequestListener
         tags:
