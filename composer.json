@@ -18,11 +18,14 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta5#76a329c819a7ba0c1df8b0b0ea2e4b3dbf75048b",
-        "apy/jsfv-bundle": "2.1.*",
-        "knplabs/knp-gaufrette-bundle": "0.2.*",
-        "incenteev/composer-parameter-handler": "~2.0",
-        "symfony/icu": "1.1.*",
+        "oro/platform": "dev-maintenance/pim_beta5#89b0bcf2d08dc86566e92fcc8ff410dc57b1c6d2",
+        "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
+        "knplabs/knp-gaufrette-bundle": "0.2.x-dev#171844b400e50d66f6fab6aa7aea820407fc74a3",
+        "incenteev/composer-parameter-handler": "2.1.0",
+        "symfony/icu": "1.1.0",
+        "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
+        "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
+        "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3",
         "akeneo/measure-bundle": "0.1.0",
         "akeneo/batch-bundle": "0.1.0"
     },
@@ -71,7 +74,14 @@
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "app/config/parameters.yml",
+            "env-map": {
+                "database_host": "PIM_DATABASE_HOST",
+                "database_port": "PIM_DATABASE_PORT",
+                "database_name": "PIM_DATABASE_NAME",
+                "database_user": "PIM_DATABASE_USER",
+                "database_password": "PIM_DATABASE_PASSWORD"
+            }
         }
     }
 }

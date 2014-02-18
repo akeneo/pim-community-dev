@@ -219,7 +219,8 @@ class Grid extends Index
     }
 
     /**
-     * @param string $column
+     * @param string  $column
+     * @param boolean $withHeader
      *
      * @return integer
      */
@@ -669,16 +670,34 @@ class Grid extends Index
 
         $filter->find('css', 'button.filter-update')->click();
     }
+
+    /**
+     * Open the column configuration popin
+     * @return null
+     */
     public function openColumnsPopin()
     {
         return $this->getElement('Configure columns')->click();
     }
 
+    /**
+     * Hide a grid column
+     * @param string $column
+     *
+     * @return null
+     */
     public function hideColumn($column)
     {
         return $this->getElement('Configuration Popin')->hideColumn($column);
     }
 
+    /**
+     * Move a grid column
+     * @param string $source
+     * @param string $target
+     *
+     * @return null
+     */
     public function moveColumn($source, $target)
     {
         return $this->getElement('Configuration Popin')->moveColumn($source, $target);

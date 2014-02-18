@@ -2,8 +2,6 @@
 
 namespace Context\Page\Import;
 
-use Context\Page\Import\Show;
-
 /**
  * Import launch page
  *

@@ -434,6 +434,11 @@ class Edit extends Form
         );
     }
 
+    /**
+     * @param string $language
+     *
+     * @throws \InvalidArgumentException
+     */
     public function compareWith($language)
     {
         $this->getElement('Comparison dropdown')->find('css', 'button:contains("Translate")')->click();
@@ -484,6 +489,9 @@ class Edit extends Form
             ->check();
     }
 
+    /**
+     * Click the link to copy selected translations
+     */
     public function copySelectedTranslations()
     {
         $this->getElement('Copy translations link')->click();
@@ -521,6 +529,13 @@ class Edit extends Form
         return $cells[$columnIdx];
     }
 
+    /**
+     * @param string $name
+     * @param string $scope
+     *
+     * @return NodeElement
+     * @throws ElementNotFoundException
+     */
     protected function findScopedField($name, $scope)
     {
         $label = $this->find('css', sprintf('label:contains("%s")', $name));

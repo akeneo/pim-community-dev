@@ -15,8 +15,6 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
-            gridName: null,
-
             /**
              * Filter container selector
              *
@@ -66,9 +64,12 @@ define(
              * @param {Object} options
              */
             _init: function(collection) {
-                this.gridName = collection.inputName;
                 this.$el.remove();
                 this.$el = $(this.container);
+
+                var $filterChoices = $('#' + collection.inputName).find('#add-filter-select');
+                $filterChoices.find('option[value="category"]').remove();
+                $filterChoices.multiselect('refresh');
 
                 this.value.value.categoryId = +this.value.value.categoryId;
                 this.value.value.treeId     = +this.value.value.treeId;
@@ -77,7 +78,7 @@ define(
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
                 TreeView.init(this.$el, this._getInitialState());
 
-                mediator.on('grid_action_execute:' + this.gridName + ':delete', function() {
+                mediator.on('grid_action_execute:' + collection.inputName + ':delete', function() {
                     TreeView.refresh();
                 });
             },

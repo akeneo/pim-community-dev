@@ -1147,6 +1147,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $columns
+     *
      * @Given /^I\'ve displayed the columns (.*)$/
     */
     public function iVeDisplayedTheColumns($columns)
@@ -1160,6 +1162,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
     public function iVeRemovedTheAttribute($attribute)

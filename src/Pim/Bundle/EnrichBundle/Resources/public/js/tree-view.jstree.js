@@ -9,6 +9,7 @@ define(
             includeSub   = false,
             dataLocale   = null,
             $el          = null,
+            firstLoad    = true,
 
             triggerUpdate = function() {
                 $el.trigger('tree.updated');
@@ -146,7 +147,14 @@ define(
             afterTreeLoaded = function (e, root_node_id) {
                 if (root_node_id && selectedTree !== +root_node_id) {
                     selectedTree = +root_node_id;
-                    activeNode   = 0;
+                    if (firstLoad) {
+                        activeNode = 0;
+                        firstLoad  = false;
+                    } else {
+                        activeNode = selectedTree;
+                        selectNode(activeNode);
+                        triggerUpdate();
+                    }
                 } else if (!activeNode) {
                     activeNode = +root_node_id;
                     selectNode(activeNode);

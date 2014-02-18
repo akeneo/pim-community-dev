@@ -12,12 +12,23 @@ Connector: Connecteur
 pim_import_export:
   status:
     - Prêt
+  batch_status:
+    1: TERMINÉ
+    2: DÉMARRAGE EN COURS
+    3: DÉMARRÉ
+    4: ARRÊT EN COURS
+    5: ARRÊTÉ
+    6: EN ÉCHEC
+    7: ABANDONNÉ
+    8: INCONNU
   steps:
     dummy_reader.title: Lecteur factice
     dummy_processor.title: Processeur factice
     dummy_writer.title: Écrivain factice
     product_reader.title: Extraction de produits
     entity_reader.title: "Extraction d'entité"
+    csv_reader:
+      title: Lecteur de CSV
     csv_product_reader.title: Lecteur de CSV de produits
     csv_category_reader.title: Lecteur de CSV de catégories
     product_processor.title: Création de produit
@@ -37,6 +48,16 @@ pim_import_export:
     output: Télécharger fichier généré
     input: Télécharger fichier lu
     invalid: Télécharger données invalides
+pim_title.export_profile.index: "Gestion de profils d'export"
+pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
+pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
+pim_title.export_execution.index: "Exporter l'historique d'exécutions"
+pim_title.export_execution.show: "Executions d'exports | Détails"
+pim_title.import_profile.index: Importer gestion de profils
+pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
+pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
+pim_title.import_execution.index: "Importer l'historique des exécutions"
+pim_title.import_execution.show: "Executions d'imports | Détails"
 export report:
   overview: "Rapports d'exportations"
 import report:
@@ -78,12 +99,18 @@ confirmation:
     import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
 flash:
   export:
+    created: "L'export a été correctement crée"
     removed: "Le profil d'export a été supprimé"
+    updated: "L'export a correctement été mis à jour"
   import:
+    created: "L'import a été correctement crée"
     removed: "Le profil d'import a été supprimé"
+    updated: "L'import a correctement été mis à jour"
 pim_menu:
   item:
+    export_history: Historique des exports
     export_profile: "Profils d'export"
+    import_history: Historique des imports
     import_profile: "Profils d'import"
 General properties: Propriétés générales
 History: Historique

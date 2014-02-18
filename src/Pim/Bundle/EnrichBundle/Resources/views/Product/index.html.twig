@@ -7,29 +7,10 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'oro/mediator', 'jquery.sidebarize'],
-            function ($, mediator) {
+            ['jquery', 'jquery.sidebarize'],
+            function ($) {
                 'use strict';
-
-                // Move scope filter to the proper location and remove it from the 'Manage filters' selector
-                // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/datagrid/filter-list.js and manage this there
-                function moveScopeFilter() {
-                    if (!$('.scope-filter').length || $('.scope-filter').parent().parent().hasClass('.actions-panel')) {
-                        return;
-                    }
-
-                    $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
-                    $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
-
-                    $('#add-filter-select').find('option[value="scope"]').remove();
-                    $('#add-filter-select').find('option[value="category"]').remove();
-                    $('#add-filter-select').multiselect('refresh');
-                }
-
-                mediator.once('datagrid_filters:rendered', moveScopeFilter);
-
                 $(function() {
-                    moveScopeFilter();
                     $('.has-sidebar').sidebarize();
                 });
             }

@@ -17,7 +17,7 @@
 
         {% set confirmationMessage = 'confirmation.remove.association type'|trans({ '%name%': form.vars.value.label }) %}
         {% if usageCount %}
-            {% set confirmationMessage = confirmationMessage ~ '</br>' ~ 'info.association type.remove from products'|trans({ '%count%': usageCount }) %}
+            {% set confirmationMessage = confirmationMessage ~ '<br />' ~ 'info.association type.remove from products'|trans({ '%count%': usageCount }) %}
         {% endif %}
         {% set buttons %}
             {{ elements.backLink(path('pim_enrich_association_type_index')) }}

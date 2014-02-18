@@ -11,6 +11,7 @@ parameters:
     pim_transform.transformer.property.relation.class:           Pim\Bundle\TransformBundle\Transformer\Property\RelationTransformer
     pim_transform.transformer.property.media.class:              Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer
     pim_transform.transformer.property.date.class:               Pim\Bundle\TransformBundle\Transformer\Property\DateTransformer
+    pim_transform.transformer.property.array.class:              Pim\Bundle\TransformBundle\Transformer\Property\ArrayTransformer
     pim_transform.transformer.property.boolean.class:            Pim\Bundle\TransformBundle\Transformer\Property\BooleanTransformer
     pim_transform.transformer.property.metric.class:             Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer
     pim_transform.transformer.property.prices.class:             Pim\Bundle\TransformBundle\Transformer\Property\PricesTransformer
@@ -117,6 +118,12 @@ services:
     pim_transform.transformer.property.date:
         class: %pim_transform.transformer.property.date.class%
         public: false
+
+    pim_transform.transformer.property.array:
+        class: %pim_transform.transformer.property.array.class%
+        public: false
+        arguments:
+            - '@property_accessor'
 
     pim_transform.transformer.property.boolean:
         class: %pim_transform.transformer.property.boolean.class%

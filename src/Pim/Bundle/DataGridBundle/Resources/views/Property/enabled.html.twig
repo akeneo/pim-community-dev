@@ -1,1 +1,2 @@
-<span class="label label-{{ value ? 'success' : 'important'}}">{{ value ? 'Enabled'|trans : 'Disabled'|trans }}</span>
+{% set status = value ? 'enabled' : 'disabled' %}
+<div class="badge badge-{{ status }} status-{{ status }}"><i class="icon-status-{{ status }} icon-circle"></i>{{ value ? 'Enabled'|trans : 'Disabled'|trans }}</div>
