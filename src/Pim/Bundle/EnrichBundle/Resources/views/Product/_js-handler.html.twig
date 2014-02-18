@@ -25,10 +25,10 @@
 
                 {% if resource_granted('pim_enrich_product_change_family') %}
                     {% set familyWidget %}
-                        {{ 'info.product.change family to'|trans }}:
-                        {{ form_widget(form.family) }}<br /><br />
                         {{ 'info.product.merge attributes'|trans }}<br />
-                        {{ 'info.product.keep attributes'|trans }}
+                        {{ 'info.product.keep attributes'|trans }}<br />
+                        {{ 'info.product.change family to'|trans }}:
+                        {{ form_widget(form.family) }}
                     {% endset %}
 
                     $('#edit-family').on('click', function () {
@@ -43,6 +43,7 @@
                         $('#{{ form.family.vars.id }}')
                             .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                             .select2({ allowClear: true });
+                        $('#{{ form.family.vars.id }}').closest('.modal-body').css({'line-height': '25px', 'height': 130});
                     });
                 {% endif %}
 
