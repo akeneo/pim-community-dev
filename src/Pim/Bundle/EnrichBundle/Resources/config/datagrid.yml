@@ -253,7 +253,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -431,7 +431,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -534,7 +534,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -935,7 +935,7 @@ datagrid:
                 label:         Complete
                 data_name:     ratio
                 type:          twig
-                template:      PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label:         Created
