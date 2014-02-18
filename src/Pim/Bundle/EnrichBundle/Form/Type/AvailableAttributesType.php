@@ -51,7 +51,8 @@ class AvailableAttributesType extends AbstractType
                 'repository' => $this->repository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes'],
-                    'localeCode'             => $this->userContext->getCurrentLocaleCode()
+                    'locale_code'            => $this->userContext->getCurrentLocaleCode(),
+                    'other_group_label'      => $options['other_group_label'],
                 ],
                 'multiple' => true,
                 'expanded' => false,
@@ -66,8 +67,9 @@ class AvailableAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'attributes' => array(),
+                'data_class'        => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
+                'attributes'        => array(),
+                'other_group_label' => 'Other',
             )
         );
 

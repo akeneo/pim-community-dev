@@ -41,16 +41,21 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             throw new \InvalidArgumentException('Option "localeCode" is required');
         }
 
+        if (!isset($options['other_group_label'])) {
+            throw new \InvalidArgumentException('Option "other_group_label" is required');
+        }
+
         $qb = $this
             ->createQueryBuilder('a')
             ->select('a.id')
             ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :otherGroupLabel) as group_label')
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->orderBy('attribute_label, group_label')
             ->setParameter('localeCode', $options['localeCode']);
+            ->setParameter('otherGroupLabel', $options['other_group_label']);
 
         if (!empty($options['excluded_attribute_ids'])) {
             $qb->andWhere(
