@@ -16,11 +16,12 @@ class FlexibleOptionProperty extends FlexibleFieldProperty
      */
     protected function convertValue($value)
     {
-        $data = $this->getBackendData($value);
+        $data   = $this->getBackendData($value);
+        $result = null;
 
         if (count($data['optionValues']) === 1) {
             $result = $data['optionValues'][0]['value'];
-        } else {
+        } elseif (isset($data['code'])) {
             $result = '['.$data['code'].']';
         }
 
