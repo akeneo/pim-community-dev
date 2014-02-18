@@ -21,6 +21,7 @@
 - Fix select field missing for scopable simple/multi select attributes in the product form
 - Restored missing attributes translation
 - Fix the display of scopable metric attributes in the product edit form
+- Fix regression with resolve target entity on Category entity
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
