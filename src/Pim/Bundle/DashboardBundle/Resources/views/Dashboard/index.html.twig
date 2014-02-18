@@ -14,7 +14,7 @@
         <div class="container">
             <h3>{{ 'pim_dashboard.quick_launchpad'|trans }}</h3>
 
-            {% set widgetsArray = ['completeness', 'links'] %}
+            {% set widgetsArray = ['completeness', 'links', 'last_operations'] %}
 
             {% for widget in widgetsArray %}
                 {% if loop.index is odd %}<div class="row">{% endif %}
