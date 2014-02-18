@@ -23,7 +23,8 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         'constraints'     => array('constraints'),
         'label'           => null,
         'required'        => null,
-        'auto_initialize' => null
+        'auto_initialize' => null,
+        'label_attr'      => ['max_length' => 24],
     );
 
     protected function setUp()

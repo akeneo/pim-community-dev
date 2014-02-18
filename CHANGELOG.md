@@ -2,6 +2,7 @@
 
 ## Features
 - Uservoice integration
+- Add a last operations widget on the dashboard
 
 ## Improvements
 - Load choices for grid filters asynchronously
@@ -55,7 +56,7 @@
 - Products grid loaded twice the first time the screen is displayed
 - The first tree is not displayed in the mass edit wizard
 - When no group type exist, it's not possible to add Variant Group
-- Job validation is applied twice (create import/export) 
+- Job validation is applied twice (create import/export)
 - Validation messages not visible in job creation popin (create import/export)
 - Lose hashnav when I create a tree
 - Fix completeness calculation on icecat demo dev data

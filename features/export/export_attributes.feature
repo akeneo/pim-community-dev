@@ -20,6 +20,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;0;1;;;;0;0
     pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;0;1;;;;0;0
     pim_catalog_textarea;description;Description;info;0;0;1;;;;1;1
+    pim_catalog_text;comment;Comment;Other;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;0;0
     pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg;;;0;0
@@ -48,6 +49,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;manufacturer;Manufacturer;;info;0;0;1;;;;0;0
     pim_catalog_multiselect;weather_conditions;"Weather conditions";;info;0;0;1;;;;0;0
     pim_catalog_textarea;description;Description;;info;0;0;1;;;;1;1
+    pim_catalog_text;comment;Comment;;Other;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;;marketing;0;1;1;;;;0;0
     pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg;;;0;0

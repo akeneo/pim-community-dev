@@ -9,16 +9,18 @@ define(
             }
             var $target = $(target);
 
-            if (!$target.attr('data-loaded') && $target.attr('data-url')) {
+            if (!$target.attr('data-loaded') && !$target.attr('data-loading') && $target.attr('data-url')) {
+                $target.attr('data-loading', 1);
+                if (!$target.hasClass('active')) {
+                    $target.addClass('active');
+                }
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($('#container'));
+                loadingMask.render().$el.appendTo($target).css({ 'position': 'absolute', 'width': '100%', 'height': '80%' });
                 loadingMask.show();
 
                 $.get($target.attr('data-url'), function(data) {
-                    $target.html(data);
-                    $target.attr('data-loaded', 1);
-                    loadingMask.hide();
-                    loadingMask.$el.remove();
+                    $target.html(data).attr('data-loaded', 1).removeAttr('data-loading');
+                    loadingMask.hide().$el.remove();
                     $target.closest('form').trigger('tab.loaded', $target);
                 });
             }
