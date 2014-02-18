@@ -228,8 +228,10 @@ th label {
   text-align: center;
 }
 
-.table-condensed:not(.grid) td {
-  text-align: center;
+.table-condensed:not(.grid) {
+  td, th.center {
+    text-align: center;
+  }
 }
 
 .table-striped tbody>tr:nth-child(even)>td {
