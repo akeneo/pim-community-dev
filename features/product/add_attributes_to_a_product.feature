@@ -32,3 +32,7 @@ Feature: Add attributes to a product
     And I add available attribute Length
     Then I should see "Length"
     And I should see "Centimeter"
+
+  Scenario: Successfully display unclassified attributes in group "Other"
+    Given I am on the "sandals" product page
+    Then I should see available attribute Comment in group "Other"
