@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
 
 /**
@@ -13,15 +14,20 @@ use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
  */
 class LastOperationsWidget implements WidgetInterface
 {
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /** @var WidgetRepository */
     protected $repository;
 
     /**
+     * @param SecurityFacade   $securityFacade
      * @param WidgetRepository $repository
      */
-    public function __construct(WidgetRepository $repository)
+    public function __construct(SecurityFacade $securityFacade, WidgetRepository $repository)
     {
-        $this->repository = $repository;
+        $this->securityFacade = $securityFacade;
+        $this->repository     = $repository;
     }
 
     /**
@@ -37,8 +43,15 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        return [
-            'params' => $this->repository->getLastOperationsData()
-        ];
+        $types = array_filter(
+            ['import', 'export'],
+            function ($type) {
+                return $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $type));
+            }
+        );
+
+        $params = empty($types) ? [] : $this->repository->getLastOperationsData($types);
+
+        return ['params' => $params];
     }
 }

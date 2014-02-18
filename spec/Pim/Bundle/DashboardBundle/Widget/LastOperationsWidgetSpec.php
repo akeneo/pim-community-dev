@@ -3,13 +3,16 @@
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {
-    function let(WidgetRepository $repository)
+    function let(SecurityFacade $securityFacade, WidgetRepository $repository)
     {
-        $this->beConstructedWith($repository);
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
+        $this->beConstructedWith($securityFacade, $repository);
     }
 
     function it_is_a_widget()
@@ -32,7 +35,7 @@ class LastOperationsWidgetSpec extends ObjectBehavior
             'id'     => 3
         ];
 
-        $repository->getLastOperationsData()->willReturn([$operation]);
+        $repository->getLastOperationsData(Argument::type('array'))->willReturn([$operation]);
 
         $this->getParameters()->shouldReturn(['params' => [$operation]]);
     }

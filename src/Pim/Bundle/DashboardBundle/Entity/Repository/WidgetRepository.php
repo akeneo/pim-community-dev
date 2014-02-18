@@ -29,9 +29,11 @@ class WidgetRepository
     /**
      * Get data for the last operations widget
      *
+     * @param array $types Job types to show
+     *
      * @return array
      */
-    public function getLastOperationsData()
+    public function getLastOperationsData(array $types)
     {
         $qb = $this->manager->createQueryBuilder();
 
@@ -40,6 +42,9 @@ class WidgetRepository
             ->addSelect('CONCAT(\'pim_import_export.batch_status.\', e.status) as status')
             ->from('AkeneoBatchBundle:JobExecution', 'e')
             ->innerJoin('e.jobInstance', 'j')
+            ->where(
+                $qb->expr()->in('j.type', $types)
+            )
             ->orderBy('e.startTime', 'DESC')
             ->setMaxResults(10);
 
