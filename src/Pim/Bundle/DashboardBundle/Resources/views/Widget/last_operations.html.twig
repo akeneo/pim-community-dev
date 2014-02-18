@@ -3,7 +3,7 @@
 </div>
 
 {% if widget.params|length %}
-    <table id="last-operations-widget" class="table table-condensed groups unspaced">
+    <table id="last-operations-widget" class="table table-condensed table-light groups unspaced">
         <thead>
             <tr>
                 <th class="center">{{ 'pim_dashboard.widget.last_operations.date'|trans }}</th>
@@ -14,14 +14,30 @@
             </tr>
         </thead>
         <tbody>
+        {% set statusLabels = {
+            1: 'success',
+            3: 'info',
+            4: 'important',
+            5: 'important',
+            6: 'important',
+            7: 'important',
+            8: 'inverse'
+        } %}
             {% for operation in widget.params %}
                 <tr>
-                    <td>{{ operation.date|date("Y-m-d h:i:s") }}</td>
+                    <td>
+                        {% set timeFormat = 'now'|date('Y-m-d') == operation.date|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
+                        {{ operation.date|date(timeFormat) }}
+                    </td>
                     <td>{{ ('pim_dashboard.widget.last_operations.job_type.' ~ operation.type)|trans }}</td>
                     <td>{{ operation.label }}</td>
-                    <td>{{ operation.status|trans }}</td>
                     <td>
-                        <a href="{{ path('pim_importexport_' ~ operation.type ~ '_execution_show', { id: operation.id }) }}">
+                        <span class="label{{ statusLabels[operation.status] is defined ? ' label-' ~ statusLabels[operation.status] : '' }} fullwidth">
+                            {{ ('pim_import_export.batch_status.' ~ operation.status)|trans|capitalize }}
+                        </span>
+                    </td>
+                    <td>
+                        <a class="btn btn-mini" href="{{ path('pim_importexport_' ~ operation.type ~ '_execution_show', { id: operation.id }) }}">
                             {{ 'pim_dashboard.widget.last_operations.details'|trans }}
                         </a>
                     </td>
@@ -30,5 +46,5 @@
         </tbody>
     </table>
 {% else %}
-    <span class="label text-center buffer-small-top buffer-small-bottom" style="width: 100%">{{ 'pim_dashboard.widget.last_operations.empty'|trans }}</span>
+    <span class="label text-center buffer-small-top buffer-small-bottom fullwidth">{{ 'pim_dashboard.widget.last_operations.empty'|trans }}</span>
 {% endif %}

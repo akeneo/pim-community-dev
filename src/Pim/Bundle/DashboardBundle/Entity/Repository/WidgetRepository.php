@@ -38,8 +38,7 @@ class WidgetRepository
         $qb = $this->manager->createQueryBuilder();
 
         $qb
-            ->select('e.id, e.startTime as date, j.type, j.label')
-            ->addSelect('CONCAT(\'pim_import_export.batch_status.\', e.status) as status')
+            ->select('e.id, e.startTime as date, j.type, j.label, e.status')
             ->from('AkeneoBatchBundle:JobExecution', 'e')
             ->innerJoin('e.jobInstance', 'j')
             ->where(

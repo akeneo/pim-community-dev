@@ -16,4 +16,4 @@ Feature: Display last operations widget
     And I wait for the job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
-    And I should see "Export Footwear category export COMPLETED"
+    And I should see "Export Footwear category export Completed"
