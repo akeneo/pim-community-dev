@@ -110,10 +110,26 @@ class OrmSelectorExtension extends AbstractExtension
                 ->addSelect('simpleoption')
 
                 ->leftJoin(
+                    'simpleoption.optionValues',
+                    'simpleoptionvalues',
+                    'WITH',
+                    'simpleoptionvalues.locale = :dataLocale OR simpleoptionvalues.locale IS NULL'
+                )
+                ->addSelect('simpleoptionvalues')
+
+                ->leftJoin(
                     'values.options',
                     'multioptions'
                 )
                 ->addSelect('multioptions')
+
+                ->leftJoin(
+                    'multioptions.optionValues',
+                    'multioptionvalues',
+                    'WITH',
+                    'multioptionvalues.locale = :dataLocale OR multioptionvalues.locale IS NULL'
+                )
+                ->addSelect('multioptionvalues')
 
                 ->setParameter('attributeIds', $attributeIds);
         }

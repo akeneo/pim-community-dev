@@ -20,7 +20,11 @@ class FlexibleOptionsProperty extends FlexibleFieldProperty
 
         $optionValues = [];
         foreach ($data as $option) {
-            $optionValues[]= '['.$option['code'].']';
+            if (count($option['optionValues']) === 1) {
+                $optionValues[]= $option['optionValues'][0]['value'];
+            } else {
+                $optionValues[]= '['.$option['code'].']';
+            }
         }
         $result = implode(', ', $optionValues);
 
