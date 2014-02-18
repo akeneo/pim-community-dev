@@ -53,7 +53,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('attribute_label, group_label')
+            ->orderBy('g.sortOrder, a.sortOrder')
             ->setParameter('localeCode', $options['localeCode']);
             ->setParameter('otherGroupLabel', $options['other_group_label']);
 
@@ -65,10 +65,18 @@ class AttributeRepository extends FlexibleAttributeRepository implements
 
         $result = $qb->getQuery()->getArrayResult();
 
+        // Build choices list
         $attributes = [];
         foreach ($result as $key => $attribute) {
             $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
             unset($result[$key]);
+        }
+
+        // Move other group to the end
+        if (isset($attributes[$options['other_group_label']])) {
+            $other = $attributes[$options['other_group_label']];
+            unset($attributes[$options['other_group_label']]);
+            $attributes[$options['other_group_label']] = $other;
         }
 
         return $attributes;
