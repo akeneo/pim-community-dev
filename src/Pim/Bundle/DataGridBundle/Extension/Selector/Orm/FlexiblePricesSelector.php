@@ -35,4 +35,3 @@ class FlexiblePricesSelector implements SelectorInterface
             ->addSelect('prices');
     }
 }
-

@@ -48,4 +48,3 @@ class FlexibleValuesSelector implements SelectorInterface
         $this->applied = true;
     }
 }
-

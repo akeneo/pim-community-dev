@@ -35,4 +35,3 @@ class FlexibleMediaSelector implements SelectorInterface
             ->addSelect('media');
     }
 }
-

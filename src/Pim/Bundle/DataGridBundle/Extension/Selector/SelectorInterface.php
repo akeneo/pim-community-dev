@@ -22,4 +22,3 @@ interface SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration);
 }
-

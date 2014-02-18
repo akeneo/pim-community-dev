@@ -40,4 +40,3 @@ services:
             - @oro_datagrid.datagrid.request_params
         tags:
              - { name: oro_datagrid.extension }
-

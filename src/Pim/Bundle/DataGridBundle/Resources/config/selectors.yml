@@ -46,4 +46,3 @@ services:
             - @pim_datagrid.extension.selector.orm.flexible_values_selector
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_media }
-

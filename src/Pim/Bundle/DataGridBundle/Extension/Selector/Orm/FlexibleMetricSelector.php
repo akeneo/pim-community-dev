@@ -35,4 +35,3 @@ class FlexibleMetricSelector implements SelectorInterface
             ->addSelect('metric');
     }
 }
-

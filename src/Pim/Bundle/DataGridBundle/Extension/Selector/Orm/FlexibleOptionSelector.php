@@ -46,4 +46,3 @@ class FlexibleOptionSelector implements SelectorInterface
             ->addSelect('simpleoptionvalues');
     }
 }
-
