@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\OptionsResolver\Options;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Type for available attributes
