@@ -63,7 +63,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
             mappedBy: category
         children:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
