@@ -19,33 +19,23 @@ class FlexibleFieldProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
+        $result = $this->getBackendData($value);
+
+        return parent::convertValue($result);
+    }
+
+    /**
+     * Retrieve the relevant backend data from attribute configuration
+     *
+     * @param array $value
+     *
+     * @return array
+     */
+    protected function getBackendData($value)
+    {
         $backend = $value['attribute']['backendType'];
         $value   = $value[$backend];
 
-        if ($backend === AbstractAttributeType::BACKEND_TYPE_PRICE) {
-            $prices = [];
-            foreach ($value as $price) {
-                $prices[]= $price['data'].' '.$price['currency'];
-            }
-            $result = implode(', ', $prices);
-
-        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_METRIC) {
-            $result= $value['data'].' '.$value['unit'];
-
-        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-             $result= '['.$value['code'].']';
-
-        } elseif ($backend === AbstractAttributeType::BACKEND_TYPE_OPTIONS) {
-            $optionValues = [];
-            foreach ($value as $option) {
-                $optionValues[]= '['.$option['code'].']';
-            }
-            $result = implode(', ', $optionValues);
-
-        } else {
-            $result = $value;
-        }
-
-        return parent::convertValue($result);
+        return $value;
     }
 }
