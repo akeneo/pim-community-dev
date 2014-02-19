@@ -32,6 +32,6 @@ class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
         $em = $this->flexibleManager->getEntityManager();
         $group = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->findOne($groupId);
 
-        return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes, $group);
+        return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $group);
     }
 }

@@ -93,10 +93,10 @@ class ConfigureFlexibleGridListener
         if ($isFlexibleGrid) {
             $this->addAttributesIds($datagridConfig);
             $this->addLocaleCode($datagridConfig);
-            $attributes = $this->getAttributesConfig($datagridConfig);
-            $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
-            $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
-            $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
+            $this->addAttributesConfig($datagridConfig);
+            $this->getColumnsConfigurator($datagridConfig)->configure();
+            $this->getSortersConfigurator($datagridConfig)->configure();
+            $this->getFiltersConfigurator($datagridConfig)->configure();
         }
     }
 
@@ -112,39 +112,36 @@ class ConfigureFlexibleGridListener
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param array()               $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
     {
-        return new ColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
+        return new ColumnsConfigurator($datagridConfig, $this->confRegistry);
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param array                 $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig)
     {
         $sorterCallback = $this->getFlexibleSorterApplyCallback();
 
-        return new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
+        return new SortersConfigurator($datagridConfig, $this->confRegistry, $sorterCallback);
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param array                 $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig)
     {
         $flexibleEntity = $this->getEntity($datagridConfig);
 
-        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
+        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $flexibleEntity);
     }
 
     /**
@@ -183,7 +180,7 @@ class ConfigureFlexibleGridListener
      *
      * @param DatagridConfiguration $datagridConfig
      */
-    protected function addAttributesConfiguration(DatagridConfiguration $datagridConfig)
+    protected function addAttributesConfig(DatagridConfiguration $datagridConfig)
     {
         $attributes = $this->getAttributesConfig($datagridConfig);
 
