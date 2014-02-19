@@ -62,6 +62,8 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             ),
 
             'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
+
+            'isRunning' => $object->isRunning(),
         ];
     }
 

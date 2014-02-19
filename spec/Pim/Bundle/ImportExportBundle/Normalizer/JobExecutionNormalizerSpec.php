@@ -45,6 +45,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('error', ['foo' => 'bar'], 'messages', 'en_US')->willReturn('Such error');
 
         $jobExecution->getLabel()->willReturn('Wow job');
+        $jobExecution->isRunning()->willReturn(true);
 
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
         $serializer->normalize($exportExecution, 'any', ['translationDomain' => 'messages', 'translationLocale' => 'en_US'])->willReturn('**exportExecution**');
@@ -53,7 +54,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $this->normalize($jobExecution, 'any')->shouldReturn([
             'label'          => 'Wow job',
             'failures'       => ['Such error'],
-            'stepExecutions' => ['**exportExecution**', '**cleanExecution**']
+            'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
+            'isRunning'      => true,
         ]);
     }
 
@@ -69,13 +71,15 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('error', ['foo' => 'bar'], 'job', 'ce_ZN')->willReturn('Such error');
 
         $jobExecution->getLabel()->willReturn('Wow job');
+        $jobExecution->isRunning()->willReturn(false);
 
         $jobExecution->getStepExecutions()->willReturn([]);
 
         $this->normalize($jobExecution, 'any', ['translationDomain' => 'job', 'translationLocale' => 'ce_ZN'])->shouldReturn([
             'label'          => 'Wow job',
             'failures'       => ['Such error'],
-            'stepExecutions' => []
+            'stepExecutions' => [],
+            'isRunning'      => false,
         ]);
     }
 
