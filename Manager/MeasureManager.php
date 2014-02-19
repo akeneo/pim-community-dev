@@ -41,7 +41,7 @@ class MeasureManager
             function ($unit) {
                 return $unit['symbol'];
             },
-            $this->getFamilyConfig($family)['units']
+            $unitsConfig
         );
     }
 
