@@ -35,6 +35,8 @@ class MeasureManager
      */
     public function getUnitSymbolsForFamily($family)
     {
+        $familyConfig = $this->getFamilyConfig($family);
+        $unitsConfig =  $familyConfig['units'];
         return array_map(
             function ($unit) {
                 return $unit['symbol'];
