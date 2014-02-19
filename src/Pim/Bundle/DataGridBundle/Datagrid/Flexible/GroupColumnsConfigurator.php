@@ -23,16 +23,14 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param array                 $attributes    the attributes
      * @param Group                 $group         the current group
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        $attributes,
         Group $group
     ) {
-        parent::__construct($configuration, $registry, $attributes);
+        parent::__construct($configuration, $registry);
 
         $this->group = $group;
     }
@@ -42,6 +40,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     public function configure()
     {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
@@ -66,7 +65,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         );
         $axisColumns = array();
 
-        foreach ($this->attributes as $attributeCode => $attribute) {
+        foreach ($attributes as $attributeCode => $attribute) {
             $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
