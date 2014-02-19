@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'jquery.select2', 'bootstrap.bootstrapswitch'],
-    function ($, _) {
+    ['jquery', 'underscore', 'datepicker', 'jquery.select2', 'bootstrap.bootstrapswitch'],
+    function ($, _, datepicker) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
@@ -66,6 +66,10 @@ require(
                         $(formName+'_availableLocales').select2('val', '');
                         $(this).parent().parent().next().hide();
                     }
+                });
+
+                _.each($(formName + ' input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
                 });
 
                 $(formName+'_metricFamily').select2({
