@@ -54,7 +54,8 @@ class MeasureManager
      */
     public function getStandardUnitForFamily($family)
     {
-        return $this->getFamilyConfig($family)['standard'];
+        $familyConfig = $this->getFamilyConfig($family);
+        return $familyConfig['standard'];
     }
 
     /**
