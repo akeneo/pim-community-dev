@@ -1,8 +1,10 @@
 parameters:
-    pim_dashboard.controller.widget.class:   Pim\Bundle\DashboardBundle\Controller\WidgetController
-    pim_dashboard.widget.registry.class:     Pim\Bundle\DashboardBundle\Widget\Registry
-    pim_dashboard.widget.completeness.class: Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
-    pim_dashboard.widget.links.class:        Pim\Bundle\DashboardBundle\Widget\LinksWidget
+    pim_dashboard.controller.widget.class:      Pim\Bundle\DashboardBundle\Controller\WidgetController
+    pim_dashboard.repository.orm.widget.class:  Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository
+    pim_dashboard.widget.registry.class:        Pim\Bundle\DashboardBundle\Widget\Registry
+    pim_dashboard.widget.completeness.class:    Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
+    pim_dashboard.widget.links.class:           Pim\Bundle\DashboardBundle\Widget\LinksWidget
+    pim_dashboard.widget.last_operations.class: Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget
 
 services:
     pim_dashboard.controller.widget:
@@ -11,6 +13,11 @@ services:
         parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_dashboard.widget.registry'
+
+    pim_dashboard.repository.orm.widget:
+        class: %pim_dashboard.repository.orm.widget.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     pim_dashboard.widget.registry:
         class: %pim_dashboard.widget.registry.class%
@@ -29,3 +36,11 @@ services:
             - '@pim_catalog.repository.orm.product'
         tags:
             - { name: pim_dashboard.widget, alias: completeness }
+
+    pim_dashboard.widget.last_operations:
+        class: %pim_dashboard.widget.last_operations.class%
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_dashboard.repository.orm.widget'
+        tags:
+            - { name: pim_dashboard.widget, alias: last_operations }

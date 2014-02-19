@@ -74,6 +74,13 @@ attributes:
         useableAsGridFilter: true
         maxCharacters:       1000
         sortOrder:           5
+    comment:
+        labels:
+            en_US: Comment
+        type:  pim_catalog_text
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        maxCharacters:       255
     price:
         labels:
             en_US: Price

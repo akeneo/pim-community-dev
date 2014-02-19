@@ -79,13 +79,14 @@ class MetricTypeTest extends AttributeTypeTestCase
                 $this->formType,
                 $data,
                 array(
-                    'constraints' => array('constraints'),
-                    'label' => null,
-                    'required' => null,
+                    'constraints'     => array('constraints'),
+                    'label'           => null,
+                    'required'        => null,
                     'auto_initialize' => false,
-                    'default_unit' => array('GRAM'),
-                    'units' => array('GRAM' => 'g', 'KILOGRAM' => 'kg'),
-                    'family' => 'Weight'
+                    'label_attr'      => ['max_length' => 24],
+                    'default_unit'    => array('GRAM'),
+                    'units'           => array('GRAM' => 'g', 'KILOGRAM' => 'kg'),
+                    'family'          => 'Weight'
                 )
             );
 

@@ -48,10 +48,11 @@ class BooleanTypeTest extends AttributeTypeTestCase
                 $this->formType,
                 $data,
                 array(
-                    'constraints' => array('constraints'),
-                    'label' => null,
-                    'required' => null,
-                    'auto_initialize' => false
+                    'constraints'     => array('constraints'),
+                    'label'           => null,
+                    'required'        => null,
+                    'auto_initialize' => false,
+                    'label_attr'      => ['max_length' => 24],
                 )
             );
 

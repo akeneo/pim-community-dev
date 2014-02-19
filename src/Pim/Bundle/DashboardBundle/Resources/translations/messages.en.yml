@@ -23,4 +23,16 @@ pim_dashboard:
         error:
             title:   Error while loading widget
             message: Widget "%alias%" does not exist
-        completeness: Completeness Over Channels and Locales
+        completeness:
+            title: Completeness Over Channels and Locales
+        last_operations:
+            title:        Last operations
+            empty:        No operations found
+            status:       Status
+            date:         Date
+            type:         Type
+            profile name: Profile name
+            details:      Details
+            job_type:
+                import: Import
+                export: Export

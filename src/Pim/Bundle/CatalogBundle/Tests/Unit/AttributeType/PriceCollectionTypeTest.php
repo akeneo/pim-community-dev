@@ -50,14 +50,15 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
                 'text',
                 'bar',
                 array(
-                    'constraints'      => array('constraints'),
-                    'label'        => null,
-                    'required'     => null,
-                    'type'         => 'pim_enrich_price',
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'auto_initialize' => false
+                    'constraints'     => array('constraints'),
+                    'label'           => null,
+                    'required'        => null,
+                    'label_attr'      => ['max_length' => 24],
+                    'type'            => 'pim_enrich_price',
+                    'allow_add'       => true,
+                    'allow_delete'    => true,
+                    'by_reference'    => false,
+                    'auto_initialize' => false,
                 )
             );
 
