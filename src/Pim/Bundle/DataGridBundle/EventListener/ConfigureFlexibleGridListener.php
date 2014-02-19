@@ -181,7 +181,7 @@ class ConfigureFlexibleGridListener
         $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
 
         if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableAsGridColumns($flexibleEntity);
+            $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
         }
 
         $datagridConfig->offsetSetByPath(self::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
