@@ -217,7 +217,7 @@ class ConfigureFlexibleGridListener
     }
 
     /**
-     * Get attributes configuration
+     * Get attributes configuration for attribute that can be used in grid (as column or filter)
      *
      * @param DatagridConfiguration $datagridConfig
      *
@@ -225,12 +225,14 @@ class ConfigureFlexibleGridListener
      */
     protected function getAttributesConfig(DatagridConfiguration $datagridConfig)
     {
-        $repository     = $this->flexibleManager->getAttributeRepository();
         $flexibleEntity = $this->flexibleManager->getFlexibleName();
-        $currentLocale  = $this->getCurrentLocaleCode();
-        $attConfig      = $repository->getAttributesGridConfig($flexibleEntity, $currentLocale);
+        $repository     = $this->flexibleManager->getAttributeRepository();
 
-        return $attConfig;
+        $attributeIds  = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+        $currentLocale = $this->getCurrentLocaleCode();
+        $configuration = $repository->getAttributesAsArray($flexibleEntity, true, $currentLocale, $attributeIds);
+
+        return $configuration;
     }
 
     /**

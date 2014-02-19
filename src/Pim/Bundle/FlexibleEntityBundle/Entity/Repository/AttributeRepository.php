@@ -73,33 +73,43 @@ class AttributeRepository extends EntityRepository
     }
 
     /**
-     * Get associative array of code to attribute config
+     * Get attribute as array indexed by code
      *
-     * @param string $entityType the entity type
-     * @param string $locale     the locale
-     * @param mixed  $codes      the attribute codes
+     * @param string  $entityType the entity type
+     * @param boolean $withLabel  translated label should be joined
+     * @param string  $locale     the locale code of the label
+     * @param mixed   $ids        the attribute ids
      *
      * @return array
      */
-    public function getAttributesGridConfig($entityType, $locale, $codes = null)
+    public function getAttributesAsArray($entityType, $withLabel = false, $locale = null, $ids = null)
     {
-        $labelExpr = '(CASE WHEN trans.label IS NULL THEN att.code ELSE trans.label END)';
-
-        // TODO : load whole attribute
         $qb = $this->_em->createQueryBuilder()
-            ->select('att.id,att.code,att.attributeType,att.useableAsGridColumn,att.useableAsGridFilter,att.metricFamily')
-            ->addSelect(sprintf('%s as label', $labelExpr))
+            ->select('att')
             ->from($this->_entityName, 'att', 'att.code')
-            ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')->setParameter('locale', $locale)
             ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
+        if ($ids !== null) {
+            $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+        }
+        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        if ($codes !== null) {
-            $qb->andWhere('att.code IN (:codes)')->setParameter('codes', $codes);
+        if ($withLabel) {
+            $labelExpr = 'COALESCE(trans.label, CONCAT(\'[\', att.code, \']\'))';
+            $qb = $this->_em->createQueryBuilder()
+                ->select('att.code', sprintf('%s as label', $labelExpr))
+                ->from($this->_entityName, 'att', 'att.code')
+                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')->setParameter('locale', $locale)
+                ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
+            if ($ids !== null) {
+                $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+            }
+            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($labels as $code => $data) {
+                $results[$code]['label']= $data['label'];
+            }
         }
 
-        $result = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-
-        return $result;
+        return $results;
     }
 
     /**
@@ -125,19 +135,28 @@ class AttributeRepository extends EntityRepository
     }
 
     /**
-     * Get ids of attributes useable as columns
+     * Get ids of attributes useable in grid
      *
-     * @param string $entityType the entity type
+     * @param string  $entityType the entity type
+     * @param boolean $asColumn   the attribute is useable as column
+     * @param bolean  $asFilter   the attribute is useable as filter
      *
      * @return array
      */
-    public function getAttributeIdsUseableAsGridColumns($entityType)
+    public function getAttributeIdsUseableInGrid($entityType, $asColumn = true, $asFilter = true)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id')
-            ->where('att.entityType = :entityType')
-            ->andWhere('att.useableAsGridColumn = 1');
+            ->where('att.entityType = :entityType');
+
+        if ($asColumn && $asFilter) {
+            $qb->andWhere('att.useableAsGridColumn = 1 OR att.useableAsGridFilter = 1');
+        } elseif ($asColumn) {
+            $qb->andWhere('att.useableAsGridColumn = 1');
+        } elseif ($asFilter) {
+            $qb->andWhere('att.useableAsGridFilter = 1');
+        }
 
         $parameters = ['entityType' => $entityType];
         $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
