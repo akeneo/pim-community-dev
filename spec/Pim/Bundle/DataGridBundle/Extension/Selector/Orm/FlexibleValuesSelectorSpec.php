@@ -18,7 +18,7 @@ class FlexibleValuesSelectorSpec extends ObjectBehavior
     function it_applies_join_on_datasource_query(OrmDatasource $datasource, DatagridConfiguration $configuration, QueryBuilder $queryBuilder)
     {
         $datasource->getQueryBuilder()->willReturn($queryBuilder);
-        $configuration->offsetGetByPath('[source][displayed_attributes]')->willReturn([1, 2]);
+        $configuration->offsetGetByPath('[source][displayed_attribute_ids]')->willReturn([1, 2]);
         $queryBuilder->getRootAlias()->willReturn('p');
         $queryBuilder->leftJoin(
             'p.values',
