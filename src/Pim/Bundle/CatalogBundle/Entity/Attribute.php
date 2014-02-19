@@ -214,13 +214,12 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getDefaultValue()
     {
-        if (is_null($this->defaultValue) && $this->getDefaultOptions()->isEmpty()) {
-            return null;
-        }
-
         switch ($this->getBackendType()) {
             case 'option':
                 $default = $this->getDefaultOptions()->first();
+                if ( false === $default) {
+                    $default = null;
+                }
                 break;
             case 'options':
                 $default = $this->getDefaultOptions();
