@@ -25,6 +25,11 @@ class CategoryFilter extends NumberFilter
     const UNCLASSIFIED_CATEGORY = -1;
 
     /**
+     * @staticvar integer
+     */
+    const ALL_CATEGORY = -2;
+
+    /**
      * @var ProductManager $productManager
      */
     protected $productManager;
@@ -73,7 +78,9 @@ class CategoryFilter extends NumberFilter
         $qb = $ds->getQueryBuilder();
         $rootAlias = $qb->getRootAlias();
 
-        if ($categoryId === self::UNCLASSIFIED_CATEGORY) {
+        if ($categoryId === self::ALL_CATEGORY) {
+            return true;
+        } elseif ($categoryId === self::UNCLASSIFIED_CATEGORY) {
             $tree = $repository->find($treeId);
             if ($tree) {
                 $productIds = $this->productManager->getProductIdsInCategory($tree, true);
@@ -114,7 +121,7 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $data['includeSub'] = isset($data['type'])                ? (bool) $data['type']               : null;
+        $data['includeSub'] = isset($data['type'])                ? (bool) $data['type']               : true;
         $data['treeId']     = isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null;
         $data['categoryId'] = isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null;
         unset($data['type']);

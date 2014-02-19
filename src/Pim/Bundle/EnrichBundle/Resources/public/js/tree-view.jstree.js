@@ -3,13 +3,21 @@ define(
     function ($, _, __, Routing) {
         'use strict';
 
-        var selectedNode = 0,
+        var unclassified = -1,
+            all          = -2,
+            selectedNode = 0,
             selectedTree = 0,
-            activeNode   = 0,
-            includeSub   = false,
+            includeSub   = true,
             dataLocale   = null,
             $el          = null,
-            firstLoad    = true,
+
+            getActiveNode = function(skipVirtual) {
+                if (skipVirtual) {
+                    return selectedNode > 0 ? selectedNode : selectedTree
+                }
+
+                return selectedNode !== 0 ? selectedNode : selectedTree;
+            },
 
             triggerUpdate = function() {
                 $el.trigger('tree.updated');
@@ -21,7 +29,7 @@ define(
                     {
                         _format:        'json',
                         dataLocale:     dataLocale,
-                        select_node_id: activeNode > 0 ? activeNode : selectedTree,
+                        select_node_id: getActiveNode(true),
                         include_sub:    +includeSub
                     }
                 );
@@ -52,7 +60,7 @@ define(
                     data: { title: __(title) }
                 }, null, true);
 
-                if (id === activeNode) {
+                if (id === getActiveNode()) {
                     selectNode(id);
                 }
             },
@@ -95,7 +103,7 @@ define(
                         },
                         auto_open_root: true,
                         node_label_field: 'label',
-                        preselect_node_id: activeNode
+                        preselect_node_id: getActiveNode()
                     },
                     themes: {
                         dots: true,
@@ -108,7 +116,7 @@ define(
                                 // the result is fed to the AJAX request `data` option
                                 return {
                                     id: getNodeId(node),
-                                    select_node_id: activeNode,
+                                    select_node_id: getActiveNode(),
                                     with_products_count: 1,
                                     include_sub: +includeSub
                                 };
@@ -145,30 +153,28 @@ define(
             },
 
             afterTreeLoaded = function (e, root_node_id) {
-                if (root_node_id && selectedTree !== +root_node_id) {
-                    selectedTree = +root_node_id;
-                    if (firstLoad) {
-                        activeNode = 0;
-                        firstLoad  = false;
-                    } else {
-                        activeNode = selectedTree;
-                        selectNode(activeNode);
-                        triggerUpdate();
-                    }
-                } else if (!activeNode) {
-                    activeNode = +root_node_id;
-                    selectNode(activeNode);
+                var previousTree = selectedTree;
+                selectedTree = +root_node_id;
+
+                if (previousTree && previousTree !== selectedTree) {
+                    // Tree was switched by user, select the root node
+                    selectedNode = 0;
+                    selectNode(selectedTree);
+                } else {
+                    selectNode(getActiveNode());
                 }
-                if (!$('#node_0').length) {
-                    createNode(0, null, 'jstree.all');
+                triggerUpdate();
+
+                if (!$('#node_'+all).length) {
+                    createNode(all, null, 'jstree.all');
                 }
             },
 
             afterOpenNode = function (e, data) {
                 var $node = $(data.args[0]);
 
-                if ($node.attr('rel') === 'folder' && !$('#node_-1').length) {
-                    createNode(-1, $node.attr('id'), 'jstree.unclassified');
+                if ($node.attr('rel') === 'folder' && !$('#node_'+unclassified).length) {
+                    createNode(unclassified, $node.attr('id'), 'jstree.unclassified');
                 }
             },
 
@@ -179,9 +185,8 @@ define(
                 }
                 var $node = $(data.args).parent();
                 var nodeId = getNodeId($node);
-                activeNode = nodeId;
 
-                if ($node.attr('rel') === 'folder') {
+                if ($node.attr('rel') === 'folder' && !$node.hasClass('jstree-unclassified')) {
                     selectedNode = 0;
                     selectedTree = nodeId;
                 } else {
@@ -202,7 +207,6 @@ define(
                 selectedNode = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
                 selectedTree = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
                 includeSub   = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
-                activeNode   = selectedNode;
 
                 initTree();
             },
@@ -210,7 +214,7 @@ define(
             getState: function() {
                 return {
                     selectedNode: selectedNode,
-                    selectedTree: activeNode === 0 ? 0 : selectedTree,
+                    selectedTree: selectedTree,
                     includeSub:   includeSub
                 };
             },
@@ -222,7 +226,8 @@ define(
             reset: function() {
                 if ($el) {
                     clearSelection();
-                    selectNode(0);
+                    selectedNode = all;
+                    selectNode(selectedNode);
                 }
             }
         };
