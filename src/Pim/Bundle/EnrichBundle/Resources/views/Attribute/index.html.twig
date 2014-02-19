@@ -3,9 +3,51 @@
 
 {% set title = 'attribute.overview'|trans %}
 
+{% block head_script_component %}
+    {{ parent() }}
+    {% if resource_granted('pim_enrich_attribute_create') %}
+        {% set modalContent %}
+            {% for attributeType in attributeTypes %}
+                <div class="pull-left halfwidth" style="padding: 5px;">
+                    <a class="btn btn-large fullwidth" href="{{ path('pim_enrich_attribute_create', { attribute_type: attributeType }) }}">
+                        <i class="icon-file pull-left" style="line-height:30px;"></i>
+                        {{ attributeType|trans }}
+                    </a>
+                </div>
+            {% endfor %}
+        {% endset %}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'routing', 'backbone/bootstrap-modal'],
+                function($, routing) {
+                    $(function() {
+                        var modal = null;
+                        $('#create-attribute').on('click', function() {
+                            if (modal) {
+                                modal.open();
+                            } else {
+                                modal = new Backbone.BootstrapModal({
+                                    title: '{{ 'Choose the attribute type'|trans }}',
+                                    content: {{ modalContent|json_encode|raw }}
+                                });
+
+                                modal.open();
+                                modal.$el.css({
+                                    'width': '700px',
+                                    'margin-left': '-350px'
+                                }).find('.modal-footer').remove();
+                            }
+                        });
+                    });
+                }
+            );
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% set buttons %}
-        {{ elements.createBtn('attribute', path('pim_enrich_attribute_create'), null, 'pim_enrich_attribute_create') }}
+        {{ elements.createBtn('attribute', null, { id: 'create-attribute' }, 'pim_enrich_attribute_create') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

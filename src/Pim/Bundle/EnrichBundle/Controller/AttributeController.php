@@ -128,42 +128,51 @@ class AttributeController extends AbstractDoctrineController
         $this->auditManager     = $auditManager;
         $this->measuresConfig   = $measuresConfig;
     }
+
     /**
      * List attributes
-     * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_attribute_index")
-     * @return template
+     * @return Template
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return array();
+        return ['attributeTypes' => $this->attributeManager->getAttributeTypes()];
     }
 
     /**
      * Create attribute
+     * @param Request $request
      *
      * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_create")
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
+        $attributeType = $request->get('attribute_type');
+        $attributeTypes = $this->attributeManager->getAttributeTypes();
+
+        if (!$attributeType || !is_string($attributeType) || !array_key_exists($attributeType, $attributeTypes)) {
+            return $this->redirectToRoute('pim_enrich_attribute_index');
+        }
+
+        $attribute = $this->attributeManager->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
-            'measures'        => $this->measuresConfig
-        );
+            'measures'        => $this->measuresConfig,
+            'attributeType'   => $attributeType
+        ];
     }
 
     /**
