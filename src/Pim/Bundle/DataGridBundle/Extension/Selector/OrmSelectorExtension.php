@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
@@ -20,6 +21,11 @@ use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
  */
 class OrmSelectorExtension extends AbstractExtension
 {
+    /**
+     * @var string
+     */
+    const COLUMN_SELECTOR_PATH = 'selector';
+
     /**
      * @var SelectorInterface[]
      */
@@ -89,6 +95,29 @@ class OrmSelectorExtension extends AbstractExtension
     }
 
     /**
+     * Prepare selectors array
+     *
+     * @param DatagridConfiguration $config
+     *
+     * @return SelectorInterface[]
+     */
+    protected function getSelectorsToApply(DatagridConfiguration $config)
+    {
+        $selectors = [];
+        $columnsConfig = $config->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
+        );
+
+        foreach ($columnsConfig as $column) {
+            if (isset($column[self::COLUMN_SELECTOR_PATH]) && $name = $column[self::COLUMN_SELECTOR_PATH]) {
+                $selectors[$name] = $this->selectors[$name];
+            }
+        }
+
+        return $selectors;
+    }
+
+    /**
      * Retrieve entity ids, filters, sorters and limits are already in the datasource query builder
      *
      * @param DatasourceInterface $datasource
@@ -105,38 +134,5 @@ class OrmSelectorExtension extends AbstractExtension
         $results = $getIdsQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($results);
-    }
-
-    /**
-     * Prepare selectors array
-     *
-     * @param DatagridConfiguration $config
-     *
-     * @return SelectorInterface[]
-     */
-    protected function getSelectorsToApply(DatagridConfiguration $config)
-    {
-        /*
-        $filters       = [];
-        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-
-        foreach ($filtersConfig as $column => $filter) {
-            // if label not set, try to suggest it from column with the same name
-            if (!isset($filter['label'])) {
-                $filter['label'] = $config->offsetGetByPath(
-                    sprintf('[%s][%s][label]', FormatterConfiguration::COLUMNS_KEY, $column)
-                );
-            }
-            $filters[] = $this->getFilterObject($column, $filter);
-        }*/
-
-        // TODO : get selectors from configuration
-        $isFlexible = $config->offsetGetByPath('[source][is_flexible]');
-        if ($isFlexible) {
-            return $this->selectors;
-        }
-
-
-        return [];
     }
 }
