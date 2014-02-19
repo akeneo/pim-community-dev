@@ -22,7 +22,7 @@ class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
      *
      * @return ConfiguratorInterface
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
     {
         $groupId = $this->request->get('id', null);
         if (!$groupId) {
