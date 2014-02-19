@@ -31,7 +31,7 @@ services:
         arguments:
             - @pim_datagrid.extension.selector.orm.flexible_values_selector
         tags:
-            - { name: pim_datagrid.extension.selector, type: flexible_prices }
+            - { name: pim_datagrid.extension.selector, type: flexible_price }
 
     pim_datagrid.extension.selector.orm.flexible_metric_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_metric_selector.class%
