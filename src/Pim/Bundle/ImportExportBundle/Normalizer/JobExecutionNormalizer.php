@@ -24,8 +24,19 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function normalize($object, $format = null, array $context = array())
     {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Cannot normalize job execution of "%s" because injected serializer is not a normalizer',
+                    $object->getLabel()
+                )
+            );
+        }
 
         $context = array_merge(
             [
@@ -51,14 +62,17 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             ),
 
             'stepExecutions' => array_map(
-                function ($stepExecution) use ($format) {
-                    return $this->serializer->normalize($stepExecution, $format);
+                function ($stepExecution) use ($format, $context) {
+                    return $this->serializer->normalize($stepExecution, $format, $context);
                 },
                 $object->getStepExecutions()
             ),
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof JobExecution;
