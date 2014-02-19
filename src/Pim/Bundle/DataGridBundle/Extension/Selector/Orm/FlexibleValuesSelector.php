@@ -29,7 +29,7 @@ class FlexibleValuesSelector implements SelectorInterface
     {
         if ($this->applied === false) {
             $rootAlias    = $datasource->getQueryBuilder()->getRootAlias();
-            $attributeIds = $configuration->offsetGetByPath('[source][displayed_attributes]');
+            $attributeIds = $configuration->offsetGetByPath('[source][displayed_attribute_ids]');
 
             $datasource->getQueryBuilder()
                 ->leftJoin(

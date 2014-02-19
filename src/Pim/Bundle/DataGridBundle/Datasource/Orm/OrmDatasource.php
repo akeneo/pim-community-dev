@@ -22,6 +22,31 @@ class OrmDatasource extends OroOrmDatasource
     const TYPE = 'pim_orm';
 
     /**
+     * @var string
+     */
+    const IS_FLEXIBLE_ENTITY_PATH = '[source][is_flexible]';
+
+    /**
+     * @var string
+     */
+    const ENTITY_PATH = '[source][entity]';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attribute_ids]';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_LOCALE_PATH = '[source][locale_code]';
+
+    /**
+     * @var string
+     */
+    const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
+
+    /**
      * @var boolean
      */
     protected $isFlexible = false;

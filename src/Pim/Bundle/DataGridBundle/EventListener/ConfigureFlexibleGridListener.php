@@ -6,9 +6,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
@@ -25,26 +25,6 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
  */
 class ConfigureFlexibleGridListener
 {
-    /**
-     * @var string
-     */
-    const IS_FLEXIBLE_ENTITY_PATH = '[source][is_flexible]';
-
-    /**
-     * @var string
-     */
-    const ENTITY_PATH = '[source][entity]';
-
-    /**
-     * @var string
-     */
-    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attributes]';
-
-    /**
-     * @var string
-     */
-    const DISPLAYED_LOCALE_PATH = '[source][locale_code]';
-
     /**
      * @var FlexibleManager
      */
@@ -108,7 +88,7 @@ class ConfigureFlexibleGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
-        $isFlexibleGrid = $datagridConfig->offsetGetByPath(self::IS_FLEXIBLE_ENTITY_PATH);
+        $isFlexibleGrid = $datagridConfig->offsetGetByPath(OrmDatasource::IS_FLEXIBLE_ENTITY_PATH);
 
         if ($isFlexibleGrid) {
             $this->addAttributesIds($datagridConfig);
@@ -127,7 +107,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getEntity(DatagridConfiguration $datagridConfig)
     {
-        return $datagridConfig->offsetGetByPath(self::ENTITY_PATH);
+        return $datagridConfig->offsetGetByPath(OrmDatasource::ENTITY_PATH);
     }
 
     /**
@@ -184,7 +164,7 @@ class ConfigureFlexibleGridListener
             $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
         }
 
-        $datagridConfig->offsetSetByPath(self::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
+        $datagridConfig->offsetSetByPath(OrmDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
     }
 
     /**
@@ -195,7 +175,19 @@ class ConfigureFlexibleGridListener
     protected function addLocaleCode(DatagridConfiguration $datagridConfig)
     {
         $localeCode = $this->getCurrentLocaleCode();
-        $datagridConfig->offsetSetByPath(self::DISPLAYED_LOCALE_PATH, $localeCode);
+        $datagridConfig->offsetSetByPath(OrmDatasource::DISPLAYED_LOCALE_PATH, $localeCode);
+    }
+
+    /**
+     * Inject attributes configurations in the datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     */
+    protected function addAttributesConfiguration(DatagridConfiguration $datagridConfig)
+    {
+        $attributes = $this->getAttributesConfig($datagridConfig);
+
+        $datagridConfig->offsetSetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
     }
 
     /**
