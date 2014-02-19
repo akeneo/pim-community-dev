@@ -61,13 +61,30 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
                 $object->getFailureExceptions()
             ),
 
-            'stepExecutions' => array_map(
-                function ($stepExecution) use ($format, $context) {
-                    return $this->serializer->normalize($stepExecution, $format, $context);
-                },
-                $object->getStepExecutions()
-            ),
+            'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
         ];
+    }
+
+    /**
+     * Normalizes the step executions collection
+     *
+     * As JobExecution::getStepExecutions() might return something else than an array,
+     * (like a PersistentCollection) we use a foreach instead of an array_map
+     *
+     * @param array|Traversable $stepExecutions
+     * @param string            $format
+     * @param array             $context
+     *
+     * @return array
+     */
+    protected function normalizeStepExecutions($stepExecutions, $format, array $context)
+    {
+        $result = [];
+        foreach ($stepExecutions as $stepExecution) {
+            $result[] = $this->serializer->normalize($stepExecution, $format, $context);
+        }
+
+        return $result;
     }
 
     /**
