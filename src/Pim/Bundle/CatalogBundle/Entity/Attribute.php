@@ -218,18 +218,18 @@ class Attribute extends AbstractEntityAttribute implements
             return null;
         }
 
-        switch ($this->getAttributeType()) {
-            case 'pim_catalog_simpleselect':
+        switch ($this->getBackendType()) {
+            case 'option':
                 $default = $this->getDefaultOptions()->first();
                 break;
-            case 'pim_catalog_multiselect':
+            case 'options':
                 $default = $this->getDefaultOptions();
                 break;
-            case 'pim_catalog_date':
+            case 'date':
                 $default = new \DateTime();
                 $default->setTimestamp((int) $this->defaultValue);
                 break;
-            case 'pim_catalog_boolean':
+            case 'boolean':
                 $default = (bool) $this->defaultValue;
                 break;
             default:
@@ -252,11 +252,11 @@ class Attribute extends AbstractEntityAttribute implements
             || ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty())) {
             $this->defaultValue = null;
         } else {
-            switch ($this->getAttributeType()) {
-                case 'pim_catalog_date':
+            switch ($this->getBackendType()) {
+                case 'date':
                     $this->defaultValue = $defaultValue->format('U');
                     break;
-                case 'pim_catalog_boolean':
+                case 'boolean':
                     $this->defaultValue = (int) $defaultValue;
                     break;
                 default:
