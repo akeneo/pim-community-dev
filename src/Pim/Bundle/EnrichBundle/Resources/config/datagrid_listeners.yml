@@ -97,6 +97,8 @@ services:
             - '@pim_datagrid.datagrid.flexible.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-grid, method: buildBefore }
 
