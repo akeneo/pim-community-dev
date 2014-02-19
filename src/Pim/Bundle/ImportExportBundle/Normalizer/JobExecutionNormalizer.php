@@ -49,7 +49,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         return [
             'label' => $object->getLabel(),
 
-            'failureExceptions' => array_map(
+            'failures' => array_map(
                 function ($exception) use ($context) {
                     return $this->translator->trans(
                         $exception['message'],
