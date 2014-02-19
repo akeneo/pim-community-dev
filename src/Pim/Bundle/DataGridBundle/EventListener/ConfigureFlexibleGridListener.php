@@ -199,11 +199,21 @@ class ConfigureFlexibleGridListener
     }
 
     /**
+     * Get current locale from datagrid parameters, then request parameters, then user config
+     *
      * @return string
      */
     protected function getCurrentLocaleCode()
     {
-        return $this->requestParams->get('dataLocale', null);
+        $dataLocale = $this->requestParams->get('dataLocale', null);
+        if (!$dataLocale) {
+            $dataLocale = $this->request->get('dataLocale', null);
+        }
+        if (!$dataLocale && $locale = $this->getUser()->getCatalogLocale()) {
+            $dataLocale = $locale->getCode();
+        }
+
+        return $dataLocale;
     }
 
     /**
