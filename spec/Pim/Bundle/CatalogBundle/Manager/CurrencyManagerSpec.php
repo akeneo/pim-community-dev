@@ -16,7 +16,6 @@ class CurrencyManagerSpec extends ObjectBehavior
         Currency $eur,
         Currency $usd,
         Currency $gbp
-
     ) {
         $this->beConstructedWith($objectManager);
         $objectManager->getRepository('PimCatalogBundle:Currency')->willReturn($repository);
