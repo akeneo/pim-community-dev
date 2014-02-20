@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
@@ -34,6 +35,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         JobExecution $jobExecution,
         StepExecution $exportExecution,
         StepExecution $cleanExecution,
+        BatchStatus $status,
         $serializer,
         $translator
     ) {
@@ -46,6 +48,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
 
         $jobExecution->getLabel()->willReturn('Wow job');
         $jobExecution->isRunning()->willReturn(true);
+        $jobExecution->getStatus()->willReturn($status);
+        $status->__toString()->willReturn('COMPLETED');
 
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
         $serializer->normalize($exportExecution, 'any', ['translationDomain' => 'messages', 'translationLocale' => 'en_US'])->willReturn('**exportExecution**');
@@ -56,11 +60,13 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
+            'status'         => 'COMPLETED',
         ]);
     }
 
     function it_normalizes_a_job_execution_instance_using_context_parameters_to_translate_failure_exceptions(
         JobExecution $jobExecution,
+        BatchStatus $status,
         $translator
     ) {
         $jobExecution->getFailureExceptions()->willReturn(
@@ -72,6 +78,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
 
         $jobExecution->getLabel()->willReturn('Wow job');
         $jobExecution->isRunning()->willReturn(false);
+        $jobExecution->getStatus()->willReturn($status);
+        $status->__toString()->willReturn('COMPLETED');
 
         $jobExecution->getStepExecutions()->willReturn([]);
 
@@ -80,6 +88,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'failures'       => ['Such error'],
             'stepExecutions' => [],
             'isRunning'      => false,
+            'status'         => 'COMPLETED',
         ]);
     }
 

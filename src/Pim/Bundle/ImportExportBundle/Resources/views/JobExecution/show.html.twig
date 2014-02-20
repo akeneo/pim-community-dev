@@ -37,8 +37,8 @@
     {% endset %}
 
     {% set left %}
-        <ul class="inline">
-           <li>{{ 'Status'|trans }}: {{ execution.status|upper }}</li>
+        <ul class="inline" id="status">
+           <li>{{ 'Status'|trans }}: ...</li>
        </ul>
     {% endset %}
 
@@ -167,17 +167,29 @@
 
                     render: function() {
                         this.$el.html(this.template(this.model.toJSON()));
+                        return this;
                     }
                 });
 
-                var jobExecution = new JobExecution();
+                var JobExecutionStatusView = Backbone.View.extend({
+                    initialize: function () {
+                        this.listenTo(this.model, 'change', this.render);
+                    },
 
+                    template: _.template('<li>{{ "Status"|trans }}: <%= status.toUpperCase() %></li>'),
+
+                    render: function() {
+                        this.$el.html(this.template(this.model.toJSON()));
+                        return this;
+                    }
+
+                });
+
+                var jobExecution = new JobExecution();
                 jobExecution.fetch();
 
-                var jobExecutionView = new JobExecutionView({
-                    model: jobExecution,
-                    el: '#job-execution tbody'
-                });
+                new JobExecutionView({ model: jobExecution, el: '#job-execution tbody' });
+                new JobExecutionStatusView({ model: jobExecution, el: '#status' });
 
                 var interval = setInterval(function() {
                     jobExecution.fetch();
