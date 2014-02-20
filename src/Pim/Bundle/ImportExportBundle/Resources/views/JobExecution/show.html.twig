@@ -73,6 +73,19 @@
                         }
                     },
 
+                    events: {
+                        'click a.data': function(event) {
+                            event.preventDefault();
+
+                            var $link = $(event.currentTarget);
+                            var displayLabel = $link.data('display-label');
+                            var hideLabel = $link.data('hide-label');
+
+                            $link.siblings('table').toggleClass('hide');
+                            $link.text($link.text().trim() == displayLabel ? hideLabel : displayLabel);
+                        }
+                    },
+
                     template: _.template(
                         {# Step execution information #}
                         '<% _.each(jobExecution.stepExecutions, function(stepExecution) { %>' +
@@ -105,7 +118,7 @@
                                             '{{ "Display item"|trans }}' +
                                         '</a>' +
                                         '<table class="hide table-striped table-bordered table-hover">' +
-                                            '<% _.each(warning.items, function(value, key) { %>' +
+                                            '<% _.each(warning.item, function(value, key) { %>' +
                                                 '<tr>' +
                                                     '<td><%= key %></td>' +
                                                     '<td><%= value %></td>' +
