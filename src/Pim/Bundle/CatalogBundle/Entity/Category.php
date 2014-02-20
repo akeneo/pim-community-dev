@@ -30,7 +30,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableInterface
 {
     /**
-     * @var Category $parent
+     * @var CategoryInterface $parent
      */
     protected $parent;
 
@@ -89,7 +89,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param ProductInterface $product
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function addProduct(ProductInterface $product)
     {
@@ -114,7 +114,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param ProductInterface $product
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -139,7 +139,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param mixed $products Traversable object or array
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function setProducts($products)
     {
@@ -265,7 +265,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param string $label
      *
-     * @return string
+     * @return CategoryInterface
      */
     public function setLabel($label)
     {
