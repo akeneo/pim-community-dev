@@ -3,36 +3,10 @@
 {% block content %}
 
     {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
-    {% set subtitle = execution.jobInstance.label  %}
-    {% set isRunning = execution.exitStatus.exitCode not in [
-            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::COMPLETED'),
-            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::STOPPED'),
-            constant('Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus::FAILED')
-        ]
-    %}
 
     {% set buttons %}
-        {% if isRunning %}
-            {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
-        {% else %}
-            {% for archiver,files in archives %}
-                {% if files|length == 1 %}
-                    {% for key,file in files %}
-                        {{ elements.link(
-                            ('pim_import_export.download_archive.' ~ archiver),
-                            path(download_file_route, { 'id': execution.id, 'archiver': archiver, 'key': key }), { icon: 'download', class:'no-hash' }
-                        ) }}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-
-            {% if existingLog %}
-                {{ elements.link(
-                    'Download log',
-                    path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
-                ) }}
-            {% endif %}
-        {% endif %}
+        <span id="archives" />
+        <span id="log" />
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}
 
@@ -42,10 +16,11 @@
        </ul>
     {% endset %}
 
-    {{ elements.page_header(title, buttons, subtitle, left) }}
+    {{ elements.page_header(title, buttons, '', left) }}
 
     <div class="container-fluid grid-container">
-        <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="Loading" id="loading" class="transparent" />
+        <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="Loading" class="transparent loading" />
+        {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh', class: 'transparent loading btn-mini' }) }}
         <table class="table table-bordered groups" id="job-execution">
             <thead>
                 <th>{{ 'Step' | trans | upper }}</th>
@@ -69,15 +44,13 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'backbone', 'underscore',],
-            function($, Backbone, _){
+            ['jquery', 'backbone', 'underscore','routing'],
+            function($, Backbone, _, Routing){
                 'use strict';
-
-                var keepPolling = true;
 
                 var JobExecution = Backbone.Model.extend({
                     url: function() {
-                        return  "{{ path('pim_importexport_export_execution_show', {id: execution.id, _format: 'json'}) }}";
+                        return "{{ path(refresh_route, {id: execution.id, _format: 'json'}) }}";
                     }
                 });
 
@@ -89,19 +62,20 @@
                     },
 
                     ajaxStart: function(){
-                        $('#loading').css('opacity', 1);
+                        $('img.loading').removeClass('transparent');
                     },
 
-                    ajaxComplete: function(model, job){
-                        $('#loading').css('opacity', 0);
-                        if (!job.isRunning) {
-                            keepPolling = false;
+                    ajaxComplete: function(model, resp){
+                        $('img.loading').addClass('transparent');
+                        if (!resp.jobExecution.isRunning) {
+                            clearInterval(interval);
+                            interval = null;
                         }
                     },
 
                     template: _.template(
                         {# Step execution information #}
-                        '<% _.each(stepExecutions, function(stepExecution) { %>' +
+                        '<% _.each(jobExecution.stepExecutions, function(stepExecution) { %>' +
                             '<tr>' +
                                 '<td><%= stepExecution.label %></td>' +
                                 '<td><%= stepExecution.status %></td>' +
@@ -155,7 +129,7 @@
                         '<% }); %>' +
 
                         {# Job execution failures #}
-                        '<% _.each(failures, function(failure) { %>' +
+                        '<% _.each(jobExecution.failures, function(failure) { %>' +
                             '<tr class="error">' +
                                 '<td colspan="7">' +
                                     '<span class="title"><%= label.toUpperCase() %></span>&nbsp;' +
@@ -176,13 +150,56 @@
                         this.listenTo(this.model, 'change', this.render);
                     },
 
-                    template: _.template('<li>{{ "Status"|trans }}: <%= status.toUpperCase() %></li>'),
+                    template: _.template('<li>{{ "Status"|trans }}: <%= jobExecution.status %></li>'),
 
                     render: function() {
                         this.$el.html(this.template(this.model.toJSON()));
                         return this;
                     }
+                });
 
+                var JobExecutionButtonsView = Backbone.View.extend({
+                    initialize: function () {
+                        this.listenTo(this.model, 'change', this.render);
+                    },
+
+                    template: _.template(
+                        '<% _.each(archives, function(archive) { %>' +
+                            '<a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="' +
+                            '<%= Routing.generate("{{ download_file_route }}", {id: {{ execution.id }}, archiver: archive.archiver, key: archive.key }) %>' +
+                            '">' +
+                                '<i class="icon-download"></i>' +
+                                '<%= archive.name %>' +
+                            '</a>' +
+                        '<% }); %>'
+                    ),
+
+                    render: function() {
+                        this.$el.html(this.template(this.model.toJSON()));
+                        return this;
+                    }
+                });
+
+                var JobExecutionLogButtonView = Backbone.View.extend({
+                    initialize: function () {
+                        this.listenTo(this.model, 'change', this.render);
+                    },
+
+                    template: _.template(
+                        '<% if (hasLog) { %>' +
+                            '<a class="btn no-hash icons-holder-text" title="{{ "Download log"|trans }}" href="' +
+                                '<%= Routing.generate("{{ download_log_route }}", {id: {{ execution.id }}}) %>' +
+                                '">' +
+                                    '<i class="icon-download"></i>' +
+                                    '{{ "Download log"|trans }}' +
+                            '</a>' +
+                        '<% } %>'
+                    ),
+
+                    render: function() {
+                        this.$el.html(this.template(this.model.toJSON()));
+                        return this;
+                    }
                 });
 
                 var jobExecution = new JobExecution();
@@ -190,17 +207,24 @@
 
                 new JobExecutionView({ model: jobExecution, el: '#job-execution tbody' });
                 new JobExecutionStatusView({ model: jobExecution, el: '#status' });
+                new JobExecutionButtonsView({ model: jobExecution, el: '.navbar-buttons #archives' });
+                new JobExecutionLogButtonView({ model: jobExecution, el: '.navbar-buttons #log' });
+
+                var displayRefreshLink = function() {
+                    $('img.loading').hide();
+                    $('a.loading').removeClass('transparent');
+                };
 
                 var interval = setInterval(function() {
                     jobExecution.fetch();
-                    if (!keepPolling) {
-                        clearInterval(interval);
-                    }
                 }, 1000);
 
                 setTimeout(function() {
-                    clearInterval(interval);
-                }, 100000);
+                    if (null !== interval) {
+                        clearInterval(interval);
+                        displayRefreshLink();
+                    }
+                }, 120000);
             }
         );
     </script>

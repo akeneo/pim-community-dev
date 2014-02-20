@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Gaufrette\StreamMode;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Job execution controller
@@ -113,7 +114,25 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
         if ('json' === $request->getRequestFormat()) {
-            return new Response($this->serializer->serialize($jobExecution, 'json'));
+
+            $archives = [];
+            foreach ($this->archivist->getArchives($jobExecution) as $archiver => $files) {
+                foreach (array_keys($files) as $key) {
+                    $archives[] = [
+                        'name'     => ucfirst($this->translator->trans(sprintf('pim_import_export.download_archive.%s', $archiver))),
+                        'archiver' => $archiver,
+                        'key'      => $key,
+                    ];
+                }
+            }
+
+            return new JsonResponse(
+                [
+                    'jobExecution' => $this->serializer->normalize($jobExecution, 'json'),
+                    'hasLog'       => file_exists($jobExecution->getLogFile()),
+                    'archives'     => $archives,
+                ]
+            );
         }
 
         return $this->render(
