@@ -416,15 +416,12 @@ class ProductManager extends FlexibleManager
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $attributeClass = $this->getAttributeName();
         $valueClass = $this->getFlexibleValueName();
 
         $flexible = new $class();
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $codeToAttributeData = $this->getEntityManager()->getRepository($attributeClass)->getCodeToAttributes($class);
-        $flexible->setAllAttributes($codeToAttributeData);
         $flexible->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $flexible);
