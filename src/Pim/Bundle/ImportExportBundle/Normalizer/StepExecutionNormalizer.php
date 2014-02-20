@@ -45,7 +45,12 @@ class StepExecutionNormalizer implements NormalizerInterface
             ),
 
             'status'    => (string) $object->getStatus(),
-            'summary'   => $object->getSummary(),
+            'summary'   => $this->normalizeSummary(
+                $object->getSummary(),
+                $context['translationDomain'],
+                $context['translationLocale']
+            ),
+
             'startedAt' => $this->normalizeDateTime($object->getStartTime()),
             'endedAt'   => $this->normalizeDateTime($object->getEndTime()),
 
@@ -114,5 +119,24 @@ class StepExecutionNormalizer implements NormalizerInterface
             'reason' => $this->translator->trans($warning['reason'], $warning['reasonParameters'], $domain, $locale),
             'item'   => $warning['item'],
         ];
+    }
+
+    /**
+     * Normalizes the summary
+     *
+     * @param array $summary
+     * @param string $domain
+     * @param string $locale
+     *
+     * @return array
+     */
+    protected function normalizeSummary(array $summary, $domain, $locale)
+    {
+        $result = [];
+        foreach ($summary as $key => $value) {
+            $result[$this->translator->trans($key, [], $domain, $locale)] = $value;
+        }
+
+        return $result;
     }
 }

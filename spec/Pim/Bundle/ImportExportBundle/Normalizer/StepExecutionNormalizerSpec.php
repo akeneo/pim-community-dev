@@ -35,6 +35,8 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('export', [], 'messages', 'en_US')->willReturn('Export step');
 
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);
+        $translator->trans('read', [], 'messages', 'en_US')->willReturn('Read');
+        $translator->trans('write', [], 'messages', 'en_US')->willReturn('Write');
 
         $stepExecution->getStatus()->willReturn($status);
         $status->__toString()->willReturn('PENDING');
@@ -70,7 +72,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
             [
                'label'     => 'Export step',
                'status'    => 'PENDING',
-               'summary'   => ['read' => 12, 'write' => 50],
+               'summary'   => ['Read' => 12, 'Write' => 50],
                'startedAt' => 'yesterday',
                'endedAt'   => null,
                'warnings'  => [
