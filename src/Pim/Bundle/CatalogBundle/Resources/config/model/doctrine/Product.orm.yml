@@ -39,7 +39,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:
