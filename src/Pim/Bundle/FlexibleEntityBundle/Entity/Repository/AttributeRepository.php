@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\AbstractQuery;
 
 /**
  * Attribute repository
