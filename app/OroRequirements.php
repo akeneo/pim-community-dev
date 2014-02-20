@@ -13,7 +13,7 @@ class OroRequirements extends SymfonyRequirements
     const REQUIRED_PHP_VERSION = '5.4.4';
     const REQUIRED_GD_VERSION = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION = '4.4';
+    const REQUIRED_ICU_VERSION = '4.2';
 
     public function __construct()
     {
@@ -120,7 +120,7 @@ class OroRequirements extends SymfonyRequirements
             'app/import',
             'app/export',
             'app/emails',
-            'web/bundles',
+            'app/archive',
             'app/uploads/product'
         );
         foreach ($directories as $directory) {

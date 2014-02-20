@@ -19,13 +19,6 @@ Pim\Bundle\CatalogBundle\Entity\Locale:
         activated:
             type: boolean
             column: is_activated
-    manyToOne:
-        defaultCurrency:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Currency
-            inversedBy: locales
-            joinColumns:
-                default_currency_id:
-                    referencedColumnName: id
     manyToMany:
         channels:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel

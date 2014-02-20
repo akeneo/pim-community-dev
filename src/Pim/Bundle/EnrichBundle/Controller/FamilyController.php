@@ -239,7 +239,6 @@ class FamilyController extends AbstractDoctrineController
         );
 
         $attributesForm->submit($this->getRequest());
-
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);
         }

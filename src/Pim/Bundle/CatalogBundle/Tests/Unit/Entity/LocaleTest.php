@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -76,34 +75,6 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
         $newFallback = 'fr_FR';
         $this->assertEntity($this->locale->setFallback($newFallback));
         $this->assertEquals($newFallback, $this->locale->getFallback());
-    }
-
-    /**
-     * Test getter/setter for currencies property
-     */
-    public function testGetSetDefaultCurrency()
-    {
-        $currencyCode = 'USD';
-        $currencyUs = $this->createCurrency($currencyCode);
-        $this->assertNull($this->locale->getDefaultCurrency());
-
-        $this->assertEntity($this->locale->setDefaultCurrency($currencyUs));
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Currency', $this->locale->getDefaultCurrency());
-        $this->assertEquals($this->locale->getDefaultCurrency()->getCode(), $currencyCode);
-    }
-
-    /**
-     * Create a currency for testing
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
-     */
-    protected function createCurrency($code)
-    {
-        $currency = new Currency();
-        $currency->setCode($code);
-
-        return $currency;
     }
 
     /**

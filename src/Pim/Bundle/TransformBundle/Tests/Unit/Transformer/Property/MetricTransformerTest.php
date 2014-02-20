@@ -35,7 +35,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getSuffixes')
             ->will($this->returnValue(array($columnSuffix)));
 
-        $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\AttributeInterface')
+        $attribute = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute')
             ->setMethods(array('getMetricFamily'))
             ->getMock();
         $columnInfo->expects($this->any())

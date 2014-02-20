@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Converter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

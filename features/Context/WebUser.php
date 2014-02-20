@@ -471,7 +471,7 @@ class WebUser extends RawMinkContext
             }
         }
 
-        $value = $value ?: $this->getInvalidValueFor(
+        $value = $value !== null ? $value : $this->getInvalidValueFor(
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
@@ -692,6 +692,57 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I fill in the following information in the quick search popin:$/
+     */
+    public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
+    {
+        $fields = $table->getRowsHash();
+        if (!isset($fields['type'])) {
+            $fields['type'] = null;
+        }
+
+        $this->getCurrentPage()->fillQuickSearch($fields['search'], $fields['type']);
+    }
+
+    /**
+     * @When /^I open the quick search popin$/
+     */
+    public function iOpenTheQuickSearchPopin()
+    {
+        $this->getCurrentPage()->openQuickSearchPopin();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can search by the following types:$/
+     */
+    public function iCanSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can not search by the following types:$/
+     */
+    public function iCanNotSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list, false);
     }
 
     /**
@@ -1253,6 +1304,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function completenessOfShouldBe($channel, $ratio)
@@ -1271,6 +1325,10 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function localizedCompletenessOfShouldBe($lang, $channel, $ratio)
@@ -1569,6 +1627,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string       $code
+     * @param PyStringNode $data
+     *
      * @Given /^the invalid data file of "([^"]*)" should contain:$/
      */
     public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)

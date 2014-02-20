@@ -14,7 +14,7 @@ Feature: Delete import
 
   Scenario: Successfully delete an import job
     Given I confirm the deletion
-    Then I should see flash message "Item deleted"
+    Then I should see flash message "Import profile successfully removed"
     And the grid should contain 5 elements
     And I should not see import profile "footwear_product_import"
 

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Gaufrette\Filesystem;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;

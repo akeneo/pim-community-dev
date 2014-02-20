@@ -68,11 +68,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: boolean
             nullable: true
             column: negative_allowed
-        dateType:
-            type: string
-            length: 20
-            nullable: true
-            column: date_type
         dateMin:
             type: datetime
             nullable: true
@@ -184,3 +179,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     locale_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+        families:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            mappedBy: attributes

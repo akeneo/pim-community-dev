@@ -5,10 +5,10 @@ Feature: Join a document to a product
 
   Background:
     Given the "default" catalog configuration
-    And a "Car" product
     And the following attribute:
       | label       | type | allowed extensions |
       | Description | file | txt                |
+    And a "Car" product
     And the following product value:
       | product | attribute   | value |
       | Car     | description |       |

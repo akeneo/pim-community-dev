@@ -88,7 +88,7 @@ btn:
     edit:            edit
     save:            save
     save and back:   save and back to grid
-    save and create: save and create
+    save and create: save and create new
     remove:          remove
     delete:          delete
     cancel:          cancel
@@ -115,11 +115,17 @@ confirmation:
         variant group:    Are you sure you want to delete the variant group %name%?
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
+        user:             Are you sure you want to delete the user %name%?
+    attribute group:
+        remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
+    family:
+        remove attribute: Are you sure you want to remove the attribute %name% from this family?
+    product:
+        remove attribute: Are you sure you want to remove the attribute %name% from this product?
 
 # Flash messages
 flash:
     entity:
-        removed: Item was deleted
         removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
@@ -181,11 +187,12 @@ flash:
         removed: Group type successfully removed
         cant remove variant: Group type variant can't be removed
         cant remove used: Group type is used by some groups and can't be removed
-
     association type:
         created: Association type successfully created
         updated: Association type successfully updated
         removed: Association type successfully removed
+    user:
+        removed: User successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -206,13 +213,16 @@ info:
         disable:                 Disable
         disabled:                Disabled
     group:
-        axis:                Variation axis: %attributes%
+        axis:                'Variation axis: %attributes%'
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
+        no group types:      No group types exist, click here to create one
     association type:
         show products:        Show products
         show groups:          Show groups
         remove from products: Deleting the association type will remove it from %count% products.
+        none exist:           No association types exist.
+        create one:           Click here to create one
 
 # Form elements
 Options:                       Options
@@ -238,6 +248,7 @@ Scopable:                      Scopable
 Localizable:                   Localizable
 Unique value:                  Unique value
 Attribute group:               Attribute group
+Other:                         Other
 Variants behavior when edited: Variants behavior when edited
 Edit:                          Edit
 Remove:                        Remove
@@ -304,10 +315,8 @@ Number min:              Min number
 Number max:              Max number
 Decimals allowed:        Allow decimals
 Negative allowed:        Allow negative values
-Date type:               Date type
 Date min:                Min date
 Date max:                Max date
-Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
 Max file size:           Max file size (MB)
@@ -373,11 +382,12 @@ Disable:   Disable
 
 # Batch operations
 pim_enrich.mass_edit_action:
-    page_title:    Products
-    page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
-    title:         Choose operation
-    subtitle:      Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-    confirm:       You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+    page_title:     Products
+    page_subtitle:  Mass Edit (1 product)|Mass Edit (%count% products)
+    title:          Choose operation
+    subtitle:       Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+    confirm:        You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+    limit_exceeded: Please choose less than %limit% products to edit
 
     change-status:
         label:         Change status (enable / disable)
@@ -544,6 +554,7 @@ pane.accordion:
     general_properties: General properties
     locale_values: Locale values
     backend_parameters: Backend parameters
+    general_parameters: General parameters
     label_translations: Label translations
     options: Options
     group_values: Group values
@@ -556,6 +567,7 @@ popin.create:
     group_type.title: Create a new group type
     product.title: Create a new product
     variant_group.title: Create a new variant group
+    option.title: Create a new option
 
 # Datagrid contents
 Has product: Has product

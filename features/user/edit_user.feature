@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a user
   In order to manage the users and rights
   As Peter

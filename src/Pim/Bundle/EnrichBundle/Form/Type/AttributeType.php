@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
  * Type for attribute form
@@ -20,7 +20,7 @@ class AttributeType extends AbstractType
 {
     /**
      * Attribute type manager
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -39,13 +39,13 @@ class AttributeType extends AbstractType
      * Constructor
      *
      * @param string                                  $attributeClass Attribute class
-     * @param AttributeManagerInterface               $manager        Attribute manager
+     * @param AttributeManager                        $manager        Attribute manager
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber     Subscriber to add attribute type related fields
      */
     public function __construct(
         $attributeClass,
-        AttributeManagerInterface $manager = null,
-        AddAttributeTypeRelatedFieldsSubscriber $subscriber = null
+        AttributeManager $manager,
+        AddAttributeTypeRelatedFieldsSubscriber $subscriber
     ) {
         $this->attributeClass   = $attributeClass;
         $this->attributeManager = $manager;
@@ -200,7 +200,7 @@ class AttributeType extends AbstractType
      *
      * @return array
      */
-    public function getAttributeTypeChoices()
+    protected function getAttributeTypeChoices()
     {
         return $this->attributeManager->getAttributeTypes();
     }

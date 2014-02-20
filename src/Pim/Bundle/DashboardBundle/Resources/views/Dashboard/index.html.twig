@@ -14,18 +14,17 @@
         <div class="container">
             <h3>{{ 'pim_dashboard.quick_launchpad'|trans }}</h3>
 
-            {% set widgetsArray = ['completeness', 'links'] %}
+            <div class="row">
+                {% set widgetsArray = ['completeness', 'links', 'last_operations'] %}
 
-            {% for widget in widgetsArray %}
-                {% if loop.index is odd %}<div class="row">{% endif %}
-                {{ __.renderWidget(widget) }}
-                {% if loop.index is even %}</div>{% endif %}
-            {% endfor %}
-
+                {% for widget in widgetsArray %}
+                    {{ __.renderWidget(widget) }}
+                {% endfor %}
+            </div>
         </div>
 
         <div class="version-container">
-            <strong>Version:</strong> 1.0.0-beta4 "The Abominable Snow Rabbit"
+            <strong>Version:</strong> {{ version() }}
         </div>
     </div>
 {% endblock %}

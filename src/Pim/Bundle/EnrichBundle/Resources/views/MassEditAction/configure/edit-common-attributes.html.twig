@@ -5,35 +5,37 @@
         {{ form_widget(form.operation.locale) }}
     </div>
     <div class="pull-left buffer-small-left">
-        {{ form_widget(form.operation.attributesToDisplay) }}
+        {{ form_widget(form.operation.displayedAttributes) }}
     </div>
 {% endblock %}
 
 {% block formContent %}
     {% for groupView in form.operation.vars.groups %}
 
-        <h4>{{ groupView.label }}</h4>
+        <div class="group-container hide">
+            <h4>{{ groupView.label }}</h4>
 
-        {% for attributeView in groupView.attributes %}
-            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-                {% if attributeView.values is defined %}
-                    {% for scope, subvalue in attributeView.values %}
+            {% for attributeView in groupView.attributes %}
+                <div class="attribute-field hide {{ attributeView.classes|default([])|keys|join(' ') }}" data-attribute-id="{{ attributeView.id }}">
+                    {% if attributeView.values is defined %}
+                        {% for scope, subvalue in attributeView.values %}
+                            <div class="control-group" data-field="{{ attributeView.code }}">
+                                {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
                         <div class="control-group" data-field="{{ attributeView.code }}">
-                            {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                            {{ form_widget(attributeView.value) }}
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="control-group" data-field="{{ attributeView.code }}">
-                        {{ form_widget(attributeView.value) }}
-                    </div>
-                {% endif %}
-                <i class="icon-remove remove-attribute" data-id="{{ attributeView.id }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
-            </div>
-        {% endfor %}
+                    {% endif %}
+                    <i class="icon-remove remove-attribute" data-id="{{ attributeView.id }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                </div>
+            {% endfor %}
 
-        {% if not loop.last %}
-            <hr />
-        {% endif %}
+            {% if not loop.last %}
+                <hr />
+            {% endif %}
+        </div>
 
     {% else %}
 
@@ -47,8 +49,8 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
-            function ($, _, Scopable, CurrencyField) {
+            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
+            function ($, _, Scopable, CurrencyField, datepicker, mediator) {
                 'use strict';
                 $(function () {
                     {% if form.operation.vars.groups is empty %}
@@ -62,6 +64,12 @@
                     _.each($('form div.currency'), function (field) {
                         new CurrencyField({ el: $(field) });
                     });
+
+                    _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                        datepicker.init(field.getAttribute('id'));
+                    });
+
+                    mediator.trigger('pim:reinit');
 
                     /**
                      * Add attributes widget
@@ -81,7 +89,7 @@
                     };
                     opts.selectedText = opts.title;
                     opts.noneSelectedText = opts.title;
-                    var $el = $('#{{ form.operation.attributesToDisplay.vars.id }}')
+                    var $el = $('#{{ form.operation.displayedAttributes.vars.id }}')
                         .addClass('pimmultiselect')
                         .multiselect(opts)
                         .multiselectfilter({
@@ -95,14 +103,33 @@
                     var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
                     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                         $el.multiselect('close');
-                        {% set action = path('pim_enrich_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'products': productIds }) %}
-                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
+                        var checked = _.map($el.multiselect('getChecked'), function(el) {
+                            return +el.value;
+                        });
+                        $('div.attribute-field').each(function() {
+                            var $field = $(this);
+                            if (_.contains(checked, $field.data('attribute-id'))) {
+                                $field.removeClass('hide');
+                            } else {
+                                $field.addClass('hide');
+                            }
+                        });
+                        $('div.group-container').each(function() {
+                            if ($(this).find('div.attribute-field:not(.hide)').length) {
+                                $(this).removeClass('hide');
+                            } else {
+                                $(this).addClass('hide');
+                            }
+                        });
                     }).appendTo(footerContainer);
 
                     var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
                     $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
 
                     $menu.find('input[type="search"]').width(207);
+
+                    // Click the save button to show selected fields in case of errors
+                    $saveButton.click();
 
                     /**
                      * Manage removal of attributes from the form

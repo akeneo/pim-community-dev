@@ -90,7 +90,7 @@ class CatalogConfigurationContext extends RawMinkContext
                     $files
                 );
         }
-        
+
         foreach ($this->postEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
             $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;

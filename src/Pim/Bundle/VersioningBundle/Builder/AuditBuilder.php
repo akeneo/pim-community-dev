@@ -57,11 +57,7 @@ class AuditBuilder
     public function buildAudit(Version $current, Version $previous = null, $versionNumber = 1)
     {
         $newData = $current->getData();
-        if ($previous) {
-            $oldData = $previous->getData();
-        } else {
-            $oldData = array();
-        }
+        $oldData = $previous ? $previous->getData() : [];
 
         $diffData = $this->buildDiffData($oldData, $newData);
 
@@ -87,45 +83,68 @@ class AuditBuilder
      *
      * @return array
      */
-    protected function buildDiffData($oldData, $newData)
+    protected function buildDiffData(array $oldData, array $newData)
     {
-        $merge = $this->getMergedData($oldData, $newData);
-        $diffData = array();
-        foreach ($merge as $changedField => $data) {
-            if ($data['old'] != $data['new'] || !isset($oldData[$changedField])) {
-                $diffData[$changedField] = $data;
-            }
-        }
+        $diffData = $this->filterDiffData($this->getMergedData($oldData, $newData));
 
         if (!empty($diffData) && $this->context) {
-            $diffData['context'] = array('old' => '', 'new' => $this->context);
+            $diffData['context'] = ['old' => '', 'new' => $this->context];
         }
 
         return $diffData;
     }
 
     /**
-     * Merge data
+     * Merge the old and new data
      *
      * @param array $oldData
      * @param array $newData
      *
      * @return array
      */
-    protected function getMergedData($oldData, $newData)
+    protected function getMergedData(array $oldData, array $newData)
     {
-        $merge = array();
-        foreach ($newData as $field => $value) {
-            $merge[$field] = array('old' => '', 'new' => $value);
-        }
-        foreach ($oldData as $field => $value) {
-            if (!isset($merge[$field])) {
-                $merge[$field] = array('old' => $value, 'new' => '');
-            } else {
-                $merge[$field]['old'] = $value;
-            }
-        }
+        $newData = array_map(
+            function ($newItem) {
+                return ['new' => $newItem];
+            },
+            $newData
+        );
 
-        return $merge;
+        $oldData = array_map(
+            function ($oldItem) {
+                return ['old' => $oldItem];
+            },
+            $oldData
+        );
+
+        $mergedData = array_merge_recursive($newData, $oldData);
+
+        return array_map(
+            function ($mergedItem) {
+                return [
+                    'old' => array_key_exists('old', $mergedItem) ? $mergedItem['old'] : '',
+                    'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
+                ];
+            },
+            $mergedData
+        );
+    }
+
+    /**
+     * Filter diff data to remove values that are the same
+     *
+     * @param array $diffData
+     *
+     * @return array
+     */
+    protected function filterDiffData(array $diffData)
+    {
+        return array_filter(
+            $diffData,
+            function ($diffItem) {
+                return $diffItem['old'] != $diffItem['new'];
+            }
+        );
     }
 }

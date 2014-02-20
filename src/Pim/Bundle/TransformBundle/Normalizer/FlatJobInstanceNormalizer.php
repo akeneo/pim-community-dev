@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * A normalizer to transform a job instance entity into a array

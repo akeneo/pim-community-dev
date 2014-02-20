@@ -76,25 +76,20 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     Then the metric "Weight" of products boots and sandals should be "600"
 
-  Scenario: Succesfully translate groups and labels in english
-    Given I mass-edit products boots and sandals
+  Scenario: Succesfully translate groups and labels
+    Given I add the "french" locale to the "mobile" channel
+    And the following attribute label translations:
+      | attribute | locale | label  |
+      | name      | french | Nom    |
+      | size      | french | Taille |
+    When I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Name and Size attributes
     Then I should see "Product information"
     And I should see "Sizes"
     And I should see "Name"
     And I should see "Size"
-
-  Scenario: Succesfully translate groups and labels in french
-    Given I add the "french" locale to the "mobile" channel
-    And the following attribute label translations:
-      | attribute | locale | label  |
-      | name      | french | Nom    |
-      | size      | french | Taille |
-    And I mass-edit products boots and sandals
-    And I choose the "Edit attributes" operation
-    And I switch the locale to "French (France)"
-    And I display the Nom and Taille attributes
+    When I switch the locale to "French (France)"
     Then I should see "[info]"
     And I should see "[sizes]"
     And I should see "Nom"

@@ -91,7 +91,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $this->assertConstraintsConfiguration(
             'Pim\Bundle\CatalogBundle\Validator\Constraints\Range',
             $constraints,
-            array('min' => 0)
+            array('min' => 100)
         );
     }
 

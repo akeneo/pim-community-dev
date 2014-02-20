@@ -5,3 +5,4 @@ config:
         oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
         oro/datafilter/category-filter:     pimfilter/js/datafilter/filter/category-filter
         oro/datafilter/completeness-filter: pimfilter/js/datafilter/filter/completeness-filter
+        oro/datafilter/ajax-choice-filter:  pimfilter/js/datafilter/filter/ajax-choice-filter

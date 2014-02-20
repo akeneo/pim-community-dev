@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 class ProductReaderSpec extends ObjectBehavior
 {

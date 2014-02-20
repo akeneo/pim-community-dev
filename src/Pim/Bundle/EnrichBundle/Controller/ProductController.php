@@ -414,10 +414,7 @@ class ProductController extends AbstractDoctrineController
         );
         $attributesForm->submit($request);
 
-        foreach ($availableAttributes->getAttributes() as $attribute) {
-            $this->productManager->addAttributeToProduct($product, $attribute);
-        }
-
+        $this->productManager->addAttributesToProduct($product, $availableAttributes);
         $this->productManager->save($product);
 
         $this->addFlash('success', 'flash.product.attributes added');

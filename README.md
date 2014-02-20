@@ -49,7 +49,7 @@ http://getcomposer.org/ or just run the following command:
 
 ### Clone Akeneo PIM project with:
 
-    git clone git@github.com:akeneo/pim-community-dev.git
+    $ git clone git@github.com:akeneo/pim-community-dev.git
 
 Now, you can go to your pim project directory.
 
@@ -64,28 +64,28 @@ Due to some limitations of Oro Platform, you **MUST** create your database befor
 Note that using the "--prefer-dist" option can speed up
 the installation by looking into your local Composer cache.
 
-### Add translation packs
+### Add translation packs (optional)
 
 You can download translation packs from crowdin:
 - http://crowdin.net/project/akeneo
 - http://crowdin.net/project/oro-platform
 
-The Akeneo PIM archive contains the following directories tree: <locale>/<version>/<translation_directories>
+The Akeneo PIM archive contains the following directories tree: `<locale>/<version>/<translation_directories>`
 You just have to paste the <translation_directories> in your app/Resources/ directory.
 
 For Oro Platform, the archive contains the same directories tree except the version directory which is removed.
 
 ### Initialize data and assets
 
-    $ php app/console pim:install --env=prod
+    $ php app/console pim:install --env=dev
 
 Note: This script can be executed several times if you need to reinit your db or redeploy your assets.
 You just have to use the `--force` option.
 By default, this script initializes the dev environment.
 
-In case of problems with the menu, you can try to remove your cache by hand:
+### Clear the cache to finalize the installation
 
-    $ rm -rf app/cache/*
+    $ php app/console cache:clear --env=dev
 
 Create the Apache Virtual host
 ------------------------------
@@ -153,7 +153,7 @@ configured for a Symfony application.
 
 Execute the `check.php` script from the command line:
 
-    php app/console pim:install --force --task=check
+    $ php app/console pim:install --force --task=check
 
 If you get any warnings or recommendations, fix them before moving on.
 
@@ -161,7 +161,6 @@ Connect to your PIM application
 -------------------------------
 
 Go to http://akeneo-pim.local/ for production mode or http://akeneo-pim.local/app_dev.php for development mode.
-Note: If you want to use development mode, do not forget to launch ./install.sh all dev
 
 You can now connect as Akeneo administrator with the following credentials:
 - username: "admin"
@@ -180,13 +179,13 @@ just change the following config line in app/config/parameters.yml:
     installer_data: PimInstallerBundle:minimal
 ```
 
-Then relaunch the install.sh script with the db option:
+Then relaunch the install with the db option:
 
-$ php app/console pim:install --force --env=prod --task=db
+    $ php app/console pim:install --force --env=dev --task=db
 
 Known issues
 ------------
- - when cleaning up the cache by hand (rm -rf app/cache/*), error about `Oro\\Bundle\\UserBundle\\Entity\\User::$field_catalogLocale` can occur. In this case, a proper cache:clear command is required, as it will warm a non-corrupted cache:
+ - when cleaning up the cache by hand (rm -rf app/cache/*), error about `Oro\\Bundle\\UserBundle\\Entity\\User::$field_catalogLocale` can occur. In this case, a proper cache:clear command is required, as it will warm a non-corrupted cache (note that sometimes, you will need to execute this command twice to get a clean cache):
 `php app/console cache:clear`
  - with XDebug on, the default value of max_nesting_level (100) is too low and can make the ACL loading fail (which causes 403 HTTP response code on every application screen, even the login screen). A working value is 500:
 `xdebug.max_nesting_level=500`

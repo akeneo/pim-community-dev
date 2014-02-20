@@ -122,9 +122,6 @@ oro_menu_config:
                         pim_enrich_group_type: ~
                         pim_enrich_currency: ~
                         pim_enrich_locale: ~
-
-                pim_export_tab:
-                    children:
                         pim_enrich_channel: ~
 
 oro_titles:

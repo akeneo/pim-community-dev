@@ -62,14 +62,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testLocaleCurrency()
-    {
-        $this->assertEquals('USD', $this->localeExtension->localeCurrency());
-    }
-
-    /**
-     * Test related method
-     */
     public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
@@ -81,10 +73,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('currency_symbol', $twigFunctions);
         $this->assertTrue(method_exists($this->localeExtension, 'currencySymbol'));
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['currency_symbol']);
-
-        $this->assertArrayHasKey('locale_currency', $twigFunctions);
-        $this->assertTrue(method_exists($this->localeExtension, 'localeCurrency'));
-        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['locale_currency']);
     }
 
     /**
@@ -111,9 +99,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $helper->expects($this->any())
             ->method('getLocaleLabel')
             ->will($this->returnArgument(0));
-        $helper->expects($this->any())
-            ->method('getLocaleCurrency')
-            ->will($this->returnValue('USD'));
         $helper->expects($this->any())
             ->method('getFlag')
             ->will($this->returnArgument(0));

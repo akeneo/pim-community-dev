@@ -1,8 +1,7 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'wysiwyg', 'bootstrap', 'jquery.select2'],
-    function ($, Backbone, _, mediator, pimInit, wysiwyg) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
-        pimInit();
         /**
          * Allow expanding/collapsing scopable fields
          *
@@ -13,11 +12,12 @@ define(
         var ScopableField = Backbone.View.extend({
             field:    null,
             rendered: false,
+            isMetric: false,
 
             template: _.template(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
-                    '<div class="controls input-prepend">' +
+                    '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>">' +
                             '<span class="field-toggle">' +
                                 '<i class="icon-caret-down"></i>' +
@@ -65,6 +65,22 @@ define(
                     }
 
                     field.input = $field.get(0).outerHTML;
+
+                    _.each($field.siblings('input, select'), function(el) {
+                        field.input += el.outerHTML;
+                    });
+
+                    if (this.$el.find('.controls.metric').length) {
+                        this.isMetric = true;
+                    }
+
+                    if ($field.siblings('a.add-attribute-option').length) {
+                        field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
+                    }
+
+                    _.each($field.siblings('.validation-tooltip'), function(icon) {
+                        $(icon).appendTo(this.$el.find('.icons-container'));
+                    }, this);
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -80,17 +96,14 @@ define(
                     this.$el.empty();
                     this.$el.append(
                         this.template({
-                            field: this.field
+                            field:    this.field,
+                            isMetric: this.isMetric
                         })
                     );
 
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
                     this.$el.find('.switch').bootstrapSwitch();
                     this.$el.find('select').select2();
-                    var $textarea = this.$el.find('textarea.wysiwyg');
-                    if ($textarea.length) {
-                        wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
-                    }
                 }
 
                 return this;
@@ -106,8 +119,10 @@ define(
             expandIcon:   'icon-caret-right',
             collapseIcon: 'icon-caret-down',
 
+            skipUIInit: false,
+
             template: _.template(
-                '<label class="control-label"><%= label %></label>'
+                '<%= label %>'
             ),
 
             initialize: function () {
@@ -122,7 +137,7 @@ define(
                     this._addField(field);
                 }, this);
 
-                this.label = this.$el.find('.control-label').first().html();
+                this.label = this.$el.find('.control-label').first().get(0).outerHTML;
 
                 this.render();
 
@@ -166,6 +181,11 @@ define(
 
                     this._collapse();
 
+                    var $optionLink = this.$el.find('a.add-attribute-option');
+                    if ($optionLink.length) {
+                        optionform.init('#' + $optionLink.attr('id'));
+                    }
+
                     mediator.trigger('scopablefield:rendered', this.$el);
                 }
 
@@ -182,6 +202,7 @@ define(
                 if (!this.expanded) {
                     this.expanded = true;
 
+                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -190,6 +211,7 @@ define(
                         first = false;
                     }, this);
 
+                    this._initUI();
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -200,6 +222,7 @@ define(
                 if (this.expanded) {
                     this.expanded = false;
 
+                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -212,6 +235,7 @@ define(
                         }
                     }, this);
 
+                    this._initUI();
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
@@ -223,13 +247,19 @@ define(
             },
 
             _changeDefault: function (scope) {
+                this.skipUIInit = true;
+                this._toggle();
+
                 _.each(this.fields, function (field) {
                     if ($(field).data('scope') === scope) {
+                        $(field).addClass('first');
                         this._setFieldFirst(field);
+                    } else {
+                        $(field).removeClass('first');
                     }
                 }, this);
 
-                this._toggle();
+                this.skipUIInit = false;
                 this._toggle();
 
                 return this;
@@ -260,17 +290,45 @@ define(
 
             _showField: function (field, first) {
                 if (first) {
+                    $(field).addClass('first');
                     this._setFieldFirst(field);
+                } else {
+                    $(field).removeClass('first');
                 }
                 $(field).show();
-                var $textarea = $(field).find('textarea.wysiwyg');
-                if ($textarea.length) {
-                    wysiwyg.reinit($textarea.attr('id'));
-                }
             },
 
             _hideField: function (field) {
                 $(field).hide().find('.field-toggle').addClass('hide');
+            },
+
+            _destroyUI: function () {
+                _.each(this.fields, function (field) {
+                    var $textarea = $(field).find('textarea.wysiwyg');
+                    if ($textarea.length) {
+                        wysiwyg.destroy($textarea.attr('id'));
+                    }
+                });
+
+                return this;
+            },
+
+            _initUI: function () {
+                if (!this.skipUIInit) {
+                    _.each(this.fields, function (field) {
+                        var $textarea = $(field).find('textarea.wysiwyg');
+                        if ($textarea.length) {
+                            wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
+                        }
+
+                        var $fileInput = $(field).find('input[type=file][id]');
+                        if ($fileInput.length) {
+                            fileinput.init($fileInput.attr('id'));
+                        }
+                    });
+                }
+
+                return this;
             },
 
             events: {

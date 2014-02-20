@@ -61,6 +61,21 @@ class Form extends Base
     }
 
     /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+
+        return $tabs->findAll('css', 'a');
+    }
+
+    /**
      * Visit the specified group
      * @param string $group
      */
@@ -178,6 +193,10 @@ class Form extends Base
             throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
         }
 
+        if ($field->getAttribute('type') !== 'file') {
+            $field = $field->getParent()->find('css', 'input[type="file"]');
+        }
+
         $field->attachFile($path);
     }
 
@@ -250,12 +269,22 @@ class Form extends Base
                     // We are playing with a select2 widget
                     $field = $label->getParent()->find('css', 'select');
                     $field->selectOption($value);
+                } elseif (preg_match('/_date$/', $for)) {
+                    $this->getSession()->executeScript(
+                        sprintf("$('#%s').val('%s').trigger('change');", $for, $value)
+                    );
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
                     if ($field->getTagName() === 'select') {
                         $field->selectOption($value);
                     } else {
-                        $field->setValue($value);
+                        if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
+                            $this->getSession()->executeScript(
+                                sprintf("$('#%s').val('%s');", $for, $value)
+                            );
+                        } else {
+                            $field->setValue($value);
+                        }
                     }
                 }
             } else {
@@ -335,6 +364,14 @@ class Form extends Base
         }
     }
 
+    /**
+     * Find a price field
+     * @param string $name
+     * @param string $currency
+     *
+     * @return NodeElement
+     * @throws ElementNotFoundException
+     */
     protected function findPriceField($name, $currency)
     {
         $label = $this->find('css', sprintf('label:contains("%s")', $name));

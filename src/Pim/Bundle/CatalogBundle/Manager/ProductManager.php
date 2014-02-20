@@ -8,12 +8,13 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -128,7 +129,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
+        $product = $this->getFlexibleRepository()->findOneByWithValues($id);
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
@@ -168,7 +169,7 @@ class ProductManager extends FlexibleManager
     {
         $code = $this->getIdentifierAttribute()->getCode();
 
-        $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
+        $products = $this->getFlexibleRepository()->findAllByAttributes(array(), array($code => $identifier));
         $product = reset($products);
 
         if ($product) {
@@ -181,25 +182,27 @@ class ProductManager extends FlexibleManager
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param ProductInterface    $product
+     * @param AvailableAttributes $availableAttributes
      *
      * @return null
      */
-    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
+    public function addAttributesToProduct(ProductInterface $product, AvailableAttributes $availableAttributes)
     {
-        $this->builder->addAttributeToProduct($product, $attribute);
+        foreach ($availableAttributes->getAttributes() as $attribute) {
+            $this->builder->addAttributeToProduct($product, $attribute);
+        }
     }
 
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param ProductInterface  $product
+     * @param AbstractAttribute $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
         $this->builder->removeAttributeFromProduct($product, $attribute);
     }
@@ -229,8 +232,8 @@ class ProductManager extends FlexibleManager
      * Save multiple products
      *
      * @param ProductInterface[] $products    The products to save
-     * @param boolean            $recalculate Wether or not to directly recalculate the completeness
-     * @param boolean            $flush       Wether or not to flush the entity manager
+     * @param boolean            $recalculate Whether or not to directly recalculate the completeness
+     * @param boolean            $flush       Whether or not to flush the entity manager
      */
     public function saveAll(array $products, $recalculate = false, $flush = true)
     {
@@ -246,7 +249,7 @@ class ProductManager extends FlexibleManager
     /**
      * Return the identifier attribute
      *
-     * @return AttributeInterface|null
+     * @return AbstractAttribute|null
      */
     public function getIdentifierAttribute()
     {
@@ -413,15 +416,12 @@ class ProductManager extends FlexibleManager
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $attributeClass = $this->getAttributeName();
         $valueClass = $this->getFlexibleValueName();
 
         $flexible = new $class();
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $codeToAttributeData = $this->getEntityManager()->getRepository($attributeClass)->getCodeToAttributes($class);
-        $flexible->setAllAttributes($codeToAttributeData);
         $flexible->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $flexible);

@@ -291,7 +291,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($group = null, $type = 'pim_catalog_text', $code = null)
     {

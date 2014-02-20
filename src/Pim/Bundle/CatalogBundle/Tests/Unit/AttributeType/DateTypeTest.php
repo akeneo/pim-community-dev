@@ -70,7 +70,8 @@ class DateTypeTest extends AttributeTypeTestCase
                         'constraints'     => array('constraints'),
                         'label'           => null,
                         'required'        => null,
-                        'auto_initialize' => false
+                        'auto_initialize' => false,
+                        'label_attr'      => ['max_length' => 24],
                     ),
                     $expectedResult
                 )
@@ -90,7 +91,7 @@ class DateTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            9,
+            8,
             $attFormType
         );
     }

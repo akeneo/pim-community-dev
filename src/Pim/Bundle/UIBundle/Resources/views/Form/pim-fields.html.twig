@@ -60,11 +60,16 @@
             {% set label = name|humanize %}
         {% endif %}
         {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% set label = label|trans({}, translation_domain) %}
+        {% if label_attr.max_length is defined and label|length > label_attr.max_length %}
+            {% set label_attr = label_attr|merge({ 'title': label }) %}
+            {% set label = label[:label_attr.max_length-3] ~ '...' %}
+        {% endif %}
+        <label{% for attrname, attrvalue in label_attr if attrname != 'max_length' %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
                 <input type="checkbox" class="comparisonSelection exclude" />
             {% else %}
-                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}
+                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label }}
             {% endif %}
         </label>
     {% endif %}
@@ -183,14 +188,20 @@
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.file.vars.id }}');
                 }
             );
         </script>
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone file empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
@@ -242,14 +253,20 @@
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.file.vars.id }}');
                 }
             );
         </script>
     {% else %}
         <div class="control-group">
             <div class="controls">
-                {{ 'pim_enrich.product.no_compared_media'|trans }}
+                <label class="upload-zone image empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
             </div>
         </div>
     {% endif %}
@@ -290,20 +307,13 @@
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
         <div class="controls metric input-append">
-            {{ form_widget(form.data, { 'attr': { 'class': 'input-small pull-left' }}) }}
-            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small append pull-left' }}) }}
+            {{ form_widget(form.data, { 'attr': { 'class': 'input-small' }}) }}
+            {{ form_widget(form.unit, { 'attr': { 'class': 'select2 input-small append' }}) }}
             {{ form_widget(form.family) }}
+            {{ form_errors(form.data) }}
             {{ block('form_info') }}
         </div>
     </div>
-    <script type="text/javascript">
-        require(
-            ['jquery', 'selectize'],
-            function ($) {
-                $('#{{ form.unit.vars.id }}').selectize();
-            }
-        );
-    </script>
 {% endspaceless %}
 {% endblock pim_flexibleentity_metric_row %}
 
@@ -314,6 +324,7 @@
 {% block pim_enrich_price_collection_widget %}
     {% for child in form.children %}
         {{ form_widget(child) }}
+        {{ form_errors(child.data) }}
     {% endfor %}
     {{ block('form_info') }}
 {% endblock pim_enrich_price_collection_widget %}
@@ -353,3 +364,9 @@
 {% block pim_ajax_entity_row %}
     {{ block('form_row_field') }}
 {% endblock %}
+
+{% block oro_date_widget %}
+    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker', 'placeholder': placeholder|trans }) %}
+
+    {{ block('date_widget') }}
+{% endblock oro_date_widget %}

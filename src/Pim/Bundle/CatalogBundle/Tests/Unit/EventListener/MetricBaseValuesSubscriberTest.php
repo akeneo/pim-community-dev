@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber;

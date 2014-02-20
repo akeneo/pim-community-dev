@@ -69,6 +69,12 @@ services:
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.attribute.class%
 
+    pim_catalog.manager.family:
+        class: %pim_catalog.manager.family.class%
+        arguments:
+            - '@pim_catalog.repository.orm.family'
+            - '@pim_user.context.user'
+
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
         arguments:
@@ -76,13 +82,3 @@ services:
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
             - %pim_catalog.entity.completeness.class%
-
-    pim_catalog.manager.family:
-        class: %pim_catalog.manager.family.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    pim_catalog.manager.association:
-        class: %pim_catalog.manager.association.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'

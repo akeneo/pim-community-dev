@@ -2,8 +2,6 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Export\Show;
-
 /**
  * Export launch page
  *

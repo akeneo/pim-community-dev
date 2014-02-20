@@ -68,7 +68,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $attributeType
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function addAttribute($code, $attributeType = 'default')
     {

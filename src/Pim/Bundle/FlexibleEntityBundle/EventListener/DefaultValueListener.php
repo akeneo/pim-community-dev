@@ -49,17 +49,19 @@ class DefaultValueListener implements EventSubscriber
     }
 
     /**
-     * If Value is empty or null and has
+     * Defines default value
+     *
      * @param LifecycleEventArgs $args
      */
     protected function defineDefaultValue(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof FlexibleValueInterface) {
-            // check that value has no data and attribute has defined default value
-            if (!$entity->hasData() and !is_null($entity->getAttribute()->getDefaultValue())) {
-                $entity->setData($entity->getAttribute()->getDefaultValue());
-            }
+        if (!$entity instanceof FlexibleValueInterface) {
+            return;
+        }
+
+        if (!$entity->hasData()) {
+            $entity->setData($entity->getAttribute()->getDefaultValue());
         }
     }
 }

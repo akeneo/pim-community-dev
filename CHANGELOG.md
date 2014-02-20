@@ -1,22 +1,76 @@
-# 1.0.0-rc-1 -
+# 1.0.0-
 
 ## Features
-- Created the completenesses over channels and locales widget
-- Create command to install the PIM
-- Allow price attributes to be scopable
-- Added popin to configure product datagrid columns
+- Uservoice integration
+- Add a last operations widget on the dashboard
 
 ## Improvements
-- Add some missing translations
+- Load choices for grid filters asynchronously
+- Allow adding/removing attributes to mass edit attributes view without a page reload
+- Propagate -v option to subcommands of install command
+- Fix the versions of dependencies in composer.json
+- Undisplay unwanted searchable elements in quick search
+- Add icons for category and product in search view
+- Prevent hydrating all attributes in the available attributes addition form
+- Prevent hydrating all families in the product edition form
+- Import conversion units for channels
+
+## Bug fixes
+- Fix non-updated values being displayed in the the audit history
+- Fix attribute group form state not being saved
+- Do not display Id as an eligible attribute as label
+- Fix select field missing for scopable simple/multi select attributes in the product form
+- Restored missing attributes translation
+- Fix the display of scopable metric attributes in the product edit form
+- Fix regression with resolve target entity on Category entity
+
+## BC breaks
+- Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
+- Remove unnecessary AttributeManagerInterface and AttributeInterface in favor of AbstractAttribute
+- Rename findByWithSortedAttribute to findOneByWithValues, add pre-select attributes and related translations to reduce number of lazy loaded queries when edit a product
+- Rename findByWithAttributes to findAllByAttributes
+- MeasureBundle has been moved from the BAP to an external repository (akeneo/measure-bundle).
+- AkeneoBundle has been moved from the BAP to an external repository (akeneo/batch-bundle).
+- Remove magic setter access to value (ex: $product->setDescription()), as it has multiple conceptual and
+technical flaws (attribute codes are data, not a freeze structure, needed to maintain an full attribute cache in product
+that made the entity too smart for its own good and created performances problem)
+- Remove Product::createValue(). Can be replaced by calling ProductManager::createFlexibleValue() and setting attribute, scope and locale on the created value.
+
+# 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
+
+## Features
+- Completenesses over channels and locales widget
+- New command to install the PIM
+- Price attributes can be scopable
+- Popin to configure product datagrid columns
+
+## Improvements
+- Add missing translations
+- New grid implementation
+- Grids performances
 - Quick export of selected products in the grid
-- Performance of grids
-- Add a status column in the product grid
-- Add a thumbnail in product grid for attribute of type image
+- Status column in the product grid
+- Thumbnail in product grid for attribute of type image
 
 ## Bug fixes
 - Bug #658: Export all activated translations even if no value has been set
 - Bug PIM-1892: Prevented the form subscriber to remove form fields if not valid
 - Downgrade ICU lib to be compatible with RedHat 6 and CentOS 6
+- Fix an issue with excessive url length when mass editing many products
+- Products grid loaded twice the first time the screen is displayed
+- The first tree is not displayed in the mass edit wizard
+- When no group type exist, it's not possible to add Variant Group
+- Job validation is applied twice (create import/export)
+- Validation messages not visible in job creation popin (create import/export)
+- Lose hashnav when I create a tree
+- Fix completeness calculation on icecat demo dev data
+- Application crash on some product validation fail
+- In create product popin, no way to search for family (in select 2 field)
+- Attribute export in csv shift columns instead of putting blank values
+- Error with field_catalogLocale on first load
+- Missing translations in page titles
+- When adding a new option from product form, the new option is not in the select
+- Category edit and page title not updated
 
 ## BC breaks
 - Change some translation message keys
@@ -34,6 +88,7 @@
 - Introduce a TransformBundle and move cache, converters, encoders, normalizers, transformers and related configuration from ImportExportBundle
 - Renaming of services of ImportExport that have been moved (pim_transform_* and pim_base_connector_*)
 - Move functionality related to user preferences from LocaleManager and ChannelManager to a dedicated UserContext
+- Remove AbstractFlexibleValue::isMatching() method
 
 # 1.0.0-beta-4 - "The Abominable Snow Rabbit" (2014-01-08)
 

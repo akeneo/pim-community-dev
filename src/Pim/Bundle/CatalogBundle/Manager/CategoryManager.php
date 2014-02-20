@@ -57,7 +57,7 @@ class CategoryManager extends SegmentManager
         $trees = $this->getTrees();
         $choices = array();
         foreach ($trees as $tree) {
-            $choices[$tree->getId()]= $tree;
+            $choices[$tree->getId()] = $tree;
         }
 
         return $choices;

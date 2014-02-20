@@ -27,4 +27,5 @@ Feature: Create an import
       | Code  | PRODUCT_IMPORT  |
       | Label | Products import |
     And I press the "Save" button
-    Then I should see "Failed to create an \"import\" with an unknown job definition"
+    Then I should see validation error "Failed to create an import with an unknown job definition"
+

@@ -1,9 +1,14 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'pim/dialog', 'pim/dialogform', 'backbone/bootstrap-modal', 'jquery.select2'],
-        function ($, _, Scopable, CurrencyField, Dialog, DialogForm) {
+        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
             'use strict';
+
             $(function () {
+                _.each($('a.add-attribute-option'), function(optionLink) {
+                    optionform.init('#' + optionLink.getAttribute('id'));
+                });
+
                 _.each($('form div.scopable:not(.currency)'), function (field) {
                     new Scopable({ el: $(field) });
                 });
@@ -12,12 +17,18 @@
                     new CurrencyField({ el: $(field) });
                 });
 
+                _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+                mediator.trigger('pim:reinit');
+
                 {% if resource_granted('pim_enrich_product_change_family') %}
                     {% set familyWidget %}
+                        {{ 'info.product.merge attributes'|trans }}<br />
+                        {{ 'info.product.keep attributes'|trans }}<br />
                         {{ 'info.product.change family to'|trans }}:
-                        {{ form_widget(form.family) }}</br>
-                        {{ 'info.product.merge attributes'|trans }}</br>
-                        {{ 'info.product.keep attributes'|trans }}
+                        {{ form_widget(form.family) }}
                     {% endset %}
 
                     $('#edit-family').on('click', function () {
@@ -32,6 +43,7 @@
                         $('#{{ form.family.vars.id }}')
                             .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                             .select2({ allowClear: true });
+                        $('#{{ form.family.vars.id }}').closest('.modal-body').css({'line-height': '25px', 'height': 130});
                     });
                 {% endif %}
 

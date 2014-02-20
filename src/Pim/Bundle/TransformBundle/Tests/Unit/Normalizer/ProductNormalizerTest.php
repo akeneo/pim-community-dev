@@ -201,9 +201,9 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get a product value mock
-     * @param Attribute $attribute
-     * @param mixed     $data
-     * @param string    $locale
+     * @param AbstractAttribute $attribute
+     * @param mixed             $data
+     * @param string            $locale
      *
      * @return ProductValue
      */

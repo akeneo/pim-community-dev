@@ -11,9 +11,7 @@
                         var targetId = sourceId.replace('{{ comparisonLocale }}', '{{ dataLocale }}');
                         var $target = $('#' + targetId);
 
-                        if ($source.is('select') && $source.parent().hasClass('metric')) {
-                            $target.get(0).selectize.setValue($source.get(0).selectize.getValue());
-                        } else if ($source.is('input[type=checkbox]')) {
+                        if ($source.is('input[type=checkbox]')) {
                             $target.parent().parent().bootstrapSwitch('setState', $source.is(':checked'));
                         } else if ($source.is('input[type=file]')) {
                             $('#' + targetId.replace(/file$/, 'copyFrom'))

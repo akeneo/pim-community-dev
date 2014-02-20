@@ -2,29 +2,45 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Family manager
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FamilyManager
 {
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
+    /** @var FamilyRepository */
+    protected $repository;
+
+    /** @var UserContext */
+    protected $userContext;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $objectManager
+     * @param FamilyRepository $repository
+     * @param UserContext      $userContext
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(FamilyRepository $repository, UserContext $userContext)
     {
-        $this->objectManager = $objectManager;
+        $this->repository  = $repository;
+        $this->userContext = $userContext;
+    }
+
+    /**
+     * Get choices
+     *
+     * @return array
+     */
+    public function getChoices()
+    {
+        return $this->repository->getChoices(
+            ['localeCode' => $this->userContext->getCurrentLocaleCode()]
+        );
     }
 }

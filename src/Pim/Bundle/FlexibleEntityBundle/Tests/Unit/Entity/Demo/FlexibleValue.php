@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class FlexibleValue extends AbstractEntityFlexibleValue
 {
     /**
-     * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      */

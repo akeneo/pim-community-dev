@@ -10,7 +10,7 @@ services:
         scope: request
         class: %pim_import_export.controller.export_profile.class%
         arguments:
-            - '@oro_batch.connectors'
+            - '@akeneo_batch.connectors'
             - export
             - %kernel.root_dir%
             - %kernel.environment%
@@ -21,7 +21,7 @@ services:
         scope: request
         class: %pim_import_export.controller.import_profile.class%
         arguments:
-            - '@oro_batch.connectors'
+            - '@akeneo_batch.connectors'
             - import
             - %kernel.root_dir%
             - %kernel.environment%
@@ -32,7 +32,7 @@ services:
         scope: request
         class: %pim_import_export.controller.export_execution.class%
         arguments:
-            - '@oro_batch.logger.batch_log_handler'
+            - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - export
 
@@ -41,6 +41,6 @@ services:
         scope: request
         class: %pim_import_export.controller.import_execution.class%
         arguments:
-            - '@oro_batch.logger.batch_log_handler'
+            - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - import

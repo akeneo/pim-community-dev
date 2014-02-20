@@ -52,6 +52,23 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
                 'processor_options' => array('key' => 'entity1_format2_processor_option'),
             ),
         ),
+        'entity1.step2' => array(
+            'order' => 90,
+            'file_name' => 'entity1',
+            'class' => 'entity1_class',
+            'format1' => array(
+                'reader'            => 'entity1_format1_reader2',
+                'reader_options'    => array('key' => 'entity1_format1_reader_option2'),
+                'processor'         => 'entity1_format1_processor2',
+                'processor_options' => array('key' => 'entity1_format1_processor_option2'),
+            ),
+            'format2' => array(
+                'reader'            => 'entity1_format2_reader2',
+                'reader_options'    => array('key' => 'entity1_format2_reader_option2'),
+                'processor'         => 'entity1_format2_processor2',
+                'processor_options' => array('key' => 'entity1_format2_processor_option2'),
+            ),
+        ),
         'entity2' => array(
             'format2' => array(
                 'processor_options' => array('key' => 'entity2_format2_processor_option')
@@ -104,12 +121,6 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->configurationRegistry->contains('entity3'));
     }
 
-    public function testGetOrder()
-    {
-        $this->assertEquals(150, $this->configurationRegistry->getOrder('entity1'));
-        $this->assertEquals(100, $this->configurationRegistry->getOrder('entity2'));
-    }
-
     public function testGetClass()
     {
         $this->assertEquals('entity1_class', $this->configurationRegistry->getClass('entity1'));
@@ -152,5 +163,45 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
         $entity2Format2Reader = $this->configurationRegistry->getReader('entity2', 'format2');
         $this->assertEquals('default_format2_reader', $entity2Format2Reader->id);
         $this->assertEquals('default_format2_reader_option', $entity2Format2Reader->key);
+    }
+
+    public function testGetFixtures()
+    {
+        $this->assertEquals(
+            array(
+                array(
+                    'name'      => 'entity1.step2',
+                    'extension' => 'format1',
+                    'path'      => '/tmp/entity1.format1'
+                ),
+                array(
+                    'name'      => 'entity1.step2',
+                    'extension' => 'format2',
+                    'path'      => '/tmp/entity1.format2'
+                ),
+                array(
+                    'name'      => 'entity2',
+                    'extension' => 'format2',
+                    'path'      => '/tmp/entity2.format2'
+                ),
+                array(
+                    'name'      => 'entity1',
+                    'extension' => 'format1',
+                    'path'      => '/tmp/entity1.format1'
+                ),
+                array(
+                    'name'      => 'entity1',
+                    'extension' => 'format2',
+                    'path'      => '/tmp/entity1.format2'
+                ),
+            ),
+            $this->configurationRegistry->getFixtures(
+                array(
+                    '/tmp/entity1.format1',
+                    '/tmp/entity1.format2',
+                    '/tmp/entity2.format2'
+                )
+            )
+        );
     }
 }

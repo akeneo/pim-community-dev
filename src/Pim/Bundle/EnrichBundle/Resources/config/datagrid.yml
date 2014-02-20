@@ -53,7 +53,7 @@ datagrid:
     association-type-grid:
         extend: translatable-entity-grid
         options:
-            entityHint: association
+            entityHint: association type
         source:
             acl_resource: pim_enrich_association_type_index
             entity: %pim_catalog.entity.association_type.class%
@@ -136,7 +136,8 @@ datagrid:
                     data_name: a.attributeType
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.attribute->getAttributeTypes
+                            multiple: true
+                            choices:  @pim_catalog.manager.attribute->getAttributeTypes
                 scopable:
                     type:      boolean
                     data_name: a.scopable
@@ -148,7 +149,8 @@ datagrid:
                     data_name: attributeGroup.code
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.attribute->getAttributeGroupChoices
+                            multiple: true
+                            choices:  @pim_catalog.manager.attribute->getAttributeGroupChoices
 
     channel-grid:
         options:
@@ -219,7 +221,8 @@ datagrid:
                     data_name: category.id
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.category->getTreeChoices
+                            multiple: true
+                            choices:  @pim_catalog.manager.category->getTreeChoices
 
     product-grid:
         # TODO: useless config ?
@@ -340,14 +343,13 @@ datagrid:
         filters:
             columns:
                 family:
-                    type:      entity
+                    type:      choice
                     label:     Family
-                    data_name: productFamily
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices:  @pim_catalog.manager.family->getChoices
                 groups:
                     type:      choice
                     label:     Groups
@@ -355,7 +357,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: @pim_catalog.manager.group->getChoices
+                            choices:  @pim_catalog.manager.group->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -464,13 +466,13 @@ datagrid:
                     data_name: has_product
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices:  @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -568,13 +570,13 @@ datagrid:
                     data_name: has_product
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class: %pim_catalog.entity.family.class%
-                            property: label
+                            choices:  @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -668,7 +670,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: @pim_catalog.repository.orm.attribute->getAvailableAttributesAsLabelChoice
+                            choices:  @pim_catalog.repository.orm.attribute->getAvailableAttributesAsLabelChoice
 
     currency-grid:
         options:
@@ -830,7 +832,8 @@ datagrid:
                     data_name: g.type
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.group->getTypeChoices
+                            multiple: true
+                            choices:  @pim_catalog.manager.group->getTypeChoices
 
     variant-group-grid:
         options:
@@ -901,7 +904,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: @pim_catalog.manager.group->getAvailableAxisChoices
+                            choices:  @pim_catalog.manager.group->getAvailableAxisChoices
 
     association-product-grid:
         flexible_entity: %pim_catalog.entity.product.class%
@@ -968,13 +971,13 @@ datagrid:
                     data_name:        has_association
                     filter_by_having: true
                 family:
-                    type:      entity
-                    data_name: productFamily
+                    type:      choice
+                    label:     Family
+                    data_name: family
                     options:
                         field_options:
                             multiple: true
-                            class:    %pim_catalog.entity.family.class%
-                            property: label
+                            choices:  @pim_catalog.manager.family->getChoices
                 enabled:
                     type:      choice
                     label:     Status
@@ -1056,7 +1059,8 @@ datagrid:
                     data_name: g.type
                     options:
                         field_options:
-                            choices: @pim_catalog.manager.group->getTypeChoices
+                            multiple: true
+                            choices:  @pim_catalog.manager.group->getTypeChoices
 
     history-grid:
         source:

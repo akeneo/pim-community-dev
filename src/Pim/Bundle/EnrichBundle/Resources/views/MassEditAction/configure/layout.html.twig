@@ -2,12 +2,13 @@
 
 {% block content %}
     {% set title = 'pim_enrich.mass_edit_action.page_title'|trans %}
-    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
+    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', { 'operationAlias': operator.operationAlias, 'products': productIds }) }) }}
+    {{ JSFV(form) }}
+    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operator.operationAlias })) }) }}
 
         <div class="row">
             <div class="offset1 span12">
@@ -21,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ 'pim_enrich.mass_edit_action.confirm'|transchoice(productIds|length) }}
+                {{ 'pim_enrich.mass_edit_action.confirm'|transchoice(productCount) }}
             </div>
         </div>
 
@@ -30,20 +31,18 @@
                 <div class="errors">
                     {{ elements.form_errors(form) }}
                 </div>
-                {{ JSFV(form) }}
                 {% block formContent %}
-
                 {% endblock %}
             </div>
         </div>
 
         <div class="row offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', {'products': productIds})) }}
-            {{ elements.link('btn.next', '#', {'class': ['next', 'btn-primary']}) }}
+            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
+            {{ elements.link('btn.next', null, {'class': ['next', 'btn-primary']}) }}
         </div>
 
         <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', '#', {'class': 'cancel'}) }}
+            {{ elements.link('btn.cancel', null, {'class': 'cancel'}) }}
             {{ elements.submitBtn('btn.confirm') }}
         </div>
 
@@ -54,7 +53,7 @@
     {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set action = path('pim_enrich_mass_edit_action_configure', { 'operationAlias': operator.operationAlias, 'products': productIds }) %}
+    {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operator.operationAlias })) %}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
@@ -117,18 +116,14 @@
                     /**
                      * Confirmation
                      */
-                    $('a.next').on('click', function(event) {
-                        event.preventDefault();
-
+                    $('a.next').on('click', function() {
                         $('.wizard').wizard({ currentStep: 4});
                         disableForm();
                         $('.configuration').addClass('hide');
                         $('.confirmation').removeClass('hide');
                     });
 
-                    $('a.cancel').on('click', function(event) {
-                        event.preventDefault();
-
+                    $('a.cancel').on('click', function() {
                         $('.wizard').wizard({ currentStep: 3});
                         enableForm();
                         $('.configuration').removeClass('hide');

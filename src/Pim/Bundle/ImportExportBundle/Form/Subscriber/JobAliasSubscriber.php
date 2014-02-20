@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Job alias and connector subscriber.

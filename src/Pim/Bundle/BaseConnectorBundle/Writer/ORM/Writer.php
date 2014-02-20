@@ -4,10 +4,10 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\ORM;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
  * Generic writer for basic entities

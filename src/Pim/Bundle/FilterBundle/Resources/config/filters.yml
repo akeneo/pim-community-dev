@@ -2,6 +2,7 @@ parameters:
     pim_filter.scope_filter.class:        Pim\Bundle\FilterBundle\Filter\ScopeFilter
     pim_filter.category_filter.class:     Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.completeness_filter.class: Pim\Bundle\FilterBundle\Filter\CompletenessFilter
+    pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
     pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
 
@@ -44,6 +45,14 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: completeness }
 
+    pim_filter.ajax_choice_filter:
+        class: %pim_filter.ajax_choice_filter.class%
+        arguments:
+            - @form.factory
+            - @oro_filter.filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
+
     pim_filter.flexible_utility:
         class: %pim_filter.flexible_utility.class%
         arguments:
@@ -62,6 +71,8 @@ services:
         arguments:
             - @form.factory
             - @pim_filter.flexible_utility
+            - @pim_user.context.user
+            - %pim_catalog.entity.attribute_option.class%
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
 
@@ -111,8 +122,8 @@ services:
             - @form.factory
             - @pim_filter.flexible_utility
             - @translator
-            - @oro_measure.manager
-            - @oro_measure.measure_converter
+            - @akeneo_measure.manager
+            - @akeneo_measure.measure_converter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
 

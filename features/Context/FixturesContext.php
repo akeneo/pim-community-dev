@@ -7,7 +7,7 @@ use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -64,7 +64,7 @@ class FixturesContext extends RawMinkContext
         'Family'          => 'PimCatalogBundle:Family',
         'Category'        => 'PimCatalogBundle:Category',
         'AssociationType' => 'PimCatalogBundle:AssociationType',
-        'JobInstance'     => 'OroBatchBundle:JobInstance',
+        'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'Locale'          => 'PimCatalogBundle:Locale',
@@ -270,6 +270,7 @@ class FixturesContext extends RawMinkContext
 
         $product = $this->loadFixture('products', $data);
 
+        $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->save($product);
 
         return $product;
@@ -458,6 +459,7 @@ class FixturesContext extends RawMinkContext
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
+            $this->getProductBuilder()->addMissingProductValues($product);
             $this->getProductManager()->save($product);
         }
 
@@ -515,7 +517,6 @@ class FixturesContext extends RawMinkContext
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
-            assertEquals($data['date_type'], $attribute->getDateType());
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
         }
@@ -591,6 +592,17 @@ class FixturesContext extends RawMinkContext
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
+            assertEquals($data['type'], $group->getType()->getCode());
+
+            if ($group->getType()->isVariant()) {
+                $attributes = array();
+                foreach ($group->getAttributes() as $attribute) {
+                    $attributes[] = $attribute->getCode();
+                }
+                asort($attributes);
+                $attributes = implode(',', $attributes);
+                assertEquals($data['attributes'], $attributes);
+            }
         }
     }
 
@@ -675,7 +687,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('oro_batch.connectors');
+        $registry = $this->getContainer()->get('akeneo_batch.connectors');
 
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
@@ -851,7 +863,10 @@ class FixturesContext extends RawMinkContext
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
             foreach ($table->getHash() as $price) {
-                assertEquals($price['amount'], $productValue->getPrice($price['currency'])->getData());
+                $productPrice = $productValue->getPrice($price['currency']);
+                $this->getEntityManager()->refresh($productPrice);
+
+                assertEquals($price['amount'], $productPrice->getData());
             }
         }
     }
@@ -1132,6 +1147,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $columns
+     *
      * @Given /^I\'ve displayed the columns (.*)$/
     */
     public function iVeDisplayedTheColumns($columns)
@@ -1145,6 +1162,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
     public function iVeRemovedTheAttribute($attribute)
@@ -1196,13 +1215,11 @@ class FixturesContext extends RawMinkContext
 
         $this->getEntityManager()->refresh($product);
 
-        $values = $product->getValues()->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                return $value->isMatching($attribute, $locale, $scope);
-            }
-        );
+        $value = $product->getValue($attribute, $locale, $scope);
 
-        if (!$values->count()) {
+        $this->getEntityManager()->refresh($value);
+
+        if (null === $value) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
@@ -1213,20 +1230,7 @@ class FixturesContext extends RawMinkContext
             );
         }
 
-        if ($values->count() > 1) {
-            throw new \Exception(
-                sprintf(
-                    '"%s": expecting to see only one value for attribute "%s" in locale "%s" for scope "%s", found %d',
-                    $identifier,
-                    $attribute,
-                    $locale,
-                    $scope,
-                    $values->count()
-                )
-            );
-        }
-
-        return $values->first();
+        return $value;
     }
 
     /**
@@ -1729,6 +1733,14 @@ class FixturesContext extends RawMinkContext
     private function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+     */
+    private function getProductBuilder()
+    {
+        return $this->getContainer()->get('pim_catalog.builder.product');
     }
 
     /**

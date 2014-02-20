@@ -5,4 +5,4 @@ services:
     pim_import_export.datagrid.provider.job:
         class: %pim_import_export.datagrid.provider.job.class%
         arguments:
-            - '@oro_batch.connectors'
+            - '@akeneo_batch.connectors'

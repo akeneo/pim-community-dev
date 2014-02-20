@@ -1,36 +1,36 @@
 channels:
-    'mobile':
-        'code':    'mobile'
-        'label':   'Mobile'
-        'tree':    master
-        'locales':
-            - 'fr_FR'
-            - 'de_DE'
-            - 'en_US'
-        'currencies':
-            - 'USD'
-            - 'EUR'
+    mobile:
+        code:    mobile
+        label:   Mobile
+        tree:    master
+        locales:
+            - fr_FR
+            - de_DE
+            - en_US
+        currencies:
+            - USD
+            - EUR
 
-    'print':
-        'code':    'print'
-        'label':   'Print'
-        'tree':    master
-        'locales':
-            - 'fr_FR'
-            - 'de_DE'
-            - 'en_US'
-        'currencies':
-            - 'USD'
-            - 'EUR'
+    print:
+        code:    print
+        label:   Print
+        tree:    master
+        locales:
+            - fr_FR
+            - de_DE
+            - en_US
+        currencies:
+            - USD
+            - EUR
 
-    'ecommerce':
-        'code':    'ecommerce'
-        'label':   'Ecommerce'
-        'tree':    master
-        'locales':
-            - 'fr_FR'
-            - 'de_DE'
-            - 'en_US'
-        'currencies':
-            - 'USD'
-            - 'EUR'
+    ecommerce:
+        code:    ecommerce
+        label:   Ecommerce
+        tree:    master
+        locales:
+            - fr_FR
+            - de_DE
+            - en_US
+        currencies:
+            - USD
+            - EUR

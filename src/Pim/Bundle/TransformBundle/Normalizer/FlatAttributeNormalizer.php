@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
- * A normalizer to transform a AttributeInterface entity into a flat array
+ * A normalizer to transform an AbstractAttribute entity into a flat array
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -28,7 +28,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAvailableLocales($attribute)
+    protected function normalizeAvailableLocales(AbstractAttribute $attribute)
     {
         $availableLocales = $attribute->getAvailableLocales();
 
@@ -47,7 +47,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeOptions($attribute)
+    protected function normalizeOptions(AbstractAttribute $attribute)
     {
         $options = $attribute->getOptions();
 
@@ -73,7 +73,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeDefaultOptions($attribute)
+    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
     {
         $defaultOptions = $attribute->getDefaultOptions();
 

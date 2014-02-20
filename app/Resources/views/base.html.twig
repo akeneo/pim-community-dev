@@ -7,6 +7,9 @@
             init();
         });
     </script>
+    {% if uservoice_key is not null %}
+        {% include 'PimUIBundle:Default:pim_uservoice.js.twig' %}
+    {% endif %}
     {{ block('head_script_component') }}
 {% endblock %}
 

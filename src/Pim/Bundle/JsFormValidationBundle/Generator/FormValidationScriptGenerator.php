@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraint;
 use Assetic\Asset\AssetCollection;
-use Assetic\Filter\Yui\JsCompressorFilter;
 
 use APY\JsFormValidationBundle\Generator\PostProcessEvent;
 use APY\JsFormValidationBundle\JsfvEvents;
@@ -87,12 +86,6 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
             // Create asset and compress it
             $asset = new AssetCollection();
             $asset->setContent($template);
-
-            $yui = new JsCompressorFilter(
-                $this->container->getParameter('assetic.filter.yui_js.jar'),
-                $this->container->getParameter('assetic.java.bin')
-            );
-            $yui->filterDump($asset);
 
             return $asset->getContent();
         }

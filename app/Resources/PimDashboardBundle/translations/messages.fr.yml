@@ -20,3 +20,9 @@ pim_dashboard:
       attribute: Gérer les attributs
       family: Gérer des familles
   quick_launchpad: "Panneau d'accès rapide"
+  widget:
+    error:
+      title: Erreur lors du chargement du widget
+      message: |-
+        Le widget "%alias%" n'existe pas
+    completeness: Complétude par canaux et locales

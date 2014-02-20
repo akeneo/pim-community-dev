@@ -8,12 +8,12 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Form subscriber for AttributeInterface
+ * Form subscriber for AbstractAttribute
  * Allow to change field behavior like disable when editing
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -24,7 +24,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 {
     /**
      * Attribute manager
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -43,13 +43,11 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Constructor
      *
-     * @param AttributeManagerInterface $attributeManager Attribute manager
-     * @param AttributeTypeFactory      $attTypeFactory   Attribute type factory
+     * @param AttributeManager     $attributeManager Attribute manager
+     * @param AttributeTypeFactory $attTypeFactory   Attribute type factory
      */
-    public function __construct(
-        AttributeManagerInterface $attributeManager = null,
-        AttributeTypeFactory $attTypeFactory = null
-    ) {
+    public function __construct(AttributeManager $attributeManager, AttributeTypeFactory $attTypeFactory)
+    {
         $this->attributeManager = $attributeManager;
         $this->attTypeFactory   = $attTypeFactory;
     }
@@ -122,10 +120,10 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Customize the attribute form
      *
-     * @param Form               $form      AttributeInterface form
-     * @param AttributeInterface $attribute AttributeInterface entity
+     * @param Form              $form
+     * @param AbstractAttribute $attribute
      */
-    protected function customizeForm(Form $form, AttributeInterface $attribute)
+    protected function customizeForm(Form $form, AbstractAttribute $attribute)
     {
         $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);

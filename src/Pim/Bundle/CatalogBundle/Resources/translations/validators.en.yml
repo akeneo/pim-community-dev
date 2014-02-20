@@ -1,2 +1,11 @@
-An identifier attribute already exists.: An identifier attribute already exists.
+An identifier attribute already exists.:                         An identifier attribute already exists.
 Attribute code may contain only letters, numbers and underscore: Attribute code may contain only letters, numbers and underscore
+This attribute type can't be used as a grid filter:              This attribute type can't be used as a grid filter
+This code is not available:                                      This code is not available
+This attribute type must be required:                            This attribute type must be required
+This attribute type can't be required:                           This attribute type can't be required
+This attribute type can't have unique value:                     This attribute type can't have unique value
+No default value may be specified for this attribute type:       No default value may be specified for this attribute type
+This value should be Yes or No:                                  This value should be Yes or No
+This value should not be blank:                                  This value should not be blank
+Option code may contain only letters, numbers and underscores:   Option code may contain only letters, numbers and underscores

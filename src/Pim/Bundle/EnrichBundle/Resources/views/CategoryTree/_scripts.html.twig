@@ -1,19 +1,21 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap-tooltip'],
-        function($, TreeManage){
+        ['jquery', 'backbone', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap-tooltip'],
+        function($, Backbone, TreeManage){
             'use strict';
             $(function() {
                 var buttons = [];
                 {% if resource_granted('pim_enrich_category_create') %}
                     buttons.push($('<a>', {
-                        'href': '{{ path("pim_enrich_categorytree_create") }}',
+                        'class': 'no-hash',
                         'data-toggle': 'tooltip',
                         'data-placement': 'right',
                         'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
-                    ).tooltip());
+                    ).on('click', function () {
+                        Backbone.history.navigate('url={{ path("pim_enrich_categorytree_create") }}', { trigger: true });
+                    }).tooltip());
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });

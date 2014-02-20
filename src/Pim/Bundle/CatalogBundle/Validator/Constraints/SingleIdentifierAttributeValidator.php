@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Validator for single identifier attribute constraint
@@ -33,19 +34,15 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     /**
      * Don't allow creating an identifier attribute if one already exists
      *
-     * @param AttributeInterface $value
-     * @param Constraint         $constraint
+     * @param AbstractAttribute $attribute
+     * @param Constraint        $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($attribute, Constraint $constraint)
     {
-        if ($value->getAttributeType() === 'pim_catalog_identifier') {
-            $identifier = $this->manager->getAttributeRepository()->findOneBy(
-                array(
-                    'attributeType' => 'pim_catalog_identifier'
-                )
-            );
+        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            $identifier = $this->manager->getIdentifierAttribute();
 
-            if ($identifier && $identifier->getId() !== $value->getId()) {
+            if ($identifier && $identifier->getId() !== $attribute->getId()) {
                 $this->context->addViolationAt('attributeType', $constraint->message);
             }
         }

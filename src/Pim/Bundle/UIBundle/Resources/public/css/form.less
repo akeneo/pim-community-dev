@@ -22,10 +22,12 @@ form.form-signin {
     margin-bottom: 3px;
     input[type="text"],
     input[type="password"] {
+      width: 265px;
       color: @textColor;
       background-color: #fbfbfb;
     }
     .add-on {
+      width: 36px;
       color: @textColor;
       #gradient .vertical(#f4f4f4, #dcdcdc);
     }
@@ -162,16 +164,21 @@ a.accordion-toggle {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 20px;
-  label.control-label:after {
-    content: '';
+  margin-bottom: 10px;
+  label.control-label {
+    &:not(.add-on) {
+      max-height: 25px;
+    }
+    &:after {
+      content: '';
+    }
   }
 }
 
 #pim_importexport_import_upload .control-group {
   max-width: 50%;
-  margin-left: 25%;
   margin-right: 25%;
+  margin-left: 25%;
 }
 
 .controls .switch label{
@@ -221,12 +228,19 @@ th label {
   text-align: center;
 }
 
-.table-condensed:not(.grid) td {
-  text-align: center;
+.table-condensed:not(.grid) {
+  td, th.center {
+    text-align: center;
+  }
 }
 
-.table-striped tbody>tr:nth-child(even)>td {
+.table-striped tbody>tr:nth-child(even)>td,
+.table-light tbody tr {
   background-color: @backgroundColor-white;
+}
+
+.fullwidth {
+  width: 100%;
 }
 
 i.remove-attribute {
@@ -236,10 +250,14 @@ i.remove-attribute {
 a.add-attribute-option {
   margin-left: 5px;
 }
+.input-prepend a.add-attribute-option {
+  border-radius: 3px;
+}
 
 /* bootstrapSwitch */
 .has-switch {
   margin-right: 3px;
+  margin-bottom: -6px;
   span {
     padding: 4px 7px;
     font-size: 12px;
@@ -257,6 +275,9 @@ div.btn-group > .has-switch {
   display: block;
 }
 
+.select2-results .select2-highlighted {
+  background: @color-purple_light;
+}
 .select2-container.select2-container-disabled .select2-choice {
   border: none;
 }
@@ -287,17 +308,16 @@ div.btn-group > .has-switch {
   margin: 10px;
 }
 #channel-switcher .dropdown-toggle {
+  border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  border-right: 0;
 }
 
 #comparison-buttons {
-  float: right;
   position: relative;
-  padding-right: 10px;
+  float: right;
+  padding: 4px 10px 22px 0;
   text-align: right;
-  padding: 4px 9px 22px 0;
   &.compare{
     width: 50%;
     border-left: 1px solid #ddd;
@@ -312,8 +332,8 @@ div.btn-group > .has-switch {
   width: 100%;
   td {
     width: 50%;
-    border-right: 1px solid darken(@color-light_grey, 5%);
     vertical-align: top;
+    border-right: 1px solid darken(@color-light_grey, 5%);
     &.no-label .control-group {
       label.control-label {
         width: 30px;
@@ -656,8 +676,8 @@ table i {
 /* Product edit form - attributes tab */
 
 .submit-form .dropdown-menu.right-align {
-  left: auto;
   right: 0;
+  left: auto;
 }
 
 .product-edit #attributes {
@@ -686,6 +706,9 @@ table i {
   }
   .control-group {
     max-width: inherit;
+    .control-group {
+      margin-bottom: 0;
+    }
   }
   .currency-header {
     display: inline-block;
@@ -693,8 +716,8 @@ table i {
     .currency-label {
       display: inline-block;
       width: 103px;
-      text-align: center;
       font-weight: bold;
+      text-align: center;
     }
     &.small .currency-label {
       width: 74px;
@@ -708,8 +731,8 @@ table i {
   .controls {
     .input-small, .input-mini {
       height: 21px;
-      border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
       &:not(:last-of-type) {
         border-right: 0;
         border-top-right-radius: 0;
@@ -733,15 +756,9 @@ table.comparison .no-label .attribute-field.currency.scopable .currency-header {
   padding-left: 165px;
 }
 
-.metric {
-  .selectize-input {
-    width: 180px;
-  }
-}
-
 .attribute-field.scopable {
-  margin-bottom: 10px;
   max-width: inherit;
+  margin-bottom: 20px;
   >div {
     &:first-of-type .controls {
       .control-label.add-on {
@@ -1011,24 +1028,24 @@ div.dropdown-menu.channel {
     border: none;
     .flag {
       display: inline-block;
-      vertical-align: bottom;
       margin-bottom: 5px;
+      vertical-align: bottom;
     }
     .language {
-      color: @textColor + #333;
-      padding-left: 5px;
-      font-size: 12px;
-      font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-      vertical-align: bottom;
-      width: 30px;
       display: inline-block;
+      width: 30px;
+      padding-left: 5px;
+      font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+      font-size: 12px;
+      color: @textColor + #333;
+      vertical-align: bottom;
     }
   }
 }
 #comparison-switcher .dropdown-toggle .flag-language {
   .flag {
-    vertical-align: middle;
     margin-top: 2px;
+    vertical-align: middle;
   }
   .language {
     padding-left: 0;
@@ -1039,8 +1056,8 @@ div.dropdown-menu.channel {
   margin-top: 10px;
   margin-right: 5px;
   clear: right;
-  opacity: 0;
   cursor: default;
+  opacity: 0;
   .label-warning {
     color: @textColor + #333;
     text-shadow: none;
@@ -1093,6 +1110,7 @@ button.pimmultiselect {
   padding: 0 10px;
   line-height: @buttonHeight;
   color: @textColor + #222;
+  font-size: 13px;
   &:hover {
     color: @textColor + #222;
   }
@@ -1146,6 +1164,9 @@ button.pimmultiselect {
 .ui-multiselect-optgroup-label a:hover {
   color: @textColor;
 }
+.ui-multiselect-menu {
+  z-index: 800;
+}
 
 .attribute-requirement {
   height: 20px;
@@ -1164,34 +1185,59 @@ button.pimmultiselect {
   }
 }
 
-/* Selectize UI for metric attribute field */
-.selectize-control.input-small {
-  display: inline-block;
-  .selectize-input {
-    padding: 4px 10px 4px 10px;
-    &> * {
-      float: left;
+/* UI for select2 inside a scopable field */
+.attribute-field.scopable {
+  &>div:not(.first) {
+    .controls div.select2-container {
+      border-top-right-radius: 0;
+    }
+    &:not(:last-of-type) .controls div.select2-container {
+      border-bottom-right-radius: 0;
     }
   }
-  &.append .selectize-input {
-    border-left: 0;
-    border-top-left-radius: 0;
+  &:not(.collapsed)>div.first .controls div.select2-container {
+    border-bottom-right-radius: 0;
+  }
+  .controls.input-prepend div.select2-container {
     border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
   }
 }
+
+/* UI for metric attribute field */
 .controls.metric.input-append {
-  margin-left: 10px;
-  .icons-container {
-    margin-left: 95px;
+  &:not(.input-prepend) {
+    margin-left: 10px;
+  }
+  select.select2-offscreen {
+    display: none;
+  }
+  div.select2-container {
+    border-left: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    &>a {
+      height: 28px;
+      line-height: 28px;
+      .select2-arrow {
+        top: 5px;
+      }
+    }
+    .select2-focusser {
+      display: none;
+    }
+  }
+  .scopable-input input[type=text] {
+    height: 20px;
+    margin-left: -1px;
+    border-radius: 0;
   }
 }
-.selectize-dropdown {
-  [data-selectable].active {
-     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  }
-  .active {
-    background-color: @color-purple_light;
-  }
+.attribute-field.scopable>div:not(.first) .controls.metric input {
+  height: 21px;
+}
+.product-edit #attributes .metric .select2-container {
+  width: 160px !important;
 }
 
 /** Product completeness *******************************************************************************/
@@ -1273,18 +1319,24 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
+#pim_catalog_datagrid_configuration {
+  margin-bottom: 0;
+}
 .connectedSortable {
+  height: 320px;
+  min-height: 15px;
+  padding: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+  overflow-y: auto;
+  list-style-type: none;
   border: 1px solid #ccc;
   &#bucket {
     border-style: dashed;
   }
-  margin-left: 0;
-  padding: 10px;
-  min-height: 15px;
-  list-style-type: none;
   li {
-    cursor: pointer;
     padding: 5px 0;
     font-size: 13px;
+    cursor: pointer;
   }
 }
