@@ -31,6 +31,10 @@
 - Rename findByWithAttributes to findAllByAttributes
 - MeasureBundle has been moved from the BAP to an external repository (akeneo/measure-bundle).
 - AkeneoBundle has been moved from the BAP to an external repository (akeneo/batch-bundle).
+- Remove magic setter access to value (ex: $product->setDescription()), as it has multiple conceptual and
+technical flaws (attribute codes are data, not a freeze structure, needed to maintain an full attribute cache in product
+that made the entity too smart for its own good and created performances problem)
+- Remove Product::createValue(). Can be replaced by calling ProductManager::createFlexibleValue() and setting attribute, scope and locale on the created value.
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
