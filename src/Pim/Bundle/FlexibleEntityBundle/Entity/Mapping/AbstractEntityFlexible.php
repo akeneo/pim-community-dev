@@ -244,7 +244,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
                 }
                 if (null !== $possibleValue->getScope()) {
                     $valueScope = ($scopeCode) ? $scopeCode : $this->getScope();
-                 }
+                }
                 if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
                     $value = $possibleValue;
                     break;
