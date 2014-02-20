@@ -423,8 +423,6 @@ class ProductManager extends FlexibleManager
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $codeToAttributeData = $this->getEntityManager()->getRepository($attributeClass)->getCodeToAttributes($class);
-        $flexible->setAllAttributes($codeToAttributeData);
         $flexible->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $flexible);

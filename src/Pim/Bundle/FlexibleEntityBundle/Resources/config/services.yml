@@ -5,14 +5,13 @@ parameters:
     pim_flexibleentity.value_form.value_subscriber.class:            Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     pim_flexibleentity.filterAttributes.twig.extension.class:        Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
     pim_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
-    pim_flexibleentity.listener.add_attributes.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
+    pim_flexibleentity.listener.set_value_class.class:               Pim\Bundle\FlexibleEntityBundle\EventListener\SetValueClassListener
     pim_flexibleentity.listener.localizable.class:                   Pim\Bundle\FlexibleEntityBundle\EventListener\LocalizableListener
     pim_flexibleentity.listener.scopable.class:                      Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
     pim_flexibleentity.listener.timestampable.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
     pim_flexibleentity.listener.has_required_value.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
     pim_flexibleentity.listener.default_value.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
     pim_flexibleentity.listener.initialize_flexible.class:           Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
-    pim_flexibleentity.listener.attribute_cache.class:               Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
     pim_flexibleentity.listener.outdate_indexed_values.class:        Pim\Bundle\FlexibleEntityBundle\EventListener\OutdateIndexedValuesListener
     pim_flexibleentity.doctrine.orm.flexible_query_builder.class:    Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder
 
@@ -33,8 +32,8 @@ services:
         arguments: ['@service_container', ~]
 
     # inject attributes into flexible entity
-    pim_flexibleentity.listener.add_attributes:
-        class: %pim_flexibleentity.listener.add_attributes.class%
+    pim_flexibleentity.listener.set_value_class:
+        class: %pim_flexibleentity.listener.set_value_class.class%
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -65,12 +64,6 @@ services:
         class: %pim_flexibleentity.listener.has_required_value.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    # Clear attribute list cache when inserting or delete an attribute
-    pim_flexibleentity.listener.attribute_cache:
-        class: %pim_flexibleentity.listener.attribute_cache.class%
         tags:
             - { name: doctrine.event_subscriber }
 

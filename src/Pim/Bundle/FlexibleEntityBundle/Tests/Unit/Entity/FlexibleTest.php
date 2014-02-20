@@ -60,10 +60,6 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
 
         $this->flexible = new Flexible();
         $this->flexible->setValueClass('Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue');
-        $attributes = array(
-            $this->attributeCodeText => $this->attributeText, $this->attributeCodeSelect => $this->attributeSelect
-        );
-        $this->flexible->setAllAttributes($attributes);
     }
 
     /**
@@ -156,13 +152,6 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->flexible->getValues()->count(), 1);
         $this->flexible->removeValue($value2);
         $this->assertEquals($this->flexible->getValues()->count(), 0);
-
-        // test magic method
-        $this->flexible->setShortDescription('my value');
-        $this->assertEquals($this->flexible->getShortDescription(), 'my value');
-
-        $this->flexible->setColor($data2);
-        $this->assertEquals($this->flexible->getColor(), $value2);
     }
 
     /**

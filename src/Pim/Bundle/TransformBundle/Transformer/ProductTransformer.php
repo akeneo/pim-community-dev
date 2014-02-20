@@ -250,9 +250,11 @@ class ProductTransformer extends EntityTransformer
     protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
         $productValue = $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
-        if (!$productValue) {
-            $productValue = $product
-                ->createValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
+        if (null === $productValue) {
+            $productValue = $this->productManager->createProductValue();
+            $productValue->setAttribute($columnInfo->getAttribute());
+            $productValue->setLocale($columnInfo->getLocale());
+            $productValue->setScope($columnInfo->getScope());
             $product->addValue($productValue);
         }
 
