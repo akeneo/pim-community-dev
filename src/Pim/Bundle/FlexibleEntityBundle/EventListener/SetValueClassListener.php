@@ -8,13 +8,13 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
- * Aims to inject available attributes into a flexible entity
+ * Set the value class for the newly loaded flexible entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddAttributesListener implements EventSubscriber
+class SetValueClassListener implements EventSubscriber
 {
     /**
      * Specifies the list of events to listen
@@ -46,13 +46,6 @@ class AddAttributesListener implements EventSubscriber
             $valueAssociation     = $flexibleAssociations['values'];
             $valueClass           = $valueAssociation['targetEntity'];
 
-            $valueMetadata        = $metadata[$valueClass];
-            $valueAssociations    = $valueMetadata->getAssociationMappings();
-            $attributeAssociation = $valueAssociations['attribute'];
-            $attributeClass       = $attributeAssociation['targetEntity'];
-
-            $codeToAttributeData = $em->getRepository($attributeClass)->getCodeToAttributes($entityClass);
-            $flexible->setAllAttributes($codeToAttributeData);
             $flexible->setValueClass($valueClass);
         }
     }

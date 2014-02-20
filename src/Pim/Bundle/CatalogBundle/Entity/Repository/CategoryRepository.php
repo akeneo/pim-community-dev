@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Category repository
@@ -35,7 +35,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return integer
      */
-    public function countChildren(Category $category, $onlyDirect = false)
+    public function countChildren(CategoryInterface $category, $onlyDirect = false)
     {
         $qb = ($onlyDirect) ?
             $this->getNodeQueryBuilder($category) :
@@ -113,7 +113,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getNodeQueryBuilder(Category $category)
+    protected function getNodeQueryBuilder(CategoryInterface $category)
     {
         $qb = $this->createQueryBuilder('ps');
         $qb->where('ps.id = :nodeId')
@@ -130,7 +130,7 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getAllChildrenQueryBuilder(Category $category, $includeNode = false)
+    public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }

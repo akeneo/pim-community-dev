@@ -47,9 +47,6 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $this->product->expects($this->any())
             ->method('getReference')
             ->will($this->returnValue('id'));
-        $this->product->expects($this->any())
-            ->method('createValue')
-            ->will($this->returnCallback(array($this, 'createValue')));
 
         $this->flexibleRepository = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface'
@@ -66,6 +63,9 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $this->productManager->expects($this->any())
             ->method('getFlexibleValueName')
             ->will($this->returnValue('product_value_class'));
+        $this->productManager->expects($this->any())
+            ->method('createProductValue')
+            ->will($this->returnCallback(array($this, 'createValue')));
 
         $this->attributeCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\AttributeCache')
             ->disableOriginalConstructor()
