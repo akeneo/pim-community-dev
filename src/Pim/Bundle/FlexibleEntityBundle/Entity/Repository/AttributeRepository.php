@@ -137,27 +137,22 @@ class AttributeRepository extends EntityRepository
     /**
      * Get ids of attributes useable in grid
      *
-     * @param string  $entityType the entity type
-     * @param boolean $asColumn   the attribute is useable as column
-     * @param bolean  $asFilter   the attribute is useable as filter
+     * @param string $entityType the entity type
      *
      * @return array
      */
-    public function getAttributeIdsUseableInGrid($entityType, $asColumn = true, $asFilter = true)
+    public function getAttributeIdsUseableInGrid($entityType)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id')
             ->where('att.entityType = :entityType');
 
-        if ($asColumn && $asFilter) {
-            $qb->andWhere('att.useableAsGridColumn = 1 OR att.useableAsGridFilter = 1');
-        } elseif ($asColumn) {
-            $qb->andWhere('att.useableAsGridColumn = 1');
-        } elseif ($asFilter) {
-            $qb->andWhere('att.useableAsGridFilter = 1');
-        }
-
+        $qb->andWhere(
+            "att.useableAsGridColumn = 1 ".
+            "OR att.useableAsGridFilter = 1 ".
+            "OR att.attributeType = 'pim_catalog_simpleselect'"
+        );
         $parameters = ['entityType' => $entityType];
         $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
 
