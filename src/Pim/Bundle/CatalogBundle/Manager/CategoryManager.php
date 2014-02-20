@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Extends SegmentManager for category tree
@@ -29,7 +29,7 @@ class CategoryManager extends SegmentManager
     /**
      * Get a new tree instance
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function getTreeInstance()
     {
@@ -80,12 +80,12 @@ class CategoryManager extends SegmentManager
      * and ancestors sibligns are filled too, in order to be able to display the tree
      * directly without loading other data.
      *
-     * @param Category   $root       Tree root category
-     * @param Collection $categories categories
+     * @param CategoryInterface $root       Tree root category
+     * @param Collection        $categories categories
      *
      * @return array Multi-dimensional array representing the tree
      */
-    public function getFilledTree(Category $root, Collection $categories)
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
         $parentsIds = array();
 

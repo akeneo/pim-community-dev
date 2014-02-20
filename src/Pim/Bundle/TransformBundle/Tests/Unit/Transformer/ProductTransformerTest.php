@@ -48,7 +48,6 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->method('getReference')
             ->will($this->returnValue('id'));
 
-
         $this->flexibleRepository = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface'
         );

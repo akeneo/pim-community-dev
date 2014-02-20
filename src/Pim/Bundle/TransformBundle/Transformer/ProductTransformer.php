@@ -156,7 +156,6 @@ class ProductTransformer extends EntityTransformer
         }
     }
 
-
     /**
      * Sets the product entitie's properties
      *

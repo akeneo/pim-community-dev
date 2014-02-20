@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test related class
