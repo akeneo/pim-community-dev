@@ -29,6 +29,23 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
+     * @param string $localeCode
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllWithGroups($localeCode)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('atrans', 'g', 'gtrans')
+            ->leftJoin('a.translations', 'atrans', 'WITH', 'atrans.locale = :locale')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gtrans', 'WITH', 'gtrans.locale = :locale')
+            ->setParameter('locale', $localeCode);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getChoices(array $options)

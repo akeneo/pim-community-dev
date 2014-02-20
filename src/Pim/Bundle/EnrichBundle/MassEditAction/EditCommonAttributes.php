@@ -237,9 +237,8 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function initializeCommonAttributes(array $products)
     {
-        $attributes = $this->productManager->getAttributeRepository()->findAll();
-
         $currentLocaleCode = $this->getLocale()->getCode();
+        $attributes = $this->productManager->getAttributeRepository()->findAllWithGroups($currentLocaleCode);
 
         // Set attribute options locale
         $this->productManager->setLocale($currentLocaleCode);
