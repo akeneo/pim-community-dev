@@ -96,7 +96,7 @@
                             {# Step execution warnings #}
                             '<% _.each(stepExecution.warnings, function(warning) { %>' +
                                 '<tr class="warning">' +
-                                    '<td colspan="7">' +
+                                    '<td colspan="5">' +
                                         '<span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;' +
                                         '<%= warning.reason %><br />' +
                                         '<a class="data" href="#"' +
@@ -119,7 +119,7 @@
                             {# Step execution failures #}
                             '<% _.each(stepExecution.failures, function(failure) { %>' +
                                 '<tr class="error">' +
-                                    '<td colspan="7">' +
+                                    '<td colspan="5">' +
                                         '<span class="title"><%= stepExecution.label.toUpperCase() %></span>&nbsp;' +
                                         '<%= failure %>' +
                                     '</td>' +
@@ -131,7 +131,7 @@
                         {# Job execution failures #}
                         '<% _.each(jobExecution.failures, function(failure) { %>' +
                             '<tr class="error">' +
-                                '<td colspan="7">' +
+                                '<td colspan="5">' +
                                     '<span class="title"><%= label.toUpperCase() %></span>&nbsp;' +
                                     '<%= failure %>' +
                                 '</td>' +
