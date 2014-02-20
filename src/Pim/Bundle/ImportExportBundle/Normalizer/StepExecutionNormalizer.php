@@ -106,7 +106,7 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes a warning
      *
-     * @param array $warning
+     * @param array  $warning
      * @param string $domain
      * @param string $locale
      *
@@ -124,7 +124,7 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes the summary
      *
-     * @param array $summary
+     * @param array  $summary
      * @param string $domain
      * @param string $locale
      *
