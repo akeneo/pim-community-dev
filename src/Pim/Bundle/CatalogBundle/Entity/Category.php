@@ -159,7 +159,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * Get products count
      *
-     * @return number
+     * @return integer
      */
     public function getProductsCount()
     {
