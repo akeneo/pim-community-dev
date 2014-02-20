@@ -265,15 +265,11 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $attributeClass = $this->getAttributeName();
         $valueClass = $this->getFlexibleValueName();
 
         $flexible = new $class();
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
-
-        $codeToAttributeData = $this->getObjectManager()->getRepository($attributeClass)->getCodeToAttributes($class);
-        $flexible->setAllAttributes($codeToAttributeData);
         $flexible->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $flexible);
@@ -291,7 +287,7 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
     {
         $class = $this->getFlexibleValueName();
         $value = new $class();
-        // dispatch event
+
         $event = new FilterFlexibleValueEvent($this, $value);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
 

@@ -16,10 +16,26 @@ use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass
  */
 class PimCatalogBundle extends Bundle
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
+
+    /** @staticvar string */
+    const VERSION = '1.0.0-DEV';
+
+    /** @staticvar string */
+    const VERSION_CODENAME = '';
+
+    /** @staticvar string */
+    const MAJOR_VERSION = '1';
+
+    /** @staticvar string */
+    const MINOR_VERSION = '0';
+
+    /** @staticvar string */
+    const PATCH_VERSION = '0';
+
+    /** @staticvar string */
+    const EXTRA_VERSION = 'DEV';
 
     /**
      * {@inheritdoc}

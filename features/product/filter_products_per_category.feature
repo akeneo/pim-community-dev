@@ -23,14 +23,14 @@ Feature: Filter products by category
   Scenario: Successfully filter products by category
     Given I am on the products page
     When I select the "Catalog" tree
-    Then I should see products akeneo-mug, purple-tshirt, green-tshirt and blue-jeans
-    And I should be able to use the following filters:
+    Then I should see products purple-tshirt, green-tshirt and blue-jeans
+    When I uncheck the "Include sub-categories" switch
+    Then I should be able to use the following filters:
       | filter   | value        | result                         |
       | category | tshirts      | purple-tshirt and green-tshirt |
       | category | trousers     |                                |
       | category | unclassified | akeneo-mug                     |
     When I check the "Include sub-categories" switch
-    When I select the "Catalog" tree
     Then I should be able to use the following filters:
       | filter   | value    | result     |
       | category | trousers | blue-jeans |

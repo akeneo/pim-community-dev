@@ -28,9 +28,9 @@ define(
             emptyValue: {
                 value: {
                     treeId:     0,
-                    categoryId: 0
+                    categoryId: -2
                 },
-                type: 0
+                type: 1
             },
 
             /**
