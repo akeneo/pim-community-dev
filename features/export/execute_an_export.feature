@@ -1,3 +1,4 @@
+@javascript
 Feature: Execute a job
   In order to launch an export
   As a user
