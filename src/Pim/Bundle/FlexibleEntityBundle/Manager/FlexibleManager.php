@@ -265,7 +265,6 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
     public function createFlexible()
     {
         $class = $this->getFlexibleName();
-        $attributeClass = $this->getAttributeName();
         $valueClass = $this->getFlexibleValueName();
 
         $flexible = new $class();
