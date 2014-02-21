@@ -18,7 +18,7 @@ users:
         firstname: Julia
         lastname: Zaro
         owner: Main
-        catalog_locale: en_US
+        catalog_locale: de_DE
         catalog_scope: ecommerce
         default_tree: master
         role: ROLE_ADMINISTRATOR
