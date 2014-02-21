@@ -4,7 +4,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 
@@ -90,7 +89,7 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * {@inheritdoc}
      *
-     * @return Category[]
+     * @return CategoryInterface[]
      */
     public function process($data)
     {
