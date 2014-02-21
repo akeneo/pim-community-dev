@@ -125,8 +125,10 @@ class AttributeType extends AbstractType
             'attributeType',
             'choice',
             array(
-                'choices' => $this->getAttributeTypeChoices(),
-                'select2' => true
+                'choices'   => $this->getAttributeTypeChoices(),
+                'select2'   => true,
+                'disabled'  => true,
+                'read_only' => true
             )
         );
     }

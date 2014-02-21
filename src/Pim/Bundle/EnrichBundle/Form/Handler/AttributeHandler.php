@@ -59,21 +59,6 @@ class AttributeHandler
     }
 
     /**
-     * Preprocess method
-     * @param array $data
-     */
-    public function preProcess($data)
-    {
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-
-        $this->form->setData($attribute);
-
-        $data = $this->attributeManager->prepareFormData($data);
-
-        $this->form->bind($data);
-    }
-
-    /**
      * Process method for handler
      * @param AbstractAttribute $entity
      *
@@ -176,8 +161,6 @@ class AttributeHandler
                 }
             }
         }
-
-        $this->attributeManager->prepareBackendProperties($entity);
 
         $this->manager->persist($entity);
         $this->manager->flush();

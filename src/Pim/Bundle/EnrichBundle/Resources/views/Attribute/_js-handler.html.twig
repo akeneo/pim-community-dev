@@ -11,26 +11,8 @@ require(
 
             var $optionList;
 
-            function updateForm() {
-                $.post(
-                    '{{ path("pim_enrich_attribute_preprocess") }}',
-                    $(formName).serialize(),
-                    function(data) {
-                        for (var prop in data) {
-                            $('#'+prop).html(data[prop]);
-                        }
-                        $(formName+' div.alert').remove();
-                        $(formName).trigger('tab.loaded', $(formName));
-                        initializeForm();
-                    }
-                );
-            }
-
             function initializeForm(preventUpdate) {
                 initializeOptions();
-                $('#{{ form.attributeType.vars.id }}').on('change', function() {
-                    updateForm();
-                });
 
                 // Enable/disable scope and localizable fields according to unique field value
                 $(formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {

@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Form;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -202,51 +201,6 @@ class AttributeController extends AbstractDoctrineController
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
-    }
-
-    /**
-     * Preprocess attribute form
-     *
-     * @param Request $request
-     *
-     * @Template("PimEnrichBundle:Attribute:_form_parameters.html.twig")
-     * @AclAncestor("pim_enrich_attribute_edit")
-     * @return array
-     */
-    public function preProcessAction(Request $request)
-    {
-        $data = $request->request->all();
-        if (!isset($data['pim_enrich_attribute_form'])) {
-            return $this->redirectToRoute('pim_enrich_attribute_create');
-        }
-
-        // Add custom fields to the form and set the entered data to the form
-        $this->attributeHandler->preProcess($data['pim_enrich_attribute_form']);
-
-        $locales         = $this->localeManager->getActiveLocales();
-        $disabledLocales = $this->localeManager->getDisabledLocales();
-        $form            = $this->attributeForm->createView();
-
-        $data = array(
-            'parameters' => $this->renderView(
-                'PimEnrichBundle:Attribute:_form_parameters.html.twig',
-                array(
-                    'form'            => $form,
-                    'locales'         => $locales,
-                    'disabledLocales' => $disabledLocales
-                )
-            ),
-            'values' => $this->renderView(
-                'PimEnrichBundle:Attribute:_form_values.html.twig',
-                array(
-                    'form'            => $form,
-                    'locales'         => $locales,
-                    'disabledLocales' => $disabledLocales
-                )
-            )
-        );
-
-        return new JsonResponse($data);
     }
 
     /**

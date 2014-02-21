@@ -127,36 +127,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createAttributeFromFormData method
-     */
-    public function testCreateAttributeFromFormData()
-    {
-        $data = array('attributeType' => 'pim_catalog_metric');
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $attribute);
-
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_price_collection');
-        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $newAttribute);
-        $this->assertEquals($attribute, $newAttribute);
-
-        $attribute = 'ImageType';
-        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
-        $this->assertNull($newAttribute);
-    }
-
-    /**
-     * Test prepareFormData method
-     */
-    public function testPrepareFormData()
-    {
-        $data = array('attributeType' => 'pim_catalog_multiselect');
-        $data = $this->attributeManager->prepareFormData($data);
-        $this->assertNotEmpty($data);
-        $this->assertArrayHasKey('options', $data);
-    }
-
-    /**
      * Test related method
      */
     public function testCreateAttribute()
