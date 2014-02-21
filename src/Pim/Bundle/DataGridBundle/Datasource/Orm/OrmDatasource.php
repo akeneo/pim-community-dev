@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -21,6 +22,41 @@ class OrmDatasource extends OroOrmDatasource
     const TYPE = 'pim_orm';
 
     /**
+     * @var string
+     */
+    const IS_FLEXIBLE_ENTITY_PATH = '[source][is_flexible]';
+
+    /**
+     * @var string
+     */
+    const ENTITY_PATH = '[source][entity]';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attribute_ids]';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_LOCALE_PATH = '[source][locale_code]';
+
+    /**
+     * @var string
+     */
+    const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
+
+    /**
+     * @var boolean
+     */
+    protected $isFlexible = false;
+
+    /**
+     * @var string
+     */
+    protected $localeCode = null;
+
+    /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
@@ -38,6 +74,9 @@ class OrmDatasource extends OroOrmDatasource
             $this->qb = $repository->createQueryBuilder('o');
         }
 
+        $this->isFlexible = isset($config['is_flexible']) ? (bool) $config['is_flexible'] : false;
+        $this->localeCode = isset($config['locale_code']) ? $config['locale_code'] : null;
+
         $grid->setDatasource(clone $this);
     }
 
@@ -48,10 +87,32 @@ class OrmDatasource extends OroOrmDatasource
     {
         $query = $this->qb->getQuery();
 
-        $results = $query->execute();
-        $rows    = [];
-        foreach ($results as $result) {
-            $rows[] = new ResultRecord($result);
+        if ($this->isFlexible) {
+            $results = $query->getArrayResult();
+            $rows    = [];
+            foreach ($results as $result) {
+                $entityFields = $result[0];
+                unset($result[0]);
+                $otherFields = $result;
+                $result = $entityFields + $otherFields;
+                $values = $result['values'];
+                foreach ($values as $value) {
+                    $result[$value['attribute']['code']]= $value;
+                }
+                unset($result['values']);
+                $result['dataLocale']= $this->localeCode;
+
+                $rows[] = new ResultRecord($result);
+            }
+
+        } else {
+            $results = $query->execute();
+            $rows    = [];
+            foreach ($results as $result) {
+                $rows[] = new ResultRecord($result);
+            }
+
+            return $rows;
         }
 
         return $rows;

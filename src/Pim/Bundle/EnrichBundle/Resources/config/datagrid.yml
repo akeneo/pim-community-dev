@@ -225,8 +225,6 @@ datagrid:
                             choices:  @pim_catalog.manager.category->getTreeChoices
 
     product-grid:
-        # TODO: useless config ?
-        flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
             requireJSModules:
@@ -241,6 +239,7 @@ datagrid:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createDatagridQueryBuilder
+            is_flexible: true
         columns:
             family:
                 label: Family
@@ -254,7 +253,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -263,9 +262,9 @@ datagrid:
                 label: Updated At
                 frontend_type: date
             groups:
-                label: Groups
-                type: twig
-                template: PimDataGridBundle:Property:options.html.twig
+                label:         Groups
+                type:          flexible_twig
+                template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
                 frontend_type: html
         properties:
             id: ~
@@ -274,6 +273,7 @@ datagrid:
                 route: pim_enrich_product_edit
                 params:
                     - id
+                    - dataLocale
             delete_link:
                 type: url
                 route: pim_enrich_product_remove
@@ -394,8 +394,6 @@ datagrid:
                     filter_by_having: true
 
     product-group-grid:
-        # TODO: useless config ?
-        flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
             requireJSModules:
@@ -411,6 +409,7 @@ datagrid:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
+            is_flexible: true
         columns:
             has_product:
                 frontend_type: boolean
@@ -432,7 +431,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -498,8 +497,6 @@ datagrid:
                     filter_by_having: true
 
     product-variant-group-grid:
-        # TODO: useless config ?
-        flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
             requireJSModules:
@@ -515,6 +512,7 @@ datagrid:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
+            is_flexible: true
         columns:
             has_product:
                 frontend_type: boolean
@@ -536,7 +534,7 @@ datagrid:
                 label: Complete
                 data_name: ratio
                 type: twig
-                template: PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template: PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label: Created At
@@ -907,7 +905,6 @@ datagrid:
                             choices:  @pim_catalog.manager.group->getAvailableAxisChoices
 
     association-product-grid:
-        flexible_entity: %pim_catalog.entity.product.class%
         options:
             entityHint: product
             requireJSModules:
@@ -919,6 +916,7 @@ datagrid:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
+            is_flexible: true
         columns:
             has_association:
                 frontend_type: boolean
@@ -937,7 +935,7 @@ datagrid:
                 label:         Complete
                 data_name:     ratio
                 type:          twig
-                template:      PimEnrichBundle:Completeness:_datagridCompleteness.html.twig
+                template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
             created:
                 label:         Created

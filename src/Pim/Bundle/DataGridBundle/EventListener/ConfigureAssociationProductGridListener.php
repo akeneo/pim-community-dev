@@ -17,8 +17,8 @@ class ConfigureAssociationProductGridListener extends ConfigureFlexibleGridListe
     /**
      * {@inheritdoc}
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
     {
-        return new AssociationProductColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
+        return new AssociationProductColumnsConfigurator($datagridConfig, $this->confRegistry);
     }
 }

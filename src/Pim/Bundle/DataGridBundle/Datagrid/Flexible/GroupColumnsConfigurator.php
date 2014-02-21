@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -23,16 +24,14 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param array                 $attributes    the attributes
      * @param Group                 $group         the current group
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        $attributes,
         Group $group
     ) {
-        parent::__construct($configuration, $registry, $attributes);
+        parent::__construct($configuration, $registry);
 
         $this->group = $group;
     }
@@ -42,6 +41,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     public function configure()
     {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
@@ -66,21 +66,21 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         );
         $axisColumns = array();
 
-        foreach ($this->attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute->getAttributeType();
+        foreach ($attributes as $attributeCode => $attribute) {
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 if ($attributeType === 'pim_catalog_identifier') {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
+                        'label' => $attribute['label'],
                     );
                     $identifierColumn[$attributeCode] = $columnConfig;
                 } elseif (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
+                        'label' => $attribute['label'],
                     );
                     $axisColumns[$attributeCode] = $columnConfig;
                 }

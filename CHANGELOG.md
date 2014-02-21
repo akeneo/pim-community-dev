@@ -15,6 +15,7 @@
 - Prevent hydrating all attributes in the available attributes addition form
 - Prevent hydrating all families in the product edition form
 - Import conversion units for channels
+- Product grid loading performance
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
@@ -36,6 +37,8 @@
 technical flaws (attribute codes are data, not a freeze structure, needed to maintain an full attribute cache in product
 that made the entity too smart for its own good and created performances problem)
 - Remove Product::createValue(). Can be replaced by calling ProductManager::createFlexibleValue() and setting attribute, scope and locale on the created value.
+- Product datagrid, hydrate rows as arrays (in place of objects) to reduce the loading time
+- Datagrid configuration, replace [flexible_entity] config by a [source][is_flexible] config to avoid to define the used entity twice
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

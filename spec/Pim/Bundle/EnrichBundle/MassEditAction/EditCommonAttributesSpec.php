@@ -123,7 +123,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $attributeRepository->findAll()->willReturn([$name]);
+        $attributeRepository->findAllWithGroups()->willReturn([$name]);
 
         $this->initialize($qb);
 
@@ -141,7 +141,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $query->getResult()->willReturn([$product]);
 
         $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
-        $attributeRepository->findAll()->willReturn([$identifier]);
+        $attributeRepository->findAllWithGroups()->willReturn([$identifier]);
 
         $this->initialize($qb);
 
@@ -160,7 +160,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $attribute->getAttributeType()->willReturn('pim_catalog_text');
         $attribute->isUnique()->willReturn(true);
-        $attributeRepository->findAll()->willReturn([$attribute]);
+        $attributeRepository->findAllWithGroups()->willReturn([$attribute]);
 
         $this->initialize($qb);
 
@@ -205,7 +205,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $price->isUnique()->willReturn(false);
         $price->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $attributeRepository->findAll()->willReturn([$name, $color, $price]);
+        $attributeRepository->findAllWithGroups()->willReturn([$name, $color, $price]);
 
         $this->initialize($qb);
 
@@ -236,7 +236,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attribute');
         $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $attributeRepository->findAll()->willReturn([$attribute]);
+        $attributeRepository->findAllWithGroups()->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
 
         $this->initialize($qb);

@@ -1,8 +1,9 @@
 parameters:
-    pim_datagrid.extension.filter.orm_filter.class: Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension
-    pim_datagrid.extension.sorter.orm_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
-    pim_datagrid.extension.pager.orm_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
-    pim_datagrid.extension.pager.orm.pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    pim_datagrid.extension.filter.orm_filter.class:     Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension
+    pim_datagrid.extension.sorter.orm_sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
+    pim_datagrid.extension.pager.orm_pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    pim_datagrid.extension.pager.orm.pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    pim_datagrid.extension.selector.orm_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\OrmSelectorExtension
 
 services:
     pim_datagrid.extension.filter.orm_filter:
@@ -32,3 +33,10 @@ services:
         arguments:
             - @oro_security.acl_helper
         class: %pim_datagrid.extension.pager.orm.pager.class%
+
+    pim_datagrid.extension.selector.orm_selector:
+        class: %pim_datagrid.extension.selector.orm_selector.class%
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+        tags:
+             - { name: oro_datagrid.extension }

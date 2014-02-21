@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Flexible field property, able to render majority of flexible attribute values
@@ -18,12 +19,23 @@ class FlexibleFieldProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        if (is_object($value) && is_callable([$value, '__toString'])) {
-            $value = $value->__toString();
-        } elseif (false === $value) {
-            return null;
-        }
+        $result = $this->getBackendData($value);
 
-        return parent::convertValue($value);
+        return parent::convertValue($result);
+    }
+
+    /**
+     * Retrieve the relevant backend data from attribute configuration
+     *
+     * @param array $value
+     *
+     * @return array
+     */
+    protected function getBackendData($value)
+    {
+        $backend = $value['attribute']['backendType'];
+        $value   = $value[$backend];
+
+        return $value;
     }
 }
