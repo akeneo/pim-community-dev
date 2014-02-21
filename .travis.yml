@@ -4,9 +4,17 @@ php:
   - "5.4"
   - "hhvm"
 
+matrix:
+    allow_failures:
+        - php: hhvm
+
+cache:
+    directories:
+        - vendor
+
 before_script:
   - composer self-update
-  - composer update
+  - composer update --prefer-source
 
 script: phpunit --coverage-text
 
