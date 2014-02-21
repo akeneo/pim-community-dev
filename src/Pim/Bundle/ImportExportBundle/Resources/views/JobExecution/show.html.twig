@@ -5,8 +5,8 @@
     {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
 
     {% set buttons %}
-        <span id="archives" />
-        <span id="log" />
+        <span id="archives"></span>
+        <span id="log"></span>
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}
 
@@ -44,200 +44,28 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'backbone', 'underscore','routing'],
-            function($, Backbone, _, Routing){
+            ['jquery', 'pim/job-execution-view'],
+            function($, jobExecutionView){
                 'use strict';
 
-                var JobExecution = Backbone.Model.extend({
-                    url: function() {
-                        return "{{ path(refresh_route, {id: execution.id, _format: 'json'}) }}";
-                    }
+                $(function () {
+                    jobExecutionView.init({
+                        loadingImageSelector:          'img.loading',
+                        refreshButtonSelector:         'a.loading',
+                        jobExecutionSelector:          '#job-execution tbody',
+                        jobExecutionStatusSelector:    '#status',
+                        jobExecutionButtonsSelector:   '.navbar-buttons #archives',
+                        jobExecutionLogButtonSelector: '.navbar-buttons #log',
+
+                        statusLabel:                   '{{ 'Status'|trans }}',
+                        downloadLabel:                 '{{ 'Download log'|trans }}',
+
+                        path:                          '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
+                        executionId:                   {{ execution.id }},
+                        downloadFileRoute:             '{{ download_file_route }}',
+                        downloadLogRoute:              '{{ download_log_route }}'
+                    });
                 });
-
-                var JobExecutionView = Backbone.View.extend({
-                    initialize: function () {
-                        this.listenTo(this.model, "change", this.render);
-                        this.model.bind('request', this.ajaxStart, this);
-                        this.model.bind('sync', this.ajaxComplete, this);
-                    },
-
-                    ajaxStart: function(){
-                        $('img.loading').removeClass('transparent');
-                    },
-
-                    ajaxComplete: function(model, resp){
-                        $('img.loading').addClass('transparent');
-                        if (!resp.jobExecution.isRunning) {
-                            clearInterval(interval);
-                            interval = null;
-                        }
-                    },
-
-                    events: {
-                        'click a.data': function(event) {
-                            event.preventDefault();
-
-                            var $link = $(event.currentTarget);
-                            var displayLabel = $link.data('display-label');
-                            var hideLabel = $link.data('hide-label');
-
-                            $link.siblings('table').toggleClass('hide');
-                            $link.text($link.text().trim() == displayLabel ? hideLabel : displayLabel);
-                        }
-                    },
-
-                    template: _.template(
-                        {# Step execution information #}
-                        '<% _.each(jobExecution.stepExecutions, function(stepExecution) { %>' +
-                            '<tr>' +
-                                '<td><%= stepExecution.label %></td>' +
-                                '<td><%= stepExecution.status %></td>' +
-                                '<td>' +
-                                    '<table class="table-striped table-bordered table-hover">' +
-                                        '<% _.each(stepExecution.summary, function(value, key) { %>' +
-                                            '<tr>' +
-                                                '<td><%= key %></td>' +
-                                                '<td><%= value %></td>' +
-                                            '</tr>' +
-                                        '<% }); %>' +
-                                    '</table>' +
-                                '</td>' +
-                                '<td><%= stepExecution.startedAt %></td>' +
-                                '<td><%= stepExecution.endedAt %></td>' +
-                            '</tr>' +
-
-                            {# Step execution warnings #}
-                            '<% _.each(stepExecution.warnings, function(warning) { %>' +
-                                '<tr class="warning">' +
-                                    '<td colspan="5">' +
-                                        '<span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;' +
-                                        '<%= warning.reason %><br />' +
-                                        '<a class="data" href="#"' +
-                                            'data-display-label="{{ "Display item"|trans }}"' +
-                                            'data-hide-label="{{ "Hide item"|trans }}">' +
-                                            '{{ "Display item"|trans }}' +
-                                        '</a>' +
-                                        '<table class="hide table-striped table-bordered table-hover">' +
-                                            '<% _.each(warning.item, function(value, key) { %>' +
-                                                '<tr>' +
-                                                    '<td><%= key %></td>' +
-                                                    '<td><%= value %></td>' +
-                                                '</tr>' +
-                                            '<% }); %>' +
-                                        '</table>' +
-                                    '</td>' +
-                                '</tr>' +
-                            '<% }); %>' +
-
-                            {# Step execution failures #}
-                            '<% _.each(stepExecution.failures, function(failure) { %>' +
-                                '<tr class="error">' +
-                                    '<td colspan="5">' +
-                                        '<span class="title"><%= stepExecution.label.toUpperCase() %></span>&nbsp;' +
-                                        '<%= failure %>' +
-                                    '</td>' +
-                                '</tr>' +
-                            '<% }); %>' +
-
-                        '<% }); %>' +
-
-                        {# Job execution failures #}
-                        '<% _.each(jobExecution.failures, function(failure) { %>' +
-                            '<tr class="error">' +
-                                '<td colspan="5">' +
-                                    '<span class="title"><%= label.toUpperCase() %></span>&nbsp;' +
-                                    '<%= failure %>' +
-                                '</td>' +
-                            '</tr>' +
-                        '<% }); %>'
-                    ),
-
-                    render: function() {
-                        this.$el.html(this.template(this.model.toJSON()));
-                        return this;
-                    }
-                });
-
-                var JobExecutionStatusView = Backbone.View.extend({
-                    initialize: function () {
-                        this.listenTo(this.model, 'change', this.render);
-                    },
-
-                    template: _.template('<li>{{ "Status"|trans }}: <%= jobExecution.status %></li>'),
-
-                    render: function() {
-                        this.$el.html(this.template(this.model.toJSON()));
-                        return this;
-                    }
-                });
-
-                var JobExecutionButtonsView = Backbone.View.extend({
-                    initialize: function () {
-                        this.listenTo(this.model, 'change', this.render);
-                    },
-
-                    template: _.template(
-                        '<% _.each(archives, function(archive) { %>' +
-                            '<a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="' +
-                            '<%= Routing.generate("{{ download_file_route }}", {id: {{ execution.id }}, archiver: archive.archiver, key: archive.key }) %>' +
-                            '">' +
-                                '<i class="icon-download"></i>' +
-                                '<%= archive.name %>' +
-                            '</a>&nbsp;' +
-                        '<% }); %>'
-                    ),
-
-                    render: function() {
-                        this.$el.html(this.template(this.model.toJSON()));
-                        return this;
-                    }
-                });
-
-                var JobExecutionLogButtonView = Backbone.View.extend({
-                    initialize: function () {
-                        this.listenTo(this.model, 'change', this.render);
-                    },
-
-                    template: _.template(
-                        '<% if (hasLog) { %>' +
-                            '<a class="btn no-hash icons-holder-text" title="{{ "Download log"|trans }}" href="' +
-                                '<%= Routing.generate("{{ download_log_route }}", {id: {{ execution.id }}}) %>' +
-                                '">' +
-                                    '<i class="icon-download"></i>' +
-                                    '{{ "Download log"|trans }}' +
-                            '</a>' +
-                        '<% } %>'
-                    ),
-
-                    render: function() {
-                        this.$el.html(this.template(this.model.toJSON()));
-                        return this;
-                    }
-                });
-
-                var jobExecution = new JobExecution();
-                jobExecution.fetch();
-
-                new JobExecutionView({ model: jobExecution, el: '#job-execution tbody' });
-                new JobExecutionStatusView({ model: jobExecution, el: '#status' });
-                new JobExecutionButtonsView({ model: jobExecution, el: '.navbar-buttons #archives' });
-                new JobExecutionLogButtonView({ model: jobExecution, el: '.navbar-buttons #log' });
-
-                var displayRefreshLink = function() {
-                    $('img.loading').hide();
-                    $('a.loading').removeClass('transparent');
-                };
-
-                var interval = setInterval(function() {
-                    jobExecution.fetch();
-                }, 1000);
-
-                setTimeout(function() {
-                    if (null !== interval) {
-                        clearInterval(interval);
-                        displayRefreshLink();
-                    }
-                }, 120000);
             }
         );
     </script>
