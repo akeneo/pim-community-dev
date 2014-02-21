@@ -329,75 +329,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function setUp(InputInterface $input, OutputInterface $output)
     {
-        $this->userSetup($input, $output);
-
         return $this;
-    }
-
-    /**
-     * Set up the user information
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return InstallCommand
-     */
-    protected function userSetup(InputInterface $input, OutputInterface $output)
-    {
-        if ($input->getOption('env') !== 'behat') {
-            $output->writeln('<info>Administration setup.</info>');
-
-            $user = $this->createUser($input, $output);
-//             $this->getContainer()->get('oro_user.manager')->updateUser($user);
-
-            $output->writeln('');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Create user
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \Exception
-     *
-     * @return User
-     */
-    protected function createUser(InputInterface $input, OutputInterface $output)
-    {
-        $user = $this->getContainer()->get('oro_user.manager')->createUser();
-        $role = $this->getContainer()
-            ->get('doctrine.orm.entity_manager')
-            ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
-
-        $businessUnit = $this->getContainer()
-            ->get('doctrine.orm.entity_manager')
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => 'Main'));
-
-        $options = $input->getOptions();
-        $userName = $input->getOption('user-name');
-        $userEmail = $input->getOption('user-email');
-        $userFirstName = $input->getOption('user-firstname');
-        $userLastName = $input->getOption('user-lastname');
-        $userPassword = $input->getOption('user-password');
-
-        $user
-            ->setUsername($userName)
-            ->setEmail($userEmail)
-            ->setFirstName($userFirstName)
-            ->setLastName($userLastName)
-            ->setPlainPassword($userPassword)
-            ->setEnabled(true)
-            ->addRole($role)
-            ->setOwner($businessUnit)
-            ->addBusinessUnit($businessUnit);
-
-        return $user;
     }
 
     /**
