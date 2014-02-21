@@ -41,11 +41,6 @@ class AttributeManager
     protected $objectManager;
 
     /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var AttributeTypeFactory
      */
     protected $factory;
@@ -58,7 +53,6 @@ class AttributeManager
      * @param string               $optionValueClass Option value class
      * @param string               $productClass     Product class
      * @param ObjectManager        $objectManager    Object manager
-     * @param LocaleManager        $localeManager    Locale manager
      * @param AttributeTypeFactory $factory          Attribute type factory
      */
     public function __construct(
@@ -67,7 +61,6 @@ class AttributeManager
         $optionValueClass,
         $productClass,
         ObjectManager $objectManager,
-        LocaleManager $localeManager,
         AttributeTypeFactory $factory
     ) {
         $this->attributeClass   = $attributeClass;
@@ -75,7 +68,6 @@ class AttributeManager
         $this->optionValueClass = $optionValueClass;
         $this->productClass     = $productClass;
         $this->objectManager    = $objectManager;
-        $this->localeManager    = $localeManager;
         $this->factory          = $factory;
     }
 
