@@ -242,9 +242,6 @@ th label {
 .fullwidth {
   width: 100%;
 }
-.halfwidth {
-  width: 50%;
-}
 
 i.remove-attribute {
   cursor: pointer;
@@ -613,6 +610,37 @@ div.ui-dialog {
 }
 
 /* Attribute Form ***************************************************************************************************/
+
+.attribute-choice {
+  background: transparent;
+  height: 50px;
+  line-height: 48px;
+  padding-left: 10px;
+  &:hover {
+    background-image: none;
+    background-color: @color-purple_hover;
+    -webkit-transition: background-color 0.5s;
+    -moz-transition: background-color 0.5s;
+    -o-transition: background-color 0.5s;
+    -ms-transition: background-color 0.5s;
+    transition: background-color 0.5s;  }
+  i {
+    padding-top: 10px;
+    line-height: 30px;
+    font-size: 30px;
+  }
+}
+.attribute-type-selector {
+  display: table;
+  margin-bottom: -10px;
+  &>div {
+    width: 49%;
+    margin-bottom: 10px;
+    &:nth-child(even) {
+      margin-left: 2%;
+    }
+  }
+}
 
 #sortable_options {
   th {
