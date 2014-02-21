@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
@@ -100,7 +98,7 @@ class AttributeHandler
                 }
                 foreach ($locales as $locale) {
                     if (!in_array($locale, $existingLocales)) {
-                        $optionValue = new AttributeOptionValue();
+                        $optionValue = $this->attributeManager->createAttributeOptionValue();
                         $optionValue->setLocale($locale);
                         $optionValue->setValue('');
                         $option->addOptionValue($optionValue);
@@ -119,7 +117,7 @@ class AttributeHandler
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
-            $option = new AttributeOption();
+            $option = $this->attributeManager->createAttributeOption();
             $option->setTranslatable(true);
             $entity->addOption($option);
         }

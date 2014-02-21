@@ -20,10 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
@@ -48,7 +45,7 @@ class AttributeController extends AbstractDoctrineController
     protected $attributeForm;
 
     /**
-     * @var ProductManager
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -253,9 +250,9 @@ class AttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
         }
 
-        $option = new AttributeOption();
+        $option = $this->attributeManager->createAttributeOption();
 
-        $optionValue = new AttributeOptionValue();
+        $optionValue = $this->attributeManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);

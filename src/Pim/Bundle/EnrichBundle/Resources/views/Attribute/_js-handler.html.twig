@@ -11,7 +11,7 @@ require(
 
             var $optionList;
 
-            function initializeForm(preventUpdate) {
+            function initializeForm() {
                 initializeOptions();
 
                 // Enable/disable scope and localizable fields according to unique field value
@@ -64,12 +64,10 @@ require(
                     });
                 }).trigger('change');
 
-                if (preventUpdate) {
-                    $(formName).trigger('refresh');
-                }
+                $(formName).trigger('refresh');
             }
 
-            initializeForm(true);
+            initializeForm();
 
             function initializeOptions() {
                 $optionList = $('table#sortable_options');
