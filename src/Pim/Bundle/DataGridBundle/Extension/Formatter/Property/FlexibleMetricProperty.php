@@ -3,13 +3,13 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 /**
- * Flexible image field property, able to render image attribute type
+ * Flexible metric field property, able to render metric attribute type
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleImageProperty extends FlexibleTwigProperty
+class FlexibleMetricProperty extends FlexibleTwigProperty
 {
     /**
      * {@inheritdoc}
@@ -17,18 +17,16 @@ class FlexibleImageProperty extends FlexibleTwigProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        $fileName = $result['filename'];
-        $title    = $result['originalFilename'];
+        $data   = $result['data'];
+        $unit   = $result['unit'];
 
-        if ($fileName) {
+        if ($data && $unit) {
             return $this->getTemplate()->render(
                 array(
-                    'filename' => $fileName,
-                    'title'    => $title
+                    'data' => $data,
+                    'unit' => $unit
                 )
             );
         }
-
-        return null;
     }
 }

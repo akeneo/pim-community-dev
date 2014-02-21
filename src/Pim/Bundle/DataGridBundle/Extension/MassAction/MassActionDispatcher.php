@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediator;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher as OroMassActionDispatcher;
 use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
@@ -47,6 +48,31 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $result = $handle->handle($mediator);
 
         return $result;
+    }
+
+    /**
+     * Override to ensure a not indexed hydration
+     *
+     * {@inheritdoc}
+     */
+    protected function getDatagridQuery(
+        DatagridInterface $datagrid,
+        $identifierField = 'id',
+        $inset = true,
+        $values = []
+    ) {
+        $qb = parent::getDatagridQuery($datagrid, $identifierField, $inset, $values);
+
+        $rootAlias = $qb->getRootAlias();
+        $from      = current($qb->getDQLPart('from'));
+        $entity    = $from->getFrom();
+
+        $qb->resetDQLPart('select');
+        $qb->select($rootAlias);
+        $qb->resetDQLPart('from');
+        $qb->from($entity, $rootAlias);
+
+        return $qb;
     }
 
     /**

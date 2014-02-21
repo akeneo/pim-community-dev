@@ -1,0 +1,6 @@
+parameters:
+    pim_datagrid.datagrid.flexible.configuration_registry.class: Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry
+
+services:
+    pim_datagrid.datagrid.flexible.configuration_registry:
+        class: %pim_datagrid.datagrid.flexible.configuration_registry.class%

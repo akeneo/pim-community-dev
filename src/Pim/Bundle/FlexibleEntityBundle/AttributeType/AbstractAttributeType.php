@@ -40,7 +40,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     const BACKEND_TYPE_VARCHAR    = 'varchar';
     const BACKEND_TYPE_MEDIA      = 'media';
     const BACKEND_TYPE_METRIC     = 'metric';
-    const BACKEND_TYPE_PRICE      = 'price';
+    const BACKEND_TYPE_PRICE      = 'prices';
     const BACKEND_TYPE_COLLECTION = 'collections';
     const BACKEND_TYPE_ENTITY     = 'entity';
 
