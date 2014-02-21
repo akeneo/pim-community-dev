@@ -81,34 +81,43 @@ class UserContext
     }
 
     /**
-     * Returns the current locale code from the request or the user's catalog locale
+     * Returns the current locale from the request or the user's catalog locale
      * or the first activated locale the user has access to
      *
-     * @return string Current locale code
+     * @return Locale
      *
      * @throws \LogicException When user doesn't have access to any activated locales
      */
-    public function getCurrentLocaleCode()
+    public function getCurrentLocale()
     {
         if (null !== $locale = $this->getRequestLocale()) {
-            return $locale->getCode();
+            return $locale;
         }
 
         if (null !== $locale = $this->getUserLocale()) {
-            return $locale->getCode();
+            return $locale;
         }
 
-        if (null !== $localeCode = $this->getDefaultLocaleCode()) {
-            return $localeCode;
+        if (null !== $locale = $this->getDefaultLocale()) {
+            return $locale;
         }
 
         if ($locale = current($this->getUserLocales())) {
-            return $locale->getCode();
+            return $locale;
         }
 
         throw new \LogicException("User doesn't have access to any activated locales");
     }
 
+    /**
+     * Returns the current locale code
+     *
+     * @return string
+     */
+    public function getCurrentLocaleCode()
+    {
+        return $this->getCurrentLocale()->getCode();
+    }
 
     /**
      * Returns active locales the user has access to
@@ -230,12 +239,12 @@ class UserContext
     /**
      * Returns the default application locale if user has access to it
      *
-     * @return string
+     * @return Locale|null
      */
-    protected function getDefaultLocaleCode()
+    protected function getDefaultLocale()
     {
         if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale))) {
-            return $this->defaultLocale;
+            return $this->localeManager->getLocaleByCode($this->defaultLocale);
         }
 
         return null;

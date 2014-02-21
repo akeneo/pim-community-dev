@@ -35,7 +35,6 @@
 technical flaws (attribute codes are data, not a freeze structure, needed to maintain an full attribute cache in product
 that made the entity too smart for its own good and created performances problem)
 - Remove Product::createValue(). Can be replaced by calling ProductManager::createFlexibleValue() and setting attribute, scope and locale on the created value.
-- Remove LocaleHelper::getCurrentLocale() and UserContext::getCurrentLocale(). Instead, uses LocaleHelper::getCurrentLocaleCode() and UserContext::getCurrentLocaleCode().
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
