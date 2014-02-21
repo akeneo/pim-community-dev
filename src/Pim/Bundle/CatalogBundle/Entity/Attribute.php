@@ -219,7 +219,7 @@ class Attribute extends AbstractEntityAttribute implements
         switch ($this->getBackendType()) {
             case 'option':
                 $default = $this->getDefaultOptions()->first();
-                if ( false === $default) {
+                if (false === $default) {
                     $default = null;
                 }
                 break;
