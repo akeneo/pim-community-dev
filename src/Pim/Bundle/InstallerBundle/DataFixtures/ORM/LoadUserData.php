@@ -5,8 +5,18 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Load fixtures for users
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class LoadUserData extends AbstractInstallerFixture
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(ObjectManager $manager)
     {
         $this->om = $manager;
@@ -20,26 +30,49 @@ class LoadUserData extends AbstractInstallerFixture
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEntity()
     {
         return 'users';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOrder()
     {
         return 30;
     }
 
+    /**
+     * Get user manager
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\UserManager
+     */
     protected function getUserManager()
     {
         return $this->container->get('oro_user.manager');
     }
 
+    /**
+     * Create a user
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\User
+     */
     protected function createUser()
     {
         return $this->getUserManager()->createUser();
     }
 
+    /**
+     * Build the user entity from data
+     *
+     * @param array $data
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\User
+     */
     protected function buildUser(array $data)
     {
         $user = $this->createUser();
@@ -70,6 +103,13 @@ class LoadUserData extends AbstractInstallerFixture
         return $user;
     }
 
+    /**
+     * Get the owner (business unit) from code
+     *
+     * @param string $owner
+     *
+     * @return \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+     */
     protected function getOwner($owner)
     {
         return $this->om
@@ -77,6 +117,13 @@ class LoadUserData extends AbstractInstallerFixture
             ->findOneBy(array('name' => $owner));
     }
 
+    /**
+     * Get the role from code
+     *
+     * @param string $role
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\Role
+     */
     protected function getRole($role)
     {
         return $this->om
@@ -84,31 +131,67 @@ class LoadUserData extends AbstractInstallerFixture
             ->findOneBy(array('role' => $role));
     }
 
+    /**
+     * Get the locale manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
     protected function getLocaleManager()
     {
         return $this->container->get('pim_catalog.manager.locale');
     }
 
-    protected function getLocale($locale)
+    /**
+     * Get locale entity from locale code
+     *
+     * @param string $localeCode
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\Locale
+     */
+    protected function getLocale($localeCode)
     {
-        return $this->getLocaleManager()->getLocaleByCode($locale);
+        return $this->getLocaleManager()->getLocaleByCode($localeCode);
     }
 
+    /**
+     * Get the channel manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     */
     protected function getChannelManager()
     {
         return $this->container->get('pim_catalog.manager.channel');
     }
 
-    protected function getChannel($channel)
+    /**
+     * Get channel entity from channel code
+     *
+     * @param string $channelCode
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\Channel
+     */
+    protected function getChannel($channelCode)
     {
-        return $this->getChannelManager()->getChannelByCode($channel);
+        return $this->getChannelManager()->getChannelByCode($channelCode);
     }
 
+    /**
+     * Get the category manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
+     */
     protected function getCategoryManager()
     {
         return $this->container->get('pim_catalog.manager.category');
     }
 
+    /**
+     * Get tree entity from category code
+     *
+     * @param string $treeCode
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     */
     protected function getTree($tree)
     {
         return $this->getCategoryManager()->getEntityRepository()->findOneBy(array('code' => $tree));
