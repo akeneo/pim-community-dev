@@ -228,6 +228,19 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($jobInstance, $this->jobExecution->getJobInstance());
     }
 
+    public function testGetLabel()
+    {
+        $jobInstance = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobInstance')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->jobExecution->setJobInstance($jobInstance);
+
+        $jobInstance->expects($this->any())->method('getLabel')->will($this->returnValue('foo'));
+
+        $this->assertEquals('foo', $this->jobExecution->getLabel());
+    }
+
+
     public function testToString()
     {
         $startTime = new \DateTime('2013-02-01 12:34:56');

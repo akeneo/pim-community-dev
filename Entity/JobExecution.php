@@ -492,6 +492,16 @@ class JobExecution
     }
 
     /**
+     * Get the associated jobInstance label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->jobInstance->getLabel();
+    }
+
+    /**
      * Set the log file
      *
      * @param string $logFile
