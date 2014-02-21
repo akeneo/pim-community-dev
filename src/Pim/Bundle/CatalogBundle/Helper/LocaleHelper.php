@@ -37,9 +37,9 @@ class LocaleHelper
      *
      * @return string
      */
-    public function getCurrentLocale()
+    public function getCurrentLocaleCode()
     {
-        return $this->userContext->getCurrentLocale();
+        return $this->userContext->getCurrentLocaleCode();
     }
 
     /**
@@ -52,7 +52,7 @@ class LocaleHelper
      */
     public function getLocaleLabel($code, $localeCode = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $localeCode = $localeCode ?: $this->getCurrentLocaleCode();
 
         return \Locale::getDisplayName($code, $localeCode);
     }
@@ -67,7 +67,7 @@ class LocaleHelper
      */
     public function getCurrencySymbol($currency, $localeCode = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $localeCode = $localeCode ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
@@ -83,7 +83,7 @@ class LocaleHelper
      */
     public function getCurrencyLabel($currency, $localeCode = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $localeCode = $localeCode ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
@@ -98,7 +98,7 @@ class LocaleHelper
      */
     public function getCurrencyLabels($localeCode = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $localeCode = $localeCode ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($localeCode);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
@@ -115,7 +115,7 @@ class LocaleHelper
      */
     public function getFlag($code, $fullLabel = false, $localeCode = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $localeCode = $localeCode ?: $this->getCurrentLocaleCode();
 
         return sprintf(
             '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',

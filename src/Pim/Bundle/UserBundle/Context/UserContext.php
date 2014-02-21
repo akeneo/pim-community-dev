@@ -81,43 +81,34 @@ class UserContext
     }
 
     /**
-     * Returns the current locale from the request or the user's catalog locale
+     * Returns the current locale code from the request or the user's catalog locale
      * or the first activated locale the user has access to
      *
-     * @return Locale
+     * @return string Current locale code
      *
      * @throws \LogicException When user doesn't have access to any activated locales
      */
-    public function getCurrentLocale()
+    public function getCurrentLocaleCode()
     {
         if (null !== $locale = $this->getRequestLocale()) {
-            return $locale;
+            return $locale->getCode();
         }
 
         if (null !== $locale = $this->getUserLocale()) {
-            return $locale;
+            return $locale->getCode();
         }
 
-        if (null !== $locale = $this->getDefaultLocale()) {
-            return $locale;
+        if (null !== $localeCode = $this->getDefaultLocaleCode()) {
+            return $localeCode;
         }
 
         if ($locale = current($this->getUserLocales())) {
-            return $locale;
+            return $locale->getCode();
         }
 
         throw new \LogicException("User doesn't have access to any activated locales");
     }
 
-    /**
-     * Returns the current locale code
-     *
-     * @return string
-     */
-    public function getCurrentLocaleCode()
-    {
-        return $this->getCurrentLocale()->getCode();
-    }
 
     /**
      * Returns active locales the user has access to
@@ -239,12 +230,12 @@ class UserContext
     /**
      * Returns the default application locale if user has access to it
      *
-     * @return Locale|null
+     * @return string
      */
-    protected function getDefaultLocale()
+    protected function getDefaultLocaleCode()
     {
         if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale))) {
-            return $this->localeManager->getLocaleByCode($this->defaultLocale);
+            return $this->defaultLocale;
         }
 
         return null;
