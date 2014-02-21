@@ -18,8 +18,8 @@
         {% endset %}
         <script type="text/javascript">
             require(
-                ['jquery', 'routing', 'backbone/bootstrap-modal'],
-                function($, routing) {
+                ['jquery', 'oro/navigation', 'backbone/bootstrap-modal'],
+                function($, navigation) {
                     $(function() {
                         var modal = null;
                         $('#create-attribute').on('click', function() {
@@ -36,6 +36,13 @@
                                     'width': '700px',
                                     'margin-left': '-350px'
                                 }).find('.modal-footer').remove();
+
+                                modal.$el.on('click', 'a', function(e) {
+                                    e.preventDefault();
+                                    modal.close();
+                                    modal.$el.remove();
+                                    navigation.getInstance().navigate('#url=' + $(this).attr('href'), { trigger: true });
+                                });
                             }
                         });
                     });
