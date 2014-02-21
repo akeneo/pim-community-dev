@@ -11,3 +11,51 @@ users:
         default_tree: master
         role: ROLE_ADMINISTRATOR
         enable: true
+    julia:
+        username: julia
+        password: julia
+        email: julia@example.com
+        firstname: Julia
+        lastname: Zaro
+        owner: Main
+        catalog_locale: en_US
+        catalog_scope: ecommerce
+        default_tree: master
+        role: ROLE_ADMINISTRATOR
+        enable: true
+    mary:
+        username: mary
+        password: mary
+        email: mary@example.com
+        firstname: Mary
+        lastname: Doe
+        owner: Main
+        catalog_locale: en_US
+        catalog_scope: ecommerce
+        default_tree: master
+        role: ROLE_ADMINISTRATOR
+        enable: true
+    sandra:
+        username: sandra
+        password: sandra
+        email: sandra@example.com
+        firstname: Sandra
+        lastname: Doe
+        owner: Main
+        catalog_locale: en_US
+        catalog_scope: ecommerce
+        default_tree: master
+        role: ROLE_ADMINISTRATOR
+        enable: true
+    peter:
+        username: peter
+        password: peter
+        email: peter@example.com
+        firstname: Peter
+        lastname: Doe
+        owner: Main
+        catalog_locale: en_US
+        catalog_scope: ecommerce
+        default_tree: master
+        role: ROLE_ADMINISTRATOR
+        enable: true
