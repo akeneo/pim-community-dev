@@ -22,11 +22,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     protected $attributeManager;
 
     /**
-     * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var AttributeTypeFactory
      */
     protected $factory;
@@ -38,7 +33,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     {
         $repository    = $this->getEntityRepositoryMock();
         $objectManager = $this->getObjectManagerMock($repository);
-        $localeManager = $this->getLocaleManagerMock();
         $factory       = $this->getAttributeTypeFactoryMock();
 
         $this->attributeManager = new AttributeManager(
@@ -47,7 +41,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
             'Pim\Bundle\CatalogBundle\Model\Product',
             $objectManager,
-            $localeManager,
             $factory
         );
     }
@@ -78,29 +71,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManagerMock()
-    {
-        $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale');
-        $locale->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue(('en_US')));
-        $manager->expects($this->any())
-            ->method('getLocaleByCode')
-            ->will($this->returnValue($locale));
-        $manager->expects($this->any())
-            ->method('getActiveLocales')
-            ->will($this->returnValue(array($locale)));
-
-        return $manager;
     }
 
     /**
