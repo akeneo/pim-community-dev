@@ -188,14 +188,12 @@ class LoadUserData extends AbstractInstallerFixture
     /**
      * Get tree entity from category code
      *
-     * @param string $treeCode
+     * @param string $categoryCode
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Category
      */
-    protected function getTree($tree)
+    protected function getTree($categoryCode)
     {
-        return $this->getCategoryManager()
-            ->getEntityRepository()
-            ->findOneBy(array('code' => $tree, 'parent' => null));
+        return $this->getCategoryManager()->getTreeByCode($categoryCode);
     }
 }
