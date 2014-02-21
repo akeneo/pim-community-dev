@@ -214,26 +214,29 @@ class Attribute extends AbstractEntityAttribute implements
      */
     public function getDefaultValue()
     {
-        if (is_null($this->defaultValue) && $this->getDefaultOptions()->isEmpty()) {
-            return null;
-        }
+        $default = $this->defaultValue;
 
         switch ($this->getBackendType()) {
             case 'option':
                 $default = $this->getDefaultOptions()->first();
+                if (false === $default) {
+                    $default = null;
+                }
                 break;
             case 'options':
                 $default = $this->getDefaultOptions();
                 break;
             case 'date':
-                $default = new \DateTime();
-                $default->setTimestamp((int) $this->defaultValue);
+                if (null !== $this->defaultValue) {
+                    $default = new \DateTime();
+                    $default->setTimestamp((int) $this->defaultValue);
+                }
                 break;
             case 'boolean':
-                $default = (bool) $this->defaultValue;
+                if (null !== $this->defaultValue) {
+                    $default = (bool) $this->defaultValue;
+                }
                 break;
-            default:
-                $default = $this->defaultValue;
         }
 
         return $default;
