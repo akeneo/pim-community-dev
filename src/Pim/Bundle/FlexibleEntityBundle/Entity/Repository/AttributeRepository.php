@@ -53,8 +53,10 @@ class AttributeRepository extends EntityRepository
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))
                 ->from($this->_entityName, 'att', 'att.code')
-                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')->setParameter('locale', $locale)
-                ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
+                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+                ->where('att.entityType = :entityType')
+                ->setParameter('locale', $locale)
+                ->setParameter('entityType', $entityType);
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
