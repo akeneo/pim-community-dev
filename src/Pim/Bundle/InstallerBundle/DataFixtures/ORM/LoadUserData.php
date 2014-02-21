@@ -43,7 +43,7 @@ class LoadUserData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 30;
+        return 110;
     }
 
     /**
@@ -156,7 +156,7 @@ class LoadUserData extends AbstractInstallerFixture
     /**
      * Get the channel manager
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     * @return \Pim\Bundle\CatalogBundle\Entity\ChannelManager
      */
     protected function getChannelManager()
     {
@@ -168,7 +168,7 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param string $channelCode
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     protected function getChannel($channelCode)
     {
@@ -194,6 +194,8 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getTree($tree)
     {
-        return $this->getCategoryManager()->getEntityRepository()->findOneBy(array('code' => $tree));
+        return $this->getCategoryManager()
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $tree, 'parent' => null));
     }
 }
