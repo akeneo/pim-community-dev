@@ -15,14 +15,14 @@ Important note: the current version of this application is not production ready 
 Requirements
 ------------
 ## System
- - PHP 5.4.* above 5.4.4 (Akeneo PIM has not been yet tested with PHP 5.5)
+ - PHP 5.4.* above 5.4.4
  - PHP Modules:
     - php5-curl
     - php5-gd
     - php5-intl
     - php5-mysql
     - php5-mcrypt
-    - php-apc (opcode and data cache)
+    - php-apc with PHP 5.4.\* (opcode and data cache) and php-acpu with PHP 5.5.\* (for data cache)
  - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
  - MySQL 5.1 or above
  - Apache mod rewrite enabled
@@ -157,50 +157,4 @@ Execute the `check.php` script from the command line:
 
 If you get any warnings or recommendations, fix them before moving on.
 
-Connect to your PIM application
--------------------------------
-
-Go to http://akeneo-pim.local/ for production mode or http://akeneo-pim.local/app_dev.php for development mode.
-
-You can now connect as Akeneo administrator with the following credentials:
-- username: "admin"
-- password: "admin"
-
-
-Generating a clean database
----------------------------
-
-By default, when you install the PIM, the database is preconfigured with demo data.
-
-If you want to get only the bare minimum of data to have a clean but functional PIM,
-just change the following config line in app/config/parameters.yml:
-
-```
-    installer_data: PimInstallerBundle:minimal
-```
-
-Then relaunch the install with the db option:
-
-    $ php app/console pim:install --force --env=dev --task=db
-
-Known issues
-------------
- - when cleaning up the cache by hand (rm -rf app/cache/*), error about `Oro\\Bundle\\UserBundle\\Entity\\User::$field_catalogLocale` can occur. In this case, a proper cache:clear command is required, as it will warm a non-corrupted cache (note that sometimes, you will need to execute this command twice to get a clean cache):
-`php app/console cache:clear`
- - with XDebug on, the default value of max_nesting_level (100) is too low and can make the ACL loading fail (which causes 403 HTTP response code on every application screen, even the login screen). A working value is 500:
-`xdebug.max_nesting_level=500`
-
- - not enough memory can cause the JS routing bundle to fail with a segmentation fault. Please check with `php -i | grep memory` that you have enough memory according to the requirements
-
- - some segmentation fault can be caused as well by the circular references collector. You can disable it with the following setting in your php.ini files:
-`zend.enable_gc = 0`
-
- - When installing with `php composer.phar create-project...` command, error about `Unable to parse file "<path>/Resources/config/web.xml".`. It seems an external issue related to libxml, you can downgrade to `libxml2.x86_64 0:2.6.26-2.1.21.el5_9.1`. Look at: http://www.akeneo.com/topic/erreur-with-php-composer-phar-beta4/ for more informations.
-
-
-[1]:  http://symfony.com/doc/2.1/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://www.orocrm.com/oro-platform 
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/akeneo/pim-community-dev/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+Con
