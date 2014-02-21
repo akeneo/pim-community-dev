@@ -30,6 +30,7 @@ define(
                 this.listenTo(this.model, "change", this.render);
                 this.model.bind('request', this.ajaxStart, this);
                 this.model.bind('sync', this.ajaxComplete, this);
+                this.model.bind('error', this.ajaxError, this);
             },
 
             ajaxStart: function () {
@@ -42,6 +43,13 @@ define(
                     clearInterval(interval);
                     interval = null;
                 }
+            },
+
+            ajaxError: function (model, resp, options) {
+                $(this.loadingImageSelector).addClass('transparent');
+                clearInterval(interval);
+                interval = null;
+                this.$el.html('<tr><td colspan="5"><span class="label label-important">' + options.xhr.statusText + '</span></td></tr>');
             },
 
             events: {
