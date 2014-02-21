@@ -58,7 +58,7 @@ class LocaleExtension extends \Twig_Extension
      */
     public function currentLocaleCode()
     {
-        return $this->localeHelper->getCurrentLocaleCode();
+        return $this->localeHelper->getCurrentLocale()->getCode();
     }
 
     /**
