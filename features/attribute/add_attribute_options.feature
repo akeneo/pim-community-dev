@@ -7,10 +7,10 @@ Feature: Add attribute options
   Background:
     Given the "default" catalog configuration
     And I am logged in as "admin"
-    And I am on the attribute creation page
+    And I am on the attributes page
 
   Scenario Outline: Sucessfully display the Options section when creating an attribute
-    Given I change the "Attribute type" to "<type>"
+    Given I create a "<type>" attribute
     And I visit the "Values" tab
     Then I should see the "Options" section
     And the Options section should contain 1 empty option
@@ -21,22 +21,22 @@ Feature: Add attribute options
       | Multi select  |
 
   Scenario: Fail to remove the only option
-    Given I change the "Attribute type" to "Simple select"
+    Given I create a "Simple select" attribute
     And I visit the "Values" tab
     Then the Options section should contain 1 empty option
     And the option should not be removable
 
   Scenario: Fail to create a select attribute with an empty option
-    Given I change the "Attribute type" to "Simple select"
+    Given I create a "Simple select" attribute
     And I fill in the following information:
-     | Code | color |
+      | Code | color |
     And I save the attribute
     Then I should see "Code must be specified for all options"
 
   Scenario: Successfully create a select attribute with some options
-    Given I change the "Attribute type" to "Simple select"
+    Given I create a "Simple select" attribute
     And I fill in the following information:
-     | Code | color |
+      | Code | color |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code  | Selected by default |

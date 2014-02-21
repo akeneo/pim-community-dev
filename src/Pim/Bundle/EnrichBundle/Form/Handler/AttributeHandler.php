@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
@@ -59,21 +57,6 @@ class AttributeHandler
     }
 
     /**
-     * Preprocess method
-     * @param array $data
-     */
-    public function preProcess($data)
-    {
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-
-        $this->form->setData($attribute);
-
-        $data = $this->attributeManager->prepareFormData($data);
-
-        $this->form->bind($data);
-    }
-
-    /**
      * Process method for handler
      * @param AbstractAttribute $entity
      *
@@ -115,7 +98,7 @@ class AttributeHandler
                 }
                 foreach ($locales as $locale) {
                     if (!in_array($locale, $existingLocales)) {
-                        $optionValue = new AttributeOptionValue();
+                        $optionValue = $this->attributeManager->createAttributeOptionValue();
                         $optionValue->setLocale($locale);
                         $optionValue->setValue('');
                         $option->addOptionValue($optionValue);
@@ -134,7 +117,7 @@ class AttributeHandler
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
-            $option = new AttributeOption();
+            $option = $this->attributeManager->createAttributeOption();
             $option->setTranslatable(true);
             $entity->addOption($option);
         }
@@ -176,8 +159,6 @@ class AttributeHandler
                 }
             }
         }
-
-        $this->attributeManager->prepareBackendProperties($entity);
 
         $this->manager->persist($entity);
         $this->manager->flush();

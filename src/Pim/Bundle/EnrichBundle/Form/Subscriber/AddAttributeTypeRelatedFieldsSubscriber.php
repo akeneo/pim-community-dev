@@ -6,11 +6,10 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Form subscriber for AbstractAttribute
@@ -22,12 +21,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * Attribute manager
-     * @var AttributeManager
-     */
-    protected $attributeManager;
-
     /**
      * Attribute type factory
      * @var AttributeTypeFactory
@@ -43,13 +36,11 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Constructor
      *
-     * @param AttributeManager     $attributeManager Attribute manager
-     * @param AttributeTypeFactory $attTypeFactory   Attribute type factory
+     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
      */
-    public function __construct(AttributeManager $attributeManager, AttributeTypeFactory $attTypeFactory)
+    public function __construct(AttributeTypeFactory $attTypeFactory)
     {
-        $this->attributeManager = $attributeManager;
-        $this->attTypeFactory   = $attTypeFactory;
+        $this->attTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -68,7 +59,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_BIND => 'preBind',
             FormEvents::PRE_SET_DATA => 'preSetData'
         );
     }
@@ -94,27 +84,9 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             }
 
             $this->disableField($form, 'code');
-            $this->disableField($form, 'attributeType');
         }
 
         $this->customizeForm($event->getForm(), $data);
-    }
-
-    /**
-     * Method called before binding data
-     * @param FormEvent $event
-     */
-    public function preBind(FormEvent $event)
-    {
-        $data = $event->getData();
-
-        if (null === $data) {
-            return;
-        }
-
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-
-        $this->customizeForm($event->getForm(), $attribute);
     }
 
     /**
