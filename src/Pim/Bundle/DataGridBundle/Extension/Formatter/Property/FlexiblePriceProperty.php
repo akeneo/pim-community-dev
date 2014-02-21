@@ -22,8 +22,7 @@ class FlexiblePriceProperty extends FlexibleFieldProperty
         foreach ($data as $price) {
             $prices[]= $price['data'].' '.$price['currency'];
         }
-        $result = implode(', ', $prices);
 
-        return $result;
+        return implode(', ', $prices);
     }
 }

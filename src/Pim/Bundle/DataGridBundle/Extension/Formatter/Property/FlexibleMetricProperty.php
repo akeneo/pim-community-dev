@@ -28,7 +28,5 @@ class FlexibleMetricProperty extends FlexibleTwigProperty
                 )
             );
         }
-
-        return null;
     }
 }
