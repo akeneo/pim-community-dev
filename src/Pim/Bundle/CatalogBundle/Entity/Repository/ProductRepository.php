@@ -387,16 +387,14 @@ SQL;
             ->leftJoin('p.groups', 'groups')
             ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
 
-
         $this->addCompleteness($qb);
 
         $qb
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect('groups')
-            ->addSelect('gt')
+            ->addSelect('gt');
 
-;
         return $qb;
     }
 
