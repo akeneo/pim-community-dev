@@ -246,27 +246,6 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Load fixtures step.</info>');
-
-        $this
-            ->loadFixtures($input, $output)
-            ->setUp($input, $output);
-
-        $output->writeln('');
-
-        return $this;
-    }
-
-    /**
-     * Load default data fixtures
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return InstallCommand
-     */
-    protected function loadFixtures(InputInterface $input, OutputInterface $output)
-    {
         if ($input->getOption('env') === 'behat') {
             $input->setOption('fixtures', self::LOAD_ORO);
         }
@@ -317,19 +296,6 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         return array();
-    }
-
-    /**
-     * Extension point to override if installation interactivity is needed
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return InstallCommand
-     */
-    protected function setUp(InputInterface $input, OutputInterface $output)
-    {
-        return $this;
     }
 
     /**
