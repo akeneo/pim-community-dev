@@ -348,7 +348,7 @@ class InstallCommand extends ContainerAwareCommand
             $output->writeln('<info>Administration setup.</info>');
 
             $user = $this->createUser($input, $output);
-            $this->getContainer()->get('oro_user.manager')->updateUser($user);
+//             $this->getContainer()->get('oro_user.manager')->updateUser($user);
 
             $output->writeln('');
         }
