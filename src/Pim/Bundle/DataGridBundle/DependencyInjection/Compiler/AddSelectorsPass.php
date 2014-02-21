@@ -21,7 +21,7 @@ class AddSelectorsPass implements CompilerPassInterface
     const SELECTOR_EXTENSION_ID = 'pim_datagrid.extension.selector.orm_selector';
 
     /**
-     * @®ar string
+     * @var string
      */
     const TAG_NAME = 'pim_datagrid.extension.selector';
 
@@ -35,6 +35,11 @@ class AddSelectorsPass implements CompilerPassInterface
             $filters = $container->findTaggedServiceIds(self::TAG_NAME);
             foreach ($filters as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
+                if (isset($tagAttrs['type']) === false) {
+                    throw new \InvalidArgumentException(
+                        sprintf('The service %s must be configured with a type attribute', $serviceId)
+                    );
+                }
                 $extension->addMethodCall('addSelector', array($tagAttrs['type'], new Reference($serviceId)));
             }
         }
