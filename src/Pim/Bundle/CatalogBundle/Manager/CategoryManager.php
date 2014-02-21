@@ -44,9 +44,7 @@ class CategoryManager extends SegmentManager
      */
     public function getTrees()
     {
-        $entityRepository = $this->getEntityRepository();
-
-        return $entityRepository->getChildren(null, true, 'created', 'DESC');
+        return $this->getEntityRepository()->getChildren(null, true, 'created', 'DESC');
     }
 
     /**
@@ -103,5 +101,33 @@ class CategoryManager extends SegmentManager
         $parentsIds = array_unique($parentsIds);
 
         return $this->getEntityRepository()->getTreeFromParents($parentsIds);
+    }
+
+    /**
+     * Get tree by code
+     *
+     * @param string $code
+     *
+     * @return CategoryInterface
+     */
+    public function getTreeByCode($code)
+    {
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $code, 'parent' => null));
+    }
+
+    /**
+     * Get category by code
+     *
+     * @param string $code
+     *
+     * @return CategoryInterface
+     */
+    public function getCategoryByCode($code)
+    {
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $code));
     }
 }
