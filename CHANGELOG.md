@@ -15,7 +15,7 @@
 - Prevent hydrating all attributes in the available attributes addition form
 - Prevent hydrating all families in the product edition form
 - Import conversion units for channels
-- Product grid loading performance
+- Product grid loading performance by hydrating as array and introduce selector extension
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
@@ -32,7 +32,7 @@
 - Rename findByWithSortedAttribute to findOneByWithValues, add pre-select attributes and related translations to reduce number of lazy loaded queries when edit a product
 - Rename findByWithAttributes to findAllByAttributes
 - MeasureBundle has been moved from the BAP to an external repository (akeneo/measure-bundle).
-- AkeneoBundle has been moved from the BAP to an external repository (akeneo/batch-bundle).
+- BatchBundle has been moved from the BAP to an external repository (akeneo/batch-bundle).
 - Remove magic setter access to value (ex: $product->setDescription()), as it has multiple conceptual and
 technical flaws (attribute codes are data, not a freeze structure, needed to maintain an full attribute cache in product
 that made the entity too smart for its own good and created performances problem)
