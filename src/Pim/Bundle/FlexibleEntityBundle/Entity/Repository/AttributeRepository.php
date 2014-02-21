@@ -33,17 +33,17 @@ class AttributeRepository extends EntityRepository
      * @param string  $entityType the entity type
      * @param boolean $withLabel  translated label should be joined
      * @param string  $locale     the locale code of the label
-     * @param mixed   $ids        the attribute ids
+     * @param array   $ids        the attribute ids
      *
      * @return array
      */
-    public function getAttributesAsArray($entityType, $withLabel = false, $locale = null, $ids = null)
+    public function getAttributesAsArray($entityType, $withLabel = false, $locale = null, array $ids = [])
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att')
             ->from($this->_entityName, 'att', 'att.code')
             ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
-        if ($ids !== null) {
+        if (!empty($ids)) {
             $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
         }
         $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
@@ -55,7 +55,7 @@ class AttributeRepository extends EntityRepository
                 ->from($this->_entityName, 'att', 'att.code')
                 ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')->setParameter('locale', $locale)
                 ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
-            if ($ids !== null) {
+            if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
             $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
