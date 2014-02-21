@@ -22,7 +22,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_group_type_index             |
       | pim_enrich_locale_index                 |
       | pim_enrich_product_index                |
-      | pim_enrich_attribute_create             |
       | pim_enrich_attribute_index              |
       | pim_enrich_variant_group_index          |
       | pim_importexport_export_profile_index   |

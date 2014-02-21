@@ -377,8 +377,8 @@ pim_catalog_metric:           Metric
 # Attribute icons (should be valid FontAwesome icons)
 icon:
     pim_catalog_identifier:       asterisk
-    pim_catalog_text:             file-text-alt
-    pim_catalog_textarea:         file-text
+    pim_catalog_text:             font
+    pim_catalog_textarea:         file-text-alt
     pim_catalog_number:           sort-by-order
     pim_catalog_price_collection: money
     pim_catalog_multiselect:      tags
@@ -387,7 +387,7 @@ icon:
     pim_catalog_image:            camera-retro
     pim_catalog_boolean:          check
     pim_catalog_date:             calendar
-    pim_catalog_metric:           tasks
+    pim_catalog_metric:           beaker
 
 # Locales
 Fallback:  Fallback
