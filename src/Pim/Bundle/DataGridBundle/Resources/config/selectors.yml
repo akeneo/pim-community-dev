@@ -15,34 +15,34 @@ services:
     pim_datagrid.extension.selector.orm.flexible_option_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_option_selector.class%
         arguments:
-            - @pim_datagrid.extension.selector.orm.flexible_values_selector
+            - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_option }
 
     pim_datagrid.extension.selector.orm.flexible_options_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_options_selector.class%
         arguments:
-            - @pim_datagrid.extension.selector.orm.flexible_values_selector
+            - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_options }
 
     pim_datagrid.extension.selector.orm.flexible_prices_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_prices_selector.class%
         arguments:
-            - @pim_datagrid.extension.selector.orm.flexible_values_selector
+            - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_price }
 
     pim_datagrid.extension.selector.orm.flexible_metric_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_metric_selector.class%
         arguments:
-            - @pim_datagrid.extension.selector.orm.flexible_values_selector
+            - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_metric }
 
     pim_datagrid.extension.selector.orm.flexible_media_selector:
         class: %pim_datagrid.extension.selector.orm.flexible_media_selector.class%
         arguments:
-            - @pim_datagrid.extension.selector.orm.flexible_values_selector
+            - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_media }

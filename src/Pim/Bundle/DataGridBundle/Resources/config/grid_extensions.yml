@@ -9,34 +9,34 @@ services:
     pim_datagrid.extension.filter.orm_filter:
         class: %pim_datagrid.extension.filter.orm_filter.class%
         arguments:
-            - @oro_datagrid.datagrid.request_params
-            - @translator
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
         tags:
              - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter.orm_sorter:
         class: "%pim_datagrid.extension.sorter.orm_sorter.class%"
         arguments:
-            - @oro_datagrid.datagrid.request_params
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.pager.orm_pager:
         class: "%pim_datagrid.extension.pager.orm_pager.class%"
         arguments:
-            - @pim_datagrid.extension.pager.orm.pager
-            - @oro_datagrid.datagrid.request_params
+            - '@pim_datagrid.extension.pager.orm.pager'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.pager.orm.pager:
         arguments:
-            - @oro_security.acl_helper
+            - '@oro_security.acl_helper'
         class: %pim_datagrid.extension.pager.orm.pager.class%
 
     pim_datagrid.extension.selector.orm_selector:
         class: %pim_datagrid.extension.selector.orm_selector.class%
         arguments:
-            - @oro_datagrid.datagrid.request_params
+            - '@oro_datagrid.datagrid.request_params'
         tags:
              - { name: oro_datagrid.extension }

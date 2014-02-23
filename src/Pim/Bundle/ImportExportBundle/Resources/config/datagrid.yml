@@ -126,11 +126,11 @@ datagrid:
                 alias:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getExportJobChoices'
                 connector:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getExportConnectorChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getExportConnectorChoices'
 
     import-profile-grid:
         extend: job-profile-grid
@@ -154,11 +154,11 @@ datagrid:
                 alias:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getImportJobChoices'
                 connector:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getImportConnectorChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getImportConnectorChoices'
 
     job-execution-grid:
         source:
@@ -269,7 +269,7 @@ datagrid:
                 alias:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getExportJobChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getExportJobChoices'
 
     import-execution-grid:
         extend: job-execution-grid
@@ -289,4 +289,4 @@ datagrid:
                 alias:
                     options:
                         field_options:
-                            choices:  @pim_import_export.datagrid.provider.job->getImportJobChoices
+                            choices: '@pim_import_export.datagrid.provider.job->getImportJobChoices'
