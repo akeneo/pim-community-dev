@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\GroupColumnsConfigurator;
 
 /**
@@ -18,7 +17,6 @@ class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
 {
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
      *
      * @return ConfiguratorInterface
      */
