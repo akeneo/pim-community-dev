@@ -59,12 +59,12 @@ services:
             - '@pim_base_connector.validator.product_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
 
     pim_base_connector.processor.association:
         parent: pim_base_connector.processor.transformer
         arguments:
-            - '%pim_catalog.entity.association.class%'
+            - %pim_catalog.entity.association.class%
 
     pim_base_connector.processor.category:
         class: %pim_base_connector.processor.category.class%

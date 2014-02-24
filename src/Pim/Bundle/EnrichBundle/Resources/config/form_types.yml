@@ -215,7 +215,6 @@ services:
     pim_enrich.form.subscriber.attribute:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_catalog.manager.attribute'
             - '@pim_flexibleentity.attributetype.factory'
 
     pim_enrich.form.subscriber.attribute_requirements:

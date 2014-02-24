@@ -29,6 +29,20 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllWithGroups()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('atrans', 'g', 'gtrans')
+            ->leftJoin('a.translations', 'atrans')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gtrans');
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getChoices(array $options)

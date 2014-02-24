@@ -156,5 +156,3 @@ Execute the `check.php` script from the command line:
     $ php app/console pim:install --force --task=check
 
 If you get any warnings or recommendations, fix them before moving on.
-
-Con

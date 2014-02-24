@@ -22,11 +22,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     protected $attributeManager;
 
     /**
-     * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var AttributeTypeFactory
      */
     protected $factory;
@@ -38,7 +33,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     {
         $repository    = $this->getEntityRepositoryMock();
         $objectManager = $this->getObjectManagerMock($repository);
-        $localeManager = $this->getLocaleManagerMock();
         $factory       = $this->getAttributeTypeFactoryMock();
 
         $this->attributeManager = new AttributeManager(
@@ -47,7 +41,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
             'Pim\Bundle\CatalogBundle\Model\Product',
             $objectManager,
-            $localeManager,
             $factory
         );
     }
@@ -81,29 +74,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManagerMock()
-    {
-        $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale');
-        $locale->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue(('en_US')));
-        $manager->expects($this->any())
-            ->method('getLocaleByCode')
-            ->will($this->returnValue($locale));
-        $manager->expects($this->any())
-            ->method('getActiveLocales')
-            ->will($this->returnValue(array($locale)));
-
-        return $manager;
-    }
-
-    /**
      * Get a mock of AttributeTypeFactory
      *
      * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
@@ -124,36 +94,6 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('mytype')));
 
         return $factory;
-    }
-
-    /**
-     * Test createAttributeFromFormData method
-     */
-    public function testCreateAttributeFromFormData()
-    {
-        $data = array('attributeType' => 'pim_catalog_metric');
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $attribute);
-
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_price_collection');
-        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Attribute', $newAttribute);
-        $this->assertEquals($attribute, $newAttribute);
-
-        $attribute = 'ImageType';
-        $newAttribute = $this->attributeManager->createAttributeFromFormData($attribute);
-        $this->assertNull($newAttribute);
-    }
-
-    /**
-     * Test prepareFormData method
-     */
-    public function testPrepareFormData()
-    {
-        $data = array('attributeType' => 'pim_catalog_multiselect');
-        $data = $this->attributeManager->prepareFormData($data);
-        $this->assertNotEmpty($data);
-        $this->assertArrayHasKey('options', $data);
     }
 
     /**

@@ -7,7 +7,7 @@
     {{ form_start(form, {
         'action': form.vars.value.id ?
             path('pim_enrich_attribute_edit', { id: form.vars.value.id }) :
-            path('pim_enrich_attribute_create'),
+            path('pim_enrich_attribute_create', { attribute_type: attributeType }),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute'|trans })

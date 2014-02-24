@@ -53,8 +53,10 @@ class AttributeTypeSpec extends ObjectBehavior
                 'attributeType',
                 'choice',
                 [
-                    'choices' => ['text', 'number', 'email'],
-                    'select2' => true
+                    'choices'   => ['text', 'number', 'email'],
+                    'select2'   => true,
+                    'disabled'  => true,
+                    'read_only' => true
                 ]
             )
             ->shouldHaveBeenCalled();

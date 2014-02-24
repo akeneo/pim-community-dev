@@ -1,3 +1,4 @@
+@javascript
 Feature: Create an attribute
   In order to be able to define the properties of a product
   As a user
@@ -6,11 +7,12 @@ Feature: Create an attribute
   Background:
     Given the "default" catalog configuration
     And I am logged in as "admin"
-    And I am on the attribute creation page
+    And I am on the attributes page
+    And I create a "Text" attribute
 
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
-     | Code | short_description |
+      | Code | short_description |
     And I save the attribute
     Then I should see "Attribute successfully created"
 
