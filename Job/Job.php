@@ -335,10 +335,10 @@ class Job implements JobInterface
             $this->jobRepository->updateJobExecution($jobExecution);
         }
 
+        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
+
         $jobExecution->setEndTime(new \DateTime());
         $this->jobRepository->updateJobExecution($jobExecution);
-
-        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
 
     /**
