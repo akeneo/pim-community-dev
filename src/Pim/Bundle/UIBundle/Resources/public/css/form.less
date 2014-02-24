@@ -770,8 +770,26 @@ table i {
   }
 }
 
-table.comparison .no-label .attribute-field.currency.scopable .currency-header {
-  padding-left: 55px;
+table.comparison .no-label .attribute-field.scopable {
+  &.currency .currency-header {
+    padding-left: 55px;
+  }
+  &>div {
+    &>.control-group>.control-label {
+      margin-left: 10px;
+    }
+    &.first>.control-group>.control-label {
+      position: relative;
+      .field-toggle {
+        position: absolute;
+        left: -9px;
+        top: 7px;
+      }
+    }
+    &:not(.first) .field-toggle {
+      display: none!important;
+    }
+  }
 }
 
 .attribute-field.scopable {

@@ -244,7 +244,10 @@ define(
                 return this;
             },
 
-            _toggle: function () {
+            _toggle: function (e) {
+                if (e) {
+                    e.preventDefault();
+                }
                 return this.expanded ? this._collapse() : this._expand();
             },
 
