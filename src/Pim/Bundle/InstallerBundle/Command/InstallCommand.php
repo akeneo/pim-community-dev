@@ -47,11 +47,6 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('pim:install')
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
-            ->addOption('user-name', null, InputOption::VALUE_REQUIRED, 'User name', 'admin')
-            ->addOption('user-email', null, InputOption::VALUE_OPTIONAL, 'User email', 'admin@akeneo.com')
-            ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name', 'Peter')
-            ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name', 'Doe')
-            ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password', 'admin')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption(
                 'task',
@@ -95,7 +90,6 @@ class InstallCommand extends ContainerAwareCommand
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
             $this->updateInstalledFlag($input, $output, false);
-            $this->clearCache($input, $output);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -216,7 +210,16 @@ class InstallCommand extends ContainerAwareCommand
         $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
-            ->runCommand('doctrine:schema:drop', $defaultParams + array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:database:drop', $defaultParams + array('--force' => true))
+            ->runCommand('doctrine:database:create', $defaultParams);
+
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+
+        if ($connection->isConnected()) {
+            $connection->close();
+        }
+
+        $this->commandExecutor
             ->runCommand('doctrine:schema:create', $defaultParams)
             ->runCommand('oro:entity-config:init', $defaultParams)
             ->runCommand('oro:entity-extend:init', $defaultParams)
@@ -280,12 +283,24 @@ class InstallCommand extends ContainerAwareCommand
     protected function getFixturesList($fixtureOpt)
     {
         if ($fixtureOpt === self::LOAD_ORO) {
+            $bundles = $this->getContainer()->getParameter('kernel.bundles');
+
             $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
-            $phpFinder = new Finder();
-            $directories = $phpFinder
-                ->in($basePath)
-                ->path('/Oro\/Bundle\/.*Bundle\/DataFixtures$/')
+            $finder = new Finder();
+
+            foreach ($bundles as $bundleName => $bundleNamespace) {
+                if (strpos($bundleNamespace, 'Oro\\') === 0) {
+                    $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
+                    $finder->in($bundle->getPath());
+                }
+
+            }
+            // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
+            $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
+            $directories = $finder
+                ->path('/^DataFixtures$/')
                 ->directories();
+
 
             $oroFixtures = array();
             foreach ($directories as $directory) {

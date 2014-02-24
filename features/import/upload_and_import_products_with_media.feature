@@ -32,3 +32,15 @@ Feature: Upload and import products with media
       | side_view | cat_002.png |
     And the product "CAT-003" should have the following values:
       | side_view | cat_003.png |
+
+  @info https://akeneo.atlassian.net/browse/PIM-2090
+  Scenario: Fail to launch an import through file upload when no file was selected
+    Given a "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "footwear_product_import" import job page
+    When I follow "Upload and import"
+    And I execute javascript:
+      """
+      $('#pim_importexport_import_upload').submit()
+      """
+    Then I should see "You must select a file to upload"

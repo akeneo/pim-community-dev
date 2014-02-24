@@ -21,7 +21,6 @@ class LoadUserData extends AbstractInstallerFixture
     {
         $this->om = $manager;
 
-        $filePath = realpath($this->getFilePath());
         $dataUsers = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($dataUsers['users'] as $dataUser) {

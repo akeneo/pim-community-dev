@@ -1684,6 +1684,15 @@ JS
     }
 
     /**
+     * @Given /^I execute javascript:$/
+     */
+    public function iExecuteJavascript(PyStringNode $string)
+    {
+        $this->getSession()->executeScript((string) $string);
+        $this->wait();
+    }
+
+    /**
      * @param integer $y
      *
      * @Given /^I scroll down$/
