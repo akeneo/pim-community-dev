@@ -43,6 +43,7 @@
     {{ parent() }}
 
     <script type="text/template" id="job-execution-summary">
+        {% block job_execution_summary %}
         <!-- Step execution information -->
         <% _.each(jobExecution.stepExecutions, function (stepExecution) { %>
             <tr>
@@ -105,27 +106,34 @@
                 </td>
             </tr>
         <% }); %>
+        {% endblock %}
     </script>
 
     <script type="text/template" id="job-execution-status">
+        {% block job_execution_status %}
         <li><%= statusLabel %>: <%= jobExecution.status %></li>
+        {% endblock %}
     </script>
 
     <script type="text/template" id="job-execution-buttons">
+        {% block job_execution_buttons %}
         <% _.each(archives, function (archive) { %>
             <a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archive.archiver, key: archive.key }) %>">
                 <i class="icon-download"></i> <%= archive.name %>
             </a>&nbsp;
         <% }); %>
+        {% endblock %}
     </script>
 
     <script type="text/template" id="job-execution-log-button">
+        {% block job_execution_log_button %}
         <% if (hasLog) { %>
             <a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
                 <i class="icon-download"></i>
                 <%= downloadLabel %>
             </a>
         <% } %>
+        {% endblock %}
     </script>
 
     <script type="text/javascript">
@@ -136,11 +144,6 @@
 
                 $(function () {
                     jobExecutionView.init({
-                        jobExecutionSummaryTemplateSelector:   '#job-execution-summary',
-                        jobExecutionStatusTemplateSelector:    '#job-execution-status',
-                        jobExecutionButtonsTemplateSelector:   '#job-execution-buttons',
-                        jobExecutionLogButtonTemplateSelector: '#job-execution-log-button',
-
                         loadingImageSelector:          'img.loading',
                         refreshButtonSelector:         'a.loading',
                         jobExecutionSelector:          '#job-execution tbody',

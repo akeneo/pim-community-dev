@@ -23,14 +23,9 @@ define(
             hideLabel: 'Hide item',
 
             initialize: function (params) {
-                if (!_.has(params, 'jobExecutionSummaryTemplateSelector')) {
-                    throw new Error('A "jobExecutionSummaryTemplateSelector" parameter is required');
-                }
-
                 this.showLabel            = params.showLabel || this.showLabel;
                 this.hideLabel            = params.hideLabel || this.hideLabel;
                 this.loadingImageSelector = params.loadingImageSelector;
-                this.templateSelector     = params.jobExecutionSummaryTemplateSelector;
 
                 this.listenTo(this.model, "change", this.render);
                 this.model.bind('request', this.ajaxStart, this);
@@ -72,9 +67,7 @@ define(
                 $link.text($link.text().trim() == displayLabel ? hideLabel : displayLabel);
             },
 
-            template: function (data) {
-                return _.template($(this.templateSelector).html(), data);
-            },
+            template: _.template($('#job-execution-summary').html()),
 
             render: function () {
                 this.$el.html(
@@ -95,19 +88,12 @@ define(
         var JobExecutionStatusView = Backbone.View.extend({
             statusLabel: 'Status',
             initialize: function (params) {
-                if (!_.has(params, 'jobExecutionStatusTemplateSelector')) {
-                    throw new Error('A "jobExecutionStatusTemplateSelector" parameter is required');
-                }
-
                 this.statusLabel      = params.statusLabel || this.statusLabel;
-                this.templateSelector = params.jobExecutionStatusTemplateSelector
 
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: function (data) {
-                return _.template($(this.templateSelector).html(), data);
-            },
+            template: _.template($('#job-execution-status').html()),
 
             render: function () {
                 this.$el.html(
@@ -135,20 +121,14 @@ define(
                 if (!_.has(params, 'executionId')) {
                     throw new Error('A "executionId" parameter is required');
                 }
-                if (!_.has(params, 'jobExecutionButtonsTemplateSelector')) {
-                    throw new Error('A "jobExecutionButtonsTemplateSelector" parameter is required');
-                }
 
                 this.downloadFileRoute = params.downloadFileRoute;
                 this.executionId       = params.executionId;
-                this.templateSelector  = params.jobExecutionButtonsTemplateSelector;
 
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: function (data) {
-                return _.template($(this.templateSelector).html(), data);
-            },
+            template: _.template($('#job-execution-buttons').html()),
 
             render: function () {
                 this.$el.html(
@@ -178,21 +158,15 @@ define(
                 if (!_.has(params, 'executionId')) {
                     throw new Error('A "executionId" parameter is required');
                 }
-                if (!_.has(params, 'jobExecutionLogButtonTemplateSelector')) {
-                    throw new Error('A "jobExecutionLogButtonTemplateSelector" parameter is required');
-                }
 
                 this.downloadLogRoute = params.downloadLogRoute;
                 this.executionId      = params.executionId;
                 this.downloadLabel    = params.downloadLabel || this.downloadLabel;
-                this.templateSelector = params.jobExecutionLogButtonTemplateSelector;
 
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: function (data) {
-                return _.template($(this.templateSelector).html(), data);
-            },
+            template: _.template($('#job-execution-log-button').html()),
 
             render: function () {
                 this.$el.html(
