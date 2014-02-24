@@ -20,6 +20,8 @@ use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Gaufrette\StreamMode;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Job execution controller
@@ -70,7 +72,8 @@ class JobExecutionController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
-        $jobType
+        $jobType,
+        SerializerInterface $serializer
     ) {
         parent::__construct(
             $request,
@@ -86,6 +89,7 @@ class JobExecutionController extends AbstractDoctrineController
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist       = $archivist;
         $this->jobType         = $jobType;
+        $this->serializer      = $serializer;
     }
     /**
      * List the reports
@@ -106,9 +110,30 @@ class JobExecutionController extends AbstractDoctrineController
      *
      * @return template
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        if ('json' === $request->getRequestFormat()) {
+
+            $archives = [];
+            foreach ($this->archivist->getArchives($jobExecution) as $archiver => $files) {
+                foreach (array_keys($files) as $key) {
+                    $archives[] = [
+                        'name'     => ucfirst($this->translator->trans(sprintf('pim_import_export.download_archive.%s', $archiver))),
+                        'archiver' => $archiver,
+                        'key'      => $key,
+                    ];
+                }
+            }
+
+            return new JsonResponse(
+                [
+                    'jobExecution' => $this->serializer->normalize($jobExecution, 'json'),
+                    'hasLog'       => file_exists($jobExecution->getLogFile()),
+                    'archives'     => $archives,
+                ]
+            );
+        }
 
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Export execution controller
@@ -28,9 +29,9 @@ class ExportExecutionController extends JobExecutionController
      *
      * @AclAncestor("pim_importexport_export_execution_show")
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
-        return parent::showAction($id);
+        return parent::showAction($request, $id);
     }
 
     /**

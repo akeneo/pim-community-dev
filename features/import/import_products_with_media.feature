@@ -1,5 +1,6 @@
+@javascript
 Feature: Import media with products
-  In order to re-use the images and documents I have setted on my products
+  In order to re-use the images and documents I have set on my products
   As Julia
   I need to be able to import them along with the products
 

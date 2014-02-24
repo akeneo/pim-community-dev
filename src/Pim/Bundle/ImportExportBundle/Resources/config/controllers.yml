@@ -35,6 +35,7 @@ services:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - export
+            - '@pim_serializer'
 
     pim_import_export.controller.import_execution:
         parent: pim_enrich.controller.abstract_doctrine
@@ -44,3 +45,4 @@ services:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - import
+            - '@pim_serializer'

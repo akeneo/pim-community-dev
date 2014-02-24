@@ -4,6 +4,7 @@
 - Uservoice integration
 - Add a last operations widget on the dashboard
 - Add new user as fixtures
+- Auto-refresh job execution report page
 
 ## Improvements
 - Load choices for grid filters asynchronously
