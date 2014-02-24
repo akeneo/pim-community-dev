@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             nullable: false
         color:
             type: string
-            length: 10
+            length: 15
             nullable: true
     manyToOne:
         category:
