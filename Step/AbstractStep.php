@@ -185,11 +185,11 @@ abstract class AbstractStep implements StepInterface
             }
         }
 
+        $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
+
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
         $this->jobRepository->updateStepExecution($stepExecution);
-
-        $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 
     /**
