@@ -71,18 +71,17 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         \RequirementCollection $collection
     ) {
         $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getPhpIniRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getOroRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getPimRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getRecommendations(), 'Mandatory requirements', $output);
+        $this->renderTable($collection->getPhpIniRequirements(), 'PHP requirements', $output);
+        $this->renderTable($collection->getOroRequirements(), 'Oro Platform requirements', $output);
+        $this->renderTable($collection->getPimRequirements(), 'Pim requirements', $output);
+        $this->renderTable($collection->getRecommendations(), 'Recommendations', $output);
 
         if (count($collection->getFailedRequirements())) {
             $this->renderTable($collection->getFailedRequirements(), 'Errors', $output);
 
-            $output->writeln(
-                '<error>Some system requirements are not fulfilled. Please check output messages and fix them</error>'
+            throw new \RuntimeException(
+                'Some system requirements are not fulfilled. Please check output messages and fix them'
             );
-            exit(0);
         }
     }
 
