@@ -3,7 +3,7 @@
         {% if attributeView.values is defined %}
             {% for scope, subvalue in attributeView.values %}
                 <div class="control-group" data-field="{{ attributeView.code }}">
-                    {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                    {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope)}}) }}
                 </div>
             {% endfor %}
         {% else %}
