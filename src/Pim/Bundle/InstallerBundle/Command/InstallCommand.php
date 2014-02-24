@@ -210,7 +210,16 @@ class InstallCommand extends ContainerAwareCommand
         $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
-            ->runCommand('doctrine:schema:drop', $defaultParams + array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:database:drop', $defaultParams + array('--force' => true))
+            ->runCommand('doctrine:database:create', $defaultParams);
+
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+
+        if ($connection->isConnected()) {
+            $connection->close();
+        }
+
+        $this->commandExecutor
             ->runCommand('doctrine:schema:create', $defaultParams)
             ->runCommand('oro:entity-config:init', $defaultParams)
             ->runCommand('oro:entity-extend:init', $defaultParams)
