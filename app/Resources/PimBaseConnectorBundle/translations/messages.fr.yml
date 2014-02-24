@@ -39,8 +39,28 @@ pim_base_connector:
       title: Import des groupes en CSV
       import.title: Import de groupes
   steps:
+    dummy_reader.title: Lecteur factice
+    product_reader.title: Extraction de produits
+    entity_reader.title: "Extraction d'entité"
     csv_reader:
+      title: Lecteur de CSV
       invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %csvPath%:%lineno%'
+    csv_product_reader.title: Lecteur de CSV de produits
+    csv_category_reader.title: Lecteur de CSV de catégories
+    dummy_processor.title: Processeur factice
+    product_processor.title: Création de produit
+    category_processor.title: Création de catégorie
+    association_processor.title: "Création d'association"
+    group_processor.title: Création de groupe
+    attribute_processor.title: "Création d'attribut"
+    attribute_option_processor.title: "Création d'option d'attribut"
+    heterogeneous_processor.title: Sérialiseur de produit en CSV
+    homogeneous_processor.title: "Sérialiseur d'entité en CSV"
+    dummy_writer.title: Ecriture factice
+    file_writer.title: Sortie
+    product_writer.title: Stockage des produits
+    category_writer.title: Stockage des catégories
+    writer.title: Stockage des entités
   export:
     delimiter:
       label: Délimiteur
