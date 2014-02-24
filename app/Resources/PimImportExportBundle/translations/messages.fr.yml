@@ -21,28 +21,6 @@ pim_import_export:
     6: EN ÉCHEC
     7: ABANDONNÉ
     8: INCONNU
-  steps:
-    dummy_reader.title: Lecteur factice
-    dummy_processor.title: Processeur factice
-    dummy_writer.title: Écrivain factice
-    product_reader.title: Extraction de produits
-    entity_reader.title: "Extraction d'entité"
-    csv_reader:
-      title: Lecteur de CSV
-    csv_product_reader.title: Lecteur de CSV de produits
-    csv_category_reader.title: Lecteur de CSV de catégories
-    product_processor.title: Création de produit
-    category_processor.title: Création de catégorie
-    association_processor.title: "Création d'association"
-    group_processor.title: Création de groupe
-    attribute_processor.title: "Création d'attribut"
-    attribute_option_processor.title: "Création d'option d'attribut"
-    heterogeneous_processor.title: Sérialiseur de produits en CSV
-    homogeneous_processor.title: "Sérialiseur d'entité en CSV"
-    file_writer.title: Sortie
-    product_writer.title: Stockage des produits
-    category_writer.title: Stockage des catégories
-    writer.title: Stockage des entités
   download_archive:
     archive: Télécharger fichier généré
     output: Télécharger fichier généré

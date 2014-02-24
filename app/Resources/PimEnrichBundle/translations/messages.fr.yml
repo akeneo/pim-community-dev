@@ -94,6 +94,13 @@ confirmation:
     variant group: 'Êtes-vous sûr de vouloir supprimer le groupe de variantes %name%?'
     association type: "Êtes-vous sûr de que vouloir supprimer le type d'association %name% ?"
     group type: 'Êtes-vous sûr de que vouloir supprimer le groupe %name%?'
+    user: "Etes vous sûr de vouloir supprimer l'utilisateur %name%?"
+  attribute group:
+    remove attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de ce groupe?"
+  family:
+    remove attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de cette famille?"
+  product:
+    remove attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de ce produit?"
 flash:
   entity:
     removed: "L'entité a été supprimée"
@@ -161,6 +168,8 @@ flash:
     created: "Le type d'association est créé avec succès"
     updated: "Le type d'association est mis à jour avec succès"
     removed: "Le type d'association est supprimé avec succès"
+  user:
+    removed: Utilisateur supprimé avec succès
   error ocurred: Opération échouée. Merci de réessayer.
 info:
   updated: "Des modifications n'ont pas encore été sauvegardées."
@@ -182,6 +191,7 @@ info:
     axis: 'Axes de variations: %attributes%'
     select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
     selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
+    no group types: "Aucun type de groupe n'existe, merci d'en créer un"
   association type:
     show products: Afficher les produits
     show groups: Afficher les groupes
@@ -253,6 +263,7 @@ General Properties: Propriétés générales
 Group values: Valeurs du groupe
 New group: Nouveau groupe
 Groups overview: Liste des groupes
+"Y-m-d h:i:s": Y-m-d h:i:s
 Max characters: Nombre maximum de caractères
 Validation rule: Règle de validation
 Validation regexp: Expression régulière
@@ -261,7 +272,6 @@ Number min: Nombre min
 Number max: Nombre max
 Decimals allowed: Autoriser les nombres décimaux
 Negative allowed: Autoriser les valeurs négatives
-Date type: Type de date
 Date min: Date mini
 Date max: Date maxi
 Metric family: Type de mesure
@@ -322,6 +332,7 @@ pim_enrich.mass_edit_action:
   title: "Choisir l'opération à effectuer"
   subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
   confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+  limit_exceeded: 'Merci de sélectionner moins de %limit% produits à éditer'
   change-status:
     label: Changer de statut (activé / désactivé)
     description: Les produits sélectionnés vont être activés ou désactivés.
@@ -466,6 +477,7 @@ pane.accordion:
   general_properties: Propriétés générales
   locale_values: Valeurs de locale
   backend_parameters: Paramètres de stockage
+  general_parameters: Paramètres généraux
   label_translations: Traduction des libellés
   options: Options
   group_values: Valeurs du groupe
@@ -476,6 +488,7 @@ popin.create:
   group_type.title: Créer un nouveau type de groupe
   product.title: Créer un nouveau produit
   variant_group.title: Créer un nouveau groupe de variants
+  option.title: Créer une nouvelle option
 Has product: Lié au produit
 Attribute as label: Attribut en tant que libellé
 Available Columns: Colonnes disponibles
