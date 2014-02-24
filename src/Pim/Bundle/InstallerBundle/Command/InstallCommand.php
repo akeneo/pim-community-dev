@@ -285,7 +285,7 @@ class InstallCommand extends ContainerAwareCommand
             $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
             $finder = new Finder();
 
-            foreach($bundles as $bundleName => $bundleNamespace) {
+            foreach ($bundles as $bundleName => $bundleNamespace) {
                 if (strpos($bundleNamespace, 'Oro\\') === 0) {
                     $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
                     $finder->in($bundle->getPath());
