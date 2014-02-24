@@ -29,6 +29,7 @@
 - Fix regression with resolve target entity on Category entity
 - Fix datepicker in date attribute form
 - Fix unwanted fields appearing in attribute creation form if server-side validation errors are present
+- Fix 500 response when submitting import launch form without selecting file to upload
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)

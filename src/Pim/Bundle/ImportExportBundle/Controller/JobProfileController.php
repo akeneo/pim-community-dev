@@ -339,10 +339,13 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
-                $file = $data->getFile();
-                $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+                if ($file = $data->getFile()) {
+                    $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
-                return $this->configureUploadJob($jobInstance, $file);
+                    return $this->configureUploadJob($jobInstance, $file);
+                }
+
+                $this->addFlash('error', 'You must select a file to upload');
             }
         }
 
