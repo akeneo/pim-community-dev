@@ -280,12 +280,24 @@ class InstallCommand extends ContainerAwareCommand
     protected function getFixturesList($fixtureOpt)
     {
         if ($fixtureOpt === self::LOAD_ORO) {
+            $bundles = $this->getContainer()->getParameter('kernel.bundles');
+
             $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
-            $phpFinder = new Finder();
-            $directories = $phpFinder
-                ->in($basePath)
-                ->path('/Oro\/Bundle\/.*Bundle\/DataFixtures$/')
+            $finder = new Finder();
+
+            foreach($bundles as $bundleName => $bundleNamespace) {
+                if (strpos($bundleNamespace, 'Oro\\') === 0) {
+                    $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
+                    $finder->in($bundle->getPath());
+                }
+
+            }
+            // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
+            $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
+            $directories = $finder
+                ->path('/^DataFixtures$/')
                 ->directories();
+
 
             $oroFixtures = array();
             foreach ($directories as $directory) {
