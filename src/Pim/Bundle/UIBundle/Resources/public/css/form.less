@@ -338,7 +338,7 @@ div.btn-group > .has-switch {
       label.control-label {
         width: 30px;
         &.add-on {
-          width: 135px;
+          width: 25px;
         }
       }
       .controls {
@@ -737,9 +737,6 @@ table i {
   }
   .control-group {
     max-width: inherit;
-    .control-group {
-      margin-bottom: 0;
-    }
   }
   .currency-header {
     display: inline-block;
@@ -756,7 +753,7 @@ table i {
   }
   &.scopable {
     .currency-header {
-      padding-left: 135px;
+      padding-left: 25px;
     }
   }
   .controls {
@@ -771,20 +768,10 @@ table i {
       }
     }
   }
-  >div.first .controls {
-    .control-label.add-on {
-      font-weight: bold;
-      background-color: @backgroundColor-white;
-      border-top-left-radius: 3px;
-    }
-    input {
-      border-top-right-radius: 3px;
-    }
-  }
 }
 
 table.comparison .no-label .attribute-field.currency.scopable .currency-header {
-  padding-left: 165px;
+  padding-left: 55px;
 }
 
 .attribute-field.scopable {
@@ -820,35 +807,21 @@ table.comparison .no-label .attribute-field.currency.scopable .currency-header {
       }
     }
   }
+  label.control-label i.field-toggle {
+    padding-left: 5px;
+    font-size: 14px;
+    .user-select(none);
+  }
   label.control-label.add-on {
-    float: left;
-    width: 135px;
-    padding-top: 4px;
-    padding-right: 10px;
+    width: 25px;
+    padding-left: 7px;
     margin-bottom: 0;
     font-weight: normal;
-    text-align: right;
+    text-align: left;
     background-color: #fbfbfb;
     border-right-width: 0;
     border-radius: 0;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    span.field-toggle {
-      position: relative;
-      top: -4px;
-      left: -5px;
-      float: left;
-      height: 100%;
-      padding: 4px 5px;
-      i {
-        padding-left: 3px;
-        font-size: 16px;
-        line-height: 18px;
-      }
-    }
+    .user-select(none);
   }
   .control-group {
     margin: 0;
@@ -860,7 +833,7 @@ table.comparison .no-label .attribute-field.currency.scopable .currency-header {
       }
       .scopable-input {
         position: relative;
-        left: 135px;
+        left: 25px;
       }
     }
   }

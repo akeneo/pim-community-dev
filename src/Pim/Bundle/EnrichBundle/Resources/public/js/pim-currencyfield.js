@@ -34,8 +34,8 @@ define(
                     '<% _.each(currencies, function(currency, index) { %>' +
                         '<% if (item.label === currency) { %>' +
                             '<% if (scopable && index === 0) { %>' +
-                                '<label class="control-label add-on">' +
-                                    '<%= item.scope %>' +
+                                '<label class="control-label add-on" title="<%= item.scope %>">' +
+                                    '<%= item.scope[0].toUpperCase() %>' +
                                 '</label>' +
                                 '<div class="scopable-input">' +
                             '<% } %>' +
@@ -133,8 +133,10 @@ define(
                 var $label = this.$el.find('label.control-label:first').prependTo(this.$el);
                 this.$el.find('label.control-label:not(:first)').remove();
 
-                var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
-                $label.prepend($toggleIcon);
+                if (this.scopable) {
+                    var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                    $label.prepend($toggleIcon);
+                }
 
                 this.$el.find('div[data-scope]').each(function() {
                     var $parent = $(this).parent();

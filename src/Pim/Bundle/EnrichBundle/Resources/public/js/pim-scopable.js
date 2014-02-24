@@ -18,8 +18,8 @@ define(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
-                        '<label class="control-label add-on" for="<%= field.id %>">' +
-                            '<%= field.scope %>' +
+                        '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>">' +
+                            '<%= field.scope[0].toUpperCase() %>' +
                         '</label>' +
                         '<div class="scopable-input">' +
                             '<%= field.input %>' +
