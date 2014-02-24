@@ -91,6 +91,19 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter/setter for color property
+     */
+    public function testGetSetColor()
+    {
+        $this->assertEmpty($this->channel->getColor());
+
+        // change value and assert new
+        $newColor = '25,25,112';
+        $this->assertEntity($this->channel->setColor($newColor));
+        $this->assertEquals($newColor, $this->channel->getColor());
+    }
+
+    /**
      * Create a category for testing
      *
      * @param string $code

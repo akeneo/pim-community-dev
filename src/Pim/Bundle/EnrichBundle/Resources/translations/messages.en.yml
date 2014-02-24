@@ -224,6 +224,26 @@ info:
         none exist:           No association types exist.
         create one:           Click here to create one
 
+# Labels for channel colors
+color:
+    navy:    Navy
+    blue:    Blue
+    aqua:    Aqua
+    teal:    Teal
+    olive:   Olive
+    green:   Green
+    lime:    Lime
+    yellow:  Yellow
+    orange:  Orange
+    red:     Red
+    maroon:  Maroon
+    fuchsia: Fuchsia
+    purple:  Purple
+    white:   White
+    silver:  Silver
+    gray:    Gray
+    black:   Black
+
 # Form elements
 Options:                       Options
 Created at:                    Created at

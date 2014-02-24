@@ -55,6 +55,7 @@ class ChannelType extends AbstractType
         $this
             ->addCodeField($builder)
             ->addLabelField($builder)
+            ->addColorField($builder)
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
@@ -84,6 +85,44 @@ class ChannelType extends AbstractType
     protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add('label', 'text', array('label' => 'Default label'));
+
+        return $this;
+    }
+
+    /**
+     * Create color field
+     * @param FormBuilderInterface $builder
+     *
+     * @return ChannelType
+     */
+    protected function addColorField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'color',
+            'choice',
+            [
+                'choices' => [
+                    '0,31,63'     => 'color.navy',
+                    '0,116,217'   => 'color.blue',
+                    '127,219,255' => 'color.aqua',
+                    '57,204,204'  => 'color.teal',
+                    '61,153,112'  => 'color.olive',
+                    '46,204,64'   => 'color.green',
+                    '1,255,112'   => 'color.lime',
+                    '255,220,0'   => 'color.yellow',
+                    '255,133,27'  => 'color.orange',
+                    '255,65,54'   => 'color.red',
+                    '133,20,75'   => 'color.maroon',
+                    '240,18,190'  => 'color.fuchsia',
+                    '177,13,201'  => 'color.purple',
+                    '255,255,255' => 'color.white',
+                    '221,221,221' => 'color.silver',
+                    '170,170,170' => 'color.gray',
+                    '17,17,17'    => 'color.black',
+                ],
+                'select2' => true
+            ]
+        );
 
         return $this;
     }
