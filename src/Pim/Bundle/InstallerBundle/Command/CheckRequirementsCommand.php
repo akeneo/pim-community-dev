@@ -30,6 +30,18 @@ class CheckRequirementsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('<info>Akeneo PIM requirements check:</info>');
+
+        $this->renderRequirements($input, $output, $this->getRequirements());
+    }
+
+    /**
+     * Get Akeneo PIM requirements
+     *
+     * @return \PimRequirements
+     */
+    protected function getRequirements()
+    {
         if (!class_exists('PimRequirements')) {
             require_once $this->getContainer()->getParameter('kernel.root_dir')
                 . DIRECTORY_SEPARATOR .'PimRequirements.php';
@@ -41,7 +53,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             $directories[] = $this->getContainer()->getParameter('archive_dir');
         }
 
-        $this->renderRequirements($input, $output, new \PimRequirements($directories));
+        return new \PimRequirements($directories);
     }
 
     /**
