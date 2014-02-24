@@ -397,10 +397,10 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - oro/datagrid/column-form-listener
+                - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_product
+                columnName: is_checked
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
@@ -411,11 +411,17 @@ datagrid:
             repository_method: createGroupDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_product:
+            is_checked:
                 frontend_type: boolean
-                label: Has product
-                editable: true
-                data_name: has_product
+                data_name:     has_product
+                editable:      true
+            has_product:
+                label:         Has product
+                data_name:     has_product
+                editable:      true
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             label:
                 label: Label
                 data_name: label
@@ -500,10 +506,10 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - oro/datagrid/column-form-listener
+                - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_product
+                columnName: is_checked
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
@@ -514,11 +520,17 @@ datagrid:
             repository_method: createVariantGroupDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_product:
+            is_checked:
                 frontend_type: boolean
-                label: Has product
-                editable: true
-                data_name: has_product
+                data_name:     has_product
+                editable:      true
+            has_product:
+                label:         Has product
+                data_name:     has_product
+                editable:      true
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             label:
                 label: Label
                 data_name: label
@@ -911,18 +923,23 @@ datagrid:
                 - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_association
+                columnName: is_checked
         source:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_association:
+            is_checked:
                 frontend_type: boolean
-                label:         Has association
                 data_name:     has_association
                 editable:      true
+            has_association:
+                label:         Has association
+                data_name:     has_association
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             family:
                 label:     Family
                 data_name: familyLabel
@@ -1005,17 +1022,22 @@ datagrid:
                 - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_association
+                columnName: is_checked
         source:
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
             repository_method: createAssociationDatagridQueryBuilder
         columns:
-            has_association:
+            is_checked:
                 frontend_type: boolean
-                label:         Has association
                 data_name:     has_association
                 editable:      true
+            has_association:
+                label:         Has association
+                data_name:     has_association
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             code:
                 label: Code
             label:
