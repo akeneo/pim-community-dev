@@ -1418,4 +1418,85 @@ class User extends ExtendUser implements
 
         return $this;
     }
+
+    /**
+     * @var Pim\Bundle\CatalogBundle\Entity\Locale
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $catalogLocale;
+
+    /**
+     * @var Pim\Bundle\CatalogBundle\Entity\Channel
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $catalogScope;
+
+    /**
+     * @var Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $defaultTree;
+
+    /**
+     * @return Locale
+     */
+    public function getCatalogLocale()
+    {
+        return $this->catalogLocale;
+    }
+
+    /**
+     * @param Locale $catalogLocale
+     *
+     * @return User
+     */
+    public function setCatalogLocale($catalogLocale)
+    {
+        $this->catalogLocale = $catalogLocale;
+
+        return $this;
+    }
+
+    /**
+     * @return Channel
+     */
+    public function getCatalogScope()
+    {
+        return $this->catalogScope;
+    }
+
+    /**
+     * @param Channel $catalogScope
+     *
+     * @return User
+     */
+    public function setCatalogScope($catalogScope)
+    {
+        $this->catalogScope = $catalogScope;
+
+        return $this;
+    }
+
+    /**
+     * @return CategoryInterface
+     */
+    public function getDefaultTree()
+    {
+        return $this->defaultTree;
+    }
+
+    /**
+     * @param CategoryInterface $defaulTree
+     *
+     * @return User
+     */
+    public function setDefaultTree($defaultTree)
+    {
+        $this->defaultTree = $defaultTree;
+
+        return $this;
+    }
 }
