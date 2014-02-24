@@ -14,6 +14,8 @@
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,install-all-behat,behat-coverage"/>
 
+    <target name="build-docs-behat" depends="prepare,composer,vendors,link-pim-docs,install-all-behat,behat-docs"/>
+
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
@@ -192,6 +194,16 @@
             <arg value="run" />
             <arg value="-fjunit" />
             <arg value="--no-interaction" />
+        </exec>
+    </target>
+    
+    <target name="link-pim-docs" description="Clone pim-docs repo and configure pim-dev to work with">
+        <exec executable="${basedir}/app/Resources/jenkins/pim-docs/link-pim-docs.sh" failonerror="true" />
+    </target>
+    
+    <target name="behat-docs" description="Run acceptance tests with Behat">
+        <exec executable="bin/behat" failonerror="true">
+            <arg value="--tags=doc" />
         </exec>
     </target>
 
