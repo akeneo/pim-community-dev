@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test related class
@@ -48,7 +47,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
         );
 
         $this->stepExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -252,7 +251,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedException Akeneo\Bundle\BatchBundle\Item\InvalidItemException
      * @expectedExceptionMessage key1: <tr>Error</tr>
      */
     public function testTransformWithErrorsWithoutStepExecution()

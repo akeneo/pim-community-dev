@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/datafilter/select-filter'],
-    function (_, SelectFilter) {
+    ['underscore', 'oro/mediator', 'oro/datafilter/select-filter'],
+    function (_, mediator, SelectFilter) {
         'use strict';
 
         /**
@@ -21,6 +21,27 @@ define(
              * @see Oro.Filter.SelectFilter
              */
             contextSearch: false,
+
+            initialize: function(options) {
+                SelectFilter.prototype.initialize.apply(this, arguments);
+
+                mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
+
+                mediator.bind('grid_load:complete', function(collection) {
+                    $('#grid-' + collection.inputName).find('div.toolbar').show();
+                });
+            },
+
+            moveFilter: function (collection) {
+                var $grid = $('#grid-' + collection.inputName);
+                this.$el.addClass('pull-right').insertBefore($grid.find('.actions-panel'));
+
+                var $filterChoices = $grid.find('#add-filter-select');
+                $filterChoices.find('option[value="scope"]').remove();
+                $filterChoices.multiselect('refresh');
+
+                this.selectWidget.multiselect('refresh');
+            },
 
             /**
              * @inheritDoc

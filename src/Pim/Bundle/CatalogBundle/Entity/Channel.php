@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Channel entity
@@ -33,7 +34,7 @@ class Channel implements ReferableInterface
     /** @var string $label */
     protected $label;
 
-    /** @var Category $category */
+    /** @var CategoryInterface $category */
     protected $category;
 
     /** @var ArrayCollection $currencies */
@@ -129,7 +130,7 @@ class Channel implements ReferableInterface
     /**
      * Get category
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function getCategory()
     {
@@ -139,11 +140,11 @@ class Channel implements ReferableInterface
     /**
      * Set category
      *
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return Channel
      */
-    public function setCategory(Category $category)
+    public function setCategory(CategoryInterface $category)
     {
         $this->category = $category;
 

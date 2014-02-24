@@ -44,34 +44,34 @@ class ProductTransformer extends EntityTransformer
     protected $associationReader;
 
     /**
-     * @var array
-     */
-    protected $attributes;
-
-    /**
      * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $identifierAttribute;
 
     /**
-     * @var boolean
+     * @var array
      */
-    protected $initialized=false;
+    protected $attributes = array();
 
     /**
      * @var array
      */
-    protected $propertyColumnsInfo;
+    protected $propertyColumnsInfo = array();
 
     /**
      * @var array
      */
-    protected $attributeColumnsInfo;
+    protected $attributeColumnsInfo = array();
 
     /**
      * @var array
      */
-    protected $associationColumnsInfo;
+    protected $associationColumnsInfo = array();
+
+    /**
+     * @var array
+     */
+    protected $readLabels = array();
 
     /**
      * Constructor
@@ -148,6 +148,9 @@ class ProductTransformer extends EntityTransformer
     {
         foreach ($this->propertyColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
+            if (!array_key_exists($label, $data)) {
+                continue;
+            }
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
@@ -155,7 +158,6 @@ class ProductTransformer extends EntityTransformer
             }
         }
     }
-
 
     /**
      * Sets the product entitie's properties
@@ -171,6 +173,9 @@ class ProductTransformer extends EntityTransformer
         $this->transformedColumns[$flexibleValueClass] = array();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
+            if (!array_key_exists($label, $data)) {
+                continue;
+            }
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
             $value = $data[$label];
             if ((is_scalar($value) && '' !== trim($value)) ||
@@ -198,6 +203,10 @@ class ProductTransformer extends EntityTransformer
 
         $associations = array();
         foreach ($this->associationColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
+            if (!array_key_exists($label, $data)) {
+                continue;
+            }
             $key = $entity->getReference() . '.' . $columnInfo->getName();
             $suffixes = $columnInfo->getSuffixes();
             $lastSuffix = array_pop($suffixes);
@@ -207,7 +216,7 @@ class ProductTransformer extends EntityTransformer
                     'associationType' => $columnInfo->getName(),
                 );
             }
-            $associations[$key][$lastSuffix] =  $data[$columnInfo->getLabel()] ?: array();
+            $associations[$key][$lastSuffix] =  $data[$label] ?: array();
         }
 
         foreach ($associations as $association) {
@@ -250,9 +259,11 @@ class ProductTransformer extends EntityTransformer
     protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
         $productValue = $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
-        if (!$productValue) {
-            $productValue = $product
-                ->createValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
+        if (null === $productValue) {
+            $productValue = $this->productManager->createProductValue();
+            $productValue->setAttribute($columnInfo->getAttribute());
+            $productValue->setLocale($columnInfo->getLocale());
+            $productValue->setScope($columnInfo->getScope());
             $product->addValue($productValue);
         }
 
@@ -266,16 +277,17 @@ class ProductTransformer extends EntityTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->initialized) {
+        $labels = array_diff(array_keys($data), $this->readLabels);
+        if (!count($labels)) {
             return;
         }
+
         $class = $this->productManager->getFlexibleName();
-        $columnsInfo = $this->columnInfoTransformer->transform($class, array_keys($data));
-        $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
-        $this->attributeColumnsInfo = array();
-        $this->propertyColumnsInfo = array();
-        $this->associationColumnsInfo = array();
+        $columnsInfo = $this->columnInfoTransformer->transform($class, $labels);
+
+        $this->attributes += $this->attributeCache->getAttributes($columnsInfo);
         foreach ($columnsInfo as $columnInfo) {
+            $this->readLabels[] = $columnInfo->getLabel();
             $columnName = $columnInfo->getName();
             $suffixes = $columnInfo->getSuffixes();
             $lastSuffix = array_pop($suffixes);
@@ -301,12 +313,12 @@ class ProductTransformer extends EntityTransformer
      */
     public function reset()
     {
-        $this->attributes = null;
         $this->identifierAttribute = null;
-        $this->attributeColumnsInfo = null;
-        $this->propertyColumnsInfo = null;
-        $this->associationColumnsInfo = null;
-        $this->initialized = false;
+        $this->attributes = array();
+        $this->attributeColumnsInfo = array();
+        $this->propertyColumnsInfo = array();
+        $this->associationColumnsInfo = array();
+        $this->readLabels = array();
     }
 
     /**

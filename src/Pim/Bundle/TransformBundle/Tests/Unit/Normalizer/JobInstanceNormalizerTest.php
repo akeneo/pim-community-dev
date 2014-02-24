@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\TransformBundle\Normalizer\JobInstanceNormalizer;
 
 /**
@@ -29,9 +29,9 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', true),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', true),
-            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', false),
+            array('Akeneo\Bundle\BatchBundle\Entity\JobInstance', 'json', true),
+            array('Akeneo\Bundle\BatchBundle\Entity\JobInstance', 'xml', true),
+            array('Akeneo\Bundle\BatchBundle\Entity\JobInstance', 'csv', false),
             array('stdClass', 'json', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),

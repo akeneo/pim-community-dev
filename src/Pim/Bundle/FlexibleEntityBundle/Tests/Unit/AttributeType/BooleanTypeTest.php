@@ -38,12 +38,7 @@ class BooleanTypeTest extends AttributeTypeTest
                 'foo',
                 'email',
                 'bar',
-                array(
-                    'constraints'     => array('constraints'),
-                    'label'           => null,
-                    'required'        => null,
-                    'auto_initialize' => null
-                )
+                $this->defaultCreateNamedOptions
             );
 
         $this->target->buildValueFormType($factory, $value);

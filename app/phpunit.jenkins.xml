@@ -45,6 +45,6 @@
     </filter>
 
     <logging>
-        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+        <log type="junit" target="build/logs/phpunit/junit.xml" logIncompleteSkipped="false"/>
     </logging>
 </phpunit>

@@ -86,8 +86,6 @@ class ProductManagerSpec extends ObjectBehavior
 
     function it_creates_a_product($entityManager, AttributeRepository $attRepository, Attribute $sku)
     {
-        $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
-        $attRepository->getCodeToAttributes(self::PRODUCT_CLASS)->willReturn(['sku' => $sku]);
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
@@ -113,9 +111,7 @@ class ProductManagerSpec extends ObjectBehavior
         Attribute $name,
         Attribute $size
     ) {
-        $attributes->getAttributeIds()->willReturn([1, 2, 3]);
-        $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
-        $attRepository->findBy(['id' => [1, 2, 3]])->willReturn([$sku, $name, $size]);
+        $attributes->getAttributes()->willReturn([$sku, $name, $size]);
 
         $builder->addAttributeToProduct($product, $sku)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();

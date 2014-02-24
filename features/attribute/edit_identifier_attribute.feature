@@ -13,15 +13,9 @@ Feature: Edit an identifier attribute
     And the fields Unique, Scope, Usable as grid column and Usable as grid filter should be disabled
 
   @javascript
-  Scenario: Succesfully display a message that an identifier already exists when trying to create a second identifier
-    Given I am on the attribute creation page
-    When I change the "Attribute type" to "Identifier"
-    Then I should see validation error "An identifier attribute already exists."
-
-  @javascript
-  Scenario: Fail to create a second identifier
-    Given I am on the attribute creation page
-    When I change the "Attribute type" to "Identifier"
+  Scenario: Fail to create a second identifier attribute
+    Given I am on the attributes page
+    When I create an "Identifier" attribute
     And I fill in the following information:
       | Code           | mySecondId |
       | Max characters | 100        |

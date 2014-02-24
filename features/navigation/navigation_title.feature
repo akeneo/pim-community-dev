@@ -13,7 +13,6 @@ Feature: Well display navigation titles
       | association types                         | Association types                               |
       | "X_SELL" association type                 | Association types Cross sell \| Edit            |
       | attributes                                | Attributes                                      |
-      | attribute creation                        | Attributes \| Create                            |
       | "size" attribute                          | Attributes Size \| Edit                         |
       | channels                                  | Channels                                        |
       | channel creation                          | Channels \| Create                              |

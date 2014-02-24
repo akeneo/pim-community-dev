@@ -1,0 +1,12 @@
+{% if value %}
+    {% for group in value %}
+
+        {% if group['translations']|length > 0 %}
+            {{ group['translations'][0]['label'] }}
+        {% else %}
+            [{{ group['code'] }}]
+        {% endif %}
+        {% if not loop.last %}, {% endif %}
+
+    {% endfor %}
+{% endif %}

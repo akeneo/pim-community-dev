@@ -7,4 +7,4 @@ versionable:
     - Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
     - Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     - Pim\Bundle\CatalogBundle\Entity\Channel
-    - Oro\Bundle\BatchBundle\Entity\JobInstance
+    - Akeneo\Bundle\BatchBundle\Entity\JobInstance

@@ -11,10 +11,11 @@ pim_importexport_import_execution_download_log:
         id: \d+
 
 pim_importexport_import_execution_show:
-    path: collect/import_execution/{id}/show
-    defaults: { _controller: pim_import_export.controller.import_execution:showAction }
+    path: collect/import_execution/{id}.{_format}
+    defaults: { _controller: pim_import_export.controller.import_execution:showAction, _format: html }
     requirements:
         id: \d+
+        _format: html|json
 
 pim_importexport_import_execution_download_file:
     path: collect/import_execution/{id}/download/{archiver}/{key}

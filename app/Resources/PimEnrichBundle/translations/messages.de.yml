@@ -94,6 +94,13 @@ confirmation:
     variant group: 'Sind Sie sicher, dass Sie die Variantengruppe %name% löschen möchten?'
     association type: 'Sind Sie sicher, dass Sie den Verbindungstyp %name% löschen möchten?'
     group type: 'Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?'
+    user: 'Sind Sie sicher, dass Sie den Benutzer %name% löschen möchten?'
+  attribute group:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Attributgruppe entfernen möchten?'
+  family:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Produktfamilie entfernen möchten?'
+  product:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus diesem Produkt entfernen möchten?'
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -161,6 +168,8 @@ flash:
     created: Verbindungstyp erfolgreich angelegt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
+  user:
+    removed: Benutzer erfolgreich gelöscht
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
   updated: Es gibt ungesicherte Änderungen.
@@ -179,8 +188,10 @@ info:
     disable: Deaktivieren
     disabled: Deaktiviert
   group:
+    axis: 'Variation Achse: %attributes%'
     select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
     selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
+    no group types: Kein Gruppentyp vorhanden, bitte legen Sie einen an
   association type:
     show products: Produkte anzeigen
     show groups: Gruppen anzeigen
@@ -205,6 +216,7 @@ Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
 Scopable: Je Ausgabekanal individualisierbar
+Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
 Variants behavior when edited: Das Verhalten von Varianten beim Bearbeiten
@@ -260,7 +272,6 @@ Number min: Min. Wert
 Number max: Max. Wert
 Decimals allowed: Dezimalzahlen zulassen
 Negative allowed: Negative Werte zulassen
-Date type: Datumstyp
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
@@ -296,7 +307,12 @@ pim_title.group.index: Gruppen
 pim_title.group.edit: 'Gruppen %group.label% | Bearbeiten'
 pim_title.variant_group.index: Variantengruppen
 pim_title.variant_group.edit: 'Variantengruppen %group.label% | Bearbeiten'
+pim_title.association_type.index: Verbindungstypen
+pim_title.association_type.edit: 'Verbindungstypen %association type.label% | Bearbeiten'
+pim_title.group_type.index: Gruppentypen
+pim_title.group_type.edit: 'Gruppentypen %group type.label% | Bearbeiten'
 pim_catalog_identifier: Kennung
+pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
 pim_catalog_number: Nummer
 pim_catalog_price_collection: Preis
@@ -316,6 +332,7 @@ pim_enrich.mass_edit_action:
   title: Aktion auswählen
   subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
   confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|'
+  limit_exceeded: 'Bitte wählen Sie weniger als %limit% Produkte für die Bearbeitung aus'
   change-status:
     label: Status ändern (aktivieren / deaktivieren)
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
@@ -337,6 +354,14 @@ pim_enrich.mass_edit_action:
     label: Zu Gruppen hinzufügen
     description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
     success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+Choose products: Produkte auswählen
+Choose operation: Aktion auswählen
+Configure: Konfigurieren
+Confirm: Bestätigen
+To enable: Um zu aktivieren
+Select attributes: Attribute auswählen
+Select: Auswählen
+Remove this attribute: Dieses Attribut löschen
 pim_enrich.completeness:
   progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
   subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
@@ -353,6 +378,8 @@ pim_enrich.group:
 pim_enrich.product:
   no_comparison_locale_available: Es ist kein anderes Gebietsschema für einen Vergleich vorhanden
   no_compared_media: Keine Medien für einen Vergleich vorhanden
+Copy: Kopieren
+Current tab: Aktueller Reiter
 pim_enrich.channel.pick_conversion_unit: Wählen Sie eine Umrechnungseinheit für jedes metrische Attribut, welche beim Produkt-Export verwendet werden soll
 Group: Gruppe
 View group: Gruppe ansehen
@@ -402,6 +429,12 @@ pim_enrich:
       sort: Attributgruppen sortieren
       add_attribute: Attribut zu einer Gruppe hinzufügen
       remove_attribute: Attribut aus einer Gruppe löschen
+    attribute:
+      index: Attribute auflisten
+      create: Ein Attribut anlegen
+      edit: Ein Attribut bearbeiten
+      remove: Ein Attribut löschen
+      sort: Attribute innerhalb von Attributgruppen sortieren
     group:
       index: Gruppen auflisten
       create: Eine Gruppe anlegen
@@ -417,8 +450,46 @@ pim_enrich:
       create: Einen Verbindungstyp anlegen
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
+  datagrid_configuration.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
+pim_menu:
+  tab:
+    collect: Sammeln
+    enrich: Anreichern
+    settings: Einstellungen
+    spread: Ausleiten
+  item:
+    association_type: Verbindungstypen
+    attribute: Attribute
+    attribute_group: Attributgruppen
+    category: Kategorien
+    channel: Ausgabekanäle
+    currency: Währungen
+    family: Produktfamilien
+    group: Gruppen
+    group_type: Gruppentypen
+    locale: Gebietsschemata
+    product: Produkte
+    variant_group: Variantengruppen
+Properties: Eigenschaften
+History: Historie
+pane.accordion:
+  node_values: Knotenwerten
+  general_properties: Allgemeine Eigenschaften
+  locale_values: Gebietsschemawerte
+  backend_parameters: Backend Parameter
+  general_parameters: Allgemeine Parameter
+  label_translations: Feldbezeichner-Übersetzungen
+  options: Optionen
+  group_values: Werte der Gruppe
 popin.create:
+  association_type.title: Einen neuen Verbindungstyp anlegen
+  family.title: Neue Produktfamilie anlegen
+  group.title: Neue Gruppe anlegen
+  group_type.title: Neuen Gruppentypen anlegen
+  product.title: Neues Produkt anlegen
   variant_group.title: Neue Variantengruppe anlegen
+  option.title: Neue Option anlegen
+Has product: Hat Produkt
 Attribute as label: Attribut als Label
 Available Columns: Verfügbare Spalten
 Displayed Columns: Angezeigten Spalten

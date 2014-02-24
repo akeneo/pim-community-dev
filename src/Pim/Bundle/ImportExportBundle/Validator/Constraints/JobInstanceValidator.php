@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
 /**
  * Validator for job instance entity
@@ -36,7 +36,7 @@ class JobInstanceValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof \Oro\Bundle\BatchBundle\Entity\JobInstance) {
+        if ($entity instanceof \Akeneo\Bundle\BatchBundle\Entity\JobInstance) {
             if (!$this->connectorRegistry->getJob($entity)) {
                 $this->context->addViolationAt(
                     $constraint->property,

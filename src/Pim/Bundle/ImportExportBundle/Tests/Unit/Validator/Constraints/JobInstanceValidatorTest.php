@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Constraints;
 
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstanceValidator;
 
@@ -18,7 +18,7 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
     /** @var Symfony\Component\Validator\ExecutionContext $context */
     protected $context;
 
-    /** @var Oro\Bundle\BatchBundle\Connector\ConnectorRegistry $connectorRegistry */
+    /** @var Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry $connectorRegistry */
     protected $connectorRegistry;
 
     /** @var JobInstanceValidator $validator */
@@ -50,12 +50,12 @@ class JobInstanceValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Oro\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * @return Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
      */
     protected function getConnectorRegistryMock()
     {
         return $this
-            ->getMockBuilder('\Oro\Bundle\BatchBundle\Connector\ConnectorRegistry')
+            ->getMockBuilder('\Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry')
             ->disableOriginalConstructor()
             ->getMock();
     }

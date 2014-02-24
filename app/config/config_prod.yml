@@ -13,9 +13,21 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
-            level: debug
+            action_level: critical
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, buffered]
+        streamed:
+           type:  stream
+           path:  "%kernel.logs_dir%/%kernel.environment%.log"
+           level: debug
+        buffered:
+            type:    buffer
+            handler: swift
+        swift:
+            type:       native_mailer
+            from_email: techteam@akeneo.com
+            to_email:   techteam@akeneo.com
+            subject:    An Error Occurred!
+            level:      debug

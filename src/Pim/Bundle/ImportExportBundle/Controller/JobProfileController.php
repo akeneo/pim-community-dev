@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -305,7 +305,7 @@ class JobProfileController extends AbstractDoctrineController
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
-                'php %s/console oro:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
+                'php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
@@ -397,7 +397,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
-        $jobInstance = $this->findOr404('OroBatchBundle:JobInstance', $id);
+        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
         if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {

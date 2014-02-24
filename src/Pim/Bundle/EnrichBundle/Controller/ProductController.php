@@ -227,16 +227,14 @@ class ProductController extends AbstractDoctrineController
                 'heterogeneous' => true
             ];
 
+            $rootAlias = $qb->getRootAlias();
+            $qb->resetDQLPart('select');
+            $qb->resetDQLPart('from');
+            $qb->select($rootAlias);
+            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
+
             $results = $qb->getQuery()->execute();
-
-            $entities = array_map(
-                function ($result) {
-                    return current($result);
-                },
-                $results
-            );
-
-            echo $this->serializer->serialize($entities, $format, $context);
+            echo $this->serializer->serialize($results, $format, $context);
 
             flush();
         };

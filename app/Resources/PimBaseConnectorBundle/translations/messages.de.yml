@@ -39,8 +39,28 @@ pim_base_connector:
       title: Gruppen-Import aus CSV-Datei
       import.title: Gruppen-Import
   steps:
+    dummy_reader.title: Dummy reader
+    product_reader.title: Produkt Auszug
+    entity_reader.title: Entitäten Auszug
     csv_reader:
+      title: CSV-Reader
       invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich sind es %itemColumnsCount% in %csvPath%:%lineno%'
+    csv_product_reader.title: CSV Produkt Reader
+    csv_category_reader.title: CSV Kategorie Reader
+    dummy_processor.title: Dummy Processor
+    product_processor.title: Produktanlage
+    category_processor.title: Kategorieanlage
+    association_processor.title: Zuweisungserstellung
+    group_processor.title: Gruppenerstellung
+    attribute_processor.title: Attributerstellung
+    attribute_option_processor.title: Attribut-Optionserstellung
+    heterogeneous_processor.title: Produkt CSV serialisierung
+    homogeneous_processor.title: CSV Entitäten serialisierung
+    dummy_writer.title: Dummy Writer
+    file_writer.title: Ausgabe
+    product_writer.title: Produkt-Speicher
+    category_writer.title: Kategorie-Speicher
+    writer.title: Entitäten-Speicher
   export:
     delimiter:
       label: Trennzeichen

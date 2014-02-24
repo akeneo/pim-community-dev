@@ -9,7 +9,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
@@ -260,11 +259,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
 
     /**
      * Add a category
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return Product
      */
-    public function addCategory(Category $category)
+    public function addCategory(CategoryInterface $category)
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -275,11 +274,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
 
     /**
      * Remove a category
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return Product
      */
-    public function removeCategory(Category $category)
+    public function removeCategory(CategoryInterface $category)
     {
         $this->categories->removeElement($category);
 

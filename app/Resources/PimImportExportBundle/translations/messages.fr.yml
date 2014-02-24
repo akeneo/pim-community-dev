@@ -12,31 +12,30 @@ Connector: Connecteur
 pim_import_export:
   status:
     - Prêt
-  steps:
-    dummy_reader.title: Lecteur factice
-    dummy_processor.title: Processeur factice
-    dummy_writer.title: Écrivain factice
-    product_reader.title: Extraction de produits
-    entity_reader.title: "Extraction d'entité"
-    csv_product_reader.title: Lecteur de CSV de produits
-    csv_category_reader.title: Lecteur de CSV de catégories
-    product_processor.title: Création de produit
-    category_processor.title: Création de catégorie
-    association_processor.title: "Création d'association"
-    group_processor.title: Création de groupe
-    attribute_processor.title: "Création d'attribut"
-    attribute_option_processor.title: "Création d'option d'attribut"
-    heterogeneous_processor.title: Sérialiseur de produits en CSV
-    homogeneous_processor.title: "Sérialiseur d'entité en CSV"
-    file_writer.title: Sortie
-    product_writer.title: Stockage des produits
-    category_writer.title: Stockage des catégories
-    writer.title: Stockage des entités
+  batch_status:
+    1: TERMINÉ
+    2: DÉMARRAGE EN COURS
+    3: DÉMARRÉ
+    4: ARRÊT EN COURS
+    5: ARRÊTÉ
+    6: EN ÉCHEC
+    7: ABANDONNÉ
+    8: INCONNU
   download_archive:
     archive: Télécharger fichier généré
     output: Télécharger fichier généré
     input: Télécharger fichier lu
     invalid: Télécharger données invalides
+pim_title.export_profile.index: "Gestion de profils d'export"
+pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
+pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
+pim_title.export_execution.index: "Exporter l'historique d'exécutions"
+pim_title.export_execution.show: "Executions d'exports | Détails"
+pim_title.import_profile.index: Importer gestion de profils
+pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
+pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
+pim_title.import_execution.index: "Importer l'historique des exécutions"
+pim_title.import_execution.show: "Executions d'imports | Détails"
 export report:
   overview: "Rapports d'exportations"
 import report:
@@ -78,12 +77,18 @@ confirmation:
     import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
 flash:
   export:
+    created: "L'export a été correctement crée"
     removed: "Le profil d'export a été supprimé"
+    updated: "L'export a correctement été mis à jour"
   import:
+    created: "L'import a été correctement crée"
     removed: "Le profil d'import a été supprimé"
+    updated: "L'import a correctement été mis à jour"
 pim_menu:
   item:
+    export_history: Historique des exports
     export_profile: "Profils d'export"
+    import_history: Historique des imports
     import_profile: "Profils d'import"
 General properties: Propriétés générales
 History: Historique

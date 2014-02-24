@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Repository

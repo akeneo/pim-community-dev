@@ -2,20 +2,19 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 /**
  * Grid listener to configure column, filter and sorter based on attributes and business rules
@@ -27,14 +26,9 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 class ConfigureFlexibleGridListener
 {
     /**
-     * @var string
+     * @var FlexibleManager
      */
-    const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
-
-    /**
-     * @var FlexibleManagerRegistry
-     */
-    protected $flexRegistry;
+    protected $flexibleManager;
 
     /**
      * @var ConfigurationRegistry
@@ -47,6 +41,11 @@ class ConfigureFlexibleGridListener
     protected $requestParams;
 
     /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
      * @var Request
      */
     protected $request;
@@ -54,18 +53,21 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManagerRegistry $flexRegistry  flexible manager registry
-     * @param ConfigurationRegistry   $confRegistry  attribute type configuration registry
-     * @param RequestParameters       $requestParams request parameters
+     * @param FlexibleManager          $flexibleManager flexible manager
+     * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
+     * @param RequestParameters        $requestParams   request parameters
+     * @param SecurityContextInterface $securityContext the security context
      */
     public function __construct(
-        FlexibleManagerRegistry $flexRegistry,
+        FlexibleManager $flexibleManager,
         ConfigurationRegistry $confRegistry,
-        RequestParameters $requestParams
+        RequestParameters $requestParams,
+        SecurityContextInterface $securityContext
     ) {
-        $this->flexRegistry  = $flexRegistry;
-        $this->confRegistry  = $confRegistry;
-        $this->requestParams = $requestParams;
+        $this->flexibleManager = $flexibleManager;
+        $this->confRegistry    = $confRegistry;
+        $this->requestParams   = $requestParams;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -86,100 +88,150 @@ class ConfigureFlexibleGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $isFlexibleGrid = $datagridConfig->offsetGetByPath(OrmDatasource::IS_FLEXIBLE_ENTITY_PATH);
 
-        if ($flexibleEntity) {
-            $attributes = $this->getFlexibleAttributes($flexibleEntity);
-            $this->getColumnsConfigurator($datagridConfig, $attributes)->configure();
-            $this->getSortersConfigurator($datagridConfig, $attributes)->configure();
-            $this->getFiltersConfigurator($datagridConfig, $attributes)->configure();
+        if ($isFlexibleGrid) {
+            $this->addAttributesIds($datagridConfig);
+            $this->addLocaleCode($datagridConfig);
+            $this->addAttributesConfig($datagridConfig);
+            $this->getColumnsConfigurator($datagridConfig)->configure();
+            $this->getSortersConfigurator($datagridConfig)->configure();
+            $this->getFiltersConfigurator($datagridConfig)->configure();
         }
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
      *
-     * @return ConfiguratorInterface
+     * @return string
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getEntity(DatagridConfiguration $datagridConfig)
     {
-        return new ColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes);
+        return $datagridConfig->offsetGetByPath(OrmDatasource::ENTITY_PATH);
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
     {
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
-        $sorterCallback = $this->getFlexibleSorterApplyCallback($flexibleEntity);
-
-        return new SortersConfigurator($datagridConfig, $this->confRegistry, $attributes, $sorterCallback);
+        return new ColumnsConfigurator($datagridConfig, $this->confRegistry);
     }
 
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
+        $sorterCallback = $this->getFlexibleSorterApplyCallback();
 
-        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $attributes, $flexibleEntity);
+        return new SortersConfigurator($datagridConfig, $this->confRegistry, $sorterCallback);
     }
 
     /**
-     * Prepares attributes array for given entity
+     * @param DatagridConfiguration $datagridConfig
      *
-     * @param string $entityFQCN
-     *
-     * @return AbstractAttribute[]
+     * @return ConfiguratorInterface
      */
-    protected function getFlexibleAttributes($entityFQCN)
+    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        $flexManager = $this->getFlexibleManager($entityFQCN);
+        $flexibleEntity = $this->getEntity($datagridConfig);
 
-        $attributeRepository = $flexManager->getAttributeRepository();
-        $attributeEntities   = $attributeRepository->findBy(['entityType' => $flexManager->getFlexibleName()]);
-        $attributes          = [];
+        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $flexibleEntity);
+    }
 
-        foreach ($attributeEntities as $attribute) {
-            $attributes[$attribute->getCode()] = $attribute;
+    /**
+     * Inject the displayed attribute ids in the datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     */
+    protected function addAttributesIds(DatagridConfiguration $datagridConfig)
+    {
+        $userConfig     = $this->getUserConfig($datagridConfig);
+        $attributeCodes = $userConfig ? $userConfig->getColumns() : null;
+        $repository     = $this->flexibleManager->getAttributeRepository();
+        $flexibleEntity = $this->flexibleManager->getFlexibleName();
+        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
+
+        if (!$attributeIds) {
+            $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
         }
 
-        return $attributes;
+        $datagridConfig->offsetSetByPath(OrmDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
     }
 
     /**
-     * @param string $entityFQCN
+     * Inject current locale code in the datagrid configuration
      *
-     * @return FlexibleManager
+     * @param DatagridConfiguration $datagridConfig
      */
-    protected function getFlexibleManager($entityFQCN)
+    protected function addLocaleCode(DatagridConfiguration $datagridConfig)
     {
-        $flexManager = $this->flexRegistry->getManager($entityFQCN);
+        $localeCode = $this->getCurrentLocaleCode();
+        $datagridConfig->offsetSetByPath(OrmDatasource::DISPLAYED_LOCALE_PATH, $localeCode);
+    }
 
-        $flexManager->setLocale($this->requestParams->getLocale());
+    /**
+     * Inject attributes configurations in the datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     */
+    protected function addAttributesConfig(DatagridConfiguration $datagridConfig)
+    {
+        $attributes = $this->getAttributesConfig($datagridConfig);
 
-        return $flexManager;
+        $datagridConfig->offsetSetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+    }
+
+    /**
+     * Get current locale from datagrid parameters, then request parameters, then user config
+     *
+     * @return string
+     */
+    protected function getCurrentLocaleCode()
+    {
+        $dataLocale = $this->requestParams->get('dataLocale', null);
+        if (!$dataLocale) {
+            $dataLocale = $this->request->get('dataLocale', null);
+        }
+        if (!$dataLocale && $locale = $this->getUser()->getCatalogLocale()) {
+            $dataLocale = $locale->getCode();
+        }
+
+        return $dataLocale;
+    }
+
+    /**
+     * Get attributes configuration for attribute that can be used in grid (as column or filter)
+     *
+     * @param DatagridConfiguration $datagridConfig
+     *
+     * @return array
+     */
+    protected function getAttributesConfig(DatagridConfiguration $datagridConfig)
+    {
+        $flexibleEntity = $this->flexibleManager->getFlexibleName();
+        $repository     = $this->flexibleManager->getAttributeRepository();
+
+        $attributeIds  = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+        $currentLocale = $this->getCurrentLocaleCode();
+        $configuration = $repository->getAttributesAsArray($flexibleEntity, true, $currentLocale, $attributeIds);
+
+        return $configuration;
     }
 
     /**
      * Creates sorter apply callback
      *
-     * @param string $entityFQCN
-     *
      * @return callable
      */
-    protected function getFlexibleSorterApplyCallback($entityFQCN)
+    protected function getFlexibleSorterApplyCallback()
     {
-        $flexManager = $this->getFlexibleManager($entityFQCN);
+        $flexManager = $this->flexibleManager;
 
         return function (OrmDatasource $datasource, $attributeCode, $direction) use ($flexManager) {
             $qb = $datasource->getQueryBuilder();
@@ -188,5 +240,41 @@ class ConfigureFlexibleGridListener
             $entityRepository = $flexManager->getFlexibleRepository();
             $entityRepository->applySorterByAttribute($qb, $attributeCode, $direction);
         };
+    }
+
+    /**
+     * Get user datagrid configuration
+     *
+     * @param DatagridConfiguration $datagridConfig
+     *
+     * @return null|DatagridConfiguration
+     */
+    protected function getUserConfig(DatagridConfiguration $datagridConfig)
+    {
+        $alias = $datagridConfig->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
+
+        $repository = $this->flexibleManager
+            ->getEntityManager()
+            ->getRepository('PimEnrichBundle:DatagridConfiguration');
+
+        return $repository->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
+    }
+
+    /**
+     * Get the user from the security context
+     *
+     * @return null|User
+     */
+    protected function getUser()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return;
+        }
+
+        return $user;
     }
 }

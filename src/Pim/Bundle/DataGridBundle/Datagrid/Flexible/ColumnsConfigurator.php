@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
@@ -25,22 +26,15 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param array
-     */
-    protected $attributes;
-
-    /**
      * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the conf registry
-     * @param array                 $attributes    the attributes
+     * @param ConfigurationRegistry $registry      the config registry
      *
      * @throws \LogicException
      */
-    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry, $attributes)
+    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
     {
         $this->configuration = $configuration;
         $this->registry      = $registry;
-        $this->attributes    = $attributes;
     }
 
     /**
@@ -48,15 +42,16 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         $identifierColumn  = array();
         $attributesColumns = array();
 
-        foreach ($this->attributes as $attributeCode => $attribute) {
-            $showColumn        = $attribute->isUseableAsGridColumn();
-            $attributeType     = $attribute->getAttributeType();
+        foreach ($attributes as $attributeCode => $attribute) {
+            $showColumn        = $attribute['useableAsGridColumn'];
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {
@@ -73,7 +68,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    'label' => $attribute->getLabel(),
+                    'label' => $attribute['label'],
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {

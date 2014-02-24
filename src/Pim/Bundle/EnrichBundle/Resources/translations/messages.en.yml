@@ -88,7 +88,7 @@ btn:
     edit:            edit
     save:            save
     save and back:   save and back to grid
-    save and create: save and create
+    save and create: save and create new
     remove:          remove
     delete:          delete
     cancel:          cancel
@@ -115,6 +115,7 @@ confirmation:
         variant group:    Are you sure you want to delete the variant group %name%?
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
+        user:             Are you sure you want to delete the user %name%?
     attribute group:
         remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
     family:
@@ -125,7 +126,6 @@ confirmation:
 # Flash messages
 flash:
     entity:
-        removed: Item was deleted
         removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
@@ -187,11 +187,12 @@ flash:
         removed: Group type successfully removed
         cant remove variant: Group type variant can't be removed
         cant remove used: Group type is used by some groups and can't be removed
-
     association type:
         created: Association type successfully created
         updated: Association type successfully updated
         removed: Association type successfully removed
+    user:
+        removed: User successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -215,11 +216,13 @@ info:
         axis:                'Variation axis: %attributes%'
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
-        no group types:      No group types exist, please create one
+        no group types:      No group types exist, click here to create one
     association type:
         show products:        Show products
         show groups:          Show groups
         remove from products: Deleting the association type will remove it from %count% products.
+        none exist:           No association types exist.
+        create one:           Click here to create one
 
 # Form elements
 Options:                       Options
@@ -245,6 +248,7 @@ Scopable:                      Scopable
 Localizable:                   Localizable
 Unique value:                  Unique value
 Attribute group:               Attribute group
+Other:                         Other
 Variants behavior when edited: Variants behavior when edited
 Edit:                          Edit
 Remove:                        Remove
@@ -369,6 +373,21 @@ pim_catalog_image:            Image
 pim_catalog_boolean:          Yes/No
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
+
+# Attribute icons (should be valid FontAwesome icons)
+icon:
+    pim_catalog_identifier:       asterisk
+    pim_catalog_text:             font
+    pim_catalog_textarea:         file-text-alt
+    pim_catalog_number:           sort-by-order
+    pim_catalog_price_collection: money
+    pim_catalog_multiselect:      tags
+    pim_catalog_simpleselect:     tag
+    pim_catalog_file:             file
+    pim_catalog_image:            camera-retro
+    pim_catalog_boolean:          check
+    pim_catalog_date:             calendar
+    pim_catalog_metric:           beaker
 
 # Locales
 Fallback:  Fallback

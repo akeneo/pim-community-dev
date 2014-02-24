@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Sorters configurator for flexible grid
@@ -27,11 +28,6 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param array
-     */
-    protected $attributes;
-
-    /**
      * @param \Closure
      */
     protected $callback;
@@ -39,18 +35,15 @@ class SortersConfigurator implements ConfiguratorInterface
     /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param array                 $attributes    the attributes
      * @param Closure               $callback      the callback function
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        $attributes,
         \Closure $callback
     ) {
         $this->configuration = $configuration;
         $this->registry      = $registry;
-        $this->attributes    = $attributes;
         $this->callback      = $callback;
     }
 
@@ -59,11 +52,12 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $columns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
-        foreach ($this->attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute->getAttributeType();
+        foreach ($attributes as $attributeCode => $attribute) {
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
             $columnExists      = isset($columns[$attributeCode]);
 

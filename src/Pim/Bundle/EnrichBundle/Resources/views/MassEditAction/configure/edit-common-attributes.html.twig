@@ -49,8 +49,8 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'jquery.multiselect', 'jquery.multiselect.filter'],
-            function ($, _, Scopable, CurrencyField) {
+            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
+            function ($, _, Scopable, CurrencyField, datepicker, mediator) {
                 'use strict';
                 $(function () {
                     {% if form.operation.vars.groups is empty %}
@@ -64,6 +64,12 @@
                     _.each($('form div.currency'), function (field) {
                         new CurrencyField({ el: $(field) });
                     });
+
+                    _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                        datepicker.init(field.getAttribute('id'));
+                    });
+
+                    mediator.trigger('pim:reinit');
 
                     /**
                      * Add attributes widget

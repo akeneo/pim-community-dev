@@ -6,6 +6,6 @@ services:
     pim_customentity.extension.formatter.property.url_property:
         class: %pim_customentity.extension.formatter.property.url_property.class%
         arguments:
-            - @router
+            - '@router'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: custom_entity_url }

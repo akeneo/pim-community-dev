@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Form;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,10 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
@@ -49,7 +45,7 @@ class AttributeController extends AbstractDoctrineController
     protected $attributeForm;
 
     /**
-     * @var ProductManager
+     * @var AttributeManager
      */
     protected $attributeManager;
 
@@ -128,42 +124,51 @@ class AttributeController extends AbstractDoctrineController
         $this->auditManager     = $auditManager;
         $this->measuresConfig   = $measuresConfig;
     }
+
     /**
      * List attributes
-     * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_attribute_index")
-     * @return template
+     * @return Template
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return array();
+        return ['attributeTypes' => $this->attributeManager->getAttributeTypes()];
     }
 
     /**
      * Create attribute
+     * @param Request $request
      *
      * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_create")
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
+        $attributeType = $request->get('attribute_type');
+        $attributeTypes = $this->attributeManager->getAttributeTypes();
+
+        if (!$attributeType || !is_string($attributeType) || !array_key_exists($attributeType, $attributeTypes)) {
+            return $this->redirectToRoute('pim_enrich_attribute_index');
+        }
+
+        $attribute = $this->attributeManager->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
-            'measures'        => $this->measuresConfig
-        );
+            'measures'        => $this->measuresConfig,
+            'attributeType'   => $attributeType
+        ];
     }
 
     /**
@@ -193,51 +198,6 @@ class AttributeController extends AbstractDoctrineController
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
-    }
-
-    /**
-     * Preprocess attribute form
-     *
-     * @param Request $request
-     *
-     * @Template("PimEnrichBundle:Attribute:_form_parameters.html.twig")
-     * @AclAncestor("pim_enrich_attribute_edit")
-     * @return array
-     */
-    public function preProcessAction(Request $request)
-    {
-        $data = $request->request->all();
-        if (!isset($data['pim_enrich_attribute_form'])) {
-            return $this->redirectToRoute('pim_enrich_attribute_create');
-        }
-
-        // Add custom fields to the form and set the entered data to the form
-        $this->attributeHandler->preProcess($data['pim_enrich_attribute_form']);
-
-        $locales         = $this->localeManager->getActiveLocales();
-        $disabledLocales = $this->localeManager->getDisabledLocales();
-        $form            = $this->attributeForm->createView();
-
-        $data = array(
-            'parameters' => $this->renderView(
-                'PimEnrichBundle:Attribute:_form_parameters.html.twig',
-                array(
-                    'form'            => $form,
-                    'locales'         => $locales,
-                    'disabledLocales' => $disabledLocales
-                )
-            ),
-            'values' => $this->renderView(
-                'PimEnrichBundle:Attribute:_form_values.html.twig',
-                array(
-                    'form'            => $form,
-                    'locales'         => $locales,
-                    'disabledLocales' => $disabledLocales
-                )
-            )
-        );
-
-        return new JsonResponse($data);
     }
 
     /**
@@ -290,9 +250,9 @@ class AttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
         }
 
-        $option = new AttributeOption();
+        $option = $this->attributeManager->createAttributeOption();
 
-        $optionValue = new AttributeOptionValue();
+        $optionValue = $this->attributeManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);

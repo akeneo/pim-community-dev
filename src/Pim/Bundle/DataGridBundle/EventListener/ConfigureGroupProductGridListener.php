@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\GroupColumnsConfigurator;
 
 /**
@@ -18,22 +17,19 @@ class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
 {
     /**
      * @param DatagridConfiguration $datagridConfig
-     * @param AbstractAttribute[]   $attributes
      *
      * @return ConfiguratorInterface
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig, $attributes)
+    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
     {
         $groupId = $this->request->get('id', null);
         if (!$groupId) {
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $flexibleEntity = $datagridConfig->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
-        $flexibleManager = $this->getFlexibleManager($flexibleEntity);
-        $em = $flexibleManager->getEntityManager();
+        $em = $this->flexibleManager->getEntityManager();
         $group = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->findOne($groupId);
 
-        return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $attributes, $group);
+        return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $group);
     }
 }

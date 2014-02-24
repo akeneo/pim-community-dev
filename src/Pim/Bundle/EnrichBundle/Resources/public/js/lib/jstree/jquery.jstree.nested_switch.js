@@ -61,7 +61,7 @@
                 ;
         },
         defaults: {
-            state:    false,
+            state:    true,
             label:    null,
             callback: null
         },

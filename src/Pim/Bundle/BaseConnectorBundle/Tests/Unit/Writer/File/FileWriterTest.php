@@ -39,9 +39,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAConfigurableStepExecutionAwareWriter()
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->writer);
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->writer);
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemWriterInterface', $this->writer);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->writer);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->writer);
+        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface', $this->writer);
     }
 
     /**
@@ -72,12 +72,12 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
      */
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

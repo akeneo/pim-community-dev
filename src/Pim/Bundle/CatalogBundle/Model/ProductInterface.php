@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
@@ -74,19 +73,19 @@ interface ProductInterface
 
     /**
      * Add a category
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return Product
      */
-    public function addCategory(Category $category);
+    public function addCategory(CategoryInterface $category);
 
     /**
      * Remove a category
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return Product
      */
-    public function removeCategory(Category $category);
+    public function removeCategory(CategoryInterface $category);
 
     /**
      * Predicate to know if product is enabled or not

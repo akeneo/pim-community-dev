@@ -3,9 +3,9 @@
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 
 /**

@@ -364,6 +364,14 @@ class Form extends Base
         }
     }
 
+    /**
+     * Find a price field
+     * @param string $name
+     * @param string $currency
+     *
+     * @return NodeElement
+     * @throws ElementNotFoundException
+     */
     protected function findPriceField($name, $currency)
     {
         $label = $this->find('css', sprintf('label:contains("%s")', $name));

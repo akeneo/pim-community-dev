@@ -208,9 +208,11 @@ class FlexibleEntityRepository extends EntityRepository implements
     {
         $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
         $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
         $qb->addSelect('AttributeTranslations');
+        $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
         $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');

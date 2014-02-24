@@ -60,7 +60,7 @@ interface ConfigurationRegistryInterface
      * @param string $name
      * @param string $extension
      *
-     * @return \Oro\Bundle\BatchBundle\Item\ItemProcessorInterface
+     * @return \Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface
      */
     public function getProcessor($name, $extension);
 
@@ -70,7 +70,7 @@ interface ConfigurationRegistryInterface
      * @param string $name
      * @param string $extension
      *
-     * @return \Oro\Bundle\BatchBundle\Item\ItemReaderInterface
+     * @return \Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface
      */
     public function getReader($name, $extension);
 }

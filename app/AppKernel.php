@@ -50,7 +50,8 @@ class AppKernel extends OroKernel
             // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
-            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle()
+            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
+            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle()
         );
         $bundles = array_merge($bundles, $pimDepBundles);
 
