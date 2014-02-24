@@ -119,7 +119,9 @@ class JobExecutionController extends AbstractDoctrineController
             foreach ($this->archivist->getArchives($jobExecution) as $archiver => $files) {
                 foreach (array_keys($files) as $key) {
                     $archives[] = [
-                        'name'     => ucfirst($this->translator->trans(sprintf('pim_import_export.download_archive.%s', $archiver))),
+                        'name'     => ucfirst(
+                            $this->translator->trans(sprintf('pim_import_export.download_archive.%s', $archiver))
+                        ),
                         'archiver' => $archiver,
                         'key'      => $key,
                     ];
