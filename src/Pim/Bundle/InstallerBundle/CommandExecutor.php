@@ -3,7 +3,6 @@
 namespace Pim\Bundle\InstallerBundle;
 
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
@@ -30,6 +29,7 @@ class CommandExecutor extends OroCommandExecutor
      *
      * @param string $command
      * @param array  $params
+     *
      * @return CommandExecutor
      * @throws \RuntimeException if command failed and '--ignore-errors' parameter is not specified
      */
