@@ -50,6 +50,7 @@ abstract class OroKernel extends Kernel
 
         $finder
             ->files()
+            ->followLinks()
             ->in(
                 array(
                     $this->getRootDir() . '/../src',
