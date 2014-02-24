@@ -27,7 +27,7 @@
         "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
         "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3",
         "akeneo/measure-bundle": "0.1.0",
-        "akeneo/batch-bundle": "0.1.0"
+        "akeneo/batch-bundle": "0.1.1"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",

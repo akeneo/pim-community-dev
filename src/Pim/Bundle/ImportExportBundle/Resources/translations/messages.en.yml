@@ -124,3 +124,8 @@ pane.accordion:
 popin.create:
     export_profile.title: Create a new export profile
     import_profile.title: Create a new import profile
+
+# Job execution
+'Display item': Display item
+'Hide item': Hide item
+'Collecting data about job execution...': Collecting data about job execution...

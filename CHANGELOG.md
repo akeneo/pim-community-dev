@@ -4,6 +4,7 @@
 - Uservoice integration
 - Add a last operations widget on the dashboard
 - Add new user as fixtures
+- Auto-refresh job execution report page
 
 ## Improvements
 - Load choices for grid filters asynchronously
@@ -16,6 +17,7 @@
 - Prevent hydrating all families in the product edition form
 - Import conversion units for channels
 - Product grid loading performance by hydrating as array and introduce selector extension
+- Add a screen to select the attribute type before creating an attribute
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
@@ -25,6 +27,8 @@
 - Restored missing attributes translation
 - Fix the display of scopable metric attributes in the product edit form
 - Fix regression with resolve target entity on Category entity
+- Fix datepicker in date attribute form
+- Fix unwanted fields appearing in attribute creation form if server-side validation errors are present
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)

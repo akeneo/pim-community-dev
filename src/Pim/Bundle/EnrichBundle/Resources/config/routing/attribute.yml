@@ -14,11 +14,6 @@ pim_enrich_attribute_edit:
     requirements:
         id: \d+
 
-pim_enrich_attribute_preprocess:
-    path: /preprocess
-    defaults: { _controller: pim_enrich.controller.attribute:preprocessAction }
-    methods: [POST]
-
 pim_enrich_attribute_sort:
     path: /sort
     defaults: { _controller: pim_enrich.controller.attribute:sortAction }

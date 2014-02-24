@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
-use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension as OroOrmPagerExtension;
-use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 
 /**

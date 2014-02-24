@@ -44,7 +44,6 @@ services:
             - %pim_catalog.entity.attribute_option_value.class%
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.locale'
             - '@pim_flexibleentity.attributetype.factory'
 
     pim_catalog.manager.locale:

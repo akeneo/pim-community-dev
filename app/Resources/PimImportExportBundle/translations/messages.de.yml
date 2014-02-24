@@ -21,28 +21,6 @@ pim_import_export:
     6: FEHLGESCHLAGEN
     7: AUFGEGEBEN
     8: UNBEKANNT
-  steps:
-    dummy_reader.title: Dummy reader
-    dummy_processor.title: Dummy Processor
-    dummy_writer.title: Dummy Writer
-    product_reader.title: Produkt Auszug
-    entity_reader.title: Entitäten Auszug
-    csv_reader:
-      title: CSV-Reader
-    csv_product_reader.title: CSV Produkt Reader
-    csv_category_reader.title: CSV Kategorie Reader
-    product_processor.title: Produktanlage
-    category_processor.title: Kategorieanlage
-    association_processor.title: Zuweisungserstellung
-    group_processor.title: Gruppenerstellung
-    attribute_processor.title: Attributerstellung
-    attribute_option_processor.title: Attribut-Optionserstellung
-    heterogeneous_processor.title: CSV Produkt Serialisierer
-    homogeneous_processor.title: CSV Entitäten Serialisierer
-    file_writer.title: Ausgabe
-    product_writer.title: Produkt-Speicher
-    category_writer.title: Kategorie-Speicher
-    writer.title: Entitäten-Speicher
   download_archive:
     archive: Erstellte Datei herunterladen
     output: Erstellte Datei herunterladen

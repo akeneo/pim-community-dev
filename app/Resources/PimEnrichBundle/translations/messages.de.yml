@@ -94,6 +94,13 @@ confirmation:
     variant group: 'Sind Sie sicher, dass Sie die Variantengruppe %name% löschen möchten?'
     association type: 'Sind Sie sicher, dass Sie den Verbindungstyp %name% löschen möchten?'
     group type: 'Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?'
+    user: 'Sind Sie sicher, dass Sie den Benutzer %name% löschen möchten?'
+  attribute group:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Attributgruppe entfernen möchten?'
+  family:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Produktfamilie entfernen möchten?'
+  product:
+    remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus diesem Produkt entfernen möchten?'
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -161,6 +168,8 @@ flash:
     created: Verbindungstyp erfolgreich angelegt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
+  user:
+    removed: Benutzer erfolgreich gelöscht
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
   updated: Es gibt ungesicherte Änderungen.
@@ -182,6 +191,7 @@ info:
     axis: 'Variation Achse: %attributes%'
     select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
     selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
+    no group types: Kein Gruppentyp vorhanden, bitte legen Sie einen an
   association type:
     show products: Produkte anzeigen
     show groups: Gruppen anzeigen
@@ -262,7 +272,6 @@ Number min: Min. Wert
 Number max: Max. Wert
 Decimals allowed: Dezimalzahlen zulassen
 Negative allowed: Negative Werte zulassen
-Date type: Datumstyp
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
@@ -323,6 +332,7 @@ pim_enrich.mass_edit_action:
   title: Aktion auswählen
   subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
   confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|'
+  limit_exceeded: 'Bitte wählen Sie weniger als %limit% Produkte für die Bearbeitung aus'
   change-status:
     label: Status ändern (aktivieren / deaktivieren)
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
@@ -467,6 +477,7 @@ pane.accordion:
   general_properties: Allgemeine Eigenschaften
   locale_values: Gebietsschemawerte
   backend_parameters: Backend Parameter
+  general_parameters: Allgemeine Parameter
   label_translations: Feldbezeichner-Übersetzungen
   options: Optionen
   group_values: Werte der Gruppe
@@ -477,6 +488,7 @@ popin.create:
   group_type.title: Neuen Gruppentypen anlegen
   product.title: Neues Produkt anlegen
   variant_group.title: Neue Variantengruppe anlegen
+  option.title: Neue Option anlegen
 Has product: Hat Produkt
 Attribute as label: Attribut als Label
 Available Columns: Verfügbare Spalten

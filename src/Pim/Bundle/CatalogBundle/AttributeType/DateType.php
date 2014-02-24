@@ -22,21 +22,21 @@ class DateType extends FlexDateType
         $properties = array(
             array(
                 'name'      => 'defaultValue',
-                'fieldType' => 'date',
+                'fieldType' => 'oro_date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
                 'name'      => 'dateMin',
-                'fieldType' => 'date',
+                'fieldType' => 'oro_date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )
             ),
             array(
                 'name'      => 'dateMax',
-                'fieldType' => 'date',
+                'fieldType' => 'oro_date',
                 'options'   => array(
                     'widget' => 'single_text'
                 )

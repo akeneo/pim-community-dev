@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Flexible field property, able to render majority of flexible attribute values

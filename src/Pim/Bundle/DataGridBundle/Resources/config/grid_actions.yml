@@ -8,9 +8,9 @@ services:
     oro_datagrid.mass_action.dispatcher:
         class: %pim_datagrid.mass_action.dispatcher.class%
         arguments:
-            - @service_container
-            - @oro_datagrid.datagrid.manager
-            - @oro_datagrid.datagrid.request_params
+            - '@service_container'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.request_params'
 
     pim_datagrid.extension.action.type.tab_redirect:
         class: %pim_datagrid.extension.action.type.tab_redirect.class%

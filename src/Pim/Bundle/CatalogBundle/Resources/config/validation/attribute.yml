@@ -135,6 +135,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 groups: [pim_catalog_file, pim_catalog_image, pim_catalog_identifier]
             - Length:
                 max: 65535
+                groups: [pim_catalog_textarea]
             - Length:
                 max: 255
                 groups: [pim_catalog_text]
