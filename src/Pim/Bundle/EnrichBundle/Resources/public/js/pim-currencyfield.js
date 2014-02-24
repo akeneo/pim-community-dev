@@ -22,11 +22,11 @@ define(
             inputThreshold:  3,
 
             currencyTemplate: _.template(
-                '<div class="currency-header<%= small ? " small" : "" %>">' +
+                '<span class="currency-header<%= small ? " small" : "" %>">' +
                     '<% _.each(currencies, function(currency) { %>' +
                         '<span class="currency-label"><%= currency %></span>' +
                     '<% }); %>' +
-                '</div>'
+                '</span>'
             ),
 
             template: _.template(
@@ -35,9 +35,6 @@ define(
                         '<% if (item.label === currency) { %>' +
                             '<% if (scopable && index === 0) { %>' +
                                 '<label class="control-label add-on">' +
-                                    '<% if (first) { %>' +
-                                        '<span class="field-toggle"><i class="<%= collapseIcon %>"></i></span>' +
-                                    '<% } %>' +
                                     '<%= item.scope %>' +
                                 '</label>' +
                                 '<div class="scopable-input">' +
@@ -60,7 +57,7 @@ define(
             ),
 
             events: {
-                'click label span.field-toggle' : '_toggle'
+                'click label i.field-toggle' : '_toggle'
             },
 
             initialize: function () {
@@ -136,6 +133,9 @@ define(
                 var $label = this.$el.find('label.control-label:first').prependTo(this.$el);
                 this.$el.find('label.control-label:not(:first)').remove();
 
+                var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                $label.prepend($toggleIcon);
+
                 this.$el.find('div[data-scope]').each(function() {
                     var $parent = $(this).parent();
                     $(this).insertBefore($parent);
@@ -166,7 +166,6 @@ define(
 
                 if (this.scopable) {
                     $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
-                    this.$el.find('div.first .controls').css('margin-left', 10);
                     this._collapse();
                     mediator.trigger('scopablefield:rendered', this.$el);
                 } else {
@@ -181,7 +180,7 @@ define(
                     this.expanded = true;
 
                     this.$el.find('div[data-scope]').removeClass('hide');
-                    this.$el.find('.field-toggle i').toggleClass(this.expandIcon + ' ' + this.collapseIcon);
+                    this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -193,7 +192,7 @@ define(
                     this.expanded = false;
 
                     this.$el.find('div[data-scope]:not(:first)').addClass('hide');
-                    this.$el.find('.field-toggle i').toggleClass(this.expandIcon + ' ' + this.collapseIcon);
+                    this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
@@ -210,7 +209,11 @@ define(
                 var $firstField = $fields.filter('[data-scope="'+ scope +'"]');
 
                 $firstField.addClass('first').insertBefore($fields.eq(0));
-                $fields.find('.field-toggle').prependTo($firstField.find('label.add-on'));
+
+                if (this.scopable) {
+                    var $iconsContainer = this.$el.find('.icons-container:first');
+                    $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
+                }
 
                 this._toggle();
                 this._toggle();

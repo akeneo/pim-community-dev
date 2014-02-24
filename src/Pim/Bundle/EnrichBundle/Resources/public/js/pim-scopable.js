@@ -19,9 +19,6 @@ define(
                 '<div class="control-group">' +
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>">' +
-                            '<span class="field-toggle">' +
-                                '<i class="icon-caret-down"></i>' +
-                            '</span>' +
                             '<%= field.scope %>' +
                         '</label>' +
                         '<div class="scopable-input">' +
@@ -175,6 +172,9 @@ define(
                         })
                     );
 
+                    var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                    this.$el.find('label').removeAttr('for').prepend($toggleIcon);
+
                     _.each(this.fieldViews, function (fieldView) {
                         fieldView.render().$el.appendTo(this.$el);
                     }, this);
@@ -212,6 +212,7 @@ define(
                     }, this);
 
                     this._initUI();
+                    this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -236,6 +237,7 @@ define(
                     }, this);
 
                     this._initUI();
+                    this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
@@ -278,14 +280,6 @@ define(
                 } else {
                     $field.prependTo(this.$el);
                 }
-
-                $field.find('.field-toggle').removeClass('hide');
-
-                if (this.expanded) {
-                    $field.find('.field-toggle i').removeClass(this.expandIcon).addClass(this.collapseIcon);
-                } else {
-                    $field.find('.field-toggle i').removeClass(this.collapseIcon).addClass(this.expandIcon);
-                }
             },
 
             _showField: function (field, first) {
@@ -299,7 +293,7 @@ define(
             },
 
             _hideField: function (field) {
-                $(field).hide().find('.field-toggle').addClass('hide');
+                $(field).hide();
             },
 
             _destroyUI: function () {
@@ -332,7 +326,7 @@ define(
             },
 
             events: {
-                'click label span.field-toggle' : '_toggle'
+                'click label i.field-toggle' : '_toggle'
             }
         });
     }
