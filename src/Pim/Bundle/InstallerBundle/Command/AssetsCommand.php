@@ -33,7 +33,7 @@ class AssetsCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor = new CommandExecutor(
-            $input->hasOption('env') ? $input->getOption('env') : null,
+            $input,
             $output,
             $this->getApplication()
         );
@@ -45,34 +45,16 @@ class AssetsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
-        $defaultParams = $this->getDefaultParams($input);
 
         $this->commandExecutor
-            ->runCommand('oro:navigation:init', $defaultParams)
-            ->runCommand('fos:js-routing:dump', $defaultParams + array('--target' => 'web/js/routes.js'))
-            ->runCommand('oro:localization:dump', $defaultParams)
-            ->runCommand('assets:install', $defaultParams)
-            ->runCommand('assetic:dump', $defaultParams)
-            ->runCommand('oro:assetic:dump', $defaultParams)
-            ->runCommand('oro:translation:dump', $defaultParams);
+            ->runCommand('oro:navigation:init')
+            ->runCommand('fos:js-routing:dump', array('--target' => 'web/js/routes.js'))
+            ->runCommand('oro:localization:dump')
+            ->runCommand('assets:install')
+            ->runCommand('assetic:dump')
+            ->runCommand('oro:assetic:dump')
+            ->runCommand('oro:translation:dump');
 
         return $this;
-    }
-
-    /**
-     * Get default params
-     *
-     * @param InputInterface $input
-     *
-     * @return array
-     */
-    protected function getDefaultParams(InputInterface $input)
-    {
-        $defaultParams = array();
-        if ($input->getOption('verbose')) {
-            $defaultParams = array('--verbose' => true);
-        }
-
-        return $defaultParams;
     }
 }

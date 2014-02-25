@@ -58,7 +58,7 @@ class InstallCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor = new CommandExecutor(
-            $input->hasOption('env') ? $input->getOption('env') : null,
+            $input,
             $output,
             $this->getApplication()
         );
@@ -119,7 +119,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
-        $this->commandExecutor->runCommand('pim:installer:check-requirements', $this->getDefaultParams($input));
+        $this->commandExecutor->runCommand('pim:installer:check-requirements');
 
         return $this;
     }
@@ -134,7 +134,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function databaseStep(InputInterface $input, OutputInterface $output)
     {
-        $this->commandExecutor->runCommand('pim:installer:db', $this->getDefaultParams($input));
+        $this->commandExecutor->runCommand('pim:installer:db');
 
         return $this;
     }
@@ -149,7 +149,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function assetsStep(InputInterface $input, OutputInterface $output)
     {
-        $this->commandExecutor->runCommand('pim:installer:assets', $this->getDefaultParams($input));
+        $this->commandExecutor->runCommand('pim:installer:assets');
 
         return $this;
     }
@@ -171,22 +171,5 @@ class InstallCommand extends ContainerAwareCommand
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
-    }
-
-    /**
-     * Get default params
-     *
-     * @param InputInterface $input
-     *
-     * @return array
-     */
-    protected function getDefaultParams(InputInterface $input)
-    {
-        $defaultParams = array();
-        if ($input->getOption('verbose')) {
-            $defaultParams = array('--verbose' => true);
-        }
-
-        return $defaultParams;
     }
 }

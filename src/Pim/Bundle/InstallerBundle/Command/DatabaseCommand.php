@@ -29,11 +29,6 @@ class DatabaseCommand extends ContainerAwareCommand
     const LOAD_ORO    = 'OroPlatform';
 
     /**
-     * @staticvar integer
-     */
-    const LOAD_FIXTURES_TIMEOUT = 0;
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -56,7 +51,7 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor = new CommandExecutor(
-            $input->hasOption('env') ? $input->getOption('env') : null,
+            $input,
             $output,
             $this->getApplication()
         );
@@ -69,11 +64,9 @@ class DatabaseCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Prepare database schema</info>');
 
-        $defaultParams = $this->getDefaultParams($input);
-
         $this->commandExecutor
-            ->runCommand('doctrine:database:drop', $defaultParams + array('--force' => true))
-            ->runCommand('doctrine:database:create', $defaultParams);
+            ->runCommand('doctrine:database:drop', array('--force' => true))
+            ->runCommand('doctrine:database:create');
 
         // Needs to close connection if always open
         $connection = $this->getContainer()->get('doctrine')->getConnection();
@@ -82,16 +75,15 @@ class DatabaseCommand extends ContainerAwareCommand
         }
 
         $this->commandExecutor
-            ->runCommand('doctrine:schema:create', $defaultParams)
-            ->runCommand('oro:entity-config:init', $defaultParams)
-            ->runCommand('oro:entity-extend:init', $defaultParams)
+            ->runCommand('doctrine:schema:create')
+            ->runCommand('oro:entity-config:init')
+            ->runCommand('oro:entity-extend:init')
             ->runCommand(
-                'oro:entity-extend:update-config',
-                $defaultParams
+                'oro:entity-extend:update-config'
             )
             ->runCommand(
                 'doctrine:schema:update',
-                $defaultParams + array('--force' => true, '--no-interaction' => true)
+                array('--force' => true, '--no-interaction' => true)
             );
 
         $this
@@ -114,13 +106,10 @@ class DatabaseCommand extends ContainerAwareCommand
         if ($input->getOption('env') === 'behat') {
             $input->setOption('fixtures', self::LOAD_ORO);
         }
-        $defaultParams = $this->getDefaultParams($input);
 
         $output->writeln('<info>Load fixtures.</info>');
 
-        $params =
-            $defaultParams
-            + array(
+        $params = array(
                 '--no-interaction' => true,
                 '--append' => true
             )
@@ -181,34 +170,19 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
-        $defaultParams = $this->getDefaultParams($input);
-
         $this->commandExecutor
-            ->runCommand('oro:search:create-index')
+            ->runCommand('oro:search:create-index');
+        var_dump('pim search reindex');
+        $this->commandExecutor
             ->runCommand(
                 'pim:search:reindex',
-                $defaultParams + array('locale' => $this->getContainer()->getParameter('locale'))
-            )
-            ->runCommand('pim:versioning:refresh', $defaultParams)
-            ->runCommand('pim:completeness:calculate', $defaultParams);
+                array('locale' => $this->getContainer()->getParameter('locale'))
+            );
+        var_dump('end of :D');
+        $this->commandExecutor
+            ->runCommand('pim:versioning:refresh')
+            ->runCommand('pim:completeness:calculate');
 
         return $this;
-    }
-
-    /**
-     * Get default params
-     *
-     * @param InputInterface $input
-     *
-     * @return array
-     */
-    protected function getDefaultParams(InputInterface $input)
-    {
-        $defaultParams = array();
-        if ($input->getOption('verbose')) {
-            $defaultParams = array('--verbose' => true);
-        }
-
-        return $defaultParams;
     }
 }

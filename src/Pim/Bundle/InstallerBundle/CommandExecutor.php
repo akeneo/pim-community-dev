@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\InstallerBundle;
 
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
-
-use Oro\Bundle\InstallerBundle\CommandExecutor as OroCommandExecutor;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command executor
@@ -17,19 +15,46 @@ use Oro\Bundle\InstallerBundle\CommandExecutor as OroCommandExecutor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommandExecutor extends OroCommandExecutor
+class CommandExecutor
 {
+    /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * Constructor
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param Application     $application
+     */
+    public function __construct(InputInterface $input, OutputInterface $output, Application $application)
+    {
+        $this->input       = $input;
+        $this->output      = $output;
+        $this->application = $application;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function runCommand($command, $params = array())
     {
         $params = array_merge(
-            array(
-                'command'    => $command,
-                '--no-debug' => true,
-            ),
-            $params
+            array('command' => $command),
+            $params,
+            $this->getDefaultParams()
         );
 
         $this->application->setAutoExit(false);
@@ -43,5 +68,25 @@ class CommandExecutor extends OroCommandExecutor
         }
 
         return $this;
+    }
+
+    /**
+     * Get default parameters
+     *
+     * @return array
+     */
+    protected function getDefaultParams()
+    {
+        $defaultParams = array('--no-debug' => true);
+
+        if ($this->input->hasOption('env')) {
+            $defaultParams['--env'] = $this->input->getOption('env');
+        }
+
+        if ($this->input->hasOption('verbose')) {
+            $defaultParams['--verbose'] = $this->input->getOption('verbose');
+        }
+
+        return $defaultParams;
     }
 }
