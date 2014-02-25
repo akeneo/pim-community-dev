@@ -36,6 +36,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const AVAILABLE_COLUMNS_KEY = 'available_columns';
+
+    /**
+     * @var string
+     */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
     /**
