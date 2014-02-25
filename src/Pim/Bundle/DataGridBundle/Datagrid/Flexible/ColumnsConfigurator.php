@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
@@ -48,7 +49,12 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * @param array
      */
-    protected $sortedColumns;
+    protected $availableColumns;
+
+    /**
+     * @param array
+     */
+    protected $displayedColumns;
 
     /**
      * @param DatagridConfiguration $configuration the grid config
@@ -101,7 +107,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected function prepareAttributesColumns()
     {
         $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
-
         $this->identifierColumn  = array();
         $this->attributesColumns = array();
 
@@ -121,7 +126,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
             }
 
             if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
-
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
                     'label' => $attribute['label'],
@@ -150,25 +154,26 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     protected function sortColumns()
     {
-        $columns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
-            + $this->attributesColumns;
-
-        $this->sortedColumns = $columns;
-
         $userColumns = $this->configuration->offsetGetByPath(
             sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
         );
-        if (!$userColumns) {
-            $this->sortedColumns = $columns;
 
-        } else {
-            $sortedColumns = $this->editableColumns;
+        $allColumns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
+            + $this->attributesColumns;
+
+        if (!empty($userColumns)) {
+            $this->displayedColumns = $this->editableColumns;
+            $this->availableColumns = $allColumns;
             foreach ($userColumns as $column) {
-                if (array_key_exists($column, $columns)) {
-                    $sortedColumns[$column] = $columns[$column];
+                if (array_key_exists($column, $allColumns)) {
+                    $this->displayedColumns[$column] = $allColumns[$column];
+                    unset($this->availableColumns[$column]);
                 }
             }
-            $this->sortedColumns = $sortedColumns;
+
+        } else {
+            $this->displayedColumns = $allColumns;
+            $this->availableColumns = array();
         }
     }
 
@@ -181,7 +186,12 @@ class ColumnsConfigurator implements ConfiguratorInterface
     {
         $this->configuration->offsetSetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY),
-            $this->sortedColumns
+            $this->displayedColumns
+        );
+
+        $this->configuration->offsetSetByPath(
+            sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY),
+            $this->availableColumns
         );
     }
 }
