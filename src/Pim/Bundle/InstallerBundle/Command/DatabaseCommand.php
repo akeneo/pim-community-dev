@@ -2,20 +2,35 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
-use Symfony\Component\Console\Input\InputOption;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 
+/**
+ * Database preparing command
+ * - creates database
+ * - updates schema
+ * - loads fixtures
+ * - launches other command for database calculations (search index, completeness calculation)
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class DatabaseCommand extends ContainerAwareCommand
 {
-
+    /**
+     * @staticvar string
+     */
     const LOAD_ALL    = 'all';
     const LOAD_ORO    = 'OroPlatform';
 
+    /**
+     * @staticvar integer
+     */
     const LOAD_FIXTURES_TIMEOUT = 0;
 
     /**
