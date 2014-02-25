@@ -19,7 +19,22 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 class ContextConfigurator implements ConfiguratorInterface
 {
     /**
-     * @param DatagridConfiguration
+     * @var string
+     */
+    const SOURCE_PATH = '[source][%s]';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_LOCALE_KEY = 'locale_code';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
+
+    /**
+     * @var DatagridConfiguration
      */
     protected $configuration;
 
@@ -71,9 +86,20 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
-        $this->addAttributesIds();
         $this->addLocaleCode();
+        $this->addDisplayedColumnCodes();
+        $this->addAttributesIds();
         $this->addAttributesConfig();
+    }
+
+    /**
+     * @param string $key the configuration key
+     *
+     * @return string
+     */
+    protected function getSourcePath($key)
+    {
+        return sprintf(self::SOURCE_PATH, $key);
     }
 
     /**
@@ -81,7 +107,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addAttributesIds()
     {
-        $userConfig     = $this->getUserConfig();
+        $userConfig     = $this->getUserGridConfig();
         $attributeCodes = $userConfig ? $userConfig->getColumns() : null;
         $repository     = $this->flexibleManager->getAttributeRepository();
         $flexibleEntity = $this->flexibleManager->getFlexibleName();
@@ -100,7 +126,20 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addLocaleCode()
     {
         $localeCode = $this->getCurrentLocaleCode();
-        $this->configuration->offsetSetByPath(OrmDatasource::DISPLAYED_LOCALE_PATH, $localeCode);
+        $path = $this->getSourcePath(self::DISPLAYED_LOCALE_KEY);
+        $this->configuration->offsetSetByPath($path, $localeCode);
+    }
+
+    /**
+     * Inject displayed columns in the datagrid configuration
+     */
+    protected function addDisplayedColumnCodes()
+    {
+        $userConfig = $this->getUserGridConfig();
+        if ($userConfig) {
+            $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
+            $this->configuration->offsetSetByPath($path, $userConfig->getColumns());
+        }
     }
 
     /**
@@ -153,10 +192,9 @@ class ContextConfigurator implements ConfiguratorInterface
      *
      * @return null|DatagridConfiguration
      */
-    protected function getUserConfig()
+    protected function getUserGridConfig()
     {
         $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
-
         $repository = $this->flexibleManager
             ->getEntityManager()
             ->getRepository('PimEnrichBundle:DatagridConfiguration');
