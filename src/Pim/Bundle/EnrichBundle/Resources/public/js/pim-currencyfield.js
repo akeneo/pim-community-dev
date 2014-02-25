@@ -139,12 +139,14 @@ define(
                 var $label = this.$el.find('label.control-label:first').prependTo(this.$el);
                 this.$el.find('label.control-label:not(:first)').remove();
 
-                if (this.scopable) {
+                var $fields = this.$el.find('div[data-scope]');
+
+                if (this.scopable && $fields.length > 1) {
                     var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
                     $label.prepend($toggleIcon);
                 }
 
-                this.$el.find('div[data-scope]').each(function() {
+                $fields.each(function() {
                     var $parent = $(this).parent();
                     $(this).insertBefore($parent);
                     $parent.remove();

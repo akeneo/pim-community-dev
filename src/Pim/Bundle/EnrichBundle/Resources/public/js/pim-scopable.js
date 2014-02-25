@@ -177,8 +177,10 @@ define(
                         })
                     );
 
-                    var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
-                    this.$el.find('label').removeAttr('for').prepend($toggleIcon);
+                    if (this.fieldViews.length > 1) {
+                        var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                        this.$el.find('label').removeAttr('for').prepend($toggleIcon);
+                    }
 
                     _.each(this.fieldViews, function (fieldView) {
                         fieldView.render().$el.appendTo(this.$el);
