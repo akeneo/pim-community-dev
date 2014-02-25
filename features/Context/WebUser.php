@@ -1133,20 +1133,10 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $this->wait(
-            120000,
-            <<<JS
-function () {
-    switch ($("#status").text()) {
-        case 'Status: COMPLETED':
-        case 'Status: STOPPED':
-        case 'Status: FAILED':
-            return true;
-    }
-    return false;
-}
-JS
-        );
+        // Wait until the loading image is hidden
+        $this->wait(120000, '$("img.loading.transparent").length');
+        // Wait again to give the the backbone view time to render
+        $this->wait();
     }
 
     /**
