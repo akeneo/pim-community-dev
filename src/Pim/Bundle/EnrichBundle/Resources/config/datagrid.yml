@@ -942,6 +942,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
+                editable:      true
             family:
                 label:     Family
                 data_name: familyLabel
