@@ -43,6 +43,7 @@
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
         <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-docs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -210,7 +211,7 @@
             <arg value="akeneo_ci_pim_docs_" />
             <!-- Profile Prefix -->
             <arg value="jenkins-docs-" />
-            <arg value="${basedir}/bin/behat --ansi" />
+            <arg value="${basedir}/bin/behat --tags=docs --ansi" />
         </exec>
     </target>
 
