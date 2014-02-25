@@ -114,18 +114,16 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
         if ('json' === $request->getRequestFormat()) {
-
             $archives = [];
-            foreach ($this->archivist->getArchives($jobExecution) as $archiver => $files) {
-                foreach (array_keys($files) as $key) {
-                    $archives[] = [
-                        'name'     => ucfirst(
-                            $this->translator->trans(sprintf('pim_import_export.download_archive.%s', $archiver))
-                        ),
-                        'archiver' => $archiver,
-                        'key'      => $key,
-                    ];
-                }
+            foreach ($this->archivist->getArchives($jobExecution) as $key => $files) {
+                $label = $this->translator->transchoice(
+                    sprintf('pim_import_export.download_archive.%s', $key),
+                    count($files)
+                );
+                $archives[$key] = [
+                    'label' => ucfirst($label),
+                    'files' => $files,
+                ];
             }
 
             return new JsonResponse(
@@ -141,8 +139,6 @@ class JobExecutionController extends AbstractDoctrineController
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
             array(
                 'execution'   => $jobExecution,
-                'existingLog' => file_exists($jobExecution->getLogFile()),
-                'archives'    => $this->archivist->getArchives($jobExecution),
             )
         );
     }
