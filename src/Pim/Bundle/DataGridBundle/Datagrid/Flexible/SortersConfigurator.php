@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfigu
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Sorters configurator for flexible grid
@@ -28,23 +29,23 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param \Closure
+     * @var FlexibleManager
      */
-    protected $callback;
+    protected $flexibleManager;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the conf registry
-     * @param Closure               $callback      the callback function
+     * @param DatagridConfiguration $configuration   the grid config
+     * @param ConfigurationRegistry $registry        the conf registry
+     * @param FlexibleManager       $flexibleManager flexible manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        \Closure $callback
+        FlexibleManager $manager
     ) {
-        $this->configuration = $configuration;
-        $this->registry      = $registry;
-        $this->callback      = $callback;
+        $this->configuration   = $configuration;
+        $this->registry        = $registry;
+        $this->flexibleManager = $manager;
     }
 
     /**
@@ -53,6 +54,7 @@ class SortersConfigurator implements ConfiguratorInterface
     public function configure()
     {
         $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
+        $callback = $this->getApplyCallback();
         $columns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
@@ -78,11 +80,29 @@ class SortersConfigurator implements ConfiguratorInterface
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
                         array(
                             PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                            'apply_callback'                 => $this->callback
+                            'apply_callback'                 => $callback
                         )
                     );
                 }
             }
         }
+    }
+
+    /**
+     * Creates sorter apply callback
+     *
+     * @return callable
+     */
+    protected function getApplyCallback()
+    {
+        $flexManager = $this->flexibleManager;
+
+        return function (OrmDatasource $datasource, $attributeCode, $direction) use ($flexManager) {
+            $qb = $datasource->getQueryBuilder();
+
+            /** @var $entityRepository FlexibleEntityRepository */
+            $entityRepository = $flexManager->getFlexibleRepository();
+            $entityRepository->applySorterByAttribute($qb, $attributeCode, $direction);
+        };
     }
 }
