@@ -202,8 +202,15 @@
     </target>
     
     <target name="behat-docs" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat" failonerror="true">
-            <arg value="--tags=doc" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="2" />
+            <arg value="noxdebug" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_docs_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-docs-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 
