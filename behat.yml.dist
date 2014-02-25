@@ -171,3 +171,37 @@ jenkins-coverage-1:
             output_path: null,app/build/logs/behat-coverage/
     filters:
         tags: ~skip
+
+jenkins-docs-1:
+    context:
+        parameters:
+            base_url: http://pim-docs-behat-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-docs-behat-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat-docs/
+    filters:
+        tags: ~skip
+
+jenkins-docs-2:
+    context:
+        parameters:
+            base_url: http://pim-docs-behat-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-docs-behat-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat-docs/
+    filters:
+        tags: ~skip
