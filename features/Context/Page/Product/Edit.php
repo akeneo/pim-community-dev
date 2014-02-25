@@ -153,7 +153,10 @@ class Edit extends Form
             // mobile Description
             list($scope, $name) = str_word_count($name, 1);
 
-            return $this->findScopedField($name, $scope);
+            // Check that it is really a scoped field, not a field with a two word label
+            if (strtolower($scope) === $scope) {
+                return $this->findScopedField($name, $scope);
+            }
         }
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
