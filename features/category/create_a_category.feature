@@ -7,7 +7,6 @@ Feature: Create a category
     Given the "default" catalog configuration
     And I am logged in as "admin"
 
-  @doc
   Scenario: Create a category tree
     Given I am on the category tree creation page
     When I fill in the following information:
