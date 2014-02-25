@@ -42,80 +42,69 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
 
-        if (!$form->has('additional')) {
-            return;
-        }
-
-        $subForm = $form->get('additional');
-        $this->updateCatalogLocale($subForm);
-        $this->updateCatalogScope($subForm);
-        $this->updateDefaultTree($subForm);
+        $this->updateCatalogLocale($form);
+        $this->updateCatalogScope($form);
+        $this->updateDefaultTree($form);
 
     }
 
     /**
-     * @param Form $subForm
+     * @param Form $form
      *
      * @return null
      */
-    protected function updateCatalogLocale(Form $subForm)
+    protected function updateCatalogLocale(Form $form)
     {
-        if ($subForm->has('catalogLocale')) {
-            $subForm->add(
-                'catalogLocale',
-                'entity',
-                array(
-                    'class'         => 'PimCatalogBundle:Locale',
-                    'property'      => 'code',
-                    'select2'       => true,
-                    'query_builder' => function (EntityRepository $repository) {
-                        return $repository->getActivatedLocalesQB();
-                    }
-                )
-            );
-        };
+        $form->add(
+            'catalogLocale',
+            'entity',
+            array(
+                'class'         => 'PimCatalogBundle:Locale',
+                'property'      => 'code',
+                'select2'       => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getActivatedLocalesQB();
+                }
+            )
+        );
     }
 
     /**
-     * @param Form $subForm
+     * @param Form $form
      *
      * @return null
      */
-    protected function updateCatalogScope(Form $subForm)
+    protected function updateCatalogScope(Form $form)
     {
-        if ($subForm->has('catalogScope')) {
-            $subForm->add(
-                'catalogScope',
-                'entity',
-                array(
-                    'class'    => 'PimCatalogBundle:Channel',
-                    'property' => 'label',
-                    'select2'  => true
-                )
-            );
-        };
+        $form->add(
+            'catalogScope',
+            'entity',
+            array(
+                'class'    => 'PimCatalogBundle:Channel',
+                'property' => 'label',
+                'select2'  => true
+            )
+        );
     }
 
     /**
-     * @param Form $subForm
+     * @param Form $form
      *
      * @return null
      */
-    protected function updateDefaultTree(Form $subForm)
+    protected function updateDefaultTree(Form $form)
     {
-        if ($subForm->has('defaultTree')) {
-            $subForm->add(
-                'defaultTree',
-                'entity',
-                array(
-                    'class'         => 'PimCatalogBundle:Category',
-                    'property'      => 'label',
-                    'select2'       => true,
-                    'query_builder' => function (EntityRepository $repository) {
-                        return $repository->getTreesQB();
-                    }
-                )
-            );
-        };
+        $form->add(
+            'defaultTree',
+            'entity',
+            array(
+                'class'         => 'PimCatalogBundle:Category',
+                'property'      => 'label',
+                'select2'       => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getTreesQB();
+                }
+            )
+        );
     }
 }
