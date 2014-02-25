@@ -5,6 +5,7 @@
 - Add a last operations widget on the dashboard
 - Add new user as fixtures
 - Auto-refresh job execution report page
+- Add a checkbox to select all visible rows in entity association grids
 
 ## Improvements
 - Load choices for grid filters asynchronously
