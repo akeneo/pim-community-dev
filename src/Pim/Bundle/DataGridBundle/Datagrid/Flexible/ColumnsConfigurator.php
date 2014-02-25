@@ -26,6 +26,31 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
+     * @param array
+     */
+    protected $propertiesColumns;
+
+    /**
+     * @param array
+     */
+    protected $editableColumns;
+
+    /**
+     * @param array
+     */
+    protected $identifierColumn;
+
+    /**
+     * @param array
+     */
+    protected $attributesColumns;
+
+    /**
+     * @param array
+     */
+    protected $sortedColumns;
+
+    /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the config registry
      *
@@ -42,12 +67,43 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
-        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
-        $propertiesColumns = $this->configuration->offsetGetByPath(
+        $this->preparePropertiesColumns();
+        $this->prepareAttributesColumns();
+        $this->sortColumns();
+        $this->addColumns();
+    }
+
+    /**
+     * Prepare properties columns, ie, the static columns defined in datagrid.yml
+     *
+     * @return null
+     */
+    protected function preparePropertiesColumns()
+    {
+        $this->propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
-        $identifierColumn  = array();
-        $attributesColumns = array();
+        $this->editableColumns = array();
+
+        foreach ($this->propertiesColumns as $columnCode => $columnData) {
+            if (isset($columnData['editable'])) {
+                $this->editableColumns[$columnCode] = $columnData;
+                unset($this->propertiesColumns[$columnCode]);
+            }
+        }
+    }
+
+    /**
+     * Prepare dynamic columns, ie columns for attributes
+     *
+     * @return null
+     */
+    protected function prepareAttributesColumns()
+    {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
+
+        $this->identifierColumn  = array();
+        $this->attributesColumns = array();
 
         foreach ($attributes as $attributeCode => $attribute) {
             $showColumn        = $attribute['useableAsGridColumn'];
@@ -72,21 +128,60 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {
-                    $identifierColumn[$attributeCode] = $columnConfig;
+                    $this->identifierColumn[$attributeCode] = $columnConfig;
                 } else {
-                    $attributesColumns[$attributeCode] = $columnConfig;
+                    $this->attributesColumns[$attributeCode] = $columnConfig;
                 }
             }
         }
 
         uasort(
-            $attributesColumns,
+            $this->attributesColumns,
             function ($col1, $col2) {
                 return strcmp($col1['label'], $col2['label']);
             }
         );
+    }
 
-        $columns = $identifierColumn + $propertiesColumns + $attributesColumns;
-        $this->configuration->offsetSetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY), $columns);
+    /**
+     * Sort the columns
+     *
+     * @return null
+     */
+    protected function sortColumns()
+    {
+        $columns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
+            + $this->attributesColumns;
+
+        $this->sortedColumns = $columns;
+
+        $userColumns = $this->configuration->offsetGetByPath(
+            sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
+        );
+        if (!$userColumns) {
+            $this->sortedColumns = $columns;
+
+        } else {
+            $sortedColumns = $this->editableColumns;
+            foreach ($userColumns as $column) {
+                if (array_key_exists($column, $columns)) {
+                    $sortedColumns[$column] = $columns[$column];
+                }
+            }
+            $this->sortedColumns = $sortedColumns;
+        }
+    }
+
+    /**
+     * Add columns to datagrid configuration
+     *
+     * @return null
+     */
+    protected function addColumns()
+    {
+        $this->configuration->offsetSetByPath(
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY),
+            $this->sortedColumns
+        );
     }
 }
