@@ -27,5 +27,5 @@ Feature: Sort available products for a variant group
 
   Scenario: Successfully sort products
     Given I am on the "POSTIT" variant group page
-    Then the rows should be sorted descending by Has product
-    And I should be able to sort the rows by Has product, SKU, Color, Size, Family, Created at and Updated at
+    Then the rows should be sorted descending by In group
+    And I should be able to sort the rows by In group, SKU, Color, Size, Family, Created at and Updated at

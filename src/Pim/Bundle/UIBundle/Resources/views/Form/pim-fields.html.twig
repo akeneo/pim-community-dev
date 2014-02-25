@@ -351,13 +351,11 @@
 {% endblock pim_enrich_price_widget %}
 
 {% block pim_enrich_attribute_requirement_widget %}
-    <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
+    {% set requiredTitle = 'Required'|trans %}
+    {% set nonRequiredTitle = 'Not required'|trans %}
+    <div class="attribute-requirement" data-required-title="{{ requiredTitle }}" data-not-required-title="{{ nonRequiredTitle }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
-        {% if form.required.vars.checked %}
-        <i class="icon-ok required" data-toggle="tooltip" data-placement="right"></i>
-        {% else %}
-        <i class="icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
-        {% endif %}
+        <i class="icon-{{ form.required.vars.checked ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
     </div>
 {% endblock pim_enrich_attribute_requirement_widget %}
 

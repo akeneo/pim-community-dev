@@ -397,10 +397,10 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - oro/datagrid/column-form-listener
+                - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_product
+                columnName: is_checked
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
@@ -411,11 +411,17 @@ datagrid:
             repository_method: createGroupDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_product:
+            is_checked:
                 frontend_type: boolean
-                label: Has product
-                editable: true
-                data_name: has_product
+                data_name:     is_checked
+                editable:      true
+            in_group:
+                label:         In group
+                data_name:     in_group
+                editable:      true
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             label:
                 label: Label
                 data_name: label
@@ -443,8 +449,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                has_product:
-                    data_name: has_product
+                in_group:
+                    data_name: in_group
                 family:
                     data_name: familyLabel
                 enabled:
@@ -456,13 +462,13 @@ datagrid:
                 updated:
                     data_name: p.updated
             default:
-                has_product: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
-                has_product:
+                in_group:
                     type:      boolean
-                    label:     Has product
-                    data_name: has_product
+                    label:     In group
+                    data_name: in_group
                     filter_by_having: true
                 family:
                     type:      choice
@@ -500,10 +506,10 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - oro/datagrid/column-form-listener
+                - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_product
+                columnName: is_checked
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
@@ -514,11 +520,17 @@ datagrid:
             repository_method: createVariantGroupDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_product:
+            is_checked:
                 frontend_type: boolean
-                label: Has product
-                editable: true
-                data_name: has_product
+                data_name:     is_checked
+                editable:      true
+            in_group:
+                label:         In group
+                data_name:     in_group
+                editable:      true
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             label:
                 label: Label
                 data_name: label
@@ -546,8 +558,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                has_product:
-                    data_name: has_product
+                in_group:
+                    data_name: in_group
                 family:
                     data_name: familyLabel
                 enabled:
@@ -559,13 +571,13 @@ datagrid:
                 updated:
                     data_name: p.updated
             default:
-                has_product: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
-                has_product:
+                in_group:
                     type:      boolean
-                    label:     Has product
-                    data_name: has_product
+                    label:     In group
+                    data_name: in_group
                     filter_by_having: true
                 family:
                     type:      choice
@@ -911,18 +923,23 @@ datagrid:
                 - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_association
+                columnName: is_checked
         source:
             type: pim_orm
             entity: %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             is_flexible: true
         columns:
-            has_association:
+            is_checked:
                 frontend_type: boolean
-                label:         Has association
-                data_name:     has_association
+                data_name:     is_checked
                 editable:      true
+            is_associated:
+                label:         Is associated
+                data_name:     is_associated
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             family:
                 label:     Family
                 data_name: familyLabel
@@ -947,8 +964,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                has_association:
-                    data_name: has_association
+                is_associated:
+                    data_name: is_associated
                 family:
                     data_name: familyLabel
                 enabled:
@@ -960,13 +977,13 @@ datagrid:
                 updated:
                     data_name: p.updated
             default:
-                has_association: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
-                has_association:
+                is_associated:
                     type:             boolean
-                    label:            Has association
-                    data_name:        has_association
+                    label:            Is associated
+                    data_name:        is_associated
                     filter_by_having: true
                 family:
                     type:      choice
@@ -1005,17 +1022,22 @@ datagrid:
                 - pim/datagrid/column-form-listener
             columnListener:
                 dataField: id
-                columnName: has_association
+                columnName: is_checked
         source:
             type: pim_orm
             entity: %pim_catalog.entity.group.class%
             repository_method: createAssociationDatagridQueryBuilder
         columns:
-            has_association:
+            is_checked:
                 frontend_type: boolean
-                label:         Has association
-                data_name:     has_association
+                data_name:     is_checked
                 editable:      true
+            is_associated:
+                label:         Is associated
+                data_name:     is_associated
+                type:          twig
+                template:      PimDataGridBundle:Property:checked.html.twig
+                frontend_type: html
             code:
                 label: Code
             label:
@@ -1026,8 +1048,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                has_association:
-                    data_name: has_association
+                is_associated:
+                    data_name: is_associated
                 code:
                     data_name: g.code
                 label:
@@ -1035,13 +1057,13 @@ datagrid:
                 type:
                     data_name: typeLabel
             default:
-                has_association: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
-                has_association:
+                is_associated:
                     type:             boolean
-                    label:            Has association
-                    data_name:        has_association
+                    label:            Is associated
+                    data_name:        is_associated
                     filter_by_having: true
                 code:
                     type:      string

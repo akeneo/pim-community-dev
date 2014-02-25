@@ -113,13 +113,13 @@ class GroupRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('g');
 
-        $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
-        $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
+        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
+        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
         $typeExpr = $qb->expr()->in('type.id', ':groupTypes');
 
         $qb
-            ->addSelect(sprintf("%s AS groupLabel", $groupLabelExpr))
-            ->addSelect(sprintf("%s AS typeLabel", $typeLabelExpr))
+            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
+            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
             ->addSelect('translation.label');
 
         $qb
@@ -142,15 +142,18 @@ class GroupRepository extends ReferableEntityRepository
         $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
         $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
 
-        $hasAssociationExpr =
-            'CASE WHEN (pa IS NOT NULL OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in)' .
+        $isCheckecExpr =
+            'CASE WHEN (pa IS NOT NULL OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
+
+        $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
             ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
             ->addSelect('translation.label')
-            ->addSelect($hasAssociationExpr.' AS has_association');
+            ->addSelect($isCheckecExpr.' AS is_checked')
+            ->addSelect($isAssociatedExpr.' AS is_associated');
 
         $qb
             ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :dataLocale')
