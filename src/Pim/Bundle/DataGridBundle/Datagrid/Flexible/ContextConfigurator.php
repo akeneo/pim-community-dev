@@ -34,6 +34,11 @@ class ContextConfigurator implements ConfiguratorInterface
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
     /**
+     * @var string
+     */
+    const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
+
+    /**
      * @var DatagridConfiguration
      */
     protected $configuration;
@@ -194,7 +199,12 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridConfig()
     {
-        $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
+        $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
+        $alias = $this->configuration->offsetGetByPath($path);
+        if (!$alias) {
+            $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
+        }
+
         $repository = $this->flexibleManager
             ->getEntityManager()
             ->getRepository('PimEnrichBundle:DatagridConfiguration');
