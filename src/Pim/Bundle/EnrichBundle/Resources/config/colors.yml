@@ -1,19 +1,31 @@
+# Solarized colors (https://github.com/altercation/solarized)
+#
+# Copyright (c) 2011 Ethan Schoonover
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 parameters:
     pim_enrich.colors:
-        navy:    '0,31,63,.4'
-        blue:    '0,116,217,.4'
-        aqua:    '127,219,255,.4'
-        teal:    '57,204,204,.4'
-        olive:   '61,153,112,.4'
-        green:   '46,204,64,.4'
-        lime:    '1,255,112,.4'
-        yellow:  '255,220,0,.4'
-        orange:  '255,133,27,.4'
-        red:     '255,65,54,.4'
-        maroon:  '133,20,75,.4'
-        fuchsia: '240,18,190,.4'
-        purple:  '177,13,201,.4'
-        white:   '255,255,255,.4'
-        silver:  '221,221,221,.4'
-        gray:    '170,170,170,.4'
-        black:   '17,17,17,.4'
+        gray:    '238,232,213,1'
+        white:   '253,246,227,1'
+        yellow:  '181,137,0,1'
+        orange:  '203,75,22,1'
+        magenta: '211,54,130,1'
+        violet:  '108,113,196,1'
+        blue:    '38,139,210,1'
+        cyan:    '42,161,152,1'

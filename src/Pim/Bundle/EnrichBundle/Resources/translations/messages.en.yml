@@ -226,23 +226,14 @@ info:
 
 # Labels for channel colors
 color:
-    navy:    Navy
-    blue:    Blue
-    aqua:    Aqua
-    teal:    Teal
-    olive:   Olive
-    green:   Green
-    lime:    Lime
+    gray:    Gray
+    white:   White
     yellow:  Yellow
     orange:  Orange
-    red:     Red
-    maroon:  Maroon
-    fuchsia: Fuchsia
-    purple:  Purple
-    white:   White
-    silver:  Silver
-    gray:    Gray
-    black:   Black
+    magenta: Magenta
+    violet:  Violet
+    blue:    Blue
+    cyan:    Cyan
 
 # Form elements
 Options:                       Options
