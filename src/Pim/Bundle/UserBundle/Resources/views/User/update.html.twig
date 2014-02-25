@@ -104,9 +104,7 @@
 
         {% set tabs = ['General'] %}
 
-        {% if form.additional is defined and form.additional.children|length > 0 %}
-            {% set tabs = tabs|merge(['Additional']) %}
-        {% endif %}
+        {% set tabs = tabs|merge(['Additional']) %}
 
         {% if form.groups is defined or form.rolesCollection is defined %}
             {% set tabs = tabs|merge(['Groups and Roles']) %}
@@ -140,14 +138,11 @@
                 {{ UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans) }}
             </div>
 
-            {% if form.additional is defined and form.additional.children|length > 0 %}
-                <div class="tab-pane" id="additional">
-                    {% for value in form.additional %}
-                        {{ form_row(value) }}
-                    {% endfor %}
-
-                </div>
-            {% endif %}
+            <div class="tab-pane" id="additional">
+                {{ form_row(form.catalogLocale) }}
+                {{ form_row(form.catalogScope) }}
+                {{ form_row(form.defaultTree) }}
+            </div>
 
             {% if form.groups is defined or form.rolesCollection is defined %}
                 <div class="tab-pane" id="groups-and-roles">

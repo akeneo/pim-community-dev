@@ -169,7 +169,7 @@ class UserPreferencesListener implements EventSubscriber
      */
     protected function onChannelRemoved(Channel $channel)
     {
-        $users  = $this->findUsersBy(array('field_catalogScope' => $channel));
+        $users  = $this->findUsersBy(array('catalogScope' => $channel));
         $scopes = $this->container->get('pim_catalog.manager.channel')->getChannels();
 
         $defaultScope = current(
@@ -196,7 +196,7 @@ class UserPreferencesListener implements EventSubscriber
      */
     protected function onTreeRemoved(Category $category)
     {
-        $users = $this->findUsersBy(array('field_defaultTree' => $category));
+        $users = $this->findUsersBy(array('defaultTree' => $category));
         $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
 
         $defaultTree = current(
@@ -225,7 +225,7 @@ class UserPreferencesListener implements EventSubscriber
 
         foreach ($this->deactivatedLocales as $localeCode) {
             $deactivatedLocale = $localeManager->getLocaleByCode($localeCode);
-            $users = $this->findUsersBy(array('field_catalogLocale' => $deactivatedLocale));
+            $users = $this->findUsersBy(array('catalogLocale' => $deactivatedLocale));
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
