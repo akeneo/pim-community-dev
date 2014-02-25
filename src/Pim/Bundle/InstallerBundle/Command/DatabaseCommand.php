@@ -87,11 +87,11 @@ class DatabaseCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-extend:init', $defaultParams)
             ->runCommand(
                 'oro:entity-extend:update-config',
-                $defaultParams + array('--process-isolation' => true)
+                $defaultParams
             )
             ->runCommand(
                 'doctrine:schema:update',
-                $defaultParams + array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
+                $defaultParams + array('--force' => true, '--no-interaction' => true)
             );
 
         $this
@@ -121,10 +121,8 @@ class DatabaseCommand extends ContainerAwareCommand
         $params =
             $defaultParams
             + array(
-                '--process-isolation' => true,
                 '--no-interaction' => true,
-                '--append' => true,
-                '--process-timeout' => static::LOAD_FIXTURES_TIMEOUT
+                '--append' => true
             )
             + $this->getFixturesList($input->getOption('fixtures'));
 
