@@ -21,7 +21,7 @@ Feature: Filter available products for a variant group
     And I should not see product sneakers
     And I should be able to use the following filters:
       | filter      | value    | result                                  |
-      | Has product | no       | black_boots, white_boots and blue_boots |
+      | In group    | no       | black_boots, white_boots and blue_boots |
       | SKU         | bl       | black_boots and blue_boots              |
       | Family      | Sneakers | blue_boots                              |
       | Color       | Black    | black_boots                             |

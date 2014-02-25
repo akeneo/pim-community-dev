@@ -43,6 +43,7 @@
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
         <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-docs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
