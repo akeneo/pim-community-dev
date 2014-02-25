@@ -23,7 +23,7 @@ Requirements
     - php5-mysql
     - php5-mcrypt
     - php-apc with PHP 5.4.\* (opcode and data cache) and php-acpu with PHP 5.5.\* (for data cache)
- - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
+ - PHP memory_limit at least at 256 MB on Apache side and 728 MB on CLI side (needed for installation, can be lowered to 512MB after installation for PHP-CLI)
  - MySQL 5.1 or above
  - Apache mod rewrite enabled
  - Java JRE (for compressing the JavaScript via YUI Compressor)

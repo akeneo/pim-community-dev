@@ -234,14 +234,12 @@ class InstallCommand extends ContainerAwareCommand
                     $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
                     $finder->in($bundle->getPath());
                 }
-
             }
             // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
             $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
             $directories = $finder
                 ->path('/^DataFixtures$/')
                 ->directories();
-
 
             $oroFixtures = array();
             foreach ($directories as $directory) {
