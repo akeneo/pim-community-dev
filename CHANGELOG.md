@@ -47,6 +47,7 @@ that made the entity too smart for its own good and created performances problem
 - Product datagrid, hydrate rows as arrays (in place of objects) to reduce the loading time
 - Datagrid configuration, replace [flexible_entity] config by a [source][is_flexible] config to avoid to define the used entity twice
 - Rename and move src/Pim/Bundle/EnrichBundle/Resources/views/Completeness/_datagridCompleteness.html.twig => DataGridBundle/Resources/views/Property/completeness.html.twig
+- Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
