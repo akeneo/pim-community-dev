@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-
 class SortersConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, FlexibleManager $manager)
