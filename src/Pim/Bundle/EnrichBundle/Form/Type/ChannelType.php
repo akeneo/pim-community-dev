@@ -15,6 +15,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 
 /**
  * Type for channel form
@@ -36,15 +37,22 @@ class ChannelType extends AbstractType
     protected $localeHelper;
 
     /**
-     * Inject locale manager and locale helper in the constructor
-     *
-     * @param LocaleManager $localeManager
-     * @param LocaleHelper  $localeHelper
+     * @var ColorsProvider
      */
-    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
+    protected $colorsProvider;
+
+    /**
+     * Inject locale manager, locale helper and colors provider in the constructor
+     *
+     * @param LocaleManager  $localeManager
+     * @param LocaleHelper   $localeHelper
+     * @param ColorsProvider $provider
+     */
+    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper, ColorsProvider $provider)
     {
         $this->localeManager = $localeManager;
         $this->localeHelper  = $localeHelper;
+        $this->provider      = $provider;
     }
 
     /**
@@ -101,25 +109,7 @@ class ChannelType extends AbstractType
             'color',
             'choice',
             [
-                'choices' => [
-                    '0,31,63,.4'     => 'color.navy',
-                    '0,116,217,.4'   => 'color.blue',
-                    '127,219,255,.4' => 'color.aqua',
-                    '57,204,204,.4'  => 'color.teal',
-                    '61,153,112,.4'  => 'color.olive',
-                    '46,204,64,.4'   => 'color.green',
-                    '1,255,112,.4'   => 'color.lime',
-                    '255,220,0,.4'   => 'color.yellow',
-                    '255,133,27,.4'  => 'color.orange',
-                    '255,65,54,.4'   => 'color.red',
-                    '133,20,75,.4'   => 'color.maroon',
-                    '240,18,190,.4'  => 'color.fuchsia',
-                    '177,13,201,.4'  => 'color.purple',
-                    '255,255,255,.4' => 'color.white',
-                    '221,221,221,.4' => 'color.silver',
-                    '170,170,170,.4' => 'color.gray',
-                    '17,17,17,.4'    => 'color.black',
-                ],
+                'choices' => $this->provider->getColorChoices(),
                 'select2' => true
             ]
         );

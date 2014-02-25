@@ -6,12 +6,13 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 
 class ChannelExtensionSpec extends ObjectBehavior
 {
-    function let(ChannelManager $manager)
+    function let(ChannelManager $manager, ColorsProvider $colorsProvider)
     {
-        $this->beConstructedWith($manager);
+        $this->beConstructedWith($manager, $colorsProvider);
     }
 
     function it_is_a_twig_extension()
@@ -28,10 +29,11 @@ class ChannelExtensionSpec extends ObjectBehavior
         $functions['channel_color']->shouldBeAnInstanceOf('\Twig_Function_Method');
     }
 
-    function its_channelColor_method_returns_the_color_for_the_provided_channel_code($manager, Channel $channel)
+    function its_channelColor_method_returns_the_color_for_the_provided_channel_code($manager, Channel $channel, $colorsProvider)
     {
         $manager->getChannelByCode(Argument::not(null))->willReturn($channel);
-        $channel->getColor()->willReturn('0,31,63,.4');
+        $channel->getColor()->willReturn('blue');
+        $colorsProvider->getColorCode('blue')->willReturn('0,31,63,.4');
 
         $this->channelColor('test')->shouldReturn('0,31,63,.4');
     }

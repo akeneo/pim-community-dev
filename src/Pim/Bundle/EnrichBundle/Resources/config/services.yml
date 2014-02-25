@@ -1,6 +1,7 @@
 parameters:
     pim_enrich.imagine.local_dir_resolver.class:  Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver
     pim_enrich.event_listener.user_context.class: Pim\Bundle\EnrichBundle\EventListener\UserContextListener
+    pim_enrich.provider.colors.class:             Pim\Bundle\EnrichBundle\Provider\ColorsProvider
     pim_enrich.twig.locale_extension.class:       Pim\Bundle\EnrichBundle\Twig\LocaleExtension
     pim_enrich.twig.category_extension.class:     Pim\Bundle\EnrichBundle\Twig\CategoryExtension
     pim_enrich.twig.channel_extension.class:      Pim\Bundle\EnrichBundle\Twig\ChannelExtension
@@ -66,6 +67,12 @@ services:
         tags:
             - { name: liip_imagine.cache.resolver, resolver: local_dir }
 
+    # Color management
+    pim_enrich.provider.colors:
+        class: %pim_enrich.provider.colors.class%
+        arguments:
+            - %pim_enrich.colors%
+
     # Twig extensions
     pim_enrich.twig.locale_extension:
         class: %pim_enrich.twig.locale_extension.class%
@@ -86,6 +93,7 @@ services:
         class: %pim_enrich.twig.channel_extension.class%
         arguments:
             - '@pim_catalog.manager.channel'
+            - '@pim_enrich.provider.colors'
         tags:
             - { name: twig.extension }
 

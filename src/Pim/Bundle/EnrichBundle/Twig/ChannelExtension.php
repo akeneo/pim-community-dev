@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 
 /**
  * Twig extension to get channel colors
@@ -19,13 +20,20 @@ class ChannelExtension extends \Twig_Extension
     protected $channelManager;
 
     /**
+     * @var ColorsProvider
+     */
+    protected $colorsProvider;
+
+    /**
      * Constructor
      *
      * @param ChannelManager $channelManager
+     * @param ColorsProvider $colorsProvider
      */
-    public function __construct(ChannelManager $channelManager)
+    public function __construct(ChannelManager $channelManager, ColorsProvider $colorsProvider)
     {
         $this->channelManager = $channelManager;
+        $this->colorsProvider = $colorsProvider;
     }
 
     /**
@@ -49,7 +57,7 @@ class ChannelExtension extends \Twig_Extension
     {
         $channel = $this->channelManager->getChannelByCode($code);
 
-        return $channel ? $channel->getColor() : '';
+        return $channel ? $this->colorsProvider->getColorCode($channel->getColor()) : '';
     }
 
     /**
