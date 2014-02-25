@@ -12,9 +12,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\DataGridBundle\EventListener\HideColumnsListener;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 /**
  * Datagrid configuration controller
@@ -150,12 +151,22 @@ class DatagridController extends AbstractDoctrineController
      */
     protected function getColumnChoices($alias)
     {
-        return $this
+        $choices = array();
+
+        $columnsConfig = $this
             ->manager
             ->getDatagrid($alias)
             ->getAcceptor()
             ->getConfig()
-            ->offsetGetByPath(sprintf('[%s]', HideColumnsListener::AVAILABLE_COLUMNS));
+            ->offsetGetByPath(sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY));
+
+        if ($columnsConfig) {
+            foreach ($columnsConfig as $code => $meta) {
+                $choices[$code]= $meta['label'];
+            }
+        }
+
+        return $choices;
     }
 
     /**
