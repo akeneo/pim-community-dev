@@ -286,9 +286,10 @@ default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
 Translate from:                Translate from
-Yes: Yes
-No: No
-Close: Close
+Yes:                           Yes
+No:                            No
+Close:                         Close
+Choose a color:                Choose a color
 
 Create:               Create
 Cancel:               Cancel
