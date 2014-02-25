@@ -413,15 +413,18 @@ SQL;
 
         $this->addCompleteness($qb);
 
-        $hasProductExpr =
-            "CASE WHEN " .
-            "(:currentGroup MEMBER OF p.groups ".
-            "OR p.id IN (:data_in)) AND ". "p.id NOT IN (:data_not_in)".
-            "THEN true ELSE false END";
+        $isCheckedExpr =
+            'CASE WHEN ' .
+            '(:currentGroup MEMBER OF p.groups '.
+            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)'.
+            'THEN true ELSE false END';
+
+        $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
 
         $qb
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect($hasProductExpr.' AS has_product');
+            ->addSelect($isCheckedExpr.' AS is_checked')
+            ->addSelect($inGroupExpr.' AS in_group');
 
         return $qb;
     }
@@ -431,26 +434,7 @@ SQL;
      */
     public function createVariantGroupDatagridQueryBuilder()
     {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('p')
-            ->from($this->_entityName, 'p', 'p.id');
-
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $this->addCompleteness($qb);
-
-        $hasProductExpr =
-            "CASE WHEN " .
-            "(:currentGroup MEMBER OF p.groups ".
-            "OR p.id IN (:data_in)) AND ". "p.id NOT IN (:data_not_in)".
-            "THEN true ELSE false END";
-
-        $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect($hasProductExpr.' AS has_product');
-
+        $qb = $this->createGroupDatagridQueryBuilder();
         $qb->andWhere($qb->expr()->in('p.id', ':productIds'));
 
         return $qb;
@@ -479,13 +463,16 @@ SQL;
 
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
-        $hasProductExpr =
-            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)' .
+        $isCheckedExpr =
+            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
+
+        $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
 
         $qb
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect($hasProductExpr.' AS has_association');
+            ->addSelect($isCheckedExpr.' AS is_checked')
+            ->addSelect($isAssociatedExpr.' AS is_associated');
 
         return $qb;
     }
@@ -514,8 +501,7 @@ SQL;
                 'WITH',
                 'completeness.locale = locale.id AND completeness.channel = channel.id '.
                 'AND completeness.product = p.id'
-            );
-        $qb
+            )
             ->addSelect('completeness.ratio AS ratio');
     }
 }
