@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 
@@ -171,15 +172,11 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor
-            ->runCommand('oro:search:create-index');
-        var_dump('pim search reindex');
-        $this->commandExecutor
+            ->runCommand('oro:search:create-index')
             ->runCommand(
                 'pim:search:reindex',
                 array('locale' => $this->getContainer()->getParameter('locale'))
-            );
-        var_dump('end of :D');
-        $this->commandExecutor
+            )
             ->runCommand('pim:versioning:refresh')
             ->runCommand('pim:completeness:calculate');
 
