@@ -158,22 +158,19 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
         );
 
-        $allColumns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
+        $this->availableColumns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
             + $this->attributesColumns;
 
         if (!empty($userColumns)) {
             $this->displayedColumns = $this->editableColumns;
-            $this->availableColumns = $allColumns;
             foreach ($userColumns as $column) {
-                if (array_key_exists($column, $allColumns)) {
-                    $this->displayedColumns[$column] = $allColumns[$column];
-                    unset($this->availableColumns[$column]);
+                if (array_key_exists($column, $this->availableColumns)) {
+                    $this->displayedColumns[$column] = $this->availableColumns[$column];
                 }
             }
 
         } else {
-            $this->displayedColumns = $allColumns;
-            $this->availableColumns = array();
+            $this->displayedColumns = $this->availableColumns;
         }
     }
 
