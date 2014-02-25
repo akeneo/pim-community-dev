@@ -202,7 +202,7 @@ class Grid extends Index
      */
     public function getValuesInColumn($column)
     {
-        $column = $this->getColumnPosition($column);
+        $column = $this->getColumnPosition($column, true);
         $rows   = $this->getRows();
         $values = array();
 
@@ -220,13 +220,13 @@ class Grid extends Index
 
     /**
      * @param string  $column
-     * @param boolean $withHeader
+     * @param boolean $withActions
      *
      * @return integer
      */
-    public function getColumnPosition($column, $withHeader = false)
+    public function getColumnPosition($column, $withActions = false)
     {
-        $headers = $this->getColumnHeaders(false, $withHeader);
+        $headers = $this->getColumnHeaders(false, $withActions);
         foreach ($headers as $position => $header) {
             if (strtolower($column) === strtolower($header->getText())) {
                 return $position;
@@ -574,7 +574,8 @@ class Grid extends Index
         if (!$withActions) {
             foreach ($headers as $key => $header) {
                 if ($header->getAttribute('class') === 'action-column'
-                    || $header->getAttribute('class') === 'select-all-header-cell') {
+                    || $header->getAttribute('class') === 'select-all-header-cell'
+                    || $header->find('css', 'input[type="checkbox"]')) {
                     unset($headers[$key]);
                 }
             }
