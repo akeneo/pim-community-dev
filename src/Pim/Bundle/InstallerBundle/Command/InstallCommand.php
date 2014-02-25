@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-use Oro\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\InstallerBundle\CommandExecutor;
 
 /**
  * Override OroInstaller command to add PIM custom rules
@@ -131,69 +131,10 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(sprintf('<info>%s requirements check:</info>', static::APP_NAME));
-
-        if (!class_exists('OroRequirements')) {
-            require_once $this->getContainer()->getParameter('kernel.root_dir')
-                . DIRECTORY_SEPARATOR
-                . 'OroRequirements.php';
-        }
-
-        $this->renderRequirements($input, $output, $this->getRequirements());
-
-        $output->writeln('');
+        $this->commandExecutor
+            ->runCommand('pim:installer:check-requirements', $this->getDefaultParams($input));
 
         return $this;
-    }
-
-    /**
-     * Get requirements class
-     *
-     * @return \RequirementCollection
-     */
-    protected function getRequirements()
-    {
-        if (!class_exists('PimRequirements')) {
-            require_once $this->getContainer()->getParameter('kernel.root_dir')
-                . DIRECTORY_SEPARATOR . 'PimRequirements.php';
-        }
-
-        $directories = array();
-
-        if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
-            $directories[] = $this->getContainer()->getParameter('upload_dir');
-            $directories[] = $this->getContainer()->getParameter('archive_dir');
-        }
-
-        return new \PimRequirements($directories);
-    }
-
-    /**
-     * Render Oro requirements
-     *
-     * @param InputInterface         $input
-     * @param OutputInterface        $output
-     * @param \RequirementCollection $collection
-     *
-     * @throws \RuntimeException
-     */
-    protected function renderRequirements(
-        InputInterface $input,
-        OutputInterface $output,
-        \RequirementCollection $collection
-    ) {
-        $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
-        $this->renderTable($collection->getPhpIniRequirements(), 'PHP settings', $output);
-        $this->renderTable($collection->getOroRequirements(), 'Oro specific requirements', $output);
-        $this->renderTable($collection->getPimRequirements(), 'Pim specific requirements', $output);
-        $this->renderTable($collection->getRecommendations(), 'Optional recommendations', $output);
-
-        if (count($collection->getFailedRequirements())) {
-            $this->renderTable($collection->getFailedRequirements(), 'Errors', $output);
-            throw new \RuntimeException(
-                'Some system requirements are not fulfilled. Please check output messages and fix them.'
-            );
-        }
     }
 
     /**
@@ -293,14 +234,12 @@ class InstallCommand extends ContainerAwareCommand
                     $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
                     $finder->in($bundle->getPath());
                 }
-
             }
             // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
             $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
             $directories = $finder
                 ->path('/^DataFixtures$/')
                 ->directories();
-
 
             $oroFixtures = array();
             foreach ($directories as $directory) {
@@ -415,36 +354,5 @@ class InstallCommand extends ContainerAwareCommand
         }
 
         return $defaultParams;
-    }
-
-    /**
-     * Render requirements table
-     *
-     * @param array           $collection
-     * @param string          $header
-     * @param OutputInterface $output
-     */
-    protected function renderTable(array $collection, $header, OutputInterface $output)
-    {
-        $table = $this->getHelperSet()->get('table');
-
-        $table
-            ->setHeaders(array('Check  ', $header))
-            ->setRows(array());
-
-        foreach ($collection as $requirement) {
-            if ($requirement->isFulfilled()) {
-                $table->addRow(array('OK', $requirement->getTestMessage()));
-            } else {
-                $table->addRow(
-                    array(
-                        $requirement->isOptional() ? 'WARNING' : 'ERROR',
-                        $requirement->getHelpText()
-                    )
-                );
-            }
-        }
-
-        $table->render($output);
     }
 }
