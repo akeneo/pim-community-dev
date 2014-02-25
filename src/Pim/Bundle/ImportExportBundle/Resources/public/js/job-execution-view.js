@@ -67,81 +67,17 @@ define(
                 $link.text($link.text().trim() == displayLabel ? hideLabel : displayLabel);
             },
 
-            template: _.template(
-                // Step execution information
-                '<% _.each(jobExecution.stepExecutions, function (stepExecution) { %>' +
-                    '<tr>' +
-                        '<td><%= stepExecution.label %></td>' +
-                        '<td><%= stepExecution.status %></td>' +
-                        '<td>' +
-                            '<table class="table-striped table-bordered table-hover">' +
-                                '<% _.each(stepExecution.summary, function (value, key) { %>' +
-                                    '<tr>' +
-                                        '<td><%= key %></td>' +
-                                        '<td><%= value %></td>' +
-                                    '</tr>' +
-                                '<% }); %>' +
-                            '</table>' +
-                        '</td>' +
-                        '<td><%= stepExecution.startedAt %></td>' +
-                        '<td><%= stepExecution.endedAt %></td>' +
-                    '</tr>' +
-
-                    //Step execution warnings
-                    '<% _.each(stepExecution.warnings, function (warning) { %>' +
-                        '<tr class="warning">' +
-                            '<td colspan="5">' +
-                                '<span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;' +
-                                '<%= warning.reason %><br />' +
-                                '<a class="data" href="#"' +
-                                    'data-display-label="<%= showLabel %>"' +
-                                    'data-hide-label="<%= hideLabel %>">' +
-                                    '<%= showLabel %>' +
-                                '</a>' +
-                                '<table class="hide table-striped table-bordered table-hover">' +
-                                    '<% _.each(warning.item, function (value, key) { %>' +
-                                        '<tr>' +
-                                            '<td><%= key %></td>' +
-                                            '<td><%= value %></td>' +
-                                        '</tr>' +
-                                    '<% }); %>' +
-                                '</table>' +
-                            '</td>' +
-                        '</tr>' +
-                    '<% }); %>' +
-
-                    //Step execution failures
-                    '<% _.each(stepExecution.failures, function (failure) { %>' +
-                        '<tr class="error">' +
-                            '<td colspan="5">' +
-                                '<span class="title"><%= stepExecution.label.toUpperCase() %></span>&nbsp;' +
-                                '<%= failure %>' +
-                            '</td>' +
-                        '</tr>' +
-                    '<% }); %>' +
-
-                '<% }); %>' +
-
-                //Job execution failures
-                '<% _.each(jobExecution.failures, function (failure) { %>' +
-                    '<tr class="error">' +
-                        '<td colspan="5">' +
-                            '<span class="title"><%= label.toUpperCase() %></span>&nbsp;' +
-                            '<%= failure %>' +
-                        '</td>' +
-                    '</tr>' +
-                '<% }); %>'
-            ),
+            template: _.template($('#job-execution-summary').html()),
 
             render: function () {
                 this.$el.html(
                     this.template(
                         _.extend(
-                        {
-                            showLabel: this.showLabel,
-                            hideLabel: this.hideLabel
-                        },
-                        this.model.toJSON()
+                            {
+                                showLabel: this.showLabel,
+                                hideLabel: this.hideLabel
+                            },
+                            this.model.toJSON()
                         )
                     )
                 );
@@ -152,11 +88,12 @@ define(
         var JobExecutionStatusView = Backbone.View.extend({
             statusLabel: 'Status',
             initialize: function (params) {
-                this.statusLabel = params.statusLabel || this.statusLabel;
+                this.statusLabel      = params.statusLabel || this.statusLabel;
+
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template('<li><%= statusLabel %>: <%= jobExecution.status %></li>'),
+            template: _.template($('#job-execution-status').html()),
 
             render: function () {
                 this.$el.html(
@@ -184,21 +121,14 @@ define(
                 if (!_.has(params, 'executionId')) {
                     throw new Error('A "executionId" parameter is required');
                 }
+
                 this.downloadFileRoute = params.downloadFileRoute;
                 this.executionId       = params.executionId;
+
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template(
-                '<% _.each(archives, function (archive) { %>' +
-                    '<a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="' +
-                    '<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archive.archiver, key: archive.key }) %>' +
-                    '">' +
-                        '<i class="icon-download"></i>' +
-                        '<%= archive.name %>' +
-                    '</a>&nbsp;' +
-                '<% }); %>'
-            ),
+            template: _.template($('#job-execution-buttons').html()),
 
             render: function () {
                 this.$el.html(
@@ -228,6 +158,7 @@ define(
                 if (!_.has(params, 'executionId')) {
                     throw new Error('A "executionId" parameter is required');
                 }
+
                 this.downloadLogRoute = params.downloadLogRoute;
                 this.executionId      = params.executionId;
                 this.downloadLabel    = params.downloadLabel || this.downloadLabel;
@@ -235,16 +166,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template(
-                '<% if (hasLog) { %>' +
-                    '<a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="' +
-                        '<%= Routing.generate(downloadLogRoute, {id: executionId}) %>' +
-                    '">' +
-                        '<i class="icon-download"></i>' +
-                        '<%= downloadLabel %>' +
-                    '</a>' +
-                '<% } %>'
-            ),
+            template: _.template($('#job-execution-log-button').html()),
 
             render: function () {
                 this.$el.html(

@@ -42,6 +42,100 @@
 {% block head_script %}
     {{ parent() }}
 
+    <script type="text/template" id="job-execution-summary">
+        {% block job_execution_summary %}
+        <!-- Step execution information -->
+        <% _.each(jobExecution.stepExecutions, function (stepExecution) { %>
+            <tr>
+                <td><%= stepExecution.label %></td>
+                <td><%= stepExecution.status %></td>
+                <td>
+                    <table class="table-striped table-bordered table-hover">
+                        <% _.each(stepExecution.summary, function (value, key) { %>
+                            <tr>
+                                <td><%= key %></td>
+                                <td><%= value %></td>
+                            </tr>
+                        <% }); %>
+                    </table>
+                </td>
+                <td><%= stepExecution.startedAt %></td>
+                <td><%= stepExecution.endedAt %></td>
+            </tr>
+
+            <!-- Step execution warnings -->
+            <% _.each(stepExecution.warnings, function (warning) { %>
+                <tr class="warning">
+                    <td colspan="5">
+                        <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
+                        <%= warning.reason %><br />
+                        <a class="data" href="#"
+                            data-display-label="<%= showLabel %>"
+                            data-hide-label="<%= hideLabel %>">
+                            <%= showLabel %>
+                        </a>
+                        <table class="hide table-striped table-bordered table-hover">
+                            <% _.each(warning.item, function (value, key) { %>
+                                <tr>
+                                    <td><%= key %></td>
+                                    <td><%= value %></td>
+                                </tr>
+                            <% }); %>
+                        </table>
+                    </td>
+                </tr>
+            <% }); %>
+
+            <!-- Step execution failures -->
+            <% _.each(stepExecution.failures, function (failure) { %>
+                <tr class="error">
+                    <td colspan="5">
+                        <span class="title"><%= stepExecution.label.toUpperCase() %></span>&nbsp;
+                        <%= failure %>
+                    </td>
+                </tr>
+            <% }); %>
+        <% }); %>
+
+        <!-- Job execution failures -->
+        <% _.each(jobExecution.failures, function (failure) { %>
+            <tr class="error">
+                <td colspan="5">
+                    <span class="title"><%= label.toUpperCase() %></span>&nbsp;
+                    <%= failure %>
+                </td>
+            </tr>
+        <% }); %>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-status">
+        {% block job_execution_status %}
+        <li><%= statusLabel %>: <%= jobExecution.status %></li>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-buttons">
+        {% block job_execution_buttons %}
+        <% _.each(archives, function (archive) { %>
+            <a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archive.archiver, key: archive.key }) %>">
+                <i class="icon-download"></i> <%= archive.name %>
+            </a>&nbsp;
+        <% }); %>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-log-button">
+        {% block job_execution_log_button %}
+        <% if (hasLog) { %>
+            <a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+                <i class="icon-download"></i>
+                <%= downloadLabel %>
+            </a>
+        <% } %>
+        {% endblock %}
+    </script>
+
     <script type="text/javascript">
         require(
             ['jquery', 'pim/job-execution-view'],
@@ -57,13 +151,13 @@
                         jobExecutionButtonsSelector:   '.navbar-buttons #archives',
                         jobExecutionLogButtonSelector: '.navbar-buttons #log',
 
-                        statusLabel:                   '{{ 'Status'|trans }}',
-                        downloadLabel:                 '{{ 'Download log'|trans }}',
+                        statusLabel:   '{{ 'Status'|trans }}',
+                        downloadLabel: '{{ 'Download log'|trans }}',
 
-                        path:                          '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
-                        executionId:                   {{ execution.id }},
-                        downloadFileRoute:             '{{ download_file_route }}',
-                        downloadLogRoute:              '{{ download_log_route }}'
+                        path:              '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
+                        executionId:       {{ execution.id }},
+                        downloadFileRoute: '{{ download_file_route }}',
+                        downloadLogRoute:  '{{ download_log_route }}'
                     });
                 });
             }
