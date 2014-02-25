@@ -78,25 +78,13 @@
                         $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
                     });
 
-                    $('.attribute-requirement:not(.identifier) i').each(function() {
-                        var $input = $(this).siblings('input[type="checkbox"]');
-                        if ($input.attr('checked')) {
-                            $(this).attr('data-original-title', $(this).parent().data('required-title'));
-                        } else {
-                            $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
-                        }
-                    }).click(function() {
-                        $(this).toggleClass('icon-ok required');
-                        $(this).toggleClass('icon-circle non-required');
+                    $('.attribute-requirement:not(.identifier) i').on('click', function() {
+                        $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
 
-                        var $input = $(this).siblings('input[type="checkbox"]');
-                        if ($input.attr('checked')) {
-                            $(this).attr('data-original-title', $(this).parent().data('not-required-title')).tooltip('show');
-                            $input.removeAttr('checked').trigger('change');
-                        } else {
-                            $(this).attr('data-original-title', $(this).parent().data('required-title')).tooltip('show');
-                            $input.attr('checked', 'checked').trigger('change');
-                        }
+                        var $input = $(this).siblings('input[type="checkbox"]').eq(0);
+                        var checked = $input.is(':checked');
+                        $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
+                        $input.prop('checked', !checked).trigger('change');
                     });
                 });
             }
