@@ -211,7 +211,7 @@
             <arg value="akeneo_ci_pim_docs_" />
             <!-- Profile Prefix -->
             <arg value="jenkins-docs-" />
-            <arg value="${basedir}/bin/behat --tags=doc --ansi" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 
