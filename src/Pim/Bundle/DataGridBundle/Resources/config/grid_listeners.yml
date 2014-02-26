@@ -6,6 +6,5 @@ parameters:
 
     pim_datagrid.event_listener.configure_flexible_grid_listener.class:            Pim\Bundle\DataGridBundle\EventListener\ConfigureFlexibleGridListener
     pim_datagrid.event_listener.configure_product_group_grid_listener.class:       Pim\Bundle\DataGridBundle\EventListener\ConfigureGroupProductGridListener
-    pim_catalog.event_listener.hide_columns_listener.class:                        Pim\Bundle\DataGridBundle\EventListener\HideColumnsListener
 
 services: ~
