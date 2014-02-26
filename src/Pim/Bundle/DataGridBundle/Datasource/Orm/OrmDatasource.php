@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -34,11 +35,6 @@ class OrmDatasource extends OroOrmDatasource
      * @var string
      */
     const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attribute_ids]';
-
-    /**
-     * @var string
-     */
-    const DISPLAYED_LOCALE_PATH = '[source][locale_code]';
 
     /**
      * @var string
@@ -74,7 +70,8 @@ class OrmDatasource extends OroOrmDatasource
         }
 
         $this->isFlexible = isset($config['is_flexible']) ? (bool) $config['is_flexible'] : false;
-        $this->localeCode = isset($config['locale_code']) ? $config['locale_code'] : null;
+        $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
+        $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
 
         $grid->setDatasource(clone $this);
     }

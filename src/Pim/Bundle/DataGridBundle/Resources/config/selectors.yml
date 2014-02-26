@@ -5,6 +5,7 @@ parameters:
     pim_datagrid.extension.selector.orm.flexible_prices_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\FlexiblePricesSelector
     pim_datagrid.extension.selector.orm.flexible_metric_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\FlexibleMetricSelector
     pim_datagrid.extension.selector.orm.flexible_media_selector.class:   Pim\Bundle\DataGridBundle\Extension\Selector\Orm\FlexibleMediaSelector
+    pim_datagrid.extension.selector.orm.product_label_selector.class:    Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductLabelSelector
 
 services:
     pim_datagrid.extension.selector.orm.flexible_values_selector:
@@ -46,3 +47,8 @@ services:
             - '@pim_datagrid.extension.selector.orm.flexible_values_selector'
         tags:
             - { name: pim_datagrid.extension.selector, type: flexible_media }
+
+    pim_datagrid.extension.selector.orm.product_label_selector:
+        class: %pim_datagrid.extension.selector.orm.product_label_selector.class%
+        tags:
+            - { name: pim_datagrid.extension.selector, type: product_label }
