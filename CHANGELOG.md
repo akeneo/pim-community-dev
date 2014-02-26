@@ -21,17 +21,18 @@
 - Add a screen to select the attribute type before creating an attribute
 
 ## Bug fixes
-- Fix non-updated values being displayed in the the audit history
-- Fix attribute group form state not being saved
+- Fixed non-updated values being displayed in the the audit history
+- Fixed attribute group form state not being saved
 - Do not display Id as an eligible attribute as label
-- Fix select field missing for scopable simple/multi select attributes in the product form
+- Fixed select field missing for scopable simple/multi select attributes in the product form
 - Restored missing attributes translation
-- Fix the display of scopable metric attributes in the product edit form
-- Fix regression with resolve target entity on Category entity
-- Fix datepicker in date attribute form
-- Fix unwanted fields appearing in attribute creation form if server-side validation errors are present
-- Fix 500 response when submitting import launch form without selecting file to upload
-- Fix $field_catalogLocale linked bugs
+- Fixed the display of scopable metric attributes in the product edit form
+- Fixed regression with resolve target entity on Category entity
+- Fixed datepicker in date attribute form
+- Fixed unwanted fields appearing in attribute creation form if server-side validation errors are present
+- Fixed 500 response when submitting import launch form without selecting file to upload
+- Fixed $field_catalogLocale linked bugs
+- Restored unique variant axis constraint when saving product
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
