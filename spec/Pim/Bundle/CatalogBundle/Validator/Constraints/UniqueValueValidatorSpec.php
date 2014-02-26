@@ -59,11 +59,30 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
 
-    function it_does_not_validate_with_non_context(ExecutionContextInterface $emptyContext, Constraint $constraint)
-    {
+    function it_does_not_validate_with_non_context(
+        ProductManager $productManager,
+        ProductValueInterface $value,
+        ExecutionContextInterface $emptyContext,
+        Constraint $constraint
+    ) {
         $this->initialize($emptyContext);
-        $this->validate("my_value", $constraint)->shouldReturn(null);
+        $productManager->valueExists($value)->shouldNotBeCalled();
         $emptyContext->addViolation()->shouldNotBeCalled();
+        $emptyContext->getPropertyPath()->shouldBeCalled();
+
+        $this->validate("my_value", $constraint)->shouldReturn(null);
+    }
+
+    function it_does_not_validate_with_empty_value(
+        ProductManager $productManager,
+        ProductValueInterface $value,
+        ExecutionContextInterface $context,
+        Constraint $constraint
+    ) {
+        $productManager->valueExists($value)->shouldNotBeCalled();
+        $context->addViolation()->shouldNotBeCalled();
+
+        $this->validate("", $constraint)->shouldReturn(null);
     }
 }
 

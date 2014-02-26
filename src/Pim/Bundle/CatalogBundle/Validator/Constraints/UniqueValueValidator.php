@@ -38,29 +38,31 @@ class UniqueValueValidator extends ConstraintValidator
      * Constraint is applied on ProductValue data property.
      * That's why we use the current property path to guess the code
      * of the attribute to which the data belongs to.
-     * @param object     $value
+     * @param object     $rawValue
      * @param Constraint $constraint
      *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($rawValue, Constraint $constraint)
     {
-        $entity = $this->getEntity();
-        if (!$entity instanceof ProductValueInterface || empty($value)) {
+        if (empty($rawValue)) {
             return;
         }
 
-        if ($this->productManager->valueExists($entity)) {
+        $value = $this->getProductValue();
+
+        if (($value instanceof ProductValueInterface) && ($this->productManager->valueExists($value))) {
             $this->context->addViolation($constraint->message);
         }
+
     }
 
     /**
-     * Get entity
+     * Get productValue
      *
-     * @return mixed|null
+     * @return ProductValueInterface|null
      */
-    private function getEntity()
+    private function getProductValue()
     {
         preg_match(
             '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
@@ -76,10 +78,12 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        if (false === $entity = $product->getValue($matches[1])) {
+        $value = $product->getValue($matches[1]);
+
+        if (false === $value) {
             return;
         }
 
-        return $entity;
+        return $value;
     }
 }
