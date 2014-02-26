@@ -69,6 +69,12 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'OroFilterBundle'                => 'oro_filter',
             'AkeneoBatchBundle'              => 'akeneo_batch',
             'KnpGaufretteBundle'             => 'knp_gaufrette',
+            'JDareClankBundle'               => 'clank',
+            'A2lixTranslationFormBundle'     => 'a2lix_translation_form',
+            'APYJsFormValidationBundle'      => 'apy_js_form_validation',
+            'LexikMaintenanceBundle'         => 'lexik_maintenance',
+            'OroRequireJSBundle'             => 'oro_require_js',
+            'OroHelpBundle'                  => 'oro_help',
         );
 
         foreach ($prependConfig as $bundle => $alias) {

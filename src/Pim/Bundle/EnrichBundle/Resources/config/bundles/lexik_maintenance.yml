@@ -1,0 +1,8 @@
+lexik_maintenance:
+    authorized:
+        path: "maintenance|.*\.js" # "maintenance" is only for demo purposes, remove in production!
+        # ips: ["127.0.0.1"]         # Optional. Authorized ip addresses
+    driver:
+        class: Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
+        options:
+            file_path: %kernel.root_dir%/cache/lock
