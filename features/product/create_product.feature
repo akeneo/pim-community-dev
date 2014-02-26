@@ -6,6 +6,11 @@ Feature: Product creation
 
   Background:
     Given a "footwear" catalog configuration
+    And the following products:
+    | sku     | family  |
+    | sandals | sandals |
+    | boots   |         |
+
     And I am logged in as "admin"
     And I am on the products page
 
@@ -17,3 +22,10 @@ Feature: Product creation
     And I press the "Save" button
     Then I should see "Family: N/A"
     And I should see "caterpillar_1"
+
+  Scenario: Fail to create a product with an already used code
+    Given I create a new product
+    And I fill in the following information in the popin:
+      | SKU | sandals |
+    And I press the "Save" button
+    Then I should see validation error "This value is already set on another product."
