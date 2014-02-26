@@ -32,7 +32,6 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\TagBundle\Entity\Tag;
 
-use Oro\Bundle\UserBundle\Model\ExtendUser;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
@@ -66,7 +65,7 @@ use DateTime;
  *      }
  * )
  */
-class User extends ExtendUser implements
+class User implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
