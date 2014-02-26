@@ -56,6 +56,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     ) {
         $productManager->valueExists($value)->willReturn(true);
         $context->addViolation($constraint->message)->shouldBeCalled();
+
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
 
