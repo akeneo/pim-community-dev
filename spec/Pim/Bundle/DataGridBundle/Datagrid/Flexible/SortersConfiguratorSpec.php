@@ -11,6 +11,7 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {
@@ -34,7 +35,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
     }
 
-    function it_configures_datagrid_columns(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function it_configures_datagrid_sorters(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
     {
         $attributes = [
             'sku' => [
@@ -59,6 +60,9 @@ class SortersConfiguratorSpec extends ObjectBehavior
 
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'name');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
+
+        $columnConfPath = sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH);
+        $configuration->offsetGetByPath($columnConfPath)->shouldBeCalled();
 
         $this->configure();
     }

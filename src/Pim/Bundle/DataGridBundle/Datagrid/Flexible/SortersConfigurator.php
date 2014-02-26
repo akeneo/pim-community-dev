@@ -102,21 +102,24 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     protected function removeExtraSorters()
     {
-        $displayedColumns =$this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
+        $displayedColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
         $columnsCodes = array_keys($displayedColumns);
         $sorters = $this->configuration->offsetGetByPath(sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH));
-        $sortersCodes = array_keys($sorters);
 
-        foreach ($sortersCodes as $sorterCode) {
-            if (!in_array($sorterCode, $columnsCodes)) {
-                unset($sorters[$sorterCode]);
+        if (!empty($sorters)) {
+            $sortersCodes = array_keys($sorters);
+
+            foreach ($sortersCodes as $sorterCode) {
+                if (!in_array($sorterCode, $columnsCodes)) {
+                    unset($sorters[$sorterCode]);
+                }
             }
-        }
 
-        $this->configuration->offsetSetByPath(
-            sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH),
-            $sorters
-        );
+            $this->configuration->offsetSetByPath(
+                sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH),
+                $sorters
+            );
+        }
     }
 
     /**

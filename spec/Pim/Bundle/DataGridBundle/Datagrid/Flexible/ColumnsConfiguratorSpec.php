@@ -9,6 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 class ColumnsConfiguratorSpec extends ObjectBehavior
 {
@@ -65,7 +66,14 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
+        $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
+
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
+        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+
         $this->configure();
     }
 
@@ -98,7 +106,14 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
+        $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
+
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
+        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+
         $this->configure();
     }
 
