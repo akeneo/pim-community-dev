@@ -504,4 +504,26 @@ SQL;
             )
             ->addSelect('completeness.ratio AS ratio');
     }
+
+    /**
+     * Returns true if a ProductValue with the provided value alread exists,
+     * false otherwise.
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return boolean
+     */
+    public function valueExists(ProductValueInterface $value)
+    {
+        $criteria = array(
+            'attribute' => $value->getAttribute(),
+            $value->getAttribute()->getBackendType() => $value
+        );
+        $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
+
+        return (
+            (0 !== count($result)) &&
+            !(1 === count($result) && $value === ($result instanceof \Iterator ? $result->current() : current($result)))
+        );
+    }
 }
