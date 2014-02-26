@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
