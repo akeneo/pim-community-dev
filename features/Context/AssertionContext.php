@@ -330,6 +330,41 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string    $field
+     * @param TableNode $table
+     *
+     * @Then /^the scopable "([^"]*)" field should have the following colors:$/
+     */
+    public function theScopableFieldShouldHaveTheFollowingColors($field, TableNode $table)
+    {
+        $element = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $field))->getParent();
+        $colors  = $this->getMainContext()->getContainer()->getParameter('pim_enrich.colors');
+        foreach ($table->getHash() as $item) {
+            $style = $element->find('css', sprintf('label[title="%s"]', $item['scope']))->getAttribute('style');
+            assertGreaterThanOrEqual(
+                1,
+                strpos($style, $colors[$item['background']]),
+                sprintf(
+                    'Expecting the background of the %s %s field to be %s',
+                    $item['scope'],
+                    $field,
+                    $item['background']
+                )
+            );
+            assertGreaterThanOrEqual(
+                1,
+                strpos($style, $item['font']),
+                sprintf(
+                    'Expecting the font of the %s %s field to be %s',
+                    $item['scope'],
+                    $field,
+                    $item['font']
+                )
+            );
+        }
+    }
+
+    /**
      * @return Page
      */
     private function getCurrentPage()
