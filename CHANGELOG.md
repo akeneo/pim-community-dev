@@ -19,6 +19,8 @@
 - Import conversion units for channels
 - Product grid loading performance by hydrating as array and introduce selector extension
 - Add a screen to select the attribute type before creating an attribute
+- Create check-requirements, assets and database/fixtures commands and simplify install one
+- Make documentation tested linking it to our behat scenarios
 
 ## Bug fixes
 - Fix non-updated values being displayed in the the audit history
