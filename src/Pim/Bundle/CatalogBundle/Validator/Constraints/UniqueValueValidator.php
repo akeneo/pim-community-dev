@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
@@ -20,13 +20,18 @@ use Symfony\Component\Validator\Constraint;
 class UniqueValueValidator extends ConstraintValidator
 {
     /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
      * Constructor
      *
      * @param object $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ProductManager $productManager)
     {
-        $this->registry = $registry;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -45,20 +50,9 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        $em = $this->registry->getManagerForClass(get_class($entity));
-        $criteria = array(
-            'attribute'                               => $entity->getAttribute(),
-            $entity->getAttribute()->getBackendType() => $value,
-        );
-        $result = $em->getRepository(get_class($entity))->findBy($criteria);
-
-        if (0 === count($result) ||
-            (1 === count($result) && $entity === ($result instanceof \Iterator ? $result->current() : current($result)))
-        ) {
-            return;
+        if ($this->productManager->valueExists($entity)) {
+            $this->context->addViolation($constraint->message);
         }
-
-        $this->context->addViolation($constraint->message);
     }
 
     /**
