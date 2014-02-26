@@ -43,12 +43,14 @@ The following installation overview is for contributing to Akeneo PIM, not for p
 
 ## Installation overview:
 * Install files and DB content
+
     $ curl -s https://getcomposer.org/installer | php
     $ git clone git@github.com:akeneo/pim-community-dev.git
     $ cd pim-community-dev
     $ php ../composer.phar install
     $ php app/console pim:install --env=dev
     $ php app/console cache:clear --env=dev
+
 * Create a VirtualHost pointing to your pim-community-dev/web directory and a matching hostname
 * Go to http://<my-hostname>/app_dev.php to access your dev environment
 
