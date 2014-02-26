@@ -10,7 +10,8 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
- * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config, attributes config, current locale
+ * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config,
+ * attributes config, current locale
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

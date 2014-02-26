@@ -89,6 +89,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function sortColumns()
     {
-        $this->displayedColumns = $this->editableColumns + $this->identifierColumn + $this->axisColumns + $this->propertiesColumns;
+        $this->displayedColumns = $this->editableColumns + $this->identifierColumn + $this->axisColumns
+            + $this->propertiesColumns;
     }
 }
