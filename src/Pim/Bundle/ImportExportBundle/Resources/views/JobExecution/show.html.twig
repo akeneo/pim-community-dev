@@ -117,10 +117,35 @@
 
     <script type="text/template" id="job-execution-buttons">
         {% block job_execution_buttons %}
-        <% _.each(archives, function (archive) { %>
-            <a class="btn no-hash icons-holder-text" title="<%= archive.name %>" href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archive.archiver, key: archive.key }) %>">
-                <i class="icon-download"></i> <%= archive.name %>
-            </a>&nbsp;
+        <% _.each(archives, function (archive, archiver) { %>
+            <% if (_.size(archive.files) === 1) { %>
+
+                <% _.each(archive.files, function (file, key) { %>
+                     <a class="btn no-hash icons-holder-text" title="<%= archive.label %>"
+                     href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                         <i class="icon-download"></i> <%= archive.label %>
+                     </a>
+                <% }); %>
+
+            <% } else { %>
+
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-download"></i> <%= archive.label %>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <% _.each(archive.files, function (file, key) { %>
+                        <li>
+                            <a href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                            <%= key %>
+                            </a>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+            <% } %>
         <% }); %>
         {% endblock %}
     </script>

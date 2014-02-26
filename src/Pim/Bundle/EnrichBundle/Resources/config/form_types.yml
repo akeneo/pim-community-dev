@@ -99,6 +99,7 @@ services:
         arguments:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.helper.locale'
+            - '@pim_enrich.provider.colors'
         tags:
             - { name: form.type, alias: pim_enrich_channel }
 

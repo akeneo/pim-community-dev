@@ -1,6 +1,10 @@
 Pim\Bundle\CatalogBundle\Entity\Channel:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields:
+                - color
+            message: This color is already used by another channel
         - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
             properties:
                 - code

@@ -134,6 +134,7 @@ class ProductFormView
                 $this->getAttributeValues($attribute, $value->getLocale()),
                 array($value->getScope() => $view)
             );
+            ksort($attributeView['values']);
         } else {
             $attributeView['value'] = $view;
         }
