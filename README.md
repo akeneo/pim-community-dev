@@ -85,17 +85,3 @@ You must give write permission to the Apache user on the following directories:
 - app/uploads/product
 - app/archive
 
-Configure crontab
------------------
-
-To ensure that completeness is as up to date as possible, you can configure the following crontab
-line:
-
-    */2 * * * * php app/console pim:completeness:calculate > /tmp/completeness.log
-
-In case you import data without running the versioning system in real time, you can make sure
-that versioning is recalculated appropriately with this crontab line (assuming you filled the
-version pending table with the adequate information):
-
-    */5 * * * * php app/console pim:versioning:refresh > /tmp/versioning.log
-
