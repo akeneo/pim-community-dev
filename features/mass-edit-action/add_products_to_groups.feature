@@ -33,5 +33,5 @@ Feature: Add products to many groups at once
     When I move on to the next step
     Then I should see:
     """
-    Product "hiking_shoes" cannot be added to the the variant group "Caterpillar boots" because it already contains another product with values "size: 42, color: Red".
+    Group "Caterpillar boots" already contains another product with values "size: 42, color: Red"
     """
