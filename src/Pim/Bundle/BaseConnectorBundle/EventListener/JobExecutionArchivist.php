@@ -75,13 +75,15 @@ class JobExecutionArchivist implements EventSubscriberInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $archives = array();
+        $result = array();
 
         foreach ($this->archivers as $archiver) {
-            $archives[$archiver->getName()] = $archiver->getArchives($jobExecution);
+            if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
+                $result[$archiver->getName()] = $archives;
+            }
         }
 
-        return $archives;
+        return $result;
     }
 
     /**

@@ -77,8 +77,10 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
     {
         $foo = $this->getArchiverMock('foo', array('fooArch1', 'fooArch2'));
         $bar = $this->getArchiverMock('bar', array('barArch1', 'barArch2'));
+        $baz = $this->getArchiverMock('baz');
         $this->archivist->registerArchiver($foo);
         $this->archivist->registerArchiver($bar);
+        $this->archivist->registerArchiver($baz);
 
         $jobExecution = $this->getJobExecutionMock();
 
