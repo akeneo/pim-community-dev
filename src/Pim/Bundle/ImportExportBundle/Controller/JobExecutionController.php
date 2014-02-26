@@ -138,7 +138,7 @@ class JobExecutionController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
             array(
-                'execution'   => $jobExecution,
+                'execution' => $jobExecution,
             )
         );
     }
