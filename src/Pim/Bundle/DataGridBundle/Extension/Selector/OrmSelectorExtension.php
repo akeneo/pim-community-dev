@@ -130,6 +130,7 @@ class OrmSelectorExtension extends AbstractExtension
         $rootAlias  = $getIdsQb->getRootAlias();
         $rootField  = $rootAlias.'.id';
         $getIdsQb->add('from', new From($rootEntity, $rootAlias, $rootField), false);
+        $getIdsQb->groupBy($rootField);
         $results = $getIdsQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($results);
