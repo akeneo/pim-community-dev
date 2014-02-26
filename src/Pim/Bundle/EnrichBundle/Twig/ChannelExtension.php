@@ -42,7 +42,8 @@ class ChannelExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'channel_color' => new \Twig_Function_Method($this, 'channelColor')
+            'channel_color'      => new \Twig_Function_Method($this, 'channelColor'),
+            'channel_font_color' => new \Twig_Function_Method($this, 'channelFontColor')
         ];
     }
 
@@ -58,6 +59,20 @@ class ChannelExtension extends \Twig_Extension
         $channel = $this->channelManager->getChannelByCode($code);
 
         return $channel ? $this->colorsProvider->getColorCode($channel->getColor()) : '';
+    }
+
+    /**
+     * Get channel font color
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function channelFontColor($code)
+    {
+        $channel = $this->channelManager->getChannelByCode($code);
+
+        return $channel ? $this->colorsProvider->getFontColor($channel->getColor()) : '';
     }
 
     /**

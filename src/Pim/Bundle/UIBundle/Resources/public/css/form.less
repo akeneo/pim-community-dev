@@ -798,7 +798,6 @@ table.comparison .no-label .attribute-field.scopable {
   >div {
     &:first-of-type .controls {
       .control-label.add-on {
-        font-weight: bold;
         background-color: @backgroundColor-white;
         border-top-left-radius: 3px;
       }
@@ -832,10 +831,9 @@ table.comparison .no-label .attribute-field.scopable {
   }
   label.control-label.add-on {
     width: 25px;
-    padding-left: 7px;
     margin-bottom: 0;
-    font-weight: normal;
-    text-align: left;
+    font-weight: bold;
+    text-align: center;
     background-color: #fbfbfb;
     border-right-width: 0;
     border-radius: 0;
@@ -848,6 +846,10 @@ table.comparison .no-label .attribute-field.scopable {
       .control-label.add-on {
         position: absolute;
         height: 100%;
+        font-size; 15px;
+        &[style] {
+          text-shadow: none;
+        }
       }
       .scopable-input {
         position: relative;

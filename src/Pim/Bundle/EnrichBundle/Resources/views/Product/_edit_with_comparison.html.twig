@@ -6,7 +6,7 @@
                 {% if attributeView.values is defined %}
                     {% for scope, subvalue in attributeView.values %}
                         <div class="control-group" data-field="{{ attributeView.code }}">
-                            {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope)}}) }}
+                            {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope), 'data-font-color': channel_font_color(scope)}}) }}
                         </div>
                     {% endfor %}
                 {% else %}
@@ -35,7 +35,7 @@
                             {% if comparisonView.values is defined %}
                                 {% for scope, subvalue in comparisonView.values %}
                                     <div class="control-group" data-field="{{ comparisonView.code }}">
-                                        {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope)}}) }}
+                                        {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope), 'data-font-color': channel_font_color(scope)}}) }}
                                     </div>
                                 {% endfor %}
                             {% else %}
