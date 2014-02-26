@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\InstallerBundle;
 
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
-
-use Oro\Bundle\InstallerBundle\CommandExecutor as OroCommandExecutor;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command executor
@@ -17,95 +15,78 @@ use Oro\Bundle\InstallerBundle\CommandExecutor as OroCommandExecutor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommandExecutor extends OroCommandExecutor
+class CommandExecutor
 {
     /**
-     * Launches a command.
-     * If '--process-isolation' parameter is specified the command will be launched as a separate process.
-     * In this case you can parameter '--process-timeout' to set the process timeout
-     * in seconds. Default timeout is 60 seconds.
-     * If '--ignore-errors' parameter is specified any errors are ignored;
-     * otherwise, an exception is raises if an error happened.
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * Constructor
      *
-     * @param string $command
-     * @param array  $params
-     *
-     * @return CommandExecutor
-     * @throws \RuntimeException if command failed and '--ignore-errors' parameter is not specified
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param Application     $application
+     */
+    public function __construct(InputInterface $input, OutputInterface $output, Application $application)
+    {
+        $this->input       = $input;
+        $this->output      = $output;
+        $this->application = $application;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function runCommand($command, $params = array())
     {
         $params = array_merge(
-            array(
-                'command'    => $command,
-                '--no-debug' => true,
-            ),
-            $params
+            array('command' => $command),
+            $params,
+            $this->getDefaultParams()
         );
-        if ($this->env && $this->env !== 'dev') {
-            $params['--env'] = $this->env;
-        }
-        $ignoreErrors = false;
-        if (array_key_exists('--ignore-errors', $params)) {
-            $ignoreErrors = true;
-            unset($params['--ignore-errors']);
-        }
 
-        if (array_key_exists('--process-isolation', $params)) {
-            unset($params['--process-isolation']);
-            $phpFinder = new PhpExecutableFinder();
-            $php       = $phpFinder->find();
-            $pb        = new ProcessBuilder();
-            $pb
-                ->add($php)
-                ->add($_SERVER['argv'][0]);
+        $this->application->setAutoExit(false);
+        $exitCode = $this->application->run(new ArrayInput($params), $this->output);
 
-            if (array_key_exists('--process-timeout', $params)) {
-                $pb->setTimeout($params['--process-timeout']);
-                unset($params['--process-timeout']);
-            }
-
-            foreach ($params as $param => $val) {
-                if ($param && '-' === $param[0]) {
-                    if ($val === true) {
-                        $pb->add($param);
-                    } elseif (is_array($val)) {
-                        foreach ($val as $value) {
-                            $pb->add($param . '=' . $value);
-                        }
-                    } else {
-                        $pb->add($param . '=' . $val);
-                    }
-                } else {
-                    $pb->add($val);
-                }
-            }
-
-            $process = $pb
-                ->inheritEnvironmentVariables(true)
-                ->getProcess();
-
-            $output = $this->output;
-            $process->run(
-                function ($type, $data) use ($output) {
-                    $output->write($data);
-                }
+        if (0 !== $exitCode) {
+            $this->output->writeln(
+                sprintf('<error>The command terminated with an error code: %u.</error>', $exitCode)
             );
-            $ret = $process->getExitCode();
-        } else {
-            $this->application->setAutoExit(false);
-            $ret = $this->application->run(new ArrayInput($params), $this->output);
-        }
-
-        if (0 !== $ret) {
-            if ($ignoreErrors) {
-                $this->output->writeln(
-                    sprintf('<error>The command terminated with an error code: %u.</error>', $ret)
-                );
-            }
-            exit($ret);
+            exit($exitCode);
         }
 
         return $this;
+    }
+
+    /**
+     * Get default parameters
+     *
+     * @return array
+     */
+    protected function getDefaultParams()
+    {
+        $defaultParams = array('--no-debug' => true);
+
+        if ($this->input->hasOption('env')) {
+            $defaultParams['--env'] = $this->input->getOption('env');
+        }
+
+        if ($this->input->hasOption('verbose')) {
+            $defaultParams['--verbose'] = $this->input->getOption('verbose');
+        }
+
+        return $defaultParams;
     }
 }

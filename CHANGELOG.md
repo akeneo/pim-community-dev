@@ -6,6 +6,7 @@
 - Add new user as fixtures
 - Auto-refresh job execution report page
 - Add a checkbox to select all visible rows in entity association grids
+- Add colors to channels and use them in scopable field labels to make them more compact
 
 ## Improvements
 - Load choices for grid filters asynchronously
@@ -19,6 +20,8 @@
 - Import conversion units for channels
 - Product grid loading performance by hydrating as array and introduce selector extension
 - Add a screen to select the attribute type before creating an attribute
+- Create check-requirements, assets and database/fixtures commands and simplify install one
+- Make documentation tested linking it to our behat scenarios
 
 ## Bug fixes
 - Fixed non-updated values being displayed in the the audit history
@@ -32,6 +35,7 @@
 - Fixed unwanted fields appearing in attribute creation form if server-side validation errors are present
 - Fixed 500 response when submitting import launch form without selecting file to upload
 - Fixed $field_catalogLocale linked bugs
+- Fixed scopable value order in product form
 - Restored unique variant axis constraint when saving product
 
 ## BC breaks

@@ -9,3 +9,4 @@ No default value may be specified for this attribute type:       No default valu
 This value should be Yes or No:                                  This value should be Yes or No
 This value should not be blank:                                  This value should not be blank
 Option code may contain only letters, numbers and underscores:   Option code may contain only letters, numbers and underscores
+This color is already used by another channel:                   This color is already used by another channel

@@ -41,15 +41,18 @@ http://docs.akeneo.com/installation/installation_workstation.html
 
 The following installation overview is for contributing to Akeneo PIM, not for project purpose.
 
-## Installation overview:
-* Install files and DB content
+## Installation overview
+* Make sure all requirements are fullfilled
+* Install files and DB content:
 
+````
     $ curl -s https://getcomposer.org/installer | php
     $ git clone git@github.com:akeneo/pim-community-dev.git
     $ cd pim-community-dev
     $ php ../composer.phar install
     $ php app/console pim:install --env=dev
     $ php app/console cache:clear --env=dev
+````
 
 * Create a VirtualHost pointing to your pim-community-dev/web directory and a matching hostname
 * Go to http://<my-hostname>/app_dev.php to access your dev environment
@@ -63,14 +66,10 @@ By default, this script initializes the dev environment.
 
 ### Add translation packs (optional)
 
-You can download translation packs from crowdin:
-- http://crowdin.net/project/akeneo
-- http://crowdin.net/project/oro-platform
+You can download translation packs from crowdin: http://crowdin.net/project/akeneo
 
 The Akeneo PIM archive contains the following directories tree: `<locale>/<version>/<translation_directories>`
 You just have to paste the <translation_directories> in your app/Resources/ directory.
-
-For Oro Platform, the archive contains the same directories tree except the version directory which is removed.
 
 Write permission for the HTTP server
 ------------------------------------
@@ -85,18 +84,4 @@ You must give write permission to the Apache user on the following directories:
 - web/bundles
 - app/uploads/product
 - app/archive
-
-Configure crontab
------------------
-
-To ensure that completeness is as up to date as possible, you can configure the following crontab
-line:
-
-    */2 * * * * php app/console pim:completeness:calculate > /tmp/completeness.log
-
-In case you import data without running the versioning system in real time, you can make sure
-that versioning is recalculated appropriately with this crontab line (assuming you filled the
-version pending table with the adequate information):
-
-    */5 * * * * php app/console pim:versioning:refresh > /tmp/versioning.log
 

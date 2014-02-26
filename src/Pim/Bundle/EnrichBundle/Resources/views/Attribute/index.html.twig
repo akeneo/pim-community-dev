@@ -15,7 +15,7 @@
                 {% for code, label in attributeTypes|sort %}
                     <div class="pull-left">
                         <a class="btn btn-large attribute-choice fullwidth" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
-                            <i class="icon-{{ ('icon.' ~ code)|trans }} pull-left"></i>
+                            <i class="icon-{{ attribute_icon(code) }} pull-left"></i>
                             {{ label }}
                         </a>
                     </div>

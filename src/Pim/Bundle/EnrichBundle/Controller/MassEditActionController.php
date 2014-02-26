@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormError;
 
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr\From;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -267,11 +268,16 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $qb = clone $this->getGridQB($request);
 
-        $rootAlias = $qb->getRootAlias();
+        $rootEntity = current($qb->getRootEntities());
+        $rootAlias  = $qb->getRootAlias();
+        $rootField  = $rootAlias.'.id';
         $qb->resetDQLPart('select');
-        $qb->select(sprintf('COUNT (%s.id)', $rootAlias));
+        $qb->select($rootField);
+        $qb->add('from', new From($rootEntity, $rootAlias), false);
+        $qb->groupBy($rootField);
+        $ids = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
-        return (int) $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+        return count($ids);
     }
 
     /**
