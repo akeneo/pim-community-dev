@@ -17,6 +17,54 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 interface ProductRepositoryInterface
 {
     /**
+     * Get flexible entity config
+     *
+     * @return array $config
+     */
+    public function getFlexibleConfig();
+
+    /**
+     * Set flexible entity config
+     *
+     * @param array $config
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleConfig($config);
+
+    /**
+     * Return asked locale code or default one
+     *
+     * @return string
+     */
+    public function getLocale();
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setLocale($code);
+
+    /**
+     * Return asked scope code or default one
+     *
+     * @return string
+     */
+    public function getScope();
+
+    /**
+     * Set scope code
+     *
+     * @param string $code
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setScope($code);
+
+    /**
      * @param string $scope
      *
      * @return QueryBuilder
