@@ -41,8 +41,9 @@ http://docs.akeneo.com/installation/installation_workstation.html
 
 The following installation overview is for contributing to Akeneo PIM, not for project purpose.
 
-## Installation overview:
-* Install files and DB content
+## Installation overview
+* Make sure all requirements are fullfilled
+* Install files and DB content:
 
 ````
     $ curl -s https://getcomposer.org/installer | php
@@ -65,14 +66,10 @@ By default, this script initializes the dev environment.
 
 ### Add translation packs (optional)
 
-You can download translation packs from crowdin:
-- http://crowdin.net/project/akeneo
-- http://crowdin.net/project/oro-platform
+You can download translation packs from crowdin: http://crowdin.net/project/akeneo
 
 The Akeneo PIM archive contains the following directories tree: `<locale>/<version>/<translation_directories>`
 You just have to paste the <translation_directories> in your app/Resources/ directory.
-
-For Oro Platform, the archive contains the same directories tree except the version directory which is removed.
 
 Write permission for the HTTP server
 ------------------------------------
