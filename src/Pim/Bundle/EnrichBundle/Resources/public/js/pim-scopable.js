@@ -18,11 +18,12 @@ define(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
-                        '<label class="control-label add-on" for="<%= field.id %>">' +
-                            '<span class="field-toggle">' +
-                                '<i class="icon-caret-down"></i>' +
-                            '</span>' +
-                            '<%= field.scope %>' +
+                        '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>"' +
+                            '<% if (field.color) { %>' +
+                                ' style="background-color:rgba(<%= field.color %>)<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
+                            '<% } %>' +
+                        '>' +
+                            '<%= field.scope[0].toUpperCase() %>' +
                         '</label>' +
                         '<div class="scopable-input">' +
                             '<%= field.input %>' +
@@ -84,6 +85,8 @@ define(
                 }
 
                 field.scope       = this.$el.data('scope');
+                field.color       = this.$el.data('color');
+                field.fontColor   = this.$el.data('font-color');
                 field.hiddenInput = this.$el.find('input[type="hidden"]').get(0).outerHTML;
                 field.icons       = this.$el.find('.icons-container').html();
 
@@ -175,6 +178,11 @@ define(
                         })
                     );
 
+                    if (this.fieldViews.length > 1) {
+                        var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                        this.$el.find('label').removeAttr('for').prepend($toggleIcon);
+                    }
+
                     _.each(this.fieldViews, function (fieldView) {
                         fieldView.render().$el.appendTo(this.$el);
                     }, this);
@@ -212,6 +220,7 @@ define(
                     }, this);
 
                     this._initUI();
+                    this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
 
@@ -236,13 +245,17 @@ define(
                     }, this);
 
                     this._initUI();
+                    this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
                 return this;
             },
 
-            _toggle: function () {
+            _toggle: function (e) {
+                if (e) {
+                    e.preventDefault();
+                }
                 return this.expanded ? this._collapse() : this._expand();
             },
 
@@ -278,14 +291,6 @@ define(
                 } else {
                     $field.prependTo(this.$el);
                 }
-
-                $field.find('.field-toggle').removeClass('hide');
-
-                if (this.expanded) {
-                    $field.find('.field-toggle i').removeClass(this.expandIcon).addClass(this.collapseIcon);
-                } else {
-                    $field.find('.field-toggle i').removeClass(this.collapseIcon).addClass(this.expandIcon);
-                }
             },
 
             _showField: function (field, first) {
@@ -299,7 +304,7 @@ define(
             },
 
             _hideField: function (field) {
-                $(field).hide().find('.field-toggle').addClass('hide');
+                $(field).hide();
             },
 
             _destroyUI: function () {
@@ -332,7 +337,7 @@ define(
             },
 
             events: {
-                'click label span.field-toggle' : '_toggle'
+                'click label i.field-toggle' : '_toggle'
             }
         });
     }

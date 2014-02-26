@@ -6,6 +6,7 @@
 - Add new user as fixtures
 - Auto-refresh job execution report page
 - Add a checkbox to select all visible rows in entity association grids
+- Add colors to channels and use them in scopable field labels to make them more compact
 
 ## Improvements
 - Load choices for grid filters asynchronously
@@ -34,6 +35,7 @@
 - Fix unwanted fields appearing in attribute creation form if server-side validation errors are present
 - Fix 500 response when submitting import launch form without selecting file to upload
 - Fix $field_catalogLocale linked bugs
+- Fix scopable value order in product form
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
