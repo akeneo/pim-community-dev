@@ -413,7 +413,6 @@ datagrid:
         columns:
             is_checked:
                 frontend_type: boolean
-                label:         Is checked
                 data_name:     is_checked
                 editable:      true
             in_group:
@@ -523,7 +522,6 @@ datagrid:
         columns:
             is_checked:
                 frontend_type: boolean
-                label:         Is checked
                 data_name:     is_checked
                 editable:      true
             in_group:
@@ -934,7 +932,6 @@ datagrid:
         columns:
             is_checked:
                 frontend_type: boolean
-                label:         Is checked
                 data_name:     is_checked
                 editable:      true
             is_associated:
@@ -1033,7 +1030,6 @@ datagrid:
         columns:
             is_checked:
                 frontend_type: boolean
-                label:         Is checked
                 data_name:     is_checked
                 editable:      true
             is_associated:
