@@ -34,7 +34,7 @@ jenkins-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-2:
     context:
@@ -51,7 +51,7 @@ jenkins-2:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-3:
     context:
@@ -68,7 +68,7 @@ jenkins-3:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-4:
     context:
@@ -85,7 +85,7 @@ jenkins-4:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-pr-1:
     context:
@@ -102,7 +102,7 @@ jenkins-pr-1:
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-pr-2:
     context:
@@ -119,7 +119,7 @@ jenkins-pr-2:
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-pr-3:
     context:
@@ -136,7 +136,7 @@ jenkins-pr-3:
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-pr-4:
     context:
@@ -153,7 +153,7 @@ jenkins-pr-4:
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
 
 jenkins-coverage-1:
     context:
@@ -170,4 +170,38 @@ jenkins-coverage-1:
         parameters:
             output_path: null,app/build/logs/behat-coverage/
     filters:
-        tags: ~skip
+        tags: ~skip,~doc
+
+jenkins-docs-1:
+    context:
+        parameters:
+            base_url: http://pim-docs-behat-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-docs-behat-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat-docs/
+    filters:
+        tags: ~skip,~skip-doc
+
+jenkins-docs-2:
+    context:
+        parameters:
+            base_url: http://pim-docs-behat-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-docs-behat-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat-docs/
+    filters:
+        tags: ~skip,~skip-doc
