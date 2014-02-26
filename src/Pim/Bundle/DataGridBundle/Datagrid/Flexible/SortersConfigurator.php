@@ -53,6 +53,15 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $this->addAttributeSorters();
+        $this->removeExtraSorters();
+    }
+
+    /**
+     * Add sorters for attributes used as columns
+     */
+    protected function addAttributeSorters()
+    {
         $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $callback = $this->getApplyCallback();
         $columns = $this->configuration->offsetGetByPath(
@@ -86,6 +95,28 @@ class SortersConfigurator implements ConfiguratorInterface
                 }
             }
         }
+    }
+
+    /**
+     * Remove extra sorters, ie, sorters defined in datagrid.yml but columns are not displayed
+     */
+    protected function removeExtraSorters()
+    {
+        $displayedColumns =$this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
+        $columnsCodes = array_keys($displayedColumns);
+        $sorters = $this->configuration->offsetGetByPath(sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH));
+        $sortersCodes = array_keys($sorters);
+
+        foreach ($sortersCodes as $sorterCode) {
+            if (!in_array($sorterCode, $columnsCodes)) {
+                unset($sorters[$sorterCode]);
+            }
+        }
+
+        $this->configuration->offsetSetByPath(
+            sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH),
+            $sorters
+        );
     }
 
     /**
