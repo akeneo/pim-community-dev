@@ -241,6 +241,10 @@ datagrid:
             repository_method: createDatagridQueryBuilder
             is_flexible: true
         columns:
+            label:
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -424,8 +428,9 @@ datagrid:
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
             label:
-                label: Label
-                data_name: label
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -533,8 +538,9 @@ datagrid:
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
             label:
-                label: Label
-                data_name: label
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -943,6 +949,10 @@ datagrid:
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
                 editable:      true
+            label:
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label:     Family
                 data_name: familyLabel
