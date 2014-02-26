@@ -46,6 +46,9 @@ class Channel implements ReferableInterface
     /** @var array $conversionUnits */
     protected $conversionUnits = array();
 
+    /** @var string $color */
+    protected $color;
+
     /**
      * Constructor
      */
@@ -279,6 +282,30 @@ class Channel implements ReferableInterface
     public function getConversionUnits()
     {
         return $this->conversionUnits;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Channel
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
     }
 
     /**

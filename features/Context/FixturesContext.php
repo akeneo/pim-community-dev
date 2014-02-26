@@ -614,54 +614,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingChannels(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(
-                array(
-                    'label'      => null,
-                    'locales'    => null,
-                    'currencies' => null,
-                    'category'   => null,
-                ),
-                $data
-            );
-
-            $category = null;
-            if ($data['category']) {
-                $category = $this->getCategory($data['category']);
-            }
-
-            try {
-                $channel = $this->getChannel($data['code']);
-
-                if ($data['label']) {
-                    $channel->setLabel($data['label']);
-                }
-
-                if ($category !== null) {
-                    $channel->setCategory($category);
-                }
-
-                if ($data['locales']) {
-                    foreach ($this->listToArray($data['locales']) as $localeCode) {
-                        $channel->addLocale($this->getLocale($localeCode));
-                    }
-                }
-
-                if ($data['currencies']) {
-                    foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-                        $channel->addCurrency($this->getCurrency($currencyCode));
-                    }
-                }
-
-                $this->persist($channel);
-            } catch (\InvalidArgumentException $e) {
-                $this->createChannel(
-                    $data['code'],
-                    $data['label'],
-                    $this->listToArray($data['locales']),
-                    $category,
-                    $this->listToArray($data['currencies'])
-                );
-            }
+            $this->createChannel($data);
         }
     }
 
@@ -1430,32 +1383,46 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string   $code
-     * @param string   $label
-     * @param string[] $locales
-     * @param Category $tree
-     * @param string[] $currencies
+     * @param array $data
+     *
+     * @return Channel
      */
-    private function createChannel($code, $label = null, $locales = array(), $tree = null, $currencies = array())
+    private function createChannel($data)
     {
+        if (is_string($data)) {
+            $data = [['code' => $data]];
+        }
+
+        $data = array_merge(
+            [
+                'label'      => null,
+                'color'      => null,
+                'currencies' => null,
+                'locales'    => null,
+                'tree'       => null,
+            ],
+            $data
+        );
+
         $channel = new Channel();
-        $channel->setCode($code);
 
-        if ($label === null) {
-            $label = ucfirst($code);
-        }
-        $channel->setLabel($label);
+        $channel->setCode($data['code']);
+        $channel->setLabel($data['label']);
 
-        if ($tree !== null) {
-            $channel->setCategory($tree);
+        if ($data['color']) {
+            $channel->setColor($data['color']);
         }
 
-        foreach ($locales as $localeCode) {
+        foreach ($this->listToArray($data['currencies']) as $currencyCode) {
+            $channel->addCurrency($this->getCurrency($currencyCode));
+        }
+
+        foreach ($this->listToArray($data['locales']) as $localeCode) {
             $channel->addLocale($this->getLocale($localeCode));
         }
 
-        foreach ($currencies as $currencyCode) {
-            $channel->addCurrency($this->getCurrency($currencyCode));
+        if ($data['tree']) {
+            $channel->setCategory($this->getCategory($data['tree']));
         }
 
         $this->persist($channel);
