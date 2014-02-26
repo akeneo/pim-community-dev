@@ -597,7 +597,8 @@ popin.create:
     option.title: Create a new option
 
 # Datagrid contents
-Has product: Has product
-Attribute as label: Attribute as label
-Available Columns: Available Columns
-Displayed Columns: Displayed Columns
+'In group': In group
+'Attribute as label': Attribute as label
+'Available Columns': Available Columns
+'Displayed Columns': Displayed Columns
+'Is associated': Is associated
