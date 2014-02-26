@@ -1,7 +1,7 @@
 {% if value %}
     {% for group in value %}
 
-        {% if group['translations']|length > 0 %}
+        {% if group['translations']|length > 0 and group['translations'][0]['label'] != "" %}
             {{ group['translations'][0]['label'] }}
         {% else %}
             [{{ group['code'] }}]
