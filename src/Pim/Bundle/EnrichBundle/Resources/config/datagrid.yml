@@ -339,7 +339,7 @@ datagrid:
                 enabled:
                     data_name:      p.enabled
                 completeness:
-                    data_name:      sorterCompleteness.ratio
+                    data_name:      ratio
                     apply_callback: '@pim_datagrid.extension.sorter.orm.product_completeness_sorter->apply'
                 created:
                     data_name:      p.created
