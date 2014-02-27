@@ -335,16 +335,16 @@ datagrid:
         sorters:
             columns:
                 family:
-                    data_name:      familyLabel
+                    data_name: familyLabel
                 enabled:
-                    data_name:      p.enabled
+                    data_name: p.enabled
                 completeness:
-                    data_name:      ratio
+                    data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name:      p.created
+                    data_name: p.created
                 updated:
-                    data_name:      p.updated
+                    data_name: p.updated
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
