@@ -36,6 +36,7 @@
 - Fix 500 response when submitting import launch form without selecting file to upload
 - Fix $field_catalogLocale linked bugs
 - Fix scopable value order in product form
+- Fix missing breadcrumbs for edit views
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
