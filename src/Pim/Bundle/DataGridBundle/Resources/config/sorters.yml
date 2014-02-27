@@ -4,4 +4,5 @@ parameters:
 services:
     pim_datagrid.extension.sorter.orm.product_completeness_sorter:
         class: %pim_datagrid.extension.sorter.orm.product_completeness_sorter.class%
-
+        arguments:
+            - '@pim_catalog.repository.orm.product'

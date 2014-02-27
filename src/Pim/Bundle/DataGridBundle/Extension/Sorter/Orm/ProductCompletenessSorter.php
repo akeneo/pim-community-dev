@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 
 /**
  * Product completeness sorter
@@ -16,34 +17,30 @@ use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 class ProductCompletenessSorter implements SorterInterface
 {
     /**
+     * @var ProductRepository
+     */
+    protected $repository;
+
+    /**
+     * @param ProductRepository $repository
+     */
+    public function __construct(ProductRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function apply()
     {
         return function (DatasourceInterface $datasource, $field, $direction) {
 
-            $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
-            $datasource->getQueryBuilder()
-                ->leftJoin(
-                    'PimCatalogBundle:Locale',
-                    'sorterCLocale',
-                    'WITH',
-                    'sorterCLocale.code = :dataLocale'
-                )
-                ->leftJoin(
-                    'PimCatalogBundle:Channel',
-                    'sorterCChannel',
-                    'WITH',
-                    'sorterCChannel.code = :scopeCode'
-                )
-                ->leftJoin(
-                    'Pim\Bundle\CatalogBundle\Model\Completeness',
-                    'sorterCompleteness',
-                    'WITH',
-                    'sorterCompleteness.locale = sorterCLocale.id AND sorterCompleteness.channel = sorterCChannel.id '.
-                    'AND sorterCompleteness.product = '.$rootAlias.'.id'
-                )
-                ->addOrderBy($field, $direction);
+            $qb        = $datasource->getQueryBuilder();
+            $joinAlias = 'sorterCompleteness';
+
+            $this->repository->addCompleteness($qb, $joinAlias);
+            $qb->addOrderBy($joinAlias.'.'.$field, $direction);
         };
     }
 }
