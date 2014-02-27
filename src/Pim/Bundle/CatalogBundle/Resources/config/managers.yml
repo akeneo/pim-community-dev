@@ -54,12 +54,12 @@ services:
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%
         arguments:
-            - '@pim_catalog.repository.orm.currency.class'
+            - '@pim_catalog.repository.orm.currency'
 
     pim_catalog.manager.channel:
         class: %pim_catalog.manager.channel.class%
         arguments:
-            - '@pim_catalog.repository.orm.channel.class'
+            - '@pim_catalog.repository.orm.channel'
 
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
