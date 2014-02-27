@@ -340,7 +340,7 @@ datagrid:
                     data_name:      p.enabled
                 completeness:
                     data_name:      ratio
-                    apply_callback: '@pim_datagrid.extension.sorter.orm.product_completeness_sorter->apply'
+                    sorter:    product_completeness
                 created:
                     data_name:      p.created
                 updated:
@@ -467,7 +467,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
-                    apply_callback: '@pim_datagrid.extension.sorter.orm.product_completeness_sorter->apply'
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -579,7 +579,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
-                    apply_callback: '@pim_datagrid.extension.sorter.orm.product_completeness_sorter->apply'
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -993,7 +993,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
-                    apply_callback: '@pim_datagrid.extension.sorter.orm.product_completeness_sorter->apply'
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
