@@ -1133,20 +1133,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $this->wait(
-            120000,
-            <<<JS
-function () {
-    switch ($("#status").text()) {
-        case 'Status: COMPLETED':
-        case 'Status: STOPPED':
-        case 'Status: FAILED':
-            return true;
-    }
-    return false;
-}
-JS
-        );
+        $this->wait(120000, '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())');
     }
 
     /**

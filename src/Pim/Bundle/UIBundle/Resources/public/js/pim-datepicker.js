@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/formatter/datetime', 'jquery-ui'],
+    ['jquery', 'oro/formatter/datetime', 'jquery-ui-full'],
     function ($, datetimeFormatter) {
 
         var init = function(id) {

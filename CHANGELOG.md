@@ -6,6 +6,7 @@
 - Add new user as fixtures
 - Auto-refresh job execution report page
 - Add a checkbox to select all visible rows in entity association grids
+- Add colors to channels and use them in scopable field labels to make them more compact
 
 ## Improvements
 - Load choices for grid filters asynchronously
@@ -23,17 +24,19 @@
 - Make documentation tested linking it to our behat scenarios
 
 ## Bug fixes
-- Fix non-updated values being displayed in the the audit history
-- Fix attribute group form state not being saved
+- Fixed non-updated values being displayed in the the audit history
+- Fixed attribute group form state not being saved
 - Do not display Id as an eligible attribute as label
-- Fix select field missing for scopable simple/multi select attributes in the product form
+- Fixed select field missing for scopable simple/multi select attributes in the product form
 - Restored missing attributes translation
-- Fix the display of scopable metric attributes in the product edit form
-- Fix regression with resolve target entity on Category entity
-- Fix datepicker in date attribute form
-- Fix unwanted fields appearing in attribute creation form if server-side validation errors are present
-- Fix 500 response when submitting import launch form without selecting file to upload
-- Fix $field_catalogLocale linked bugs
+- Fixed the display of scopable metric attributes in the product edit form
+- Fixed regression with resolve target entity on Category entity
+- Fixed datepicker in date attribute form
+- Fixed unwanted fields appearing in attribute creation form if server-side validation errors are present
+- Fixed 500 response when submitting import launch form without selecting file to upload
+- Fixed $field_catalogLocale linked bugs
+- Fixed scopable value order in product form
+- Restored unique variant axis constraint when saving product
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
@@ -49,6 +52,8 @@ that made the entity too smart for its own good and created performances problem
 - Product datagrid, hydrate rows as arrays (in place of objects) to reduce the loading time
 - Datagrid configuration, replace [flexible_entity] config by a [source][is_flexible] config to avoid to define the used entity twice
 - Rename and move src/Pim/Bundle/EnrichBundle/Resources/views/Completeness/_datagridCompleteness.html.twig => DataGridBundle/Resources/views/Property/completeness.html.twig
+- Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
+- Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

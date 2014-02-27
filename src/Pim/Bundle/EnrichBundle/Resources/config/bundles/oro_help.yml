@@ -1,0 +1,14 @@
+oro_help:
+    defaults:
+        server: http://help.orocrm.com/
+        prefix: Third_Party
+    vendors:
+        Oro:
+            prefix: ~
+            alias: Platform
+        OroCRM:
+            prefix: ~
+            alias: CRM
+    routes:
+        oro_default:
+            uri: CRM/OroCRMDashboardBundle

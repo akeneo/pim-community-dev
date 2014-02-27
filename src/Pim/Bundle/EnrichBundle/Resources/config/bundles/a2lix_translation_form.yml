@@ -1,0 +1,3 @@
+a2lix_translation_form:
+    locales:    [en, fr]
+    templating: OroUIBundle:Form:translateable.html.twig

@@ -65,12 +65,20 @@ class DatabaseCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Prepare database schema</info>');
 
-        $this->commandExecutor
-            ->runCommand('doctrine:database:drop', array('--force' => true))
-            ->runCommand('doctrine:database:create');
+        // Needs to try if database already exists or not
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+        if (!$connection->isConnected()) {
+            try {
+                $connection->connect();
+                $this->commandExecutor->runCommand('doctrine:database:drop', array('--force' => true));
+            } catch (\PDOException $e) {
+                $output->writeln('<info>Database does not exist yet</info>');
+            }
+        }
+
+        $this->commandExecutor->runCommand('doctrine:database:create');
 
         // Needs to close connection if always open
-        $connection = $this->getContainer()->get('doctrine')->getConnection();
         if ($connection->isConnected()) {
             $connection->close();
         }
@@ -79,9 +87,8 @@ class DatabaseCommand extends ContainerAwareCommand
             ->runCommand('doctrine:schema:create')
             ->runCommand('oro:entity-config:init')
             ->runCommand('oro:entity-extend:init')
-            ->runCommand(
-                'oro:entity-extend:update-config'
-            )
+            ->runCommand('oro:entity-extend:update-config')
+            ->runCommand('oro:entity-extend:clear')
             ->runCommand(
                 'doctrine:schema:update',
                 array('--force' => true, '--no-interaction' => true)

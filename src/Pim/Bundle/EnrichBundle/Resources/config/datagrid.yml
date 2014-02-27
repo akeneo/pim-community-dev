@@ -241,6 +241,10 @@ datagrid:
             repository_method: createDatagridQueryBuilder
             is_flexible: true
         columns:
+            label:
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -405,11 +409,12 @@ datagrid:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
         source:
-            acl_resource: pim_enrich_product_index
-            type: pim_orm
-            entity: %pim_catalog.entity.product.class%
+            acl_resource:      pim_enrich_product_index
+            type:              pim_orm
+            entity:            %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
-            is_flexible: true
+            is_flexible:       true
+            user_config_alias: product-grid
         columns:
             is_checked:
                 frontend_type: boolean
@@ -423,8 +428,9 @@ datagrid:
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
             label:
-                label: Label
-                data_name: label
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -532,8 +538,9 @@ datagrid:
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
             label:
-                label: Label
-                data_name: label
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label: Family
                 data_name: familyLabel
@@ -925,10 +932,11 @@ datagrid:
                 dataField: id
                 columnName: is_checked
         source:
-            type: pim_orm
-            entity: %pim_catalog.entity.product.class%
+            type:              pim_orm
+            entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
-            is_flexible: true
+            is_flexible:       true
+            user_config_alias: product-grid
         columns:
             is_checked:
                 frontend_type: boolean
@@ -940,6 +948,11 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:checked.html.twig
                 frontend_type: html
+                editable:      true
+            label:
+                label:     Label
+                data_name: productLabel
+                selector:  product_label
             family:
                 label:     Family
                 data_name: familyLabel

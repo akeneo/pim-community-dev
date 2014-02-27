@@ -222,7 +222,7 @@
                         mediator.trigger('scopablefield:' + action);
                         var newAction = action == 'collapse' ? 'expand' : 'collapse';
                         $el.attr('title', $el.attr('data-' + newAction + '-title')).attr('data-action', newAction);
-                        $el.find('i').toggleClass('icon-caret-right icon-caret-up');
+                        $el.find('i').toggleClass('icon-caret-right icon-caret-down');
                     });
                 });
             }

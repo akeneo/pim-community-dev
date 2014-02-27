@@ -19,6 +19,10 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
         conversionUnits:
             type: array
             nullable: false
+        color:
+            type: string
+            length: 15
+            nullable: true
     manyToOne:
         category:
             targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
