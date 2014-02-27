@@ -383,8 +383,6 @@ SQL;
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
-        $this->addCompleteness($qb);
-
         $qb
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
@@ -404,8 +402,6 @@ SQL;
         $qb
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $this->addCompleteness($qb);
 
         $isCheckedExpr =
             'CASE WHEN ' .
@@ -453,8 +449,6 @@ SQL;
                 'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
             );
 
-        $this->addCompleteness($qb);
-
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
         $isCheckedExpr =
@@ -469,33 +463,5 @@ SQL;
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
         return $qb;
-    }
-
-    /**
-     * @param QueryBuilder $qb
-     */
-    protected function addCompleteness(QueryBuilder $qb)
-    {
-        $qb
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'locale',
-                'WITH',
-                'locale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'channel',
-                'WITH',
-                'channel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
-                'completeness',
-                'WITH',
-                'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.product = p.id'
-            )
-            ->addSelect('completeness.ratio AS ratio');
     }
 }
