@@ -54,7 +54,7 @@
                                     {% for element in child.children %}
                                     <tr>
                                         <td><b>{{ element.vars.label|trans }}</b></td>
-                                        <td>{{ element.vars.data }} {{ getViolations(violations, element.vars.name) }}</td>
+                                        <td>{{ element.vars.data|normalizeValue }} {{ getViolations(violations, element.vars.name) }}</td>
                                     </tr>
                                     {% endfor %}
                                 {% endfor %}
