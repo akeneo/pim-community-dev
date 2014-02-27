@@ -1,4 +1,13 @@
 families:
+    mongo:
+        labels:
+            en_US: MongoDB Family
+            fr_FR: Famille MongoDB
+        attributes:
+            - sku
+            - name
+            - short_description
+        attributeAsLabel: name
     mug:
         labels:
             en_US: Mug

@@ -7,6 +7,8 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+
 /**
  * Product interface
  *
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductInterface
+interface ProductInterface extends FlexibleInterface
 {
     /**
      * Get family
@@ -47,13 +49,6 @@ interface ProductInterface
      * @return array the attributes of the current product
      */
     public function getAttributes();
-
-    /**
-     * Get values
-     *
-     * @return ArrayCollection
-     */
-    public function getValues();
 
     /**
      * Get product label
