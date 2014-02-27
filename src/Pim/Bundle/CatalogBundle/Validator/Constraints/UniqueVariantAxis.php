@@ -18,7 +18,7 @@ class UniqueVariantAxis extends Constraint
      *
      * @var string
      */
-    public $message;
+    public $message = 'Group "%variant group%" already contains another product with values "%values%"';
 
     /**
      * {@inheritdoc}

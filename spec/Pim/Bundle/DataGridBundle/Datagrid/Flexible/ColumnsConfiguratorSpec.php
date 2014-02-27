@@ -9,6 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 class ColumnsConfiguratorSpec extends ObjectBehavior
 {
@@ -28,19 +29,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-        $columns = [
-            'sku' => [
-                'identifier_config',
-                'label' => 'Sku'
-            ],
-            'family' => [
-                'family_config',
-            ],
-            'name' => [
-                'text_config',
-                'label' => 'Name'
-            ]
-        ];
         $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
 
         $attributes = [
@@ -65,7 +53,27 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
+        $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
+
+        $columns = [
+            'sku' => [
+                'identifier_config',
+                'label' => 'Sku'
+            ],
+            'family' => [
+                'family_config',
+            ],
+            'name' => [
+                'text_config',
+                'label' => 'Name'
+            ]
+        ];
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
+        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+
         $this->configure();
     }
 
@@ -98,7 +106,80 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
+        $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
+
         $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
+        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+
+        $this->configure();
+    }
+
+    function it_displays_only_columns_configured_by_the_user(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    {
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
+        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config')));
+
+        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
+        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config')));
+
+        $attributes = [
+            'sku' => [
+                'code'  => 'sku',
+                'label' => 'Sku',
+                'useableAsGridColumn' => 1,
+                'attributeType' => 'pim_catalog_identifier'
+            ],
+            'name' => [
+                'code'  => 'name',
+                'label' => 'Name',
+                'useableAsGridColumn' => 1,
+                'attributeType' => 'pim_catalog_text'
+            ],
+            'desc' => [
+                'code'  => 'desc',
+                'label' => 'Desc',
+                'useableAsGridColumn' => 0,
+                'attributeType' => 'pim_catalog_text'
+            ],
+        ];
+        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+
+        $userColumnsPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($userColumnsPath)->willReturn(array('family', 'sku'));
+
+        $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
+        $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
+
+        $columns = [
+            'sku' => [
+                'identifier_config',
+                'label' => 'Sku'
+            ],
+            'family' => [
+                'family_config',
+            ],
+        ];
+        $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $columns = [
+            'sku' => [
+                'identifier_config',
+                'label' => 'Sku'
+            ],
+            'family' => [
+                'family_config',
+            ],
+            'name' => [
+                'text_config',
+                'label' => 'Name'
+            ]
+        ];
+        $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
+        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+
         $this->configure();
     }
 

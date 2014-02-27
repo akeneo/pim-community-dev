@@ -267,8 +267,26 @@ class Form extends Base
                 $for = $label->getAttribute('for');
                 if (0 === strpos($for, 's2id_')) {
                     // We are playing with a select2 widget
-                    $field = $label->getParent()->find('css', 'select');
-                    $field->selectOption($value);
+                    if (null !== $field = $label->getParent()->find('css', 'select')) {
+                        return $field->selectOption($value);
+                    }
+
+                    // Maybe it's an ajax select2?
+                    if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
+                        $link->click();
+
+                        // Wait for the ajax request to finish
+                        $this->getSession()->wait(5000, '!$.active');
+
+                        // Select the value in the displayed dropdown
+                        if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
+                            return $item->click();
+                        }
+                    }
+
+                    throw new \InvalidArgumentException(
+                        sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+                    );
                 } elseif (preg_match('/_date$/', $for)) {
                     $this->getSession()->executeScript(
                         sprintf("$('#%s').val('%s').trigger('change');", $for, $value)

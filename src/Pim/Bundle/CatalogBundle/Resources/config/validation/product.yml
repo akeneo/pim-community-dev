@@ -1,4 +1,3 @@
-Pim\Bundle\CatalogBundle\Entity\Product:
+Pim\Bundle\CatalogBundle\Model\Product:
     constraints:
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
-            message: Product "%product%" cannot be added to the the variant group "%variant group%" because it already contains another product with values "%values%".
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis: ~
