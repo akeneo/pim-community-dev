@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 
 /**
  * Product completeness selector
@@ -16,32 +17,27 @@ use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 class ProductCompletenessSelector implements SelectorInterface
 {
     /**
+     * @var ProductRepository
+     */
+    protected $repository;
+
+    /**
+     * @param ProductRepository $repository
+     */
+    public function __construct(ProductRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
+        $qb        = $datasource->getQueryBuilder();
+        $joinAlias = 'selectCompleteness';
 
-        $datasource->getQueryBuilder()
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'scLocale',
-                'WITH',
-                'scLocale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'scChannel',
-                'WITH',
-                'scChannel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
-                'selectCompleteness',
-                'WITH',
-                'selectCompleteness.locale = scLocale.id AND selectCompleteness.channel = scChannel.id '.
-                'AND selectCompleteness.product = '.$rootAlias.'.id'
-            )
-            ->addSelect('selectCompleteness.ratio AS ratio');
+        $this->repository->addCompleteness($qb, $joinAlias);
+        $qb->addSelect($joinAlias.'.ratio AS ratio');
     }
 }

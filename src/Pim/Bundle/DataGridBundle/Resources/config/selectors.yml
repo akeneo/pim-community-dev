@@ -62,5 +62,7 @@ services:
 
     pim_datagrid.extension.selector.orm.product_completeness_selector:
         class: %pim_datagrid.extension.selector.orm.product_completeness_selector.class%
+        arguments:
+            - '@pim_catalog.repository.orm.product'
         tags:
             - { name: pim_datagrid.extension.selector, type: product_completeness }
