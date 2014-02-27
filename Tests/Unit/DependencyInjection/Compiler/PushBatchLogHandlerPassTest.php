@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class PushBatchLogHandlerPassTest extends \PHPUnit_Framework_TestCase
 {
+    protected $pass;
+
     protected function setUp()
     {
         $this->pass = new PushBatchLogHandlerPass();

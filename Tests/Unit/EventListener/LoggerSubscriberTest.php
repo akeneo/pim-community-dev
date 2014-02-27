@@ -10,6 +10,10 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
  */
 class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    protected $logger;
+    protected $translator;
+    protected $subscriber;
+
     protected function setUp()
     {
         $this->logger = $this->getLoggerMock();

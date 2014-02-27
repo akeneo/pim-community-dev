@@ -10,6 +10,12 @@ use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
  */
 class MailNotifierTest extends \PHPUnit_Framework_TestCase
 {
+    protected $handler;
+    protected $securityContext;
+    protected $twig;
+    protected $mailer;
+    protected $notifier;
+
     protected function setUp()
     {
         $this->handler         = $this->getDisabledConstructorMock(

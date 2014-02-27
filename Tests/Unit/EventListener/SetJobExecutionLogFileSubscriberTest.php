@@ -10,6 +10,9 @@ use Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber;
  */
 class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    protected $logger;
+    protected $subscriber;
+
     protected function setUp()
     {
         $this->logger = $this->getLoggerMock();

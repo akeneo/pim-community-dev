@@ -9,6 +9,10 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 {
+    protected $jobFactory;
+    protected $stepFactory;
+    protected $registry;
+
     public function setup()
     {
         $this->jobFactory  = $this->getConstructorDisabledMock('Akeneo\Bundle\BatchBundle\Job\JobFactory');

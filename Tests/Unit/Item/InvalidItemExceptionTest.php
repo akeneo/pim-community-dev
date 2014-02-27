@@ -13,6 +13,8 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
  */
 class InvalidItemExceptionTest extends \PHPUnit_Framework_TestCase
 {
+    protected $exception;
+
     protected function setUp()
     {
         $this->exception = new InvalidItemException(

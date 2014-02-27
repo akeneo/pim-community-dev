@@ -11,6 +11,8 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
  */
 class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    protected $subscriber;
+
     protected function setUp()
     {
         $this->subscriber = new NotificationSubscriber();

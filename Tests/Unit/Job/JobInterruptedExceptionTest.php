@@ -11,7 +11,8 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
  */
 class JobInterruptedExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    protected $jobInterruptedException = null;
+    protected $job;
+    protected $jobInterruptedException;
 
     /**
      * {@inheritdoc}
