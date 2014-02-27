@@ -32,15 +32,12 @@ class ProductCompletenessSorter implements SorterInterface
     /**
      * {@inheritdoc}
      */
-    public function apply()
+    public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        return function (DatasourceInterface $datasource, $field, $direction) {
+        $qb        = $datasource->getQueryBuilder();
+        $joinAlias = 'sorterCompleteness';
 
-            $qb        = $datasource->getQueryBuilder();
-            $joinAlias = 'sorterCompleteness';
-
-            $this->repository->addCompleteness($qb, $joinAlias);
-            $qb->addOrderBy($joinAlias.'.'.$field, $direction);
-        };
+        $this->repository->addCompleteness($qb, $joinAlias);
+        $qb->addOrderBy($joinAlias.'.'.$field, $direction);
     }
 }

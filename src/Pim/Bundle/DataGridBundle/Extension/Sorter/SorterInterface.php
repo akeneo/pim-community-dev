@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+
 /**
  * Sorter interface, allows to join extra data in the datasource before to sort on
  *
@@ -12,9 +14,11 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 interface SorterInterface
 {
     /**
-     * Prepare and return a closure that is able to apply an order by on a datasource
+     * Apply a custom order by on the datasource
      *
-     * @return \Closure
+     * @param DatasourceInterface $datasource
+     * @param string              $field
+     * @param string              $direction
      */
-    public function apply();
+    public function apply(DatasourceInterface $datasource, $field, $direction);
 }
