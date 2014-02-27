@@ -475,4 +475,16 @@ class ProductManager extends FlexibleManager
 
         return $this->getFlexibleRepository()->getProductIdsInCategory($category, $categoryQb);
     }
+
+    /**
+     * Check if a product value with a specific value already exists
+     *
+     * @param ProductValueInterface $value
+     *
+     * return boolean
+     */
+    public function valueExists(ProductValueInterface $value)
+    {
+        return $this->getFlexibleRepository()->valueExists($value);
+    }
 }

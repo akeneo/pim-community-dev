@@ -8,6 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Common\EventSubscriber;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Inject ORM attribute object into ProductValue loaded from MongoDB
@@ -66,6 +67,8 @@ class InjectORMReferencesSubscriber implements EventSubscriber
             $this->setAttributeReference($document, $documentManager);
         } elseif ($document instanceof ProductInterface) {
             $this->setFamilyReference($document, $documentManager);
+        } elseif ($document instanceof Association) {
+            $this->setAssociationTypeReference($document, $documentManager);
         }
     }
 
@@ -86,6 +89,26 @@ class InjectORMReferencesSubscriber implements EventSubscriber
         $attributeReflProp->setValue(
             $value,
             $this->entityManager->getReference($this->attributeClass, $value->getAttributeId())
+        );
+    }
+
+    /**
+     * Add the reference to associationType inside the associationType
+     * in order to be able to lazyload it when needed
+     *
+     * @param Association     $association
+     * @param DocumentManager $documentManager
+     */
+    protected function setAssociationTypeReference(Association $association, DocumentManager $documentManager)
+    {
+        $associationMetadata = $documentManager->getClassMetadata(get_class($association));
+
+        $typeReflProp = $associationMetadata->reflClass->getProperty('associationType');
+        $typeReflProp->setAccessible(true);
+
+        $typeReflProp->setValue(
+            $association,
+            $this->entityManager->getReference('PimCatalogBundle:Family', $association->getAssociationTypeId())
         );
     }
 

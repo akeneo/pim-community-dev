@@ -45,7 +45,7 @@ services:
     pim_catalog.validator.constraints.unique_value:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.manager.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 

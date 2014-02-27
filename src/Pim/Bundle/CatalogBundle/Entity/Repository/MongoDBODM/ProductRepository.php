@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -197,7 +198,8 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function findOneByWithValues($id)
     {
         // FIXME_MONGO Shortcut, but must do the same thing
-        // than the parent
+        // than the ORM one
+        //TODO
         return $this->find($id);
     }
 
@@ -206,6 +208,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
+        //TODO
         return null;
     }
 
@@ -214,12 +217,29 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getReferenceProperties()
     {
+        //TODO
         return array();
     }
 
     /**
      * {@inheritdoc}
      */
+    public function valueExists(ProductValueInterface $value)
+    {
+        $attributeId = $value->getAttribute()->getId();
+        $attributeBackend = $value->getAttribute()->getBackendType();
+        $data = $value->getData();
+
+        $result = $this->createQueryBuilder()
+            ->hydrate(false)
+            ->field("values.".$attributeBackend)->equals($data)
+            ->field("values.attributeId")->equals($attributeId)
+            ->getQuery()
+            ->getSingleResult();
+
+        return (count($result) !== 0);
+    }
+
     public function countProductsPerChannels()
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);

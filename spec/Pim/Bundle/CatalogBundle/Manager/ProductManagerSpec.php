@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 
 class ProductManagerSpec extends ObjectBehavior
@@ -32,7 +33,7 @@ class ProductManagerSpec extends ObjectBehavior
         MediaManager $mediaManager,
         CompletenessManager $completenessManager,
         ProductBuilder $builder,
-        ProductRepository $repository,
+        ProductRepositoryInterface $repository,
         ClassMetadata $productMeta,
         ClassMetadata $valueMeta,
         ClassMetadata $attributeMeta,
@@ -67,7 +68,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager');
     }
 
-    function it_has_a_product_repository(ProductRepository $repository)
+    function it_has_a_product_repository(ProductRepositoryInterface $repository)
     {
         $this->getFlexibleRepository()->shouldReturn($repository);
     }
@@ -118,5 +119,17 @@ class ProductManagerSpec extends ObjectBehavior
         $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
 
         $this->addAttributesToProduct($product, $attributes);
+    }
+
+    function it_checks_value_existence(
+        ProductRepositoryInterface $repository,
+        ProductValueInterface $value
+    ) {
+        $repository->setFlexibleConfig($this->getFlexibleConfig())->shouldBeCalled();
+        $repository->valueExists($value)->willReturn(true);
+        $this->valueExists($value)->shouldReturn(true);
+
+        $repository->valueExists($value)->willReturn(false);
+        $this->valueExists($value)->shouldReturn(false);
     }
 }
