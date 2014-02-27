@@ -15,6 +15,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 
 /**
  * Type for channel form
@@ -36,15 +37,22 @@ class ChannelType extends AbstractType
     protected $localeHelper;
 
     /**
-     * Inject locale manager and locale helper in the constructor
-     *
-     * @param LocaleManager $localeManager
-     * @param LocaleHelper  $localeHelper
+     * @var ColorsProvider
      */
-    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
+    protected $colorsProvider;
+
+    /**
+     * Inject locale manager, locale helper and colors provider in the constructor
+     *
+     * @param LocaleManager  $localeManager
+     * @param LocaleHelper   $localeHelper
+     * @param ColorsProvider $provider
+     */
+    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper, ColorsProvider $provider)
     {
         $this->localeManager = $localeManager;
         $this->localeHelper  = $localeHelper;
+        $this->provider      = $provider;
     }
 
     /**
@@ -55,6 +63,7 @@ class ChannelType extends AbstractType
         $this
             ->addCodeField($builder)
             ->addLabelField($builder)
+            ->addColorField($builder)
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
@@ -84,6 +93,28 @@ class ChannelType extends AbstractType
     protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add('label', 'text', array('label' => 'Default label'));
+
+        return $this;
+    }
+
+    /**
+     * Create color field
+     * @param FormBuilderInterface $builder
+     *
+     * @return ChannelType
+     */
+    protected function addColorField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'color',
+            'choice',
+            [
+                'choices'     => $this->provider->getColorChoices(),
+                'select2'     => true,
+                'required'    => false,
+                'empty_value' => 'Choose a color'
+            ]
+        );
 
         return $this;
     }

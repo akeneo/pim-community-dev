@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Filters configurator for flexible grid
@@ -26,11 +27,6 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param array
-     */
-    protected $attributes;
-
-    /**
      * @param $string
      */
     protected $flexibleEntity;
@@ -38,18 +34,15 @@ class FiltersConfigurator implements ConfiguratorInterface
     /**
      * @param DatagridConfiguration $configuration  the grid config
      * @param ConfigurationRegistry $registry       the conf registry
-     * @param array                 $attributes     the attributes
      * @param string                $flexibleEntity the flexible entity FQCN
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        $attributes,
         $flexibleEntity
     ) {
         $this->configuration  = $configuration;
         $this->registry       = $registry;
-        $this->attributes     = $attributes;
         $this->flexibleEntity = $flexibleEntity;
     }
 
@@ -58,9 +51,11 @@ class FiltersConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
-        foreach ($this->attributes as $attributeCode => $attribute) {
-            $showFilter        = $attribute->isUseableAsGridFilter();
-            $attributeType     = $attribute->getAttributeType();
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
+
+        foreach ($attributes as $attributeCode => $attribute) {
+            $showFilter        = $attribute['useableAsGridFilter'];
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($showFilter && (!$attributeTypeConf || !isset($attributeTypeConf['filter']))) {
@@ -79,12 +74,12 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig = $filterConfig + array(
                     FilterUtility::FEN_KEY       => $this->flexibleEntity,
                     FilterUtility::DATA_NAME_KEY => $attributeCode,
-                    'label'                      => $attribute->getLabel(),
+                    'label'                      => $attribute['label'],
                     'enabled'                    => ($attributeType === 'pim_catalog_identifier')
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {
-                    $filterConfig['family'] = $attribute->getMetricFamily();
+                    $filterConfig['family'] = $attribute['metricFamily'];
                 }
 
                 $this->configuration->offsetSetByPath(

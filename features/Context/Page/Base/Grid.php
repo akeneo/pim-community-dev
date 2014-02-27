@@ -202,7 +202,7 @@ class Grid extends Index
      */
     public function getValuesInColumn($column)
     {
-        $column = $this->getColumnPosition($column);
+        $column = $this->getColumnPosition($column, true);
         $rows   = $this->getRows();
         $values = array();
 
@@ -219,13 +219,14 @@ class Grid extends Index
     }
 
     /**
-     * @param string $column
+     * @param string  $column
+     * @param boolean $withActions
      *
      * @return integer
      */
-    public function getColumnPosition($column, $withHeader = false)
+    public function getColumnPosition($column, $withActions = false)
     {
-        $headers = $this->getColumnHeaders(false, $withHeader);
+        $headers = $this->getColumnHeaders(false, $withActions);
         foreach ($headers as $position => $header) {
             if (strtolower($column) === strtolower($header->getText())) {
                 return $position;
@@ -366,6 +367,19 @@ class Grid extends Index
     }
 
     /**
+     * Make sure a filter is visible
+     * @param string $filterName
+     */
+    public function assertFilterVisible($filterName)
+    {
+        if (!$this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is not visible', $filterName)
+            );
+        }
+    }
+
+    /**
      * Hide a filter from the management list
      * @param string $filterName
      */
@@ -420,12 +434,6 @@ class Grid extends Index
     {
         if (!$this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
-        }
-
-        if (!$this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is not visible', $filterName)
-            );
         }
     }
 
@@ -566,7 +574,8 @@ class Grid extends Index
         if (!$withActions) {
             foreach ($headers as $key => $header) {
                 if ($header->getAttribute('class') === 'action-column'
-                    || $header->getAttribute('class') === 'select-all-header-cell') {
+                    || $header->getAttribute('class') === 'select-all-header-cell'
+                    || $header->find('css', 'input[type="checkbox"]')) {
                     unset($headers[$key]);
                 }
             }
@@ -662,16 +671,34 @@ class Grid extends Index
 
         $filter->find('css', 'button.filter-update')->click();
     }
+
+    /**
+     * Open the column configuration popin
+     * @return null
+     */
     public function openColumnsPopin()
     {
         return $this->getElement('Configure columns')->click();
     }
 
+    /**
+     * Hide a grid column
+     * @param string $column
+     *
+     * @return null
+     */
     public function hideColumn($column)
     {
         return $this->getElement('Configuration Popin')->hideColumn($column);
     }
 
+    /**
+     * Move a grid column
+     * @param string $source
+     * @param string $target
+     *
+     * @return null
+     */
     public function moveColumn($source, $target)
     {
         return $this->getElement('Configuration Popin')->moveColumn($source, $target);

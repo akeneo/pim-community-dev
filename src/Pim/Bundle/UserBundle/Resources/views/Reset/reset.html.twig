@@ -25,7 +25,9 @@
             <h2 class="title">{{ 'Password Reset'|trans }}</h2>
         </div>
         <fieldset>
-            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.plainPassword) }}
+            {{ form_widget(form._token) }}
             <div class="form-row">
                 <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
                 <button type="submit" class="btn btn-large extra-submit btn-primary">{{ 'Reset'|trans }}</button>

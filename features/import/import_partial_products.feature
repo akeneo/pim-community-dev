@@ -1,3 +1,4 @@
+@javascript
 Feature: Import partial product information
   In order to avoid overwriting existing data
   As Julia

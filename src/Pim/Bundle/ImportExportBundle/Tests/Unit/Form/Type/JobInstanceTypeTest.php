@@ -47,12 +47,12 @@ class JobInstanceTypeTest extends AbstractFormTypeTest
     /**
      * Get connector registry mock
      *
-     * @return \Oro\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * @return \Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
      */
     protected function getConnectorRegistryMock()
     {
         return $this
-            ->getMockBuilder('\Oro\Bundle\BatchBundle\Connector\ConnectorRegistry')
+            ->getMockBuilder('\Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry')
             ->disableOriginalConstructor()
             ->getMock();
     }

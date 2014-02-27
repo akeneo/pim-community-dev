@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 class ReaderSpec extends ObjectBehavior
 {
@@ -16,9 +16,9 @@ class ReaderSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_reader()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldBeAnInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface');
-        $this->shouldBeAnInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
+        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
     function it_reads_records_one_by_one(AbstractQuery $query)

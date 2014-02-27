@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a user
   In order to manage the users and rights
   As Peter
@@ -14,7 +15,8 @@ Feature: Edit a user
       | Last name  | Smith |
       | Owner      | Main  |
     And I save the user
-    Then I should see "John Smith"
+    Then I should see "User saved"
+    And I should see "John Smith"
 
   @javascript
   Scenario: Successfully edit and apply user preferences

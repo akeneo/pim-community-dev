@@ -43,9 +43,10 @@ Feature: Update user preferences
   @javascript
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
-    And I select "fr_FR" from "Catalog locale"
+    And I visit the "Additional" tab
+    And I change the "Catalog locale" to "fr_FR"
     And I save the user
-    When I visit the "Additional" tab
+    When I visit the "Additional Information" tab
     Then I should see "Catalog locale"
     And I should see "fr_FR"
     When I edit the "ecommerce" channel

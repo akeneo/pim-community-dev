@@ -12,12 +12,15 @@ Feature: Add attributes to a product
     | boots   |         |
     And I am logged in as "admin"
 
-  Scenario: Display and add available attributes to a product
+  Scenario: Display available attributes to a product
     Given I am on the "sandals" product page
     Then I should see available attribute Weather conditions in group "Product information"
     And I should see available attribute Lace color in group "Colors"
     And I should see available attribute Top view in group "Media"
     But I should not see available attribute Side view in group "Media"
+
+  Scenario: Add some available attributes to a product
+    Given I am on the "sandals" product page
     When I add available attributes Weather conditions and Lace color
     Then attributes in group "Colors" should be Color and Lace color
     And I should see available attribute Top view in group "Media"
@@ -29,3 +32,7 @@ Feature: Add attributes to a product
     And I add available attribute Length
     Then I should see "Length"
     And I should see "Centimeter"
+
+  Scenario: Successfully display unclassified attributes in group "Other"
+    Given I am on the "sandals" product page
+    Then I should see available attribute Comment in group "Other"

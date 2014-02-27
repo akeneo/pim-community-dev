@@ -7,6 +7,12 @@ require(
             function updateSortOrder() {
                 var num = 0;
                 $('#entities-sortable').find('li').each(function() {
+                    {% if currentGroup and sortFieldId %}
+                        if ($(this).data('id') == '{{ currentGroup }}') {
+                            $('#{{ sortFieldId }}').val(num);
+                        }
+                    {% endif %}
+
                     $(this).find('.handle input').val(num);
                     num++;
                 });

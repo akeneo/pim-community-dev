@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product import processor
@@ -40,7 +40,7 @@ class ProductProcessor extends TransformerProcessor
     protected $stepExecution;
 
     /**
-     * Set wether or not the created product should be activated or not
+     * Set whether or not the created product should be activated or not
      *
      * @param boolean $enabled
      */
@@ -50,7 +50,7 @@ class ProductProcessor extends TransformerProcessor
     }
 
     /**
-     * Wether or not the created product should be activated or not
+     * Whether or not the created product should be activated or not
      *
      * @return bool
      */

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * Operation to execute on a set of products
  *
@@ -28,14 +30,14 @@ interface MassEditActionInterface
     /**
      * Initialize the operation with the products
      *
-     * @param ProductInterface[] $products
+     * @param QueryBuilder $qb
      */
-    public function initialize(array $products);
+    public function initialize(QueryBuilder $qb);
 
     /**
      * Perform an operation on a set of products
      *
-     * @param ProductInterface[] $products
+     * @param QueryBuilder $qb
      */
-    public function perform(array $products);
+    public function perform(QueryBuilder $qb);
 }

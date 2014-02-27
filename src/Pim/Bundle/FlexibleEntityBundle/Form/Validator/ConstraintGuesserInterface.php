@@ -14,7 +14,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 interface ConstraintGuesserInterface
 {
     /**
-     * Tells wether or not the constraint guesser supports the given attribute type
+     * Tells whether or not the constraint guesser supports the given attribute type
      *
      * @param AbstractAttribute $attribute
      *

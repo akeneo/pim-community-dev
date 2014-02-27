@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -21,18 +21,21 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     protected $group;
 
     /**
+     * @param array
+     */
+    protected $axisColumns;
+
+    /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param array                 $attributes    the attributes
      * @param Group                 $group         the current group
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        $attributes,
         Group $group
     ) {
-        parent::__construct($configuration, $registry, $attributes);
+        parent::__construct($configuration, $registry);
 
         $this->group = $group;
     }
@@ -42,52 +45,51 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     public function configure()
     {
-        $propertiesColumns = $this->configuration->offsetGetByPath(
-            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
-        );
+        $this->preparePropertiesColumns();
+        $this->prepareAttributesColumns();
+        $this->prepareAxisColumns();
+        $this->sortColumns();
+        $this->addColumns();
+    }
 
-        $editableColumn = array();
-        $labelColumn = array();
-        foreach ($propertiesColumns as $columnCode => $columnData) {
-            if (isset($columnData['editable'])) {
-                $editableColumn[$columnCode] = $columnData;
-                unset($propertiesColumns[$columnCode]);
-            } elseif ($columnCode === 'label') {
-                $labelColumn[$columnCode] = $columnData;
-                unset($propertiesColumns[$columnCode]);
-            }
-        }
-        $identifierColumn = array();
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareAxisColumns()
+    {
+        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();
             },
             $this->group->getAttributes()->toArray()
         );
-        $axisColumns = array();
+        $this->axisColumns = array();
 
-        foreach ($this->attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute->getAttributeType();
+        foreach ($attributes as $attributeCode => $attribute) {
+            $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {
-                if ($attributeType === 'pim_catalog_identifier') {
+                if (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
                     $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
+                        'label' => $attribute['label'],
                     );
-                    $identifierColumn[$attributeCode] = $columnConfig;
-                } elseif (in_array($attributeCode, $axisCodes)) {
-                    $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + array(
-                        'label' => $attribute->getLabel(),
-                    );
-                    $axisColumns[$attributeCode] = $columnConfig;
+                    $this->axisColumns[$attributeCode] = $columnConfig;
                 }
             }
         }
+    }
 
-        $columns = $editableColumn + $identifierColumn + $labelColumn + $axisColumns + $propertiesColumns;
-        $this->configuration->offsetSetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY), $columns);
+    /**
+     * Sort the columns
+     *
+     * @return null
+     */
+    protected function sortColumns()
+    {
+        $this->displayedColumns = $this->editableColumns + $this->identifierColumn + $this->axisColumns
+            + $this->propertiesColumns;
     }
 }

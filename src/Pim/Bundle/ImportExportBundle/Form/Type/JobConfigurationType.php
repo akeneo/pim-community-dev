@@ -37,7 +37,7 @@ class JobConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\\Bundle\\BatchBundle\\Job\\Job',
+                'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Job\\Job',
             )
         );
     }

@@ -30,6 +30,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        uservoice_key: %uservoice_key%
 
 # Assetic Configuration
 assetic:
@@ -103,64 +105,3 @@ services:
             -
               db_table:       oro_session
               db_id_col:      id
-
-clank:
-    web_socket_server:
-        port:                 %websocket_port%                # The port the socket server will listen on
-        host:                 %websocket_host%                # (optional) The host ip to bind to
-    session_handler:          session.handler.pdo
-    periodic:
-        -
-            service:          "oro_wamp.db_ping"
-            time:             60000                           # the time in milliseconds between the "tick" function being called
-
-a2lix_translation_form:
-    locales:                  [en, fr]
-    templating:               "OroUIBundle:Form:translateable.html.twig"
-
-apy_js_form_validation:
-    check_modes: [submit, change]
-
-lexik_maintenance:
-    authorized:
-        path:                 "maintenance|.*\.js"             # "maintenance" is only for demo purposes, remove in production!
-#        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
-    driver:
-        class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
-        options:
-            file_path:        %kernel.root_dir%/cache/lock
-
-oro_batch:
-    enable_mail_notification: true
-
-oro_require_js:
-    config:
-        # @see http://requirejs.org/docs/api.html#config
-        waitSeconds: 0
-#        enforceDefine: true
-#        scriptType: 'text/javascript'
-    build_path: "js/oro.min.js"
-    building_timeout: 3600
-    build:
-        # @see https://github.com/jrburke/r.js/blob/master/build/example.build.js
-        optimize: "uglify2"
-        preserveLicenseComments: true
-#        generateSourceMaps: true
-#        useSourceUrl: true
-    # Change to "java -Xss10m -Xms512m -Xmx1024m -cp %kernel.root_dir%/Resources/java/js.jar org.mozilla.javascript.tools.shell.Main" if nodejs is not installed
-    js_engine: node
-
-oro_help:
-    defaults:
-        server: http://help.orocrm.com/
-        prefix: Third_Party
-    vendors:
-        Oro:
-            prefix: ~
-            alias: Platform
-        OroCRM:
-            prefix: ~
-            alias: CRM
-    routes:
-        oro_default:
-            uri: CRM/OroCRMDashboardBundle

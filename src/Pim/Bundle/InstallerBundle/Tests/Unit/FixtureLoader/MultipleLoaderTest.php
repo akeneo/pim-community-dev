@@ -22,28 +22,26 @@ class MultipleLoaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $multipleLoader = new MultipleLoader($configurationRegistry, $factory);
-        $configurationRegistry
-            ->expects($this->any())
-            ->method('contains')
+        $configurationRegistry->expects($this->any())
+            ->method('getFixtures')
             ->will(
-                $this->returnValueMap(
+                $this->returnValue(
                     array(
-                        array('entity1', true),
-                        array('entity2', true),
-                        array('entity3', true),
-                        array('entity4', false)
-                    )
-                )
-            );
-        $configurationRegistry
-            ->expects($this->any())
-            ->method('getOrder')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array('entity1', 150),
-                        array('entity2', 100),
-                        array('entity3', 100)
+                        array(
+                            'name' => 'entity2',
+                            'extension' => 'csv',
+                            'path'      => '/dir1/entity2.csv'
+                        ),
+                        array(
+                            'name' => 'entity3',
+                            'extension' => 'yml',
+                            'path'      => '/dir2/entity3.yml'
+                        ),
+                        array(
+                            'name' => 'entity1',
+                            'extension' => 'yml',
+                            'path'      => '/dir1/entity1.yml'
+                        ),
                     )
                 )
             );

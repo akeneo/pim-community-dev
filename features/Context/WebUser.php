@@ -83,6 +83,32 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $type
+     *
+     * @return Then[]
+     *
+     * @Given /^I create a(?:n)? "([^"]*)" attribute$/
+     */
+    public function iCreateAnAttribute($type)
+    {
+        return [
+            new Step\Then('I create a new attribute'),
+            new Step\Then(sprintf('I choose the "%s" attribute type', $type))
+        ];
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I choose the "([^"]*)" attribute type$/
+     */
+    public function iChooseTheAttributeType($type)
+    {
+        $this->getCurrentPage()->clickLink($type);
+        $this->wait();
+    }
+
+    /**
      * @param TableNode $pages
      *
      * @Then /^I should be able visit the following pages without errors$/
@@ -471,7 +497,7 @@ class WebUser extends RawMinkContext
             }
         }
 
-        $value = $value ?: $this->getInvalidValueFor(
+        $value = $value !== null ? $value : $this->getInvalidValueFor(
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
@@ -695,6 +721,57 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @When /^I fill in the following information in the quick search popin:$/
+     */
+    public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
+    {
+        $fields = $table->getRowsHash();
+        if (!isset($fields['type'])) {
+            $fields['type'] = null;
+        }
+
+        $this->getCurrentPage()->fillQuickSearch($fields['search'], $fields['type']);
+    }
+
+    /**
+     * @When /^I open the quick search popin$/
+     */
+    public function iOpenTheQuickSearchPopin()
+    {
+        $this->getCurrentPage()->openQuickSearchPopin();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can search by the following types:$/
+     */
+    public function iCanSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I can not search by the following types:$/
+     */
+    public function iCanNotSearchByTheFollowingTypes(TableNode $table)
+    {
+        $list = array();
+        foreach ($table->getHash() as $row) {
+            $list[] = $row['type'];
+        }
+        $this->getCurrentPage()->checkTypeSearchFieldList($list, false);
+    }
+
+    /**
      * @param string $permission
      * @param string $resources
      *
@@ -817,18 +894,20 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @return Then[]
+     *
      * @Given /^the following attribute types should have the following fields$/
      */
     public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
     {
+        $steps = [];
         foreach ($table->getRowsHash() as $type => $fields) {
-            $this->iChangeTheTo('Attribute type', $type);
-            try {
-                $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
-            } catch (ExpectationException $e) {
-                throw $this->createExpectationException(sprintf('%s: %s', $type, $e->getMessage()));
-            }
+            $steps[] = new Step\Then('I am on the attributes page');
+            $steps[] = new Step\Then(sprintf('I create a "%s" attribute', $type));
+            $steps[] = new Step\Then(sprintf('I should see the %s fields', $fields));
         }
+
+        return $steps;
     }
 
     /**
@@ -1054,18 +1133,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 120;
-
-        while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
-            sleep(3);
-            $timeout -= 3;
-            $refreshLink->click();
-            $this->wait();
-        }
-
-        if ($refreshLink) {
-            throw $this->createExpectationException("The job didn't finish in 2 minutes");
-        }
+        $this->wait(120000, '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())');
     }
 
     /**
@@ -1253,6 +1321,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function completenessOfShouldBe($channel, $ratio)
@@ -1271,6 +1342,10 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $channel
+     * @param string $ratio
+     *
      * @Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
      */
     public function localizedCompletenessOfShouldBe($lang, $channel, $ratio)
@@ -1569,6 +1644,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string       $code
+     * @param PyStringNode $data
+     *
      * @Given /^the invalid data file of "([^"]*)" should contain:$/
      */
     public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
@@ -1590,6 +1668,15 @@ class WebUser extends RawMinkContext
                 sprintf("Invalid data file contains:\n\"\"\"\n%s\n\"\"\"", $content)
             );
         }
+    }
+
+    /**
+     * @Given /^I execute javascript:$/
+     */
+    public function iExecuteJavascript(PyStringNode $string)
+    {
+        $this->getSession()->executeScript((string) $string);
+        $this->wait();
     }
 
     /**

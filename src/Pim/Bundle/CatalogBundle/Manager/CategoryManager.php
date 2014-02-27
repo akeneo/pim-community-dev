@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Extends SegmentManager for category tree
@@ -29,7 +29,7 @@ class CategoryManager extends SegmentManager
     /**
      * Get a new tree instance
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function getTreeInstance()
     {
@@ -44,9 +44,7 @@ class CategoryManager extends SegmentManager
      */
     public function getTrees()
     {
-        $entityRepository = $this->getEntityRepository();
-
-        return $entityRepository->getChildren(null, true, 'created', 'DESC');
+        return $this->getEntityRepository()->getChildren(null, true, 'created', 'DESC');
     }
 
     /**
@@ -57,7 +55,7 @@ class CategoryManager extends SegmentManager
         $trees = $this->getTrees();
         $choices = array();
         foreach ($trees as $tree) {
-            $choices[$tree->getId()]= $tree;
+            $choices[$tree->getId()] = $tree;
         }
 
         return $choices;
@@ -73,7 +71,6 @@ class CategoryManager extends SegmentManager
     public function getCategoriesByIds($categoriesIds)
     {
         return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
-
     }
 
     /**
@@ -81,12 +78,12 @@ class CategoryManager extends SegmentManager
      * and ancestors sibligns are filled too, in order to be able to display the tree
      * directly without loading other data.
      *
-     * @param Category   $root       Tree root category
-     * @param Collection $categories categories
+     * @param CategoryInterface $root       Tree root category
+     * @param Collection        $categories categories
      *
      * @return array Multi-dimensional array representing the tree
      */
-    public function getFilledTree(Category $root, Collection $categories)
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
         $parentsIds = array();
 
@@ -104,6 +101,33 @@ class CategoryManager extends SegmentManager
         $parentsIds = array_unique($parentsIds);
 
         return $this->getEntityRepository()->getTreeFromParents($parentsIds);
+    }
 
+    /**
+     * Get tree by code
+     *
+     * @param string $code
+     *
+     * @return CategoryInterface
+     */
+    public function getTreeByCode($code)
+    {
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $code, 'parent' => null));
+    }
+
+    /**
+     * Get category by code
+     *
+     * @param string $code
+     *
+     * @return CategoryInterface
+     */
+    public function getCategoryByCode($code)
+    {
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $code));
     }
 }

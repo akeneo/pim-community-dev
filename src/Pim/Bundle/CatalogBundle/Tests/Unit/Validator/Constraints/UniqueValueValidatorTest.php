@@ -400,7 +400,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function getAttributeMock()
     {

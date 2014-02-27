@@ -14,20 +14,21 @@ Feature: Export attributes
     And I wait for the job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
-    type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;date_type;metric_family;default_metric_unit;localizable;scopable
-    pim_catalog_identifier;sku;SKU;info;1;1;1;;;;;0;0
-    pim_catalog_text;name;Name;info;0;1;1;;;;;1;0
-    pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;0;1;;;;;0;0
-    pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;0;1;;;;;0;0
-    pim_catalog_textarea;description;Description;info;0;0;1;;;;;1;1
-    pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;;0;0
-    pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg;;;;0;0
-    pim_catalog_image;top_view;"Top view";media;0;0;0;gif,png,jpeg;;;;0;0
-    pim_catalog_simpleselect;size;Size;sizes;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;color;Color;colors;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;lace_color;"Lace color";colors;0;0;1;;;;;0;0
-    pim_catalog_metric;length;Length;info;0;0;0;;;Length;CENTIMETER;0;0
+    type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
+    pim_catalog_identifier;sku;SKU;info;1;1;1;;;;0;0
+    pim_catalog_text;name;Name;info;0;1;1;;;;1;0
+    pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;0;1;;;;0;0
+    pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;0;1;;;;0;0
+    pim_catalog_textarea;description;Description;info;0;0;1;;;;1;1
+    pim_catalog_text;comment;Comment;Other;0;0;1;;;;0;0
+    pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;0;0
+    pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;0;0
+    pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_image;top_view;"Top view";media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_simpleselect;size;Size;sizes;0;1;1;;;;0;0
+    pim_catalog_simpleselect;color;Color;colors;0;1;1;;;;0;0
+    pim_catalog_simpleselect;lace_color;"Lace color";colors;0;0;1;;;;0;0
+    pim_catalog_metric;length;Length;info;0;0;0;;Length;CENTIMETER;0;0
 
     """
 
@@ -42,19 +43,20 @@ Feature: Export attributes
     And I wait for the job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
-    type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;date_type;metric_family;default_metric_unit;localizable;scopable
-    pim_catalog_identifier;sku;SKU;;info;1;1;1;;;;;0;0
-    pim_catalog_text;name;Name;;info;0;1;1;;;;;1;0
-    pim_catalog_simpleselect;manufacturer;Manufacturer;;info;0;0;1;;;;;0;0
-    pim_catalog_multiselect;weather_conditions;"Weather conditions";;info;0;0;1;;;;;0;0
-    pim_catalog_textarea;description;Description;;info;0;0;1;;;;;1;1
-    pim_catalog_price_collection;price;Price;;marketing;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;rating;Rating;;marketing;0;1;1;;;;;0;0
-    pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg;;;;0;0
-    pim_catalog_image;top_view;"Top view";;media;0;0;0;gif,png,jpeg;;;;0;0
-    pim_catalog_simpleselect;size;Size;;sizes;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;color;Color;;colors;0;1;1;;;;;0;0
-    pim_catalog_simpleselect;lace_color;"Lace color";;colors;0;0;1;;;;;0;0
-    pim_catalog_metric;length;Length;;info;0;0;0;;;Length;CENTIMETER;0;0
+    type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
+    pim_catalog_identifier;sku;SKU;;info;1;1;1;;;;0;0
+    pim_catalog_text;name;Name;;info;0;1;1;;;;1;0
+    pim_catalog_simpleselect;manufacturer;Manufacturer;;info;0;0;1;;;;0;0
+    pim_catalog_multiselect;weather_conditions;"Weather conditions";;info;0;0;1;;;;0;0
+    pim_catalog_textarea;description;Description;;info;0;0;1;;;;1;1
+    pim_catalog_text;comment;Comment;;Other;0;0;1;;;;0;0
+    pim_catalog_price_collection;price;Price;;marketing;0;1;1;;;;0;0
+    pim_catalog_simpleselect;rating;Rating;;marketing;0;1;1;;;;0;0
+    pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_image;top_view;"Top view";;media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_simpleselect;size;Size;;sizes;0;1;1;;;;0;0
+    pim_catalog_simpleselect;color;Color;;colors;0;1;1;;;;0;0
+    pim_catalog_simpleselect;lace_color;"Lace color";;colors;0;0;1;;;;0;0
+    pim_catalog_metric;length;Length;;info;0;0;0;;Length;CENTIMETER;0;0
 
     """

@@ -2,8 +2,6 @@
 
 namespace Context\Page\Channel;
 
-use Context\Page\Channel\Creation;
-
 /**
  * Channel edit page
  *

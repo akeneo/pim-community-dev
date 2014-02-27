@@ -7,13 +7,13 @@ Feature: Display available field options
   Background:
     Given the "default" catalog configuration
     And I am logged in as "admin"
-    And I am on the attribute creation page
+    And I am on the attributes page
 
   Scenario: Successfully display available parameter fields for attribute types
     Then the following attribute types should have the following fields
       | Identifier    | Max characters, Validation rule, Searchable                                                                                  |
       | Yes/No        | Default value                                                                                                                |
-      | Date          | Default value, Date type, Min date, Max date, Searchable                                                                     |
+      | Date          | Default value, Min date, Max date, Searchable                                                                                |
       | File          | Max file size (MB), Allowed extensions                                                                                       |
       | Image         | Max file size (MB), Allowed extensions                                                                                       |
       | Metric        | Default value, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit, Searchable |
@@ -25,7 +25,7 @@ Feature: Display available field options
       | Text          | Default value, Max characters, Validation rule, Searchable                                                                   |
 
   Scenario Outline: Succesfully display available values fields for attribute types
-    Given I change the "Attribute type" to "<type>"
+    Given I create a "<type>" attribute
     And I visit the "Values" tab
     Then I should see the <fields> fields
 

@@ -153,7 +153,10 @@ class Edit extends Form
             // mobile Description
             list($scope, $name) = str_word_count($name, 1);
 
-            return $this->findScopedField($name, $scope);
+            // Check that it is really a scoped field, not a field with a two word label
+            if (strtolower($scope) === $scope) {
+                return $this->findScopedField($name, $scope);
+            }
         }
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
@@ -434,6 +437,11 @@ class Edit extends Form
         );
     }
 
+    /**
+     * @param string $language
+     *
+     * @throws \InvalidArgumentException
+     */
     public function compareWith($language)
     {
         $this->getElement('Comparison dropdown')->find('css', 'button:contains("Translate")')->click();
@@ -484,6 +492,9 @@ class Edit extends Form
             ->check();
     }
 
+    /**
+     * Click the link to copy selected translations
+     */
     public function copySelectedTranslations()
     {
         $this->getElement('Copy translations link')->click();
@@ -521,6 +532,13 @@ class Edit extends Form
         return $cells[$columnIdx];
     }
 
+    /**
+     * @param string $name
+     * @param string $scope
+     *
+     * @return NodeElement
+     * @throws ElementNotFoundException
+     */
     protected function findScopedField($name, $scope)
     {
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
@@ -531,10 +549,10 @@ class Edit extends Form
 
         $scopeLabel = $label
             ->getParent()
-            ->find('css', sprintf('label:contains("%s")', $scope));
+            ->find('css', sprintf('label[title="%s"]', $scope));
 
         if (!$scopeLabel) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+            throw new ElementNotFoundException($this->getSession(), 'form label', 'title', $name);
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));

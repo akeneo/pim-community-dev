@@ -1,0 +1,113 @@
+---
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Export produits en CSV
+      export.title: Export de produits
+    csv_category_export:
+      title: Export catégories en CSV
+      export.title: Export de catégories
+    csv_attribute_export:
+      title: Export attributs en CSV
+      export.title: "Export d'attributs"
+    csv_attribute_option_export:
+      title: "Export des options d'attributs en CSV"
+      export.title: "Export d'options d'attributs"
+    csv_association_type_export:
+      title: "Export des types d'association en CSV"
+      export.title: "Export des types d'association"
+    csv_group_export:
+      title: Export des groupes en CSV
+      export.title: Export de groupes
+    csv_product_import:
+      title: Import produits en CSV
+      import.title: Import de produits
+      import_associations.title: "Import d'associations de produits"
+    csv_category_import:
+      title: Import catégories (CSV)
+      import.title: Import de catégories
+    csv_attribute_import:
+      title: Import attributs en CSV
+      import.title: "Import d'attributs"
+    csv_attribute_option_import:
+      title: "Import des options d'attributs en CSV"
+      import.title: "Import d'options d'attributs"
+    csv_association_type_import:
+      title: "Import des types d'association en CSV"
+      import.title: "Import des types d'association"
+    csv_group_import:
+      title: Import des groupes en CSV
+      import.title: Import de groupes
+  steps:
+    dummy_reader.title: Lecteur factice
+    product_reader.title: Extraction de produits
+    entity_reader.title: "Extraction d'entité"
+    csv_reader:
+      title: Lecteur de CSV
+      invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %csvPath%:%lineno%'
+    csv_product_reader.title: Lecteur de CSV de produits
+    csv_category_reader.title: Lecteur de CSV de catégories
+    dummy_processor.title: Processeur factice
+    product_processor.title: Création de produit
+    category_processor.title: Création de catégorie
+    association_processor.title: "Création d'association"
+    group_processor.title: Création de groupe
+    attribute_processor.title: "Création d'attribut"
+    attribute_option_processor.title: "Création d'option d'attribut"
+    heterogeneous_processor.title: Sérialiseur de produit en CSV
+    homogeneous_processor.title: "Sérialiseur d'entité en CSV"
+    dummy_writer.title: Ecriture factice
+    file_writer.title: Sortie
+    product_writer.title: Stockage des produits
+    category_writer.title: Stockage des catégories
+    writer.title: Stockage des entités
+  export:
+    delimiter:
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
+    enclosure:
+      label: "Caractère d'encadrement (enclosure)"
+      help: Délimiteur de champs
+    withHeader:
+      label: Avec en-tête
+      help: Définit si la première ligne du fichier contient les libellés des colonnes
+    filePath:
+      label: Chemin du fichier
+      help: Emplacement du fichier généré sur le serveur
+    channel:
+      label: Canal
+      help: Le canal que vous souhaitez exporter
+  import:
+    enabled:
+      label: Activer le produit
+      help: Activer automatiquement les produits importés
+    categoriesColumn:
+      label: Colonne catégories
+      help: Nom de la colonne catégories
+    familyColumn:
+      label: Colonne Famille
+      help: Nom de la colonne famille
+    groupsColumn:
+      label: Colonne de groupes
+      help: Nom de la colonne de groupes
+    filePath:
+      label: Fichier
+      help: Fichier CSV à importer
+    uploadAllowed:
+      label: "Autoriser l'envoi de fichier sur le serveur"
+      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
+    delimiter:
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
+    enclosure:
+      label: "Caractère d'encadrement"
+      help: Délimiteur de champs
+    escape:
+      label: Echapper
+      help: Le caractère utilisé pour échapper les champs
+    circularRefsChecked:
+      label: Vérifiez les références circulaires
+      help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
+    realTimeVersioning:
+      label: "Mise à jour de l'historique en temps réel"
+      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances."

@@ -27,7 +27,7 @@
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {% if jobInstance.status != constant('Oro\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
+        {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if uploadAllowed and uploadViolations|length == 0 %}

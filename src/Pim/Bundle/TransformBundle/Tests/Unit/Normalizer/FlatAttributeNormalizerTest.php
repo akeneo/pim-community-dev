@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\TransformBundle\Normalizer\FlatAttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\FlatTranslationNormalizer;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -62,7 +63,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => 'All',
-                    'date_type'              => '',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Global',
@@ -86,7 +86,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => 'en,fr',
-                    'date_type'              => '',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
@@ -103,10 +102,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addLabels($attribute, $data)
+    protected function addLabels(AbstractAttribute $attribute, $data)
     {
         foreach ($data as $key => $label) {
             if (strpos($key, 'label-') !== false) {
@@ -118,10 +117,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addAvailableLocales($attribute, $data)
+    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
     {
         if (strtolower($data['available_locales']) !== 'all') {
             $locales = explode(',', $data['available_locales']);
@@ -136,10 +135,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     /**
      * Create attribute options
      *
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addOptions(Attribute $attribute, $data)
+    protected function addOptions(AbstractAttribute $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
@@ -165,10 +164,10 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     /**
      * Add attribute default options
      *
-     * @param Attribute $attribute
-     * @param array     $data
+     * @param AbstractAttribute $attribute
+     * @param array             $data
      */
-    protected function addDefaultOptions(Attribute $attribute, $data)
+    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
     {
         $defaultOptions = array_filter(explode('|', $data['default_options']));
         foreach ($defaultOptions as $defaultOption) {

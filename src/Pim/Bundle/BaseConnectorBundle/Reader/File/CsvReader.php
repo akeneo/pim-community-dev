@@ -5,11 +5,11 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver;
 

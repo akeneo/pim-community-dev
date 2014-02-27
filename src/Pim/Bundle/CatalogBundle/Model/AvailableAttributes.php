@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Available attributes model
  *
@@ -13,32 +11,23 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AvailableAttributes
 {
-    protected $attributes;
+    /** @var array */
+    protected $attributes = [];
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributes = new ArrayCollection();
-    }
-
-    /**
-     * Set attributes to add
+     * Set attribute
      *
-     * @param ArrayCollection $attributes The attributes to add
-     *
-     * @return null
+     * @param array $attributes
      */
-    public function setAttributes(ArrayCollection $attributes)
+    public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
     }
 
     /**
-     * Get the attributes to add
+     * Get attribute
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getAttributes()
     {

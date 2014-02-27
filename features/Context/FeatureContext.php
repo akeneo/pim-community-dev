@@ -145,14 +145,21 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $start = microtime(true);
         $end = $start + $time / 1000.0;
 
-        $condition = $condition !== null ? $condition : <<<JS
-        document.readyState == 'complete'                  // Page is ready
-            && typeof $ != 'undefined'                     // jQuery is loaded
-            && !$.active                                   // No ajax request is active
-            && $('#page').css('display') == 'block'        // Page is displayed (no progress bar)
-            && $('.loading-mask').css('display') == 'none' // Page is not loading (no black mask loading page)
-            && $('.jstree-loading').length == 0;           // Jstree has finished loading
-JS;
+        if ($condition === null) {
+            $defaultCondition = true;
+            $conditions = [
+                "document.readyState == 'complete'",           // Page is ready
+                "typeof $ != 'undefined'",                     // jQuery is loaded
+                "!$.active",                                   // No ajax request is active
+                "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
+                "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
+                "$('.jstree-loading').length == 0",            // Jstree has finished loading
+            ];
+
+            $condition = implode(' && ', $conditions);
+        } else {
+            $defaultCondition = false;
+        }
 
         // Make sure the AJAX calls are fired up before checking the condition
         $this->getSession()->wait(100, false);
@@ -161,7 +168,22 @@ JS;
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
-            throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
+            if ($defaultCondition) {
+                foreach ($conditions as $condition) {
+                    $result = $this->getSession()->evaluateScript($condition);
+                    if (!$result) {
+                        throw new BehaviorException(
+                            sprintf(
+                                'Timeout of %d reached when checking on "%s"',
+                                $time,
+                                $condition
+                            )
+                        );
+                    }
+                }
+            } else {
+                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
+            }
         }
     }
 

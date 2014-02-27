@@ -1,0 +1,437 @@
+---
+attribute:
+  overview: Liste des attributs
+  create: Créer un attribut
+  edit: Modifier un attribut
+attribute group:
+  overview: "Liste des groupes d'attributs"
+  create: "Créer un groupe d'attributs"
+  edit: "Modifier un groupe d'attributs"
+category:
+  overview: Liste des catégories
+  create: Créer une catégorie
+  edit: Editer une catégorie
+tree:
+  create: Créer un arbre
+  edit: Editer un arbre
+channel:
+  overview: Liste des canaux
+  create: Créer un channel
+  edit: Editer un channel
+currency:
+  overview: Liste des devises
+  create: Créer une monnaie
+  edit: Editer une monnaie
+family:
+  overview: Liste des familles
+  create: Créer une famille
+  edit: Editer une famille
+locale:
+  overview: Liste des locales
+  create: Créer une locale
+  edit: Modifier une locale
+product:
+  overview: Liste des produits
+  create: Créer un produit
+  edit: Modifier un produit
+group:
+  overview: Liste des groupes
+  create: Créer un groupe
+  edit: Editer un groupe
+variant group:
+  overview: Liste des groupes de variantes
+  create: Créer un groupe de variantes
+  edit: Modifier un groupe de variantes
+association type:
+  overview: "Liste des types d'association"
+  create: "Créer un type d'association"
+  edit: "Modifier le type d'association"
+group type:
+  overview: Liste des types de groupe
+  create: Créer le type de groupe
+  edit: modifier le type de groupe
+products: Produits
+btn:
+  create:
+    attribute: Créer un attribut
+    attribute group: "Créer un groupe d'attributs"
+    category: Créer une catégorie
+    tree: Créer un arbre
+    channel: Créer un canal
+    currency: Créer une devise
+    family: Créer une famille
+    locale: Créer une locale
+    product: Créer un produit
+    group: Créer un groupe
+    variant group: Créer un groupe de variantes
+    association type: "Créer un type d'association"
+    group type: Créer un type de groupe
+  edit: Modifier
+  save: Enregistrer
+  save and back: Enregistrer et revenir à la grille
+  save and create: Enregistrer et créer un nouveau produit
+  remove: Retirer
+  delete: Supprimer
+  cancel: Annuler
+  next: Suivant
+  back: Précédent
+  confirm: Confirmer
+  to grid: Retour à la grille
+  to parent: Retour au parent
+confirmation:
+  delete: Confirmation de la suppression
+  leave: Êtes-vous sûr de vouloir quitter cette page?
+  discard changes: "Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page."
+  remove:
+    item: Êtes-vous certain de vouloir supprimer cet élément?
+    attribute: "Êtes-vous sûr de vouloir supprimer l'attribut %name% ?"
+    attribute group: "Êtes-vous sûr de vouloir supprimer le groupe d'attributs %name% ?"
+    category: 'Êtes-vous sûr de vouloir supprimer la catégorie %name% ?'
+    family: 'Êtes-vous sûr de vouloir supprimer la famille %name% ?'
+    product: 'Êtes-vous sûr de vouloir supprimer le produit %name% ?'
+    channel: 'Êtes-vous sûr de vouloir supprimer le canal %name% ?'
+    group: 'Êtes-vous sûr de que vouloir supprimer le groupe %name% ?'
+    variant group: 'Êtes-vous sûr de vouloir supprimer le groupe de variantes %name%?'
+    association type: "Êtes-vous sûr de que vouloir supprimer le type d'association %name% ?"
+    group type: 'Êtes-vous sûr de que vouloir supprimer le groupe %name%?'
+flash:
+  entity:
+    removed: "L'entité a été supprimée"
+  attribute:
+    created: Attribut créé avec succès
+    updated: Attribut mis à jour avec succès
+    removed: Attribut supprimé avec succès
+    identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+    used by groups: 'Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes'
+    option created: Option créée avec succès
+    error creating option: "Une erreur s'est produite durant la création d'une option, merci d'essayer à nouveau"
+  attribute group:
+    created: "Groupe d'attributs créé avec succès"
+    updated: "Groupe d'attributs mis à jour avec succès"
+    removed: "Groupe d'attributs supprimé avec succès"
+    attributes added: "Attributs ajoutés avec succès au groupe d'attributs"
+    attribute removed: "Attribut supprimé avec succès du groupe d'attributs"
+  category:
+    created: Catégorie créée avec succès
+    updated: Catégorie mise à jour avec succès
+    removed: Catégorie supprimée avec succès
+  tree:
+    created: Arborescence créée avec succès
+    updated: Arborescence mise à jour avec succès
+    removed: Arborescence supprimée avec succès
+    not removable: Les arborescences liées à un canal ne peuvent pas être supprimés.
+  channel:
+    saved: Canal sauvegardé avec succès
+    removed: Canal supprimé avec succès
+    not removable: Le dernier canal ne peut pas être supprimé
+  currency:
+    updated: Devise a été mise à jour avec succès
+  family:
+    created: Famille créée avec succès
+    updated: Famille mise à jour avec succès
+    removed: Famille supprimée avec succès
+    identifier not removable: "Un attribut de type identifiant ne peut pas être retiré d'une famille"
+    label attribute not removable: Cet attribut ne peut pas être retiré car il est utilisé comme libellé pour cette famille
+    attribute not found: "Cet attribut n'appartient pas à cette famille"
+    attributes added: Attributs ajoutés avec succès à la famille
+    attribute removed: Attributs retirés avec succès de la famille
+  product:
+    created: Produit créé avec succès
+    updated: Produit mis à jour avec succès
+    removed: Produit supprimé avec succès
+    invalid: Merci de vérifier votre saisie et essayer à nouveau
+    attributes added: Attributs ajoutés avec succès au produit
+    attribute removed: Attribut retirés avec succès du produit
+    attribute not removable: Cet attribut ne peut pas être retiré de ce produit
+  group:
+    created: Groupe créé avec succès
+    updated: Groupe mis à jour avec succès
+    removed: Groupe supprimé avec succès
+  variant group:
+    created: Le groupe de variantes a bien été créé
+    updated: Le groupe de variantes a bien été mis à jour
+    removed: Le groupe de variantes a bien été supprimé
+  group type:
+    created: Le type de groupe a bien été créé
+    updated: Le type de groupe a bien été mis à jour
+    removed: Le type de groupe a bien été supprimé
+    cant remove variant: Le type variant ne peut pas être supprimé
+    cant remove used: Ce type de groupe est utilisé par certains groupes et ne peut pas être supprimé
+  association type:
+    created: "Le type d'association est créé avec succès"
+    updated: "Le type d'association est mis à jour avec succès"
+    removed: "Le type d'association est supprimé avec succès"
+  error ocurred: Opération échouée. Merci de réessayer.
+info:
+  updated: "Des modifications n'ont pas encore été sauvegardées."
+  category:
+    remove children: Toutes les sous-catégories vont être supprimées.
+    keep products: Les produits associés à ces catégories ne seront pas supprimés.
+  product:
+    no available attributes: "Il n'y a plus d'attributs disponibles"
+    change family: Changer la famille du produit
+    change family to: Changer la famille pour
+    merge attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
+    keep attributes: Aucun attribut ne sera supprimé.
+    number of associations: '%productCount% produits et %groupCount% groupes'
+    enable: Activer
+    enabled: Activé
+    disable: Désactiver
+    disabled: Désactivé
+  group:
+    select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
+    selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
+  association type:
+    show products: Afficher les produits
+    show groups: Afficher les groupes
+    remove from products: "La suppression du type d'association l'enlèvera de %count% produits."
+Created at: Crée le
+Updated at: Mis à jour le
+Created: Créé
+Updated: Mis à jour
+Last update: Dernière mise à jour
+by: par
+Add an option: Ajouter une option
+Manage products: Gérer les produits
+Manage groups: Gérer les groupes
+Name: Nom
+Scope: Portée
+Required: Obligatoire
+Not required: Non requis
+Translatable: Traduisible
+Scopable: Décliné par canal
+Localizable: Localisable
+Unique value: Valeur unique
+Attribute group: "Groupe d'attributs"
+Variants behavior when edited: "Comportement des variantes lors de l'édition"
+Edit: Modifier
+Remove: Supprimer
+Delete: Supprimer
+Parameters: Paramètres
+Values: Valeurs
+General parameters: Paramètres généraux
+Backend parameters: "Paramètres de l'interface"
+Label: Libellé
+Default label: Libellé par défaut
+Default value: Valeur par défaut
+Attributetype: "Type d'attribut"
+Attribute type: "Type d'attribut"
+Searchable: Recherchable
+Defaultvalue: Valeur par défaut
+Variant: Variante
+Useable as grid column: Utilisable en tant que colonne de la grille
+Useable as grid filter: Utilisable en tant que filtre de la grille
+Family: Famille
+Available locales: Locales disponibles
+Locale specific: Spécifique à une locale
+default: Défaut
+Axis: Axes
+Add attributes: Ajouter des attributs
+Translate from: Traduire depuis
+Close: Fermer
+Create: Créer
+Cancel: Annuler
+Choose a family: Choisissez une famille
+Choose a unit: Choisissez une unité
+No matches found: Aucune correspondance trouvée
+Category tree: Arborescence
+Completeness: Complétude
+Attribute used as label: Attribut utilisé comme étiquette
+Channel: Canal
+Always override: Toujours écraser
+Ask: Demander
+General Properties: Propriétés générales
+Group values: Valeurs du groupe
+New group: Nouveau groupe
+Groups overview: Liste des groupes
+Max characters: Nombre maximum de caractères
+Validation rule: Règle de validation
+Validation regexp: Expression régulière
+Wysiwyg enabled: Editeur WYSIWYG activé
+Number min: Nombre min
+Number max: Nombre max
+Decimals allowed: Autoriser les nombres décimaux
+Negative allowed: Autoriser les valeurs négatives
+Date min: Date mini
+Date max: Date maxi
+Metric family: Type de mesure
+Default metric unit: Unité de mesure par défaut
+Max file size: Taille de fichier maximale (MB)
+Allowed extensions: Extensions autorisées
+None: Aucun
+Regular expression: Expression régulière
+Minimum input length: "Longueur d'entrée minimale"
+Default: Défaut
+Attributes: Attributs
+Title: Titre
+pim_catalog_identifier: Identifiant
+pim_catalog_text: Texte
+pim_catalog_textarea: Zone de texte (TextArea)
+pim_catalog_number: Nombre
+pim_catalog_price_collection: Prix
+pim_catalog_multiselect: Liste à choix multiple
+pim_catalog_simpleselect: Liste à choix unique
+pim_catalog_file: Fichier
+pim_catalog_boolean: Oui/Non
+pim_catalog_metric: Unité de mesure
+Fallback: Langue de repli
+Activated: Activé
+Disable: Désactivé
+pim_enrich.mass_edit_action:
+  page_title: Producten
+  page_subtitle: 'Massaal bewerken (1 product)|Massaal bewerken (%count% producten)'
+  title: Kies bewerking
+  subtitle: 'Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de geselecteerde %count% producten'
+  confirm: 'U staat op het punt een product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Alstublieft bevestigen.'
+  change-status:
+    label: Status wijzigen (inschakelen / uitschakelen)
+    description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
+    success_flash: De status van één of meerdere producten is gewijzigd
+  edit-common-attributes:
+    label: Kenmerken bewerken
+    description: De kenmerken van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
+    empty: Selecteer de kenmerken die u wilt bewerken
+    success_flash: Productkenmerken zijn bijgewerkt
+  classify:
+    label: Producten in categorieën indelen
+    description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
+    success_flash: Producten zijn in geselecteerde categorieën ingedeeld
+  change-family:
+    label: Wijzigen van de productfamilie
+    description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
+    success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
+  add-to-groups:
+    label: Toevoegen aan groepen
+    description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
+    success_flash: Producten werden met succes toegevoegd aan de geselecteerde groepen
+Choose products: Choisissez des produits
+Choose operation: Choisissez une opération
+Configure: Configurer
+Confirm: Confirmer
+To enable: Pour activer
+Select attributes: Sélectionnez les attributs
+Select: Sélectionner
+Remove this attribute: Supprimer cet attribut
+pim_enrich.completeness:
+  progress_bar.title: '%ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)'
+  subtitle: '{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden'
+  missing_attributes: Ontbrekende waarde|Ontbrekende waarden
+  legend:
+    locale_not_associated: Lokalisatie niet gekoppeld aan dit kanaal
+pim_enrich.group:
+  axis.help: Assen zijn kenmerken die varianten van de variantgroep definiëren. Assen zijn kenmerken met opties, niet beschikbaar in een lokalisatie en zonder bereik. Het kan niet worden gewijzigd na het aanmaken van de variantgroep.
+  type:
+    X_SELL: Cross-Sell
+    ADDITIONAL: Extra
+    RELATED: Gerelateerd
+pim_enrich.product:
+  no_comparison_locale_available: Geen andere locale is beschikbaar voor vergelijking
+  no_compared_media: Geen media beschikbaar voor vergelijking
+Copy: Copier
+Current tab: Onglet actif
+pim_enrich.channel.pick_conversion_unit: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
+Group: Groupe
+View group: Afficher le groupe
+Products: Produits
+pim_enrich:
+  acl:
+    locale.index: Locales weergeven
+    currency:
+      index: "Valuta's weergeven"
+      toggle: "Valuta's aanzetten"
+    product:
+      index: Producten weergeven
+      create: Product aanmaken
+      edit: Product wijzigen
+      remove: Product verwijderen
+      add_attribute: Voeg een attribuut toe aan een product
+      remove_attribute: Verwijder een attribuut van een product
+      categories_view: Raadpleeg de categorieën van een product
+      associations_view: De associatietypes van een product weergeven
+      change_family: Productfamilie wijzigen
+      change_state: Status van product wijzigen
+      add_to_groups: Product toevoegen aan groepen
+      mass_edit: Product massabewerken acties
+    category:
+      list: Categorieën weergeven
+      create: Categorie aanmaken
+      edit: Categorie wijzigen
+      remove: Categorie verwijderen
+      move: Categorie verplaatsen
+      children: Categorie kinderen weergeven
+      products: Categorie producten weergeven
+    channel:
+      index: Kanalen weergeven
+      create: Kanaal aanmaken
+      edit: Kanaal wijzigen
+      remove: Kanaal verwijderen
+    family:
+      create: Familie aanmaken
+      edit: Familie wijzigen
+      remove: Familie verwijderen
+      add_attribute: Voeg attributen toe aan een familie
+      remove_attribute: Verwijder attributen van een familie
+    attribute_group:
+      create: Attribuutgroep aanmaken
+      edit: Attribuutgroep wijzigen
+      remove: Attribuutgroep verwijderen
+      sort: Attribuutgroepen sorteren
+      add_attribute: Attribuut toevoegen aan een groep
+      remove_attribute: Attribuut verwijderen van een groep
+    attribute:
+      index: Liste des attributs
+      create: Créer un attribut
+      edit: Modifier un attribut
+      remove: Supprimer un attribut
+      sort: "Trier les attributs au sein d'un groupe d'attributs"
+    group:
+      index: Groepen weergeven
+      create: Groep aanmaken
+      edit: Groep wijzigen
+      remove: Groep verwijderen
+    group_type:
+      index: Groepstypes weergeven
+      create: Groepstype aanmaken
+      edit: Groepstype wijzigen
+      remove: Groepstype verwijderen
+    association_type:
+      index: Associatietypes weergeven
+      create: Associatietype aanmaken
+      edit: Associatietype wijzigen
+      remove: Associatietype verwijderen
+pim_menu:
+  tab:
+    collect: Extraire
+    enrich: Enrichir
+    settings: Paramètres
+    spread: Diffuser
+  item:
+    association_type: "Types d'association"
+    attribute: Attributs
+    attribute_group: "Groupes d'attributs"
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    product: Produits
+    variant_group: Groupes de variantes
+Properties: Propriétés
+History: Historique
+pane.accordion:
+  node_values: Valeurs du nœud
+  general_properties: Propriétés générales
+  locale_values: Valeurs de locale
+  backend_parameters: Paramètres de stockage
+  label_translations: Traduction des libellés
+  group_values: Valeurs du groupe
+popin.create:
+  association_type.title: "Créer un nouveau type d'association"
+  family.title: Créer une nouvelle famille
+  group.title: Créer un nouveau groupe
+  group_type.title: Créer un nouveau type de groupe
+  product.title: Créer un nouveau produit
+  variant_group.title: Créer un nouveau groupe de variants
+Has product: Lié au produit
+Attribute as label: Attribut en tant que libellé

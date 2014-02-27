@@ -5,8 +5,8 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
 
 /**

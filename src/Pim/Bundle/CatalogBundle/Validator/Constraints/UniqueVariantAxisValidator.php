@@ -66,7 +66,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $combination = implode(', ', $values);
 
             if (in_array($combination, $existingCombinations)) {
-                $this->addViolation($constraint, $product->getLabel(), $variantGroup->getLabel(), $combination);
+                $this->addViolation($constraint, $variantGroup->getLabel(), $combination);
             } else {
                 $existingCombinations[] = $combination;
             }
@@ -94,7 +94,6 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                     }
                     $this->addViolation(
                         $constraint,
-                        $entity->getLabel(),
                         $variantGroup->getLabel(),
                         implode(', ', $values)
                     );
@@ -157,12 +156,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      * @param string     $variantLabel
      * @param string     $values
      */
-    protected function addViolation(Constraint $constraint, $productLabel, $variantLabel, $values)
+    protected function addViolation(Constraint $constraint, $variantLabel, $values)
     {
         $this->context->addViolation(
             $constraint->message,
             array(
-                '%product%'       => $productLabel,
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
             )

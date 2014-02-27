@@ -122,7 +122,7 @@ pim_enrich_attribute_group_remove_attribute:
     type: action
     label: pim_enrich.acl.attribute_group.remove_attribute
 
-# AttributeInterface
+# Attribute
 pim_enrich_attribute_index:
     type: action
     label: pim_enrich.acl.attribute.index

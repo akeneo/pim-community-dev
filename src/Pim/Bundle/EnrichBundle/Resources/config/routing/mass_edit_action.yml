@@ -15,9 +15,3 @@ pim_enrich_mass_edit_action_perform:
     defaults: { _controller: pim_enrich.controller.mass_edit_action:performAction }
     requirements:
         _method: POST
-
-pim_enrich_mass_edit_action_delete:
-    path: /delete
-    defaults: { _controller: pim_enrich.controller.mass_edit_action:deleteAction }
-    requirements:
-        _method: GET|POST

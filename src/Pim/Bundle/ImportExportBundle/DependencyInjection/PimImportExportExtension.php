@@ -2,11 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection;
 
-use Symfony\Component\Finder\Finder;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
@@ -26,20 +24,13 @@ class PimImportExportExtension extends Extension
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('grid.yml');
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');
-
-        // load validation files
-        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
-        $finder = new Finder();
-        foreach ($finder->files()->in(__DIR__ . '/../Resources/config/validation') as $file) {
-            $yamlMappingFiles[] = $file->getRealPath();
-        }
-        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
+        $loader->load('normalizers.yml');
     }
 }

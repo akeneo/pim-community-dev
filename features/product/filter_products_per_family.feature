@@ -25,7 +25,7 @@ Feature: Filter products per family
     Given I am on the products page
     Then I should see the filter "Family"
     And I should be able to use the following filters:
-      | filter | value            | result                   |
-      | Family | computers        | PC and Laptop            |
-      | Family | hi_fi            | Amplifier and CD changer |
-      | Family | washing_machines | Whirlpool and Electrolux |
+      | filter | value              | result                   |
+      | Family | [computers]        | PC and Laptop            |
+      | Family | [hi_fi]            | Amplifier and CD changer |
+      | Family | [washing_machines] | Whirlpool and Electrolux |

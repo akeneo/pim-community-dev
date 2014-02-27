@@ -9,11 +9,6 @@ config:
         bootstrap.bootstrapswitch:
             deps:
                 - jquery
-        selectize:
-            deps:
-                - jquery
-                - sifter
-                - microplugin
         jquery.sidebarize:
             deps:
                 - jquery
@@ -22,11 +17,9 @@ config:
         jquery-ui-full:            pimui/lib/jquery/jquery-ui-1.10.3.custom.min
         jquery.slimbox:            pimui/js/slimbox2
         bootstrap.bootstrapswitch: oroui/lib/bootstrap/js/bootstrap.switch
-        selectize:                 pimui/lib/selectize
-        sifter:                    pimui/lib/sifter
-        microplugin:               pimui/lib/microplugin
         tinymce:                   pimui/lib/tinymce/tinymce.min
         wysiwyg:                   pimui/js/pim-wysiwyg
+        datepicker:                pimui/js/pim-datepicker
         jquery.sidebarize:         pimui/js/jquery.sidebarize
         pim/ui:                    pimui/js/pim-ui
         pim/initselect2:           pimui/js/pim-initselect2

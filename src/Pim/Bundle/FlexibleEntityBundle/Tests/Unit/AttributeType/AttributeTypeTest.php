@@ -23,7 +23,8 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         'constraints'     => array('constraints'),
         'label'           => null,
         'required'        => null,
-        'auto_initialize' => null
+        'auto_initialize' => null,
+        'label_attr'      => ['max_length' => 24],
     );
 
     protected function setUp()
@@ -77,10 +78,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         );
 
         $value = $this->getMock(
-            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
-            array(
-                'getAttribute', 'getData'
-            )
+            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface'
         );
 
         $value->expects($this->any())

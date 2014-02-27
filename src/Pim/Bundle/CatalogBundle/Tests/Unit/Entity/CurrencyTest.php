@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
@@ -94,29 +93,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for locales property
-     */
-    public function testGetSetLocales()
-    {
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->currency->getLocales());
-        $this->assertCount(0, $this->currency->getLocales());
-
-        // create locales
-        $langFr = $this->createLocale('fr_FR', 'fr_FR');
-        $langUs = $this->createLocale('en_US', 'en_EN');
-        $langEn = $this->createLocale('en_EN', 'en_EN');
-
-        // Set locales and assert
-        $newLocales = array($langFr, $langUs, $langEn);
-        $this->assertEntity($this->currency->setLocales(array($langFr, $langUs, $langEn)));
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->currency->getLocales());
-        $this->assertCount(3, $this->currency->getLocales());
-        foreach ($this->currency->getLocales() as $locale) {
-            $this->assertTrue(in_array($locale, $newLocales));
-        }
-    }
-
-    /**
      * Test related method
      */
     public function testToString()
@@ -126,22 +102,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $expectedCode = 'test-code';
         $this->currency->setCode($expectedCode);
         $this->assertEquals($expectedCode, $this->currency->__toString());
-    }
-
-    /**
-     * Create a locale for testing
-     * @param string $code     Locale code
-     * @param string $fallback Fallback code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     */
-    protected function createLocale($code, $fallback)
-    {
-        $locale = new Locale();
-        $locale->setCode($code);
-        $locale->setFallback($fallback);
-
-        return $locale;
     }
 
     /**

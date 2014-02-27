@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Abstract installer fixture

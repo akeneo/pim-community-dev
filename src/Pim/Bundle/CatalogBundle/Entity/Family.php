@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -49,7 +49,7 @@ class Family implements TranslatableInterface, ReferableInterface
     protected $translations;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface $attributeAsLabel
+     * @var AbstractAttribute $attributeAsLabel
      */
     protected $attributeAsLabel;
 
@@ -173,11 +173,11 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Add attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return Family
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function addAttribute(AbstractAttribute $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes->add($attribute);
@@ -189,13 +189,13 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Remove attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return Family
      *
      * @throws InvalidArgumentException
      */
-    public function removeAttribute(AttributeInterface $attribute)
+    public function removeAttribute(AbstractAttribute $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
@@ -219,7 +219,7 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Get grouped attributes
      *
-     * @return AttributeInterface[]
+     * @return AbstractAttribute[]
      */
     public function getGroupedAttributes()
     {
@@ -234,17 +234,17 @@ class Family implements TranslatableInterface, ReferableInterface
     /**
      * Check if family has an attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(AttributeInterface $attribute)
+    public function hasAttribute(AbstractAttribute $attribute)
     {
         return $this->attributes->contains($attribute);
     }
 
     /**
-     * @param AttributeInterface $attributeAsLabel
+     * @param AbstractAttribute $attributeAsLabel
      *
      * @return Family
      */
@@ -256,7 +256,7 @@ class Family implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function getAttributeAsLabel()
     {
@@ -272,10 +272,7 @@ class Family implements TranslatableInterface, ReferableInterface
             function ($attribute) {
                 return in_array(
                     $attribute->getAttributeType(),
-                    array(
-                        'pim_catalog_text',
-                        'pim_catalog_identifier'
-                    )
+                    ['pim_catalog_text', 'pim_catalog_identifier']
                 );
             }
         )->toArray();

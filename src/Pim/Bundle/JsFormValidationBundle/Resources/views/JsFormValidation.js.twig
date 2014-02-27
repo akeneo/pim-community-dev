@@ -37,7 +37,7 @@ var jsfv = new function () {
                     return;
                 }
 
-                if ($(target).find('.validation-error').length) {
+                if ($(target).find('.validation-tooltip').length) {
                     if (!$(this).find('.validation-tooltip').length) {
                         $(this).append($error.tooltip());
                     }
@@ -61,7 +61,7 @@ var jsfv = new function () {
                     return;
                 }
 
-                if ($(target).find('.validation-error').length) {
+                if ($(target).find('.validation-tooltip').length) {
                     $(this).addClass('error');
                 } else {
                     $(this).removeClass('error');
@@ -71,12 +71,12 @@ var jsfv = new function () {
     }
 
     function showFirstTabWithErrors() {
-        $errors = $('.validation-error');
+        $errors = $('.validation-tooltip');
         if (!$errors.length || $errors.filter(':visible').length) {
             return;
         }
 
-        $error = $('.validation-tooltip').first();
+        $error = $errors.first();
         $('a[href="#'+$error.closest('.tab-pane').attr('id')+'"]').click();
     }
 
@@ -197,7 +197,7 @@ var jsfv = new function () {
                 $('<i class="validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
             }
             $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
-            $field.addClass('error').parent().filter('.controls').addClass('validation-error');
+            $field.addClass('error').closest('.controls').addClass('validation-error');
         },
 {% endblock %}
         onEvent: function (field, eventType, handler) {
@@ -254,6 +254,7 @@ var jsfv = new function () {
                 // Remove HTML5 validation
                 $(form).attr('novalidate', 'novalidate');
                 highlightTabsWithErrors();
+                showErrorsOnGroups();
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {
                     var gv, submitForm = true;

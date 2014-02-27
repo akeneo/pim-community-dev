@@ -14,7 +14,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\DataGridBundle\EventListener\HideColumnsListener;
+use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 /**
  * Datagrid configuration controller
@@ -91,7 +91,13 @@ class DatagridController extends AbstractDoctrineController
             $configuration,
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
-                'action'  => $this->generateUrl('pim_catalog_datagrid_edit', ['alias' => $alias]),
+                'action'  => $this->generateUrl(
+                    'pim_catalog_datagrid_edit',
+                    [
+                        'alias'      => $alias,
+                        'dataLocale' => $request->get('dataLocale')
+                    ]
+                ),
             ]
         );
 
@@ -108,7 +114,7 @@ class DatagridController extends AbstractDoctrineController
                 $em->flush();
             }
 
-            return $this->redirectToRoute('pim_enrich_product_index');
+            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
         }
 
         return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
@@ -144,12 +150,22 @@ class DatagridController extends AbstractDoctrineController
      */
     protected function getColumnChoices($alias)
     {
-        return $this
+        $choices = array();
+
+        $columnsConfig = $this
             ->manager
             ->getDatagrid($alias)
             ->getAcceptor()
             ->getConfig()
-            ->offsetGetByPath(sprintf('[%s]', HideColumnsListener::AVAILABLE_COLUMNS));
+            ->offsetGetByPath(sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY));
+
+        if ($columnsConfig) {
+            foreach ($columnsConfig as $code => $meta) {
+                $choices[$code]= $meta['label'];
+            }
+        }
+
+        return $choices;
     }
 
     /**

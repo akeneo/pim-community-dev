@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * The attribute requirement for a channel and a family
@@ -27,7 +27,7 @@ class AttributeRequirement
     protected $family;
 
     /**
-     * @var AttributeInterface $attribute
+     * @var AbstractAttribute $attribute
      */
     protected $attribute;
 
@@ -68,11 +68,11 @@ class AttributeRequirement
     /**
      * Set attribute
      *
-     * @param AttributeInterface $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return AttributeRequirement
      */
-    public function setAttribute(AttributeInterface $attribute)
+    public function setAttribute(AbstractAttribute $attribute)
     {
         $this->attribute = $attribute;
 
@@ -82,7 +82,7 @@ class AttributeRequirement
     /**
      * Get attribute
      *
-     * @return AttributeInterface
+     * @return AbstractAttribute
      */
     public function getAttribute()
     {

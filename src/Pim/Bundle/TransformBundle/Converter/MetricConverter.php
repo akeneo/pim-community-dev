@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Converter;
 
-use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

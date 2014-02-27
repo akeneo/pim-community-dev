@@ -1,0 +1,18 @@
+parameters:
+    pim_import_export.normalizer.job_execution.class:  Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer
+    pim_import_export.normalizer.step_execution.class: Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer
+
+services:
+    pim_import_export.normalizer.job_execution:
+        class: %pim_import_export.normalizer.job_execution.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_import_export.normalizer.step_execution:
+        class: %pim_import_export.normalizer.step_execution.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

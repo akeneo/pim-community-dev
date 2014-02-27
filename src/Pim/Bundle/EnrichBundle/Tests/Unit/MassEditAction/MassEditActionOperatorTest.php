@@ -96,9 +96,9 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
 
         $operation->expects($this->once())
             ->method('perform')
-            ->with(array(1, 2, 3));
+            ->with($this->getQueryBuilderMock());
 
-        $this->operator->performOperation(array(1, 2, 3));
+        $this->operator->performOperation($this->getQueryBuilderMock());
     }
 
     /**
@@ -112,9 +112,9 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
 
         $operation->expects($this->once())
             ->method('initialize')
-            ->with(array(1, 2, 3));
+            ->with($this->getQueryBuilderMock());
 
-        $this->operator->initializeOperation(array(1, 2, 3));
+        $this->operator->initializeOperation($this->getQueryBuilderMock());
     }
 
     /**
@@ -140,6 +140,17 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     protected function getMassEditActionMock()
     {
         return $this->getMock('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getQueryBuilderMock()
+    {
+        return $this
+            ->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**

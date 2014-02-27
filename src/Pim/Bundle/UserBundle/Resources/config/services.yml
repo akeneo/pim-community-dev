@@ -21,6 +21,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.category'
+            - %locale%
         calls:
             - [ setRequest, ['@?request='] ]
 

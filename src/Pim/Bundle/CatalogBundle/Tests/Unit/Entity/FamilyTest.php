@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 class FamilyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Family
+     * @var Family
      */
     protected $family;
 
@@ -139,7 +139,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert entity
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Family $entity
+     * @param Family $entity
      */
     protected function assertEntity($entity)
     {
@@ -176,13 +176,15 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     {
         $name    = $this->getAttributeMock();
         $address = $this->getAttributeMock();
+        $sku     = $this->getAttributeMock('pim_catalog_identifier');
         $phone   = $this->getAttributeMock('phone');
 
         $this->family->addAttribute($name);
         $this->family->addAttribute($address);
+        $this->family->addAttribute($sku);
         $this->family->addAttribute($phone);
 
-        $this->assertEquals(array($name, $address), $this->family->getAttributeAsLabelChoices());
+        $this->assertEquals([$name, $address, $sku], $this->family->getAttributeAsLabelChoices());
     }
 
     /**
@@ -299,9 +301,9 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
-    protected function getAttributeMock($type = 'pim_catalog_text', $code = null)
+    protected function getAttributeMock($type = 'pim_catalog_text', $code = null, $label = null)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
@@ -312,6 +314,10 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
                   ->method('getCode')
                   ->will($this->returnValue($code));
+
+        $attribute->expects($this->any())
+                  ->method('getLabel')
+                  ->will($this->returnValue($label));
 
         return $attribute;
     }

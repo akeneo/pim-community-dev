@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
 /**
  * Provider for job datagrid choice lists

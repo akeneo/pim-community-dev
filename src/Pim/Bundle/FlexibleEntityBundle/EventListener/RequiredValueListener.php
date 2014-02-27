@@ -84,9 +84,8 @@ class RequiredValueListener implements EventSubscriber
     protected function checkRequired(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        // check entity implements "has required value" behavior
+
         if ($entity instanceof FlexibleInterface) {
-            // get flexible config
             $entityClass = ClassUtils::getRealClass(get_class($entity));
             $metadata = $args->getEntityManager()->getClassMetadata($entityClass);
 
@@ -95,12 +94,11 @@ class RequiredValueListener implements EventSubscriber
                 $flexibleManagerName = $flexibleConfig['entities_config'][$entityClass];
                 $flexibleManager = $this->container->get($flexibleManagerName);
 
-                // get required attributes
                 $repo = $flexibleManager->getAttributeRepository();
                 $attributes = $repo->findBy(array('entityType' => $entityClass, 'required' => true));
-                // check that value is set for any required attributes
+
                 foreach ($attributes as $attribute) {
-                    if (!$entity->getValue($attribute->getCode())) {
+                    if (null === $entity->getValue($attribute->getCode())) {
                         throw new HasRequiredValueException('attribute '.$attribute->getCode().' is required');
                     }
                 }

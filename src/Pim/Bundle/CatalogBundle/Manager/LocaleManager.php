@@ -77,12 +77,12 @@ class LocaleManager
      */
     public function getActiveCodes()
     {
-        $codes = array();
-        foreach ($this->getActiveLocales() as $locale) {
-            $codes[] = $locale->getCode();
-        }
-
-        return $codes;
+        return array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->getActiveLocales()
+        );
     }
 
     /**
@@ -92,13 +92,11 @@ class LocaleManager
      */
     public function getFallbackCodes()
     {
-        $locales = $this->repository->getAvailableFallbacks();
-
-        $codes = array();
-        foreach ($locales as $locale) {
-            $codes[] = $locale->getCode();
-        }
-
-        return $codes;
+        return array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->repository->getAvailableFallbacks()
+        );
     }
 }

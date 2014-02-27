@@ -47,7 +47,10 @@ define(
                     }
                 });
                 $target.find('.attribute-field.localizable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone());
+                    var $iconsContainer = $(this).find('div.controls').find('.icons-container').eq(0);
+                    if (!$iconsContainer.find('i.icon-globe').length) {
+                        $iconsContainer.prepend($localizableIcon.clone());
+                    }
                 });
 
                 UI($target);
@@ -121,7 +124,7 @@ define(
 
                 pageInit();
             });
-            mediator.bind('hash_navigation_request:complete', function () {
+            mediator.bind('hash_navigation_request:complete pim:reinit', function () {
                 pageInit();
             });
         };

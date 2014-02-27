@@ -12,6 +12,7 @@ services:
         class: %pim_enrich.form.type.product_edit.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.repository.orm.family'
         tags:
             - { name: form.type, alias: pim_product_edit }
 
@@ -98,6 +99,7 @@ services:
         arguments:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.helper.locale'
+            - '@pim_enrich.provider.colors'
         tags:
             - { name: form.type, alias: pim_enrich_channel }
 
@@ -148,6 +150,9 @@ services:
         class: %pim_enrich.form.type.available_attributes.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.orm.attribute'
+            - '@pim_user.context.user'
+            - '@translator'
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
@@ -159,7 +164,7 @@ services:
     pim_enrich.form.type.conversion_units:
         class: %pim_enrich.form.type.conversion_units.class%
         arguments:
-            - '@oro_measure.manager'
+            - '@akeneo_measure.manager'
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.attribute.class%
         tags:
@@ -174,6 +179,11 @@ services:
         class: %pim_catalog.form.type.datagrid_configuration.class%
         tags:
             - { name: form.type, alias: pim_catalog_datagrid_configuration }
+
+    pim_catalog.form.type.light_entity:
+        class: %pim_catalog.form.type.light_entity.class%
+        tags:
+            - { name: form.type, alias: light_entity }
 
     # Form extensions
     pim_enrich.extension.type.media:
@@ -206,7 +216,6 @@ services:
     pim_enrich.form.subscriber.attribute:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_catalog.manager.attribute'
             - '@pim_flexibleentity.attributetype.factory'
 
     pim_enrich.form.subscriber.attribute_requirements:

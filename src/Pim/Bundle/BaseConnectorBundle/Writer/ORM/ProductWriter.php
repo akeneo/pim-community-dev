@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\ORM;
 
-use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -34,7 +34,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $addVersionListener;
 
     /**
-     * @var Attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     protected $identifierAttribute;
 
@@ -59,13 +59,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @var array
      */
     protected $nonClearableEntities = array(
-        'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
-        'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
+        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution',
+        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Currency',
-        'Oro\\Bundle\\BatchBundle\\Entity\\StepExecution',
+        'Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution',
         'Oro\\Bundle\\UserBundle\\Entity\\User',
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
         'Pim\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',

@@ -58,12 +58,12 @@ class CurrencyManager
      */
     public function getActiveCodes()
     {
-        $codes = array();
-        foreach ($this->getActiveCurrencies() as $currency) {
-            $codes[] = $currency->getCode();
-        }
-
-        return $codes;
+        return array_map(
+            function ($value) {
+                return $value->getCode();
+            },
+            $this->getActiveCurrencies()
+        );
     }
 
     /**

@@ -6,14 +6,13 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
- * Form subscriber for AttributeInterface
+ * Form subscriber for AbstractAttribute
  * Allow to change field behavior like disable when editing
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -22,12 +21,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * Attribute manager
-     * @var AttributeManagerInterface
-     */
-    protected $attributeManager;
-
     /**
      * Attribute type factory
      * @var AttributeTypeFactory
@@ -43,15 +36,11 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Constructor
      *
-     * @param AttributeManagerInterface $attributeManager Attribute manager
-     * @param AttributeTypeFactory      $attTypeFactory   Attribute type factory
+     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
      */
-    public function __construct(
-        AttributeManagerInterface $attributeManager = null,
-        AttributeTypeFactory $attTypeFactory = null
-    ) {
-        $this->attributeManager = $attributeManager;
-        $this->attTypeFactory   = $attTypeFactory;
+    public function __construct(AttributeTypeFactory $attTypeFactory)
+    {
+        $this->attTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -70,7 +59,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_BIND => 'preBind',
             FormEvents::PRE_SET_DATA => 'preSetData'
         );
     }
@@ -96,36 +84,18 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             }
 
             $this->disableField($form, 'code');
-            $this->disableField($form, 'attributeType');
         }
 
         $this->customizeForm($event->getForm(), $data);
     }
 
     /**
-     * Method called before binding data
-     * @param FormEvent $event
-     */
-    public function preBind(FormEvent $event)
-    {
-        $data = $event->getData();
-
-        if (null === $data) {
-            return;
-        }
-
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-
-        $this->customizeForm($event->getForm(), $attribute);
-    }
-
-    /**
      * Customize the attribute form
      *
-     * @param Form               $form      AttributeInterface form
-     * @param AttributeInterface $attribute AttributeInterface entity
+     * @param Form              $form
+     * @param AbstractAttribute $attribute
      */
-    protected function customizeForm(Form $form, AttributeInterface $attribute)
+    protected function customizeForm(Form $form, AbstractAttribute $attribute)
     {
         $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);

@@ -45,41 +45,14 @@ class MultipleLoader
      */
     public function load(ObjectManager $objectManager, ReferenceRepository $referenceRepository, array $paths)
     {
-        $fileIndex = array();
-        foreach ($paths as $path) {
-            $parts = explode('.', basename($path));
-            $file = array(
-                'path'      => $path,
-                'extension' => array_pop($parts),
-                'name'      => implode('.', $parts)
+        foreach ($this->registry->getFixtures($paths) as $fixtureConfig) {
+            $loader = $this->factory->create(
+                $objectManager,
+                $referenceRepository,
+                $fixtureConfig['name'],
+                $fixtureConfig['extension']
             );
-            if ($this->registry->contains($file['name'])) {
-                $order = $this->registry->getOrder($file['name']);
-                if (!isset($fileIndex[$order])) {
-                    $fileIndex[$order] = array();
-                }
-                $fileIndex[$order][] = $file;
-            }
-        }
-
-        ksort($fileIndex);
-        foreach ($fileIndex as $files) {
-            $this->loadFiles($objectManager, $referenceRepository, $files);
-        }
-    }
-
-    /**
-     * Loads sorted fixture files
-     *
-     * @param ObjectManager       $objectManager
-     * @param ReferenceRepository $referenceRepository
-     * @param array               $files
-     */
-    protected function loadFiles(ObjectManager $objectManager, ReferenceRepository $referenceRepository, array $files)
-    {
-        foreach ($files as $file) {
-            $loader = $this->factory->create($objectManager, $referenceRepository, $file['name'], $file['extension']);
-            $loader->load($file['path']);
+            $loader->load($fixtureConfig['path']);
         }
     }
 }

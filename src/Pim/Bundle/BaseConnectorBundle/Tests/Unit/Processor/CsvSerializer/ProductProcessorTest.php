@@ -42,7 +42,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
     public function testStoresMediaAmongWithSerializedProducts()
     {
         $stepExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -19,10 +19,10 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $reader = $this->getMockBuilder('Oro\Bundle\BatchBundle\Item\ItemReaderInterface')
+        $reader = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface')
             ->setMethods(array('setFilePath', 'read'))
             ->getMock();
-        $processor = $this->getMock('Oro\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $loader = new Loader($objectManager, $entityCache, $reader, $processor, $eventSubscriber, false);
 

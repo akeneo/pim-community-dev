@@ -4,8 +4,7 @@
     <property name="jobName" value="${env.JOB_NAME}" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
-
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
@@ -14,6 +13,8 @@
     <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,install-all-behat,behat-coverage"/>
+
+    <target name="build-docs-behat" depends="prepare,composer,vendors,link-pim-docs,install-all-behat,behat-docs"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
@@ -37,9 +38,12 @@
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/coverage-parts"/>
         <mkdir dir="${basedir}/app/build/logs"/>
+        <mkdir dir="${basedir}/app/build/logs/phpunit"/>
+        <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
         <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-docs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -176,13 +180,38 @@
         </exec>
     </target>
 
-    <target name="phpspec" description="Run specs with PhpSpec">
-        <exec executable="bin/phpspec" failonerror="true">
+    <target name="phpspec" description="Run specs with PhpSpec Pretty formatter">
+        <exec executable="bin/phpspec">
             <arg value="run" />
             <arg value="--ansi" />
             <arg value="-fpretty" />
             <arg value="--no-interaction" />
             <arg value="--verbose" />
+        </exec>
+    </target>
+
+    <target name="phpspec-junit" description="Run specs with PhpSpec JUnit formatter">
+        <exec executable="bin/phpspec" output="app/build/logs/phpspec/junit.xml">
+            <arg value="run" />
+            <arg value="-fjunit" />
+            <arg value="--no-interaction" />
+        </exec>
+    </target>
+    
+    <target name="link-pim-docs" description="Clone pim-docs repo and configure pim-dev to work with">
+        <exec executable="${basedir}/app/Resources/jenkins/pim-docs/link-pim-docs.sh" failonerror="true" />
+    </target>
+    
+    <target name="behat-docs" description="Run acceptance tests with Behat">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="2" />
+            <arg value="noxdebug" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_docs_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-docs-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 

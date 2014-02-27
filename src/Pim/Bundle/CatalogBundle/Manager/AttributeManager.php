@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Attribute manager
@@ -14,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements AttributeManagerInterface
+class AttributeManager
 {
     /**
      * @var string
@@ -42,11 +41,6 @@ class AttributeManager implements AttributeManagerInterface
     protected $objectManager;
 
     /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var AttributeTypeFactory
      */
     protected $factory;
@@ -59,7 +53,6 @@ class AttributeManager implements AttributeManagerInterface
      * @param string               $optionValueClass Option value class
      * @param string               $productClass     Product class
      * @param ObjectManager        $objectManager    Object manager
-     * @param LocaleManager        $localeManager    Locale manager
      * @param AttributeTypeFactory $factory          Attribute type factory
      */
     public function __construct(
@@ -68,7 +61,6 @@ class AttributeManager implements AttributeManagerInterface
         $optionValueClass,
         $productClass,
         ObjectManager $objectManager,
-        LocaleManager $localeManager,
         AttributeTypeFactory $factory
     ) {
         $this->attributeClass   = $attributeClass;
@@ -76,12 +68,15 @@ class AttributeManager implements AttributeManagerInterface
         $this->optionValueClass = $optionValueClass;
         $this->productClass     = $productClass;
         $this->objectManager    = $objectManager;
-        $this->localeManager    = $localeManager;
         $this->factory          = $factory;
     }
 
     /**
-     * {@inheritdoc}
+     * Create an attribute
+     *
+     * @param string $type
+     *
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function createAttribute($type = null)
     {
@@ -100,7 +95,9 @@ class AttributeManager implements AttributeManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Create an attribute option
+     *
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
      */
     public function createAttributeOption()
     {
@@ -110,7 +107,9 @@ class AttributeManager implements AttributeManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Create an attribute option value
+     *
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue
      */
     public function createAttributeOptionValue()
     {
@@ -120,7 +119,9 @@ class AttributeManager implements AttributeManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get the attribute FQCN
+     *
+     * @return string
      */
     public function getAttributeClass()
     {
@@ -128,7 +129,9 @@ class AttributeManager implements AttributeManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get the attribute option FQCN
+     *
+     * @return string
      */
     public function getAttributeOptionClass()
     {
@@ -136,54 +139,9 @@ class AttributeManager implements AttributeManagerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createAttributeFromFormData($data)
-    {
-        if ($data instanceof AttributeInterface) {
-            return $data;
-        }
-
-        if (gettype($data) === 'array' && isset($data['attributeType'])) {
-            return $this->createAttribute($data['attributeType']);
-        } elseif (gettype($data) === 'array' && isset($data['id'])) {
-            return $this->objectManager->getRepository($this->attributeClass)->find($data['id']);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareFormData($data)
-    {
-        $optionTypes = array(
-            'pim_catalog_multiselect',
-            'pim_catalog_simpleselect'
-        );
-
-        // If the attribute type can have options but no options have been created,
-        // create an empty option to render the corresponding form fields
-        if (in_array($data['attributeType'], $optionTypes) && !isset($data['options'])) {
-            $option = array(
-                'optionValues' => array()
-            );
-
-            foreach ($this->localeManager->getActiveLocales() as $locale) {
-                $option['optionValues'][] = array(
-                    'locale' => $locale->getCode()
-                );
-            }
-
-            $data['options'] = array($option);
-        }
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
+     * Get a list of available attribute types
+     *
+     * @return string[]
      */
     public function getAttributeTypes()
     {
@@ -212,18 +170,5 @@ class AttributeManager implements AttributeManagerInterface
         asort($choices);
 
         return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareBackendProperties(AttributeInterface $attribute)
-    {
-        $baseAttribute = $this->createAttribute($attribute->getAttributeType());
-
-        $attribute->setBackendType($baseAttribute->getBackendType());
-        $attribute->setBackendStorage($baseAttribute->getBackendStorage());
-
-        return $attribute;
     }
 }

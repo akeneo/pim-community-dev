@@ -1,0 +1,2 @@
+{% set status = value ? 'success' : 'important' %}
+<span class="label label-{{ status }}">{{ (value ? 'Yes': 'No')|trans }}</span>

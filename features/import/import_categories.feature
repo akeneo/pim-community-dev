@@ -1,9 +1,9 @@
+@javascript
 Feature: Import categories
   In order to reuse the categories of my products
   As Julia
   I need to be able to import categories
 
-  @javascript
   Scenario: Succesfully import categories
     Given the "default" catalog configuration
     And the following jobs:
@@ -31,7 +31,6 @@ Feature: Import categories
       | hard_drives | Hard drives | laptops   |
       | pc          | PC          | computers |
 
-  @javascript
   Scenario: Import categories with missing parent
     Given the "default" catalog configuration
     And the following jobs:

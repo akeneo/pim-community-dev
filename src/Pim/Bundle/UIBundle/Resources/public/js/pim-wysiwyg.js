@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'tinymce'],
-    function(_) {
+    ['underscore', 'backbone', 'tinymce'],
+    function(_, Backbone) {
         var config = {
             plugins:   'link preview code paste',
             statusbar: true,
@@ -13,6 +13,11 @@ define(
                 });
             }
         };
+        Backbone.Router.prototype.on('route', function () {
+            _.each(tinymce.editors, function(editor) {
+                editor.destroy();
+            });
+        });
         return {
             init: function(id, options) {
                 var settings = _.extend(_.clone(config), options, { selector: '#' + id });

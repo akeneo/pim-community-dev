@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Pager\Orm;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager as OroPager;
-use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
+use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 
 /**
  * Our custom pager to disable the use of acl helper
@@ -19,7 +19,12 @@ class Pager extends OroPager
      */
     public function computeNbResult()
     {
-        $qb    = clone $this->getQueryBuilder();
+        $qb = clone $this->getQueryBuilder();
+
+        $rootAlias  = $qb->getRootAlias();
+        $rootField  = $rootAlias.'.id';
+        $qb->groupBy($rootField);
+
         $query = $qb->setFirstResult(null)
             ->setMaxResults(null)
             ->resetDQLPart('orderBy')

@@ -1,6 +1,6 @@
 define(
-    ['oro/mediator', 'oro/datagrid/column-form-listener'],
-    function (mediator, OroColumnFormListener) {
+    ['jquery', 'oro/mediator', 'oro/datagrid/column-form-listener'],
+    function ($, mediator, OroColumnFormListener) {
         'use strict';
 
         /**
@@ -8,8 +8,34 @@ define(
          * changing of field selectors dynamically using mediator
          */
         var ColumnFormListener = OroColumnFormListener.extend({
-            initialize: function(options) {
+            $checkbox: null,
+            initialize: function (options) {
                 OroColumnFormListener.prototype.initialize.apply(this, arguments);
+
+                this.$checkbox = $('<input type="checkbox">').css('margin', 0);
+
+                mediator.on('datagrid_collection_set_after', function (collection, $grid) {
+                    if (collection.inputName === this.gridName) {
+                        this.$el = $grid.find('table.grid thead th:not([style])').first();
+
+                        this.$el.empty().html(this.$checkbox);
+
+                        this.setStateFromCollection(collection);
+
+                        this.$checkbox.on('click', _.bind(function() {
+                            var state = this.$checkbox.is(':checked');
+                            _.each(collection.models, function(model) {
+                                model.set(this.columnName, state);
+                            }, this);
+                        }, this));
+                    }
+                }, this);
+
+                mediator.on('grid_load:complete', function (collection) {
+                    if (collection.inputName === this.gridName) {
+                        this.setStateFromCollection(collection);
+                    }
+                }, this);
 
                 mediator.bind('column_form_listener:set_selectors:' + this.gridName, function (selectors) {
                     this._clearState();
@@ -19,6 +45,16 @@ define(
                 }, this);
 
                 mediator.trigger('column_form_listener:initialized', this.gridName);
+            },
+
+            setStateFromCollection: function (collection) {
+                var checked = true;
+                _.each(collection.models, function(model) {
+                    if (checked) {
+                        checked = model.get(this.columnName);
+                    }
+                }, this);
+                this.$checkbox.prop('checked', checked);
             }
         });
 

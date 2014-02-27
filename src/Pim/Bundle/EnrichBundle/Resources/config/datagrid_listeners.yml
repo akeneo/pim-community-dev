@@ -9,9 +9,12 @@ services:
     pim_enrich.event_listener.product_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
         arguments:
-            - '@pim_flexibleentity.registry'
+            - '@pim_catalog.manager.product'
             - '@pim_datagrid.datagrid.flexible.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
@@ -26,11 +29,12 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.product_group_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_product_group_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
         arguments:
-            - '@pim_flexibleentity.registry'
+            - '@pim_catalog.manager.product'
             - '@pim_datagrid.datagrid.flexible.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -50,9 +54,10 @@ services:
     pim_enrich.event_listener.product_variant_group_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_product_group_grid_listener.class%
         arguments:
-            - '@pim_flexibleentity.registry'
+            - '@pim_catalog.manager.product'
             - '@pim_datagrid.datagrid.flexible.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -86,11 +91,14 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.variant-group-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.association_product_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_association_product_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
         arguments:
-            - '@pim_flexibleentity.registry'
+            - '@pim_catalog.manager.product'
             - '@pim_datagrid.datagrid.flexible.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
+        calls:
+            - [setRequest, ['@?request=']]
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-grid, method: buildBefore }
 
@@ -121,11 +129,3 @@ services:
             - [objectClass, objectId]
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
-
-    pim_catalog.event_listener.hide_columns_listener:
-        class: %pim_catalog.event_listener.hide_columns_listener.class%
-        arguments:
-            - '@security.context'
-            - '@pim_enrich.repository.orm.datagrid_configuration'
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }

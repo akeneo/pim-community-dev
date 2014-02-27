@@ -127,7 +127,7 @@ class Attribute extends AbstractEntityAttribute
      *
      * @param integer $sortOrder
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function setSortOrder($sortOrder)
     {

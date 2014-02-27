@@ -19,35 +19,10 @@ pim_import_export:
         7: ABANDONED
         8: UNKNOWN
 
-    ## Step element titles (for readers, processors, writers)
-    steps:
-        dummy_reader.title:                  Dummy reader
-        dummy_processor.title:               Dummy processor
-        dummy_writer.title:                  Dummy writer
-        product_reader.title:                Product extraction
-        entity_reader.title:                 Entity extraction
-        csv_reader:
-            title: CSV reader
-        csv_product_reader.title:            CSV product reader
-        csv_category_reader.title:           CSV category reader
-        product_processor.title:             Product creation
-        category_processor.title:            Category creation
-        association_processor.title:         Association creation
-        group_processor.title:               Group creation
-        attribute_processor.title:           Attribute creation
-        attribute_option_processor.title:    Attribute option creation
-        association_processor.title: Association creation
-        heterogeneous_processor.title:       CSV product serializer
-        homogeneous_processor.title:         CSV entity serializer
-        file_writer.title:                   Output
-        product_writer.title:                Product storage
-        category_writer.title:               Category storage
-        writer.title:                        Entity storage
-
     download_archive:
-        archive: download generated file
-        output:  download generated file
-        input:   download read file
+        archive: download generated file|download generated files
+        output:  download generated file|download generated files
+        input:   download read file|download read files
         invalid: download invalid data
 
 # Page titles:
@@ -149,3 +124,9 @@ pane.accordion:
 popin.create:
     export_profile.title: Create a new export profile
     import_profile.title: Create a new import profile
+
+# Job execution
+'Display item': Display item
+'Hide item': Hide item
+'Collecting data about job execution...': Collecting data about job execution...
+'You must select a file to upload': You must select a file to upload

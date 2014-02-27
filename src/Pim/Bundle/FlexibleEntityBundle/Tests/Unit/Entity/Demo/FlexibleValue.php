@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class FlexibleValue extends AbstractEntityFlexibleValue
 {
     /**
-     * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      */
@@ -68,7 +68,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
      * @ORM\JoinColumn(name="price_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $price;
+    protected $prices;
 
     /**
      * Get media
@@ -123,9 +123,9 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @return Price
      */
-    public function getPrice()
+    public function getPrices()
     {
-        return $this->price;
+        return $this->prices;
     }
 
     /**
@@ -135,9 +135,9 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @return AbstractEntityFlexibleValue
      */
-    public function setPrice($price)
+    public function setPrices($price)
     {
-        $this->price = $price;
+        $this->prices = $price;
 
         return $this;
     }

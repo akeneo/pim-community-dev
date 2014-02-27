@@ -5,10 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManagerInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
  * Form handler for attribute
@@ -35,51 +33,36 @@ class AttributeHandler
     protected $manager;
 
     /**
-     * @var AttributeManagerInterface
+     * @var AttributeManager
      */
     protected $attributeManager;
 
     /**
      * Constructor for handler
-     * @param FormInterface             $form             Form called
-     * @param Request                   $request          Web request
-     * @param ObjectManager             $manager          Storage manager
-     * @param AttributeManagerInterface $attributeManager Attribute type manager
+     * @param FormInterface    $form             Form called
+     * @param Request          $request          Web request
+     * @param ObjectManager    $manager          Storage manager
+     * @param AttributeManager $attributeManager Attribute manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        AttributeManagerInterface $attributeManager
+        AttributeManager $attributeManager
     ) {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+        $this->form             = $form;
+        $this->request          = $request;
+        $this->manager          = $manager;
         $this->attributeManager = $attributeManager;
     }
 
     /**
-     * Preprocess method
-     * @param AttributeInterface $data
-     */
-    public function preProcess($data)
-    {
-        $attribute = $this->attributeManager->createAttributeFromFormData($data);
-
-        $this->form->setData($attribute);
-
-        $data = $this->attributeManager->prepareFormData($data);
-
-        $this->form->bind($data);
-    }
-
-    /**
      * Process method for handler
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      *
      * @return boolean
      */
-    public function process(AttributeInterface $entity)
+    public function process(AbstractAttribute $entity)
     {
         $this->addMissingOptionValues($entity);
         $this->form->setData($entity);
@@ -100,9 +83,9 @@ class AttributeHandler
     /**
      * Add missing attribute option values
      *
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function addMissingOptionValues(AttributeInterface $entity)
+    protected function addMissingOptionValues(AbstractAttribute $entity)
     {
         $this->ensureOneOption($entity);
 
@@ -115,7 +98,7 @@ class AttributeHandler
                 }
                 foreach ($locales as $locale) {
                     if (!in_array($locale, $existingLocales)) {
-                        $optionValue = new AttributeOptionValue();
+                        $optionValue = $this->attributeManager->createAttributeOptionValue();
                         $optionValue->setLocale($locale);
                         $optionValue->setValue('');
                         $option->addOptionValue($optionValue);
@@ -128,13 +111,13 @@ class AttributeHandler
     /**
      * Ensure at least one option for the attribute
      *
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function ensureOneOption(AttributeInterface $entity)
+    protected function ensureOneOption(AbstractAttribute $entity)
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
-            $option = new AttributeOption();
+            $option = $this->attributeManager->createAttributeOption();
             $option->setTranslatable(true);
             $entity->addOption($option);
         }
@@ -159,9 +142,9 @@ class AttributeHandler
 
     /**
      * Call when form is valid
-     * @param AttributeInterface $entity
+     * @param AbstractAttribute $entity
      */
-    protected function onSuccess(AttributeInterface $entity)
+    protected function onSuccess(AbstractAttribute $entity)
     {
         foreach ($entity->getOptions() as $option) {
             // Setting translatable to true for now - option not implemented in UI
@@ -176,8 +159,6 @@ class AttributeHandler
                 }
             }
         }
-
-        $this->attributeManager->prepareBackendProperties($entity);
 
         $this->manager->persist($entity);
         $this->manager->flush();

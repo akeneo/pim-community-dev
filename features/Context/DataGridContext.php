@@ -191,6 +191,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         if (strtolower($filterName) !== 'category') {
             $this->datagrid->showFilter($filterName);
+            $this->wait();
+            $this->datagrid->assertFilterVisible($filterName);
         }
     }
 
@@ -529,6 +531,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $column
+     *
      * @When /^I hide the "([^"]*)" column$/
      */
     public function iHideTheColumn($column)
@@ -540,6 +544,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $source
+     * @param string $target
+     *
      * @When /^I put the "([^"]*)" column before the "([^"]*)" one$/
      */
     public function iPutTheColumnBeforeTheOne($source, $target)

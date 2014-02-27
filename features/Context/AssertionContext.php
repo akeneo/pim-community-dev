@@ -56,6 +56,35 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
+     * @Then /^the "([^"]*)" tab should (?:be red|have errors)$/
+     */
+    public function theTabShouldHaveErrors($tab)
+    {
+        $links = $this->getCurrentPage()->getTabs();
+
+        foreach ($links as $link) {
+            if ($link->getText() != $tab) {
+                $link->click();
+                break;
+            }
+        }
+        $this->getMainContext()->wait();
+
+        foreach ($links as $link) {
+            if ($link->getText() == $tab) {
+                assertEquals(
+                    $link->getAttribute('class'),
+                    'error',
+                    sprintf('Expecting tab %s to have class "error", not found.', $tab)
+                );
+                break;
+            }
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
@@ -275,7 +304,7 @@ class AssertionContext extends RawMinkContext
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
             $steps[] = new Then(sprintf('I save the %s', $entity));
-            $steps[] = new Then('I should see validation error "This code is not available."');
+            $steps[] = new Then('I should see validation error "This code is not available"');
         }
 
         return $steps;
@@ -298,6 +327,41 @@ class AssertionContext extends RawMinkContext
         }
 
         return $steps;
+    }
+
+    /**
+     * @param string    $field
+     * @param TableNode $table
+     *
+     * @Then /^the scopable "([^"]*)" field should have the following colors:$/
+     */
+    public function theScopableFieldShouldHaveTheFollowingColors($field, TableNode $table)
+    {
+        $element = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $field))->getParent();
+        $colors  = $this->getMainContext()->getContainer()->getParameter('pim_enrich.colors');
+        foreach ($table->getHash() as $item) {
+            $style = $element->find('css', sprintf('label[title="%s"]', $item['scope']))->getAttribute('style');
+            assertGreaterThanOrEqual(
+                1,
+                strpos($style, $colors[$item['background']]),
+                sprintf(
+                    'Expecting the background of the %s %s field to be %s',
+                    $item['scope'],
+                    $field,
+                    $item['background']
+                )
+            );
+            assertGreaterThanOrEqual(
+                1,
+                strpos($style, $item['font']),
+                sprintf(
+                    'Expecting the font of the %s %s field to be %s',
+                    $item['scope'],
+                    $field,
+                    $item['font']
+                )
+            );
+        }
     }
 
     /**

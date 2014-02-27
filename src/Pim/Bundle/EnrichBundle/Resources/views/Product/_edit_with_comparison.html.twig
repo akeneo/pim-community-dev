@@ -6,7 +6,7 @@
                 {% if attributeView.values is defined %}
                     {% for scope, subvalue in attributeView.values %}
                         <div class="control-group" data-field="{{ attributeView.code }}">
-                            {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                            {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope), 'data-font-color': channel_font_color(scope)}}) }}
                         </div>
                     {% endfor %}
                 {% else %}
@@ -18,7 +18,7 @@
                     <i {{ elements.deleteLinkAttributes(
                         path('pim_enrich_product_removeattribute', { 'productId': product.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
                         path('pim_enrich_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
-                        'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
+                        'confirmation.product.remove attribute'|trans({'%name%': attributeView.label}),
                         'flash.product.attribute removed'|trans
                         )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
                 {% endif %}
@@ -35,7 +35,7 @@
                             {% if comparisonView.values is defined %}
                                 {% for scope, subvalue in comparisonView.values %}
                                     <div class="control-group" data-field="{{ comparisonView.code }}">
-                                        {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                                        {{ form_widget(subvalue, {'attr': {'data-scope': scope, 'data-color': channel_color(scope), 'data-font-color': channel_font_color(scope)}}) }}
                                     </div>
                                 {% endfor %}
                             {% else %}
@@ -50,4 +50,5 @@
         </td>
     </tr>
     {% endfor %}
+    <tr class="fullheight"><td></td><td></td></tr>
 </table>

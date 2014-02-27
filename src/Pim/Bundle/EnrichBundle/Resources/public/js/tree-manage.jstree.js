@@ -166,7 +166,7 @@ define(
                             }
                         },
                         error: function (jqXHR) {
-                            OroError.Dispatch(null, jqXHR);
+                            OroError.dispatch(null, jqXHR);
                             loadingMask.hide();
                         }
                     });

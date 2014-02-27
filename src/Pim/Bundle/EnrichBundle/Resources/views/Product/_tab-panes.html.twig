@@ -8,11 +8,11 @@
 {% endif %}
 
 {% if resource_granted("pim_enrich_associations_view") %}
-    <div class="tab-pane" id="associations" data-url="{{ path('pim_enrich_associations', { id: product.id }) }}">
+    <div class="tab-pane" id="associations" data-url="{{ path('pim_enrich_associations', { id: product.id , dataLocale: dataLocale}) }}">
     </div>
 {% endif %}
 
-<div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id }) }}">
+<div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
 </div>
 
 <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">

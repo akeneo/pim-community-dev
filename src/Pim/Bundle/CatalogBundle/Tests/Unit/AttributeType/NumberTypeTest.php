@@ -74,7 +74,8 @@ class NumberTypeTest extends AttributeTypeTestCase
                         'constraints'     => array('constraints'),
                         'label'           => null,
                         'required'        => null,
-                        'auto_initialize' => false
+                        'auto_initialize' => false,
+                        'label_attr'      => ['max_length' => 24],
                     ),
                     $expectedResult
                 )

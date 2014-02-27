@@ -15,17 +15,12 @@ use Doctrine\ORM\AbstractQuery;
 class AttributeRepository extends EntityRepository
 {
     /**
-     * @var string
-     */
-    const CODE_ATTRIBUTES_PREFIX = 'ATTR_CODE_';
-
-    /**
      * Get the attribute by code and entity type
      *
      * @param string $entity
      * @param string $code
      *
-     * @return Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
      */
     public function findOneByEntityAndCode($entity, $code)
     {
@@ -33,45 +28,91 @@ class AttributeRepository extends EntityRepository
     }
 
     /**
-     * Get associative array of code to attribute
+     * Get attribute as array indexed by code
      *
-     * @param string $entityType
+     * @param string  $entityType the entity type
+     * @param boolean $withLabel  translated label should be joined
+     * @param string  $locale     the locale code of the label
+     * @param array   $ids        the attribute ids
      *
      * @return array
      */
-    public function getCodeToAttributes($entityType)
+    public function getAttributesAsArray($entityType, $withLabel = false, $locale = null, array $ids = [])
     {
         $qb = $this->_em->createQueryBuilder()
-            ->select('att')->from($this->_entityName, 'att')
+            ->select('att')
+            ->from($this->_entityName, 'att', 'att.code')
             ->where('att.entityType = :entityType')->setParameter('entityType', $entityType);
+        if (!empty($ids)) {
+            $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+        }
+        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        $query = $qb->getQuery();
-        $query->useResultCache(true, null, self::getAttributesListCacheId($entityType));
-
-        // index parameter into from call not works with simple object hydratation
-        $result = $query->execute(array(), AbstractQuery::HYDRATE_SIMPLEOBJECT);
-        $associative = array();
-        foreach ($result as $row) {
-            $associative[$row->getCode()] = $row;
+        if ($withLabel) {
+            $labelExpr = 'COALESCE(trans.label, CONCAT(\'[\', att.code, \']\'))';
+            $qb = $this->_em->createQueryBuilder()
+                ->select('att.code', sprintf('%s as label', $labelExpr))
+                ->from($this->_entityName, 'att', 'att.code')
+                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+                ->where('att.entityType = :entityType')
+                ->setParameter('locale', $locale)
+                ->setParameter('entityType', $entityType);
+            if (!empty($ids)) {
+                $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+            }
+            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($labels as $code => $data) {
+                $results[$code]['label']= $data['label'];
+            }
         }
 
-        return $associative;
+        return $results;
     }
 
     /**
-     * Get the cache id used for the code to attribute list
-     * for the entityType provided
+     * Get ids from codes
      *
-     * @param string $entityType
+     * @param string $entityType the entity type
+     * @param mixed  $codes      the attribute codes
      *
-     * @return string cache id
+     * @return array
      */
-    public static function getAttributesListCacheId($entityType)
+    public function getAttributeIds($entityType, $codes)
     {
-        if (is_object($entityType)) {
-            echo(get_class($entityType));
-        }
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id')
+            ->where('att.entityType = :entityType')
+            ->andWhere('att.code IN (:codes)');
 
-        return self::CODE_ATTRIBUTES_PREFIX.$entityType;
+        $parameters = ['entityType' => $entityType, 'codes' => $codes];
+        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
+     * Get ids of attributes useable in grid
+     *
+     * @param string $entityType the entity type
+     *
+     * @return array
+     */
+    public function getAttributeIdsUseableInGrid($entityType)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id')
+            ->where('att.entityType = :entityType');
+
+        $qb->andWhere(
+            "att.useableAsGridColumn = 1 ".
+            "OR att.useableAsGridFilter = 1 ".
+            "OR att.attributeType = 'pim_catalog_simpleselect'"
+        );
+        $parameters = ['entityType' => $entityType];
+        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
     }
 }

@@ -39,7 +39,7 @@ class ProductProcessorTest extends TransformerProcessorTestCase
             ->will($this->returnValue(array()));
 
         $stepExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 

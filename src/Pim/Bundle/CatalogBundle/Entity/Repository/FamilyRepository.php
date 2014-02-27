@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository
@@ -11,36 +12,34 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyRepository extends ReferableEntityRepository
+class FamilyRepository extends ReferableEntityRepository implements ChoicesProviderInterface
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
-    public function buildAllWithTranslations()
+    public function getChoices(array $options)
     {
-        return $this->build()->addSelect('translation')->leftJoin('family.translations', 'translation');
-    }
-
-    /**
-     * Find all families ordered by label with fallback to default mecanism
-     *
-     * @return array
-     */
-    public function getIdToLabelOrderedByLabel()
-    {
-        $families = $this->buildAllWithTranslations()->getQuery()->execute();
-        $orderedFamilies = array();
-        foreach ($families as $family) {
-            $orderedFamilies[$family->getId()] = $family->getLabel();
+        if (!isset($options['localeCode'])) {
+            throw new \InvalidArgumentException('Option "localeCode" is required');
         }
-        uasort(
-            $orderedFamilies,
-            function ($first, $second) {
-                return ($first === $second) ? 0 : strcasecmp($first, $second);
-            }
-        );
 
-        return $orderedFamilies;
+        $qb = $this->_em->createQueryBuilder()
+            ->select('f.id')
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
+            ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
+            ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->orderBy('label')
+            ->setParameter('localeCode', $options['localeCode']);
+
+        $result  = $qb->getQuery()->getArrayResult();
+        $choices = [];
+
+        foreach ($result as $key => $family) {
+            $choices[$family['id']] = $family['label'];
+            unset($result[$key]);
+        }
+
+        return $choices;
     }
 
     /**

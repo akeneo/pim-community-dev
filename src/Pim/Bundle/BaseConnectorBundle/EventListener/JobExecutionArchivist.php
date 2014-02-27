@@ -3,10 +3,10 @@
 namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
-use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Job execution archivist
@@ -35,7 +35,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @param ArchiveInterface $archiver
      *
-     * @throw \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function registerArchiver(ArchiverInterface $archiver)
     {
@@ -75,13 +75,15 @@ class JobExecutionArchivist implements EventSubscriberInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $archives = array();
+        $result = array();
 
         foreach ($this->archivers as $archiver) {
-            $archives[$archiver->getName()] = $archiver->getArchives($jobExecution);
+            if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
+                $result[$archiver->getName()] = $archives;
+            }
         }
 
-        return $archives;
+        return $result;
     }
 
     /**
@@ -93,7 +95,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @return \Gaufrette\Stream
      *
-     * @throw \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {

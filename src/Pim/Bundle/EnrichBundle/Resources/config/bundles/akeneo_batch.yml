@@ -1,0 +1,3 @@
+akeneo_batch:
+    sender_email:             mailer@akeneo.com
+    enable_mail_notification: true

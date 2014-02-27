@@ -3,9 +3,64 @@
 
 {% set title = 'attribute.overview'|trans %}
 
+{% block head_script_component %}
+    {{ parent() }}
+    {% if resource_granted('pim_enrich_attribute_create') %}
+        {% set modalContent %}
+            <div class="attribute-type-selector">
+                {% for code, label in attributeTypes %}
+                    {% set attributeTypes = attributeTypes|merge({ (code): label|trans }) %}
+                {% endfor %}
+
+                {% for code, label in attributeTypes|sort %}
+                    <div class="pull-left">
+                        <a class="btn btn-large attribute-choice fullwidth" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
+                            <i class="icon-{{ attribute_icon(code) }} pull-left"></i>
+                            {{ label }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endset %}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'oro/navigation', 'backbone/bootstrap-modal'],
+                function($, navigation) {
+                    $(function() {
+                        var modal = null;
+                        $('#create-attribute').on('click', function() {
+                            if (modal) {
+                                modal.open();
+                            } else {
+                                modal = new Backbone.BootstrapModal({
+                                    title: '{{ 'Choose the attribute type'|trans }}',
+                                    content: {{ modalContent|json_encode|raw }}
+                                });
+
+                                modal.open();
+                                modal.$el.css({
+                                    'width': '700px',
+                                    'margin-left': '-350px'
+                                }).find('.modal-footer').remove();
+
+                                modal.$el.on('click', 'a.attribute-choice', function(e) {
+                                    e.preventDefault();
+                                    modal.close();
+                                    modal.$el.remove();
+                                    navigation.getInstance().navigate('#url=' + $(this).attr('href'), { trigger: true });
+                                });
+                            }
+                        });
+                    });
+                }
+            );
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% set buttons %}
-        {{ elements.createBtn('attribute', path('pim_enrich_attribute_create'), null, 'pim_enrich_attribute_create') }}
+        {{ elements.createBtn('attribute', null, { id: 'create-attribute' }, 'pim_enrich_attribute_create') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

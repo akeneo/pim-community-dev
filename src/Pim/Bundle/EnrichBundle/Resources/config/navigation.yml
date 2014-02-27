@@ -17,34 +17,32 @@ oro_menu_config:
             label: pim_menu.item.product
             route: pim_enrich_product_index
             aclResourceId: pim_enrich_product_index
+            extras:
+                routes: ['/^pim_enrich_product_\w+$/']
         pim_enrich_attribute:
             label: pim_menu.item.attribute
             route: pim_enrich_attribute_index
             aclResourceId: pim_enrich_attribute_index
+            extras:
+                routes: ['/^pim_enrich_attribute_\w+$/']
         pim_enrich_family:
             label: pim_menu.item.family
             route: pim_enrich_family_index
             aclResourceId: pim_enrich_family_index
+            extras:
+                routes: ['/^pim_enrich_family_\w+$/']
         pim_enrich_attributegroup:
             label: pim_menu.item.attribute_group
             route: pim_enrich_attributegroup_create
             aclResourceId: pim_enrich_attribute_group_create
+            extras:
+                routes: ['/^pim_enrich_attribute_group_\w+$/']
         pim_enrich_categorytree:
             label: pim_menu.item.category
             route: pim_enrich_categorytree_create
             aclResourceId: pim_enrich_category_create
-        pim_import_tab:
-            label: pim_menu.tab.collect
-            uri: '#'
             extras:
-                position: 10
-            showNonAuthorized: false
-        pim_export_tab:
-            label: pim_menu.tab.spread
-            uri: '#'
-            extras:
-                position: 30
-            showNonAuthorized: false
+                routes: ['/^pim_enrich_category_\w+$/']
         pim_configuration_tab:
             label: pim_menu.tab.settings
             uri: '#'
@@ -67,22 +65,32 @@ oro_menu_config:
             label: pim_menu.item.channel
             route: pim_enrich_channel_index
             aclResourceId: pim_enrich_channel_index
+            extras:
+                routes: ['/^pim_enrich_channel_\w+$/']
         pim_enrich_variant_group:
             label: pim_menu.item.variant_group
             route: pim_enrich_variant_group_index
             aclResourceId: pim_enrich_group_index
+            extras:
+                routes: ['/^pim_enrich_variant_group_\w+$/']
         pim_enrich_group:
             label: pim_menu.item.group
             route: pim_enrich_group_index
             aclResourceId: pim_enrich_group_index
+            extras:
+                routes: ['/^pim_enrich_group_\w+$/']
         pim_enrich_association_type:
             label: pim_menu.item.association_type
             route: pim_enrich_association_type_index
             aclResourceId: pim_enrich_association_type_index
+            extras:
+                routes: ['/^pim_enrich_association_type_\w+$/']
         pim_enrich_group_type:
             label: pim_menu.item.group_type
             route: pim_enrich_group_type_index
             aclResourceId: pim_enrich_group_type_index
+            extras:
+                routes: ['/^pim_enrich_group_type_\w+$/']
 
         oro_tag_list:
             display: false
@@ -122,9 +130,6 @@ oro_menu_config:
                         pim_enrich_group_type: ~
                         pim_enrich_currency: ~
                         pim_enrich_locale: ~
-
-                pim_export_tab:
-                    children:
                         pim_enrich_channel: ~
 
 oro_titles:

@@ -1,0 +1,171 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set fullname = entity|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery'],
+            function ($) {
+                $(function() {
+                    $('#container .navigation .span9').removeClass('span9').addClass('span10');
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% macro api_data_block(user) %}
+<div class="horizontal">
+    <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
+    {% if resource_granted('oro_user_user_update') %}
+        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+           data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
+            {{ 'Generate key'|trans }}
+        </a>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% block navButtons %}
+    {% if editRoute is defined %}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+    {% else %}
+        {% if resource_granted('oro_user_user_update') %}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+        {% endif %}
+    {% endif %}
+    {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_user', {'id': entity.id}),
+            'dataRedirect': path('oro_user_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId': entity.id,
+            'dataMessage': 'Are you sure you want to delete this user?'|trans,
+            'successMessage': 'User deleted'|trans,
+            'title': 'Delete user',
+            'label': 'Delete'
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_user_index'),
+        'indexLabel': 'Users'|trans,
+        'entityTitle': fullname,
+        'hasAvatar':   true,
+        'imagePath':   entity.imagePath,
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <div class="status-enabled pull-left">
+        {% if entity.enabled %}
+            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
+        {% else %}
+            <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
+        {% endif %}
+    </div>
+{% endblock breadcrumbs %}
+
+{% block stats %}
+    {{ parent() }}
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|oro_format_datetime : 'N/A' }}</li>
+    <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
+{% endblock stats %}
+
+{% block pageActions %}{% endblock pageActions %}
+
+{% block content_data %}
+  <div class="user-profile-cols">
+    {% set id = 'user-profile' %}
+
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'Basic Information'|trans,
+                    'data': [
+                        UI.attibuteRow('User name'|trans, entity.username),
+                        entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
+                        UI.attibuteRow('First name'|trans, entity.firstName|default('N/A')),
+                        entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
+                        UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
+                        entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|oro_format_date : 'N/A'),
+                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
+                    ]
+                },
+                {
+                'title': 'Contact Information'|trans,
+                'data': dataSubBlocks
+                }
+            ]
+        }
+    ]
+    %}
+
+    {#
+      EntityExtend fields START
+    #}
+    {% set additional = [
+        {
+            'title': 'Additional Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
+                        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
+                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                    ]
+                }
+            ]
+        }
+    ]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(additional) %}
+
+    {#
+      EntityExtend fields END
+    #}
+
+    {%- set additional_data -%}
+        {% placeholder oro_user_view_additional_data %}
+    {%- endset -%}
+
+    {% if additional_data is not empty %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': 'Additional data'|trans,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [additional_data]
+                    }
+                ]
+            }]
+        ) %}
+    {% endif %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+  </div>
+{% endblock content_data %}

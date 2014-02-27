@@ -54,7 +54,7 @@ class UserContextSpec extends ObjectBehavior
 
         $securityFacade->isGranted(Argument::any())->willReturn(true);
 
-        $this->beConstructedWith($securityContext, $securityFacade, $localeManager, $channelManager, $categoryManager);
+        $this->beConstructedWith($securityContext, $securityFacade, $localeManager, $channelManager, $categoryManager, 'en_US');
     }
 
     function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)

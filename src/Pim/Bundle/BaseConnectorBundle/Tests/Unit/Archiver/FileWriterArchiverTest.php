@@ -115,7 +115,7 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getJobExecutionMock($jobInstance, $id)
     {
         $jobExecution = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -133,7 +133,7 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getJobInstanceMock($type, $alias, $job)
     {
         $jobInstance = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobInstance')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -147,7 +147,7 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
     protected function getJobMock(array $steps)
     {
         $job = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Job\Job')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Job\Job')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -158,13 +158,13 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     protected function getStepMock()
     {
-        return $this->getMock('Oro\Bundle\BatchBundle\Step\StepInterface');
+        return $this->getMock('Akeneo\Bundle\BatchBundle\Step\StepInterface');
     }
 
     protected function getItemStepMock($writer)
     {
         $step = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Step\ItemStep')
+            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Step\ItemStep')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -187,7 +187,7 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     protected function getWriterMock()
     {
-        return $this->getMock('Oro\Bundle\BatchBundle\Item\ItemWriterInterface');
+        return $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
     }
 
     protected function getArchivableFileWriterMock(array $writtenFiles = array())
