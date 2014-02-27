@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
@@ -28,10 +29,11 @@ class CsvProductReader extends CsvReader
      * @param EntityManager           $entityManager
      * @param string                  $attributeClass
      */
-    public function __construct(InvalidItemsCsvArchiver $archiver, AttributeRepository $repository)
+    public function __construct(InvalidItemsCsvArchiver $archiver, EntityManager $entityManager, $attributeClass)
     {
         parent::__construct($archiver);
 
+        $repository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }
 
