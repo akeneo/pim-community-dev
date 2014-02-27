@@ -379,21 +379,15 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        // TODO : idealy, we add a join only if a filter is applied, the filter should contains that query part
-
         $qb
             ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->leftJoin('p.groups', 'groups')
-            ->leftJoin('groups.translations', 'gt', 'WITH', 'gt.locale = :dataLocale');
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
         $this->addCompleteness($qb);
 
         $qb
             ->addSelect('p')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect('groups')
-            ->addSelect('gt');
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
 
         return $qb;
     }
