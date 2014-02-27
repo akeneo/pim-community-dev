@@ -270,6 +270,7 @@ datagrid:
                 type:          flexible_twig
                 template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
                 frontend_type: html
+                selector:      product_groups
         properties:
             id: ~
             edit_link:
@@ -355,13 +356,13 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
-                    type:      choice
+                    type:      product_groups
                     label:     Groups
-                    data_name: groups
+                    data_name: filterGroups
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.group->getChoices'
+                            choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
                     type:      choice
                     label:     Status
