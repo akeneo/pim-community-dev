@@ -1,8 +1,8 @@
 config:
     paths:
-        oro/datafilter/price-filter:        pimfilter/js/datafilter/filter/price-filter
-        oro/datafilter/metric-filter:       pimfilter/js/datafilter/filter/metric-filter
-        oro/datafilter/scope-filter:        pimfilter/js/datafilter/filter/scope-filter
-        oro/datafilter/category-filter:     pimfilter/js/datafilter/filter/category-filter
-        oro/datafilter/completeness-filter: pimfilter/js/datafilter/filter/completeness-filter
-        oro/datafilter/ajax-choice-filter:  pimfilter/js/datafilter/filter/ajax-choice-filter
+        oro/datafilter/price-filter:                pimfilter/js/datafilter/filter/price-filter
+        oro/datafilter/metric-filter:               pimfilter/js/datafilter/filter/metric-filter
+        oro/datafilter/scope-filter:                pimfilter/js/datafilter/filter/scope-filter
+        oro/datafilter/category-filter:             pimfilter/js/datafilter/filter/category-filter
+        oro/datafilter/product_completeness-filter: pimfilter/js/datafilter/filter/product_completeness-filter
+        oro/datafilter/ajax-choice-filter:          pimfilter/js/datafilter/filter/ajax-choice-filter

@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Pager\Orm;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager as OroPager;
 use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 
 /**
  * Our custom pager to disable the use of acl helper
@@ -25,10 +26,13 @@ class Pager extends OroPager
         $rootField  = $rootAlias.'.id';
         $qb->groupBy($rootField);
 
-        $query = $qb->setFirstResult(null)
+        $qb->setFirstResult(null)
             ->setMaxResults(null)
-            ->resetDQLPart('orderBy')
-            ->getQuery();
+            ->resetDQLPart('orderBy');
+
+        PimOrmDatasource::removeExtraParameters($qb);
+
+        $query = $qb->getQuery();
 
         return QueryCountCalculator::calculateCount($query);
     }

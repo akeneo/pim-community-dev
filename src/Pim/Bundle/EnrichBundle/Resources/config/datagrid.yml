@@ -246,24 +246,25 @@ datagrid:
                 data_name: productLabel
                 selector:  product_label
             family:
-                label: Family
+                label:     Family
                 data_name: familyLabel
             enabled:
-                label: Status
-                type: twig
-                template: PimDataGridBundle:Property:enabled.html.twig
+                label:         Status
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
             completeness:
-                label: Complete
-                data_name: ratio
-                type: twig
-                template: PimDataGridBundle:Property:completeness.html.twig
+                label:         Complete
+                type:          twig
+                data_name:     ratio
+                template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
+                selector:      product_completeness
             created:
-                label: Created At
+                label:         Created At
                 frontend_type: date
             updated:
-                label: Updated At
+                label:         Updated At
                 frontend_type: date
             groups:
                 label:         Groups
@@ -339,6 +340,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -384,7 +386,7 @@ datagrid:
                     label:     Category
                     data_name: category
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -433,24 +435,25 @@ datagrid:
                 data_name: productLabel
                 selector:  product_label
             family:
-                label: Family
+                label:     Family
                 data_name: familyLabel
             enabled:
-                label: Status
-                type: twig
-                template: PimDataGridBundle:Property:enabled.html.twig
+                label:         Status
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
             completeness:
-                label: Complete
-                data_name: ratio
-                type: twig
-                template: PimDataGridBundle:Property:completeness.html.twig
+                label:         Complete
+                type:          twig
+                data_name:     ratio
+                template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
+                selector:      product_completeness
             created:
-                label: Created At
+                label:         Created At
                 frontend_type: date
             updated:
-                label: Updated At
+                label:         Updated At
                 frontend_type: date
         properties:
             id: ~
@@ -464,6 +467,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -495,7 +499,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -543,24 +547,25 @@ datagrid:
                 data_name: productLabel
                 selector:  product_label
             family:
-                label: Family
+                label:     Family
                 data_name: familyLabel
             enabled:
-                label: Status
-                type: twig
-                template: PimDataGridBundle:Property:enabled.html.twig
+                label:         Status
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
             completeness:
-                label: Complete
-                data_name: ratio
-                type: twig
-                template: PimDataGridBundle:Property:completeness.html.twig
+                label:         Complete
+                type:          twig
+                data_name:     ratio
+                template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
+                selector:      product_completeness
             created:
-                label: Created At
+                label:         Created At
                 frontend_type: date
             updated:
-                label: Updated At
+                label:         Updated At
                 frontend_type: date
         properties:
             id: ~
@@ -574,6 +579,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -605,7 +611,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -964,10 +970,11 @@ datagrid:
                 frontend_type: html
             completeness:
                 label:         Complete
-                data_name:     ratio
                 type:          twig
+                data_name:     ratio
                 template:      PimDataGridBundle:Property:completeness.html.twig
                 frontend_type: html
+                selector:      product_completeness
             created:
                 label:         Created
                 frontend_type: date
@@ -986,6 +993,7 @@ datagrid:
                     data_name: p.enabled
                 completeness:
                     data_name: ratio
+                    sorter:    product_completeness
                 created:
                     data_name: p.created
                 updated:
@@ -1017,7 +1025,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:

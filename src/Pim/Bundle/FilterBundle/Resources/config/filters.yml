@@ -1,7 +1,6 @@
 parameters:
     pim_filter.scope_filter.class:        Pim\Bundle\FilterBundle\Filter\ScopeFilter
     pim_filter.category_filter.class:     Pim\Bundle\FilterBundle\Filter\CategoryFilter
-    pim_filter.completeness_filter.class: Pim\Bundle\FilterBundle\Filter\CompletenessFilter
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
     pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
@@ -15,7 +14,9 @@ parameters:
     pim_filter.flexible_boolean.class:    Pim\Bundle\FilterBundle\Filter\Flexible\BooleanFilter
     pim_filter.flexible_metric.class:     Pim\Bundle\FilterBundle\Filter\Flexible\MetricFilter
     pim_filter.flexible_price.class:      Pim\Bundle\FilterBundle\Filter\Flexible\PriceFilter
-    pim_filter.product_groups.class:      Pim\Bundle\FilterBundle\Filter\ProductGroupsFilter
+
+    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\ProductGroupsFilter
+    pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter
 
 services:
     pim_filter.scope_filter:
@@ -37,14 +38,6 @@ services:
             - '@pim_catalog.manager.category'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: category }
-
-    pim_filter.completeness_filter:
-        class: %pim_filter.completeness_filter.class%
-        arguments:
-            - '@form.factory'
-            - '@oro_filter.filter_utility'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: completeness }
 
     pim_filter.ajax_choice_filter:
         class: %pim_filter.ajax_choice_filter.class%
@@ -143,3 +136,12 @@ services:
             - '@oro_filter.filter_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_groups }
+
+    pim_filter.product_completeness_filter:
+        class: %pim_filter.product_completeness_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@pim_catalog.repository.orm.product'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }
