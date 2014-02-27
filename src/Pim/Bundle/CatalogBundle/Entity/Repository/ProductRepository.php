@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Product repository
@@ -463,5 +464,27 @@ SQL;
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
         return $qb;
+    }
+
+    /**
+     * Returns true if a ProductValue with the provided value alread exists,
+     * false otherwise.
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return boolean
+     */
+    public function valueExists(ProductValueInterface $value)
+    {
+        $criteria = array(
+            'attribute' => $value->getAttribute(),
+            $value->getAttribute()->getBackendType() => $value->getData()
+        );
+        $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
+
+        return (
+            (0 !== count($result)) &&
+            !(1 === count($result) && $value === ($result instanceof \Iterator ? $result->current() : current($result)))
+        );
     }
 }

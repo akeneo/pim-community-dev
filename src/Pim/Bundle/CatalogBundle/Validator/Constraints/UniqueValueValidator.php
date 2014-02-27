@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
@@ -20,53 +20,49 @@ use Symfony\Component\Validator\Constraint;
 class UniqueValueValidator extends ConstraintValidator
 {
     /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
      * Constructor
      *
      * @param object $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ProductManager $productManager)
     {
-        $this->registry = $registry;
+        $this->productManager = $productManager;
     }
 
     /**
      * Constraint is applied on ProductValue data property.
      * That's why we use the current property path to guess the code
      * of the attribute to which the data belongs to.
-     * @param object     $value
+     * @param object     $rawValue
      * @param Constraint $constraint
      *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($rawValue, Constraint $constraint)
     {
-        $entity = $this->getEntity();
-        if (!$entity instanceof ProductValueInterface || empty($value)) {
+        if (empty($rawValue)) {
             return;
         }
 
-        $em = $this->registry->getManagerForClass(get_class($entity));
-        $criteria = array(
-            'attribute'                               => $entity->getAttribute(),
-            $entity->getAttribute()->getBackendType() => $value,
-        );
-        $result = $em->getRepository(get_class($entity))->findBy($criteria);
+        $value = $this->getProductValue();
 
-        if (0 === count($result) ||
-            (1 === count($result) && $entity === ($result instanceof \Iterator ? $result->current() : current($result)))
-        ) {
-            return;
+        if (($value instanceof ProductValueInterface) && ($this->productManager->valueExists($value))) {
+            $this->context->addViolation($constraint->message);
         }
 
-        $this->context->addViolation($constraint->message);
     }
 
     /**
-     * Get entity
+     * Get productValue
      *
-     * @return mixed|null
+     * @return ProductValueInterface|null
      */
-    private function getEntity()
+    private function getProductValue()
     {
         preg_match(
             '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
@@ -82,10 +78,12 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        if (false === $entity = $product->getValue($matches[1])) {
+        $value = $product->getValue($matches[1]);
+
+        if (false === $value) {
             return;
         }
 
-        return $entity;
+        return $value;
     }
 }

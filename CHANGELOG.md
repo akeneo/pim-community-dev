@@ -37,6 +37,7 @@
 - Fixed $field_catalogLocale linked bugs
 - Fixed scopable value order in product form
 - Restored unique variant axis constraint when saving product
+- Fixed missing breadcrumbs for edit views
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
