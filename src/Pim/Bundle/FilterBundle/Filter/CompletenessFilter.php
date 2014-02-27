@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
+use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 
 /**
  * Overriding of boolean filter to filter by the product completeness
@@ -15,6 +18,28 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
  */
 class CompletenessFilter extends BooleanFilter
 {
+    /**
+     * @var ProductRepository
+     */
+    protected $repository;
+
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface $factory
+     * @param FilterUtility        $util
+     * @param ProductRepository    $repository
+     */
+    public function __construct(
+        FormFactoryInterface $factory,
+        FilterUtility $util,
+        ProductRepository $repository
+    ) {
+        parent::__construct($factory, $util);
+
+        $this->repository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,31 +52,9 @@ class CompletenessFilter extends BooleanFilter
 
         $qb        = $ds->getQueryBuilder();
         $rootAlias = $qb->getRootAlias();
-
-        $qb
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                'fcLocale',
-                'WITH',
-                'fcLocale.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                'fcChannel',
-                'WITH',
-                'fcChannel.code = :scopeCode'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
-                'filterCompleteness',
-                'WITH',
-                'filterCompleteness.locale = fcLocale.id AND filterCompleteness.channel = fcChannel.id '.
-
-                'AND filterCompleteness.product = '.$rootAlias.'.id'
-            );
-
-        $qb    = $ds->getQueryBuilder();
-        $field = 'filterCompleteness.ratio';
+        $joinAlias = 'filterCompleteness';
+        $field     = $joinAlias.'.ratio';
+        $this->repository->addCompleteness($qb, $joinAlias);
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
