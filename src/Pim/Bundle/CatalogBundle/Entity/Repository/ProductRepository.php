@@ -467,6 +467,41 @@ SQL;
     }
 
     /**
+     * Add completeness joins to query builder
+     *
+     * @param QueryBuilder $qb                the query builder
+     * @param string       $completenessAlias the join alias
+     */
+    public function addCompleteness(QueryBuilder $qb, $completenessAlias)
+    {
+        $rootAlias         = $qb->getRootAlias();
+        $localeAlias       = $completenessAlias.'Locale';
+        $channelAlias      = $completenessAlias.'Channel';
+
+        $qb
+            ->leftJoin(
+                'PimCatalogBundle:Locale',
+                $localeAlias,
+                'WITH',
+                $localeAlias.'.code = :dataLocale'
+            )
+            ->leftJoin(
+                'PimCatalogBundle:Channel',
+                $channelAlias,
+                'WITH',
+                $channelAlias.'.code = :scopeCode'
+            )
+            ->leftJoin(
+                'Pim\Bundle\CatalogBundle\Model\Completeness',
+                $completenessAlias,
+                'WITH',
+                $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
+                $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
+                $completenessAlias.'.product = '.$rootAlias.'.id'
+            );
+    }
+
+    /**
      * Returns true if a ProductValue with the provided value alread exists,
      * false otherwise.
      *
