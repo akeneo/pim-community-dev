@@ -41,6 +41,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     protected $scope;
 
     /**
+     * @param FlexibleQueryBuilder
+     */
+    protected $flexibleQB;
+
+    /**
      * {@inheritdoc}
      */
     public function buildByScope($scope)
@@ -240,6 +245,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         return (count($result) !== 0);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function countProductsPerChannels()
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
@@ -251,5 +259,16 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function countCompleteProductsPerChannels()
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFlexibleQueryBuilder($flexibleQB)
+    {
+        $this->flexibleQB = $flexibleQB;
+
+        return $this;
+
     }
 }

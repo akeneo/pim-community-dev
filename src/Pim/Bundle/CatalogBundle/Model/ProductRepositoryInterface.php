@@ -205,4 +205,13 @@ interface ProductRepositoryInterface
      * @return boolean
      */
     public function valueExists(ProductValueInterface $value);
+
+    /**
+     * Set flexible query builder
+     *
+     * @param FlexibleQueryBuilder $flexibleQB
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleQueryBuilder($flexibleQB);
 }
