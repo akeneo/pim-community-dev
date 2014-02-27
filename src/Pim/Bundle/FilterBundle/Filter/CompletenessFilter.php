@@ -25,8 +25,33 @@ class CompletenessFilter extends BooleanFilter
             return false;
         }
 
+        $qb        = $ds->getQueryBuilder();
+        $rootAlias = $qb->getRootAlias();
+
+        $qb
+            ->leftJoin(
+                'PimCatalogBundle:Locale',
+                'fcLocale',
+                'WITH',
+                'fcLocale.code = :dataLocale'
+            )
+            ->leftJoin(
+                'PimCatalogBundle:Channel',
+                'fcChannel',
+                'WITH',
+                'fcChannel.code = :scopeCode'
+            )
+            ->leftJoin(
+                'Pim\Bundle\CatalogBundle\Model\Completeness',
+                'filterCompleteness',
+                'WITH',
+                'filterCompleteness.locale = fcLocale.id AND filterCompleteness.channel = fcChannel.id '.
+
+                'AND filterCompleteness.product = '.$rootAlias.'.id'
+            );
+
         $qb    = $ds->getQueryBuilder();
-        $field = 'completeness.ratio';
+        $field = 'filterCompleteness.ratio';
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
@@ -34,10 +59,7 @@ class CompletenessFilter extends BooleanFilter
                 break;
             case BooleanFilterType::TYPE_NO:
             default:
-                $expression = $qb->expr()->orX(
-                    $qb->expr()->neq($field, '100'),
-                    $qb->expr()->isNull($field)
-                );
+                $expression = $qb->expr()->lt($field, '100');
                 break;
         }
 
