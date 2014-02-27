@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 
