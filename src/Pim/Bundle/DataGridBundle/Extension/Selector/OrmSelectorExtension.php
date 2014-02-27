@@ -131,6 +131,7 @@ class OrmSelectorExtension extends AbstractExtension
         $rootField  = $rootAlias.'.id';
         $getIdsQb->add('from', new From($rootEntity, $rootAlias, $rootField), false);
         $getIdsQb->groupBy($rootField);
+        PimOrmDatasource::removeExtraParameters($getIdsQb);
         $results = $getIdsQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($results);
