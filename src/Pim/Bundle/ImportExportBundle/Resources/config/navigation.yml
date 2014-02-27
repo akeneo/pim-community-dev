@@ -1,5 +1,17 @@
 oro_menu_config:
     items:
+        pim_import_tab:
+            label: pim_menu.tab.collect
+            uri: '#'
+            extras:
+                position: 10
+            showNonAuthorized: false
+        pim_export_tab:
+            label: pim_menu.tab.spread
+            uri: '#'
+            extras:
+                position: 30
+            showNonAuthorized: false
         pim_ie_import:
             label: pim_menu.item.import_profile
             route: pim_importexport_import_profile_index
