@@ -42,6 +42,7 @@ class StepElementConfigurationType extends AbstractType
                         array(
                             'auto_initialize' => false,
                             'required'        => false,
+                            'label'           => ucfirst($field),
                         ),
                         $config['options']
                     );

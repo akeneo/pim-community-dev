@@ -1,19 +1,5 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% macro configuration(config, violations, jobType) %}
-<table class="configuration">
-    <thead></thead>
-    <tbody>
-        {% for element, value in config %}
-            <tr>
-                <td><b>{{ 'pim_base_connector.%s.%s.label'|format(jobType, element)|trans }}</b></td>
-                <td>{{ value|normalizeValue }} {{ getViolations(violations, element) }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endmacro %}
-
 {% block content %}
 
     {% set title = entityName ~ ' - ' ~ jobInstance.label %}
@@ -59,8 +45,24 @@
     <div class="row-fluid tab-content">
         <div class="tab-pane active">
             {% block configuration %}
-                {% set configuration = _self.configuration(jobInstance.job.configuration, violations, action) %}
-                {{ elements.accordion({ 'Configuration': configuration }, 1, true) }}
+                {% set globalSettings %}
+                    <table class="configuration">
+                        <thead></thead>
+                        <tbody>
+                            {% for step in form.job.steps %}
+                                {% for child in step.children %}
+                                    {% for element in child.children %}
+                                    <tr>
+                                        <td><b>{{ element.vars.label|trans }}</b></td>
+                                        <td>{{ element.vars.data }} {{ getViolations(violations, element.vars.name) }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endset %}
+                {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 1, true) }}
             {% endblock configuration %}
         </div>
     </div>
