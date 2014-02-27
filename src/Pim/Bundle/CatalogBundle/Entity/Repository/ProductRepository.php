@@ -518,7 +518,7 @@ SQL;
     {
         $criteria = array(
             'attribute' => $value->getAttribute(),
-            $value->getAttribute()->getBackendType() => $value
+            $value->getAttribute()->getBackendType() => $value->getData()
         );
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
 
