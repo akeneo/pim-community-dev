@@ -4,18 +4,26 @@ oro_menu_config:
             label: pim_menu.item.import_profile
             route: pim_importexport_import_profile_index
             aclResourceId: pim_importexport_import_profile_index
+            extras:
+                routes: ['/^pim_importexport_import_profile_\w+$/']
         pim_ie_export:
             label: pim_menu.item.export_profile
             route: pim_importexport_export_profile_index
             aclResourceId: pim_importexport_export_profile_index
+            extras:
+                routes: ['/^pim_importexport_export_profile_\w+$/']
         pim_report_import:
             label: pim_menu.item.import_history
             route: pim_importexport_import_execution_index
             aclResourceId: pim_importexport_import_execution_index
+            extras:
+                routes: ['/^pim_importexport_import_execution_\w+$/']
         pim_report_export:
             label: pim_menu.item.export_history
             route: pim_importexport_export_execution_index
             aclResourceId: pim_importexport_export_execution_index
+            extras:
+                routes: ['/^pim_importexport_export_execution_\w+$/']
 
     tree:
         application_menu:
