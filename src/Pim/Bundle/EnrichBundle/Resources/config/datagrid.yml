@@ -386,7 +386,7 @@ datagrid:
                     label:     Category
                     data_name: category
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -499,7 +499,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -611,7 +611,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
@@ -1025,7 +1025,7 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 completeness:
-                    type:      completeness
+                    type:      product_completeness
                     label:     Complete
                     data_name: ratio
                 created:
