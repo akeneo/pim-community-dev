@@ -1,5 +1,5 @@
 categories:
-    default:
+    master:
         labels:
             en_US: Master catalog
             fr_FR: Catalog principal
@@ -19,12 +19,12 @@ categories:
         labels:
             en_US: Books
             fr_FR: Livres
-        parent: default
+        parent: master
     computers:
         labels:
             en_US: Computers
             fr_FR: Ordinateurs
-        parent: default
+        parent: master
     desktops:
         labels:
             en_US: Desktops
@@ -59,7 +59,7 @@ categories:
         labels:
             en_US: Apparels & Shoes
             fr_FR: Habillements & chaussures
-        parent: default
+        parent: master
     shirts:
         labels:
             en_US: Shirts

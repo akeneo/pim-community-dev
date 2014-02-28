@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes

@@ -8,7 +8,7 @@ channels:
         currencies:
             - EUR
             - USD
-        tree: default
+        tree: master
     mobile:
         code:  mobile
         label: Mobile
@@ -17,4 +17,4 @@ channels:
             - fr_FR
         currencies:
             - EUR
-        tree: default
+        tree: master

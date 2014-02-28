@@ -70,9 +70,7 @@ class Association implements ReferableInterface
     /**
      * Get association type id
      *
-     * @param int associationTypeId
-     *
-     * @return Association
+     * @return integer
      */
     public function getAssociationTypeId()
     {
@@ -82,7 +80,7 @@ class Association implements ReferableInterface
     /**
      * Set association type id
      *
-     * @param int associationTypeId
+     * @param integer $associationTypeId
      *
      * @return Association
      */

@@ -1,4 +1,5 @@
 parameters:
+    pim_catalog.repository.product.class:                           Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.inject_orm_references.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
 
@@ -12,7 +13,6 @@ services:
             - '@doctrine_mongodb'
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.product_value.class%
-
 
     pim_catalog.event_listener.mongodb.inject_orm_references:
         class: %pim_catalog.event_listener.mongodb.inject_orm_references.class%

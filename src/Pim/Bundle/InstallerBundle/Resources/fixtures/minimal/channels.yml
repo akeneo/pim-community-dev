@@ -1,8 +1,8 @@
 channels:
-    default:
+    ecommerce:
         label: Default
         locales:
             - en_US
         currencies:
             - USD
-        tree: default
+        tree: master

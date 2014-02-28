@@ -16,7 +16,7 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
     /**
-     * @staticvar int The default priority for services
+     * @staticvar integer The default priority for services
      */
     const DEFAULT_PRIORITY = 100;
 

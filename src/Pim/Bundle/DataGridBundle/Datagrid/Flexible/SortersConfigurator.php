@@ -34,9 +34,9 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $flexibleManager;
 
     /**
-     * @param DatagridConfiguration $configuration   the grid config
-     * @param ConfigurationRegistry $registry        the conf registry
-     * @param FlexibleManager       $flexibleManager flexible manager
+     * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
+     * @param FlexibleManager       $manager       flexible manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
