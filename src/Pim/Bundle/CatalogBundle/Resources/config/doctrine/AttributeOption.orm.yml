@@ -26,6 +26,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             inversedBy: options
             joinColumns:
                 attribute_id:
+                    nullable: false
                     referencedColumnName: id
                     onDelete: CASCADE
     oneToMany:
