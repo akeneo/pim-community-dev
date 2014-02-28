@@ -80,4 +80,28 @@ class OdmDatasource implements DatasourceInterface
 
         return $rows;
     }
+
+    /**
+     * Returns query builder
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->qb;
+    }
+
+    /**
+     * Set QueryBuilder
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    public function setQueryBuilder(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+
+        return $this;
+    }
 }
