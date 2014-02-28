@@ -1,8 +1,12 @@
 parameters:
     pim_datagrid.extension.pager.orm.pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    pim_datagrid.extension.pager.odm.pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\Odm\Pager
 
 services:
     pim_datagrid.extension.pager.orm.pager:
         arguments:
             - '@oro_security.acl_helper'
         class: %pim_datagrid.extension.pager.orm.pager.class%
+
+    pim_datagrid.extension.pager.odm.pager:
+        class: %pim_datagrid.extension.pager.odm.pager.class%
