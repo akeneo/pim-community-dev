@@ -54,16 +54,12 @@ class OrmSorterExtension extends OroOrmSorterExtension
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
-
             $sortKey = $sorter['data_name'];
-
-            // if need customized behavior, just pass sorter service under "sorter" node
+            // if need customized behavior, use sorter service under "sorter" node or a closure in "apply_callback"
             if (isset($sorter['sorter'])) {
                 $sorterAlias = $sorter['sorter'];
                 $sorter = $this->sorters[$sorterAlias];
                 $sorter->apply($datasource, $sortKey, $direction);
-
-            // if need customized behavior, just pass closure under "apply_callback" node
             } elseif (isset($sorter['apply_callback']) && is_callable($sorter['apply_callback'])) {
                 $sorter['apply_callback']($datasource, $sortKey, $direction);
             } else {
