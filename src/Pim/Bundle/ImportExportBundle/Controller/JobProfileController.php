@@ -166,15 +166,16 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
+        $form = $this->createForm($this->jobInstanceType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
-        $form = null;
+        $uploadForm = null;
         $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
             if (method_exists($step, 'getReader')) {
                 $reader = $step->getReader();
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $uploadAllowed = true;
-                    $form = $this->createUploadForm()->createView();
+                    $uploadForm = $this->createUploadForm()->createView();
                 }
             }
         }
@@ -188,11 +189,12 @@ class JobProfileController extends AbstractDoctrineController
         return $this->render(
             $template,
             array(
+                'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
                 'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
                 'uploadViolations' => $validator->validate($jobInstance, array('Default', 'UploadExecution')),
                 'uploadAllowed'    => $uploadAllowed,
-                'form'             => $form,
+                'uploadForm'       => $uploadForm,
             )
         );
     }
