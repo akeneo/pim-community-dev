@@ -304,12 +304,13 @@ class ProductRepository extends FlexibleEntityRepository implements
         $sql = <<<SQL
 SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
     JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
-    JOIN pim_catalog_product p ON p.id = cp.product_id
+    JOIN %category_join_table% cp ON cp.category_id = ca.id
+    JOIN %product_table% p ON p.id = cp.product_id
     WHERE p.is_enabled = 1
     GROUP BY ch.id, ch.label
 SQL;
 
+        $sql = $this->prepareDBALQuery($sql);
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -322,9 +323,9 @@ SQL;
     public function countCompleteProductsPerChannels()
     {
         $sql = <<<SQL
-SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
+    SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
     JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN %category_join_table% cp ON cp.category_id = ca.id
     JOIN %product_table% p ON p.id = cp.product_id
     JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
     JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
@@ -333,20 +334,32 @@ SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM 
     WHERE p.is_enabled = 1
     GROUP BY ch.id, lo.id, ch.label, lo.code
 SQL;
-        $sql = strtr(
-            $sql,
-            array(
-                '%product_table%' => $this
-                    ->getEntityManager()
-                    ->getClassMetadata($this->flexibleConfig['flexible_class'])
-                    ->getTableName()
-            )
-        );
+        $sql = $this->prepareDBALQuery($sql);
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Replaces name of tables in DBAL queries
+     *
+     * @param string $sql
+     *
+     * @return string
+     */
+    protected function prepareDBALQuery($sql)
+    {
+        $categoryMapping = $this->getClassMetadata()->getAssociationMapping('categories');
+
+        return strtr(
+            $sql,
+            [
+                '%category_join_table%' => $categoryMapping['joinTable']['name'],
+                '%product_table%'       => $this->getClassMetadata()->getTableName()
+            ]
+        );
     }
 
     /**

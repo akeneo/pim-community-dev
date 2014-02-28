@@ -192,7 +192,8 @@ class GroupRepository extends ReferableEntityRepository
         $stmt->execute();
         $nbAxes = $stmt->fetch()['nb'];
 
-        $productMeta = $this->_em->getClassMetadata('Pim\Bundle\CatalogBundle\Model\Product');
+        $productClass = $this->getClassMetadata()->getAssociationTargetClass('products');
+        $productMeta = $this->_em->getClassMetadata($productClass);
         $valueClass = $productMeta->getAssociationMappings()['values']['targetEntity'];
         $valueTable = $this->_em->getClassMetadata($valueClass)->getTableName();
 

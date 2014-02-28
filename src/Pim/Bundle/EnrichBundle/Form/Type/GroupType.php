@@ -22,15 +22,22 @@ class GroupType extends AbstractType
     /**
      * @var string
      */
+    protected $productClass;
+
+    /**
+     * @var string
+     */
     protected $attributeClass;
 
     /**
      * Constructor
      *
+     * @param string $productClass
      * @param string $attributeClass
      */
-    public function __construct($attributeClass)
+    public function __construct($productClass, $attributeClass)
     {
+        $this->productClass = $productClass;
         $this->attributeClass = $attributeClass;
     }
 
@@ -140,7 +147,7 @@ class GroupType extends AbstractType
                 'appendProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'class'    => $this->productClass,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true
@@ -150,7 +157,7 @@ class GroupType extends AbstractType
                 'removeProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'class'    => $this->productClass,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true
