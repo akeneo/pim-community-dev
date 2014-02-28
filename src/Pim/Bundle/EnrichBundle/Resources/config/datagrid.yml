@@ -150,7 +150,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.attribute_group->getAttributeGroupChoices'
+                            choices:  '@pim_catalog.repository.attribute_group->getAttributeGroupChoices'
 
     channel-grid:
         options:
