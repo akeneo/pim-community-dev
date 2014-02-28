@@ -557,7 +557,7 @@ MAIN_SQL;
     public function schedule(ProductInterface $product)
     {
         $query = $this->doctrine->getManager()->createQuery(
-            "DELETE FROM $this->class c WHERE c.product = :product"
+            "DELETE FROM Pim\Bundle\CatalogBundle\Model\Completeness c WHERE c.product = :product"
         );
         $query->setParameter('product', $product);
         $query->execute();
