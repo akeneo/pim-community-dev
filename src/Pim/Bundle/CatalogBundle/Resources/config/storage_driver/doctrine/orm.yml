@@ -1,10 +1,14 @@
 parameters:
+    pim_catalog.repository.association.class:                      Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
     pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
 
 services:
     pim_catalog.object_manager.product:
+        alias: doctrine.orm.entity_manager
+        
+    pim_catalog.object_manager.association:
         alias: doctrine.orm.entity_manager
 
     pim_catalog.doctrine.completeness_generator:
