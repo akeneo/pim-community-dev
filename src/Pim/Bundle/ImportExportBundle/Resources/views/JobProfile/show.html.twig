@@ -26,20 +26,20 @@
 
     {{ elements.page_header(title, buttons, null, left) }}
 
-    {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
-        {{ form_start(form, {
+    {% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
+        {{ form_start(uploadForm, {
             'id': 'pim_importexport_import_upload',
             'action': launchRoute,
             'attr': {
                 'class': 'form-upload hide'
             }
         }) }}
-            {{ elements.form_errors(form) }}
+            {{ elements.form_errors(uploadForm) }}
             <div class="row-fluid">
-                {{ form_row(form.file) }}
+                {{ form_row(uploadForm.file) }}
                 {{ elements.submitBtn('Upload and '~action~' now') }}
             </div>
-        {{ form_end(form) }}
+        {{ form_end(uploadForm) }}
     {% endif %}
 
     <div class="row-fluid tab-content">
