@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Product completeness sorter
@@ -16,14 +16,14 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 class ProductCompletenessSorter implements SorterInterface
 {
     /**
-     * @var ProductRepository
+     * @var ProductRepositoryInterface
      */
     protected $repository;
 
     /**
-     * @param ProductRepository $repository
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductRepository $repository)
+    public function __construct(ProductRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

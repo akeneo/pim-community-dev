@@ -33,26 +33,20 @@ class ProductManagerSpec extends ObjectBehavior
         MediaManager $mediaManager,
         CompletenessManager $completenessManager,
         ProductBuilder $builder,
-        ProductRepositoryInterface $repository,
-        ClassMetadata $productMeta,
-        ClassMetadata $valueMeta,
-        ClassMetadata $attributeMeta,
-        ClassMetadata $optionMeta,
-        ClassMetadata $optionValueMeta
+        ProductRepositoryInterface $repository
     ) {
-        $objectManager->getClassMetadata(self::PRODUCT_CLASS)->willReturn($productMeta);
-        $productMeta->getAssociationMappings()->willReturn(['values' => ['targetEntity' => self::VALUE_CLASS]]);
-        $objectManager->getClassMetadata(self::VALUE_CLASS)->willReturn($valueMeta);
-        $valueMeta->getAssociationMappings()->willReturn(['attribute' => ['targetEntity' => self::ATTRIBUTE_CLASS]]);
-        $objectManager->getClassMetadata(self::ATTRIBUTE_CLASS)->willReturn($attributeMeta);
-        $attributeMeta->getAssociationMappings()->willReturn(['options' => ['targetEntity' => self::OPTION_CLASS]]);
-        $objectManager->getClassMetadata(self::OPTION_CLASS)->willReturn($optionMeta);
-        $optionMeta->getAssociationMappings()->willReturn(['optionValues' => ['targetEntity' => self::OPT_VALUE_CLASS]]);
+        $entityConfig = array(
+            'flexible_class' => self::PRODUCT_CLASS,
+            'flexible_value_class' => self::VALUE_CLASS,
+            'attribute_class' => self::ATTRIBUTE_CLASS,
+            'attribute_option_class' => self::OPTION_CLASS,
+            'attribute_option_value_class' => self::OPT_VALUE_CLASS
+        );
 
         $objectManager->getRepository(self::PRODUCT_CLASS)->willReturn($repository);
 
         $this->beConstructedWith(
-            self::PRODUCT_CLASS,
+            $entityConfig,
             $objectManager,
             $entityManager,
             $eventDispatcher,

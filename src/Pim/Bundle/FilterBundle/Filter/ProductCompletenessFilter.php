@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Overriding of boolean filter to filter by the product completeness
@@ -19,21 +19,21 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 class ProductCompletenessFilter extends BooleanFilter
 {
     /**
-     * @var ProductRepository
+     * @var ProductRepositoryInterface
      */
     protected $repository;
 
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param FilterUtility        $util
-     * @param ProductRepository    $repository
+     * @param FormFactoryInterface       $factory
+     * @param FilterUtility              $util
+     * @param ProductRepositoryInterface $repository
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        ProductRepository $repository
+        ProductRepositoryInterface $repository
     ) {
         parent::__construct($factory, $util);
 
