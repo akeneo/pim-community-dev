@@ -694,7 +694,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.orm.attribute->getAvailableAttributesAsLabelChoice'
+                            choices:  '@pim_catalog.repository.attribute->getAvailableAttributesAsLabelChoice'
 
     currency-grid:
         options:
