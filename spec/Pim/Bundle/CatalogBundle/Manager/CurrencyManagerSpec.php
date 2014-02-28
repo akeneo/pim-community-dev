@@ -11,15 +11,12 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 class CurrencyManagerSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager $objectManager,
         CurrencyRepository $repository,
         Currency $eur,
         Currency $usd,
         Currency $gbp
     ) {
-        $this->beConstructedWith($objectManager);
-        $objectManager->getRepository('PimCatalogBundle:Currency')->willReturn($repository);
-
+        $this->beConstructedWith($repository);
         $repository->findBy(array('activated' => true))->willReturn([$eur, $usd]);
         $repository->findBy(array())->willReturn([$eur, $usd, $gbp]);
 
