@@ -33,7 +33,7 @@ services:
     pim_dashboard.widget.completeness:
         class: %pim_dashboard.widget.completeness.class%
         arguments:
-            - '@pim_catalog.repository.orm.product'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_dashboard.widget, alias: completeness }
 
