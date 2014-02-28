@@ -1,5 +1,6 @@
 parameters:
-    pim_datagrid.datasource.orm.class: Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+    pim_datagrid.datasource.orm.class:         Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+    pim_datagrid.datasource.mongodb.odm.class: Pim\Bundle\DataGridBundle\Datasource\MongoDB\OdmDatasource
 
 services:
     pim_catalog.datasource.orm:
@@ -9,3 +10,10 @@ services:
             - '@oro_security.acl_helper'
         tags:
             - { name: oro_datagrid.datasource, type: pim_orm }
+
+    pim_catalog.datasource.mongodb.odm:
+        class: %pim_datagrid.datasource.mongodb.odm.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_odm_mongodb }
