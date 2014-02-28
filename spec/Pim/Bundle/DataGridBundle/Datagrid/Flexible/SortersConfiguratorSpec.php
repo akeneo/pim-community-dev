@@ -49,8 +49,8 @@ class SortersConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => array()));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => array()));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
+        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => 'flexible_field'));
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
         $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config'), 'sku' => array(), 'name' => array()));
@@ -81,7 +81,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config')));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array());
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
