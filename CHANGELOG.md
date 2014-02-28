@@ -55,6 +55,7 @@ that made the entity too smart for its own good and created performances problem
 - Rename and move src/Pim/Bundle/EnrichBundle/Resources/views/Completeness/_datagridCompleteness.html.twig => DataGridBundle/Resources/views/Property/completeness.html.twig
 - Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
 - Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
+- Rename CompletenessFilter to ProductCompletenessFilter to be consistent, move also the related js file
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

@@ -1,0 +1,10 @@
+parameters:
+    pim_datagrid.extension.sorter.orm.product_completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductCompletenessSorter
+
+services:
+    pim_datagrid.extension.sorter.orm.product_completeness_sorter:
+        class: %pim_datagrid.extension.sorter.orm.product_completeness_sorter.class%
+        arguments:
+            - '@pim_catalog.repository.orm.product'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_completeness }

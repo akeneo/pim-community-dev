@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -112,5 +113,23 @@ class OrmDatasource extends OroOrmDatasource
         }
 
         return $rows;
+    }
+
+    /**
+        * We update the query to count, get ids and fetch data, so, we can lost expected query builder parameters,
+        * and we have to remove them
+     *
+     * @param QueryBuilder $qb
+     */
+    public static function removeExtraParameters(QueryBuilder $qb)
+    {
+        $parameters    = $qb->getParameters();
+        $dql           = $qb->getDQL();
+        foreach ($parameters as $parameter) {
+            if (strpos($dql, ':'.$parameter->getName()) === false) {
+                $parameters->removeElement($parameter);
+            }
+        }
+        $qb->setParameters($parameters);
     }
 }

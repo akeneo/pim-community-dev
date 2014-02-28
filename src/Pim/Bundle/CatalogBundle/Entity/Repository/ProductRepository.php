@@ -384,8 +384,6 @@ SQL;
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
 
-        $this->addCompleteness($qb);
-
         $qb
             ->addSelect('p')
             ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
@@ -405,8 +403,6 @@ SQL;
         $qb
             ->leftJoin('p.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $this->addCompleteness($qb);
 
         $isCheckedExpr =
             'CASE WHEN ' .
@@ -454,8 +450,6 @@ SQL;
                 'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
             );
 
-        $this->addCompleteness($qb);
-
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
         $isCheckedExpr =
@@ -473,31 +467,38 @@ SQL;
     }
 
     /**
-     * @param QueryBuilder $qb
+     * Add completeness joins to query builder
+     *
+     * @param QueryBuilder $qb                the query builder
+     * @param string       $completenessAlias the join alias
      */
-    protected function addCompleteness(QueryBuilder $qb)
+    public function addCompleteness(QueryBuilder $qb, $completenessAlias)
     {
+        $rootAlias         = $qb->getRootAlias();
+        $localeAlias       = $completenessAlias.'Locale';
+        $channelAlias      = $completenessAlias.'Channel';
+
         $qb
             ->leftJoin(
                 'PimCatalogBundle:Locale',
-                'locale',
+                $localeAlias,
                 'WITH',
-                'locale.code = :dataLocale'
+                $localeAlias.'.code = :dataLocale'
             )
             ->leftJoin(
                 'PimCatalogBundle:Channel',
-                'channel',
+                $channelAlias,
                 'WITH',
-                'channel.code = :scopeCode'
+                $channelAlias.'.code = :scopeCode'
             )
             ->leftJoin(
                 'Pim\Bundle\CatalogBundle\Model\Completeness',
-                'completeness',
+                $completenessAlias,
                 'WITH',
-                'completeness.locale = locale.id AND completeness.channel = channel.id '.
-                'AND completeness.product = p.id'
-            )
-            ->addSelect('completeness.ratio AS ratio');
+                $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
+                $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
+                $completenessAlias.'.product = '.$rootAlias.'.id'
+            );
     }
 
     /**

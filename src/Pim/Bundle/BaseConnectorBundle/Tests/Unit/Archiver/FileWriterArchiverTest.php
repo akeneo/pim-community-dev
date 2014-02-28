@@ -55,13 +55,15 @@ class FileWriterArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function testArchive()
     {
-        $fileWriter       = $this->getFileWriterMock(__DIR__ . '/../../fixtures/import.csv');
-        $archivableWriter = $this->getArchivableFileWriterMock();
-        $lambdaWriter     = $this->getWriterMock();
-        $job              = $this->getJobMock(
+        $fileWriter           = $this->getFileWriterMock(__DIR__ . '/../../fixtures/import.csv');
+        $inexistantFileWriter = $this->getFileWriterMock('inexistant.csv');
+        $archivableWriter     = $this->getArchivableFileWriterMock();
+        $lambdaWriter         = $this->getWriterMock();
+        $job                  = $this->getJobMock(
             array(
                 $this->getStepMock(),
                 $this->getItemStepMock($fileWriter),
+                $this->getItemStepMock($inexistantFileWriter),
                 $this->getItemStepMock($archivableWriter),
                 $this->getItemStepMock($lambdaWriter),
             )
