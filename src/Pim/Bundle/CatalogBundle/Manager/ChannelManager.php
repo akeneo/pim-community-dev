@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 
 /**
  * Channel manager
@@ -14,17 +14,17 @@ use Doctrine\Common\Persistence\ObjectManager;
 class ChannelManager
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var ChannelRepository $repository
      */
-    protected $objectManager;
+    protected $repository;
 
     /**
      * Constructor
-     * @param ObjectManager $objectManager the storage manager
+     * @param ChannelRepository $repository
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ChannelRepository $repository)
     {
-        $this->objectManager = $objectManager;
+        $this->repository = $repository;
     }
 
     /**
@@ -36,10 +36,7 @@ class ChannelManager
      */
     public function getChannels($criterias = array())
     {
-        return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findBy($criterias);
+        return $this->repository->findBy($criterias);
     }
 
     /**
@@ -50,8 +47,7 @@ class ChannelManager
     public function getFullChannels()
     {
         return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
+            ->repository
             ->createQueryBuilder('ch')
             ->select('ch, lo, cu')
             ->leftJoin('ch.locales', 'lo')
@@ -65,14 +61,11 @@ class ChannelManager
      *
      * @param string $code
      *
-     * @return Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     public function getChannelByCode($code)
     {
-        return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findOneBy(array('code' => $code));
+        return $this->repository->findOneBy(array('code' => $code));
     }
 
     /**
