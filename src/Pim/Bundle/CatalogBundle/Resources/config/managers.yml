@@ -54,7 +54,7 @@ services:
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.currency'
 
     pim_catalog.manager.channel:
         class: %pim_catalog.manager.channel.class%
