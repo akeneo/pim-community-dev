@@ -1,7 +1,16 @@
 parameters:
-    pim_catalog.repository.attribute.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
-    pim_catalog.repository.family.class:    Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
-    pim_catalog.repository.locale.class:    Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
+    pim_catalog.repository.association.class:      Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
+    pim_catalog.repository.association_type.class: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository
+    pim_catalog.repository.attribute_group.class:  Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository
+    pim_catalog.repository.attribute_option.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository
+    pim_catalog.repository.attribute.class:        Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+    pim_catalog.repository.category.class:         Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository
+    pim_catalog.repository.channel.class:          Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository
+    pim_catalog.repository.currency.class:         Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository
+    pim_catalog.repository.family.class:           Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
+    pim_catalog.repository.group.class:            Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
+    pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
+    pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
 
 services:
     pim_catalog.repository.product:
