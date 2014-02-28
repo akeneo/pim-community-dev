@@ -42,4 +42,21 @@ class AttributeGroupRepository extends ReferableEntityRepository
 
         return $orderedGroups;
     }
+
+    /**
+     * Get the attribute group choices
+     *
+     * @return array
+     */
+    public function getAttributeGroupChoices()
+    {
+        $groups = $this->findAllWithTranslations();
+        $choices = array();
+        foreach ($groups as $group) {
+            $choices[$group->getCode()] = $group->getLabel();
+        }
+        asort($choices);
+
+        return $choices;
+    }
 }

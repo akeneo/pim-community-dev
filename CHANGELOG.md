@@ -57,6 +57,7 @@ that made the entity too smart for its own good and created performances problem
 - Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
 - Rename CompletenessFilter to ProductCompletenessFilter to be consistent, move also the related js file
 - Inject CurrencyRepository in CurrencyManager instead of EntityManager and hardcoded class
+- Move AttributeManager method on attribute group in AttributeGroup repository
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
