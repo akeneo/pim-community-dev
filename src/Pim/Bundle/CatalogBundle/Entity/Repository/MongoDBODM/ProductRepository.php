@@ -98,7 +98,8 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return array();
     }
 
     /**
@@ -204,7 +205,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     {
         // FIXME_MONGO Shortcut, but must do the same thing
         // than the ORM one
-        //TODO
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return $this->find($id);
     }
 
@@ -213,7 +214,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
-        //TODO
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return null;
     }
 
@@ -222,7 +223,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getReferenceProperties()
     {
-        //TODO
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return array();
     }
 
@@ -250,7 +251,8 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function countProductsPerChannels()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return array();
     }
 
     /**
@@ -258,7 +260,8 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function countCompleteProductsPerChannels()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return array();
     }
 
     /**

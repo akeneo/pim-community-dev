@@ -21,25 +21,19 @@ class FlexibleManagerSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        ClassMetadataInfo $flexibleMeta,
-        ClassMetadataInfo $valueMeta,
-        ClassMetadataInfo $attributeMeta,
-        ClassMetadataInfo $optionMeta,
-        ClassMetadataInfo $optionValueMeta,
         FlexibleEntityRepositoryInterface $repository
     ) {
-        $objectManager->getClassMetadata(self::ENTITY_CLASS)->willReturn($flexibleMeta);
-        $flexibleMeta->getAssociationMappings()->willReturn(['values' => ['targetEntity' => self::VALUE_CLASS]]);
-        $objectManager->getClassMetadata(self::VALUE_CLASS)->willReturn($valueMeta);
-        $valueMeta->getAssociationMappings()->willReturn(['attribute' => ['targetEntity' => self::ATTRIBUTE_CLASS]]);
-        $objectManager->getClassMetadata(self::ATTRIBUTE_CLASS)->willReturn($attributeMeta);
-        $attributeMeta->getAssociationMappings()->willReturn(['options' => ['targetEntity' => self::OPTION_CLASS]]);
-        $objectManager->getClassMetadata(self::OPTION_CLASS)->willReturn($optionMeta);
-        $optionMeta->getAssociationMappings()->willReturn(['optionValues' => ['targetEntity' => self::OPT_VALUE_CLASS]]);
+        $entityConfig = array(
+            'flexible_class' => self::ENTITY_CLASS,
+            'flexible_value_class' => self::VALUE_CLASS,
+            'attribute_class' => self::ATTRIBUTE_CLASS,
+            'attribute_option_class' => self::OPTION_CLASS,
+            'attribute_option_value_class' => self::OPT_VALUE_CLASS
+        );
 
         $objectManager->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
-        $this->beConstructedWith(self::ENTITY_CLASS, $objectManager, $eventDispatcher);
+        $this->beConstructedWith($entityConfig, $objectManager, $eventDispatcher);
     }
 
     function it_stores_flexible_config()

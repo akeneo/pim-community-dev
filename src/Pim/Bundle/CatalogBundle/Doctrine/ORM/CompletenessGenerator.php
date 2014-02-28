@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -548,5 +549,17 @@ MAIN_SQL;
     protected function getClassMetadata($className)
     {
         return $this->doctrine->getManager()->getClassMetadata($className);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function schedule(ProductInterface $product)
+    {
+        $query = $this->doctrine->getManager()->createQuery(
+            "DELETE FROM Pim\Bundle\CatalogBundle\Model\Completeness c WHERE c.product = :product"
+        );
+        $query->setParameter('product', $product);
+        $query->execute();
     }
 }

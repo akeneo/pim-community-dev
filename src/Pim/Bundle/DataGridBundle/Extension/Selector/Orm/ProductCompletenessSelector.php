@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Product completeness selector
@@ -17,14 +17,14 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 class ProductCompletenessSelector implements SelectorInterface
 {
     /**
-     * @var ProductRepository
+     * @var ProductRepositoryInterface
      */
     protected $repository;
 
     /**
-     * @param ProductRepository $repository
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductRepository $repository)
+    public function __construct(ProductRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

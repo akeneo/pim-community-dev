@@ -38,6 +38,6 @@ class AssociationRepository extends DocumentRepository implements AssociationRep
      */
     public function getReferenceProperties()
     {
-        return array('owner', 'associationType')
+        return array('owner', 'associationType');
     }
 }
