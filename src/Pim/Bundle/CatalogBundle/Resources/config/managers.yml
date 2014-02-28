@@ -49,7 +49,7 @@ services:
     pim_catalog.manager.locale:
         class: %pim_catalog.manager.locale.class%
         arguments:
-            - '@pim_catalog.repository.orm.locale'
+            - '@pim_catalog.repository.locale'
 
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%
@@ -71,7 +71,7 @@ services:
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%
         arguments:
-            - '@pim_catalog.repository.orm.family'
+            - '@pim_catalog.repository.family'
             - '@pim_user.context.user'
 
     pim_catalog.manager.completeness:
