@@ -60,6 +60,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
+     * @param SerializerInterface      $serializer
      */
     public function __construct(
         Request $request,
@@ -106,6 +107,7 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Show a report
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return template

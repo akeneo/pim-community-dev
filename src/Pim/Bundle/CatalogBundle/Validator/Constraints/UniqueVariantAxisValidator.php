@@ -152,7 +152,6 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      * Add violation to the executioncontext
      *
      * @param Constraint $constraint
-     * @param string     $productLabel
      * @param string     $variantLabel
      * @param string     $values
      */
