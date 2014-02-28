@@ -274,4 +274,14 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         return $this;
 
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder();
+
+        return $qb;
+    }
 }
