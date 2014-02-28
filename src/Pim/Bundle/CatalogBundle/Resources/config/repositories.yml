@@ -1,7 +1,7 @@
 parameters:
-    pim_catalog.repository.orm.attribute.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
-    pim_catalog.repository.orm.family.class:    Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
-    pim_catalog.repository.orm.locale.class:    Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
+    pim_catalog.repository.attribute.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+    pim_catalog.repository.family.class:    Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
+    pim_catalog.repository.locale.class:    Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
 
 services:
     pim_catalog.repository.product:
@@ -12,20 +12,20 @@ services:
         calls:
             - [setFlexibleQueryBuilder, ['@pim_flexibleentity.doctrine.orm.flexible_query_builder']]
 
-    pim_catalog.repository.orm.locale:
-        class: %pim_catalog.repository.orm.locale.class%
+    pim_catalog.repository.locale:
+        class: %pim_catalog.repository.locale.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.locale.class%]
 
-    pim_catalog.repository.orm.attribute:
-        class: %pim_catalog.repository.orm.attribute.class%
+    pim_catalog.repository.attribute:
+        class: %pim_catalog.repository.attribute.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.attribute.class%]
 
-    pim_catalog.repository.orm.family:
-        class: %pim_catalog.repository.orm.family.class%
+    pim_catalog.repository.family:
+        class: %pim_catalog.repository.family.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.family.class%]

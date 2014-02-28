@@ -12,7 +12,7 @@ services:
         class: %pim_enrich.form.type.product_edit.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.repository.orm.family'
+            - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_product_edit }
 
@@ -150,7 +150,7 @@ services:
         class: %pim_enrich.form.type.available_attributes.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
-            - '@pim_catalog.repository.orm.attribute'
+            - '@pim_catalog.repository.attribute'
             - '@pim_user.context.user'
             - '@translator'
         tags:
