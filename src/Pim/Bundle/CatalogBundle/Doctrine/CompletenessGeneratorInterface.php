@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+
 /**
  * Completeness generator interface. Will be implemented differently
  * depending of the Product storage
@@ -21,4 +23,11 @@ interface CompletenessGeneratorInterface
      * @param integer $limit
      */
     public function generate(array $criteria = array(), $limit = null);
+
+    /**
+     * Schedule recalculation of completenesses for a product
+     *
+     * @param ProductInterface $product
+     */
+    public function schedule(ProductInterface $product);
 }

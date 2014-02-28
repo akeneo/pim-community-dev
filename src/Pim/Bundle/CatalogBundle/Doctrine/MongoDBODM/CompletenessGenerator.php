@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 /**
@@ -48,6 +49,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generate(array $criteria = array(), $limit = null)
     {
+        // @TODO Not implemented yet
         return;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function schedule(ProductInterface $product)
+    {
+        // @TODO Not implemented yet
+        return;
+    }
+
+
 }
