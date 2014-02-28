@@ -51,7 +51,6 @@ class ProductCompletenessFilter extends BooleanFilter
         }
 
         $qb        = $ds->getQueryBuilder();
-        $rootAlias = $qb->getRootAlias();
         $joinAlias = 'filterCompleteness';
         $field     = $joinAlias.'.ratio';
         $this->repository->addCompleteness($qb, $joinAlias);

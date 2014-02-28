@@ -1,10 +1,14 @@
 parameters:
+    pim_catalog.repository.association.class:                       Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
     pim_catalog.repository.product.class:                           Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.inject_orm_references.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
 
 services:
     pim_catalog.object_manager.product:
+        alias: doctrine.odm.mongodb.document_manager
+        
+    pim_catalog.object_manager.association:
         alias: doctrine.odm.mongodb.document_manager
 
     pim_catalog.doctrine.completeness_generator:
