@@ -132,6 +132,7 @@ services:
     pim_enrich.form.type.group:
         class: %pim_enrich.form.type.group.class%
         arguments:
+            - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.attribute.class%
         tags:
             - { name: form.type, alias: pim_enrich_group }
@@ -158,6 +159,8 @@ services:
 
     pim_enrich.form.type.association:
         class: %pim_enrich.form.type.association.class%
+        arguments:
+            - %pim_catalog.entity.product.class%
         tags:
             - { name: form.type, alias: pim_enrich_association }
 

@@ -56,6 +56,9 @@ that made the entity too smart for its own good and created performances problem
 - Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
 - Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
 - Rename CompletenessFilter to ProductCompletenessFilter to be consistent, move also the related js file
+- Changed signature of ProductRepository::getEligibleProductIds()
+- Changed signature of GroupType::__construct()
+- Changed signature of AssociationType::__construct()
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
