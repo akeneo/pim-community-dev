@@ -1,15 +1,16 @@
 parameters:
     pim_catalog.builder.product.class: Pim\Bundle\CatalogBundle\Builder\ProductBuilder
 
-    pim_catalog.manager.attribute.class:    Pim\Bundle\CatalogBundle\Manager\AttributeManager
-    pim_catalog.manager.category.class:     Pim\Bundle\CatalogBundle\Manager\CategoryManager
-    pim_catalog.manager.channel.class:      Pim\Bundle\CatalogBundle\Manager\ChannelManager
-    pim_catalog.manager.completeness.class: Pim\Bundle\CatalogBundle\Manager\CompletenessManager
-    pim_catalog.manager.currency.class:     Pim\Bundle\CatalogBundle\Manager\CurrencyManager
-    pim_catalog.manager.group.class:        Pim\Bundle\CatalogBundle\Manager\GroupManager
-    pim_catalog.manager.family.class:       Pim\Bundle\CatalogBundle\Manager\FamilyManager
-    pim_catalog.manager.locale.class:       Pim\Bundle\CatalogBundle\Manager\LocaleManager
-    pim_catalog.manager.media.class:        Pim\Bundle\CatalogBundle\Manager\MediaManager
-    pim_catalog.manager.product.class:      Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.manager.attribute.class:       Pim\Bundle\CatalogBundle\Manager\AttributeManager
+    pim_catalog.manager.attribute_group.class: Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
+    pim_catalog.manager.category.class:        Pim\Bundle\CatalogBundle\Manager\CategoryManager
+    pim_catalog.manager.channel.class:         Pim\Bundle\CatalogBundle\Manager\ChannelManager
+    pim_catalog.manager.completeness.class:    Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+    pim_catalog.manager.currency.class:        Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+    pim_catalog.manager.group.class:           Pim\Bundle\CatalogBundle\Manager\GroupManager
+    pim_catalog.manager.family.class:          Pim\Bundle\CatalogBundle\Manager\FamilyManager
+    pim_catalog.manager.locale.class:          Pim\Bundle\CatalogBundle\Manager\LocaleManager
+    pim_catalog.manager.media.class:           Pim\Bundle\CatalogBundle\Manager\MediaManager
+    pim_catalog.manager.product.class:         Pim\Bundle\CatalogBundle\Manager\ProductManager
 
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
