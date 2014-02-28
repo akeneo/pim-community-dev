@@ -3,7 +3,12 @@ services:
     pim_catalog.manager.product:
         class: %pim_catalog.manager.product.class%
         arguments:
-            - %pim_catalog.entity.product.class%
+            -
+                  flexible_class:               %pim_catalog.entity.product.class%
+                  flexible_value_class:         %pim_catalog.entity.product_value.class%
+                  attribute_class:              %pim_catalog.entity.attribute.class%
+                  attribute_option_class:       %pim_catalog.entity.attribute_option.class%
+                  attribute_option_value_class: %pim_catalog.entity.attribute_option_value.class%
             - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'

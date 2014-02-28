@@ -26,11 +26,6 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 class FlexibleManager implements LocalizableInterface, ScopableInterface
 {
     /**
-     * @var string
-     */
-    protected $flexibleName;
-
-    /**
      * Flexible entity config
      * @var array
      */
@@ -66,34 +61,20 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
     /**
      * Constructor
      *
-     * @param string                   $flexibleName    Entity name
+     * @param array                    $flexibleConfig  Configuration of the flexible entity
      * @param ObjectManager            $manager         Object manager
      * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
-    public function __construct($flexibleName, ObjectManager $manager, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->flexibleName         = $flexibleName;
-        $this->objectManager        = $manager;
-        $this->eventDispatcher      = $eventDispatcher;
+    public function __construct(
+        $flexibleConfig,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher
+    ){
+        $this->flexibleConfig  = $flexibleConfig;
+        $this->objectManager   = $manager;
+        $this->eventDispatcher = $eventDispatcher;
 
-        $entityMeta     = $this->objectManager->getClassMetadata($this->flexibleName);
-        $valueClass     = $entityMeta->getAssociationMappings()['values']['targetEntity'];
-        $valueMeta      = $this->objectManager->getClassMetadata($valueClass);
-        $attributeClass = $valueMeta->getAssociationMappings()['attribute']['targetEntity'];
-        $attributeMeta  = $this->objectManager->getClassMetadata($attributeClass);
-        $optionClass    = $attributeMeta->getAssociationMappings()['options']['targetEntity'];
-        $optionMeta     = $this->objectManager->getClassMetadata($optionClass);
-        $optionValClass = $optionMeta->getAssociationMappings()['optionValues']['targetEntity'];
-
-        $this->flexibleConfig = array(
-            'flexible_class'               => $flexibleName,
-            'flexible_value_class'         => $valueClass,
-            'attribute_class'              => $attributeClass,
-            'attribute_option_class'       => $optionClass,
-            'attribute_option_value_class' => $optionValClass
-        );
-
-        $this->repository = $manager->getRepository($this->flexibleName);
+        $this->repository = $manager->getRepository($this->flexibleConfig['flexible_class']);
         $this->repository->setFlexibleConfig($this->flexibleConfig);
     }
 
@@ -184,7 +165,7 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
      */
     public function getFlexibleName()
     {
-        return $this->flexibleName;
+        return $this->flexibleConfig['flexible_class'];
     }
 
     /**
