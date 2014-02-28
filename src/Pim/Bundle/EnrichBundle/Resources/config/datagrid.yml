@@ -400,6 +400,36 @@ datagrid:
                     label: Updated At
                     filter_by_having: true
 
+    # TODO test with simplified grid, should ideally merge with previous one
+    product-grid-odm:
+        options:
+            entityHint: product
+        source:
+            acl_resource:      pim_enrich_product_index
+            type:              pim_odm_mongodb
+            entity:            %pim_catalog.entity.product.class%
+            repository_method: createDatagridQueryBuilder
+            is_flexible:       true
+        columns:
+            enabled:
+                label:         Status
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
+                frontend_type: html
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_product_edit
+                params:
+                    - id
+                    - dataLocale
+            delete_link:
+                type: url
+                route: pim_enrich_product_remove
+                params:
+                    - id
+
     product-group-grid:
         options:
             entityHint: product
