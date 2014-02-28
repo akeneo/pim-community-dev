@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 
 /**
  * Currency manager
@@ -14,17 +14,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CurrencyManager
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var CurrencyRepository $repository
      */
-    protected $objectManager;
+    protected $repository;
 
     /**
      * Constructor
-     * @param ObjectManager $objectManager
+     *
+     * @param CurrencyRepository $repository
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(CurrencyRepository $repository)
     {
-        $this->objectManager = $objectManager;
+        $this->repository = $repository;
     }
 
     /**
@@ -48,7 +49,7 @@ class CurrencyManager
      */
     public function getCurrencies($criterias = array())
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:Currency')->findBy($criterias);
+        return $this->repository->findBy($criterias);
     }
 
     /**
@@ -79,7 +80,6 @@ class CurrencyManager
     public function getActiveCodeChoices()
     {
         $codes = $this->getActiveCodes();
-
         if (empty($codes)) {
             return array();
         }

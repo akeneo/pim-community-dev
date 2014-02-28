@@ -51,7 +51,6 @@ class OrmSorterExtension extends OroOrmSorterExtension
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $sorters   = $this->getSortersToApply($config);
-        $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
             $sortKey = $sorter['data_name'];
