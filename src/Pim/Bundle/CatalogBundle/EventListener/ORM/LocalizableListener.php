@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
- * Aims to inject selected locale into loaded product and attribute option
+ * Aims to inject selected locale into loaded product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
