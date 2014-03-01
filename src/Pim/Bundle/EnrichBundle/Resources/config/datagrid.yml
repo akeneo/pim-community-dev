@@ -435,6 +435,53 @@ datagrid:
                 route: pim_enrich_product_remove
                 params:
                     - id
+        actions:
+            edit:
+                type:      tab-redirect
+                label:     Edit attributes of the product
+                tab:       attributes
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            edit_categories:
+                type:  tab-redirect
+                label: Classify the product
+                tab:   categories
+                icon:  folder-close
+                link:  edit_link
+            delete:
+                type:  delete
+                label: Delete the product
+                icon:  trash
+                link:  delete_link
+        mass_actions:
+            delete:
+                type: delete
+                label: Delete
+                entity_name: product
+                data_identifier: p
+                messages:
+                    confirm_title: Delete confirmation
+                    confirm_content: Are you sure you want to delete selected products?
+                    confirm_ok: OK
+                    success: Selected products successfully deleted
+                    error: Error ocurred when trying to delete selected products, please try again
+                    empty_selection: No products selected
+                launcherOptions:
+                    icon: trash
+            export:
+                type: export
+                label: Export CSV
+                icon: download
+                data_identifier: p
+                frontend_type: export
+                messages:
+                    empty_selection: No products selected
+            mass_edit:
+                type: redirect
+                label: Mass Edit
+                route: pim_enrich_mass_edit_action_choose
+                icon: edit
 
     product-group-grid:
         options:
