@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
-
 /**
  * Our custom orm pager
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datasource\MongoDB;
+namespace Pim\Bundle\DataGridBundle\Datasource\Odm;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -20,7 +20,7 @@ class OdmDatasource implements DatasourceInterface
     /**
      * @var string
      */
-    const TYPE = 'pim_odm_mongodb';
+    const TYPE = 'pim_odm';
 
     /** @var QueryBuilder */
     protected $qb;

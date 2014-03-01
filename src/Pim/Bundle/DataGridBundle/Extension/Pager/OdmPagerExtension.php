@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Pim\Bundle\DataGridBundle\Datasource\MongoDB\OdmDatasource as PimOdmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Odm\OdmDatasource as PimOdmDatasource;
 
 /**
  * Odm pager extension
