@@ -29,7 +29,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        // TODO : to implement
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
@@ -37,7 +37,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        // TODO: to implement
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return [];
     }
 
@@ -46,7 +46,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     protected function retrieveObject($offset)
     {
-        // TODO : to implement
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return null;
     }
 
