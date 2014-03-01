@@ -3,6 +3,8 @@ parameters:
     pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
+    pim_catalog.event_listener.orm.localizable.class:              Pim\Bundle\CatalogBundle\EventListener\ORM\LocalizableListener
+    pim_catalog.event_listener.orm.scopable.class:                 Pim\Bundle\CatalogBundle\EventListener\ORM\ScopableListener
 
 services:
     pim_catalog.object_manager.product:
@@ -22,5 +24,19 @@ services:
         class: %pim_catalog.event_listener.orm.inject_product_reference.class%
         arguments:
             - %pim_catalog.entity.product.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.orm.localizable:
+        class: %pim_catalog.event_listener.orm.localizable.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.orm.scopable:
+        class: %pim_catalog.event_listener.orm.scopable.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
