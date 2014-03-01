@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
- * Aims to inject selected scope into loaded entity
+ * Aims to inject selected scope into loaded product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -56,23 +56,9 @@ class ScopableListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        // inject selected scope on scopable containers
-        if ($entity instanceof ScopableInterface) {
-            // get flexible entity class
-            $flexibleEntityClass = ClassUtils::getRealClass(get_class($entity));
-
-            $metadata = $args->getEntityManager()->getClassMetadata($flexibleEntityClass);
-            $flexibleConfig = $this->container->getParameter('pim_flexibleentity.flexible_config');
-            if ($flexibleEntityClass &&
-                !$metadata->isMappedSuperclass &&
-                array_key_exists($flexibleEntityClass, $flexibleConfig['entities_config'])) {
-
-                // get flexible config and manager
-                $flexibleManagerName = $flexibleConfig['entities_config'][$flexibleEntityClass];
-                $flexibleManager = $this->container->get($flexibleManagerName);
-                // set scope setted in manager
-                $entity->setScope($flexibleManager->getScope());
-            }
+        if ($entity instanceof Product) {
+            $productManager = $this->container->get('pim_catalog.manager.product');
+            $entity->setScope($productManager->getScope());
         }
     }
 }
