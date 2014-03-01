@@ -7,7 +7,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Aims to inject selected locale into loaded product and attribute option
@@ -57,7 +56,7 @@ class LocalizableListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof Product || $entity instanceof AttributeOption) {
+        if ($entity instanceof Product) {
             $productManager = $this->container->get('pim_catalog.manager.product');
             $entity->setLocale($productManager->getLocale());
         }
