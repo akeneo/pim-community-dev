@@ -56,8 +56,10 @@ class LocalizableListener implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
+        $isProduct = ($entity instanceof Product);
+        $isAttributeOption = ($entity instanceof AttributeOption);
 
-        if ($entity instanceof Product || $entity instanceof AttributeOption) {
+        if ($isProduct || $isAttributeOption) {
             $productManager = $this->container->get('pim_catalog.manager.product');
             $entity->setLocale($productManager->getLocale());
         }
