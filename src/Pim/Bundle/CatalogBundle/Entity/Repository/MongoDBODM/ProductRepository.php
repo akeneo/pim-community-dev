@@ -3,7 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -105,7 +106,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
@@ -113,7 +114,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
         return;
     }
@@ -283,5 +284,35 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $qb = $this->createQueryBuilder();
 
         return $qb;
+    }
+
+    /**
+     * Apply a filter by attribute value
+     *
+     * @param QueryBuilder $qb             query builder to update
+     * @param string       $attributeCode  attribute code
+     * @param string|array $attributeValue value(s) used to filter
+     * @param string       $operator       operator to use
+     */
+    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    {
+        /*
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
+         */
+
+        if (true) {
+            $attributeBackend = 'varchar'; //$attribute->getBackendType();
+            $attributeId      = 1 ; //$attribute->getId();
+            // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+            $attributeValue = str_replace('%', '', $attributeValue);
+            $qb
+                ->field("values.".$attributeBackend)->equals($attributeValue) // TODO locale and scope ? operator etc
+                ->field("values.attributeId")->equals($attributeId);
+
+        } else {
+            // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
     }
 }
