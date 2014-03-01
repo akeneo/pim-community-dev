@@ -18,7 +18,12 @@ class AddFilterTypesPass implements CompilerPassInterface
     /**
      * @var string
      */
-    const FILTER_EXTENSION_ID = 'pim_datagrid.extension.filter.orm_filter';
+    const FILTER_ORM_EXTENSION_ID = 'pim_datagrid.extension.filter.orm_filter';
+
+    /**
+     * @var string
+     */
+    const FILTER_ODM_EXTENSION_ID = 'pim_datagrid.extension.filter.odm_filter';
 
     /**
      * @®ar string
@@ -30,12 +35,17 @@ class AddFilterTypesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $extension = $container->getDefinition(self::FILTER_EXTENSION_ID);
-        if ($extension) {
-            $filters = $container->findTaggedServiceIds(self::TAG_NAME);
-            foreach ($filters as $serviceId => $tags) {
-                $tagAttrs = reset($tags);
-                $extension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
+        $ormExtension = $container->getDefinition(self::FILTER_ORM_EXTENSION_ID);
+        $odmExtension = $container->getDefinition(self::FILTER_ODM_EXTENSION_ID);
+
+        $filters = $container->findTaggedServiceIds(self::TAG_NAME);
+        foreach ($filters as $serviceId => $tags) {
+            $tagAttrs = reset($tags);
+            if ($ormExtension) {
+                $ormExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
+            }
+            if ($odmExtension) {
+                $odmExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
             }
         }
     }
