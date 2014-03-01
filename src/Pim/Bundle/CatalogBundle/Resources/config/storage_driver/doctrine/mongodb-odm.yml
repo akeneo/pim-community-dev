@@ -33,11 +33,11 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
         tags:
-            - { name: doctrine_mongodb.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_listener.mongodbodm.scopable:
         class: %pim_catalog.event_listener.mongodb.scopable.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
         tags:
-            - { name: doctrine_mongodb.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
