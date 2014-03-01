@@ -28,6 +28,9 @@ class OdmDatasource implements DatasourceInterface
     /** @var ObjectManager */
     protected $om;
 
+    /** @var array grid configuration */
+    protected $configuration;
+
     /**
      * @param ObjectManager $om
      */
@@ -41,6 +44,8 @@ class OdmDatasource implements DatasourceInterface
      */
     public function process(DatagridInterface $grid, array $config)
     {
+        $this->configuration = $config;
+
         if (!isset($config['entity'])) {
             throw new \Exception(get_class($this).' expects to be configured with entity');
         }
@@ -71,10 +76,23 @@ class OdmDatasource implements DatasourceInterface
             ->getQuery();
         $results = $query->execute();
 
-        $rows    = [];
+        $rows       = [];
+        $config     = $this->configuration['attributes_configuration'];
+        $attributes = [];
+        foreach ($config as $attributeConf) {
+            $attributes[$attributeConf['id']]= $attributeConf;
+        }
+
         foreach ($results as $result) {
             $result['id']= $result['_id']->__toString();
+            unset($result['_id']);
             $result['dataLocale']= $this->localeCode;
+            foreach ($result['values'] as $value) {
+                $attribute = $attributes[$value['attributeId']];
+                $value['attribute']= $attribute;
+                $result[$attribute['code']]= $value;
+            }
+            unset($result['values']);
             $rows[] = new ResultRecord($result);
         }
 
