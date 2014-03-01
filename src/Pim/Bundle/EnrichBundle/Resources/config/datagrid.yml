@@ -416,6 +416,12 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
+            created:
+                label:         Created At
+                frontend_type: date
+            updated:
+                label:         Updated At
+                frontend_type: date
         properties:
             id: ~
             edit_link:
