@@ -1,6 +1,8 @@
 parameters:
     pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
     pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
+    pim_catalog.event_listener.orm.localizable.class:              Pim\Bundle\CatalogBundle\EventListener\ORM\LocalizableListener
+    pim_catalog.event_listener.orm.scopable.class:                 Pim\Bundle\CatalogBundle\EventListener\ORM\ScopableListener
 
 services:
     # Subscribers
@@ -16,6 +18,20 @@ services:
         arguments:
             - '@akeneo_measure.measure_converter'
             - '@akeneo_measure.manager'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.orm.localizable:
+        class: %pim_catalog.event_listener.orm.localizable.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.orm.scopable:
+        class: %pim_catalog.event_listener.orm.scopable.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
