@@ -406,7 +406,7 @@ datagrid:
             entityHint: product
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_odm_mongodb
+            type:              pim_odm
             entity:            %pim_catalog.entity.product.class%
             repository_method: createDatagridQueryBuilder
             is_flexible:       true
