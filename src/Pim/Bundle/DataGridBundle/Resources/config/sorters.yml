@@ -1,7 +1,15 @@
 parameters:
+    pim_datagrid.extension.sorter.orm.flexible_field_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FlexibleFieldSorter
     pim_datagrid.extension.sorter.orm.product_completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductCompletenessSorter
 
 services:
+    pim_datagrid.extension.sorter.orm.flexible_field_sorter:
+        class: %pim_datagrid.extension.sorter.orm.flexible_field_sorter.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: flexible_field }
+
     pim_datagrid.extension.sorter.orm.product_completeness_sorter:
         class: %pim_datagrid.extension.sorter.orm.product_completeness_sorter.class%
         arguments:

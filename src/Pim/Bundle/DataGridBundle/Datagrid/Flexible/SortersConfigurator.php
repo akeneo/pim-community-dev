@@ -34,9 +34,9 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $flexibleManager;
 
     /**
-     * @param DatagridConfiguration $configuration   the grid config
-     * @param ConfigurationRegistry $registry        the conf registry
-     * @param FlexibleManager       $flexibleManager flexible manager
+     * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
+     * @param FlexibleManager       $manager       flexible manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
@@ -63,7 +63,6 @@ class SortersConfigurator implements ConfiguratorInterface
     protected function addAttributeSorters()
     {
         $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
-        $callback = $this->getApplyCallback();
         $columns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
@@ -83,13 +82,12 @@ class SortersConfigurator implements ConfiguratorInterface
             }
 
             if ($columnExists && $attributeTypeConf && $attributeTypeConf['column']) {
-
-                if (!array_key_exists('sorter', $attributeTypeConf) || $attributeTypeConf['sorter'] !== null) {
+                if (isset($attributeTypeConf['sorter'])) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
                         array(
                             PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                            'apply_callback'                 => $callback
+                            'sorter'                         => $attributeTypeConf['sorter']
                         )
                     );
                 }
@@ -120,23 +118,5 @@ class SortersConfigurator implements ConfiguratorInterface
                 $sorters
             );
         }
-    }
-
-    /**
-     * Creates sorter apply callback
-     *
-     * @return callable
-     */
-    protected function getApplyCallback()
-    {
-        $flexManager = $this->flexibleManager;
-
-        return function (OrmDatasource $datasource, $attributeCode, $direction) use ($flexManager) {
-            $qb = $datasource->getQueryBuilder();
-
-            /** @var $entityRepository FlexibleEntityRepository */
-            $entityRepository = $flexManager->getFlexibleRepository();
-            $entityRepository->applySorterByAttribute($qb, $attributeCode, $direction);
-        };
     }
 }

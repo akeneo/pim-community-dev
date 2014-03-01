@@ -27,7 +27,7 @@ class UniqueValueValidator extends ConstraintValidator
     /**
      * Constructor
      *
-     * @param object $registry
+     * @param ProductManager $productManager
      */
     public function __construct(ProductManager $productManager)
     {

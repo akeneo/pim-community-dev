@@ -1,9 +1,79 @@
 parameters:
-    pim_catalog.repository.orm.attribute.class: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
-    pim_catalog.repository.orm.family.class:    Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
-    pim_catalog.repository.orm.locale.class:    Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
+    doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
 
 services:
+    pim_catalog.repository.association:
+        class: %pim_catalog.repository.association.class%
+        factory_service: pim_catalog.object_manager.association
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.association.class%]
+
+    pim_catalog.repository.association_type:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.association_type.class%]
+
+    pim_catalog.repository.attribute_group:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.attribute_group.class%]
+
+    pim_catalog.repository.attribute_option:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.attribute_option.class%]
+
+    pim_catalog.repository.attribute:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.attribute.class%]
+
+    pim_catalog.repository.category:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.category.class%]
+
+    pim_catalog.repository.channel:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.channel.class%]
+
+    pim_catalog.repository.currency:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.currency.class%]
+
+    pim_catalog.repository.family:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.family.class%]
+
+    pim_catalog.repository.group:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.group.class%]
+
+    pim_catalog.repository.group_type:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.group_type.class%]
+
+    pim_catalog.repository.locale:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.locale.class%]
+
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
         factory_service: pim_catalog.object_manager.product
@@ -11,21 +81,3 @@ services:
         arguments: [%pim_catalog.entity.product.class%]
         calls:
             - [setFlexibleQueryBuilder, ['@pim_flexibleentity.doctrine.orm.flexible_query_builder']]
-
-    pim_catalog.repository.orm.locale:
-        class: %pim_catalog.repository.orm.locale.class%
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.locale.class%]
-
-    pim_catalog.repository.orm.attribute:
-        class: %pim_catalog.repository.orm.attribute.class%
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.attribute.class%]
-
-    pim_catalog.repository.orm.family:
-        class: %pim_catalog.repository.orm.family.class%
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.family.class%]

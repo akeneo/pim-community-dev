@@ -51,13 +51,21 @@ class OrmSorterExtension extends OroOrmSorterExtension
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $sorters   = $this->getSortersToApply($config);
-        $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
             $sortKey = $sorter['data_name'];
             // if need customized behavior, use sorter service under "sorter" node or a closure in "apply_callback"
-            if (isset($sorter['sorter'])) {
+            if (isset($sorter['sorter']) && $sorter['sorter'] !== null) {
                 $sorterAlias = $sorter['sorter'];
+                if (!isset($this->sorters[$sorterAlias])) {
+                    throw new \LogicException(
+                        sprintf(
+                            'The sorter "%s" used to configure the column "%s" not exists',
+                            $sorterAlias,
+                            $sortKey
+                        )
+                    );
+                }
                 $sorter = $this->sorters[$sorterAlias];
                 $sorter->apply($datasource, $sortKey, $direction);
             } elseif (isset($sorter['apply_callback']) && is_callable($sorter['apply_callback'])) {

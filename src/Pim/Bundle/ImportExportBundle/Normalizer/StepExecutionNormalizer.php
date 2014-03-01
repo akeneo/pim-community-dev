@@ -18,6 +18,11 @@ class StepExecutionNormalizer implements NormalizerInterface
     /** @var TranslatorInterface */
     protected $translator;
 
+    /**
+     * Constructor
+     *
+     * @param TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

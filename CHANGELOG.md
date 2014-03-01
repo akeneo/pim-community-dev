@@ -56,8 +56,11 @@ that made the entity too smart for its own good and created performances problem
 - Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
 - Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
 - Rename CompletenessFilter to ProductCompletenessFilter to be consistent, move also the related js file
+- Inject CurrencyRepository in CurrencyManager instead of EntityManager and hardcoded class
+- Move AttributeManager method on attribute group in AttributeGroup repository
 - ProductManager and FlexibleManager constructors signatures have changed and takes now an array with flexibleConfig as first parameters (see CatalogBundle managers.yml file for more details)
 - CompletenessGeneratorInterface has a new method schedule to schedule completeness of a product
+- Move LocalizableListener and ScopableListener from FlexibleEntityBundle to CatalogBundle and make them product specific
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

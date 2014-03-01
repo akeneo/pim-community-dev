@@ -481,7 +481,7 @@ class ProductManager extends FlexibleManager
      *
      * @param ProductValueInterface $value
      *
-     * return boolean
+     * @return boolean
      */
     public function valueExists(ProductValueInterface $value)
     {

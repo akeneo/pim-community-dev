@@ -6,8 +6,6 @@ parameters:
     pim_flexibleentity.filterAttributes.twig.extension.class:        Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
     pim_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
     pim_flexibleentity.listener.set_value_class.class:               Pim\Bundle\FlexibleEntityBundle\EventListener\SetValueClassListener
-    pim_flexibleentity.listener.localizable.class:                   Pim\Bundle\FlexibleEntityBundle\EventListener\LocalizableListener
-    pim_flexibleentity.listener.scopable.class:                      Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
     pim_flexibleentity.listener.timestampable.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
     pim_flexibleentity.listener.has_required_value.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
     pim_flexibleentity.listener.default_value.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
@@ -34,22 +32,6 @@ services:
     # inject attributes into flexible entity
     pim_flexibleentity.listener.set_value_class:
         class: %pim_flexibleentity.listener.set_value_class.class%
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    # inject current locale of manager into entity
-    pim_flexibleentity.listener.localizable:
-        class: %pim_flexibleentity.listener.localizable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    # inject current scope of manager into entity
-    pim_flexibleentity.listener.scopable:
-        class: %pim_flexibleentity.listener.scopable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 

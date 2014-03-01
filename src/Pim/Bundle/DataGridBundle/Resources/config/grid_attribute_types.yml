@@ -6,6 +6,7 @@ parameters:
         filter:
             type:        flexible_string
             parent_type: string
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_text:
         column:
             type:        flexible_field
@@ -13,6 +14,7 @@ parameters:
         filter:
             type:        flexible_string
             parent_type: string
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_textarea:
         column:
             type:        flexible_field
@@ -20,6 +22,7 @@ parameters:
         filter:
             type:        flexible_string
             parent_type: string
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_simpleselect:
         column:
             type:        flexible_option
@@ -30,6 +33,7 @@ parameters:
             options:
                 field_options:
                     multiple: true
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_multiselect:
         column:
             type:        flexible_options
@@ -40,6 +44,7 @@ parameters:
             options:
                 field_options:
                     multiple: true
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_number:
         column:
             type:        flexible_field
@@ -47,6 +52,7 @@ parameters:
         filter:
             type:        flexible_number
             parent_type: number
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_boolean:
         column:
             type:        flexible_field
@@ -54,6 +60,7 @@ parameters:
         filter:
             type:        flexible_boolean
             parent_type: boolean
+        sorter:          flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_date:
         column:
             type:          flexible_field
@@ -62,19 +69,20 @@ parameters:
         filter:
             type:          flexible_date
             parent_type:   date
+        sorter:            flexible_field
     pim_datagrid.flexible.attribute_type.pim_catalog_file:
         column:
             type:          flexible_field
             selector:      flexible_media
             frontend_type: string
-        sorter: ~
+        sorter:            ~
     pim_datagrid.flexible.attribute_type.pim_catalog_image:
         column:
             type:          flexible_image
             selector:      flexible_media
             frontend_type: html
             template:      PimDataGridBundle:Property:pim_catalog_image.html.twig
-        sorter: ~
+        sorter:            ~
     pim_datagrid.flexible.attribute_type.pim_catalog_price_collection:
         column:
             type:        flexible_price
@@ -82,8 +90,7 @@ parameters:
         filter:
             type:        flexible_price
             parent_type: price
-        sorter: ~
-
+        sorter:          ~
     pim_datagrid.flexible.attribute_type.pim_catalog_metric:
         column:
             type:          flexible_metric
@@ -93,3 +100,4 @@ parameters:
         filter:
             type:          flexible_metric
             parent_type:   metric
+        sorter:            ~
