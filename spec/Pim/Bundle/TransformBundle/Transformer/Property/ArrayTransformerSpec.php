@@ -19,7 +19,7 @@ class ArrayTransformerSpec extends ObjectBehavior
     }
 
     function it_should_call_the_property_accessor(
-        PropertyAccessorInterface $propertyAccessor, 
+        PropertyAccessorInterface $propertyAccessor,
         \stdClass $object,
         ColumnInfoInterface $columnInfo
     ) {

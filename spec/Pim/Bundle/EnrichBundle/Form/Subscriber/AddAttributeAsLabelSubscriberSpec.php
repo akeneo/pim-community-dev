@@ -44,7 +44,6 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
             'description' => 'Description',
         ]);
 
-
         $factory->createNamed('attributeAsLabel', 'entity', 'name', [
             'required'        => true,
             'label'           => 'Attribute used as label',
