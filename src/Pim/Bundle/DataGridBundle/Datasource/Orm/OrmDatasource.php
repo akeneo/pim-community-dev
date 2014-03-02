@@ -25,11 +25,6 @@ class OrmDatasource extends OroOrmDatasource
     /**
      * @var string
      */
-    const IS_FLEXIBLE_ENTITY_PATH = '[source][is_flexible]';
-
-    /**
-     * @var string
-     */
     const ENTITY_PATH = '[source][entity]';
 
     /**
@@ -41,11 +36,6 @@ class OrmDatasource extends OroOrmDatasource
      * @var string
      */
     const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
-
-    /**
-     * @var boolean
-     */
-    protected $isFlexible = false;
 
     /**
      * @var string
@@ -70,7 +60,6 @@ class OrmDatasource extends OroOrmDatasource
             $this->qb = $repository->createQueryBuilder('o');
         }
 
-        $this->isFlexible = isset($config['is_flexible']) ? (bool) $config['is_flexible'] : false;
         $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
         $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
 
@@ -84,40 +73,18 @@ class OrmDatasource extends OroOrmDatasource
     {
         $query = $this->qb->getQuery();
 
-        if ($this->isFlexible) {
-            $results = $query->getArrayResult();
-            $rows    = [];
-            foreach ($results as $result) {
-                $entityFields = $result[0];
-                unset($result[0]);
-                $otherFields = $result;
-                $result = $entityFields + $otherFields;
-                $values = $result['values'];
-                foreach ($values as $value) {
-                    $result[$value['attribute']['code']]= $value;
-                }
-                unset($result['values']);
-                $result['dataLocale']= $this->localeCode;
-
-                $rows[] = new ResultRecord($result);
-            }
-
-        } else {
-            $results = $query->execute();
-            $rows    = [];
-            foreach ($results as $result) {
-                $rows[] = new ResultRecord($result);
-            }
-
-            return $rows;
+        $results = $query->execute();
+        $rows    = [];
+        foreach ($results as $result) {
+            $rows[] = new ResultRecord($result);
         }
 
         return $rows;
     }
 
     /**
-        * We update the query to count, get ids and fetch data, so, we can lost expected query builder parameters,
-        * and we have to remove them
+     * We update the query to count, get ids and fetch data, so, we can lost expected query builder parameters,
+     * and we have to remove them
      *
      * @param QueryBuilder $qb
      */
