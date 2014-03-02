@@ -109,13 +109,13 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Add an attribute to filter
+     * Add a filter condition on an attribute
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string|array      $operator  the used operator
      * @param string|array      $value     the value(s) to filter
      *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
@@ -150,12 +150,30 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
+     * Add a filter condition on a field
+     *
+     * @param string $field    the field
+     * @param string $operator the used operator
+     * @param string $value    the value to filter
+     *
+     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
      * Sort by attribute value
      *
      * @param AbstractAttribute $attribute the attribute to sort on
      * @param string            $direction the direction to use
      *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
@@ -179,8 +197,22 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * TODO : should not be public !
+     * Sort by field
      *
+     * @param string $field     the field to sort on
+     * @param string $direction the direction to use
+     *
+     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     */
+    public function addFieldSorter($field, $direction)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $this->qb->addOrderBy($field, $direction);
+
+        return $this;
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name
@@ -190,7 +222,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @return string
      * @throws FlexibleQueryException
      */
-    public function prepareCriteriaCondition($field, $operator, $value)
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
         $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
 
