@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -57,7 +57,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function prepareAxisColumns()
     {
-        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
+        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();

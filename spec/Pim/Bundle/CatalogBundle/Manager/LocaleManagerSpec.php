@@ -11,7 +11,8 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 class LocaleManagerSpec extends ObjectBehavior
 {
-    function let(LocaleRepository $repository) {
+    function let(LocaleRepository $repository)
+    {
         $this->beConstructedWith($repository);
     }
 

@@ -32,7 +32,7 @@ class ArrayGuesserSpec extends ObjectBehavior
         $columnInfo->getSuffixes()->willReturn(array());
         $this->getTransformerInfo($columnInfo, $metadata)->shouldReturn(null);
     }
-    
+
     function it_should_return_a_transformer_for_column_with_suffixes(
         PropertyTransformerInterface $transformer,
         ColumnInfoInterface $columnInfo,

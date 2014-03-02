@@ -7,10 +7,10 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after, method: onBuildAfter }
 
     pim_enrich.event_listener.product_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_datagrid.datagrid.flexible.configuration_registry'
+            - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
         calls:
@@ -42,10 +42,10 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.product_group_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_datagrid.datagrid.flexible.configuration_registry'
+            - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
         calls:
@@ -68,7 +68,7 @@ services:
         class: %pim_datagrid.event_listener.configure_product_group_grid_listener.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_datagrid.datagrid.flexible.configuration_registry'
+            - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
         calls:
@@ -104,10 +104,10 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.variant-group-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.association_product_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_flexible_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_datagrid.datagrid.flexible.configuration_registry'
+            - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
         calls:

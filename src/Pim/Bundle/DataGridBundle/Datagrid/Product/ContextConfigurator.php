@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -128,7 +128,7 @@ class ContextConfigurator implements ConfiguratorInterface
             $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
         }
 
-        $this->configuration->offsetSetByPath(OrmDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
+        $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
     }
 
     /**
@@ -160,7 +160,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $attributes = $this->getAttributesConfig();
 
-        $this->configuration->offsetSetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+        $this->configuration->offsetSetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
     }
 
     /**

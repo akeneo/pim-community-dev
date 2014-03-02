@@ -6,7 +6,8 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension as OroOrmSorte
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Orm filter extension
@@ -28,8 +29,7 @@ class OrmSorterExtension extends OroOrmSorterExtension
     public function isApplicable(DatagridConfiguration $config)
     {
         $columns      = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-        $isApplicable = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
-            && is_array($columns);
+        $isApplicable = $this->matchDatasource($config) && is_array($columns);
 
         return $isApplicable;
     }
@@ -89,5 +89,17 @@ class OrmSorterExtension extends OroOrmSorterExtension
         $this->sorters[$name] = $sorter;
 
         return $this;
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     *
+     * @return boolean
+     */
+    protected function matchDatasource(DatagridConfiguration $config)
+    {
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+
+        return ($datasourceType == PimOrmDatasource::TYPE || $datasourceType == ProductDatasource::TYPE);
     }
 }

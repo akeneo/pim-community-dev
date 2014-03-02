@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class ColumnsConfiguratorSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
     function it_configures_datagrid_columns(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
@@ -51,7 +51,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -104,7 +104,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -145,7 +145,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $userColumnsPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($userColumnsPath)->willReturn(array('family', 'sku'));
@@ -205,7 +205,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

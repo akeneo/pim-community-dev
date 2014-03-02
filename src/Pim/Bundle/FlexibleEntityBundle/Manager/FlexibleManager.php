@@ -69,7 +69,7 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
         $flexibleConfig,
         ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher
-    ){
+    ) {
         $this->flexibleConfig  = $flexibleConfig;
         $this->objectManager   = $manager;
         $this->eventDispatcher = $eventDispatcher;

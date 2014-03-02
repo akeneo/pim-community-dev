@@ -61,6 +61,4 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         // @TODO Not implemented yet
         return;
     }
-
-
 }

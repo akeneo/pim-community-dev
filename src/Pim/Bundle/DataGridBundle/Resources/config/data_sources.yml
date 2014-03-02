@@ -1,5 +1,6 @@
 parameters:
-    pim_datagrid.datasource.orm.class:         Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+    pim_datagrid.datasource.orm.class:     Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+    pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
     pim_datagrid.datasource.odm.class: Pim\Bundle\DataGridBundle\Datasource\Odm\OdmDatasource
 
 services:
@@ -10,6 +11,13 @@ services:
             - '@oro_security.acl_helper'
         tags:
             - { name: oro_datagrid.datasource, type: pim_orm }
+
+    pim_catalog.datasource.product:
+        class: %pim_datagrid.datasource.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_product }
 
     pim_catalog.datasource.odm:
         class: %pim_datagrid.datasource.odm.class%

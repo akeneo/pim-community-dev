@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 /**
  * Configurator interface

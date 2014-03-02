@@ -29,13 +29,11 @@ class ProductEditType extends AbstractType
     /**
      * Constructor
      *
-     * @param ProductFormView   $productFormView
-     * @param FamilyRepository  $repository
+     * @param ProductFormView  $productFormView
+     * @param FamilyRepository $repository
      */
-    public function __construct(
-        ProductFormView $productFormView,
-        FamilyRepository $repository
-    ) {
+    public function __construct(ProductFormView $productFormView, FamilyRepository $repository)
+    {
         $this->productFormView = $productFormView;
         $this->repository      = $repository;
     }

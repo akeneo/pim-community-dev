@@ -7,28 +7,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
- * Grid listener to configure column, filter and sorter based on attributes and business rules
+ * Grid listener to configure columns, filters and sorters based on product attributes and business rules
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfigureFlexibleGridListener
+class ConfigureProductGridListener
 {
     /**
-     * @var FlexibleManager
+     * @var ProductManager
      */
-    protected $flexibleManager;
+    protected $productManager;
 
     /**
      * @var ConfigurationRegistry
@@ -53,18 +53,18 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManager          $flexibleManager flexible manager
+     * @param ProductManager           $productManager  product manager
      * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
      * @param RequestParameters        $requestParams   request parameters
      * @param SecurityContextInterface $securityContext the security context
      */
     public function __construct(
-        FlexibleManager $flexibleManager,
+        ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
         SecurityContextInterface $securityContext
     ) {
-        $this->flexibleManager = $flexibleManager;
+        $this->productManager  = $productManager;
         $this->confRegistry    = $confRegistry;
         $this->requestParams   = $requestParams;
         $this->securityContext = $securityContext;
@@ -88,14 +88,11 @@ class ConfigureFlexibleGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
-        $isFlexibleGrid = $datagridConfig->offsetGetByPath(OrmDatasource::IS_FLEXIBLE_ENTITY_PATH);
 
-        if ($isFlexibleGrid) {
-            $this->getContextConfigurator($datagridConfig)->configure();
-            $this->getColumnsConfigurator($datagridConfig)->configure();
-            $this->getSortersConfigurator($datagridConfig)->configure();
-            $this->getFiltersConfigurator($datagridConfig)->configure();
-        }
+        $this->getContextConfigurator($datagridConfig)->configure();
+        $this->getColumnsConfigurator($datagridConfig)->configure();
+        $this->getSortersConfigurator($datagridConfig)->configure();
+        $this->getFiltersConfigurator($datagridConfig)->configure();
     }
 
     /**
@@ -105,7 +102,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getEntity(DatagridConfiguration $datagridConfig)
     {
-        return $datagridConfig->offsetGetByPath(OrmDatasource::ENTITY_PATH);
+        return $datagridConfig->offsetGetByPath(ProductDatasource::ENTITY_PATH);
     }
 
     /**
@@ -117,7 +114,7 @@ class ConfigureFlexibleGridListener
     {
         return new ContextConfigurator(
             $datagridConfig,
-            $this->flexibleManager,
+            $this->productManager,
             $this->requestParams,
             $this->request,
             $this->securityContext
@@ -141,7 +138,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getSortersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        return new SortersConfigurator($datagridConfig, $this->confRegistry, $this->flexibleManager);
+        return new SortersConfigurator($datagridConfig, $this->confRegistry);
     }
 
     /**

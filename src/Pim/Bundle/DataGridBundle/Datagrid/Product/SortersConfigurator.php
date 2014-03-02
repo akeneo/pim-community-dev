@@ -1,13 +1,12 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Sorters configurator for flexible grid
@@ -29,23 +28,15 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @var FlexibleManager
-     */
-    protected $flexibleManager;
-
-    /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param FlexibleManager       $manager       flexible manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry,
-        FlexibleManager $manager
+        ConfigurationRegistry $registry
     ) {
         $this->configuration   = $configuration;
         $this->registry        = $registry;
-        $this->flexibleManager = $manager;
     }
 
     /**
@@ -62,7 +53,7 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     protected function addAttributeSorters()
     {
-        $attributes = $this->configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH);
+        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
         $columns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );

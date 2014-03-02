@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {
@@ -32,7 +32,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
     function it_configures_datagrid_sorters(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
@@ -47,7 +47,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => 'flexible_field'));
@@ -79,7 +79,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(OrmDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array());
