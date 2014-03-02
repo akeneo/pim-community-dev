@@ -80,4 +80,4 @@ services:
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
         calls:
-            - [setFlexibleQueryBuilder, ['@pim_flexibleentity.doctrine.orm.flexible_query_builder']]
+            - [setFlexibleQueryBuilder, ['@pim_catalog.doctrine.flexible_query_builder']]

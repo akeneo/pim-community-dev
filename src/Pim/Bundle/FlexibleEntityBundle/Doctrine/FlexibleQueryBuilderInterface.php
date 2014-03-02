@@ -47,7 +47,7 @@ interface FlexibleQueryBuilderInterface
     public function setScope($code);
 
     /**
-     * Add an attribute to filter
+     * Add a filter condition on an attribute
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string|array      $operator  the used operator
@@ -58,6 +58,17 @@ interface FlexibleQueryBuilderInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
 
     /**
+     * Add a filter condition on a field
+     *
+     * @param string $field    the field
+     * @param string $operator the used operator
+     * @param string $value    the value to filter
+     *
+     * @return FlexibleQueryBuilderInterface
+     */
+    public function addFieldFilter($field, $operator, $value);
+
+    /**
      * Sort by attribute value
      *
      * @param AbstractAttribute $attribute the attribute to sort on
@@ -66,4 +77,14 @@ interface FlexibleQueryBuilderInterface
      * @return FlexibleQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction);
+
+    /**
+     * Sort by field
+     *
+     * @param string $field     the field to sort on
+     * @param string $direction the direction to use
+     *
+     * @return FlexibleQueryBuilderInterface
+     */
+    public function addFieldSorter($field, $direction);
 }

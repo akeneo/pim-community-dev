@@ -66,6 +66,8 @@ that made the entity too smart for its own good and created performances problem
 - Change configuration key in DataGridBundle/Resources/config/grid_attribute_types.yml
 - rename ConfigureFlexibleGridListener to ConfigureProductGridListener
 - Change Datagrid/Product/SortersConfigurator constructor (remove FlexibleManager argument)
+- Change visibility of FlexibleQueryBuilder::prepareCriteriaCondition from public to protected
+- Add method addFieldFilter and addFieldSorter to FlexibleQueryBuilderInterface
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

@@ -5,6 +5,7 @@ parameters:
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
     pim_catalog.event_listener.orm.localizable.class:              Pim\Bundle\CatalogBundle\EventListener\ORM\LocalizableListener
     pim_catalog.event_listener.orm.scopable.class:                 Pim\Bundle\CatalogBundle\EventListener\ORM\ScopableListener
+    pim_catalog.doctrine.orm.flexible_query_builder.class:         Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -40,3 +41,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.doctrine.flexible_query_builder:
+        class: %pim_catalog.doctrine.orm.flexible_query_builder.class%
