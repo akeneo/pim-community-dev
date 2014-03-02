@@ -126,18 +126,4 @@ class ProductDatasource implements DatasourceInterface
     {
         return $this->qb;
     }
-
-    /**
-     * Set QueryBuilder
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return $this
-     */
-    public function setQueryBuilder(QueryBuilder $qb)
-    {
-        $this->qb = $qb;
-
-        return $this;
-    }
 }
