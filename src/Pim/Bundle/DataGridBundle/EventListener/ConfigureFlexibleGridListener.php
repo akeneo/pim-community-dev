@@ -88,14 +88,11 @@ class ConfigureFlexibleGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
-        $isFlexibleGrid = $datagridConfig->offsetGetByPath(OrmDatasource::IS_FLEXIBLE_ENTITY_PATH);
 
-        if ($isFlexibleGrid) {
-            $this->getContextConfigurator($datagridConfig)->configure();
-            $this->getColumnsConfigurator($datagridConfig)->configure();
-            $this->getSortersConfigurator($datagridConfig)->configure();
-            $this->getFiltersConfigurator($datagridConfig)->configure();
-        }
+        $this->getContextConfigurator($datagridConfig)->configure();
+        $this->getColumnsConfigurator($datagridConfig)->configure();
+        $this->getSortersConfigurator($datagridConfig)->configure();
+        $this->getFiltersConfigurator($datagridConfig)->configure();
     }
 
     /**
