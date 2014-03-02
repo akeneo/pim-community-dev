@@ -64,6 +64,8 @@ that made the entity too smart for its own good and created performances problem
 - Introduce a pim_product datasource to prepare the MongoDB support
 - Move DatagridBundle/Datagrid/Flexible to DatagridBundle/Datagrid/Product
 - Change configuration key in DataGridBundle/Resources/config/grid_attribute_types.yml
+- rename ConfigureFlexibleGridListener to ConfigureProductGridListener
+- Change Datagrid/Product/SortersConfigurator constructor (remove FlexibleManager argument)
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

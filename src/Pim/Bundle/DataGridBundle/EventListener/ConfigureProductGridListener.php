@@ -14,21 +14,21 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
- * Grid listener to configure column, filter and sorter based on attributes and business rules
+ * Grid listener to configure columns, filters and sorters based on product attributes and business rules
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfigureFlexibleGridListener
+class ConfigureProductGridListener
 {
     /**
-     * @var FlexibleManager
+     * @var ProductManager
      */
-    protected $flexibleManager;
+    protected $productManager;
 
     /**
      * @var ConfigurationRegistry
@@ -53,18 +53,18 @@ class ConfigureFlexibleGridListener
     /**
      * Constructor
      *
-     * @param FlexibleManager          $flexibleManager flexible manager
+     * @param ProductManager           $productManager  product manager
      * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
      * @param RequestParameters        $requestParams   request parameters
      * @param SecurityContextInterface $securityContext the security context
      */
     public function __construct(
-        FlexibleManager $flexibleManager,
+        ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
         SecurityContextInterface $securityContext
     ) {
-        $this->flexibleManager = $flexibleManager;
+        $this->productManager  = $productManager;
         $this->confRegistry    = $confRegistry;
         $this->requestParams   = $requestParams;
         $this->securityContext = $securityContext;
@@ -114,7 +114,7 @@ class ConfigureFlexibleGridListener
     {
         return new ContextConfigurator(
             $datagridConfig,
-            $this->flexibleManager,
+            $this->productManager,
             $this->requestParams,
             $this->request,
             $this->securityContext
@@ -138,7 +138,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getSortersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        return new SortersConfigurator($datagridConfig, $this->confRegistry, $this->flexibleManager);
+        return new SortersConfigurator($datagridConfig, $this->confRegistry);
     }
 
     /**

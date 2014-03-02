@@ -7,7 +7,6 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfigu
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Sorters configurator for flexible grid
@@ -29,23 +28,15 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @var FlexibleManager
-     */
-    protected $flexibleManager;
-
-    /**
      * @param DatagridConfiguration $configuration the grid config
      * @param ConfigurationRegistry $registry      the conf registry
-     * @param FlexibleManager       $manager       flexible manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry,
-        FlexibleManager $manager
+        ConfigurationRegistry $registry
     ) {
         $this->configuration   = $configuration;
         $this->registry        = $registry;
-        $this->flexibleManager = $manager;
     }
 
     /**
