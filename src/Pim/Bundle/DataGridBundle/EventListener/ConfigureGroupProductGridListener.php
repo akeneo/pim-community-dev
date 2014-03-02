@@ -27,7 +27,7 @@ class ConfigureGroupProductGridListener extends ConfigureProductGridListener
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $em = $this->flexibleManager->getEntityManager();
+        $em = $this->productManager->getEntityManager();
         $group = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->findOne($groupId);
 
         return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $group);
