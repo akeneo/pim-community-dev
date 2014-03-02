@@ -61,9 +61,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Get locale code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -71,11 +69,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return FlexibleQueryBuilder
+     * {@inheritdoc}
      */
     public function setLocale($code)
     {
@@ -85,9 +79,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Get scope code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getScope()
     {
@@ -95,11 +87,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return FlexibleQueryBuilder
+     * {@inheritdoc}
      */
     public function setScope($code)
     {
@@ -109,13 +97,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Add a filter condition on an attribute
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
-     *
-     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     * {@inheritdoc}
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
@@ -150,13 +132,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Add a filter condition on a field
-     *
-     * @param string $field    the field
-     * @param string $operator the used operator
-     * @param string $value    the value to filter
-     *
-     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     * {@inheritdoc}
      */
     public function addFieldFilter($field, $operator, $value)
     {
@@ -168,12 +144,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Sort by attribute value
-     *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
-     *
-     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     * {@inheritdoc}
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
@@ -197,12 +168,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Sort by field
-     *
-     * @param string $field     the field to sort on
-     * @param string $direction the direction to use
-     *
-     * @return FlexibleQueryBuilder This FlexibleQueryBuilder instance.
+     * {@inheritdoc}
      */
     public function addFieldSorter($field, $direction)
     {
