@@ -11,11 +11,12 @@ use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
 /**
  * Product datasource, allows to prepare query builder from repository
  *
- * TODO : 
- * The storage can be configured (orm or mongodb-odm)
  * The query builder is built from the object repository (entity or document)
  * The extensions are common or orm/odm specific
- * Delegate the hydration as grid results
+ *
+ * TODO :
+ * - The storage can be configured (orm or mongodb-odm)
+ * - Delegate the hydration as grid results
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

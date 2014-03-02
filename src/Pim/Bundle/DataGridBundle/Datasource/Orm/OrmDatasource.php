@@ -28,21 +28,6 @@ class OrmDatasource extends OroOrmDatasource
     const ENTITY_PATH = '[source][entity]';
 
     /**
-     * @var string
-     */
-    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attribute_ids]';
-
-    /**
-     * @var string
-     */
-    const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
-
-    /**
-     * @var string
-     */
-    protected $localeCode = null;
-
-    /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
@@ -59,9 +44,6 @@ class OrmDatasource extends OroOrmDatasource
         } else {
             $this->qb = $repository->createQueryBuilder('o');
         }
-
-        $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
-        $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
 
         $grid->setDatasource(clone $this);
     }
