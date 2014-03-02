@@ -233,13 +233,12 @@ datagrid:
                 - pim/datagrid/state-listener
             exportAction:
                 label: Export CSV
-                icon: download
+                icon:  download
         source:
-            acl_resource: pim_enrich_product_index
-            type: pim_orm
-            entity: %pim_catalog.entity.product.class%
+            acl_resource:      pim_enrich_product_index
+            type:              pim_product
+            entity:            %pim_catalog.entity.product.class%
             repository_method: createDatagridQueryBuilder
-            is_flexible: true
         columns:
             label:
                 label:     Label
@@ -413,10 +412,9 @@ datagrid:
                     excluded: '#removeProducts'
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_orm
+            type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createGroupDatagridQueryBuilder
-            is_flexible:       true
             user_config_alias: product-grid
         columns:
             is_checked:
@@ -525,11 +523,10 @@ datagrid:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
         source:
-            acl_resource: pim_enrich_product_index
-            type: pim_orm
-            entity: %pim_catalog.entity.product.class%
+            acl_resource:      pim_enrich_product_index
+            type:              pim_product
+            entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
-            is_flexible: true
         columns:
             is_checked:
                 frontend_type: boolean
@@ -939,10 +936,9 @@ datagrid:
                 dataField: id
                 columnName: is_checked
         source:
-            type:              pim_orm
+            type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
-            is_flexible:       true
             user_config_alias: product-grid
         columns:
             is_checked:
