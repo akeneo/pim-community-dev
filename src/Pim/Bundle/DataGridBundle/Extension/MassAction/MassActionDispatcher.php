@@ -55,13 +55,18 @@ class MassActionDispatcher extends OroMassActionDispatcher
      *
      * {@inheritdoc}
      */
-    protected function getDatagridQuery(
-        DatagridInterface $datagrid,
-        $identifierField = 'id',
-        $inset = true,
-        $values = []
-    ) {
-        $qb = parent::getDatagridQuery($datagrid, $identifierField, $inset, $values);
+    protected function getDatagridQuery(DatagridInterface $datagrid, $idField = 'id', $inset = true, $values = []) {
+        $datasource = $datagrid->getDatasource();
+
+        /** @var QueryBuilder $qb */
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        if ($values) {
+            $valueWhereCondition =
+                $inset
+                    ? $qb->expr()->in($idField, $values)
+                    : $qb->expr()->notIn($idField, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
 
         $rootAlias = $qb->getRootAlias();
         $from      = current($qb->getDQLPart('from'));
