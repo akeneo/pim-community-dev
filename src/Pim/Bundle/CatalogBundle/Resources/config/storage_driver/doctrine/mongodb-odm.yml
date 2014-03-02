@@ -5,6 +5,7 @@ parameters:
     pim_catalog.event_listener.mongodb.inject_orm_references.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\InjectORMReferencesSubscriber
     pim_catalog.event_listener.mongodb.localizable.class:           Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
     pim_catalog.event_listener.mongodb.scopable.class:              Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
+    pim_catalog.doctrine.mongodb.flexible_query_builder.class:      Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -41,3 +42,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.doctrine.flexible_query_builder:
+        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
