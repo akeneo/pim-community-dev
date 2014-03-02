@@ -57,8 +57,6 @@ class MassActionDispatcher extends OroMassActionDispatcher
      */
     protected function getDatagridQuery(DatagridInterface $datagrid, $idField = 'id', $inset = true, $values = [])
     {
-        $datasource = $datagrid->getDatasource();
-
         /** @var QueryBuilder $qb */
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         if ($values) {
