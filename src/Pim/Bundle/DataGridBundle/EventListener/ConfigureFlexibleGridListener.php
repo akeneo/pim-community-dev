@@ -7,13 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\SortersConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\FiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -102,7 +102,7 @@ class ConfigureFlexibleGridListener
      */
     protected function getEntity(DatagridConfiguration $datagridConfig)
     {
-        return $datagridConfig->offsetGetByPath(OrmDatasource::ENTITY_PATH);
+        return $datagridConfig->offsetGetByPath(ProductDatasource::ENTITY_PATH);
     }
 
     /**

@@ -62,6 +62,8 @@ that made the entity too smart for its own good and created performances problem
 - CompletenessGeneratorInterface has a new method schedule to schedule completeness of a product
 - Move LocalizableListener and ScopableListener from FlexibleEntityBundle to CatalogBundle and make them product specific
 - Introduce a pim_product datasource to prepare the MongoDB support
+- Move DatagridBundle/Datagrid/Flexible to DatagridBundle/Datagrid/Product
+- Change configuration key in DataGridBundle/Resources/config/grid_attribute_types.yml
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

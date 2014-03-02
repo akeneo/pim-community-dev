@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 /**
  * This registry contains the grid configuration for each attribute type (cf grid_attribute_types.yml) and helps

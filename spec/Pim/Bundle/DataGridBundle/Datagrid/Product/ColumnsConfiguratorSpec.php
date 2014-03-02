@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -8,8 +8,8 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class ColumnsConfiguratorSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
     function it_configures_datagrid_columns(DatagridConfiguration $configuration, ConfigurationRegistry $registry)

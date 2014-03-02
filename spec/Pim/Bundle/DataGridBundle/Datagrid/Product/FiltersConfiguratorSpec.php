@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Flexible;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
@@ -19,7 +19,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
     function it_configures_datagrid_filters(DatagridConfiguration $configuration, ConfigurationRegistry $registry)

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\GroupColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator;
 
 /**
  * Grid listener to configure column, filter and sorter based on attributes and business rules
