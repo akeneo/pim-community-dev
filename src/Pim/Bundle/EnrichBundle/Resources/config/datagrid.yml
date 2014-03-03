@@ -1032,6 +1032,13 @@ datagrid:
                     type:             date
                     data_name:        p.updated
                     filter_by_having: true
+                scope:
+                    type:      scope
+                    label:     Scope
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
 
     association-group-grid:
         options:
