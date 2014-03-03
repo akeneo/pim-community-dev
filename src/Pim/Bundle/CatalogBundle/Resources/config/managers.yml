@@ -69,9 +69,10 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine'
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.attribute.class%
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%
