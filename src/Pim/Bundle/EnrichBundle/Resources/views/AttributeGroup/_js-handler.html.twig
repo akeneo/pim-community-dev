@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'jquery.sidebarize', 'bootstrap-tooltip'],
-    function ($){
+    ['jquery', 'backbone', 'jquery.sidebarize', 'bootstrap-tooltip'],
+    function ($, Backbone){
         'use strict';
         $(function() {
             function updateSortOrder() {
@@ -34,13 +34,15 @@ require(
             var buttons = [];
             {% if resource_granted('pim_enrich_attribute_group_create') %}
                 buttons.push($('<a>', {
-                    'href': '{{ path("pim_enrich_attributegroup_create") }}',
+                    'class': 'no-hash',
                     'data-toggle': 'tooltip',
                     'data-placement': 'right',
                     'data-original-title': '{{ "btn.create.attribute group"|trans|capitalize }}'
                 }).html(
                     $('<i>', { 'class': 'icon-plus-sign' })
-                ).tooltip());
+                ).on('click', function() {
+                    Backbone.history.navigate('url={{ path("pim_enrich_attributegroup_create") }}', { trigger: true });
+                }).tooltip());
             {% endif %}
 
             $('#group-container').sidebarize({ buttons: buttons });
