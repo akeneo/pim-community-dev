@@ -14,6 +14,7 @@ cache:
         - vendor
 
 before_script:
+    - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer self-update --no-interaction
     - composer update --prefer-dist --no-scripts --no-interaction
 
