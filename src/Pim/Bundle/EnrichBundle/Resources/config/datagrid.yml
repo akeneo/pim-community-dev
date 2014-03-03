@@ -426,7 +426,7 @@ datagrid:
                 data_name:     in_group
                 editable:      true
                 type:          twig
-                template:      PimDataGridBundle:Property:checked.html.twig
+                template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
                 label:     Label
@@ -537,7 +537,7 @@ datagrid:
                 data_name:     in_group
                 editable:      true
                 type:          twig
-                template:      PimDataGridBundle:Property:checked.html.twig
+                template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
                 label:     Label
@@ -949,7 +949,7 @@ datagrid:
                 label:         Is associated
                 data_name:     is_associated
                 type:          twig
-                template:      PimDataGridBundle:Property:checked.html.twig
+                template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
                 editable:      true
             label:
@@ -1054,7 +1054,7 @@ datagrid:
                 label:         Is associated
                 data_name:     is_associated
                 type:          twig
-                template:      PimDataGridBundle:Property:checked.html.twig
+                template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             code:
                 label: Code

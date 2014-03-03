@@ -1,11 +1,12 @@
 parameters:
     pim_datagrid.extension.formatter.property.flexible_field_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty
+    pim_datagrid.extension.formatter.property.flexible_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionsProperty
+    pim_datagrid.extension.formatter.property.flexible_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionProperty
+    pim_datagrid.extension.formatter.property.flexible_price_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexiblePriceProperty
     pim_datagrid.extension.formatter.property.flexible_twig_property.class:    Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleTwigProperty
     pim_datagrid.extension.formatter.property.flexible_image_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleImageProperty
     pim_datagrid.extension.formatter.property.flexible_metric_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleMetricProperty
-    pim_datagrid.extension.formatter.property.flexible_price_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexiblePriceProperty
-    pim_datagrid.extension.formatter.property.flexible_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionsProperty
-    pim_datagrid.extension.formatter.property.flexible_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionProperty
+    pim_datagrid.extension.formatter.property.flexible_boolean_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleBooleanProperty
 
 services:
     pim_datagrid.extension.formatter.property.flexible_field_property:
@@ -56,3 +57,10 @@ services:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: flexible_metric }
+
+    pim_datagrid.extension.formatter.property.flexible_boolean_property:
+        class: %pim_datagrid.extension.formatter.property.flexible_boolean_property.class%
+        arguments:
+            - '@twig'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: flexible_boolean }
