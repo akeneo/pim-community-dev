@@ -25,4 +25,16 @@ pim_dashboard:
       title: Erreur lors du chargement du widget
       message: |-
         Le widget "%alias%" n'existe pas
-    completeness: Complétude par canaux et locales
+    completeness:
+      title: Complétude par canaux et locales
+    last_operations:
+      title: Dernières opérations
+      empty: Aucune opération trouvée
+      status: Statut
+      date: Date
+      type: Type
+      profile name: Nom du profil
+      details: Détails
+      job_type:
+        import: Import
+        export: Export

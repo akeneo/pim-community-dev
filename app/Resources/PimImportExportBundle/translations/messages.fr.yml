@@ -22,9 +22,9 @@ pim_import_export:
     7: ABANDONNÉ
     8: INCONNU
   download_archive:
-    archive: Télécharger fichier généré
-    output: Télécharger fichier généré
-    input: Télécharger fichier lu
+    archive: Télécharger le fichier générés|Télécharger les fichiers générés
+    output: Télécharger le fichier générés|Télécharger les fichiers générés
+    input: Télécharger le fichier lu|Télécharger les fichiers lus
     invalid: Télécharger données invalides
 pim_title.export_profile.index: "Gestion de profils d'export"
 pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
@@ -98,3 +98,7 @@ pane.accordion:
 popin.create:
   export_profile.title: "Créer un nouveau profil d'export"
   import_profile.title: "Créer un nouveau profil d'import"
+Display item: "Afficher l'élément"
+Hide item: "Masquer l'élément"
+Collecting data about job execution...: "Collecte de données de l'exécution..."
+You must select a file to upload: Vous devez sélectionner un fichier à télécharger

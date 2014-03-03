@@ -24,4 +24,16 @@ pim_dashboard:
     error:
       title: Fehler beim Laden des Widgets
       message: 'Widget "%alias%" ist nicht vorhanden'
-    completeness: Vollständigkeit über Ausgabekanäle und Gebietsschemata
+    completeness:
+      title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
+    last_operations:
+      title: Letzte Vorgänge
+      empty: Keine Vorgänge gefunden
+      status: Status
+      date: Datum
+      type: Typ
+      profile name: Profilname
+      details: Details
+      job_type:
+        import: Import
+        export: Export

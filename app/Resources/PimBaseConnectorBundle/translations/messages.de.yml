@@ -56,6 +56,7 @@ pim_base_connector:
     attribute_option_processor.title: Attribut-Optionserstellung
     heterogeneous_processor.title: Produkt CSV serialisierung
     homogeneous_processor.title: CSV Entitäten serialisierung
+    transformer_processor.title: Transformation
     dummy_writer.title: Dummy Writer
     file_writer.title: Ausgabe
     product_writer.title: Produkt-Speicher
