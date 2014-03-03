@@ -69,7 +69,6 @@ btn:
   edit: Bearbeiten
   save: Speichern
   save and back: Speichern und zurück zur Übersicht
-  save and create: Speichern und anlegen
   remove: Entfernen
   delete: Löschen
   cancel: Abbrechen
@@ -191,11 +190,19 @@ info:
     axis: 'Variation Achse: %attributes%'
     select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
     selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
-    no group types: Kein Gruppentyp vorhanden, bitte legen Sie einen an
   association type:
     show products: Produkte anzeigen
     show groups: Gruppen anzeigen
     remove from products: 'Das Löschen dieses Verbindungstyps entfernt ihn von %count% Produkten.'
+color:
+  gray: Grau
+  white: Weiß
+  yellow: Gelb
+  orange: Orange
+  magenta: Magenta
+  violet: Violett
+  blue: Blau
+  cyan: Cyan
 Options: Optionen
 Created at: Angelegt am
 Updated at: Aktualisiert am
@@ -219,6 +226,7 @@ Scopable: Je Ausgabekanal individualisierbar
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
+Other: Andere
 Variants behavior when edited: Das Verhalten von Varianten beim Bearbeiten
 Edit: Bearbeiten
 Remove: Entfernen
@@ -247,6 +255,7 @@ Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
 Yes: "1"
 Close: Schließen
+Choose a color: Wählen Sie eine Farbe
 Create: Anlegen
 Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
@@ -489,7 +498,8 @@ popin.create:
   product.title: Neues Produkt anlegen
   variant_group.title: Neue Variantengruppe anlegen
   option.title: Neue Option anlegen
-Has product: Hat Produkt
+In group: In Gruppe
 Attribute as label: Attribut als Label
 Available Columns: Verfügbare Spalten
 Displayed Columns: Angezeigten Spalten
+Is associated: Ist verbunden
