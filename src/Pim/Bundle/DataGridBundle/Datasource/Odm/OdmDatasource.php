@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
