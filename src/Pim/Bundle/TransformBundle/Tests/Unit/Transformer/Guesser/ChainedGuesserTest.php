@@ -47,7 +47,8 @@ class ChainedGuesserTest extends GuesserTestCase
 
     protected function addGuessers()
     {
-        array_walk(func_get_args(), array($this->guesser, 'addGuesser'));
+        $args = func_get_args();
+        array_walk($args, array($this->guesser, 'addGuesser'));
     }
 
     protected function getGuesserMock($called = true, $transformer = null, $options = array())
