@@ -18,5 +18,5 @@ before_script:
     - composer update --prefer-dist --no-scripts --no-interaction
 
 script:
-    - phpunit -c app/ --testsuite PIM_Unit_Test
+    - phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - bin/phpspec run -fdot -v
