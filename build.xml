@@ -236,7 +236,7 @@
             <arg value="4" />
             <arg value="noxdebug" />
             <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_behat_10_dev" />
+            <arg value="akeneo_ci_pim_behat_10_dev_" />
             <!-- Profile Prefix -->
             <arg value="jenkins-10-dev-" />
             <arg value="${basedir}/bin/behat --ansi" />
