@@ -76,8 +76,8 @@
                 // submit form
                 $('div.submit-form a').click(function() {
                     var action = $(this).attr('value');
-                    $('#pim_product_edit').attr('action', $('#pim_product_edit').attr('action') +"&action="+ action);
-                    $('#pim_product_edit').submit();
+                    $('#{{ form.vars.id }}').attr('action', $('#{{ form.vars.id }}').attr('action') +"&action="+ action);
+                    $('#{{ form.vars.id }}').submit();
                 });
 
                 {% if createPopin is not null %}
