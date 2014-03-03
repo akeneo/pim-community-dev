@@ -9,7 +9,7 @@
     processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="false"
-    bootstrap="bootstrap.php.cache" >
+    bootstrap="../vendor/autoload.php" >
 
     <php>
         <ini name="intl.default_locale" value="en"/>
@@ -20,43 +20,9 @@
 
     <testsuites>
 
-        <!-- Project (PIM+Oro) test suites -->
-        <testsuite name="Project_Test">
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-
         <!-- PIM test suites -->
         <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="PIM_Functional_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="PIM_Performance_Test">
-            <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
-        </testsuite>
-
-        <!-- Jenkins test suite -->
-        <testsuite name="Jenkins_PIM_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-
-        <testsuite name="Product">
-            <directory suffix="Test.php">../src/Pim/Bundle/ProductBundle/Tests/Unit</directory>
-        </testsuite>
-
-        <testsuite name="Flexible">
-            <directory suffix="Test.php">../vendor/oro/flexible-entity-bundle/Oro/Bundle/FlexibleEntityBundle/Tests/Unit</directory>
-        </testsuite>
-
-        <testsuite name="Measure">
-            <directory suffix="Test.php">../vendor/oro/measure-bundle/Oro/Bundle/MeasureBundle/Tests</directory>
-        </testsuite>
-
-        <testsuite name="Translation">
-            <directory suffix="Test.php">../src/Pim/Bundle/TranslationBundle/Tests/Unit</directory>
         </testsuite>
 
     </testsuites>
