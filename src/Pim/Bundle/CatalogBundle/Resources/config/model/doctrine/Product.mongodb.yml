@@ -17,11 +17,11 @@ Pim\Bundle\CatalogBundle\Model\Product:
         familyId:
             type: int
         # Collection to references ORM groups code
-        #groups:
-        #    type: collection
+        groupIds:
+            type: collection
         # Collection to references ORM categories code
-        #categories:
-        #    type: collection
+        categoryIds:
+            type: collection
         associations:
             embedded: true
             type: many
