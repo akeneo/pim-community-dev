@@ -26,7 +26,7 @@ Feature: Search in Akeneo PIM
     Then I should see "product_test"
     And I should not see "Peter Doe"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2011
+  @jira https://akeneo.atlassian.net/browse/PIM-2011 @skip-doc
   Scenario: Only display Category, User and Product types for search
     Given I am on the search page
     When I open the quick search popin

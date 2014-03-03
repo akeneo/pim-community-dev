@@ -69,7 +69,6 @@ btn:
   edit: Modifier
   save: Enregistrer
   save and back: Enregistrer et revenir à la grille
-  save and create: Enregistrer et créer un nouveau produit
   remove: Retirer
   delete: Supprimer
   cancel: Annuler
@@ -433,5 +432,4 @@ popin.create:
   group_type.title: Créer un nouveau type de groupe
   product.title: Créer un nouveau produit
   variant_group.title: Créer un nouveau groupe de variants
-Has product: Lié au produit
 Attribute as label: Attribut en tant que libellé
