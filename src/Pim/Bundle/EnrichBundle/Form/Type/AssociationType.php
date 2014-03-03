@@ -16,6 +16,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class AssociationType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $productClass;
+
+    public function __construct($productClass)
+    {
+        $this->productClass = $productClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -34,7 +44,7 @@ class AssociationType extends AbstractType
                 'appendProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'class'    => $this->productClass,
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
@@ -44,7 +54,7 @@ class AssociationType extends AbstractType
                 'removeProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
+                    'class'    => $this->productClass,
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true

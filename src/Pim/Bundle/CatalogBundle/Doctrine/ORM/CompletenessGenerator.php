@@ -190,7 +190,7 @@ COMPLETE_PRICES_SQL;
                 GROUP BY c.id, r.family_id) AS c
             JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
             JOIN pim_catalog_locale l ON l.id = cl.locale_id
-            JOIN pim_catalog_product p ON p.family_id = c.family_id %product_conditions%
+            JOIN %product_interface% p ON p.family_id = c.family_id %product_conditions%
             LEFT JOIN pim_catalog_completeness co
                 ON co.product_id = p.id
                 AND co.channel_id = c.id
