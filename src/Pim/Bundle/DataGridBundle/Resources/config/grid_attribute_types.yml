@@ -55,8 +55,10 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
-            type:        flexible_field
-            selector:    flexible_values
+            type:          flexible_boolean
+            selector:      flexible_values
+            frontend_type: html
+            template:      PimDataGridBundle:Property:boolean.html.twig
         filter:
             type:        flexible_boolean
             parent_type: boolean
