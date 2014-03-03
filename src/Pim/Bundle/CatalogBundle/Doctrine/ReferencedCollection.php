@@ -93,6 +93,19 @@ class ReferencedCollection implements Collection
     }
 
     /**
+     * Get object class identifier from the repository
+     *
+     * @param mixed $itemRepository
+     *
+     * @return string
+     */
+    protected function getClassIdentifier()
+    {
+        $classMetadata = $this->objectManager->getClassMetadata($this->itemClass);
+        return $classMetadata->getIdentifier();
+    }
+
+    /**
      * Initializes the collection by loading its contents from the database
      * if the collection is not yet initialized.
      *
@@ -104,8 +117,9 @@ class ReferencedCollection implements Collection
             return;
         }
         $itemRepository = $this->objectManager->getRepository($this->itemClass);
+        $criteria = array($this->getClassIdentifier() => $this->itemIds);
 
-        $this->items = new ArrayCollection($itemRepository->findBy($this->itemIds));
+        $this->items = new ArrayCollection($itemRepository->findBy($criteria));
 
         $this->initialized = true;
     }

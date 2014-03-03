@@ -4,22 +4,33 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ReferencedCollectionSpec extends ObjectBehavior
 {
-    protected $itemIds;
+    protected $criteria;
 
-    function let (ObjectManager $objectManager, ObjectRepository $repository)
-    {
-        $this->itemIds = array(1, 2, 3);
+    function let (
+        ObjectManager $objectManager,
+        ObjectRepository $repository,
+        ClassMetadata $classMetadata
+    ) {
+        $itemIds = array(1, 2, 3);
+        $itemClass = 'MyItemClass';
+        $identifier = 'id';
+        $this->criteria = array( $identifier => $itemIds);
 
-        $repository->findBy($this->itemIds)->willReturn(array());
-        $repository->findBy($this->itemIds)->shouldBeCalled();
-        $objectManager->getRepository('MyItemClass')->willReturn($repository);
-        $this->beConstructedWith("MyItemClass", $this->itemIds, $objectManager);
+        $repository->findBy($this->criteria)->willReturn(array())->shouldBeCalled();
+
+        $classMetadata->getIdentifier()->willReturn($identifier);
+
+        $objectManager->getRepository($itemClass)->willReturn($repository);
+        $objectManager->getClassMetadata($itemClass)->willReturn($classMetadata);
+
+        $this->beConstructedWith("MyItemClass", $itemIds, $objectManager);
     }
 
     function it_initializes()
@@ -31,7 +42,7 @@ class ReferencedCollectionSpec extends ObjectBehavior
 
     function it_sets_initialized(ObjectRepository $repository)
     {
-        $repository->findBy($this->itemIds)->shouldNotBeCalled();
+        $repository->findBy($this->criteria)->shouldNotBeCalled();
         $this->isInitialized()->shouldReturn(false);
         $this->setInitialized(true);
         $this->isInitialized()->shouldReturn(true);
