@@ -1,0 +1,29 @@
+---
+oro.age: '{0} newborn|]0,Inf[age %count%'
+Get help: "Obtenir de l'aide"
+Add: Ajouter
+Owner: Propriétaire
+Created: Créé
+Updated: Mis à jour
+Call: Appel
+Loading ...: Chargement ...
+Loading...: Chargement...
+should have min 3 symbols: doit avoir min 3 caractères
+some msgs span two lines <br/> use mm/dd/yy format: "certains messages s'étendent sur deux lignes <br/> Utilisez le format mm/jj/aa"
+Delete: Supprimer
+Save: Enregistrer
+Cancel: Annuler
+Login: Login
+Username: "Nom d'utilisateur"
+Password: Mot de passe
+Remember me on this computer: Mémoriser mes informations sur cet ordinateur
+Log in: Se connecter
+Forgot your username?: "Vous avez oublié votre nom d'utilisateur ?"
+Forgot your password?: Mot de passe oublié?
+N/A: N/A
+Edit: Modifier
+Create: Créer
+Are you sure you want to delete this %entity_label%?: 'Êtes-vous sûr de vouloir supprimer ce %entity_label% ?'
+item: Elément
+%entity_label% deleted: '%entity_label% supprimé'
+Item: Elément

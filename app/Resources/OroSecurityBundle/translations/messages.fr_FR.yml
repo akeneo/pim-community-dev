@@ -1,0 +1,15 @@
+---
+(default): Autorisations par défaut sur les entités
+VIEW: Afficher
+CREATE: Créer
+EDIT: Modifier
+DELETE: Supprimer
+ASSIGN: Assigner
+SHARE: Partager
+oro.security.access-level.BASIC: Utilisateur
+oro.security.access-level.LOCAL: Business Unit
+oro.security.access-level.DEEP: Division
+oro.security.access-level.GLOBAL: Organisation
+oro.security.access-level.SYSTEM: Système
+oro.security.access-level.NONE: None
+oro.security.access-level.: oro.security.access-level.

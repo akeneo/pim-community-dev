@@ -1,0 +1,10 @@
+---
+am: matin
+AM: Matin
+pm: Après midi
+PM: Après midi
+Saving...: Enregistrement...
+Loading...: Chargement...
+Sorry, calendar events were not loaded correctly: "Désolé, les événements du calendrier n'ont pas été chargés correctement"
+Sorry, calendar event was not saved correctly: "Désolé, l'événement du calendrier n'a pas été enregistré correctement"
+Sorry, unexpected error was occurred: "Désolé, une erreur s'est produite"

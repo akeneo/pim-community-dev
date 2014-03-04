@@ -1,0 +1,52 @@
+---
+Address manipulation: Administration des adresses
+View list of addresses: Voir la liste des adresses
+View address: "Voir l'adresse"
+Edit address: "Modifier l'adresse"
+Create address: Créer adresse
+Remove address: Supprimer adresse
+oro.address.form.choose_country: Choisir un pays...
+oro.address.form.choose_state: Choisir un état...
+Primary: Principal
+Add: Ajouter
+oro.address.entity_label: Adresse
+oro.address.entity_plural_label: Adresses
+oro.address.entity_description: "Représente l'adresse"
+oro.address.id.label: Id
+oro.address.label.label: Label
+oro.address.street.label: Adresse
+oro.address.street2.label: Adresse 2
+oro.address.city.label: Ville
+oro.address.postal_code.label: Code postal
+oro.address.organization.label: Entreprise
+oro.address.region_text.label: État
+oro.address.name_prefix.label: Titre
+oro.address.first_name.label: Prénom
+oro.address.middle_name.label: Deuxième prénom
+oro.address.last_name.label: Nom de famille
+oro.address.name_suffix.label: Suffixe de nom
+oro.address.created.label: Créé le
+oro.address.updated.label: Mis à jour le
+oro.address.country.label: Pays
+oro.address.region.label: État
+oro.address.form.choose_region: Choisir un état...
+oro.address.region.entity_label: État
+oro.address.region.entity_plural_label: États
+oro.address.region.entity_description: "Représente la région de l'adresse"
+oro.address.region.name.label: Nom
+oro.address.region.country.label: Pays
+oro.address.region.combined_code.label: Code combiné
+oro.address.region.code.label: Code
+oro.address.country.entity_label: Pays
+oro.address.country.entity_plural_label: Pays
+oro.address.country.entity_description: "Représente le pays de l'adresse"
+oro.address.country.regions.label: États
+oro.address.country.name.label: Nom
+oro.address.country.iso3_code.label: Code ISO3
+oro.address.country.iso2_code.label: Code ISO2
+oro.address.addresstype.entity_label: "Type d'adresse"
+oro.address.addresstype.entity_plural_label: "Types d'adresses"
+oro.address.addresstype.entity_description: "Représentation type d'adresse"
+oro.address.addresstype.name.label: Nom
+oro.address.addresstype.label.label: Libellé
+oro.address.action.read_dictionaries: Lire le registre des adresses

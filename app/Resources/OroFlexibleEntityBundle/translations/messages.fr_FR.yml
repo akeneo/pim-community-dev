@@ -1,0 +1,24 @@
+---
+oro_flexibleentity_boolean: Oui/non
+oro_flexibleentity_text: Champ texte
+oro_flexibleentity_textarea: Zone de texte
+oro_flexibleentity_date: Date
+oro_flexibleentity_datetime: Date heure
+oro_flexibleentity_integer: Entier
+oro_flexibleentity_integer_unsigned: Entier non signé
+oro_flexibleentity_money: Devise
+oro_flexibleentity_number: Nombre
+oro_flexibleentity_multiselect: Liste à choix multiple
+oro_flexibleentity_simpleselect: Liste à choix unique
+oro_flexibleentity_metric: Métrique
+oro_flexibleentity_file: Upload de fichier
+oro_flexibleentity_image: "Téléchargement d'images"
+oro_flexibleentity_fileurl: Url du fichier
+oro_flexibleentity_imageurl: "Url de l'image"
+oro_flexibleentity_email: E-mail
+oro_flexibleentity_url: URL
+oro_flexibleentity_multicheckbox: Cases à cocher
+oro_flexibleentity_simpleradio: Radio
+oro_flexibleentity_price: Prix
+oro_flexibleentity_phone_collection: Liste de numéro de téléphone
+oro_flexibleentity_email_collection: "Collection d'Email"

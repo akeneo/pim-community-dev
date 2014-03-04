@@ -1,0 +1,2 @@
+---
+oro.notification.validators.recipient_list.empty.message: Le destinataire doit être spécifié a minima.
