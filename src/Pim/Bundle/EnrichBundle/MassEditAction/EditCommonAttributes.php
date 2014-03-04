@@ -269,11 +269,26 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
     }
 
+    /**
+     * Predicate to know if attribute is part of product family or not
+     *
+     * @param AbstractAttribute $attribute
+     * @param Family            $family
+     *
+     * @return boolean
+     */
     protected function isAttributeFromFamily(AbstractAttribute $attribute, Family $family = null)
     {
         return $family !== null && $this->getFamilyAttributes($family)->contains($attribute);
     }
 
+    /**
+     * Get the attributes of a family
+     *
+     * @param Family $family
+     *
+     * @return AbstractAttribute[]
+     */
     protected function getFamilyAttributes(Family $family)
     {
         $familyCode = $family->getCode();
