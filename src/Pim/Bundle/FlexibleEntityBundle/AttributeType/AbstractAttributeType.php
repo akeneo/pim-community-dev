@@ -224,6 +224,35 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        return array();
+        return [
+            'localizable' => [
+                'name'      => 'localizable',
+                'fieldType' => 'switch',
+                'options'   => [
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                ]
+            ],
+            'availableLocales' => [
+                'name'      => 'availableLocales',
+                'fieldType' => 'pim_enrich_available_locales'
+            ],
+            'scopable' => [
+                'name'      => 'scopable',
+                'fieldType' => 'pim_enrich_scopable',
+                'options'   => [
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
+                ]
+            ],
+            'unique' => [
+                'name'      => 'unique',
+                'fieldType' => 'switch',
+                'options'   => [
+                    'disabled'  => true,
+                    'read_only' => true
+                ]
+            ]
+        ];
     }
 }

@@ -62,8 +62,8 @@ class DateTypeTest extends AttributeTypeTest
 
     public function testBuildAttributeFormTypes()
     {
-        $this->assertEquals(
-            array(),
+        $this->assertCount(
+            4,
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)
