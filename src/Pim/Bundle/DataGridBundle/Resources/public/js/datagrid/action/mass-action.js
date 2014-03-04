@@ -14,7 +14,19 @@ function(MassAction) {
          * @private
          */
         getActionParameters: function() {
-            var params = MassAction.prototype.getActionParameters();
+            var selectionState = this.datagrid.getSelectionState();
+            var collection = this.datagrid.collection;
+            var idValues = _.map(selectionState.selectedModels, function(model) {
+                return model.get(this.identifierFieldName)
+            }, this);
+
+            var params = {
+                inset: selectionState.inset ? 1 : 0,
+                values: idValues.join(',')
+            };
+
+            params = collection.processFiltersParams(params, null, 'filters');
+
             var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
             if (locale) {
                 params['dataLocale']= locale;
