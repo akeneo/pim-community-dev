@@ -1,0 +1,10 @@
+---
+oro.config.controller.config.saved.message: Configuration sauvegardée
+Configuration: Configuration
+Configuration - System: 'Configuration - système'
+oro.config.module_label: Configuration du système
+Settings: Paramètres
+Save Settings: Enregistrer les paramètres
+Restore Defaults: Rétablir les paramètres par défaut
+Expand All: Tout déplier
+Collapse All: Tout replier

@@ -1,0 +1,47 @@
+---
+oro.tag.controller.tag.saved.message: Tag enregistré
+oro.tag.form.choose_tag: Choisir un tag
+oro.tag.form.choose_or_create_tag: Choisissez ou créez un tag
+Records tagged as "%name%": 'Enregistrements taggés comme "%name%"'
+No results were found.: Aucun résultat trouvé.
+Try modifying your search criteria: Essayez de modifier vos critères de recherche
+New Tag: Nouveau Tag
+All tags: Tous les tags
+My tags: Mes tags
+Create Tag: Créer Tag
+Create Tag - Tags - System: 'Créer Tag - Tags - système'
+Tags: Tags
+Tags - System: 'Tags - système'
+Records tagged as "%tag.name%": 'Enregistrements taggés comme "%tag.name%"'
+Records tagged as "%tag.name%" - Tags - System: 'Enregistrements taggés comme "%tag.name%" - Tags - système'
+%tag.name% Tag - Edit: '%tag.name% Tag - modifier'
+%tag.name% Tag - Edit - Tags - System: '%tag.name% tag - modifier- Tags - système'
+oro.tag.datagrid.usage_count: "Comptage de l'utilisation"
+oro.tag.entity_label: Tag
+oro.tag.entity_plural_label: Tags
+oro.tag.entity_description: Afficher les enregistrements marqués par ce tag
+oro.tag.id.label: ID
+oro.tag.name.label: Tag
+oro.tag.tagging.label: Marquage
+oro.tag.owner.label: Propriétaire
+oro.tag.created.label: Créé
+oro.tag.created_by.label: Créé par
+oro.tag.updated.label: Mis à jour
+oro.tag.updated_by.label: Mise à jour par
+oro.tag.action.assign_unassign: Tag assigné/non assigné
+oro.tag.action.unassign_global: Ne pas assigner tous les tags de ces entités
+oro.tag.action.view_cloud: Afficher le nuage de tag
+oro.tag.tagging.entity_label: Marquage
+oro.tag.tagging.entity_plural_label: Marquages
+oro.tag.tagging.entity_description: Représente le marquage
+oro.tag.tagging.alias.label: Alias
+oro.tag.tagging.created.label: Créé
+oro.tag.tagging.entity_name.label: "Nom de l'entité"
+oro.tag.tagging.id.label: ID
+oro.tag.tagging.owner.label: Propriétaire
+oro.tag.tagging.record_id.label: Enregistrer
+oro.tag.tagging.tag.label: Tag
+Create Tag - oro.tag.entity_plural_label - System: 'Créer un Tag - oro.tag.entity_plural_label - Système'
+oro.tag.entity_plural_label - System: 'oro.tag.entity_plural_label - Système'
+Records tagged as "%tag.name%" - oro.tag.entity_plural_label - System: 'Enregistrements tagués comme "%tag.name%" - oro.tag.entity_plural_label - Système'
+%tag.name% Tag - Edit - oro.tag.entity_plural_label - System: '%tag.name% Tag - Modifier - oro.tag.entity_plural_label - Système'

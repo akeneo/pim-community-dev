@@ -1,0 +1,53 @@
+---
+oro.business_unit.controller.message.saved: Business Unit enregistrée
+oro.business_unit.form.choose_business_user: Choisir une business unit...
+oro.business_unit.datagrid.action.view: Afficher
+oro.business_unit.datagrid.action.update: Modifier
+oro.business_unit.datagrid.action.delete: Supprimer
+oro.business_unit.datagrid.name: Nom
+oro.business_unit.datagrid.email: Email
+oro.business_unit.datagrid.phone: Téléphone
+oro.business_unit.datagrid.owner: Propriétaire de Business Unit
+oro.business_unit.datagrid.organization: Organisation
+oro.business_unit.datagrid.created_at: Date de création
+Update Business Unit: Mise à jour de Business Unit
+New Business Unit: Nouvelle Business Unit
+oro.business_unit.datagrid.view: oro.business_unit.datagrid.view
+Create Business Unit: Créer Business Unit
+Create Business Unit - Business Units - Users Management - System: 'Créer Business Unit - Business Units - Gestion des utilisateurs - système'
+%business_unit.name%: '%business_unit.name%'
+%business_unit.name% - Business Units - Users Management - System: '%business_unit.name% - Business Units - Gestion des utilisateurs - système'
+%business_unit.name% - Edit: '%business_unit.name% - modifier'
+%business_unit.name% - Edit - Business Units - Users Management - System: '%business_unit.name% - modifier - Business Units - Gestion des utilisateurs - système'
+Business Units: Business Units
+Business Units - Users Management - System: 'Business Units - Gestion des utilisateurs - système'
+oro.organization.entity_label: Entreprise
+oro.organization.entity_plural_label: Entreprises
+oro.organization.entity_description: "Représente l'entreprise"
+oro.organization.id.label: ID
+oro.organization.precision.label: Précision
+oro.organization.name.label: Nom
+oro.organization.currency.label: Monnaie
+oro.organization.business_units.label: Entités commerciales
+oro.organization.businessunit.entity_label: Entité commerciale
+oro.organization.businessunit.entity_plural_label: Entités commerciales
+oro.organization.businessunit.entity_description: "Représente l'entité commerciale"
+oro.organization.businessunit.id.label: ID
+oro.organization.businessunit.website.label: Site web
+oro.organization.businessunit.users.label: Utilisateurs
+oro.organization.businessunit.phone.label: Téléphone
+oro.organization.businessunit.owner.label: Propriétaire
+oro.organization.businessunit.organization.label: Entreprise
+oro.organization.businessunit.name.label: Nom
+oro.organization.businessunit.fax.label: Fax
+oro.organization.businessunit.email.label: Email
+oro.organization.businessunit.created_at.label: Créé le
+oro.organization.businessunit.updated_at.label: Mis à jour le
+Update: Mettre à jour
+New: Nouveau
+General Information: Informations générales
+oro.user.form.choose_user: oro.user.form.choose_user
+Create Business Unit - oro.organization.businessunit.entity_plural_label - Users Management - System: "Création d'une entité commerciale - oro.organization.businessunit.entity_plural_label - Gestion des utilisateurs - Système"
+oro.organization.businessunit.entity_plural_label - Users Management - System: 'oro.organization.businessunit.entity_plural_label - Gestion des utilisateurs - Système'
+%business_unit.name% - Edit - oro.organization.businessunit.entity_plural_label - Users Management - System: '%business_unit.name% - Modifier - oro.organization.businessunit.entity_plural_label - Gestion des utilisateurs - Système'
+%business_unit.name% - oro.organization.businessunit.entity_plural_label - Users Management - System: '%business_unit.name% - oro.organization.businessunit.entity_plural_label - Gestion des utilisateurs - Système'

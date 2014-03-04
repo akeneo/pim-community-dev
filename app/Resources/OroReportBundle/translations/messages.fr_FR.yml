@@ -1,0 +1,60 @@
+---
+New Report: Nouveau rapport
+Manage Custom Reports: Gérer les rapports personnalisés
+Manage Custom Reports - Reports: 'Gérer les rapports personnalisés - Rapports'
+Create Report - Reports: 'Créer un rapport - Rapports'
+%report.name% - Edit - Reports: '%report.name% - Modifier - Rapports'
+%report.name% - Reports: '%report.name% - Rapports'
+Edit report: Modifier le rapport
+Delete report: Effacer le rapport
+Are you sure you want to delete this report?: Êtes-vous sûr de vouloir supprimer ce rapport ?
+Report deleted: Rapport supprimé
+Report saved: Rapport enregistré
+Invalid report configuration: "Aucune donnée à afficher. Rendez-vous sur la page d'édition du rapport et veillez à ce que le rapport soit configuré correctement."
+oro.query_designer.aggregates.identifier.Count.name: Nb
+oro.query_designer.aggregates.identifier.Count.hint: "Nombre d'éléments"
+oro.query_designer.aggregates.string.Count.name: Nb
+oro.query_designer.aggregates.string.Count.hint: "Nombre d'éléments"
+oro.query_designer.aggregates.number.Count.name: Nb
+oro.query_designer.aggregates.number.Count.hint: "Nombre d'éléments"
+oro.query_designer.aggregates.number.Sum.name: Somme
+oro.query_designer.aggregates.number.Sum.hint: Somme de toutes les valeurs
+oro.query_designer.aggregates.number.Avg.name: Moyenne
+oro.query_designer.aggregates.number.Avg.hint: Moyenne des valeurs
+oro.query_designer.aggregates.number.Min.name: Min
+oro.query_designer.aggregates.number.Min.hint: Valeur minimale
+oro.query_designer.aggregates.number.Max.name: Max
+oro.query_designer.aggregates.number.Max.hint: Valeur maximale
+oro.report.type.table: Table
+oro.report.datagrid.column.name: Nom
+oro.report.datagrid.column.entity: Entité
+oro.report.datagrid.column.report_type: Type de rapport
+oro.report.form.designer: Designer
+oro.report.form.columns: Colonnes
+oro.report.form.filters: Filtres
+oro.report.form.choose_report_type: Choisissez un type de rapport...
+oro.report.entity_label: Rapport
+oro.report.entity_plural_label: Rapports
+oro.report.entity_description: Représente le rapport
+oro.report.id.label: ID
+oro.report.type.label: Type de rapport
+oro.report.owner.label: Propriétaire
+oro.report.name.label: Nom
+oro.report.entity.label: Entité
+oro.report.description.label: Description
+oro.report.definition.label: Définition
+oro.report.created_at.label: Créé le
+oro.report.updated_at.label: Mis à jour le
+oro.report.reporttype.entity_label: Type de rapport
+oro.report.reporttype.entity_plural_label: Types de rapports
+oro.report.reporttype.entity_description: Représente le type de rapport
+oro.report.reporttype.name.label: Nom
+oro.report.reporttype.label.label: Libellé
+Cancel: Annuler
+General: Général
+oro.entity.form.entity_fields: oro.entity.form.entity_fields
+oro.entity.form.entity_related: oro.entity.form.entity_related
+Manage Custom Reports - oro.report.entity_plural_label: 'Gérer les rapports personnalisés - oro.report.entity_plural_label'
+%report.name% - %report.group% - Reports: '%report.name% - %report.group% - Rapports'
+Life time: Durée de vie
+Life time - Accounts - Reports - oro.report.entity_plural_label: 'Durée de vie - Comptes - Rapports - oro.report.entity_plural_label'

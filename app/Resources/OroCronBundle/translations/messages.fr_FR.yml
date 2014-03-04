@@ -1,0 +1,38 @@
+---
+oro.cron.header.jobs: Emplois
+oro.cron.header.id: ID
+oro.cron.header.command: Commande
+oro.cron.header.state: État
+oro.cron.header.created: Crée le
+oro.cron.header.runtime: Runtime, s
+oro.cron.header.memory: Utilisation de la mémoire, MB
+oro.cron.header.retry: Relancer le job
+oro.cron.header.trace: Stack trace
+oro.cron.header.output: Output
+oro.cron.header.error: "Sortie d'erreur"
+oro.cron.header.statistics: Statistiques
+oro.cron.no_jobs: "Il n'y a aucun job"
+oro.cron.na: N/A
+oro.cron.sidebar.status: Statut Daemon
+oro.cron.sidebar.pid: Daemon PID
+oro.cron.sidebar.running: "En cours d'exécution"
+oro.cron.sidebar.not_running: Ne fonctionne pas
+oro.cron.sidebar.run: Exécutez le démon
+oro.cron.sidebar.stop: "Arrêter l'assistant"
+oro.cron.sidebar.refresh: Actualiser la liste
+oro.cron.sidebar.check: Vérifiez le statut
+oro.cron.view.original: Job original
+oro.cron.view.related: Entités associées
+oro.cron.view.deps: Dépendances
+oro.cron.view.in_deps: Dépendances entrants
+oro.cron.message.start.fail: "Impossible de démarrer l'assistant"
+oro.cron.message.start.success: "L'assistant a commencé"
+oro.cron.message.stop.fail: "Impossible d'arrêter l'assistant"
+oro.cron.message.stop.success: "L'assistant s'est arrêté"
+Job Queue: Planificateur
+Job Queue - System: 'Planificateur - système'
+"Job %command% (ID: %id%)": 'Job "%command%" (ID: %id%)'
+"Job %command% (ID: %id%) - Job Queue - System": 'Job "%command%" (ID: %id%) - Planificateur - système'
+oro.cron.header.view: Vue
+oro.cron.action.jobs_management: Gestion des travaux
+N/A: N/A

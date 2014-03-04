@@ -1,0 +1,18 @@
+---
+oro.locale.address_format.region_name_type.parish: Commune
+oro.locale.address_format.region_name_type.state: État/Région
+oro.locale.address_format.region_name_type.island: île
+oro.locale.address_format.region_name_type.county: Chef-lieu
+oro.locale.address_format.region_name_type.area: Zone
+oro.locale.address_format.region_name_type.prefecture: préfecture
+oro.locale.address_format.region_name_type.do_si: do_si
+oro.locale.address_format.region_name_type.department: département
+oro.locale.address_format.region_name_type.district: quartier
+oro.locale.address_format.region_name_type.province: province
+oro.locale.form.tooltip.languages: "Langues disponibles pour la traduction de modèles d'email."
+oro.locale.form.tooltip.locale: "Sélectionnez l'option de paramètre régional utilisé pour le format des nombres, des adresses, noms et dates"
+oro.locale.form.tooltip.location: " L'emplacement sera utilisé pour mettre en forme les adresses lorsque l'option 'Formate l'adresse par adresse de pays' est désactivée"
+oro.locale.form.tooltip.format_address_by_address_country: "En sélectionnant cette option, les adresses seront formatées selon le pays où elles sont localisées. Si l'option est désactivée, les adresses seront formatées selon le format de votre adresse de localisation"
+oro.locale.form.tooltip.language: Sélectionnez la langue du système que vous souhaitez utiliser
+oro.locale.form.tooltip.timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
+oro.locale.form.tooltip.currency: Sélectionnez la monnaie par défaut
