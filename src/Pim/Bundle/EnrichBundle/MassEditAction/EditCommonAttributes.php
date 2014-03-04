@@ -10,6 +10,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
@@ -60,6 +61,12 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @var ArrayCollection
      */
     protected $displayedAttributes;
+
+    /**
+     * Collection of the attributes for each family code
+     * @var array $familiesAttributes
+     */
+    protected $familiesAttributes = array();
 
     /**
      * Constructor
@@ -252,16 +259,29 @@ class EditCommonAttributes extends AbstractMassEditAction
             }
         }
 
-        $familiesAttributes = array();
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
                 if (!$product->hasAttribute($attribute)
-                    && ($product->getFamily() !== null
-                    && !$product->getFamily()->getAttributes()->contains($attribute))) {
+                    && !$this->isAttributeFromFamily($attribute, $product->getFamily())) {
                     unset($this->commonAttributes[$key]);
                 }
             }
         }
+    }
+
+    protected function isAttributeFromFamily(AbstractAttribute $attribute, Family $family = null)
+    {
+        return $family !== null && $this->getFamilyAttributes($family)->contains($attribute);
+    }
+
+    protected function getFamilyAttributes(Family $family)
+    {
+        $familyCode = $family->getCode();
+        if (!isset($this->familiesAttributes[$familyCode])) {
+            $this->familiesAttributes[$familyCode] = $family->getAttributes();
+        }
+
+        return $this->familiesAttributes[$familyCode];
     }
 
     /**
