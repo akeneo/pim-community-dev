@@ -52,8 +52,9 @@ class AssetsCommand extends Command
             ->runCommand('oro:localization:dump')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
-            ->runCommand('oro:translation:dump');
+            ->runCommand('oro:assetic:dump');
+        $defaultLocales = array('en_US', 'fr', 'nl', 'de');
+        $this->commandExecutor->runCommand('oro:translation:dump', array('locale' => $defaultLocales));
 
         return $this;
     }

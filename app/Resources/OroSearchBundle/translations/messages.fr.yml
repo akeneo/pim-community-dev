@@ -6,4 +6,5 @@ Try modifying your search criteria or creating a new ...: "Essayez de modifier v
 All: Tous
 Go: Go
 View more...: Voir plus...
-%keyword% - Search Results: "%keyword% - Résultats"
+%keyword% - Search Results: '%keyword% - Résultats'
+oro.search.module_name: Rechercher
