@@ -82,4 +82,14 @@ class GroupManagerSpec extends ObjectBehavior
         $this->getTypeChoices(true)->shouldReturn(array(4 => 'Bar', 1 => 'Foo'));
         $this->getTypeChoices(false)->shouldReturn(array(3 => 'Baz', 2 => 'Qux'));
     }
+
+    function it_provides_group_repository($groupRepo)
+    {
+        $this->getRepository()->shouldReturn($groupRepo);
+    }
+
+    function it_provides_group_type_repository($groupTypeRepo)
+    {
+        $this->getGroupTypeRepository()->shouldReturn($groupTypeRepo);
+    }
 }
