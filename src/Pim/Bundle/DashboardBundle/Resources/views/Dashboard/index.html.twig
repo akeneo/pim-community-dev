@@ -14,8 +14,12 @@
         <div class="container">
             <h3>{{ 'pim_dashboard.quick_launchpad'|trans }}</h3>
 
+            <div class="row buffer-bottom">
+                {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': 'links' })) }}
+            </div>
+
             <div class="row">
-                {% set widgetsArray = ['completeness', 'links', 'last_operations'] %}
+                {% set widgetsArray = ['completeness', 'last_operations'] %}
 
                 {% for widget in widgetsArray %}
                     {{ __.renderWidget(widget) }}

@@ -1,0 +1,223 @@
+---
+oro.user.form.choose_user: Choisissez un utilisateur...
+oro.user.form.choose_gender: Choisir un genre...
+oro.user.gender.male: Homme
+oro.user.gender.female: Femme
+%%username%% - View user - User Management: '%%username%% - vue utilisateur - gestion des Utilisateurs'
+%%username%% - Edit user - User Management: '%%username%% - modifier Utilisateur - Gestion des utilisateurs'
+New user - User Management: 'Nouvel utilisateur - gestion des utilisateurs'
+Users - User Management: 'Utilisateurs - gestion des utilisateurs'
+Edit role - User management: 'Modifier Rôle - gestion des Utilisateurs'
+Add role - User management: 'Ajouter rôle - gestion des Utilisateurs'
+Roles - User management: 'Rôles - gestion des utilisateurs'
+Login: Login
+User Status - User Management: "Statut de l'utilisateur - gestion des Utilisateurs"
+Add Status - User Management: 'Ajouter Statut - gestion des utilisateurs'
+Password Reset: Réinitialisation de mot de passe
+Forgot Password: Mot de passe oublié
+Password Reset - Check Email: 'Réinitialisation de mot de passe - Email de vérification'
+Acl Resources - User Management: 'ACL ressources - gestion des utilisateurs'
+Edit group - User Management: 'Modifier groupe - gestion des utilisateurs'
+Add group - User Management: 'Ajouter groupe - gestion des utilisateurs'
+Groups - User Management: 'Groupes - gestion des utilisateurs'
+Group manipulation: Manipulation de groupe
+Create group: Créer un groupe
+Create new group: Créer le nouveau groupe
+Edit group: Modifier groupe
+View group list: Liste de groupe
+List of groups: Liste des groupes
+User manipulation: Manipulation utilisateur
+View user user: Vue Utilisateur Utilisateur
+Generate new API key: Générer de nouvelles API key
+Create user user: Créer un utilisateur
+Edit user user: Modifier un utilisateur
+View list of user users: Voir la liste des utilisateurs
+Reset user password: Réinitialiser mot de passe utilisateur
+reset password: Réinitialiser mot de passe
+Oro Reset password page: Page de réinitialisation de mot de passe Oro
+send reset mail: Envoyer un mail de réinitialisation
+Request reset user password: "Demande de réinitialisation du mot de passe de l'utilisateur"
+reset password check email: "réinitialiser l'e-mail de vérification de mot de passe"
+Tell the user to check his email provider: "Indiquer à l'utilisateur de vérifier son fournisseur Email"
+Role manipulation: Gestion des rôles
+Create role: Créer le rôle
+Create new role: Créer nouveau rôle
+Edit role: Modifier rôle
+View role list: "Liste d'affichage de rôle"
+List of roles: Liste des rôles
+Oro Security: Sécurité de Oro
+Login page: Page de connexion
+Oro Login page: "Page de connexion d'Oro"
+Login check: Vérification de la connexion
+Oro Login check: "Vérification de la connexion d'Oro"
+Logout: Se Déconnecter
+Oro Logout: Oro Déconnexion
+ACL manipulation: "Manipulation de l'ACL"
+ACL manipulation from API: "Manipulation des ACL de l'API"
+View ACL tree: Arbre ACL affichage
+View ACL tree for a particular role: Arbre ACL affichage pour un rôle particulier
+View ACL resource: Voir ressource ACL
+View user group: Afficher Groupe utilisateurs
+Remove group: Supprimer le groupe
+View group roles: Vue groupe rôles
+Remove user user: Supprimer un utilisateur
+View user roles: "Vue rôles d'utilisateurs"
+View user groups: Afficher Groupe utilisateurs
+View user ACL: ACL Vue utilisateur
+View role: Voir rôle
+Remove role: Supprimer le rôle
+Template controller: Contrôleur de modèle
+change_password.flash.success: Le mot de passe a été changé
+resetting.flash.success: Le mot de passe a été réinitialisé correctement
+oro.user.controller.group.message.saved: Groupe enregistré
+oro.user.controller.role.message.saved: Rôle enregistré
+oro.user.controller.user.message.saved: Utilisateur enregistré
+oro.user.controller.status.message.saved: Statut enregistré
+Cancel: Annuler
+Save: Enregistrer
+Update Group: Mise à jour de groupe
+New Group: Nouveau groupe
+Are you sure you want to delete this group?: Êtes-vous sûr de vouloir supprimer ce groupe?
+Group removed: Groupe supprimé
+Groups: Groupes
+General: Général
+Users: Utilisateurs
+Are you sure you want to delete this user?: Êtes-vous sûr de vouloir supprimer cet élément?
+User deleted: Utilisateur supprimé
+Active: Actif
+Inactive: Inactif
+Last logged in: Dernière connexion
+Login count: Nombre de connexion
+Primary: Principal
+Tags: Tags
+Basic Information: Informations générale
+User name: "Nom d'utilisateur"
+First name: Prénom
+Last name: Nom de famille
+Birthday: Anniversaire
+API key: Clé API
+Contact Information: Information Contact
+User emails: "Email de l'utilisateur"
+Generate key: Générer clé
+"Generate key was successful. New key:": 'La génération de clé a été un succès. Nouvelle clé :'
+Update User: Mise à jour utilisateur
+New User: Nouvel utilisateur
+active: Actif
+Additional emails: Emails supplémentaires
+Add another email: Ajouter un autre email
+Groups and Roles: Groupes et rôles
+Passwords: Mots de passe
+Business Units: Business Units
+The username or email address "%username%" does not exist.: |-
+  Le nom d'utilisateur ou votre adresse e-mail "%username%" n'existe pas.
+Username or Email: "Nom d'utilisateur ou Email"
+Return to Login: Retourner à la connexion
+Request: Requête
+Reset: Remise à zéro
+Check Email: Consulter votre messagerie électronique
+An email has been sent to %email%. It contains a link you must click to reset your password.: 'Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer pour réinitialiser votre mot de passe.'
+Go to homepage: "Aller à la page d'accueil"
+Update Role: Mise à jour du rôle
+New Role: Nouveau rôle
+Are you sure you want to delete this role?: Êtes-vous sûr de vouloir supprimer ce rôle?
+Role removed: Rôle supprimé
+Delete Role: Supprimer rôle
+Delete: Supprimer
+Roles: Rôles
+User Statuses.: "Statuts de l'utilisateur."
+Current Status: Statut courrant
+Username: "Nom d'utilisateur"
+Password: Mot de passe
+Remember me on this computer: Mémoriser mes informations sur cet ordinateur
+Forgot your password?: Mot de passe oublié?
+Log in: Se connecter
+Create Group: Créer un groupe
+Create Group - Groups - Users Management - System: 'Créer Groupe - Groupes - Gestion des utilisateurs - système'
+%group% - Edit: '%group% - modifier'
+%group% - Edit - Groups - Users Management - System: '%group% - modifier - Groupes - Gestion Utilisateurs - Système'
+Groups - Users Management - System: 'Groupes - gestion des utilisateurs - système'
+Create Role: Créer le rôle
+Create Role - Roles - Users Management - System: 'Créer Rôle - Rôles - Gestion des utilisateurs - système'
+%role% - Edit: '%role% - modifier'
+%role% - Edit - Roles - Users Management - System: '%role% - Modifier- Rôles - Gestion des utilisateurs - Système'
+Roles - Users Management - System: 'Rôles - Gestion des utilisateurs - système'
+User Status: Statut utilisateur
+User Status - Users - Users Management - System: 'Statuts Utilisateurs - Utilisateurs - Gestion des Utilisateurs - système'
+Add Status: Ajouter statut
+Add Status - Users - Users Management - System: 'Ajouter Statut - Utilisateurs - Gestion Utilisateurs - système'
+%username%: '%username%'
+%username% - Users - Users Management - System: '%username% - Utilisateurs - Gestion des Utilisateurs - système'
+%username% - Edit: '%username% - modifier'
+%username% - Edit - Users - Users Management - System: '%username% - Modifier - Utilisateurs - Gestion des Utilisateurs - système'
+Create User: Créer Utilisateur
+Create User - Users - Users Management - System: 'Créer utilisateur - utilisateurs - gestion des utilisateurs - système'
+Users - Users Management - System: 'Utilisateurs - Gestion des utilisateurs - Système'
+oro.dashboard.recent_emails.title: Emails récents
+oro.dashboard.recent_emails.inbox: Boîte de réception
+oro.dashboard.recent_emails.sent: Envoyé
+oro.dashboard.recent_emails.view_all: Voir tous
+oro.user.entity_label: Utilisateur
+oro.user.entity_plural_label: Utilisateurs
+oro.user.entity_description: Représente le profil utilisateur
+oro.user.id.label: ID
+oro.user.username.label: "Nom d'utilisateur"
+oro.user.email.label: Email
+oro.user.name_prefix.label: Titre
+oro.user.first_name.label: Prénom
+oro.user.middle_name.label: Deuxième prénom
+oro.user.last_name.label: Nom de famille
+oro.user.name_suffix.label: Particule
+oro.user.birthday.label: Date de Naissance
+oro.user.image.label: Avatar
+oro.user.enabled.label: Statut
+oro.user.salt.label: Sel
+oro.user.password.label: Mot de passe
+oro.user.last_login.label: Dernière connexion
+oro.user.login_count.label: Nombre de connexion
+oro.user.created_at.label: Créé le
+oro.user.updated_at.label: Mis à jour le
+oro.user.owner.label: Propriétaire
+oro.user.roles.label: Rôles
+oro.user.groups.label: Groupes
+oro.user.api.label: Clé API
+oro.user.statuses.label: Statuts
+oro.user.emails.label: Emails
+oro.user.current_status.label: Statut
+oro.user.business_units.label: Entités commerciales
+oro.user.confirmation_token.label: Jeton de confirmation
+oro.user.password_requested_at.label: Mot de passe demandé à
+oro.user.imap_configuration.label: Paramètres de synchronisation de messagerie
+oro.user.group.entity_label: Groupe
+oro.user.group.entity_plural_label: Groupes
+oro.user.group.entity_description: Groupe de rôles
+oro.user.group.id.label: ID
+oro.user.group.name.label: Nom
+oro.user.group.roles.label: Rôles
+oro.user.group.owner.label: Propriétaire
+oro.user.role.entity_label: Rôle
+oro.user.role.entity_plural_label: Rôles
+oro.user.role.entity_description: "Rôle de l'utilisateur"
+oro.user.role.id.label: ID
+oro.user.role.role.label: Rôle
+oro.user.role.label.label: Libellé
+oro.user.role.owner.label: Propriétaire
+Update: Mettre à jour
+New: Nouveau
+Additional: Complément
+profile: profil
+General Information: Informations générales
+Additional Information: Informations complémentaires
+N/A: N/A
+oro.tag.entity_plural_label: oro.tag.entity_plural_label
+Create Group - oro.user.group.entity_plural_label - Users Management - System: 'Créer un groupe - oro.user.group.entity_plural_label - Gestion des utilisateurs - Système'
+%group% - Edit - oro.user.group.entity_plural_label - Users Management - System: '%group% - Modifier - oro.user.group.entity_plural_label - Gestion des utilisateurs - Système'
+oro.user.group.entity_plural_label - Users Management - System: 'oro.user.group.entity_plural_label - Gestion des utilisateurs - Système'
+Create Role - oro.user.role.entity_plural_label - Users Management - System: 'Créer un rôle - oro.user.role.entity_plural_label - Gestion des utilisateurs - Système'
+%role% - Edit - oro.user.role.entity_plural_label - Users Management - System: '%role% - Modifier - oro.user.role.entity_plural_label - Gestion des utilisateurs - Système'
+oro.user.role.entity_plural_label - Users Management - System: 'oro.user.role.entity_plural_label - Gestion des utilisateurs - Système'
+User Status - oro.user.entity_plural_label - Users Management - System: "Statut de l'utilisateur - oro.user.entity_plural_label - Gestion des utilisateurs - Système"
+Add Status - oro.user.entity_plural_label - Users Management - System: "Ajout d'un statut - oro.user.entity_plural_label - Gestion des utilisateurs - Système"
+%username% - oro.user.entity_plural_label - Users Management - System: '%username% - oro.user.entity_plural_label - Gestion des utilisateurs - Système'
+%username% - Edit - oro.user.entity_plural_label - Users Management - System: '%username% - Modifier - oro.user.entity_plural_label - Gestion des utilisateurs - Système'
+Create User - oro.user.entity_plural_label - Users Management - System: 'Créer un utilisateur - oro.user.entity_plural_label - Gestion des utilisateurs - Système'
+oro.user.entity_plural_label - Users Management - System: 'oro.user.entity_plural_label - Gestion des utilisateurs - Système'

@@ -6,6 +6,7 @@ php:
 
 matrix:
     allow_failures:
+        - php: "5.5"
         - php: hhvm
 
 cache:
@@ -13,9 +14,9 @@ cache:
         - vendor
 
 before_script:
-    - composer self-update
-    - composer update --prefer-source --dev
+    - composer self-update --no-interaction
+    - composer update --prefer-source --no-scripts --no-interaction
 
 script:
-    - phpunit -c app/ --testsuite PIM_Unit_Test
+    - phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - bin/phpspec run -fdot -v

@@ -510,6 +510,13 @@ datagrid:
                     data_name:        p.updated
                     label: Updated At
                     filter_by_having: true
+                scope:
+                    type:      scope
+                    label:     Scope
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
 
     product-variant-group-grid:
         options:
@@ -621,6 +628,13 @@ datagrid:
                     data_name:        p.updated
                     label: Updated At
                     filter_by_having: true
+                scope:
+                    type:      scope
+                    label:     Scope
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
 
     family-grid:
         options:
@@ -1032,6 +1046,13 @@ datagrid:
                     type:             date
                     data_name:        p.updated
                     filter_by_having: true
+                scope:
+                    type:      scope
+                    label:     Scope
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
 
     association-group-grid:
         options:

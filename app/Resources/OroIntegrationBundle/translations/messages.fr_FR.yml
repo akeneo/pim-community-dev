@@ -1,0 +1,23 @@
+---
+oro.integration.datagrid.column.name: Nom
+oro.integration.datagrid.column.type: Type
+oro.integration.datagrid.action.update: Mettre à jour
+oro.integration.datagrid.action.delete: Supprimer
+oro.integration.controller.channel.message.saved: Canal sauvegardé avec succès
+oro.integration.channel_type.simple.label: Simple
+oro.integration.transport.simple: Simple
+oro.integration.channel.entity_label: Canal
+oro.integration.channel.entity_plural_label: Canaux
+oro.integration.channel.entity_description: Représente le canal
+oro.integration.channel.id.label: ID
+oro.integration.channel.type.label: Type
+oro.integration.channel.transport.label: Type de transport
+oro.integration.channel.statuses.label: Statuts
+oro.integration.channel.name.label: Nom
+oro.integration.channel.connectors.label: Connecteurs
+Create: Créer
+Create Channel: Créer un canal
+Create Channel - oro.integration.channel.entity_plural_label - System: 'Créer un canal - oro.integration.channel.entity_plural_label - Système'
+oro.integration.channel.entity_plural_label - System: 'oro.Integration.Channel.entity_plural_label - Système'
+%channel.name%: '%channel.name%'
+%channel.name% - oro.integration.channel.entity_plural_label - System: '%channel.name% - oro.integration.channel.entity_plural_label - Système'

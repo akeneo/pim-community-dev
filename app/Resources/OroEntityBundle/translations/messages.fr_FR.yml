@@ -1,0 +1,12 @@
+---
+oro.entity.controller.message.saved: Entité enregistrée
+oro.form.choose_value: oro.form.choose_value
+%entityName% - Entities - System: '%entityName% - Entités - système'
+%recordName% - %entityName% - Entities - System: '%recordName% - %entityName% - Entités - système'
+oro.entity.form.choose_entity: Choisissez une entité...
+oro.entity.form.choose_entity_field: Choisir une colonne...
+oro.entity.form.choose_entity_fields: Choisir les colonnes...
+oro.entity.form.entity_fields: Champs
+oro.entity.form.entity_related: Associé
+Cancel: Annuler
+Select: Sélectionner

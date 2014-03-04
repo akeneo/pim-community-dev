@@ -1,0 +1,8 @@
+---
+Sorry, page was not loaded correctly: "Désolé, la page n'a pas été chargée correctement"
+Your local changes will be lost. Are you sure you want to refresh the page?: Vos modifications courrantes seront perdues. Êtes-vous certain de que vouloir actualiser la page ?
+Cancel: Annuler
+Content of the page is outdated, please %click here% to refresh the page: 'Le contenu de la page est obsolète, %click here% pour actualiser la page'
+Ok, got it.: OK, compris.
+navigation.message.content.outdated: "Le contenu de la page {{ titre }} est périmé, veuillez <a href='#' data-action='page-refresh'> actualiser la page</a>"
+Content of pinned page is outdated: Le contenu de la page épinglée est dépassé

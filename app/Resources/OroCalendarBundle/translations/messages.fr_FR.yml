@@ -1,0 +1,48 @@
+---
+My Calendar: Mon calendrier
+Today calendar: Calendrier du jour
+Exclude this calendar: Exclure ce calendrier
+Delete event: "Supprimer l'événement"
+Are you sure you want to delete this event?: Êtes-vous sûr de vouloir supprimer cet élément?
+oro.dashboard.calendar.new_event: Nouvel événement
+oro.dashboard.calendar.view_calendar: Mon calendrier
+oro.calendar.form.choose_user_to_add_calendar: Choisir un utilisateur pour ajouter un calendrier...
+oro.calendar.control.today: "aujourd'hui"
+oro.calendar.control.month: mois
+oro.calendar.control.week: semaine
+oro.calendar.control.day: jour
+oro.calendar.entity_label: Calendrier
+oro.calendar.entity_plural_label: Calendriers
+oro.calendar.entity_description: Représente le calendrier
+oro.calendar.id.label: Id
+oro.calendar.name.label: Nom
+oro.calendar.events.label: Événement
+oro.calendar.connections.label: Connexion
+oro.calendar.owner.label: Propriétaire
+oro.calendar.calendarevent.entity_label: Événement de calendrier
+oro.calendar.calendarevent.entity_plural_label: Calendrier des événements
+oro.calendar.calendarevent.entity_description: Représente le calendrier des événements
+oro.calendar.calendarevent.id.label: Id
+oro.calendar.calendarevent.title.label: Titre
+oro.calendar.calendarevent.start.label: Début
+oro.calendar.calendarevent.reminder.label: Rappel
+oro.calendar.calendarevent.reminded.label: Rappelé
+oro.calendar.calendarevent.remind_at.label: Rappeler le
+oro.calendar.calendarevent.end.label: Fin
+oro.calendar.calendarevent.calendar.label: Calendrier
+oro.calendar.calendarevent.all_day.label: Tous les événements du jour
+oro.calendar.calendarconnection.entity_label: Calendrier des autres utilisateurs
+oro.calendar.calendarconnection.entity_plural_label: Calendriers des autres utilisateurs
+oro.calendar.calendarconnection.entity_description: Représente la connexion au calendrier
+oro.calendar.calendarconnection.id.label: Id
+oro.calendar.calendarconnection.created_at.label: Créé
+oro.calendar.calendarconnection.connected_calendar.label: Calendrier connecté
+oro.calendar.calendarconnection.color.label: Couleur
+oro.calendar.calendarconnection.calendar.label: Calendrier
+oro.calendar.calendarconnection.background_color.label: Arrière-plan
+My: Mes
+Cancel: Annuler
+Save: Enregistrer
+oro.calendar.entity_name: Entité
+%calendarname% - Calendars - %username%: '%calendarname% - Calendriers - %username%'
+My Calendar - %username%: 'Mon calendrier - %username%'

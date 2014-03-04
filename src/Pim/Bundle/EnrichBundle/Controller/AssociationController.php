@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,13 +55,14 @@ class AssociationController
     /**
      * Display association grids
      *
-     * @param integer $id
+     * @param Request $request the request
+     * @param integer $id      the product id (owner)
      *
      * @AclAncestor("pim_enrich_associations_view")
      *
      * @return Response
      */
-    public function associationsAction($id)
+    public function associationsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
 
@@ -73,6 +75,7 @@ class AssociationController
             array(
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
+                'dataLocale'       => $request->get('dataLocale', null)
             )
         );
     }
