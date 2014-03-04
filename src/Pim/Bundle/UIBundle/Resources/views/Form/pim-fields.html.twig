@@ -301,7 +301,7 @@
     <div id="{{ switchId }}" class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ (attr['data-on-label'] is defined ? attr['data-on-label'] : 'Yes')|trans }}" data-off-label="{{ (attr['data-off-label'] is defined ? attr['data-off-label'] : 'No')|trans }}">
         {% if required %}{% set required = false %}{% endif %}
         <input id="{{ originalId }}" type="checkbox" {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
-        <input type="hidden" {{ block('widget_attributes') }}{% if checked %} value="1"{% endif %}>
+        <input type="hidden" {{ block('widget_attributes') }}{% if checked or attr.checked is defined and attr.checked %} value="1"{% endif %}>
     </div>
     <script type="text/javascript">
     require(
