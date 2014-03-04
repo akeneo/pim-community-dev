@@ -1,0 +1,31 @@
+---
+oro.query_designer.datagrid.column.column: Colonne
+oro.query_designer.datagrid.column.label: Libellé
+oro.query_designer.datagrid.column.function: Fonction
+oro.query_designer.datagrid.column.sorting: Tri en cours
+oro.query_designer.datagrid.column.actions: Actions
+oro.query_designer.datagrid.filter.index: '#'
+oro.query_designer.datagrid.filter.filter: Filtre
+oro.query_designer.datagrid.filter.actions: Actions
+oro.query_designer.datagrid.action.move_column: Déplacer la colonne
+oro.query_designer.datagrid.action.update_column: Mettre à jour la colonne
+oro.query_designer.datagrid.action.delete_column: Supprimer cette colonne
+oro.query_designer.datagrid.action.delete_column_confirmation: Êtes-vous sûr de vouloir supprimer cette colonne ?
+oro.query_designer.datagrid.action.update_filter: Mettre à jour le filtre
+oro.query_designer.datagrid.action.delete_filter: Supprimer le filtre
+oro.query_designer.datagrid.action.delete_filter_confirmation: Êtes-vous sûr de que vouloir supprimer ce filtre ?
+oro.query_designer.form.action.add: Ajouter
+oro.query_designer.form.action.save: Enregistrer
+oro.query_designer.form.action.cancel: Annuler
+oro.query_designer.form.grouping_columns: Regroupement de colonnes
+oro.query_designer.form.column: Colonne
+oro.query_designer.form.label: Libellé
+oro.query_designer.form.function: Fonction
+oro.query_designer.form.choose_function: Aucun
+oro.query_designer.form.sorting: Tri en cours
+oro.query_designer.form.choose_sorting: Aucun
+oro.query_designer.form.sorting_asc: Ascendant
+oro.query_designer.form.sorting_desc: Descendant
+oro.query_designer.form.condition: Condition
+oro.query_designer.form.filter_logic: Logique du filtre
+oro.query_designer.form.filter_logic_tooltip: 'Exemple : 1 ET (2 OU 3)'

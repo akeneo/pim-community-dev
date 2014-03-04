@@ -1,0 +1,22 @@
+---
+Your config changes will be applied to schema.: "Votre modification de configuration s'appliquera au schéma."
+It may take few minutes...: Cela peut prendre quelques minutes...
+Cancel: Annuler
+oro.entity_extend.controller.config_entity.message.saved: Entité enregistrée
+oro.entity_extend.controller.config_field.message.saved: Champ enregistré
+Add: Ajouter
+New Entity: Nouvelle entité
+New Entity - Entities - System: 'Nouvelle entité - entités - système'
+New Field - %entityName%: 'Nouveau champ - %entityName%'
+New Field - %entityName% - Entities - System: 'Nouveau champ - %entityName% - entités - système'
+%fieldName% - New Field - %entityName%: '%fieldName% - Nouveau champ - %entityName%'
+%fieldName% - New Field - %entityName% - Entities - System: '%fieldName% - Nouveau Champ - %entityName% - Entités - système'
+oro.entity_extend.action.apply_changes: Appliquer les modifications
+oro.entity_extend.action.config_entity_grid.unique: "Clés uniques d'entité"
+oro.entity_extend.action.config_entity_grid.create: Créer une entité personnalisée
+oro.entity_extend.action.config_entity_grid.remove: "Supprimer l'entité personnalisée"
+oro.entity_extend.action.config_entity_grid.unremove: "Ne pas supprimer l'entité personnalisée"
+oro.entity_extend.action.config_field_grid.create: Créer le champ personnalisé
+oro.entity_extend.action.config_field_grid.update: Mettre à jour le champ personnalisé
+oro.entity_extend.action.config_field_grid.remove: Supprimer le champ personnalisé
+oro.entity_extend.action.config_field_grid.unremove: Ne pas supprimer le champ personnalisé

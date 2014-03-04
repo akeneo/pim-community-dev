@@ -3,7 +3,9 @@
 namespace Pim\Bundle\UIBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\UIBundle\Form\Transformer\BooleanToStringTransformer;
 
 /**
  * Form type for a on/off switch field
@@ -14,6 +16,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class SwitchType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setData(isset($options['data']) ? $options['data'] : false);
+        $builder->resetViewTransformers();
+        $builder->addViewTransformer(new BooleanToStringTransformer($options['value']));
+    }
+
     /**
      * {@inheritdoc}
      */

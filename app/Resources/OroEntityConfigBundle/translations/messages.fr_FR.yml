@@ -1,0 +1,37 @@
+---
+oro.entity_config.controller.config_entity.message.saved: Entité enregistrée
+oro.entity_config.controller.config_field.message.saved: Champ enregistré
+New Field: Nouveau champ
+Created: Créé
+Updated: Mis à jour
+Number of records: "Nombre d'Enregistrements"
+%fieldName% - %entityName%: '%fieldName% - %entityName%'
+%fieldName% - %entityName% - Entities - System: '%fieldName% - %entityName% - Entités - système'
+Entities: Entités
+Entities - System: 'Entités - système'
+%entityName%: '%entityName%'
+%entityName% - Entities - System: '%entityName% - Entités - système'
+oro.entity_config.action.manage: Gérer les entités configurables
+oro.entity_config.action.view_entities: Afficher les entités configurables
+oro.entity_config.action.update_entity: Mettre à jour une entité configurable
+oro.entity_config.action.view_entity: "Afficher l'entité configurable"
+oro.entity_config.action.update_entity_field: "Mettre à jour le champ d'entité configurable"
+oro.entity_config.action.field_search: |-
+  Retourne un/des champs de type "varchar" dans l'entité donnée
+Entity Information: "Information de l'entité"
+Unique Keys: Clés uniques
+General Information: Informations générales
+Fields: Champs
+Name: Nom
+Icon: Icône
+Label: Libellé
+Plural Label: Libellé au pluriel
+Type: Type
+Description: Description
+Ownership Type: Type de propriété
+Module: Module
+No unique keys found.: Aucune clé unique trouvée.
+Default: Par défaut
+Priority: Priorité
+Add: Ajouter
+Yes: "1"

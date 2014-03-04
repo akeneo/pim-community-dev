@@ -1,0 +1,85 @@
+---
+%subject% - Email: '%subject% - Email'
+Emails: Emails
+Email: Email
+Subject: Objet
+Sent: Envoyé
+From: De
+To: À
+Cc: Cc
+Bcc: BCC
+Attachments: Pièces jointes
+oro.email.controller.emailtemplate.saved.message: Modèle enregistré
+oro.email.form.choose_template: Choisir un modèle...
+oro.email.datagrid.emailtemplate.action.update: Modifier
+oro.email.datagrid.emailtemplate.action.clone: Cloner
+oro.email.datagrid.emailtemplate.action.delete: Supprimer
+oro.email.datagrid.emailtemplate.column.entity_name: "Nom de l'entité"
+oro.email.datagrid.emailtemplate.column.name: Nom du modèle
+oro.email.datagrid.emailtemplate.column.isSystem: Est système
+oro.email.datagrid.emailtemplate.column.type: Type
+oro.email.datagrid.emailtemplate.filter.type.html: HTML
+oro.email.datagrid.emailtemplate.filter.type.txt: Texte Brut
+oro.email.datagrid.emailtemplate.filter.isSystem.yes: "1"
+oro.email.datagrid.emailtemplate.page_size.all: Tous
+oro.email.datagrid.emailtemplate.view.system_templates: Système uniquement
+oro.email.datagrid.email.from_name: De
+oro.email.datagrid.email.sentAt: Envoyé
+oro.email.datagrid.email.subject: Objet
+oro.email.datagrid.email.recipients: Destinataires
+oro.email.handler.attempt_save_system_template: La surcharge des modèles du système est interdite, il faut plutôt cloner celui-ci.
+Edit email template "%name%": |-
+  Modifier le modèle d'e-mail "%name%"
+Clone Email Template: "Cloner Modèle d'Email"
+New Email Template: "Nouveau modèle d'E-mail"
+Available variables: Variables disponibles
+"Logged in user:": 'Utilisateur connecté :'
+"Related entity:": 'Entité associée :'
+Created: Créé
+Templates: Modèles
+Templates - Emails - System: 'Modèles - Emails - système'
+Template %name% - Edit: 'Modèle %name% - modifier'
+Template %name% - Edit - Templates - Emails - System: 'Modèle %name% - modifier - Modèles - Emails - système'
+Create Email Template: "Créer modèle d'E-mail"
+Create Email Template - Templates - Emails - System: "Créer modèle d'E-mail - Modèles - Emails - système"
+Clone Email Template - Templates - Emails - System: "Cloner Modèle d'Email - Modèles - Emails - système"
+Body: Corps
+Send email: "Envoyer l'email"
+Send: Envoyer
+oro.email.handler.unable_to_send_email: "Impossible d'envoyer l'e-mail."
+oro.email.entity_label: Email
+oro.email.entity_plural_label: Emails
+oro.email.entity_description: Message électronique
+oro.email.id.label: ID
+oro.email.created.label: Créé le
+oro.email.subject.label: Sujet
+oro.email.from_name.label: De
+oro.email.received_at.label: Reçu le
+oro.email.sent_at.label: Envoyé à
+oro.email.importance.label: Importance
+oro.email.internal_date.label: Date interne
+oro.email.message_id.label: Message ID
+oro.email.x_message_id.label: xMessage ID
+oro.email.x_thread_id.label: xThread ID
+oro.email.recipients.label: Destinataires
+oro.email.folder.label: Dossier
+oro.email.email_body.label: Corps
+oro.email.from_email_address.label: De
+oro.email.emailtemplate.entity_label: Modèle
+oro.email.emailtemplate.entity_plural_label: Modèles
+oro.email.emailtemplate.entity_description: "Représentent le modèle d'email"
+oro.email.emailtemplate.id.label: ID
+oro.email.emailtemplate.is_system.label: Vient du système
+oro.email.emailtemplate.is_editable.label: Est modifiable
+oro.email.emailtemplate.name.label: Nom du modèle
+oro.email.emailtemplate.parent.label: Modèle parent
+oro.email.emailtemplate.subject.label: Sujet
+oro.email.emailtemplate.content.label: Contenu
+oro.email.emailtemplate.entity_name.label: "Nom de l'entité"
+oro.email.emailtemplate.type.label: Type
+oro.email.emailtemplate.translations.label: Traductions
+Cancel: Annuler
+oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - System: 'oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - Système'
+Template %name% - Edit - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - System: 'Modèle %name% - Modification - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - Système'
+Create Email Template - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - System: "Créer le modèle d'email - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - Système"
+Clone Email Template - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - System: "Cloner le modèle d'email - oro.email.emailtemplate.entity_plural_label - oro.email.entity_plural_label - Système"

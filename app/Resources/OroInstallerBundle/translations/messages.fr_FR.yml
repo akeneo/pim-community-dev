@@ -1,0 +1,76 @@
+---
+title: "Installation de l'application Oro"
+wait: En attente
+progress: En cours...
+passed: Fait
+failed: Echec
+form.configuration.database.header: Connexion de base de données MySQL
+form.configuration.database.driver: Driver
+form.configuration.database.host: Host
+form.configuration.database.port: Port
+form.configuration.database.user: Utilisateur
+form.configuration.database.password: Mot de passe
+form.configuration.database.name: Nom
+form.configuration.mailer.header: Paramètres Mailer
+form.configuration.mailer.host: Host
+form.configuration.mailer.user: Utilisateur
+form.configuration.mailer.password: Mot de passe
+form.configuration.mailer.transport: Transport
+form.configuration.system.header: Paramètres système
+form.configuration.system.secret: Secret
+form.configuration.system.locale: Paramètres régionaux
+form.configuration.websocket.header: WebSocket connexion
+form.configuration.websocket.host: Host
+form.configuration.websocket.port: Port
+form.setup.email: Email
+form.setup.username: "Nom d'utilisateur"
+form.setup.firstname: Prénom
+form.setup.lastname: Nom de famille
+form.setup.password: Mot de passe
+form.setup.password_re: Ré-entrez le mot de passe
+form.setup.load_fixtures: Charger les données de démo
+process.step.check.header: Vérification des exigences système
+process.step.configure.header: Configuration
+process.step.schema.header: Initialisation de la base de données
+process.step.schema.cache: "Vider le cache avant l'initialisation de base de données"
+process.step.schema.drop: Supprimer le shéma actuel
+process.step.schema.clear: Nettoyer les données des extensions des entités
+process.step.schema.create: Créer un schéma
+process.step.schema.fixtures: Charger les fixtures
+process.step.schema.init-config: Init config entités
+process.step.schema.init-extend: Init entités étendues
+process.step.schema.update-config: Mise à jour de la config des entités étendues
+process.step.setup.header: "Configuration de l'administration"
+process.step.installation.header: Installation
+process.step.installation.fixtures: Charger les données de démo
+process.step.installation.schema: Mise à jour du schéma
+process.step.installation.search: Créer des index de recherche
+process.step.installation.navigation: Init navigation
+process.step.installation.assets: Installation des assets
+process.step.installation.assetic: Dump assetic
+process.step.installation.assetic-oro: Dump Oro assetic
+process.step.installation.translation: Préparer les traductions
+process.step.installation.requirejs: Optimise les fichiers Javascripts (Optionnel)
+process.step.installation.cache: Vider le cache
+process.step.final.header: Terminer
+process.step.final.greeting: Succès!!!
+process.step.final.content: |-
+  Vous êtes maintenant prêt à utiliser Oro.<br>Pour obtenir de l'aide, vous pouvez vous joindre à notre communauté <a href="http://www.orocrm.com/forums"> forums</a>.
+process.button.back: Retour
+process.button.next: Suivant
+process.button.install: Installer
+process.button.finish: "Lancer l'application"
+process.operation: Opération
+process.status: Statut
+skipped: Passée
+form.configuration.mailer.port: Port
+form.configuration.mailer.encryption: Chiffrement
+form.setup.company_name: "Nom court de l'entreprise"
+form.setup.company_title: "Nom de l'entreprise"
+process.step.schema.schema-drop: Supprimer le shéma actuel
+process.step.schema.schema-create: Créer un schéma
+process.step.schema.schema-update: Mise à jour du schéma
+process.step.schema.workflows: Charger les définitions du flux de travail
+process.step.installation.js-routing: Dump le routage des JS
+process.step.installation.localization: Dump la localisation
+process.step.installation.finish: "Vider le cache afin de finaliser l'installation"

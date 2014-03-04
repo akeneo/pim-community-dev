@@ -1,0 +1,22 @@
+---
+label_type_contains: contient
+label_type_not_contains: ne contient pas
+label_type_equals: est égal à
+label_type_start_with: Commence par
+label_type_end_with: finit par
+label_type_not_equals: "n'est pas égal à"
+label_type_equal: '='
+label_type_greater_equal: '>='
+label_type_greater_than: '>'
+label_type_less_equal: '<='
+label_type_less_than: '<'
+label_date_type_equal: '='
+label_date_type_greater_equal: '>='
+label_date_type_greater_than: '>'
+label_date_type_less_equal: '<='
+label_date_type_less_than: moins de
+label_date_type_null: est vide
+label_date_type_not_null: "n'est pas vide"
+label_date_type_between: entre
+label_date_type_not_between: pas entre
+label_date_type_more_than: plus de

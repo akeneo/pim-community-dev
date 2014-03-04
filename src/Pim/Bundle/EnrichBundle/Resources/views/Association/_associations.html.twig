@@ -124,7 +124,7 @@
         {% endfor %}
 
         <div id="association-product-grid">
-            {{ dataGrid.renderGrid('association-product-grid', { product: product.id, associationType: associationTypes|first.id }) }}
+            {{ dataGrid.renderGrid('association-product-grid', { product: product.id, associationType: associationTypes|first.id, dataLocale: dataLocale }) }}
         </div>
 
         <div id="association-group-grid" class="hide">

@@ -1,0 +1,5 @@
+---
+entity.email_template.name: "Modèle d'email"
+entity.email_template.description: "Modèle d'email"
+entity.email.name: Email
+entity.email.description: "Contenu de l'email"

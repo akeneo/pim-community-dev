@@ -1,0 +1,40 @@
+---
+oro.notification.controller.emailnotification.saved.message: Règle de notification email enregistrée
+oro.notification.event.entity_post_update: "Mise à jour de l'entité"
+oro.notification.event.entity_post_persist: Créer Entité
+oro.notification.event.entity_post_remove: "Suppression de l'entité"
+oro.notification.datagrid.action.update: Modifier
+oro.notification.datagrid.action.delete: Supprimer
+oro.notification.datagrid.template: Modèle
+oro.notification.datagrid.event_name: "Nom de l'événement"
+oro.notification.datagrid.entity_name: "Nom de l'entité"
+oro.notification.datagrid.recipient.user: Destinataires internes
+oro.notification.datagrid.recipient.group: Groupes de destinataires
+oro.notification.datagrid.recipient.custom_email: E-mail destinataire
+oro.notification.datagrid.recipient.owner: "Propriétaire de l'entité de destination"
+"Edit notification rule "#"%id%": 'Modifier Règle de notification #%id%'
+New Notification Rule: Nouvelle règle de Notification
+oro.notification.validators.recipient_list.empty.message: oro.notification.validators.recipient_list.empty.message
+Add Notification Rule: Ajouter règle de Notification
+Add Notification Rule - Notifications - Emails - System: 'Ajouter Notification règle - système de Notifications - courriels-'
+Notifications: Notifications
+Notifications - Emails - System: 'Notifications - Emails - système'
+"Notification Rule "#"%id% - Edit": 'Règle de Notifications  #%id% - Modifier'
+"Notification Rule "#"%id% - Edit - Notifications - Emails - System": 'Règle de Notifications #%id% - Modifier - Notifications - Emails - Système'
+oro.notification.emailnotification.entity_label: Notification
+oro.notification.emailnotification.entity_plural_label: Notifications
+oro.notification.emailnotification.entity_description: Représente la notification par email
+oro.notification.emailnotification.id.label: ID
+oro.notification.emailnotification.entity_name.label: "Nom de l'entité"
+oro.notification.emailnotification.event.label: "Nom de l'événement"
+oro.notification.emailnotification.template.label: Modèle
+oro.notification.emailnotification.recipient_list.label: Liste des destinataires
+notification rule: règle de notification
+Edit: Modifier
+New: Nouveau
+oro.user.entity_plural_label: oro.user.entity_plural_label
+oro.user.group.entity_plural_label: oro.user.group.entity_plural_label
+Add Notification Rule - oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - System: "Ajout d'une règle de notification - oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - Système"
+oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - System: 'oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - Système'
+Notification Rule %id% - Edit: 'Règle de notification  #%id% - Modifier'
+Notification Rule %id% - Edit - oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - System: 'Règle de notification %id% - Modifier - oro.notification.emailnotification.entity_plural_label - oro.email.entity_plural_label - Système'

@@ -1,0 +1,7 @@
+---
+Export performed successfully, {{ count }} entities were exported.: 'Export effectué avec succès,  {{ count }} lignes ont été exportées.'
+Export operation fails, {{ count }} error(s) found.: "Opération d'export échouée, {{ count }} erreur (s) trouvés."
+Export started, please wait...: "L'exportation a commencé, veuillez patienter..."
+Download error log: Télécharger le journal des erreurs
+Download result file: Télécharger le fichier de résultat
+No entities found for export.: "Aucune entité trouvée pour l'exportation."
