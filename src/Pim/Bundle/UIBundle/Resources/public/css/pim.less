@@ -132,6 +132,11 @@ a.back-link i {
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
+  background-color:#f1f1f1;
+  &.quick-launchpad {
+    padding-top: 30px;
+  }
+
   .fullHeight() {
     min-height: 190px;
   }
@@ -154,10 +159,11 @@ a.back-link i {
   .shortcut.btn {
     height: 100px;
     width: 235px;
+    padding-top: 5px;
   }
   .big-icon {
     display: block;
-    font-size: 3em;
+    font-size: 2.5em;
     padding-top: 15px;
   }
   .shortcuts {
@@ -165,6 +171,14 @@ a.back-link i {
     .btn-group {
       .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
     }
+  }
+  h3 {
+    margin: 0;
+  }
+  &.header {
+    background-color: #fff;
+    padding: 5px 20px;
+    border-bottom: 1px solid #f7f7f7;
   }
 }
 
