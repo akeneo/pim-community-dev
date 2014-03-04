@@ -136,10 +136,14 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsRunning()
     {
-        $this->assertFalse($this->jobExecution->isRunning());
-        $this->jobExecution->setStartTime(new \DateTime());
         $this->assertTrue($this->jobExecution->isRunning());
-        $this->jobExecution->setEndTime(new \DateTime());
+
+        $status = $this->getMock('Akeneo\Bundle\BatchBundle\Job\BatchStatus');
+        $status->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnValue(BatchStatus::COMPLETED));
+        $this->jobExecution->setStatus($status);
+
         $this->assertFalse($this->jobExecution->isRunning());
     }
 

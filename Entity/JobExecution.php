@@ -390,7 +390,7 @@ class JobExecution
      */
     public function isRunning()
     {
-        return ($this->startTime != null && $this->endTime == null);
+        return $this->getStatus()->isRunning();
     }
 
     /**
