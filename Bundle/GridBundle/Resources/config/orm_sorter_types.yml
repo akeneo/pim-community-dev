@@ -1,7 +1,0 @@
-parameters:
-    oro_grid.sorter.class:                   Oro\Bundle\GridBundle\Sorter\ORM\Sorter
-
-services:
-    oro_grid.sorter:
-        class:     %oro_grid.sorter.class%
-        scope:     prototype

@@ -1,4 +1,0 @@
-oro_grid_bundle:
-    resource: "@OroGridBundle/Controller"
-    type:     annotation
-    prefix:   /grid
