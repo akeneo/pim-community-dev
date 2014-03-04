@@ -10,7 +10,7 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork
 this repository and submit a pull request.
 
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/) [![Build Status](https://travis-ci.org/akeneo/pim-community-dev.png?branch=PIM-2074)](https://travis-ci.org/akeneo/pim-community-dev)
 
 Requirements
 ------------
