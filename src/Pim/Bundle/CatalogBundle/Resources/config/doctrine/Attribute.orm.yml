@@ -141,6 +141,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             scale: 0
             length: 255
             column: backend_storage
+        properties:
+            type: array
+            nullable: true
         created:
             type: datetime
         updated:

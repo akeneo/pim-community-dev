@@ -99,6 +99,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     protected $scopable;
 
     /**
+     * @var array $properties
+     */
+    protected $properties;
+
+    /**
      * Get id
      *
      * @return integer
@@ -494,5 +499,56 @@ abstract class AbstractAttribute implements TimestampableInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Get properties
+     *
+     * @return array
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * Set properties
+     *
+     * @param array $properties
+     *
+     * @return AbstractAttribute
+     */
+    public function setProperties(array $properties)
+    {
+        $this->properties = $properties;
+
+        return $this;
+    }
+
+    /**
+     * Set a property
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @return AbstractAttribute
+     */
+    public function __set($property, $value)
+    {
+        $this->properties[$property] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get a property
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return isset($this->properties[$property]) ? $this->properties[$property] : null;
     }
 }
