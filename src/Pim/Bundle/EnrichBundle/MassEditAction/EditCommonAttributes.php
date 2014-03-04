@@ -252,9 +252,12 @@ class EditCommonAttributes extends AbstractMassEditAction
             }
         }
 
+        $familiesAttributes = array();
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
-                if (!$product->hasAttribute($attribute)) {
+                if (!$product->hasAttribute($attribute)
+                    && ($product->getFamily() !== null
+                    && !$product->getFamily()->getAttributes()->contains($attribute))) {
                     unset($this->commonAttributes[$key]);
                 }
             }
