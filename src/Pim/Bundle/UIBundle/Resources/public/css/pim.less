@@ -150,64 +150,20 @@ a.back-link i {
     .clearfix {
       background-color: lighten(@color-light_grey, 4%);
     }
-    .image-wrap {
-      display: block;
-      width: 40%;
-      .fullHeight();
-      background: #fff;
-      .widget-image {
-        display: block;
-        width: @imageWidth;
-        height: @imageHeight;
-        margin: 0 auto;
-        cursor: default;
-        background: url("../images/pim-icon.png") no-repeat;
-        &.collect-image {
-          background-position: 0 (@imageHeight*0);
-        }
-        &.collect-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*0);
-        }
-        &.enrich-image {
-          background-position: 0 (@imageHeight*-1);
-        }
-        &.enrich-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-1);
-        }
-        &.spread-image {
-          background-position: 0 (@imageHeight*-2);
-        }
-        &.spread-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-2);
-        }
-        &.configure-image {
-          background-position: 0 (@imageHeight*-3);
-        }
-        &.configure-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-3);
-        }
-      }
-      p {
-        padding: 35px 0 10px;
-        font-size: 17px;
-        color: #555555;
-      }
-    }
-    .list-wrap {
-      width: 60%;
-      .fullHeight();
-      margin-left: -1px;
-      border-left: 1px solid darken(@color-light_grey, 5%);
-      ul {
-        margin: 5px 0;
-        li > a {
-          font-size:14px;
-          border-bottom: 1px solid darken(@color-light_grey, 5%);
-        }
-        li.last > a {
-          border: none;
-        }
-      }
+  }
+  .shortcut.btn {
+    height: 100px;
+    width: 235px;
+  }
+  .big-icon {
+    display: block;
+    font-size: 3em;
+    padding-top: 15px;
+  }
+  .shortcuts {
+    text-align: center;
+    .btn-group {
+      .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
     }
   }
 }
