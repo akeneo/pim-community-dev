@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Entity\Family;
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -181,8 +183,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $query->getResult()->willReturn([$product1, $product2]);
 
         $product1->hasAttribute(Argument::any())->willReturn(true);
+        $product1->getFamily()->willReturn(null);
         $product2->hasAttribute(Argument::not($price))->willReturn(true);
         $product2->hasAttribute($price)->willReturn(false);
+        $product2->getFamily()->willReturn(null);
 
         $name->setLocale(Argument::any())->willReturn($name);
         $name->getAttributeType()->willReturn('pim_catalog_text');
@@ -211,6 +215,76 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $this->getCommonAttributes()->shouldReturn([$name, $color]);
         $this->getValues()->shouldHaveCount(2);
+    }
+
+    function it_allows_editing_only_the_common_attributes_taking_family_in_account(
+        $query,
+        Product $product1,
+        Product $product2,
+        Attribute $name,
+        Attribute $color,
+        Attribute $price,
+        Attribute $description,
+        Family $family,
+        ArrayCollection $arrayCollection,
+        $attributeRepository,
+        $qb
+    ) {
+        $query->getResult()->willReturn([$product1, $product2]);
+
+        $arrayCollection->contains(Argument::not($description))->willReturn(false);
+        $arrayCollection->contains($description)->willReturn(true);
+
+        $family->getAttributes()->willReturn($arrayCollection);
+        $family->getCode()->willReturn('foo');
+
+        $product1->hasAttribute(Argument::any())->willReturn(true);
+        $product1->getFamily()->willReturn(null);
+        $product2->hasAttribute(Argument::not([$price, $description]))->willReturn(true);
+        $product2->hasAttribute($price)->willReturn(false);
+        $product2->hasAttribute($description)->willReturn(false);
+        $product2->getFamily()->willReturn($family);
+
+        $name->setLocale(Argument::any())->willReturn($name);
+        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->isUnique()->willReturn(false);
+        $name->isScopable()->willReturn(false);
+        $name->isLocalizable()->willReturn(false);
+        $name->getCode()->willReturn('name');
+        $name->getVirtualGroup()->willReturn(new AttributeGroup());
+
+        $color->setLocale(Argument::any())->willReturn($color);
+        $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $color->isUnique()->willReturn(false);
+        $color->isScopable()->willReturn(false);
+        $color->isLocalizable()->willReturn(false);
+        $color->getCode()->willReturn('color');
+        $color->getVirtualGroup()->willReturn(new AttributeGroup());
+
+        $price->setLocale(Argument::any())->willReturn($price);
+        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->isUnique()->willReturn(false);
+        $price->getVirtualGroup()->willReturn(new AttributeGroup());
+        $price->getCode()->willReturn('price');
+
+        $description->setLocale(Argument::any())->willReturn($description);
+        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+        $description->isUnique()->willReturn(false);
+        $description->isScopable()->willReturn(false);
+        $description->isLocalizable()->willReturn(false);
+        $description->getCode()->willReturn('description');
+        $description->getVirtualGroup()->willReturn(new AttributeGroup());
+
+        $attributes = [$name, $color, $price, $description];
+        $attributeRepository->findAllWithGroups()->willReturn($attributes);
+
+        $this->initialize($qb);
+
+        $expectedResult = $attributes;
+        unset($expectedResult[2]);
+
+        $this->getCommonAttributes()->shouldReturn($expectedResult);
+        $this->getValues()->shouldHaveCount(count($expectedResult));
     }
 
     function it_updates_the_products_when_performimg_the_operation(
