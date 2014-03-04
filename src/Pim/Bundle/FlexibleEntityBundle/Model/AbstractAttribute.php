@@ -526,6 +526,18 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
+     * Get a property
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function getProperty($property)
+    {
+        return isset($this->properties[$property]) ? $this->properties[$property] : null;
+    }
+
+    /**
      * Set a property
      *
      * @param string $property
@@ -533,22 +545,10 @@ abstract class AbstractAttribute implements TimestampableInterface
      *
      * @return AbstractAttribute
      */
-    public function __set($property, $value)
+    public function setProperty($property, $value)
     {
         $this->properties[$property] = $value;
 
         return $this;
-    }
-
-    /**
-     * Get a property
-     *
-     * @param string $property
-     *
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return isset($this->properties[$property]) ? $this->properties[$property] : null;
     }
 }
