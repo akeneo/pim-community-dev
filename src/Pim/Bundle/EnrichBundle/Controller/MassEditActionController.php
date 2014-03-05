@@ -318,25 +318,6 @@ class MassEditActionController extends AbstractDoctrineController
                 $requestData
             );
 
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->select($rootAlias);
-
-            $from = current($qb->getDQLPart('from'));
-            $qb->resetDQLPart('from');
-            $qb->from($from->getFrom(), $from->getAlias());
-
-            if ($qb->getParameter('dataLocale')) {
-                $localeCode = $request->get('dataLocale', null);
-                $qb->setParameter('dataLocale', $localeCode);
-            }
-
-            if ($qb->getParameter('scopeCode')) {
-                $scopeCode = isset($parameters['filters']['scope']['value']) ?
-                    $parameters['filters']['scope']['value'] : null;
-                $qb->setParameter('scopeCode', $scopeCode);
-            }
-
             $this->gridQB = $qb;
         }
 
