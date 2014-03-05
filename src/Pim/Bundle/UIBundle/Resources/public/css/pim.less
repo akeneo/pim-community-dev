@@ -132,83 +132,36 @@ a.back-link i {
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
-  .fullHeight() {
-    min-height: 190px;
-  }
-  .quick-launchpad #container > .container {
+  background-color:#f1f1f1;
+  &.quick-launchpad > .container {
     padding-top: 30px;
   }
-  .quick-launchpad-widget > div {
-    min-height: @widgetHeight;
-    overflow: hidden;
-    border: 1px solid #b6b6b6;
-    .border-radius(5px);
-    .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
-  }
   .quick-launchpad-widget {
-    padding-bottom: 20px;
-    .clearfix {
+    margin-bottom: 20px;
+    &>div.clearfix {
+      overflow: hidden;
+      border: 1px solid #b6b6b6;
       background-color: lighten(@color-light_grey, 4%);
+      .border-radius(5px);
+      .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
     }
-    .image-wrap {
-      display: block;
-      width: 40%;
-      .fullHeight();
-      background: #fff;
-      .widget-image {
-        display: block;
-        width: @imageWidth;
-        height: @imageHeight;
-        margin: 0 auto;
-        cursor: default;
-        background: url("../images/pim-icon.png") no-repeat;
-        &.collect-image {
-          background-position: 0 (@imageHeight*0);
-        }
-        &.collect-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*0);
-        }
-        &.enrich-image {
-          background-position: 0 (@imageHeight*-1);
-        }
-        &.enrich-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-1);
-        }
-        &.spread-image {
-          background-position: 0 (@imageHeight*-2);
-        }
-        &.spread-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-2);
-        }
-        &.configure-image {
-          background-position: 0 (@imageHeight*-3);
-        }
-        &.configure-image:hover {
-          background-position: (@imageWidth*-1) (@imageHeight*-3);
-        }
-      }
-      p {
-        padding: 35px 0 10px;
-        font-size: 17px;
-        color: #555555;
-      }
-    }
-    .list-wrap {
-      width: 60%;
-      .fullHeight();
-      margin-left: -1px;
-      border-left: 1px solid darken(@color-light_grey, 5%);
-      ul {
-        margin: 5px 0;
-        li > a {
-          font-size:14px;
-          border-bottom: 1px solid darken(@color-light_grey, 5%);
-        }
-        li.last > a {
-          border: none;
-        }
-      }
-    }
+  }
+  .btn.shortcut {
+    height: 100px;
+    width: 25%;
+    padding-top: 5px;
+  }
+  .big-icon {
+    font-size: 2.5em;
+    padding-top: 15px;
+  }
+  h3 {
+    margin: 0;
+  }
+  &.header {
+    background-color: #fff;
+    padding: 5px 20px;
+    border-bottom: 1px solid #f7f7f7;
   }
 }
 
@@ -247,6 +200,17 @@ a[data-toggle-channel] {
     small {
       display: block;
       text-align: right;
+    }
+  }
+  tr.channel {
+    &.first {
+      border-top: none;
+    }
+    border-top: 1px solid #c2c2c2;
+    border-bottom: 1px solid #c2c2c2;
+    background: linear-gradient(#f2f2f2, #e8e8e8);
+    td {
+      padding: 2px 5px;
     }
   }
   td {

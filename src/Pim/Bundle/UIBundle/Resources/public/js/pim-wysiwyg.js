@@ -13,10 +13,17 @@ define(
                 });
             }
         };
+        var destroyEditor = function(id) {
+            var instance = tinymce.get(id);
+            if (instance) {
+                tinymce.remove(instance);
+                tinymce.execCommand('mceRemoveControl', true, id);
+            }
+        };
         Backbone.Router.prototype.on('route', function () {
-            _.each(tinymce.editors, function(editor) {
-                editor.destroy();
-            });
+            for (var i = tinymce.editors.length - 1; i >= 0; i--) {
+                destroyEditor(tinymce.editors[i].id);
+            }
         });
         return {
             init: function(id, options) {
@@ -26,9 +33,7 @@ define(
                 return this;
             },
             destroy: function(id) {
-                if (tinymce.editors[id]) {
-                    tinymce.editors[id].destroy();
-                }
+                destroyEditor(id);
 
                 return this;
             },

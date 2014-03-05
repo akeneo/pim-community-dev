@@ -10,6 +10,8 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-10-dev" depends="prepare,composer,vendors,install-all-behat,behat-10-dev"/>
+
     <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,install-all-behat,behat-coverage"/>
@@ -224,6 +226,19 @@
             <arg value="akeneo_ci_pim_behat_" />
             <!-- Profile Prefix -->
             <arg value="jenkins-" />
+            <arg value="${basedir}/bin/behat --ansi" />
+        </exec>
+    </target>
+
+    <target name="behat-10-dev" description="Run acceptance tests with Behat">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="4" />
+            <arg value="noxdebug" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_behat_10_dev_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-10-dev-" />
             <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
