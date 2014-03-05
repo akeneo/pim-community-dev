@@ -40,6 +40,7 @@
 - Fixed missing breadcrumbs for edit views
 - Fixed lost hashnav when creating an attribute group
 - Fixed a bug that prevented saving unchecked checkbox value in product edit form
+- Fixed recovered attributes on mass edit action
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
@@ -61,6 +62,7 @@ that made the entity too smart for its own good and created performances problem
 - Changed signature of ProductRepository::getEligibleProductIds()
 - Changed signature of GroupType::__construct()
 - Changed signature of AssociationType::__construct()
+- Removed AttributeRepository::findallWithGroups()
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
