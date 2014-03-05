@@ -1,4 +1,4 @@
-# 1.0.0-
+# 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features
 - Uservoice integration
@@ -61,6 +61,7 @@ that made the entity too smart for its own good and created performances problem
 - Changed signature of ProductRepository::getEligibleProductIds()
 - Changed signature of GroupType::__construct()
 - Changed signature of AssociationType::__construct()
+- Rename grid_extensions.yml, grid_actions.yml, grid_listeners.yml, grid_attribute_types.yml to extensions.yml, actions.yml, event_listeners.yml, attribute_types.yml
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 
