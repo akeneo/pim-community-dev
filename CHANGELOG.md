@@ -41,6 +41,7 @@
 - Fixed lost hashnav when creating an attribute group
 - Fixed a bug that prevented saving unchecked checkbox value in product edit form
 - Fixed recovered attributes on mass edit action
+- Fixed a bug with tooltips sometimes not appearing due to a conflict between bootstrap and jquery tooltip plugins
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
