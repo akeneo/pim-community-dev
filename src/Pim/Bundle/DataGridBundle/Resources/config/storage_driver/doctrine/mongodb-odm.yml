@@ -1,0 +1,4 @@
+parameters:
+    pim_datagrid.extension.pager.product.pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\Odm\Pager
+
+services: ~

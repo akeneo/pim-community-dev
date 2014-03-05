@@ -4,9 +4,16 @@ parameters:
 
 services:
     pim_datagrid.extension.pager.orm.pager:
+        class: %pim_datagrid.extension.pager.orm.pager.class%
         arguments:
             - '@oro_security.acl_helper'
-        class: %pim_datagrid.extension.pager.orm.pager.class%
 
     pim_datagrid.extension.pager.odm.pager:
         class: %pim_datagrid.extension.pager.odm.pager.class%
+        arguments:
+            - '@oro_security.acl_helper'
+
+    pim_datagrid.extension.pager.product.pager:
+        class: %pim_datagrid.extension.pager.product.pager.class%
+        arguments:
+            - '@oro_security.acl_helper'
