@@ -29,21 +29,6 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     * @deprecated
-     */
-    public function findAllWithGroups()
-    {
-        $qb = $this->createQueryBuilder('a')
-            ->addSelect('atrans', 'g', 'gtrans')
-            ->leftJoin('a.translations', 'atrans')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gtrans');
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
      * Find attributes with related attribute groups
      *
      * @param array $attributeIds
