@@ -21,9 +21,10 @@ services:
             - %kernel.root_dir%/config
             - %kernel.environment%
 
-    kernel.listener.install.event:
-        class:                                    %oro_installer.listener.request.class%
-        arguments:
-            - "@router"
-            - %installed%
-            - %kernel.debug%
+# Disabled as the PIM doesn't have an Web installer
+#    kernel.listener.install.event:
+#        class:                                    %oro_installer.listener.request.class%
+#        arguments:
+#            - "@router"
+#            - %installed%
+#            - %kernel.debug%

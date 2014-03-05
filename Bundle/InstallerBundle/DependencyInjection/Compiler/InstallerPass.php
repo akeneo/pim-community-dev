@@ -9,6 +9,10 @@ class InstallerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+
+        // PIM does not need the forced redirect to inexistent installer
+        return;
+
         // we have to add installer listener even if the application is already installed
         // this is required because we are clearing the cache on the last installation step
         // and as the result the login page is appeared instead of the final installer page
