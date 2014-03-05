@@ -490,7 +490,14 @@ class ProductManager extends FlexibleManager
 
     /**
      * Find common attributes
+     * Common attributes are:
+     *   - not unique (and not identifier)
+     *   - without value AND link to family
+     *   - with value
+     *
      * @param array $productIds
+     *
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\Attribute[]
      */
     public function findCommonAttributes(array $productIds)
     {

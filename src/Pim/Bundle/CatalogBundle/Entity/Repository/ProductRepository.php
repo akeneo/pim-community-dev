@@ -536,7 +536,14 @@ SQL;
         );
     }
 
-
+    /**
+     * Find all attribute ids linked to a family
+     * A list of product ids can be passed as parameter
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
     public function findFamilyAttributeIds(array $productIds = array())
     {
         $qb = $this->createQueryBuilder('p');
@@ -553,6 +560,13 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * Find all attribute ids with values from a list of product ids
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
     public function findAttributeIdsWithValues(array $productIds)
     {
         $qb = $this->createQueryBuilder('p');
@@ -560,11 +574,8 @@ SQL;
             ->select('a.id')
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'a')
+            ->where($qb->expr()->in('p.id', $productIds))
             ->groupBy('a.id');
-
-        if (!empty($productIds)) {
-            $qb->where($qb->expr()->in('p.id', $productIds));
-        }
 
         return $qb->getQuery()->execute();
     }

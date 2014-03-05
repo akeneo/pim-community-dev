@@ -42,6 +42,14 @@ class AttributeRepository extends FlexibleAttributeRepository implements
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * Find attributes with related attribute groups
+     *
+     * @param array $attributeIds
+     * @param array $criterias
+     *
+     * @return array
+     */
     public function findWithGroups(array $attributeIds = array(), array $criterias = array())
     {
         $qb = $this->createQueryBuilder('a')
