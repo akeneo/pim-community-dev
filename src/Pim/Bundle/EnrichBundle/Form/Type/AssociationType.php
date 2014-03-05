@@ -20,6 +20,11 @@ class AssociationType extends AbstractType
      */
     protected $productClass;
 
+    /**
+     * Costructor
+     *
+     * @param string $productClass
+     */
     public function __construct($productClass)
     {
         $this->productClass = $productClass;
