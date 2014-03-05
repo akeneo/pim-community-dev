@@ -543,18 +543,40 @@ SQL;
      * @param array $productIds
      *
      * @return mixed
+     *
+     * SELECT a.id, COUNT(a.id) AS COUNTATT
+     * FROM pim_catalog_product p
+     * INNER JOIN pim_catalog_family f ON f.id = p.family_id
+     * INNER JOIN pim_catalog_family_attribute fa ON fa.family_id = f.id
+     * INNER JOIN pim_catalog_attribute a ON a.id = fa.attribute_id
+     * WHERE p.id IN (69,70,71)
+     * GROUP BY a.id
+     * HAVING COUNTATT = (
+     *     SELECT COUNT(f.id)
+     *     FROM pim_catalog_product p
+     *     INNER JOIN pim_catalog_family f ON f.id = p.family_id
+     *     WHERE p.id IN (69,70,71)
+     * )
      */
     public function findFamilyAttributeIds(array $productIds = array())
     {
         $qb = $this->createQueryBuilder('p');
         $qb
-            ->select('a.id')
+            ->select('a.id, COUNT(a.id) AS COUNT_ATT')
             ->innerJoin('p.family', 'f')
             ->innerJoin('f.attributes', 'a')
             ->groupBy('a.id');
 
         if (!empty($productIds)) {
             $qb->where($qb->expr()->in('p.id', $productIds));
+
+            $subQb = $this->createQueryBuilder('p_sub');
+            $subQb
+                ->select('COUNT(f_sub.id)')
+                ->innerJoin('p_sub.family', 'f_sub')
+                ->where($subQb->expr()->in('p_sub.id', $productIds));
+
+            $qb->having('COUNT_ATT = ('. $subQb .')');
         }
 
         return $qb->getQuery()->execute();
@@ -566,6 +588,21 @@ SQL;
      * @param array $productIds
      *
      * @return mixed
+     *
+     * SELECT att.id, COUNT(att.id) AS COUNTATT
+     * FROM (
+     *     SELECT a.id FROM pim_catalog_product p
+     *     INNER JOIN pim_catalog_product_value pv ON pv.entity_id = p.id
+     *     INNER JOIN pim_catalog_attribute a ON a.id = pv.attribute_id
+     *     WHERE p.id IN(36,81,85,86,120,131)
+     *     GROUP BY p.id, a.id
+     * ) att
+     * GROUP BY att.id
+     * HAVING COUNTATT = (
+     *     SELECT COUNT(p.id)
+     *     FROM pim_catalog_product p
+     *     WHERE p.id IN(36,81,85,86,120,131)
+     * );
      */
     public function findAttributeIdsWithValues(array $productIds)
     {
