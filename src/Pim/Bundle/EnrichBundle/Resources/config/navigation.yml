@@ -18,7 +18,7 @@ oro_menu_config:
             route: pim_enrich_product_index
             aclResourceId: pim_enrich_product_index
             extras:
-                routes: ['/^pim_enrich_product_\w+$/']
+                routes: ['/^pim_enrich_product_\w+$/', '/^pim_enrich_mass_edit_\w+$/']
         pim_enrich_attribute:
             label: pim_menu.item.attribute
             route: pim_enrich_attribute_index
