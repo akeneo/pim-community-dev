@@ -501,7 +501,7 @@ class ProductManager extends FlexibleManager
      */
     public function findCommonAttributes(array $productIds)
     {
-        $attributes = $this->getFlexibleRepository()->findFamilyAttributeIds($productIds);
+        $attributes  = $this->getFlexibleRepository()->findFamilyAttributeIds($productIds);
         $attributes += $this->getFlexibleRepository()->findAttributeIdsWithValues($productIds);
 
         $attributeIds = array();
