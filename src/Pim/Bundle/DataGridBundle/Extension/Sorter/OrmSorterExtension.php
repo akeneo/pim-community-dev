@@ -100,6 +100,6 @@ class OrmSorterExtension extends OroOrmSorterExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return ($datasourceType == PimOrmDatasource::TYPE || $datasourceType == ProductDatasource::TYPE);
+        return ($datasourceType == PimOrmDatasource::TYPE);
     }
 }
