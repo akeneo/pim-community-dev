@@ -10,6 +10,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
@@ -60,6 +61,12 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @var ArrayCollection
      */
     protected $displayedAttributes;
+
+    /**
+     * Collection of the attributes for each family code
+     * @var array $familiesAttributes
+     */
+    protected $familiesAttributes = array();
 
     /**
      * Constructor
@@ -206,12 +213,30 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize(QueryBuilder $qb)
     {
-        $products = $qb->getQuery()->getResult();
-        $this->initializeCommonAttributes($products);
+        $productIds = $this->getProductIdsFromQB($qb);
+        $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
         }
+    }
+
+    /**
+     * Get only product ids from query builder
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return integer[]
+     */
+    protected function getProductIdsFromQB(QueryBuilder $qb)
+    {
+        $products = $qb->getQuery()->getResult();
+        $productIds = array();
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
+        }
+
+        return $productIds;
     }
 
     /**
@@ -231,33 +256,25 @@ class EditCommonAttributes extends AbstractMassEditAction
      * Attribute is not available for mass editing if:
      *   - it is an identifier
      *   - it is unique
-     *   - it isn't set on one of the selected products
+     *   - without value AND not link to family
+     *   - is not common to every products
      *
-     * @param array $products
+     * @param array $productIds
      */
-    protected function initializeCommonAttributes(array $products)
+    protected function initializeCommonAttributes(array $productIds)
     {
-        $currentLocaleCode = $this->getLocale()->getCode();
-        $attributes = $this->productManager->getAttributeRepository()->findAllWithGroups();
-
         // Set attribute options locale
+        $currentLocaleCode = $this->getLocale()->getCode();
         $this->productManager->setLocale($currentLocaleCode);
 
+        // Get common attributes
+        $attributes = $this->productManager->findCommonAttributes($productIds);
+
         foreach ($attributes as $attribute) {
-            if ('pim_catalog_identifier' !== $attribute->getAttributeType() && !$attribute->isUnique()) {
-                $attribute->setLocale($currentLocaleCode);
-                $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
+            $attribute->setLocale($currentLocaleCode);
+            $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
 
-                $this->commonAttributes[] = $attribute;
-            }
-        }
-
-        foreach ($products as $product) {
-            foreach ($this->commonAttributes as $key => $attribute) {
-                if (!$product->hasAttribute($attribute)) {
-                    unset($this->commonAttributes[$key]);
-                }
-            }
+            $this->commonAttributes[] = $attribute;
         }
     }
 
@@ -283,7 +300,10 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
-        $productValue = $this->getProductValue($product, $value);
+        if (null === $productValue = $this->getProductValue($product, $value)) {
+            $productValue = $this->createValue($value->getAttribute(), $value->getLocale(), $value->getScope());
+            $product->addValue($productValue);
+        }
 
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
