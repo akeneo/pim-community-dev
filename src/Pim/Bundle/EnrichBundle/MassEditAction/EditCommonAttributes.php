@@ -213,7 +213,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize(QueryBuilder $qb)
     {
-        $productIds = $this->getProductIdsFromQB(clone $qb);
+        $productIds = $this->getProductIdsFromQB($qb);
         $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
@@ -230,14 +230,10 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function getProductIdsFromQB(QueryBuilder $qb)
     {
-        $rootAlias = current($qb->getRootAliases());
-        $productIdExpr = sprintf('%s.id', $rootAlias);
-        $qb->select($productIdExpr)->groupBy($productIdExpr);
-
         $products = $qb->getQuery()->getResult();
         $productIds = array();
-        foreach ($products as $productId) {
-            $productIds[] = $productId['id'];
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
         }
 
         return $productIds;
