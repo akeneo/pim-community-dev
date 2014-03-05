@@ -38,6 +38,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $userContext->getUserLocales()->willReturn([$en, $de]);
 
         $qb->getQuery()->willReturn($query);
+        $qb->getRootAliases()->willReturn(['p']);
+        $qb->select(Argument::any())->willReturn($qb);
+        $qb->groupBy(Argument::any())->willReturn($qb);
 
         $productManager->setLocale(Argument::any())->willReturn($productManager);
         $productManager->createProductValue()->willReturn($productValue);
@@ -109,182 +112,27 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Product $product1,
         Product $product2,
         Attribute $name,
-        $attributeRepository,
+        $productManager,
         $qb
     ) {
         $query->getResult()->willReturn([$product1, $product2]);
 
-        $product1->hasAttribute(Argument::any())->willReturn(true);
-        $product2->hasAttribute(Argument::any())->willReturn(true);
+        $product1->getId()->willReturn(1);
+        $product2->getId()->willReturn(2);
 
         $name->setLocale(Argument::any())->willReturn($name);
         $name->getAttributeType()->willReturn('pim_catalog_text');
-        $name->isUnique()->willReturn(false);
         $name->isScopable()->willReturn(false);
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
         $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $attributeRepository->findAllWithGroups()->willReturn([$name]);
+        $productManager->findCommonAttributes([1,2])->willReturn([$name]);
 
         $this->initialize($qb);
 
         $this->getCommonAttributes()->shouldReturn([$name]);
         $this->getValues()->shouldHaveCount(1);
-    }
-
-    function it_does_not_allow_editing_identifier_attributes(
-        $query,
-        Product $product,
-        Attribute $identifier,
-        $attributeRepository,
-        $qb
-    ) {
-        $query->getResult()->willReturn([$product]);
-
-        $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
-        $attributeRepository->findAllWithGroups()->willReturn([$identifier]);
-
-        $this->initialize($qb);
-
-        $this->getCommonAttributes()->shouldHaveCount(0);
-        $this->getValues()->shouldHaveCount(0);
-    }
-
-    function it_does_not_allow_editing_unique_attributes(
-        $query,
-        Product $product,
-        Attribute $attribute,
-        $attributeRepository,
-        $qb
-    ) {
-        $query->getResult()->willReturn([$product]);
-
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
-        $attribute->isUnique()->willReturn(true);
-        $attributeRepository->findAllWithGroups()->willReturn([$attribute]);
-
-        $this->initialize($qb);
-
-        $this->getCommonAttributes()->shouldHaveCount(0);
-        $this->getValues()->shouldHaveCount(0);
-    }
-
-    function it_allows_editing_only_the_common_attributes(
-        $query,
-        Product $product1,
-        Product $product2,
-        Attribute $name,
-        Attribute $color,
-        Attribute $price,
-        $attributeRepository,
-        $qb
-    ) {
-        $query->getResult()->willReturn([$product1, $product2]);
-
-        $product1->hasAttribute(Argument::any())->willReturn(true);
-        $product1->getFamily()->willReturn(null);
-        $product2->hasAttribute(Argument::not($price))->willReturn(true);
-        $product2->hasAttribute($price)->willReturn(false);
-        $product2->getFamily()->willReturn(null);
-
-        $name->setLocale(Argument::any())->willReturn($name);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
-        $name->isUnique()->willReturn(false);
-        $name->isScopable()->willReturn(false);
-        $name->isLocalizable()->willReturn(false);
-        $name->getCode()->willReturn('name');
-        $name->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $color->setLocale(Argument::any())->willReturn($color);
-        $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
-        $color->isUnique()->willReturn(false);
-        $color->isScopable()->willReturn(false);
-        $color->isLocalizable()->willReturn(false);
-        $color->getCode()->willReturn('color');
-        $color->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $price->setLocale(Argument::any())->willReturn($price);
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
-        $price->isUnique()->willReturn(false);
-        $price->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $attributeRepository->findAllWithGroups()->willReturn([$name, $color, $price]);
-
-        $this->initialize($qb);
-
-        $this->getCommonAttributes()->shouldReturn([$name, $color]);
-        $this->getValues()->shouldHaveCount(2);
-    }
-
-    function it_allows_editing_only_the_common_attributes_taking_family_in_account(
-        $query,
-        Product $product1,
-        Product $product2,
-        Attribute $name,
-        Attribute $color,
-        Attribute $price,
-        Attribute $description,
-        Family $family,
-        ArrayCollection $arrayCollection,
-        $attributeRepository,
-        $qb
-    ) {
-        $query->getResult()->willReturn([$product1, $product2]);
-
-        $arrayCollection->contains(Argument::not($description))->willReturn(false);
-        $arrayCollection->contains($description)->willReturn(true);
-
-        $family->getAttributes()->willReturn($arrayCollection);
-        $family->getCode()->willReturn('foo');
-
-        $product1->hasAttribute(Argument::any())->willReturn(true);
-        $product1->getFamily()->willReturn(null);
-        $product2->hasAttribute(Argument::not([$price, $description]))->willReturn(true);
-        $product2->hasAttribute($price)->willReturn(false);
-        $product2->hasAttribute($description)->willReturn(false);
-        $product2->getFamily()->willReturn($family);
-
-        $name->setLocale(Argument::any())->willReturn($name);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
-        $name->isUnique()->willReturn(false);
-        $name->isScopable()->willReturn(false);
-        $name->isLocalizable()->willReturn(false);
-        $name->getCode()->willReturn('name');
-        $name->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $color->setLocale(Argument::any())->willReturn($color);
-        $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
-        $color->isUnique()->willReturn(false);
-        $color->isScopable()->willReturn(false);
-        $color->isLocalizable()->willReturn(false);
-        $color->getCode()->willReturn('color');
-        $color->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $price->setLocale(Argument::any())->willReturn($price);
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
-        $price->isUnique()->willReturn(false);
-        $price->getVirtualGroup()->willReturn(new AttributeGroup());
-        $price->getCode()->willReturn('price');
-
-        $description->setLocale(Argument::any())->willReturn($description);
-        $description->getAttributeType()->willReturn('pim_catalog_textarea');
-        $description->isUnique()->willReturn(false);
-        $description->isScopable()->willReturn(false);
-        $description->isLocalizable()->willReturn(false);
-        $description->getCode()->willReturn('description');
-        $description->getVirtualGroup()->willReturn(new AttributeGroup());
-
-        $attributes = [$name, $color, $price, $description];
-        $attributeRepository->findAllWithGroups()->willReturn($attributes);
-
-        $this->initialize($qb);
-
-        $expectedResult = $attributes;
-        unset($expectedResult[2]);
-
-        $this->getCommonAttributes()->shouldReturn($expectedResult);
-        $this->getValues()->shouldHaveCount(count($expectedResult));
     }
 
     function it_updates_the_products_when_performimg_the_operation(
@@ -293,24 +141,22 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Product $product1,
         Product $product2,
         Attribute $attribute,
-        $attributeRepository,
         $productManager,
         $productValue
     ) {
         $query->getResult()->willReturn([$product1, $product2]);
 
-        $product1->hasAttribute($attribute)->willReturn(true);
-        $product2->hasAttribute($attribute)->willReturn(true);
+        $product1->getId()->willReturn(1);
+        $product2->getId()->willReturn(2);
 
         $attribute->setLocale(Argument::any())->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_text');
-        $attribute->isUnique()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('attribute');
         $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $attributeRepository->findAllWithGroups()->willReturn([$attribute]);
+        $productManager->findCommonAttributes([1,2])->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
 
         $this->initialize($qb);
