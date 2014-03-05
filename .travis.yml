@@ -15,7 +15,7 @@ cache:
 
 before_script:
     - composer self-update --no-interaction
-    - composer update --prefer-dist --no-scripts --no-interaction
+    - composer update --prefer-source --no-scripts --no-interaction
 
 script:
     - phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test

@@ -205,3 +205,71 @@ jenkins-docs-2:
             output_path: null,app/build/logs/behat-docs/
     filters:
         tags: ~skip&&~skip-doc
+
+jenkins-10-dev-1:
+    context:
+        parameters:
+            base_url: http://pim-behat-10-dev-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-10-dev-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-10-dev-2:
+    context:
+        parameters:
+            base_url: http://pim-behat-10-dev-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-10-dev-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-10-dev-3:
+    context:
+        parameters:
+            base_url: http://pim-behat-10-dev-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-10-dev-3.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-10-dev-4:
+    context:
+        parameters:
+            base_url: http://pim-behat-10-dev-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-10-dev-4.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc

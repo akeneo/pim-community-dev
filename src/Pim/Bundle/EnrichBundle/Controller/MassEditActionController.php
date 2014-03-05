@@ -267,7 +267,6 @@ class MassEditActionController extends AbstractDoctrineController
     protected function getProductCount(Request $request)
     {
         $qb = clone $this->getGridQB($request);
-
         $rootEntity = current($qb->getRootEntities());
         $rootAlias  = $qb->getRootAlias();
         $rootField  = $rootAlias.'.id';
@@ -291,9 +290,10 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $params = $this->parametersParser->parse($request);
 
-        $params['gridName'] = $request->get('gridName');
-        $params['values']   = implode(',', $params['values']);
-        $params['filters']  = json_encode($params['filters']);
+        $params['gridName']   = $request->get('gridName');
+        $params['values']     = implode(',', $params['values']);
+        $params['filters']    = json_encode($params['filters']);
+        $params['dataLocale'] = $request->get('dataLocale', null);
 
         return $params;
     }
@@ -325,6 +325,17 @@ class MassEditActionController extends AbstractDoctrineController
             $from = current($qb->getDQLPart('from'));
             $qb->resetDQLPart('from');
             $qb->from($from->getFrom(), $from->getAlias());
+
+            if ($qb->getParameter('dataLocale')) {
+                $localeCode = $request->get('dataLocale', null);
+                $qb->setParameter('dataLocale', $localeCode);
+            }
+
+            if ($qb->getParameter('scopeCode')) {
+                $scopeCode = isset($parameters['filters']['scope']['value']) ?
+                    $parameters['filters']['scope']['value'] : null;
+                $qb->setParameter('scopeCode', $scopeCode);
+            }
 
             $this->gridQB = $qb;
         }

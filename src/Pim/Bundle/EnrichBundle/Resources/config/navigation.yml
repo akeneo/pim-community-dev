@@ -18,7 +18,7 @@ oro_menu_config:
             route: pim_enrich_product_index
             aclResourceId: pim_enrich_product_index
             extras:
-                routes: ['/^pim_enrich_product_\w+$/']
+                routes: ['/^pim_enrich_product_\w+$/', '/^pim_enrich_mass_edit_\w+$/']
         pim_enrich_attribute:
             label: pim_menu.item.attribute
             route: pim_enrich_attribute_index
@@ -133,28 +133,30 @@ oro_menu_config:
                         pim_enrich_channel: ~
 
 oro_titles:
-    oro_default:                        pim_title.dashboard
-    pim_enrich_attributegroup_create:   pim_title.attribute_group.create
-    pim_enrich_attributegroup_edit:     pim_title.attribute_group.edit
-    pim_enrich_categorytree_create:     pim_title.category.create
-    pim_enrich_categorytree_edit:       pim_title.category.edit
-    pim_enrich_attribute_index:         pim_title.attribute.index
-    pim_enrich_attribute_create:        pim_title.attribute.create
-    pim_enrich_attribute_edit:          pim_title.attribute.edit
-    pim_enrich_product_index:           pim_title.product.index
-    pim_enrich_product_edit:            pim_title.product.edit
-    pim_enrich_family_index:            pim_title.family.index
-    pim_enrich_family_edit:             pim_title.family.edit
-    pim_enrich_channel_index:           pim_title.channel.index
-    pim_enrich_channel_create:          pim_title.channel.create
-    pim_enrich_channel_edit:            pim_title.channel.edit
-    pim_enrich_currency_index:          pim_title.currency.index
-    pim_enrich_locale_index:            pim_title.locale.index
-    pim_enrich_group_index:             pim_title.group.index
-    pim_enrich_group_edit:              pim_title.group.edit
-    pim_enrich_variant_group_index:     pim_title.variant_group.index
-    pim_enrich_variant_group_edit:      pim_title.variant_group.edit
-    pim_enrich_association_type_index:  pim_title.association_type.index
-    pim_enrich_association_type_edit:   pim_title.association_type.edit
-    pim_enrich_group_type_index:        pim_title.group_type.index
-    pim_enrich_group_type_edit:         pim_title.group_type.edit
+    oro_default:                           pim_title.dashboard
+    pim_enrich_attributegroup_create:      pim_title.attribute_group.create
+    pim_enrich_attributegroup_edit:        pim_title.attribute_group.edit
+    pim_enrich_categorytree_create:        pim_title.category.create
+    pim_enrich_categorytree_edit:          pim_title.category.edit
+    pim_enrich_attribute_index:            pim_title.attribute.index
+    pim_enrich_attribute_create:           pim_title.attribute.create
+    pim_enrich_attribute_edit:             pim_title.attribute.edit
+    pim_enrich_product_index:              pim_title.product.index
+    pim_enrich_product_edit:               pim_title.product.edit
+    pim_enrich_family_index:               pim_title.family.index
+    pim_enrich_family_edit:                pim_title.family.edit
+    pim_enrich_channel_index:              pim_title.channel.index
+    pim_enrich_channel_create:             pim_title.channel.create
+    pim_enrich_channel_edit:               pim_title.channel.edit
+    pim_enrich_currency_index:             pim_title.currency.index
+    pim_enrich_locale_index:               pim_title.locale.index
+    pim_enrich_group_index:                pim_title.group.index
+    pim_enrich_group_edit:                 pim_title.group.edit
+    pim_enrich_variant_group_index:        pim_title.variant_group.index
+    pim_enrich_variant_group_edit:         pim_title.variant_group.edit
+    pim_enrich_association_type_index:     pim_title.association_type.index
+    pim_enrich_association_type_edit:      pim_title.association_type.edit
+    pim_enrich_group_type_index:           pim_title.group_type.index
+    pim_enrich_group_type_edit:            pim_title.group_type.edit
+    pim_enrich_mass_edit_action_choose:    pim_title.mass_edit_action.choose
+    pim_enrich_mass_edit_action_configure: pim_title.mass_edit_action.configure
