@@ -136,34 +136,24 @@ a.back-link i {
   &.quick-launchpad > .container {
     padding-top: 30px;
   }
-  .quick-launchpad-widget > div {
-    min-height: @widgetHeight;
-    overflow: hidden;
-    border: 1px solid #b6b6b6;
-    .border-radius(5px);
-    .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
-  }
   .quick-launchpad-widget {
-    padding-bottom: 20px;
-    .clearfix {
+    margin-bottom: 20px;
+    &>div.clearfix {
+      overflow: hidden;
+      border: 1px solid #b6b6b6;
       background-color: lighten(@color-light_grey, 4%);
+      .border-radius(5px);
+      .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
     }
   }
-  .shortcut.btn {
+  .btn.shortcut {
     height: 100px;
-    width: 235px;
+    width: 25%;
     padding-top: 5px;
   }
   .big-icon {
-    display: block;
     font-size: 2.5em;
     padding-top: 15px;
-  }
-  .shortcuts {
-    text-align: center;
-    .btn-group {
-      .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
-    }
   }
   h3 {
     margin: 0;
