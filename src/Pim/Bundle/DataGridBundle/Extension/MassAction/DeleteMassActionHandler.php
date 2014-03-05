@@ -61,7 +61,6 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
             $iteration++;
             if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
                 $this->entityManager->flush();
-                $this->entityManager->clear();
             }
         }
         $this->entityManager->flush();
