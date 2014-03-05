@@ -213,7 +213,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize(QueryBuilder $qb)
     {
-        $productIds = $this->getProductIdsFromQB($qb);
+        $productIds = $this->getProductIdsFromQB(clone $qb);
         $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
@@ -304,7 +304,10 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
-        $productValue = $this->getProductValue($product, $value);
+        if (null === $productValue = $this->getProductValue($product, $value)) {
+            $productValue = $this->createValue($value->getAttribute(), $value->getLocale(), $value->getScope());
+            $product->addValue($productValue);
+        }
 
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
