@@ -535,4 +535,37 @@ SQL;
             !(1 === count($result) && $value === ($result instanceof \Iterator ? $result->current() : current($result)))
         );
     }
+
+
+    public function findFamilyAttributeIds(array $productIds = array())
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id')
+            ->innerJoin('p.family', 'f')
+            ->innerJoin('f.attributes', 'a')
+            ->groupBy('a.id');
+
+        if (!empty($productIds)) {
+            $qb->where($qb->expr()->in('p.id', $productIds));
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function findAttributeIdsWithValues(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->groupBy('a.id');
+
+        if (!empty($productIds)) {
+            $qb->where($qb->expr()->in('p.id', $productIds));
+        }
+
+        return $qb->getQuery()->execute();
+    }
 }
