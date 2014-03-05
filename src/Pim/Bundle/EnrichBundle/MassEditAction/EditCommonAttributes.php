@@ -213,12 +213,27 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize(QueryBuilder $qb)
     {
-        $products = $qb->getQuery()->getResult();
-        $this->initializeCommonAttributes($products);
+        $productIds = $this->getProductIdsFromQB($qb);
+        $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
         }
+    }
+
+    protected function getProductIdsFromQB(QueryBuilder $qb)
+    {
+        $rootAlias = current($qb->getRootAliases());
+        $productIdExpr = sprintf('%s.id', $rootAlias);
+        $qb->select($productIdExpr)->groupBy($productIdExpr);
+
+        $products = $qb->getQuery()->getResult();
+        $productIds = array();
+        foreach ($products as $productId) {
+            $productIds[] = $productId['id'];
+        }
+
+        return $productIds;
     }
 
     /**
@@ -238,65 +253,26 @@ class EditCommonAttributes extends AbstractMassEditAction
      * Attribute is not available for mass editing if:
      *   - it is an identifier
      *   - it is unique
-     *   - it isn't set on one of the selected products
+     *   - without value AND not link to family
+     *   - is not common to every products
      *
-     * @param array $products
+     * @param array $productIds
      */
-    protected function initializeCommonAttributes(array $products)
+    protected function initializeCommonAttributes(array $productIds)
     {
-        $currentLocaleCode = $this->getLocale()->getCode();
-        $attributes = $this->productManager->getAttributeRepository()->findAllWithGroups();
-
         // Set attribute options locale
+        $currentLocaleCode = $this->getLocale()->getCode();
         $this->productManager->setLocale($currentLocaleCode);
 
+        // Get common attributes
+        $attributes = $this->productManager->findCommonAttributes($productIds);
+
         foreach ($attributes as $attribute) {
-            if ('pim_catalog_identifier' !== $attribute->getAttributeType() && !$attribute->isUnique()) {
-                $attribute->setLocale($currentLocaleCode);
-                $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
+            $attribute->setLocale($currentLocaleCode);
+            $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
 
-                $this->commonAttributes[] = $attribute;
-            }
+            $this->commonAttributes[] = $attribute;
         }
-
-        foreach ($products as $product) {
-            foreach ($this->commonAttributes as $key => $attribute) {
-                if (!$product->hasAttribute($attribute)
-                    && !$this->isAttributeFromFamily($attribute, $product->getFamily())) {
-                    unset($this->commonAttributes[$key]);
-                }
-            }
-        }
-    }
-
-    /**
-     * Predicate to know if attribute is part of product family or not
-     *
-     * @param AbstractAttribute $attribute
-     * @param Family            $family
-     *
-     * @return boolean
-     */
-    protected function isAttributeFromFamily(AbstractAttribute $attribute, Family $family = null)
-    {
-        return $family !== null && $this->getFamilyAttributes($family)->contains($attribute);
-    }
-
-    /**
-     * Get the attributes of a family
-     *
-     * @param Family $family
-     *
-     * @return AbstractAttribute[]
-     */
-    protected function getFamilyAttributes(Family $family)
-    {
-        $familyCode = $family->getCode();
-        if (!isset($this->familiesAttributes[$familyCode])) {
-            $this->familiesAttributes[$familyCode] = $family->getAttributes();
-        }
-
-        return $this->familiesAttributes[$familyCode];
     }
 
     /**

@@ -42,6 +42,25 @@ class AttributeRepository extends FlexibleAttributeRepository implements
         return $qb->getQuery()->execute();
     }
 
+    public function findWithGroups(array $attributeIds = array(), array $criterias = array())
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('atrans', 'g', 'gtrans')
+            ->leftJoin('a.translations', 'atrans')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gtrans');
+
+        if (!empty($attributeIds)) {
+            $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
+        }
+
+        foreach ($criterias as $criteria => $value) {
+            $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
     /**
      * {@inheritdoc}
      */

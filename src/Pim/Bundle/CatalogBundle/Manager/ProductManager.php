@@ -487,4 +487,23 @@ class ProductManager extends FlexibleManager
     {
         return $this->getFlexibleRepository()->valueExists($value);
     }
+
+    /**
+     * Find common attributes
+     * @param array $productIds
+     */
+    public function findCommonAttributes(array $productIds)
+    {
+        $attributes = $this->getFlexibleRepository()->findFamilyAttributeIds($productIds);
+        $attributes += $this->getFlexibleRepository()->findAttributeIdsWithValues($productIds);
+
+        $attributeIds = array();
+        foreach ($attributes as $attributeId) {
+            $attributeIds[] = $attributeId['id'];
+        }
+
+        return $this
+            ->getAttributeRepository()
+            ->findWithGroups($attributeIds, array('unique' => 0));
+    }
 }
