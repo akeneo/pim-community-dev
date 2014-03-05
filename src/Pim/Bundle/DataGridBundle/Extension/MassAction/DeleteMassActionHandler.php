@@ -3,9 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Translation\TranslatorInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
