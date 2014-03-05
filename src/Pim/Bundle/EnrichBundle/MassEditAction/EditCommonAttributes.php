@@ -221,6 +221,13 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
     }
 
+    /**
+     * Get only product ids from query builder
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return integer[]
+     */
     protected function getProductIdsFromQB(QueryBuilder $qb)
     {
         $rootAlias = current($qb->getRootAliases());
