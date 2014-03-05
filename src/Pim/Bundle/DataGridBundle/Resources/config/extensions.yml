@@ -1,23 +1,15 @@
 parameters:
     pim_datagrid.extension.filter.orm_filter.class:     Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension
-    pim_datagrid.extension.filter.odm_filter.class:     Pim\Bundle\DataGridBundle\Extension\Filter\OdmFilterExtension
     pim_datagrid.extension.sorter.orm_sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
     pim_datagrid.extension.pager.orm_pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
-    pim_datagrid.extension.pager.odm_pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\OdmPagerExtension
-    pim_datagrid.extension.pager.product_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension
     pim_datagrid.extension.selector.orm_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\OrmSelectorExtension
+
+    pim_datagrid.extension.pager.product_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension
+    pim_datagrid.extension.filter.product_filter.class: Pim\Bundle\DataGridBundle\Extension\Filter\ProductFilterExtension
 
 services:
     pim_datagrid.extension.filter.orm_filter:
         class: %pim_datagrid.extension.filter.orm_filter.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-        tags:
-             - { name: oro_datagrid.extension }
-
-    pim_datagrid.extension.filter.odm_filter:
-        class: %pim_datagrid.extension.filter.odm_filter.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
@@ -46,13 +38,13 @@ services:
         tags:
              - { name: oro_datagrid.extension }
 
-    pim_datagrid.extension.pager.odm_pager:
-        class: "%pim_datagrid.extension.pager.odm_pager.class%"
+    pim_datagrid.extension.filter.product_filter:
+        class: %pim_datagrid.extension.filter.product_filter.class%
         arguments:
-            - '@pim_datagrid.extension.pager.odm.pager'
             - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
         tags:
-            - { name: oro_datagrid.extension }
+             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.pager.product_pager:
         class: "%pim_datagrid.extension.pager.product_pager.class%"
