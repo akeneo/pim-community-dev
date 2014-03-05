@@ -353,11 +353,19 @@ SQL;
     {
         $categoryMapping = $this->getClassMetadata()->getAssociationMapping('categories');
 
+        $valueMapping  = $this->getClassMetadata()->getAssociationMapping('values');
+        $valueMetadata = $this->getEntityManager()->getClassMetadata($valueMapping['targetEntity']);
+
+        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
+
         return strtr(
             $sql,
             [
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata()->getTableName()
+                '%product_table%'       => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%' => $valueMetadata->getTableName(),
+                '%attribute_table%'     => $valueMetadata->getTableName()
             ]
         );
     }
@@ -537,28 +545,14 @@ SQL;
     }
 
     /**
-     * Find all attribute ids linked to a family
+     * Find all common attributes ids linked to a family
      * A list of product ids can be passed as parameter
      *
      * @param array $productIds
      *
      * @return mixed
-     *
-     * SELECT a.id, COUNT(a.id) AS COUNTATT
-     * FROM pim_catalog_product p
-     * INNER JOIN pim_catalog_family f ON f.id = p.family_id
-     * INNER JOIN pim_catalog_family_attribute fa ON fa.family_id = f.id
-     * INNER JOIN pim_catalog_attribute a ON a.id = fa.attribute_id
-     * WHERE p.id IN (69,70,71)
-     * GROUP BY a.id
-     * HAVING COUNTATT = (
-     *     SELECT COUNT(f.id)
-     *     FROM pim_catalog_product p
-     *     INNER JOIN pim_catalog_family f ON f.id = p.family_id
-     *     WHERE p.id IN (69,70,71)
-     * )
      */
-    public function findFamilyAttributeIds(array $productIds = array())
+    public function findFamilyAttributeIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('p');
         $qb
@@ -572,7 +566,7 @@ SQL;
 
             $subQb = $this->createQueryBuilder('p_sub');
             $subQb
-                ->select('COUNT(f_sub.id)')
+                ->select($subQb->expr()->count('f_sub.id'))
                 ->innerJoin('p_sub.family', 'f_sub')
                 ->where($subQb->expr()->in('p_sub.id', $productIds));
 
@@ -583,37 +577,38 @@ SQL;
     }
 
     /**
-     * Find all attribute ids with values from a list of product ids
+     * Find all common attribute ids with values from a list of product ids
+     * Can't use ORM here because of QueryBuilder::from method which only take string
+     * Only DBAL layer is used
      *
      * @param array $productIds
      *
      * @return mixed
-     *
-     * SELECT att.id, COUNT(att.id) AS COUNTATT
-     * FROM (
-     *     SELECT a.id FROM pim_catalog_product p
-     *     INNER JOIN pim_catalog_product_value pv ON pv.entity_id = p.id
-     *     INNER JOIN pim_catalog_attribute a ON a.id = pv.attribute_id
-     *     WHERE p.id IN(36,81,85,86,120,131)
-     *     GROUP BY p.id, a.id
-     * ) att
-     * GROUP BY att.id
-     * HAVING COUNTATT = (
-     *     SELECT COUNT(p.id)
-     *     FROM pim_catalog_product p
-     *     WHERE p.id IN(36,81,85,86,120,131)
-     * );
      */
     public function findAttributeIdsWithValues(array $productIds)
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('a.id')
-            ->innerJoin('p.values', 'v')
-            ->innerJoin('v.attribute', 'a')
-            ->where($qb->expr()->in('p.id', $productIds))
-            ->groupBy('a.id');
+        $sql = <<<SQL
+    SELECT a.id, COUNT(a.id) AS COUNT_ATT
+    FROM (
+        SELECT a.id FROM %product_table% p
+        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+        INNER JOIN %attribute_table% a ON a.id = pv.attribute_id
+        WHERE p.id IN(%product_ids%)
+        GROUP BY p.id, a.id) a
+    GROUP BY a.id
+    HAVING COUNT_ATT = (
+        SELECT COUNT(p.id)
+        FROM %product_table% p
+        WHERE p.id IN(%product_ids%)
+    )
+SQL;
 
-        return $qb->getQuery()->execute();
+        $sql = strtr($sql, ['%product_ids%' => implode($productIds, ',')]);
+        $sql = $this->prepareDBALQuery($sql);
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }
