@@ -28,6 +28,7 @@ class PimDataGridExtension extends Extension
         $loader->load('pagers.yml');
         $loader->load('extensions.yml');
         $loader->load('actions.yml');
+        $loader->load('mass_actions.yml');
         $loader->load('event_listeners.yml');
         $loader->load('attribute_types.yml');
     }
