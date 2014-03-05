@@ -2,14 +2,23 @@ parameters:
     pim_datagrid.mass_action.dispatcher.class:               Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionHandler
     pim_datagrid.extension.mass_action.type.export.class:    Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+    pim_datagrid.extension.mass_action.handler.delete.class: Pim\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
 
 services:
+    # override mass action dispatcher
     oro_datagrid.mass_action.dispatcher:
         class: %pim_datagrid.mass_action.dispatcher.class%
         arguments:
             - '@service_container'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
+
+    # override mass action delete handler
+    oro_datagrid.extension.mass_action.handler.delete:
+        class: %pim_datagrid.extension.mass_action.handler.delete.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @translator
 
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
