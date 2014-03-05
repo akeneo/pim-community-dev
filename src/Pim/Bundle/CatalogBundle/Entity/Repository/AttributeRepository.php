@@ -30,6 +30,7 @@ class AttributeRepository extends FlexibleAttributeRepository implements
 
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
+     * @deprecated
      */
     public function findAllWithGroups()
     {
