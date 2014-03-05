@@ -552,7 +552,7 @@ SQL;
      *
      * @return mixed
      */
-    public function findFamilyAttributeIds(array $productIds)
+    public function findFamilyCommonAttributeIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('p');
         $qb
@@ -585,7 +585,7 @@ SQL;
      *
      * @return mixed
      */
-    public function findAttributeIdsWithValues(array $productIds)
+    public function findValuesCommonAttributeIds(array $productIds)
     {
         $sql = <<<SQL
     SELECT a.id, COUNT(a.id) AS COUNT_ATT
