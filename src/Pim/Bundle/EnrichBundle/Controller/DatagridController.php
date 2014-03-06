@@ -87,7 +87,7 @@ class DatagridController extends AbstractDoctrineController
         }
 
         $form = $this->createForm(
-            'pim_catalog_datagrid_configuration',
+            'pim_enrich_datagrid_configuration',
             $configuration,
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
