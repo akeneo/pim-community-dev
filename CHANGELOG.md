@@ -6,9 +6,11 @@
 Removed useless app/entities and app/emails directories
 
 ## Bug fixes
+Fixed verbose option always used
 Fixed issue on attribute option removal
 
 ## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
