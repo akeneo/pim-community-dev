@@ -7,6 +7,10 @@ Pim\Bundle\EnrichBundle\Entity\DatagridView:
             id: true
             generator:
                 strategy: AUTO
+        label:
+            type:   string
+            length: 100
+            unique: true
         datagridAlias:
             type: string
             column: datagrid_alias

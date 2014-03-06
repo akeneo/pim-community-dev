@@ -7,6 +7,12 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class DatagridViewSpec extends ObjectBehavior
 {
+    function it_stores_the_label_of_the_view(User $owner)
+    {
+        $this->setLabel('random view');
+        $this->getLabel()->shouldReturn('random view');
+    }
+
     function it_stores_the_owner_of_the_view(User $owner)
     {
         $this->setOwner($owner);
