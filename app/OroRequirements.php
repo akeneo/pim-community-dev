@@ -119,7 +119,6 @@ class OroRequirements extends SymfonyRequirements
             'app/entities',
             'app/import',
             'app/export',
-            'app/emails',
             'app/archive',
             'app/uploads/product'
         );
