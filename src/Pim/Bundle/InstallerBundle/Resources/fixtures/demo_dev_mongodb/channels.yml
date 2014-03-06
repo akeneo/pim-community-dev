@@ -9,6 +9,7 @@ channels:
             - EUR
             - USD
         tree: master
+        color: orange
     mobile:
         code:  mobile
         label: Mobile
@@ -18,3 +19,4 @@ channels:
         currencies:
             - EUR
         tree: master
+        color: blue
