@@ -1,3 +1,16 @@
+# 1.1.0 - 
+
+## Features
+
+## Improvements
+Removed useless app/entities and app/emails directories
+
+## Bug fixes
+Fixed verbose option always used
+
+## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features

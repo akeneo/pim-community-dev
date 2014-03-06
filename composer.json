@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-pim-1.0#6577c9326c4123b954a899ae39fae5febefebea3",
+        "oro/platform": "dev-pim-1.0#37337badacb7b5a1e448b789368594db2ec00a4f",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-gaufrette-bundle": "0.2.x-dev#171844b400e50d66f6fab6aa7aea820407fc74a3",
         "incenteev/composer-parameter-handler": "2.1.0",
@@ -82,6 +82,9 @@
                 "database_user": "PIM_DATABASE_USER",
                 "database_password": "PIM_DATABASE_PASSWORD"
             }
+        },
+        "branch-alias": {
+            "dev-master": "1.1-dev"
         }
     }
 }

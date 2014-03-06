@@ -1,4 +1,104 @@
 ---
+export profile:
+  overview: exportprofiel overzicht
+  create: exportprofiel toevoegen
+  edit: exportprofiel bewerken
+import profile:
+  overview: importprofiel overzicht
+  create: importprofiel toevoegen
+  edit: importprofiel bewerken
+Job: Taak
+Connector: Connector
 pim_import_export:
   status:
     - Gereed
+  batch_status:
+    1: VOLTOOID
+    2: BEZIG MET STARTEN
+    3: GESTART
+    4: BEZIG MET STOPPEN
+    5: GESTOPT
+    6: MISLUKT
+    7: AFGEBROKEN
+    8: ONBEKEND
+  download_archive:
+    archive: download gegenereerd bestand | download gegenereerde bestanden
+    output: download gegenereerd bestand | download gegenereerde bestanden
+    input: download ingelezen bestand | download ingelezen bestanden
+    invalid: download ongeldige data
+pim_title.export_profile.index: Beheer van exportprofielen
+pim_title.export_profile.edit: 'Exportprofielen %job.label% | Bewerken'
+pim_title.export_profile.show: 'Exportprofielen %job.label% | Tonen'
+pim_title.export_execution.index: Exportverwerkingen geschiedenis
+pim_title.export_execution.show: Exportverwerkingen | Details
+pim_title.import_profile.index: Beheer van importprofielen
+pim_title.import_profile.edit: 'Importprofielen %job.label% | Bewerken'
+pim_title.import_profile.show: 'Importprofielen %job.label% | Tonen'
+pim_title.import_execution.index: Importverwerkingen geschiedenis
+pim_title.import_execution.show: Importverwerkingen | Details
+export report:
+  overview: Exporteer rapporten
+import report:
+  overview: Importeer rapporten
+pim_importexport:
+  acl:
+    export_profile:
+      index: Bekijk exportprofielen lijst
+      create: Exportprofiel aanmaken
+      show: Toon een exportprofiel
+      edit: Een exportprofiel bewerken
+      remove: Een exportprofiel verwijderen
+      launch: Start een exportprofiel
+    import_profile:
+      index: Bekijk importprofielen lijst
+      create: Importprofiel aanmaken
+      show: Toon een importprofiel
+      edit: Een importprofiel bewerken
+      remove: Een importprofiel verwijderen
+      launch: Start een importprofiel
+    export_execution:
+      index: Bekijk export-rapporten lijst
+      show: Bekijk export-rapport details
+      dl_log: Export-logboek downloaden
+      dl_files: Geëxporteerde bestanden downloaden
+    import_execution:
+      index: Bekijk import-rapporten lijst
+      show: Bekijk import-rapport details
+      dl_log: Import-logboek downloaden
+      dl_files: Geïmporteerde bestanden downloaden
+btn:
+  create:
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
+Upload and import: Uploaden en importeren
+confirmation:
+  remove:
+    export profile: 'Weet u zeker dat u het exportprofiel %name% wilt verwijderen?'
+    import profile: 'Weet u zeker dat u het importprofiel %name% wilt verwijderen?'
+flash:
+  export:
+    created: De export is succesvol aangemaakt
+    removed: De export is verwijderd
+    updated: De export is succesvol bijgewerkt
+  import:
+    created: De import is succesvol aangemaakt
+    removed: De import is verwijderd
+    updated: De import is succesvol bijgewerkt
+pim_menu:
+  item:
+    export_history: Exportgeschiedenis
+    export_profile: Exportprofielen
+    import_history: Importgeschiedenis
+    import_profile: Importprofielen
+General properties: Algemene eigenschappen
+History: Geschiedenis
+pane.accordion:
+  properties: Eigenschappen
+  global_settings: Algemene instellingen
+popin.create:
+  export_profile.title: Een nieuw exportprofiel aanmaken
+  import_profile.title: Een nieuw importprofiel aanmaken
+Display item: Object weergeven
+Hide item: Object verbergen
+Collecting data about job execution...: Gegevens verzamelen over taakverwerking...
+You must select a file to upload: U moet een bestand selecteren om te uploaden

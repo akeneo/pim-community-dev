@@ -162,6 +162,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $category
+     *
+     * @Given /^I expand the "([^"]*)" attribute$/
+     */
+    public function iExpandTheAttribute($attribute)
+    {
+        $this->getCurrentPage()->expandAttribute($attribute);
+    }
+
+    /**
      * @param string $category1
      * @param string $category2
      *
