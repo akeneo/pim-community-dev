@@ -367,22 +367,22 @@ class EditCommonAttributes extends AbstractMassEditAction
      * Create a value
      *
      * @param AbstractAttribute $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param string            $localeCode
+     * @param string            $channelCode
      *
      * @return ProductValueInterface
      */
-    protected function createValue(AbstractAttribute $attribute, $locale, $scope = null)
+    protected function createValue(AbstractAttribute $attribute, $localeCode = null, $channelCode = null)
     {
         $value = $this->productManager->createProductValue();
         $value->setAttribute($attribute);
 
         if ($attribute->isLocalizable()) {
-            $value->setLocale($locale);
+            $value->setLocale($localeCode);
         }
 
-        if ($scope && $attribute->isScopable()) {
-            $value->setScope($scope);
+        if ($attribute->isScopable()) {
+            $value->setScope($channelCode);
         }
 
         if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
