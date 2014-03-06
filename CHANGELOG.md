@@ -6,6 +6,7 @@
 Removed useless app/entities and app/emails directories
 
 ## Bug fixes
+Fixed verbose option always used
 
 ## BC breaks
 
