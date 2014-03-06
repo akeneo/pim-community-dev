@@ -6,6 +6,7 @@
 Removed useless app/entities and app/emails directories
 
 ## Bug fixes
+Fixed issue on attribute option removal
 
 ## BC breaks
 
