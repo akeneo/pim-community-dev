@@ -14,7 +14,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 interface HydratorInterface
 {
     /**
-     * Apply the selector on the datasource
+     * Execute the query and hydrate as result record array
      *
      * @param mixed $queryBuilder
      * @param array $options
