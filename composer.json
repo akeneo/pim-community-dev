@@ -82,6 +82,9 @@
                 "database_user": "PIM_DATABASE_USER",
                 "database_password": "PIM_DATABASE_PASSWORD"
             }
+        },
+        "branch-alias": {
+            "dev-master": "1.1-dev"
         }
     }
 }
