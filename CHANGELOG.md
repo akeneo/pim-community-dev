@@ -1,3 +1,10 @@
+# 1.1.0 - 
+
+## Features
+## Improvements
+## Bug fixes
+## BC breaks
+
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features
