@@ -3,7 +3,7 @@
 ## Features
 
 ## Improvements
-Removed useless app/entities directory
+Removed useless app/entities and app/emails directories
 
 ## Bug fixes
 
