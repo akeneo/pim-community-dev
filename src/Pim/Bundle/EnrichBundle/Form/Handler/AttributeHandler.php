@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
@@ -68,10 +69,11 @@ class AttributeHandler
         $this->form->setData($entity);
 
         if ($this->request->isMethod('POST')) {
+            $oldOptions = clone $entity->getOptions();
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($entity);
+                $this->onSuccess($entity, $oldOptions);
 
                 return true;
             }
@@ -143,8 +145,9 @@ class AttributeHandler
     /**
      * Call when form is valid
      * @param AbstractAttribute $entity
+     * @param Collection        $oldOptions
      */
-    protected function onSuccess(AbstractAttribute $entity)
+    protected function onSuccess(AbstractAttribute $entity, Collection $oldOptions)
     {
         foreach ($entity->getOptions() as $option) {
             // Setting translatable to true for now - option not implemented in UI
@@ -157,6 +160,13 @@ class AttributeHandler
                 if (!$optionValue->getValue()) {
                     $option->removeOptionValue($optionValue);
                 }
+            }
+        }
+
+        // Manually remove if option is removed
+        foreach ($oldOptions as $oldOption) {
+            if (false === $entity->getOptions()->contains($oldOption)) {
+                $this->manager->remove($oldOption);
             }
         }
 
