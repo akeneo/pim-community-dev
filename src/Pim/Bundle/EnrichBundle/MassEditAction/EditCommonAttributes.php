@@ -356,10 +356,10 @@ class EditCommonAttributes extends AbstractMassEditAction
         if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
                 $key = $attribute->getCode().'_'.$channel->getCode();
-                $this->values[$key] = $this->createValue($attribute, $locale, $channel);
+                $this->values[$key] = $this->createValue($attribute, $locale->getCode(), $channel->getCode());
             }
         } else {
-            $this->values[$attribute->getCode()] = $this->createValue($attribute, $locale);
+            $this->values[$attribute->getCode()] = $this->createValue($attribute, $locale->getCode());
         }
     }
 
@@ -367,22 +367,22 @@ class EditCommonAttributes extends AbstractMassEditAction
      * Create a value
      *
      * @param AbstractAttribute $attribute
-     * @param Locale            $locale
-     * @param Channel           $channel
+     * @param string            $localeCode
+     * @param string            $channelCode
      *
      * @return ProductValueInterface
      */
-    protected function createValue(AbstractAttribute $attribute, Locale $locale, Channel $channel = null)
+    protected function createValue(AbstractAttribute $attribute, $localeCode = null, $channelCode = null)
     {
         $value = $this->productManager->createProductValue();
         $value->setAttribute($attribute);
 
         if ($attribute->isLocalizable()) {
-            $value->setLocale($locale);
+            $value->setLocale($localeCode);
         }
 
-        if ($channel && $attribute->isScopable()) {
-            $value->setScope($channel->getCode());
+        if ($attribute->isScopable()) {
+            $value->setScope($channelCode);
         }
 
         if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
