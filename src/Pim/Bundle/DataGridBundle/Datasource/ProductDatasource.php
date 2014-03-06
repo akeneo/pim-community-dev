@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -52,6 +53,9 @@ class ProductDatasource implements DatasourceInterface
     /** @var ObjectManager */
     protected $om;
 
+    /** @var HydratorInterface */
+    protected $hydrator;
+
     /** @var array grid configuration */
     protected $configuration;
 
@@ -59,11 +63,13 @@ class ProductDatasource implements DatasourceInterface
     protected $localeCode = null;
 
     /**
-     * @param ObjectManager $om
+     * @param ObjectManager     $om
+     * @param HydratorInterface $hydrator
      */
-    public function __construct(ObjectManager $om)
+    public function __construct(ObjectManager $om, HydratorInterface $hydrator)
     {
-        $this->om = $om;
+        $this->om       = $om;
+        $this->hydrator = $hydrator;
     }
 
     /**
@@ -71,6 +77,8 @@ class ProductDatasource implements DatasourceInterface
      */
     public function process(DatagridInterface $grid, array $config)
     {
+        $this->configuration = $config;
+
         if (!isset($config['entity'])) {
             throw new \Exception(get_class($this).' expects to be configured with entity');
         }
@@ -95,24 +103,12 @@ class ProductDatasource implements DatasourceInterface
      */
     public function getResults()
     {
-        $query = $this->qb->getQuery();
+        $options = [
+            'locale_code'              => $this->localeCode,
+            'attributes_configuration' => $this->configuration['attributes_configuration']
+        ];
 
-        $results = $query->getArrayResult();
-        $rows    = [];
-        foreach ($results as $result) {
-            $entityFields = $result[0];
-            unset($result[0]);
-            $otherFields = $result;
-            $result = $entityFields + $otherFields;
-            $values = $result['values'];
-            foreach ($values as $value) {
-                $result[$value['attribute']['code']]= $value;
-            }
-            unset($result['values']);
-            $result['dataLocale']= $this->localeCode;
-
-            $rows[] = new ResultRecord($result);
-        }
+        $rows = $this->hydrator->hydrate($this->qb, $options);
 
         return $rows;
     }
