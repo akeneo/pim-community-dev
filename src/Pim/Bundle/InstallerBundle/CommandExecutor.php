@@ -82,8 +82,8 @@ class CommandExecutor
             $defaultParams['--env'] = $this->input->getOption('env');
         }
 
-        if ($this->input->hasOption('verbose')) {
-            $defaultParams['--verbose'] = $this->input->getOption('verbose');
+        if ($this->input->hasOption('verbose') && $this->input->getOption('verbose') === true) {
+            $defaultParams['--verbose'] = true;
         }
 
         return $defaultParams;
