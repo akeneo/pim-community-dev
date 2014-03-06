@@ -16,6 +16,7 @@ services:
         class: %pim_datagrid.datasource.product.class%
         arguments:
             - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.product.result_record.hydrator'
         tags:
             - { name: oro_datagrid.datasource, type: pim_product }
 
