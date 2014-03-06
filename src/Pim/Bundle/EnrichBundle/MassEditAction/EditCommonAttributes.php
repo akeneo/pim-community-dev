@@ -9,7 +9,6 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Media;
