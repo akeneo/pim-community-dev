@@ -4,7 +4,7 @@
 ## Improvements
 ## Bug fixes
 ## BC breaks
-- Add a argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
