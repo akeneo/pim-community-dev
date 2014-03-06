@@ -1,8 +1,12 @@
 # 1.1.0 - 
 
 ## Features
+
 ## Improvements
+Removed useless app/entities directory
+
 ## Bug fixes
+
 ## BC breaks
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
