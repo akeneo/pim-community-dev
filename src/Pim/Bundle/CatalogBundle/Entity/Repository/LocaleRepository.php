@@ -29,20 +29,6 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Find locales that have a fallback locale defined
-     *
-     * @return array
-     */
-    public function findWithFallback()
-    {
-        $qb = $this->createQueryBuilder('l');
-        $qb->where($qb->expr()->isNotNull('l.fallback'))
-           ->orderBy('l.code');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
      * Return an array of activated locales
      *
      * @return array
@@ -77,31 +63,6 @@ class LocaleRepository extends ReferableEntityRepository
         $qb->orderBy('l.code');
 
         return $qb;
-    }
-
-    /**
-     * Returns a query builder that select the available fallbacks
-     *
-     * A fallback must be activated and not link on another fallback
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getAvailableFallbacksQB()
-    {
-        $qb = $this->getActivatedLocalesQB();
-        $qb->andWhere($qb->expr()->isNull('l.fallback'));
-
-        return $qb;
-    }
-
-    /**
-     * Get a collection of available fallback locales
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getAvailableFallbacks()
-    {
-        return $this->getAvailableFallbacksQB()->getQuery()->getResult();
     }
 
     /**

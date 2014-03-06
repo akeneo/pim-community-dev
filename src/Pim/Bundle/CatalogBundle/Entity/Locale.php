@@ -6,7 +6,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -17,7 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @UniqueEntity("code")
- * @PimAssert\ValidLocaleFallback
  *
  * @Config(
  *     defaultValues={
@@ -38,11 +36,6 @@ class Locale implements ReferableInterface
      * @var string $code
      */
     protected $code;
-
-    /**
-     * @var string $fallback
-     */
-    protected $fallback;
 
     /**
      * @var boolean $activated
@@ -116,30 +109,6 @@ class Locale implements ReferableInterface
     public function setCode($code)
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get fallback
-     *
-     * @return string
-     */
-    public function getFallback()
-    {
-        return $this->fallback;
-    }
-
-    /**
-     * Set fallback
-     *
-     * @param string $fallback
-     *
-     * @return Locale
-     */
-    public function setFallback($fallback)
-    {
-        $this->fallback = $fallback;
 
         return $this;
     }
