@@ -1,5 +1,4 @@
 parameters:
-    pim_datagrid.extension.pager.product.pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
     pim_datagrid.datasource.product.result_record.hydrator.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\Hydrator
 
 services: ~
