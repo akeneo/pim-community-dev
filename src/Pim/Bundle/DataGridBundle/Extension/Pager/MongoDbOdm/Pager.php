@@ -26,6 +26,11 @@ class Pager extends AbstractPager implements PagerInterface
      */
     protected $aclHelper;
 
+    /**
+     * @param AclHelper    $aclHelper
+     * @param integer      $maxPerPage
+     * @param QueryBuilder $qb
+     */
     public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
@@ -38,7 +43,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
