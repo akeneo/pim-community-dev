@@ -244,7 +244,16 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             ->getQuery()
             ->getSingleResult();
 
-        return (count($result) !== 0);
+        $foundValueId = null;
+
+        if ((1 === count($result)) && isset($result['_id'])) {
+            $foundValueId = $result['_id']->id;
+        }
+
+        return (
+            (0 !== count($result)) &&
+            ($value->getId() === $foundValueId)
+        );
     }
 
     /**
