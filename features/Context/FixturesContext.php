@@ -1125,6 +1125,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
+     */
+    public function iSetProductFamilyTo($product, $family)
+    {
+        $this
+            ->getProduct($product)
+            ->setFamily($this->getFamily($family));
+
+        $this->flush();
+    }
+
+    /**
      * @param string $language
      *
      * @return string
@@ -1164,15 +1176,13 @@ class FixturesContext extends RawMinkContext
      */
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
-        $product = $this->getProduct($identifier);
+        if (null === $product = $this->getProduct($identifier)) {
+            throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
+        }
 
         $this->getEntityManager()->refresh($product);
 
-        $value = $product->getValue($attribute, $locale, $scope);
-
-        $this->getEntityManager()->refresh($value);
-
-        if (null === $value) {
+        if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
@@ -1182,6 +1192,8 @@ class FixturesContext extends RawMinkContext
                 )
             );
         }
+
+        $this->getEntityManager()->refresh($value);
 
         return $value;
     }

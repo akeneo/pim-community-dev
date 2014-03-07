@@ -213,6 +213,11 @@ define(
                     jobExecution.fetch();
                 }, 1000);
 
+                // Clear interval when changing page to prevent continuing to sync object on other pages
+                Backbone.Router.prototype.on('route', function () {
+                    clearInterval(interval);
+                });
+
                 setTimeout(function () {
                     if (null !== interval) {
                         clearInterval(interval);

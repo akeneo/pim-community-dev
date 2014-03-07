@@ -1,11 +1,11 @@
-<div class="span12 shortcuts">
-    <div class="btn-group">
+<div class="span12 shortcuts text-center">
+    <div class="btn-group fullwidth">
         {% for link in widget.links %}
             <a href="{{ path(link.route) }}" class="btn shortcut" title="{{ link.label|trans }}">
                 {{ link.label|trans }}
-                <span class="big-icon">
+                <div class="big-icon">
                     <i class="icon-{{ link.icon }}"></i>
-                </span>
+                </div>
             </a>
         {% endfor %}
     </div>

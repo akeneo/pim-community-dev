@@ -1,4 +1,20 @@
-# 1.0.0-
+# 1.1.0 -
+
+## Features
+
+## Improvements
+- Removed useless ```app/entities``` directory
+
+## Bug fixes
+- Fixed verbose option always used
+- Fixed issue on attribute option removal
+- Fixed identifier is required attribute
+
+## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Remove deprecated fallback property of Locale entity
+
+# 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features
 - Uservoice integration
@@ -41,6 +57,8 @@
 - Fixed missing breadcrumbs for edit views
 - Fixed lost hashnav when creating an attribute group
 - Fixed a bug that prevented saving unchecked checkbox value in product edit form
+- Fixed recovered attributes on mass edit action
+- Fixed a bug with tooltips sometimes not appearing due to a conflict between bootstrap and jquery tooltip plugins
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
@@ -62,6 +80,8 @@ that made the entity too smart for its own good and created performances problem
 - Changed signature of ProductRepository::getEligibleProductIds()
 - Changed signature of GroupType::__construct()
 - Changed signature of AssociationType::__construct()
+- Removed AttributeRepository::findallWithGroups()
+- Rename grid_extensions.yml, grid_actions.yml, grid_listeners.yml, grid_attribute_types.yml to extensions.yml, actions.yml, event_listeners.yml, attribute_types.yml
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

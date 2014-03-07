@@ -32,7 +32,7 @@ class VersionExtension extends \Twig_Extension
     {
         $version = PimCatalogBundle::VERSION;
         if (PimCatalogBundle::VERSION_CODENAME) {
-            $version .= sprintf(' "%s"', PimCatalogBundle::VERSION_CODENAME);
+            $version .= sprintf(' %s', PimCatalogBundle::VERSION_CODENAME);
         }
 
         return $version;
