@@ -163,7 +163,7 @@ class AttributeHandler
             }
         }
 
-        // Manually remove if option is removed
+        // Manually remove if option is removed from entity
         foreach ($oldOptions as $oldOption) {
             if (false === $entity->getOptions()->contains($oldOption)) {
                 $this->manager->remove($oldOption);
