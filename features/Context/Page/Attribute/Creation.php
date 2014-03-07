@@ -57,9 +57,7 @@ class Creation extends Form
     {
         $selectedByDefault = strtolower($selectedByDefault == 'yes') ? true : false;
 
-        $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
-
-        foreach ($rows as $row) {
+        foreach ($this->getOptionsElement() as $row) {
             if (!$row->find('css', '[id*="_code"]')->getValue()) {
                 $row->find('css', '[id*="_code"]')->setValue($name);
                 if ($selectedByDefault) {
@@ -72,7 +70,7 @@ class Creation extends Form
 
         $this->getElement('Add option button')->click();
 
-        $rows = $this->findAll('css', $this->elements['Attribute options']['css']);
+        $rows = $this->getOptionsElement();
         $row = end($rows);
 
         $row->find('css', '[id*="_code"]')->setValue($name);

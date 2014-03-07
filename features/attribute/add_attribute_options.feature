@@ -46,7 +46,7 @@ Feature: Add attribute options
     And I save the attribute
     Then I should see flash message "Attribute successfully created"
 
-  @jira
+  @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Remove some options
     Given I create a "Simple select" attribute
     And I fill in the following information:
