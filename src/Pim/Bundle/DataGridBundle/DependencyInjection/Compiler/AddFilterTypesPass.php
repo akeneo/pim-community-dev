@@ -23,7 +23,7 @@ class AddFilterTypesPass implements CompilerPassInterface
     /**
      * @var string
      */
-    const FILTER_ODM_EXTENSION_ID = 'pim_datagrid.extension.filter.odm_filter';
+    const FILTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.filter.product_filter';
 
     /**
      * @®ar string
@@ -36,7 +36,7 @@ class AddFilterTypesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $ormExtension = $container->getDefinition(self::FILTER_ORM_EXTENSION_ID);
-        $odmExtension = $container->getDefinition(self::FILTER_ODM_EXTENSION_ID);
+        $productExtension = $container->getDefinition(self::FILTER_PRODUCT_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
@@ -44,8 +44,8 @@ class AddFilterTypesPass implements CompilerPassInterface
             if ($ormExtension) {
                 $ormExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
             }
-            if ($odmExtension) {
-                $odmExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
+            if ($productExtension) {
+                $productExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
             }
         }
     }
