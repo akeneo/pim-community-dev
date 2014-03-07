@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
 /**
- * Our custom orm pager
+ * MongoDB ODM pager
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,9 +15,15 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
  */
 class Pager extends AbstractPager implements PagerInterface
 {
-    /** @var QueryBuilder */
+    /**
+     * @var QueryBuilder
+     */
     protected $qb;
 
+    /**
+     * @param integer      $maxPerPage
+     * @param QueryBuilder $qb
+     */
     public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
@@ -29,7 +35,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        // TODO : to implement
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
@@ -37,8 +43,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        // TODO: to implement
-        return [];
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
@@ -46,8 +51,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     protected function retrieveObject($offset)
     {
-        // TODO : to implement
-        return null;
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**

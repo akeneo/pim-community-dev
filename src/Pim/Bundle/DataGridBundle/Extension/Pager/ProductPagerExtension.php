@@ -10,7 +10,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
-
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
