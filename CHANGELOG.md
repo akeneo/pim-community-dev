@@ -4,6 +4,7 @@
 
 ## Improvements
 - Removed useless ```app/entities``` directory
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -38,7 +39,6 @@
 - Add a screen to select the attribute type before creating an attribute
 - Create check-requirements, assets and database/fixtures commands and simplify install one
 - Make documentation tested linking it to our behat scenarios
-- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 
 ## Bug fixes
 - Fixed non-updated values being displayed in the the audit history
