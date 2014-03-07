@@ -6,7 +6,6 @@ attributes:
             de_DE: SKU
         type: pim_catalog_identifier
         group: marketing
-        required: true
         unique: true
         useableAsGridColumn: true
         useableAsGridFilter: true

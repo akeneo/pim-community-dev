@@ -5,7 +5,6 @@ attributes:
             fr_FR: SKU
         type:  pim_catalog_identifier
         group: general
-        required:            true
         unique:              true
         useableAsGridColumn: true
         useableAsGridFilter: true
