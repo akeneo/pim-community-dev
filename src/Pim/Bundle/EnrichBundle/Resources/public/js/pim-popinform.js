@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'jquery.multiselect', 'jquery.multiselect.filter', 'jquery.select2'],
+    ['jquery', 'underscore', 'jquery.multiselect', 'jquery.multiselect.filter'],
     function ($, _) {
 
         return function (elementId) {

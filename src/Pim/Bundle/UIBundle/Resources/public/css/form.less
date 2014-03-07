@@ -1361,3 +1361,25 @@ table#progress-table {
     cursor: pointer;
   }
 }
+
+/** datagrid views ***************************************************************************************************/
+input.input-invisible {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  .box-shadow(inset 0 0 0 transparent);
+  &:focus,
+  &:focus:invalid:focus {
+    .box-shadow(none);
+  }
+}
+
+.highlight-hover li {
+  &:hover {
+    background-color: @color-purple_light;
+    color: @backgroundColor-white;
+  }
+  label {
+    cursor: pointer;
+  }
+}
