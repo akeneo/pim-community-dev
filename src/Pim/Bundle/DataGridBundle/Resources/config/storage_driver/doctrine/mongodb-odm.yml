@@ -1,4 +1,5 @@
 parameters:
-    pim_datagrid.datasource.product.result_record.hydrator.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\Hydrator
+    pim_datagrid.datasource.product.result_record.hydrator.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Hydrator
+    pim_datagrid.extension.pager.product.pager.class:             Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
 
 services: ~
