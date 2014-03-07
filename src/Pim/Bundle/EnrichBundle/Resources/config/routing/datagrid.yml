@@ -3,3 +3,9 @@ pim_catalog_datagrid_edit:
     defaults: { _controller: pim_enrich.controller.datagrid:editAction }
     requirements:
         _method: GET|POST
+
+pim_catalog_datagrid_views:
+    path: /{alias}/views
+    defaults: { _controller: pim_enrich.controller.datagrid:viewsAction }
+    requirements:
+        _method: GET|POST

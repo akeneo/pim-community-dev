@@ -183,6 +183,11 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_datagrid_configuration }
 
+    pim_enrich.form.type.datagrid_view:
+        class: %pim_enrich.form.type.datagrid_view.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_datagrid_view }
+
     pim_enrich.form.type.light_entity:
         class: %pim_enrich.form.type.light_entity.class%
         tags:

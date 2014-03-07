@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
+use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
@@ -121,6 +122,69 @@ class DatagridController extends AbstractDoctrineController
     }
 
     /**
+     * Display or save datagrid views
+     *
+     * @param Request $request
+     * @param string  $alias
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewsAction(Request $request, $alias)
+    {
+        $user          = $this->getUser();
+        $configuration = $this->getDatagridConfiguration($alias, $user);
+        $columns       = $configuration ? $configuration->getColumns() : array_keys($this->getColumnChoices($alias));
+
+        $datagridView = new DatagridView();
+        $datagridView->setOwner($user);
+        $datagridView->setDatagridAlias($alias);
+        $datagridView->setColumns($columns);
+
+        $form = $this->createForm(
+            'pim_enrich_datagrid_view',
+            $datagridView,
+            [
+                'action'  => $this->generateUrl(
+                    'pim_catalog_datagrid_views',
+                    [
+                        'alias'      => $alias,
+                        'dataLocale' => $request->get('dataLocale')
+                    ]
+                ),
+            ]
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            $violations = $this->validator->validate($datagridView);
+            if ($violations->count()) {
+                foreach ($violations as $violation) {
+                    $this->addFlash('error', $violation->getMessage());
+                }
+            } else {
+                $em = $this->getManager();
+                $em->persist($datagridView);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
+        }
+
+        $views = $this->getRepository('PimEnrichBundle:DatagridView')->findBy(['datagridAlias' => $alias]);
+
+        return $this->render(
+            'PimEnrichBundle:Datagrid:_views.html.twig',
+            [
+                'alias'      => $alias,
+                'views'      => $views,
+                'columns'    => $columns,
+                'form'       => $form->createView(),
+                'dataLocale' => $request->get('dataLocale')
+            ]
+        );
+    }
+
+    /**
      * Sort an array by key given an other array values
      *
      * @param array $array
@@ -161,7 +225,7 @@ class DatagridController extends AbstractDoctrineController
 
         if ($columnsConfig) {
             foreach ($columnsConfig as $code => $meta) {
-                $choices[$code]= $meta['label'];
+                $choices[$code] = $meta['label'];
             }
         }
 
