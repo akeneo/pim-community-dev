@@ -1,3 +1,18 @@
+# 1.1.0 - 
+
+## Features
+
+## Improvements
+- Removed useless ```app/entities``` directory
+
+## Bug fixes
+- Fixed verbose option always used
+- Fixed issue on attribute option removal
+- Fixed identifier is required attribute
+
+## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features

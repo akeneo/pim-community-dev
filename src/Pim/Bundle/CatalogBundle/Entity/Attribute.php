@@ -35,6 +35,9 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $options;
 
+    /**
+     * @var integer $sortOrder
+     */
     protected $sortOrder = 0;
 
     /**
@@ -151,16 +154,34 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $translations;
 
+    /**
+     * @var boolean $required
+     */
     protected $required;
 
+    /**
+     * @var boolean $unique
+     */
     protected $unique;
 
+    /**
+     * @var mixed $defaultValue
+     */
     protected $defaultValue;
 
+    /**
+     * @var boolean $searchable
+     */
     protected $searchable;
 
+    /**
+     * @var boolean $localizable
+     */
     protected $localizable;
 
+    /**
+     * @var boolean $scopable
+     */
     protected $scopable;
 
     /**
@@ -1003,5 +1024,19 @@ class Attribute extends AbstractEntityAttribute implements
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeType($type)
+    {
+        parent::setAttributeType($type);
+
+        if ($this->attributeType === 'pim_catalog_identifier') {
+            $this->required = true;
+        }
+
+        return $this;
     }
 }

@@ -35,7 +35,7 @@ class OrmSorterExtension extends OroOrmSorterExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function processConfigs(DatagridConfiguration $config)
     {
@@ -46,7 +46,7 @@ class OrmSorterExtension extends OroOrmSorterExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
