@@ -1,4 +1,4 @@
-# 1.1.0 - 
+# 1.1.0 -
 
 ## Features
 
@@ -12,6 +12,7 @@
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Remove deprecated fallback property of Locale entity
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
