@@ -99,10 +99,25 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Succesfully mass edit product values that does not belong yet to the product
     Given I set product "pump" family to "sneakers"
-    And I mass-edit products pump and sneakers
+    When I mass-edit products pump and sneakers
     And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
-    And the english name of "pump" should be "boots"
+    Then the english name of "pump" should be "boots"
     And the english name of "sneakers" should be "boots"
+
+  @info https://akeneo.atlassian.net/browse/PIM-2163
+  Scenario: Succesfullu mass edit scoped product values
+    Given I set product "pump" family to "boots"
+    When I mass-edit products boots and pump
+    And I choose the "Edit attributes" operation
+    And I display the Description attribute
+    And I expand the "Description" attribute
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo"
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar"
+    And I move on to the next step
+    Then the english mobile Description of "boots" should be "Foo"
+    And the english tablet Description of "boots" should be "Bar"
+    And the english mobile Description of "pump" should be "Foo"
+    And the english tablet Description of "pump" should be "Bar"

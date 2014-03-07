@@ -19,77 +19,75 @@ class IdentifierType extends FlexTextType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return [
+            'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'integer'
-            ),
-            array(
+            ],
+            'validationRule' => [
                 'name'      => 'validationRule',
                 'fieldType' => 'choice',
-                'options'   => array(
-                    'choices' => array(
+                'options'   => [
+                    'choices' => [
                         null     => 'None',
                         'regexp' => 'Regular expression'
-                    ),
+                    ],
                     'select2' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'validationRegexp' => [
                 'name' => 'validationRegexp'
-            ),
-            array(
+            ],
+            'searchable' => [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            'scopable' => [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
+                'options'   => [
                     'data'      => false,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'unique' => [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'required' => [
                 'name'      => 'required',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'useableAsGridColumn' => [
                 'name'      => 'useableAsGridColumn',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'useableAsGridFilter' => [
                 'name'      => 'useableAsGridFilter',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-        );
-
-        return $properties;
+                ]
+            ]
+        ];
     }
 
     /**

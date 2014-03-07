@@ -35,52 +35,20 @@ class OptionSimpleSelectType extends AbstractAttributeType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return parent::defineCustomAttributeProperties($attribute) + [
+            'searchable' => [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            'minimumInputLength' => [
                 'name'      => 'minimumInputLength',
-                'fieldType' => 'number',
-                'options'   => array(
-                )
-            ),
-            array(
+                'fieldType' => 'number'
+            ],
+            'options' => [
                 'name'      => 'options',
                 'fieldType' => 'pim_enrich_options'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
-                )
-            )
-        );
-
-        return $properties;
+            ]
+        ];
     }
 
     /**

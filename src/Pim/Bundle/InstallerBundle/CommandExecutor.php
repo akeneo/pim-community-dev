@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command executor
- * Just override Oro Platform CommandExecutor to exit with code 1 if error
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -83,8 +82,8 @@ class CommandExecutor
             $defaultParams['--env'] = $this->input->getOption('env');
         }
 
-        if ($this->input->hasOption('verbose')) {
-            $defaultParams['--verbose'] = $this->input->getOption('verbose');
+        if ($this->input->hasOption('verbose') && $this->input->getOption('verbose') === true) {
+            $defaultParams['--verbose'] = true;
         }
 
         return $defaultParams;
