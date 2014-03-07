@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use BeSimple\SoapCommon\Type\KeyValue\Boolean;
+
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -35,6 +37,9 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $options;
 
+    /**
+     * @var integer $sortOrder
+     */
     protected $sortOrder = 0;
 
     /**
@@ -151,16 +156,34 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $translations;
 
+    /**
+     * @var boolean $required
+     */
     protected $required;
 
+    /**
+     * @var boolean $unique
+     */
     protected $unique;
 
+    /**
+     * @var mixed $defaultValue
+     */
     protected $defaultValue;
 
+    /**
+     * @var boolean $searchable
+     */
     protected $searchable;
 
+    /**
+     * @var boolean $localizable
+     */
     protected $localizable;
 
+    /**
+     * @var boolean $scopable
+     */
     protected $scopable;
 
     /**
