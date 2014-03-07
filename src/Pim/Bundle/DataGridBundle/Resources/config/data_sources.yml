@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.datasource.orm.class:     Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
     pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
-    pim_datagrid.datasource.odm.class: Pim\Bundle\DataGridBundle\Datasource\Odm\OdmDatasource
 
 services:
     pim_catalog.datasource.orm:
@@ -19,10 +18,3 @@ services:
             - '@pim_datagrid.datasource.product.result_record.hydrator'
         tags:
             - { name: oro_datagrid.datasource, type: pim_product }
-
-    pim_catalog.datasource.odm:
-        class: %pim_datagrid.datasource.odm.class%
-        arguments:
-            - '@pim_catalog.object_manager.product'
-        tags:
-            - { name: oro_datagrid.datasource, type: pim_odm }

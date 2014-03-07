@@ -5,7 +5,6 @@ parameters:
     pim_datagrid.extension.pager.orm_pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
     pim_datagrid.extension.pager.product_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension
     pim_datagrid.extension.selector.orm_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\OrmSelectorExtension
-    pim_datagrid.extension.filter.product_filter.class: Pim\Bundle\DataGridBundle\Extension\Filter\ProductFilterExtension
 
 services:
     pim_datagrid.extension.filter.orm_filter:
