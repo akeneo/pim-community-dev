@@ -25,7 +25,5 @@ class ProcessorStub extends AbstractConfigurableStepElement implements ItemProce
 
     public function getConfigurationFields()
     {
-
     }
-
 }

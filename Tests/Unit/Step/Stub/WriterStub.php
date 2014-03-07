@@ -25,7 +25,5 @@ class WriterStub extends AbstractConfigurableStepElement implements ItemWriterIn
 
     public function getConfigurationFields()
     {
-
     }
-
 }

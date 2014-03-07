@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
@@ -257,6 +256,5 @@ class BatchCommand extends ContainerAwareCommand
                 }
             }
         }
-
     }
 }

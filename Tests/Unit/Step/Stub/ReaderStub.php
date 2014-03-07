@@ -25,7 +25,5 @@ class ReaderStub extends AbstractConfigurableStepElement implements ItemReaderIn
 
     public function getConfigurationFields()
     {
-
     }
-
 }
