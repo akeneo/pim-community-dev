@@ -95,13 +95,12 @@ class ReferencedCollection implements Collection
     /**
      * Get object class identifier from the repository
      *
-     * @param mixed $itemRepository
-     *
      * @return string
      */
     protected function getClassIdentifier()
     {
         $classMetadata = $this->objectManager->getClassMetadata($this->itemClass);
+
         return $classMetadata->getIdentifier();
     }
 
@@ -130,6 +129,7 @@ class ReferencedCollection implements Collection
     public function add($element)
     {
         $this->initialize();
+
         return $this->items->add($element);
     }
 
@@ -148,6 +148,7 @@ class ReferencedCollection implements Collection
     public function contains($element)
     {
         $this->initialize();
+
         return $this->items->contains($element);
     }
 
@@ -157,6 +158,7 @@ class ReferencedCollection implements Collection
     public function isEmpty()
     {
         $this->initialize();
+
         return $this->items->isEmpty();
     }
 
@@ -166,6 +168,7 @@ class ReferencedCollection implements Collection
     public function remove($key)
     {
         $this->initialize();
+
         return $this->items->remove($key);
     }
 
@@ -175,6 +178,7 @@ class ReferencedCollection implements Collection
     public function removeElement($element)
     {
         $this->initialize();
+
         return $this->items->removeElement($element);
     }
 
@@ -184,6 +188,7 @@ class ReferencedCollection implements Collection
     public function containsKey($key)
     {
         $this->initialize();
+
         return $this->items->containKeys($key);
     }
 
@@ -193,6 +198,7 @@ class ReferencedCollection implements Collection
     public function get($key)
     {
         $this->initialize();
+
         return $this->items->get($key);
     }
 
@@ -202,6 +208,7 @@ class ReferencedCollection implements Collection
     public function getKeys()
     {
         $this->initialize();
+
         return $this->items->getKeys();
     }
 
@@ -211,6 +218,7 @@ class ReferencedCollection implements Collection
     public function getValues()
     {
         $this->initialize();
+
         return $this->items->getValues();
     }
 
@@ -229,6 +237,7 @@ class ReferencedCollection implements Collection
     public function toArray()
     {
         $this->initialize();
+
         return $this->items->toArray();
     }
 
@@ -238,6 +247,7 @@ class ReferencedCollection implements Collection
     public function first()
     {
         $this->initialize();
+
         return $this->items->first();
     }
 
@@ -247,6 +257,7 @@ class ReferencedCollection implements Collection
     public function last()
     {
         $this->initialize();
+
         return $this->items->last();
     }
 
@@ -256,6 +267,7 @@ class ReferencedCollection implements Collection
     public function key()
     {
         $this->initialize();
+
         return $this->items->key();
     }
 
@@ -265,6 +277,7 @@ class ReferencedCollection implements Collection
     public function current()
     {
         $this->initialize();
+
         return $this->items->current();
     }
 
@@ -274,6 +287,7 @@ class ReferencedCollection implements Collection
     public function next()
     {
         $this->initialize();
+
         return $this->items->next();
     }
 
@@ -283,6 +297,7 @@ class ReferencedCollection implements Collection
     public function exists(Closure $predicate)
     {
         $this->initialize();
+
         return $this->items->exists($predicate);
     }
 
@@ -292,6 +307,7 @@ class ReferencedCollection implements Collection
     public function filter(Closure $predicate)
     {
         $this->initialize();
+
         return $this->items->filter($predicate);
     }
 
@@ -301,6 +317,7 @@ class ReferencedCollection implements Collection
     public function forAll(Closure $predicate)
     {
         $this->initialize();
+
         return $this->items->forAll($predicate);
     }
 
@@ -310,6 +327,7 @@ class ReferencedCollection implements Collection
     public function map(Closure $predicate)
     {
         $this->initialize();
+
         return $this->items->map($predicate);
     }
 
@@ -319,6 +337,7 @@ class ReferencedCollection implements Collection
     public function partition(Closure $predicate)
     {
         $this->initialize();
+
         return $this->items->partition($predicate);
     }
 
@@ -328,6 +347,7 @@ class ReferencedCollection implements Collection
     public function indexOf($element)
     {
         $this->initialize();
+
         return $this->items->indexOf($element);
     }
 
@@ -337,6 +357,7 @@ class ReferencedCollection implements Collection
     public function slice($offset, $length = null)
     {
         $this->initialize();
+
         return $this->items->slice($offset, $length);
     }
 
@@ -346,6 +367,7 @@ class ReferencedCollection implements Collection
     public function count()
     {
         $this->initialize();
+
         return $this->items->count();
     }
 
@@ -355,6 +377,7 @@ class ReferencedCollection implements Collection
     public function getIterator()
     {
         $this->initialize();
+
         return $this->items->getIterator();
     }
 
@@ -364,6 +387,7 @@ class ReferencedCollection implements Collection
     public function offsetExists($offset)
     {
         $this->initialize();
+
         return $this->items->offsetExists($offset);
     }
 
@@ -373,6 +397,7 @@ class ReferencedCollection implements Collection
     public function offsetGet($offset)
     {
         $this->initialize();
+
         return $this->items->offsetGet($offset);
     }
 
@@ -382,6 +407,7 @@ class ReferencedCollection implements Collection
     public function offsetSet($offset, $value)
     {
         $this->initialize();
+
         return $this->items->offsetSet($offset, $value);
     }
 
@@ -391,6 +417,7 @@ class ReferencedCollection implements Collection
     public function offsetUnset($offset)
     {
         $this->initialize();
+
         return $this->items->offsetSet($offset);
     }
 }
