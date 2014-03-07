@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM;
+namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
