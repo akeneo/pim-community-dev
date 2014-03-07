@@ -337,7 +337,8 @@ class JobInstance
     }
 
     /**
-     * @param  JobExecution $jobExecution
+     * @param JobExecution $jobExecution
+     *
      * @return JobInstance
      */
     public function addJobExecution(JobExecution $jobExecution)
@@ -350,7 +351,8 @@ class JobInstance
     }
 
     /**
-     * @param  JobExecution $jobExecution
+     * @param JobExecution $jobExecution
+     *
      * @return JobInstance
      */
     public function removeJobExecution(JobExecution $jobExecution)
