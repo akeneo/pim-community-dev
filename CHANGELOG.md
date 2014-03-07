@@ -3,7 +3,7 @@
 ## Features
 
 ## Improvements
-Removed useless app/entities and app/emails directories
+Removed useless ```app/entities``` directory
 
 ## Bug fixes
 Fixed verbose option always used
