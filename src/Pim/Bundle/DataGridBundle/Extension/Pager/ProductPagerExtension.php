@@ -105,7 +105,7 @@ class ProductPagerExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return $datasourceType == ProductDatasource::TYPE;
+        return ($datasourceType == ProductDatasource::TYPE);
     }
 
     /**
