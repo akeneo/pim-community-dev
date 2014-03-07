@@ -4,6 +4,7 @@
 
 ## Improvements
 - Removed useless ```app/entities``` directory
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 
 ## Bug fixes
 - Fixed verbose option always used

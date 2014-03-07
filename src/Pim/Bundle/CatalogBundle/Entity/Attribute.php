@@ -185,6 +185,11 @@ class Attribute extends AbstractEntityAttribute implements
     protected $scopable;
 
     /**
+     * @var array
+     */
+    protected $properties;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -202,6 +207,7 @@ class Attribute extends AbstractEntityAttribute implements
         $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
+        $this->properties          = array();
     }
 
     /**

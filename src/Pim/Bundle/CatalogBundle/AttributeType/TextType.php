@@ -19,63 +19,38 @@ class TextType extends FlexTextType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name' => 'defaultValue'
-            ),
-            array(
+            ],
+            'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'integer'
-            ),
-            array(
+            ],
+            'validationRule' => [
                 'name'      => 'validationRule',
                 'fieldType' => 'choice',
-                'options'   => array(
-                    'choices' => array(
+                'options'   => [
+                    'choices' => [
                         null     => 'None',
                         'email'  => 'E-mail',
                         'url'    => 'URL',
                         'regexp' => 'Regular expression'
-                    ),
+                    ],
                     'select2' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'validationRegexp' => [
                 'name' => 'validationRegexp'
-            ),
-            array(
+            ],
+            'searchable' => [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+            ]
+        ];
+
+        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
     }
