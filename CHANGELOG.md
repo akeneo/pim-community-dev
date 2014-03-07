@@ -3,12 +3,12 @@
 ## Features
 
 ## Improvements
-Removed useless ```app/entities``` directory
+- Removed useless ```app/entities``` directory
 
 ## Bug fixes
-Fixed verbose option always used
-Fixed issue on attribute option removal
-Fixed identifier is required attribute
+- Fixed verbose option always used
+- Fixed issue on attribute option removal
+- Fixed identifier is required attribute
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
