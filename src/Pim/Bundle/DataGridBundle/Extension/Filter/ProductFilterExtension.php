@@ -30,16 +30,31 @@ class ProductFilterExtension extends AbstractExtension
      */
     const FILTER_ROOT_PARAM = '_filter';
 
-    /** @var FilterInterface[] */
+    /**
+     * @var FilterInterface[]
+     */
     protected $filters = [];
 
-    /** @var TranslatorInterface */
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
-    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator)
+    /**
+     * @var string
+     */
+    protected $adapterClass;
+
+    /**
+     * @param RequestParameters   $requestParams
+     * @param TranslatorInterface $translator
+     * @param string              $adapterClass
+     */
+    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator, $adapterClass)
     {
         $this->translator = $translator;
         parent::__construct($requestParams);
+        $this->adapterClass = $adapterClass;
     }
 
     /**
