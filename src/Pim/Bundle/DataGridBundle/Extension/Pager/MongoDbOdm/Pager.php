@@ -45,7 +45,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
