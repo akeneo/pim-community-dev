@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use BeSimple\SoapCommon\Type\KeyValue\Boolean;
-
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
