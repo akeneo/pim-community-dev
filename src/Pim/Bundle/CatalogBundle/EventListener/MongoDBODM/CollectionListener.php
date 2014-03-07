@@ -4,13 +4,11 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * Aims to convert ArrayCollection to collection 
+ * Aims to convert ArrayCollection to collection
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -54,7 +52,7 @@ class CollectionListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-    /*
+        /*
         $entity = $args->getEntity();
 
         if ($entity instanceof Product) {

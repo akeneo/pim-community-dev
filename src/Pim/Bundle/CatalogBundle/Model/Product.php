@@ -282,7 +282,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Set the product categories ids
      *
-     * @param array
+     * @param array $categoryIds
      *
      * @return Product
      */
@@ -427,7 +427,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     /**
      * Set the product groups ids
      *
-     * @param array
+     * @param array $groupIds
      *
      * @return Product
      */

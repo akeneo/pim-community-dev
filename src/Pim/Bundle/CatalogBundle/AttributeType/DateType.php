@@ -19,61 +19,36 @@ class DateType extends FlexDateType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name'      => 'defaultValue',
                 'fieldType' => 'oro_date',
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            'dateMin' => [
                 'name'      => 'dateMin',
                 'fieldType' => 'oro_date',
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            'dateMax' => [
                 'name'      => 'dateMax',
                 'fieldType' => 'oro_date',
-                'options'   => array(
+                'options'   => [
                     'widget' => 'single_text'
-                )
-            ),
-            array(
+                ]
+            ],
+            'searchable' => [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+            ]
+        ];
+
+        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
     }

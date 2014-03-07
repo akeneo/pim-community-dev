@@ -60,7 +60,7 @@ class ProductPagerExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
@@ -73,7 +73,7 @@ class ProductPagerExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
@@ -81,7 +81,7 @@ class ProductPagerExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {

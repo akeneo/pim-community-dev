@@ -35,7 +35,7 @@ class AddFilterTypesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $ormExtension     = $container->getDefinition(self::FILTER_ORM_EXTENSION_ID);
+        $ormExtension = $container->getDefinition(self::FILTER_ORM_EXTENSION_ID);
         $productExtension = $container->getDefinition(self::FILTER_PRODUCT_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
