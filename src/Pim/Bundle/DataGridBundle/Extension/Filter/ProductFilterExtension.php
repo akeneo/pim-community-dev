@@ -12,7 +12,6 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
-use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
@@ -92,7 +91,7 @@ class ProductFilterExtension extends AbstractExtension
     {
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
-        $datasourceAdapter = new OrmFilterDatasourceAdapter($datasource->getQueryBuilder());
+        $datasourceAdapter = new $this->adapterClass($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
