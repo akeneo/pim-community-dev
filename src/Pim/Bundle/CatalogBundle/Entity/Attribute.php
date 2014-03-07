@@ -1004,4 +1004,18 @@ class Attribute extends AbstractEntityAttribute implements
     {
         return $this->code;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeType($type)
+    {
+        parent::setAttributeType($type);
+
+        if ($this->attributeType === 'pim_catalog_identifier') {
+            $this->required = true;
+        }
+
+        return $this;
+    }
 }
