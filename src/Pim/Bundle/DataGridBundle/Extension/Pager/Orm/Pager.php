@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 
 /**
- * Our custom pager to disable the use of acl helper
+ * Doctrine ORM pager
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
