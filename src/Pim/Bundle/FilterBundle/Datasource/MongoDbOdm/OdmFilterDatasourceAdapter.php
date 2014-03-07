@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Datasource\Odm;
+namespace Pim\Bundle\FilterBundle\Datasource\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
