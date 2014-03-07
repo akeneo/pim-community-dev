@@ -98,4 +98,49 @@ class Creation extends Form
     {
         return count($this->findAll('css', 'button.action-delete-inline:not([disabled])'));
     }
+
+    /**
+     * Remove a specific option name
+     * @param string $optionName
+     * @throws \InvalidArgumentException
+     */
+    public function removeOption($optionName)
+    {
+        $optionRow = $this->getOptionElement($optionName);
+        $deleteBtn = $optionRow->find('css', 'button.action-delete-inline:not([disabled])');
+
+        if ($deleteBtn === null) {
+            throw new \InvalidArgumentException(
+                sprintf('Remove bouton not found or disabled for %s option', $optionName)
+            );
+        }
+
+        $deleteBtn->click();
+    }
+
+    /**
+     * Get option elements
+     * @return array
+     */
+    protected function getOptionsElement()
+    {
+        return $this->findAll('css', $this->elements['Attribute options']['css']);
+    }
+
+    /**
+     * Get a specific option row from the option code
+     * @param string $optionName
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function getOptionElement($optionName)
+    {
+        foreach ($this->getOptionsElement() as $optionRow) {
+            if ($optionRow->find('css', '[id*="_code"]')->getValue() === $optionName) {
+                return $optionRow;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Option %s was not found', $optionName));
+    }
 }

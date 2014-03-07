@@ -45,3 +45,20 @@ Feature: Add attribute options
       | green | no                  |
     And I save the attribute
     Then I should see flash message "Attribute successfully created"
+
+  @jira
+  Scenario: Remove some options
+    Given I create a "Simple select" attribute
+    And I fill in the following information:
+      | Code | size |
+    And I visit the "Values" tab
+    And I create the following attribute options:
+      | Code | Selected by default |
+      | S    | no                  |
+      | M    | yes                 |
+      | L    | no                  |
+    And I save the attribute
+    And I should see flash message "Attribute successfully created"
+    When I remove the "S" option
+    And I save the attribute
+    Then I should see flash message "Attribute successfully updated"

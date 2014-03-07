@@ -362,6 +362,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $optionName
+     * @Then /^I remove the "([^"]*)" option$/
+     */
+    public function iRemoveTheOption($optionName)
+    {
+        $this->getCurrentPage()->removeOption($optionName);
+    }
+
+    /**
      * @param string $group
      * @param string $attributes
      *
