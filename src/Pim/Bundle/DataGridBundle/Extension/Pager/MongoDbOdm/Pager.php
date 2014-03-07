@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 /**
  * MongoDB ODM pager
@@ -21,13 +22,15 @@ class Pager extends AbstractPager implements PagerInterface
     protected $qb;
 
     /**
-     * @param integer      $maxPerPage
-     * @param QueryBuilder $qb
+     * @var AclHelper
      */
-    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
+    protected $aclHelper;
+
+    public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
+        $this->aclHelper = $aclHelper;
     }
 
     /**
