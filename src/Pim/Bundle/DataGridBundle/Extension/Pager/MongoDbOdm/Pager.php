@@ -27,6 +27,8 @@ class Pager extends AbstractPager implements PagerInterface
     protected $aclHelper;
 
     /**
+     * Constructor
+     *
      * @param AclHelper    $aclHelper
      * @param integer      $maxPerPage
      * @param QueryBuilder $qb

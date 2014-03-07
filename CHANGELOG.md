@@ -4,6 +4,7 @@
 
 ## Improvements
 - Removed useless ```app/entities``` directory
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -13,6 +14,7 @@
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension constructor (MongoDBODM support)
+- Remove deprecated fallback property of Locale entity
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 

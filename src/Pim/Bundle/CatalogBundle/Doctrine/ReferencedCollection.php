@@ -95,8 +95,6 @@ class ReferencedCollection implements Collection
     /**
      * Get object class identifier from the repository
      *
-     * @param mixed $itemRepository
-     *
      * @return string
      */
     protected function getClassIdentifier()
@@ -296,51 +294,51 @@ class ReferencedCollection implements Collection
     /**
      * {@inheritdoc}
      */
-    public function exists(Closure $p)
+    public function exists(Closure $predicate)
     {
         $this->initialize();
 
-        return $this->items->exists($p);
+        return $this->items->exists($predicate);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(Closure $p)
+    public function filter(Closure $predicate)
     {
         $this->initialize();
 
-        return $this->items->filter($p);
+        return $this->items->filter($predicate);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function forAll(Closure $p)
+    public function forAll(Closure $predicate)
     {
         $this->initialize();
 
-        return $this->items->forAll($p);
+        return $this->items->forAll($predicate);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function map(Closure $p)
+    public function map(Closure $predicate)
     {
         $this->initialize();
 
-        return $this->items->map($p);
+        return $this->items->map($predicate);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function partition(Closure $p)
+    public function partition(Closure $predicate)
     {
         $this->initialize();
 
-        return $this->items->partition($p);
+        return $this->items->partition($predicate);
     }
 
     /**
