@@ -12,6 +12,7 @@
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Add an argument $adapterClass (string for FQCN) in ProductFilterExtension constructor (MongoDBODM support)
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
