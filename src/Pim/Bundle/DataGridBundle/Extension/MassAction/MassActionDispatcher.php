@@ -18,13 +18,18 @@ use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
 class MassActionDispatcher extends OroMassActionDispatcher
 {
     /**
+     * @var array
+     */
+    protected $filters;
+
+    /**
      * {@inheritdoc}
      */
     public function dispatch($datagridName, $actionName, array $parameters, array $data = [])
     {
         $inset   = isset($parameters['inset'])   ? $parameters['inset']   : true;
         $values  = isset($parameters['values'])  ? $parameters['values']  : [];
-        $filters = isset($parameters['filters']) ? $parameters['filters'] : [];
+        $this->filters = isset($parameters['filters']) ? $parameters['filters'] : [];
 
         if ($inset && empty($values)) {
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
@@ -34,7 +39,7 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
 
         // set filter data
-        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
+        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $this->filters);
 
         // create mediator
         $massAction     = $this->getMassActionByName($actionName, $datagrid);
@@ -55,13 +60,17 @@ class MassActionDispatcher extends OroMassActionDispatcher
      *
      * {@inheritdoc}
      */
-    protected function getDatagridQuery(
-        DatagridInterface $datagrid,
-        $identifierField = 'id',
-        $inset = true,
-        $values = []
-    ) {
-        $qb = parent::getDatagridQuery($datagrid, $identifierField, $inset, $values);
+    protected function getDatagridQuery(DatagridInterface $datagrid, $idField = 'id', $inset = true, $values = [])
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        if ($values) {
+            $valueWhereCondition =
+                $inset
+                    ? $qb->expr()->in($idField, $values)
+                    : $qb->expr()->notIn($idField, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
 
         $rootAlias = $qb->getRootAlias();
         $from      = current($qb->getDQLPart('from'));
@@ -71,6 +80,17 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $qb->select($rootAlias);
         $qb->resetDQLPart('from');
         $qb->from($entity, $rootAlias);
+
+        if ($qb->getParameter('dataLocale')) {
+            $localeCode = $this->container->get('request')->get('dataLocale', null);
+            $qb->setParameter('dataLocale', $localeCode);
+        }
+
+        if ($qb->getParameter('scopeCode')) {
+            $scopeCode = isset($this->filters['scope']['value']) ?
+                $this->filters['scope']['value'] : null;
+            $qb->setParameter('scopeCode', $scopeCode);
+        }
 
         return $qb;
     }

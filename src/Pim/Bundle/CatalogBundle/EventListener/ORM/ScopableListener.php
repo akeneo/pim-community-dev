@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 

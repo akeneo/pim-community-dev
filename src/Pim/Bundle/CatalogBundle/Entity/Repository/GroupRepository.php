@@ -178,11 +178,12 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
+     * @param string  $productClass
      * @param integer $variantGroupId
      *
      * @return array product ids
      */
-    public function getEligibleProductIds($variantGroupId)
+    public function getEligibleProductIds($productClass, $variantGroupId)
     {
         $sql = 'SELECT count(ga.attribute_id) as nb '.
             'FROM pim_catalog_group_attribute as ga '.
@@ -192,7 +193,7 @@ class GroupRepository extends ReferableEntityRepository
         $stmt->execute();
         $nbAxes = $stmt->fetch()['nb'];
 
-        $productMeta = $this->_em->getClassMetadata('Pim\Bundle\CatalogBundle\Model\Product');
+        $productMeta = $this->_em->getClassMetadata($productClass);
         $valueClass = $productMeta->getAssociationMappings()['values']['targetEntity'];
         $valueTable = $this->_em->getClassMetadata($valueClass)->getTableName();
 

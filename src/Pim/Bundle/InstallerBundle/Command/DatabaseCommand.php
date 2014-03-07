@@ -67,13 +67,13 @@ class DatabaseCommand extends ContainerAwareCommand
 
         // Needs to try if database already exists or not
         $connection = $this->getContainer()->get('doctrine')->getConnection();
-        if (!$connection->isConnected()) {
-            try {
+        try {
+            if (!$connection->isConnected()) {
                 $connection->connect();
-                $this->commandExecutor->runCommand('doctrine:database:drop', array('--force' => true));
-            } catch (\PDOException $e) {
-                $output->writeln('<info>Database does not exist yet</info>');
             }
+            $this->commandExecutor->runCommand('doctrine:database:drop', array('--force' => true));
+        } catch (\PDOException $e) {
+            $output->writeln('<info>Database does not exist yet</info>');
         }
 
         $this->commandExecutor->runCommand('doctrine:database:create');

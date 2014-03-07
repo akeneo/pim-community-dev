@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Flexible\GroupColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator;
 
 /**
  * Grid listener to configure column, filter and sorter based on attributes and business rules
@@ -13,7 +13,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Flexible\GroupColumnsConfigurator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
+class ConfigureGroupProductGridListener extends ConfigureProductGridListener
 {
     /**
      * @param DatagridConfiguration $datagridConfig
@@ -27,7 +27,7 @@ class ConfigureGroupProductGridListener extends ConfigureFlexibleGridListener
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $em = $this->flexibleManager->getEntityManager();
+        $em = $this->productManager->getEntityManager();
         $group = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->findOne($groupId);
 
         return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $group);

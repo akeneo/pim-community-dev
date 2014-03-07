@@ -6,11 +6,12 @@ parameters:
     pim_catalog.event_listener.mongodb.localizable.class:           Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
     pim_catalog.event_listener.mongodb.scopable.class:              Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
     pim_catalog.event_listener.mongodb.collection.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\CollectionListener
+    pim_catalog.doctrine.mongodb.flexible_query_builder.class:      Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
-        
+
     pim_catalog.object_manager.association:
         alias: doctrine.odm.mongodb.document_manager
 
@@ -50,3 +51,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.doctrine.flexible_query_builder:
+        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%

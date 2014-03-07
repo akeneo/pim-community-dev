@@ -4,7 +4,7 @@
 
 <table id="completeness-widget">
 {% for channel, channelResult in widget.params %}
-    <tr>
+    <tr class="channel{{ loop.first ? ' first' : '' }}">
         <td><a href="#" data-toggle-channel="{{ channel }}"><i class="icon-caret-down"/></a></td>
         <td><a href="#" data-toggle-channel="{{ channel }}"><b>{{ channel }}</b></a></td>
         <td>

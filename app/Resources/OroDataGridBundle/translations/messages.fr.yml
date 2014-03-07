@@ -1,0 +1,17 @@
+---
+oro_datagrid.no_data_hint %entityHint%: "Aucun %entityHint% n'existe."
+oro_datagrid.not_found_hint %entityHint%: 'Aucun %entityHint% ne correspond à votre recherche. Essayez de modifier vos critères de recherche ...'
+oro_datagrid.label_add_filter: Gérer les filtres
+oro_datagrid.label_loading_mask: Chargement . . .
+oro.grid.mass_action.selected_rows: Lignes sélectionnées
+oro.grid.mass_action.confirm_title: "Confirmation de l'action de masse"
+oro.grid.mass_action.confirm_content: Êtes-vous sûr de vouloir faire cela?
+oro.grid.mass_action.confirm_ok: Oui, faites-le
+oro.grid.mass_action.error_title: "Erreur de l'action de masse"
+oro.grid.mass_action.error_content: Action de masse impossible
+oro.grid.mass_action.delete.label: Supprimer
+oro.grid.mass_action.delete.confirm_title: Confirmation de suppression
+oro.grid.mass_action.delete.confirm_content: Êtes-vous sûr de vouloir supprimer les éléments sélectionnés?
+oro.grid.datagrid.page_size.all: Tous
+oro.grid.mass_action.delete.success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimé|]1, Inf [ %count% entités ont été supprimée"
+oro.grid.export.csv: CSV

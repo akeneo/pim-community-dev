@@ -19,3 +19,21 @@ pim_dashboard:
       export_report: Exportgeschiedenis
       attribute: Kenmerken beheren
       family: Families beheren
+  quick_launchpad: Snelstarten
+  widget:
+    error:
+      title: Fout tijdens het laden van widget
+      message: 'Widget "%alias%" bestaat niet'
+    completeness:
+      title: Volledigheid over kanalen en lokalisaties
+    last_operations:
+      title: Laatste bewerkingen
+      empty: Geen bewerkingen gevonden
+      status: Status
+      date: Datum
+      type: Type
+      profile name: Profielnaam
+      details: Details
+      job_type:
+        import: Importeren
+        export: Exporteren

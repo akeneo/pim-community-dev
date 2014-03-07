@@ -304,12 +304,13 @@ class ProductRepository extends FlexibleEntityRepository implements
         $sql = <<<SQL
 SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
     JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
-    JOIN pim_catalog_product p ON p.id = cp.product_id
+    JOIN %category_join_table% cp ON cp.category_id = ca.id
+    JOIN %product_table% p ON p.id = cp.product_id
     WHERE p.is_enabled = 1
     GROUP BY ch.id, ch.label
 SQL;
 
+        $sql = $this->prepareDBALQuery($sql);
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -322,9 +323,9 @@ SQL;
     public function countCompleteProductsPerChannels()
     {
         $sql = <<<SQL
-SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
+    SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
     JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN pim_catalog_category_product cp ON cp.category_id = ca.id
+    JOIN %category_join_table% cp ON cp.category_id = ca.id
     JOIN %product_table% p ON p.id = cp.product_id
     JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
     JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
@@ -333,20 +334,40 @@ SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM 
     WHERE p.is_enabled = 1
     GROUP BY ch.id, lo.id, ch.label, lo.code
 SQL;
-        $sql = strtr(
-            $sql,
-            array(
-                '%product_table%' => $this
-                    ->getEntityManager()
-                    ->getClassMetadata($this->flexibleConfig['flexible_class'])
-                    ->getTableName()
-            )
-        );
+        $sql = $this->prepareDBALQuery($sql);
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Replaces name of tables in DBAL queries
+     *
+     * @param string $sql
+     *
+     * @return string
+     */
+    protected function prepareDBALQuery($sql)
+    {
+        $categoryMapping = $this->getClassMetadata()->getAssociationMapping('categories');
+
+        $valueMapping  = $this->getClassMetadata()->getAssociationMapping('values');
+        $valueMetadata = $this->getEntityManager()->getClassMetadata($valueMapping['targetEntity']);
+
+        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
+
+        return strtr(
+            $sql,
+            [
+                '%category_join_table%' => $categoryMapping['joinTable']['name'],
+                '%product_table%'       => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%' => $valueMetadata->getTableName(),
+                '%attribute_table%'     => $valueMetadata->getTableName()
+            ]
+        );
     }
 
     /**
@@ -521,5 +542,73 @@ SQL;
             (0 !== count($result)) &&
             !(1 === count($result) && $value === ($result instanceof \Iterator ? $result->current() : current($result)))
         );
+    }
+
+    /**
+     * Find all common attributes ids linked to a family
+     * A list of product ids can be passed as parameter
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
+    public function findFamilyCommonAttributeIds(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id, COUNT(a.id) AS COUNT_ATT')
+            ->innerJoin('p.family', 'f')
+            ->innerJoin('f.attributes', 'a')
+            ->groupBy('a.id');
+
+        if (!empty($productIds)) {
+            $qb->where($qb->expr()->in('p.id', $productIds));
+
+            $subQb = $this->createQueryBuilder('p_sub');
+            $subQb
+                ->select($subQb->expr()->count('f_sub.id'))
+                ->innerJoin('p_sub.family', 'f_sub')
+                ->where($subQb->expr()->in('p_sub.id', $productIds));
+
+            $qb->having('COUNT_ATT = ('. $subQb .')');
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Find all common attribute ids with values from a list of product ids
+     * Can't use ORM here because of QueryBuilder::from method which only take string
+     * Only DBAL layer is used
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
+    public function findValuesCommonAttributeIds(array $productIds)
+    {
+        $sql = <<<SQL
+    SELECT a.id, COUNT(a.id) AS COUNT_ATT
+    FROM (
+        SELECT a.id FROM %product_table% p
+        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+        INNER JOIN %attribute_table% a ON a.id = pv.attribute_id
+        WHERE p.id IN(%product_ids%)
+        GROUP BY p.id, a.id) a
+    GROUP BY a.id
+    HAVING COUNT_ATT = (
+        SELECT COUNT(p.id)
+        FROM %product_table% p
+        WHERE p.id IN(%product_ids%)
+    )
+SQL;
+
+        $sql = strtr($sql, ['%product_ids%' => implode($productIds, ',')]);
+        $sql = $this->prepareDBALQuery($sql);
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

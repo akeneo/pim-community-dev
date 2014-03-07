@@ -22,9 +22,9 @@ pim_import_export:
     7: AUFGEGEBEN
     8: UNBEKANNT
   download_archive:
-    archive: Erstellte Datei herunterladen
-    output: Erstellte Datei herunterladen
-    input: Eingelesene Datei herunterladen
+    archive: generierte Datei herunterladen|generierte Dateien herunterladen
+    output: generierte Datei herunterladen|generierte Dateien herunterladen
+    input: gelesene Datei herunterladen|gelesene Dateien herunterladen
     invalid: Ungültige Daten herunterladen
 pim_title.export_profile.index: Verwaltung der Export-Profile
 pim_title.export_profile.edit: 'Export-Profile %job.label% | Bearbeiten'
@@ -98,3 +98,7 @@ pane.accordion:
 popin.create:
   export_profile.title: Ein neues Exportprofil anlegen
   import_profile.title: Ein neues Importprofil anlegen
+Display item: Element anzeigen
+Hide item: Element ausblenden
+Collecting data about job execution...: Sammle Daten zur Ausführung des Jobs...
+You must select a file to upload: Sie müssen eine Datei für den Upload auswählen

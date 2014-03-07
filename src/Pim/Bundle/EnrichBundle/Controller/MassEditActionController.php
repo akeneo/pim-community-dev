@@ -267,7 +267,6 @@ class MassEditActionController extends AbstractDoctrineController
     protected function getProductCount(Request $request)
     {
         $qb = clone $this->getGridQB($request);
-
         $rootEntity = current($qb->getRootEntities());
         $rootAlias  = $qb->getRootAlias();
         $rootField  = $rootAlias.'.id';
@@ -291,9 +290,10 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $params = $this->parametersParser->parse($request);
 
-        $params['gridName'] = $request->get('gridName');
-        $params['values']   = implode(',', $params['values']);
-        $params['filters']  = json_encode($params['filters']);
+        $params['gridName']   = $request->get('gridName');
+        $params['values']     = implode(',', $params['values']);
+        $params['filters']    = json_encode($params['filters']);
+        $params['dataLocale'] = $request->get('dataLocale', null);
 
         return $params;
     }
@@ -317,14 +317,6 @@ class MassEditActionController extends AbstractDoctrineController
                 $parameters,
                 $requestData
             );
-
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->select($rootAlias);
-
-            $from = current($qb->getDQLPart('from'));
-            $qb->resetDQLPart('from');
-            $qb->from($from->getFrom(), $from->getAlias());
 
             $this->gridQB = $qb;
         }

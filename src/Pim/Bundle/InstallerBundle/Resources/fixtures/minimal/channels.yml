@@ -6,3 +6,4 @@ channels:
         currencies:
             - USD
         tree: master
+        color: orange

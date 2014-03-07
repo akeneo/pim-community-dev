@@ -69,7 +69,7 @@ btn:
   edit: Modifier
   save: Enregistrer
   save and back: Enregistrer et revenir à la grille
-  save and create: Enregistrer et créer un nouveau produit
+  save and create: Sauver et créer un nouveau
   remove: Retirer
   delete: Supprimer
   cancel: Annuler
@@ -191,11 +191,22 @@ info:
     axis: 'Axes de variations: %attributes%'
     select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
     selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
-    no group types: "Aucun type de groupe n'existe, merci d'en créer un"
+    no group types: Aucun type de groupe existe, cliquez ici pour en créer un
   association type:
     show products: Afficher les produits
     show groups: Afficher les groupes
     remove from products: "La suppression du type d'association l'enlèvera de %count% produits."
+    none exist: "Aucun type d'association n'existe."
+    create one: Cliquez ici pour en créer un
+color:
+  gray: Gris
+  white: Blanc
+  yellow: Jaune
+  orange: Orange
+  magenta: Magenta
+  violet: Violet
+  blue: Bleu
+  cyan: Cyan
 Options: Options
 Created at: Crée le
 Updated at: Mis à jour le
@@ -219,6 +230,7 @@ Scopable: Décliné par canal
 Localizable: Localisable
 Unique value: Valeur unique
 Attribute group: "Groupe d'attributs"
+Other: Autre
 Variants behavior when edited: "Comportement des variantes lors de l'édition"
 Edit: Modifier
 Remove: Supprimer
@@ -246,7 +258,9 @@ Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
 Yes: Oui
+No: ' '
 Close: Fermer
+Choose a color: Choisir une couleur
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
@@ -489,7 +503,8 @@ popin.create:
   product.title: Créer un nouveau produit
   variant_group.title: Créer un nouveau groupe de variants
   option.title: Créer une nouvelle option
-Has product: Lié au produit
+In group: Dans le groupe
 Attribute as label: Attribut en tant que libellé
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes affichées
+Is associated: Est associé

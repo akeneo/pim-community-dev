@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
@@ -86,4 +86,3 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $this->validate("", $constraint)->shouldReturn(null);
     }
 }
-

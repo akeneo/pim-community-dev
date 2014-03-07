@@ -14,6 +14,7 @@ Feature: Edit common attributes of many products at once
      | boots    | boots    |
      | sneakers | sneakers |
      | sandals  | sandals  |
+     | pump     |          |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -94,3 +95,29 @@ Feature: Edit common attributes of many products at once
     And I should see "[sizes]"
     And I should see "Nom"
     And I should see "Taille"
+
+  @info https://akeneo.atlassian.net/browse/PIM-2163
+  Scenario: Succesfully mass edit product values that does not belong yet to the product
+    Given I set product "pump" family to "sneakers"
+    When I mass-edit products pump and sneakers
+    And I choose the "Edit attributes" operation
+    And I display the Name attribute
+    And I change the "Name" to "boots"
+    And I move on to the next step
+    Then the english name of "pump" should be "boots"
+    And the english name of "sneakers" should be "boots"
+
+  @info https://akeneo.atlassian.net/browse/PIM-2163
+  Scenario: Succesfullu mass edit scoped product values
+    Given I set product "pump" family to "boots"
+    When I mass-edit products boots and pump
+    And I choose the "Edit attributes" operation
+    And I display the Description attribute
+    And I expand the "Description" attribute
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo"
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar"
+    And I move on to the next step
+    Then the english mobile Description of "boots" should be "Foo"
+    And the english tablet Description of "boots" should be "Bar"
+    And the english mobile Description of "pump" should be "Foo"
+    And the english tablet Description of "pump" should be "Bar"

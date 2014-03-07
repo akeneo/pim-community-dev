@@ -50,7 +50,7 @@ process.step.installation.assets: Installation des assets
 process.step.installation.assetic: Dump assetic
 process.step.installation.assetic-oro: Dump Oro assetic
 process.step.installation.translation: Préparer les traductions
-process.step.installation.requirejs: Optimiser les ressources de RequireJS (ce processus peut prendre quelques minutes)
+process.step.installation.requirejs: Optimise les fichiers Javascripts (Optionnel)
 process.step.installation.cache: Vider le cache
 process.step.final.header: Terminer
 process.step.final.greeting: Succès!!!
@@ -62,3 +62,15 @@ process.button.install: Installer
 process.button.finish: "Lancer l'application"
 process.operation: Opération
 process.status: Statut
+skipped: Passée
+form.configuration.mailer.port: Port
+form.configuration.mailer.encryption: Chiffrement
+form.setup.company_name: "Nom court de l'entreprise"
+form.setup.company_title: "Nom de l'entreprise"
+process.step.schema.schema-drop: Supprimer le shéma actuel
+process.step.schema.schema-create: Créer un schéma
+process.step.schema.schema-update: Mise à jour du schéma
+process.step.schema.workflows: Charger les définitions du flux de travail
+process.step.installation.js-routing: Dump le routage des JS
+process.step.installation.localization: Dump la localisation
+process.step.installation.finish: "Vider le cache afin de finaliser l'installation"

@@ -1,1 +1,114 @@
 ---
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Productexport in CSV
+      export.title: Productexport
+    csv_category_export:
+      title: Categorie-export in CSV
+      export.title: Categorie-export
+    csv_attribute_export:
+      title: Attribuutexport in CSV
+      export.title: Attribuutexport
+    csv_attribute_option_export:
+      title: Attribuutoptie-export in CSV
+      export.title: Attribuutoptie-export
+    csv_association_type_export:
+      title: Associatietype-export in CSV
+      export.title: Associatietype-export
+    csv_group_export:
+      title: Groepexport in CSV
+      export.title: Groepexport
+    csv_product_import:
+      title: Productimport in CSV
+      import.title: Productimport
+      import_associations.title: Productassociatie import
+    csv_category_import:
+      title: Categorie-import in CSV
+      import.title: Categorie-import
+    csv_attribute_import:
+      title: Attribuut-import in CSV
+      import.title: Attribuut-import
+    csv_attribute_option_import:
+      title: Attribuutoptie-import in CSV
+      import.title: Attribuutoptie-import
+    csv_association_type_import:
+      title: Associatietype-import in CSV
+      import.title: Associatietype-import
+    csv_group_import:
+      title: Groep importeren in CSV
+      import.title: Groep importeren
+  steps:
+    dummy_reader.title: Dummy lezer
+    product_reader.title: Product extractie
+    entity_reader.title: Entiteitextractie
+    csv_reader:
+      title: CSV-lezer
+      invalid_item_columns_count: 'Verwacht %totalColumnsCount% kolommen, in werkelijkheid %itemColumnsCount% %csvPath%:%lineno%'
+    csv_product_reader.title: CSV product lezer
+    csv_category_reader.title: CSV categorie lezer
+    dummy_processor.title: Dummy verwerker
+    product_processor.title: Product aanmaken
+    category_processor.title: Categorie aanmaken
+    association_processor.title: Associatie aanmaken
+    group_processor.title: Groep aanmaken
+    attribute_processor.title: Attribuut aanmaken
+    attribute_option_processor.title: Attribuutoptie aanmaken
+    heterogeneous_processor.title: CSV product serialiseren
+    homogeneous_processor.title: CSV entiteit serialiseren
+    transformer_processor.title: Transformatie
+    dummy_writer.title: Dummy schrijver
+    file_writer.title: Uitvoer
+    product_writer.title: Productopslag
+    category_writer.title: Categorieopslag
+    writer.title: Entiteitopslag
+  export:
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    withHeader:
+      label: Met koptekst
+      help: Of de kolomnaam geprint moet worden
+    filePath:
+      label: Bestandspad
+      help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+    channel:
+      label: Kanaal
+      help: Het kanaal dat u wilt exporteren
+  import:
+    enabled:
+      label: Het product inschakelen
+      help: Of geïmporteerd product moet worden ingeschakeld
+    categoriesColumn:
+      label: Categoriekolom
+      help: Naam van de categoriekolom
+    familyColumn:
+      label: Familiekolom
+      help: Naam van de familiekolom
+    groupsColumn:
+      label: Groepskolom
+      help: Naam van de groepskolom
+    filePath:
+      label: Bestand
+      help: Het CSV-bestand om te importeren
+    uploadAllowed:
+      label: Bestanden uploaden toestaan
+      help: Of direct uploaden van het bestand is toegestaan
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken dat gebruikt wordt als omsluitingsteken voor het veld
+    escape:
+      label: Escape-teken
+      help: Eén teken voor gebruik als escape-teken voor het veld
+    circularRefsChecked:
+      label: Controleer op kringverwijzingen
+      help: Indien ja zullen de gegevens worden verwerkt om ervoor te zorgen dat er zich geen kringverwijzingen tussen de categorieën voordoen
+    realTimeVersioning:
+      label: Real-time geschiedenis bijwerken
+      help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren

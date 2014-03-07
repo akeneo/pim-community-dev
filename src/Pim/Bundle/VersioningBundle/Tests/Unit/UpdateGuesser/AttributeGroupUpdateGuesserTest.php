@@ -25,30 +25,16 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
         $group     = new AttributeGroup();
         $attribute->setGroup($group);
         $guesser   = new AttributeGroupUpdateGuesser();
+
         $em        = $this->getEntityManagerMock($group);
+        $em->expects($this->any())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($this->getUnitOfWorkMock($group)));
+
         $updates   = $guesser->guessUpdates($em, $attribute, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(2, count($updates));
         $this->assertEquals($attribute, $updates[0]);
         $this->assertEquals($group, $updates[1]);
-    }
-
-    /**
-     * @param AttributeGroup $group
-     *
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock($group)
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock
-            ->expects($this->any())
-            ->method('getUnitOfWork')
-            ->will($this->returnValue($this->getUnitOfWorkMock($group)));
-
-        return $mock;
     }
 
     /**

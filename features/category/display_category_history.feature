@@ -3,7 +3,7 @@ Feature: Display the category history
   As a user
   I need to have access to a category history
 
-  @javascript
+  @javascript @skip-doc
   Scenario: Display category updates
     Given the "default" catalog configuration
     And I am logged in as "admin"

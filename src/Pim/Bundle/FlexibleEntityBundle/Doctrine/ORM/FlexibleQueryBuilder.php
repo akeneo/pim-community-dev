@@ -61,9 +61,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Get locale code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -71,11 +69,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return FlexibleQueryBuilder
+     * {@inheritdoc}
      */
     public function setLocale($code)
     {
@@ -85,9 +79,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Get scope code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getScope()
     {
@@ -95,11 +87,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return FlexibleQueryBuilder
+     * {@inheritdoc}
      */
     public function setScope($code)
     {
@@ -109,13 +97,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Add an attribute to filter
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * {@inheritdoc}
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
@@ -150,12 +132,19 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * Sort by attribute value
-     *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
@@ -179,8 +168,17 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     }
 
     /**
-     * TODO : should not be public !
-     *
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $this->qb->addOrderBy($field, $direction);
+
+        return $this;
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name
@@ -190,7 +188,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @return string
      * @throws FlexibleQueryException
      */
-    public function prepareCriteriaCondition($field, $operator, $value)
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
         $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
 

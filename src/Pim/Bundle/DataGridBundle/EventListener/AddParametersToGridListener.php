@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Get parameters from request and bind them to query builder
@@ -54,7 +55,7 @@ class AddParametersToGridListener
     public function onBuildAfter(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
-        if ($datasource instanceof OrmDatasource) {
+        if ($datasource instanceof OrmDatasource || $datasource instanceof ProductDatasource) {
             $queryParameters = $this->prepareParameters();
             /** @var QueryBuilder $query */
             $queryBuilder = $datasource->getQueryBuilder();

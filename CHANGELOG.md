@@ -1,4 +1,17 @@
-# 1.0.0-
+# 1.1.0 - 
+
+## Features
+
+## Improvements
+Removed useless app/entities and app/emails directories
+
+## Bug fixes
+Fixed verbose option always used
+
+## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+
+# 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features
 - Uservoice integration
@@ -38,6 +51,10 @@
 - Fixed scopable value order in product form
 - Restored unique variant axis constraint when saving product
 - Fixed missing breadcrumbs for edit views
+- Fixed lost hashnav when creating an attribute group
+- Fixed a bug that prevented saving unchecked checkbox value in product edit form
+- Fixed recovered attributes on mass edit action
+- Fixed a bug with tooltips sometimes not appearing due to a conflict between bootstrap and jquery tooltip plugins
 
 ## BC breaks
 - Remove the date type property of Attribute and simplify the pim_catalog_date attribute type to support date only (not date/datetime/time)
@@ -51,16 +68,16 @@ technical flaws (attribute codes are data, not a freeze structure, needed to mai
 that made the entity too smart for its own good and created performances problem)
 - Remove Product::createValue(). Can be replaced by calling ProductManager::createFlexibleValue() and setting attribute, scope and locale on the created value.
 - Product datagrid, hydrate rows as arrays (in place of objects) to reduce the loading time
-- Datagrid configuration, replace [flexible_entity] config by a [source][is_flexible] config to avoid to define the used entity twice
+- Datagrid configuration, remove [flexible_entity] config to avoid to define the used entity twice
 - Rename and move src/Pim/Bundle/EnrichBundle/Resources/views/Completeness/_datagridCompleteness.html.twig => DataGridBundle/Resources/views/Property/completeness.html.twig
 - Delete classes ConfigureAssociationProductGridListener and AssociationProductColumnsConfigurator, we now use ConfigureFlexibleGridListener to configure product association grid
 - Delete the HideColumnsListener, the ColumnConfigurator is now able to add only columns configured by the user
 - Rename CompletenessFilter to ProductCompletenessFilter to be consistent, move also the related js file
-- Inject CurrencyRepository in CurrencyManager instead of EntityManager and hardcoded class
-- Move AttributeManager method on attribute group in AttributeGroup repository
-- ProductManager and FlexibleManager constructors signatures have changed and takes now an array with flexibleConfig as first parameters (see CatalogBundle managers.yml file for more details)
-- CompletenessGeneratorInterface has a new method schedule to schedule completeness of a product
-- Move LocalizableListener and ScopableListener from FlexibleEntityBundle to CatalogBundle and make them product specific
+- Changed signature of ProductRepository::getEligibleProductIds()
+- Changed signature of GroupType::__construct()
+- Changed signature of AssociationType::__construct()
+- Removed AttributeRepository::findallWithGroups()
+- Rename grid_extensions.yml, grid_actions.yml, grid_listeners.yml, grid_attribute_types.yml to extensions.yml, actions.yml, event_listeners.yml, attribute_types.yml
 
 # 1.0.0-rc-1 - "Tortoise Beats Hare" (2014-02-06)
 

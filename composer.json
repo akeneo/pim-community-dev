@@ -12,13 +12,12 @@
         "psr-0": {
             "": "src/",
             "Context": "features/",
-            "Extend\\": "app/entities/",
             "OroEmail\\": "app/emails/"
         }
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta5#d0bf9e797f9ac52f6fea28f3c6d021c3e1d4a362",
+        "oro/platform": "dev-pim-1.0#37337badacb7b5a1e448b789368594db2ec00a4f",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-gaufrette-bundle": "0.2.x-dev#171844b400e50d66f6fab6aa7aea820407fc74a3",
         "incenteev/composer-parameter-handler": "2.1.0",
@@ -27,7 +26,7 @@
         "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
         "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3",
         "akeneo/measure-bundle": "0.1.0",
-        "akeneo/batch-bundle": "0.1.2"
+        "akeneo/batch-bundle": "0.1.3"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
@@ -82,6 +81,9 @@
                 "database_user": "PIM_DATABASE_USER",
                 "database_password": "PIM_DATABASE_PASSWORD"
             }
+        },
+        "branch-alias": {
+            "dev-master": "1.1-dev"
         }
     }
 }

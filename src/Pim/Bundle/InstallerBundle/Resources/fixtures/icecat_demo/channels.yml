@@ -10,6 +10,7 @@ channels:
         currencies:
             - USD
             - EUR
+        color: blue
 
     print:
         code:    print
@@ -22,6 +23,7 @@ channels:
         currencies:
             - USD
             - EUR
+        color: gray
 
     ecommerce:
         code:    ecommerce
@@ -34,3 +36,4 @@ channels:
         currencies:
             - USD
             - EUR
+        color: orange

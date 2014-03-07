@@ -17,12 +17,12 @@ class AddAttributeTypesPass implements CompilerPassInterface
     /**
      * @var string
      */
-    const REGISTRY_ID = 'pim_datagrid.datagrid.flexible.configuration_registry';
+    const REGISTRY_ID = 'pim_datagrid.datagrid.product.configuration_registry';
 
     /**
      * @var string
      */
-    const PARAM_PREFIX = 'pim_datagrid.flexible.attribute_type.';
+    const PARAM_PREFIX = 'pim_datagrid.product.attribute_type.';
 
     /**
      * {@inheritdoc}
@@ -43,9 +43,6 @@ class AddAttributeTypesPass implements CompilerPassInterface
             foreach ($parameters as $key => $configuration) {
                 $configurations[str_replace(self::PARAM_PREFIX, '', $key)] = $configuration;
             }
-
-            // TODO process configuration to add default values
-
             $registry->addMethodCall('setConfigurations', array($configurations));
         }
     }

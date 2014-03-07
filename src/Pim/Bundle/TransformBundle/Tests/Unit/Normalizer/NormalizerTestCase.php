@@ -26,7 +26,10 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
      * Data provider for testing supportsNormalization method
      * @return array
      */
-    abstract public static function getSupportNormalizationData();
+    public static function getSupportNormalizationData()
+    {
+        return [];
+    }
 
     /**
      * Test related method
@@ -47,7 +50,10 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
      * Data provider for testing normalize method
      * @return array
      */
-    abstract public static function getNormalizeData();
+    public static function getNormalizeData()
+    {
+        return [];
+    }
 
     /**
      * Test normalize method

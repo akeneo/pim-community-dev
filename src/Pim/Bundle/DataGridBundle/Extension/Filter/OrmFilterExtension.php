@@ -6,7 +6,8 @@ use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension as OroOrmFilterExt
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Orm filter extension
@@ -28,6 +29,8 @@ class OrmFilterExtension extends OroOrmFilterExtension
             return false;
         }
 
-        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE;
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+
+        return ($datasourceType == PimOrmDatasource::TYPE || $datasourceType == ProductDatasource::TYPE);
     }
 }

@@ -169,10 +169,7 @@ class FlexibleEntityRepository extends EntityRepository implements
             $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
 
         } else {
-            $field = current($qb->getRootAliases()).'.'.$attributeCode;
-            $qb->andWhere(
-                $this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue)
-            );
+            $this->getFlexibleQueryBuilder($qb)->addFieldFilter($attributeCode, $operator, $attributeValue);
         }
     }
 
@@ -192,7 +189,7 @@ class FlexibleEntityRepository extends EntityRepository implements
         if ($attribute) {
             $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
         } else {
-            $qb->addOrderBy(current($qb->getRootAliases()).'.'.$attributeCode, $direction);
+            $this->getFlexibleQueryBuilder($qb)->addFieldSorter($attributeCode, $direction);
         }
     }
 
