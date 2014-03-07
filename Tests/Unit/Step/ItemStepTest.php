@@ -103,7 +103,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
 
         $reader = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
-            ->setMethods(array('setStepExecution', 'read'))
+            ->setMethods(array('setStepExecution', 'read', 'initialize', 'flush'))
             ->getMock();
         $reader->expects($this->once())
             ->method('setStepExecution')
@@ -111,9 +111,11 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $reader->expects($this->exactly(8))
             ->method('read')
             ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7, null));
+        $reader->expects($this->once())->method('initialize');
+        $reader->expects($this->once())->method('flush');
 
         $processor = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
-            ->setMethods(array('setStepExecution', 'process'))
+            ->setMethods(array('setStepExecution', 'process', 'initialize', 'flush'))
             ->getMock();
         $processor->expects($this->once())
             ->method('setStepExecution')
@@ -121,15 +123,19 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $processor->expects($this->exactly(7))
             ->method('process')
             ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7));
+        $processor->expects($this->once())->method('initialize');
+        $processor->expects($this->once())->method('flush');
 
         $writer = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
-            ->setMethods(array('setStepExecution', 'write'))
+            ->setMethods(array('setStepExecution', 'write', 'initialize', 'flush'))
             ->getMock();
         $writer->expects($this->once())
             ->method('setStepExecution')
             ->with($stepExecution);
         $writer->expects($this->exactly(2))
             ->method('write');
+        $writer->expects($this->once())->method('initialize');
+        $writer->expects($this->once())->method('flush');
 
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
@@ -291,7 +297,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(

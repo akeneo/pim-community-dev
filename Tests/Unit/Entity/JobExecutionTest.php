@@ -244,7 +244,6 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $this->jobExecution->getLabel());
     }
 
-
     public function testToString()
     {
         $startTime = new \DateTime('2013-02-01 12:34:56');

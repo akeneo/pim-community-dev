@@ -2,7 +2,6 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
-
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;

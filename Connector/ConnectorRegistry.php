@@ -6,9 +6,6 @@ use Akeneo\Bundle\BatchBundle\Job\JobInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\JobFactory;
 use Akeneo\Bundle\BatchBundle\Step\StepFactory;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
 
 /**
@@ -38,7 +35,7 @@ class ConnectorRegistry
     /**
      * Get a registered job definition from a JobInstance
      *
-     * @param JobInstance $jobInstance
+     * @param  JobInstance     $jobInstance
      * @return JobInterface
      * @throws \LogicException
      */
@@ -110,7 +107,7 @@ class ConnectorRegistry
      * @param string $jobConnector
      * @param string $jobType
      * @param string $jobAlias
-     * @param string $template reference to the template (format: bundle:section:template.format.engine)
+     * @param string $template     reference to the template (format: bundle:section:template.format.engine)
      */
     public function setJobShowTemplate($jobConnector, $jobType, $jobAlias, $template)
     {
@@ -135,7 +132,7 @@ class ConnectorRegistry
      * @param string $jobConnector
      * @param string $jobType
      * @param string $jobAlias
-     * @param string $template reference to the template (format: bundle:section:template.format.engine)
+     * @param string $template     reference to the template (format: bundle:section:template.format.engine)
      */
     public function setJobEditTemplate($jobConnector, $jobType, $jobAlias, $template)
     {

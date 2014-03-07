@@ -5,8 +5,9 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step\Stub;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
-class ProcessorStub implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProcessorStub extends AbstractConfigurableStepElement implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /**
      * {@inheritDoc}
@@ -21,4 +22,10 @@ class ProcessorStub implements ItemProcessorInterface, StepExecutionAwareInterfa
     public function setStepExecution(StepExecution $stepExecution)
     {
     }
+
+    public function getConfigurationFields()
+    {
+
+    }
+
 }

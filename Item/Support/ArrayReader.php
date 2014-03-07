@@ -3,7 +3,6 @@
 namespace Akeneo\Bundle\BatchBundle\Item\Support;
 
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Simple reader that provides data from an array

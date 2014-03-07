@@ -64,4 +64,18 @@ abstract class AbstractConfigurableStepElement
             }
         }
     }
+
+    /**
+     * Override to add custom logic on step initialization.
+     */
+    public function initialize()
+    {
+    }
+
+    /**
+     * Override to add custom logic on step completion.
+     */
+    public function flush()
+    {
+    }
 }

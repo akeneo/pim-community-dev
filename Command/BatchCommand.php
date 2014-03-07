@@ -14,7 +14,6 @@ use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Batch command
@@ -258,6 +257,6 @@ class BatchCommand extends ContainerAwareCommand
                 }
             }
         }
- 
+
     }
 }

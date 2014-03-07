@@ -537,6 +537,7 @@ class JobExecution
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
+
         return sprintf(
             $message,
             $startTime,

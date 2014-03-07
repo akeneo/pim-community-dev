@@ -183,7 +183,7 @@ class ItemStep extends AbstractStep
         $itemsToWrite  = array();
         $writeCount    = 0;
 
-        $this->initializeStepComponents($stepExecution);
+        $this->initializeStepElements($stepExecution);
 
         $stopExecution = false;
         while (!$stopExecution) {
@@ -216,25 +216,30 @@ class ItemStep extends AbstractStep
         if (count($itemsToWrite) > 0) {
             $this->write($itemsToWrite);
         }
+        $this->flushStepElements();
     }
 
     /**
      * @param StepExecution $stepExecution
      */
-    protected function initializeStepComponents(StepExecution $stepExecution)
+    protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-
-        if ($this->reader instanceof StepExecutionAwareInterface) {
-            $this->reader->setStepExecution($stepExecution);
+        foreach ($this->getConfigurableStepElements() as $element) {
+            if ($element instanceof StepExecutionAwareInterface) {
+                $element->setStepExecution($stepExecution);
+            }
+            $element->initialize();
         }
+    }
 
-        if ($this->processor instanceof StepExecutionAwareInterface) {
-            $this->processor->setStepExecution($stepExecution);
-        }
-
-        if ($this->writer instanceof StepExecutionAwareInterface) {
-            $this->writer->setStepExecution($stepExecution);
+    /**
+     * Flushes step elements
+     */
+    public function flushStepElements()
+    {
+        foreach ($this->getConfigurableStepElements() as $element) {
+            $element->flush();
         }
     }
 
