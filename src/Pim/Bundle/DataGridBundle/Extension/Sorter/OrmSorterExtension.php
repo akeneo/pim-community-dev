@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
-use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension as OroOrmSorterExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 

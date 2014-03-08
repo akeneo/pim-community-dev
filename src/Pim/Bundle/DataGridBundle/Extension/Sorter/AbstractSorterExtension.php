@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -227,5 +226,5 @@ abstract class AbstractSorterExtension extends AbstractExtension
      *
      * @return boolean
      */
-    protected abstract function matchDatasource(DatagridConfiguration $config);
+    abstract protected function matchDatasource(DatagridConfiguration $config);
 }

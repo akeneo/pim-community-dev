@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
-use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension as OroOrmFilterExtension;
-use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -124,5 +123,5 @@ abstract class AbstractPagerExtension extends AbstractExtension
      *
      * @return boolean
      */
-    protected abstract function matchDatasource(DatagridConfiguration $config);
+    abstract protected function matchDatasource(DatagridConfiguration $config);
 }

@@ -232,5 +232,5 @@ abstract class AbstractFilterExtension extends AbstractExtension
      *
      * @return boolean
      */
-    protected abstract function matchDatasource(DatagridConfiguration $config);
+    abstract protected function matchDatasource(DatagridConfiguration $config);
 }
