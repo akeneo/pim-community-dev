@@ -13,6 +13,7 @@ services:
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
+            - '%pim_filter.datasource.orm_adapter.class%'
         tags:
              - { name: oro_datagrid.extension }
 
@@ -21,7 +22,7 @@ services:
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
-            - '%pim_datagrid.extension.filter.datasource_adapter.class%'
+            - '%pim_filter.datasource.product_adapter.class%'
         tags:
              - { name: oro_datagrid.extension }
 
