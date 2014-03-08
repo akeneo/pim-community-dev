@@ -7,7 +7,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Orm filter extension
@@ -54,7 +53,7 @@ class OrmSorterExtension extends OroOrmSorterExtension
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
             $sortKey = $sorter['data_name'];
-            // if need customized behavior, use sorter service under "sorter" node or a closure in "apply_callback"
+            // if need customized behavior, use sorter service under "sorter" node
             if (isset($sorter['sorter']) && $sorter['sorter'] !== null) {
                 $sorterAlias = $sorter['sorter'];
                 if (!isset($this->sorters[$sorterAlias])) {
@@ -100,6 +99,6 @@ class OrmSorterExtension extends OroOrmSorterExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return ($datasourceType == PimOrmDatasource::TYPE || $datasourceType == ProductDatasource::TYPE);
+        return ($datasourceType == PimOrmDatasource::TYPE);
     }
 }
