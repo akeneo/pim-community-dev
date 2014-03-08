@@ -50,8 +50,6 @@ class TextAreaType extends FlexTextAreaType
                 'fieldType' => 'switch'
             ]
         ];
-
-        return $properties;
     }
 
     /**
