@@ -323,5 +323,18 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         } else {
             // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         }
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * Apply a sort by attribute value
+     *
+     * @param QueryBuilder $qb            query builder to update
+     * @param string       $attributeCode attribute code
+     * @param string       $direction     direction to use
+     */
+    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    {
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }
