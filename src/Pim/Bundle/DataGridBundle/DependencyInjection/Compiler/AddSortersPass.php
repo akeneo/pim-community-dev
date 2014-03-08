@@ -23,6 +23,11 @@ class AddSortersPass implements CompilerPassInterface
     /**
      * @var string
      */
+    const SORTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.sorter.product_sorter';
+
+    /**
+     * @var string
+     */
     const TAG_NAME = 'pim_datagrid.extension.sorter';
 
     /**
@@ -30,8 +35,10 @@ class AddSortersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $extension = $container->getDefinition(self::SORTER_EXTENSION_ID);
-        if ($extension) {
+        $ormExtension = $container->getDefinition(self::SORTER_EXTENSION_ID);
+        $productExtension = $container->getDefinition(self::SORTER_PRODUCT_EXTENSION_ID);
+
+        if ($ormExtension) {
             $filters = $container->findTaggedServiceIds(self::TAG_NAME);
             foreach ($filters as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
@@ -40,7 +47,12 @@ class AddSortersPass implements CompilerPassInterface
                         sprintf('The service %s must be configured with a type attribute', $serviceId)
                     );
                 }
-                $extension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+                if ($ormExtension) {
+                    $ormExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+                }
+                if ($productExtension) {
+                    $productExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+                }
             }
         }
     }
