@@ -9,7 +9,7 @@ parameters:
 
 services:
     pim_datagrid.extension.filter.orm_filter:
-        class: %pim_datagrid.extension.filter.orm_filter.class%
+        class: '%pim_datagrid.extension.filter.orm_filter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
@@ -17,7 +17,7 @@ services:
              - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.filter.product_filter:
-        class: %pim_datagrid.extension.filter.product_filter.class%
+        class: '%pim_datagrid.extension.filter.product_filter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
@@ -26,38 +26,38 @@ services:
              - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter.orm_sorter:
-        class: "%pim_datagrid.extension.sorter.orm_sorter.class%"
+        class: '%pim_datagrid.extension.sorter.orm_sorter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter.product_sorter:
-        class: "%pim_datagrid.extension.sorter.product_sorter.class%"
+        class: '%pim_datagrid.extension.sorter.product_sorter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.pager.orm_pager:
-        class: "%pim_datagrid.extension.pager.orm_pager.class%"
+        class: '%pim_datagrid.extension.pager.orm_pager.class%'
         arguments:
             - '@pim_datagrid.extension.pager.orm.pager'
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
-    pim_datagrid.extension.selector.orm_selector:
-        class: %pim_datagrid.extension.selector.orm_selector.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-             - { name: oro_datagrid.extension }
-
     pim_datagrid.extension.pager.product_pager:
-        class: "%pim_datagrid.extension.pager.product_pager.class%"
+        class: '%pim_datagrid.extension.pager.product_pager.class%'
         arguments:
             - '@pim_datagrid.extension.pager.product.pager'
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.selector.orm_selector:
+        class: '%pim_datagrid.extension.selector.orm_selector.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+             - { name: oro_datagrid.extension }
