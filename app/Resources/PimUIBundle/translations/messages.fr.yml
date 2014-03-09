@@ -1,4 +1,3 @@
----
 User: Utilisateur
 Run demo: Lancer la démo
 Product: Produit
@@ -19,3 +18,7 @@ Channel list: Liste des canaux
 Select file: Sélectionner un fichier
 Change file: Changer le fichier
 Remove file: Supprimer le fichier
+Delete: Supprimer
+Save: Enregistrer
+Cancel: Annuler
+Get help: "besoin d'aide"
