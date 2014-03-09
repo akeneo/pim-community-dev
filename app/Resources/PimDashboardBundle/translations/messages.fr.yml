@@ -1,5 +1,6 @@
 ---
 pim_dashboard:
+  title: Tableau de bord
   menu:
     label:
       collect: Extraire

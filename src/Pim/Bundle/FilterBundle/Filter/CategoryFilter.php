@@ -69,19 +69,14 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $includeSub = $data['includeSub'];
-        $treeId     = $data['treeId'];
-        $categoryId = $data['categoryId'];
-
         $repository = $this->categoryManager->getEntityRepository();
+        $qb         = $ds->getQueryBuilder();
+        $rootAlias  = $qb->getRootAlias();
 
-        $qb = $ds->getQueryBuilder();
-        $rootAlias = $qb->getRootAlias();
-
-        if ($categoryId === self::ALL_CATEGORY) {
+        if ($data['categoryId'] === self::ALL_CATEGORY) {
             return true;
-        } elseif ($categoryId === self::UNCLASSIFIED_CATEGORY) {
-            $tree = $repository->find($treeId);
+        } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
+            $tree = $repository->find($data['treeId']);
             if ($tree) {
                 $productIds = $this->productManager->getProductIdsInCategory($tree, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
@@ -92,12 +87,12 @@ class CategoryFilter extends NumberFilter
                 return true;
             }
         } else {
-            $category = $repository->find($categoryId);
+            $category = $repository->find($data['categoryId']);
             if (!$category) {
-                $category = $repository->find($treeId);
+                $category = $repository->find($data['treeId']);
             }
             if ($category) {
-                $productIds = $this->productManager->getProductIdsInCategory($category, $includeSub);
+                $productIds = $this->productManager->getProductIdsInCategory($category, $data['includeSub']);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
 
                 $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
@@ -121,13 +116,11 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $data['includeSub'] = isset($data['type'])                ? (bool) $data['type']               : true;
-        $data['treeId']     = isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null;
-        $data['categoryId'] = isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null;
-        unset($data['type']);
-        unset($data['value']);
-
-        return $data;
+        return [
+            'includeSub' => isset($data['type'])                ? (bool) $data['type']               : true,
+            'treeId'     => isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null,
+            'categoryId' => isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null
+        ];
     }
 
     /**
