@@ -1,17 +1,9 @@
 # user grids
 oro.user.controller:
-    group:
-        message:
-        saved: "Group saved"
-    role:
-        message:
-        saved: "Role saved"
-    user:
-        message:
-        saved: "User saved"
-    status:
-        message:
-        saved: "Status saved"
+    group.message.saved: "Group saved"
+    role.message.saved: "Role saved"
+    user.message.saved: "User saved"
+    status.message.saved: "Status saved"
 
 oro.user.grid.users:
     columns:
