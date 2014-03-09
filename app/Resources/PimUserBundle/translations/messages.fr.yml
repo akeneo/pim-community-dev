@@ -1,13 +1,24 @@
 ---
-oro:
-  security:
-    access-level:
-      BASIC: Utilisateur
-      LOCAL: Entité commerciale
-      DEEP: Division
-      GLOBAL: Organisation
-      SYSTEM: Système
-      NONE: Aucun
+oro.user.controller:
+  group.message.saved: Groupe enregistré
+  role.message.saved: Rôle enregistré
+  user.message.saved: Utilisateur enregistré
+  status.message.saved: Statut enregistré
+oro.user.grid.users:
+  columns:
+    username: "Nom d'utilisateur"
+    email: Email
+    firstName: Prénom
+    lastName: Nom
+    createdAt: Crée le
+    updatedAt: Mis à jour le
+    enabled: Statut
+oro.user.grid.roles:
+  columns:
+    label: Libellé
+oro.user.grid.groups:
+  columns:
+    name: Nom
 Users Management: Gestion des Utilisateurs
 Create user: Créer un utilisateur
 New user: Nouvel utilisateur
@@ -57,6 +68,15 @@ EDIT: Editer
 DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
+oro:
+  security:
+    access-level:
+      BASIC: Utilisateur
+      LOCAL: Entité commerciale
+      DEEP: Division
+      GLOBAL: Organisation
+      SYSTEM: Système
+      NONE: Aucun
 Create group: Créer un groupe
 Has group: A un groupe
 Save and Close: Enregistrer et fermer

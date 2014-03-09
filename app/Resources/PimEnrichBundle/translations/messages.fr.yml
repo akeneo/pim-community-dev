@@ -301,46 +301,46 @@ Minimum input length: "Longueur d'entrée minimale"
 Default: Défaut
 Attributes: Attributs
 Title: Titre
-pim_title:
-  dashboard: Tableau de bord
-  attribute_group:
-    create: "Groupe d'attributs | Créer"
-    edit: "Groupe d'attribut %group.label% | Modifier"
-  category:
-    create: Arbre de catégories | Créer
-    edit: 'Arbre de catégories %category.label% | Modifier'
-  attribute:
-    index: Attributs
-    create: Attributs | Créer
-    edit: 'Attributs %attribute.label% | Modifier'
-  product:
-    index: Produits
-    edit: 'Produit %product.sku% | Modifier'
-  family:
-    index: Familles
-    edit: 'Famille %family.label% | Modifier'
-  channel:
-    index: Canaux
-    create: Canaux | Créer
-    edit: 'Canal %channel.label% | Modifier'
-  currency:
-    index: Devises
-  locale.index: Locales
-  group:
-    index: Groupes
-    edit: 'Groupes %group.label% | Edit'
-  variant_group:
-    index: Groupes de variantes
-    edit: 'Groupe de variantes %group.label% | Editer'
-  association_type:
-    index: "Types d'associations"
-    edit: "Types d'association %association type.label% | Modifier"
-  group_type:
-    index: Types de groupe
-    edit: 'Type de groupes %grouptype.label% | Modifier'
-  mass_edit_action:
-    choose: Edition de masse | Choisir
-    configure: Edition de masse | Configurer
+pim_title.attribute_group:
+  create: "Groupe d'attributs | Créer"
+  edit: "Groupe d'attribut %group.label% | Modifier"
+pim_title.category:
+  create: Arborescences | Créer
+  edit: 'Arborescences %category.label% | Modifier'
+pim_title.attribute:
+  index: Attributs
+  create: Attributs | Créer
+  edit: 'Attributs %attribute.label% | Modifier'
+pim_title.product:
+  index: Produits
+  edit: 'Produit %product.sku% | Modifier'
+pim_title.family:
+  index: Familles
+  edit: 'Famille %family.label% | Modifier'
+pim_title.channel:
+  index: Canaux
+  create: Canaux | Créer
+  edit: 'Canal %channel.label% | Modifier'
+pim_title.currency:
+  index: Devises
+pim_title.locale:
+  index: Locales
+pim_title.group:
+  index: Groupes
+  edit: 'Groupes %group.label% | Edit'
+pim_title.variant_group:
+  index: Groupes de variantes
+  edit: 'Groupe de variantes %group.label% | Editer'
+pim_title.association_type:
+  index: "Types d'associations"
+  edit: "Types d'association %association type.label% | Modifier"
+pim_title.group_type:
+  index: Types de groupe
+  edit: 'Type de groupes %group type.label% | Modifier'
+pim_title.mass_edit_action:
+  choose: Edition de masse | Choisir
+  configure: Edition de masse | Configurer
+pim_title.dashboard: Tableau de bord
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte (TextArea)
