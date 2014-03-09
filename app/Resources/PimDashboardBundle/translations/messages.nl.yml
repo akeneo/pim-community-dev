@@ -2,7 +2,7 @@
 pim_dashboard.link.label:
   product: Producten beheren
   category: Categorieën beheren
-  attribute: Kenmerken beheren
+  attribute: Attributen beheren
   family: Families beheren
 pim_dashboard.widget.error:
   title: Fout tijdens het laden van widget
