@@ -1,0 +1,7 @@
+---
+entity.user.name: Utilisateur
+entity.user.description: Représentation profil utilisateur
+entity.role.name: Rôle
+entity.role.description: "Rôle de l'utilisateur"
+entity.group.name: Groupe
+entity.group.description: Groupe de rôles
