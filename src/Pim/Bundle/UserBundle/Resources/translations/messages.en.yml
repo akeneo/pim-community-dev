@@ -58,6 +58,15 @@ Email synchronization settings: Email synchronization settings
 Host: Host
 Port: Port
 Ssl: Ssl
+Last logged in: Last logged in
+Login count: Login count
+Additional Information: Additional Information
+Basic Information: Basic Information
+Contact Information: Contact Information
+User name: User name
+Birthday: Birthday
+API key: API key
+Primary: primary
 
 # Role
 Role: Role
