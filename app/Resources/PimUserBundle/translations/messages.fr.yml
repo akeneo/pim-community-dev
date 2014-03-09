@@ -1,0 +1,10 @@
+oro.user.grid.users.columns:
+    username: Utilisateur
+    email: E-mail
+    firstName: Prénom
+    lastName: Nom
+    createdAt: Créé à
+    updatedAt: Mis à jour à
+    enabled: Activé
+
+
