@@ -536,7 +536,7 @@ Localization options: Options de localisation
 Locale: Locale
 Location: Localisation
 Format address by address country: Format d'adresse par pays
-Language: Language
+Language: Langue
 Timezone: Fuseau horaire
 Currency: Devise
 oro.locale.address_format.region_name_type.parish: Commune
