@@ -509,6 +509,12 @@ Attribute as label: Attribut en tant que libellé
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes affichées
 Is associated: Est associé
+Complete: Complet
+"Created At": "Créé le"
+"Updated At": "Mis à jour le"
+Enabled: Activé
+Disabled: Désactivé
+Status: Statut
 Change History: Historique des modifications
 Data Audit: Audit de données
 Data Audit - System: 'Audit de données - système'
