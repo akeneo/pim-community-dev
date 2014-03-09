@@ -6,5 +6,3 @@ oro.user.grid.users.columns:
     createdAt: Created at
     updatedAt: Updated at
     enabled: Enabled
-
-
