@@ -1,1 +1,23 @@
 ---
+pim_dashboard.title: Dashboard
+pim_dashboard.link.label:
+  product: Produkte verwalten
+  category: Kategorien verwalten
+  attribute: Attribute verwalten
+  family: Produktfamilien verwalten
+pim_dashboard.widget.error:
+  title: Fehler beim Laden des Widgets
+  message: "Widget '%alias%' ist nicht vorhanden"
+pim_dashboard.widget.completeness:
+  title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
+pim_dashboard.widget.last_operations:
+  title: Letzte Vorgänge
+  empty: Keine Vorgänge gefunden
+  status: Status
+  date: Datum
+  type: Typ
+  profile name: Profilname
+  details: Details
+  job_type:
+    import: Import
+    export: Export

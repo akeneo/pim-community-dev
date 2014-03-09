@@ -299,6 +299,42 @@ Minimum input length: Minimale invoerlengte
 Default: Standaard
 Attributes: Attributen
 Title: Titel
+pim_title.attribute_group:
+  create: Attribuutgroepen | Aanmaken
+  edit: 'Attribuutgroepen %group.label% | Bewerken'
+pim_title.category:
+  create: Categoriestructuren|Aanmaken
+  edit: 'Categoriestructuren %category.label% | Bewerken'
+pim_title.attribute:
+  index: Attributen
+  create: Attributen | Aanmaken
+  edit: 'Attributen %attribute.label% | Bewerken'
+pim_title.product:
+  index: Producten
+  edit: 'Producten %product.sku% | Bewerken'
+pim_title.family:
+  index: Families
+  edit: 'Families %family.label%|Bewerken'
+pim_title.channel:
+  index: Kanalen
+  create: Kanalen | Aanmaken
+  edit: 'Kanalen %channel.label% | Bewerken'
+pim_title.currency:
+  index: Valuta
+pim_title.locale:
+  index: Lokalisaties
+pim_title.group:
+  index: Groepen
+  edit: 'Groepen %group.label% | Bewerken'
+pim_title.variant_group:
+  index: Variantgroepen
+  edit: 'Variantgroepen %group.label%|Bewerken'
+pim_title.association_type:
+  index: Associatietypes
+  edit: 'Associatietypes %association type.label% | Bewerken'
+pim_title.group_type:
+  index: Groepstypen
+  edit: 'Groupstypen %group type.label% | Bewerken'
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstblok
