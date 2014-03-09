@@ -23,6 +23,7 @@ oro.user.controller:
     status:
         message:
             saved: "Statut enregistré"
+Users Management: Gestion des utilisateurs
 Create user: Créer utilisateur
 New user: Nouvel utilisateur
 Additional: Additionel
