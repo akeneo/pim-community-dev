@@ -603,3 +603,17 @@ popin.create:
 'Available Columns': Available Columns
 'Displayed Columns': Displayed Columns
 'Is associated': Is associated
+
+# Versioning / history
+Change History: Change history
+Data Audit: Data audit
+Data Audit - System: 'Data audit - system'
+Action: Action
+Version: Version
+Entity type: Entity type
+Entity name: Entity name
+Entity id: Entity id
+Data: Data
+Author: Author
+Logged at: Logged at
+Deleted: Deleted

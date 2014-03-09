@@ -509,3 +509,15 @@ Attribute as label: Attribut en tant que libellé
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes affichées
 Is associated: Est associé
+Change History: Historique des modifications
+Data Audit: Audit de données
+Data Audit - System: 'Audit de données - système'
+Action: Action
+Version: Version
+Entity type: "Type d'objet"
+Entity name: Nom
+Entity id: "Id de l'objet"
+Data: Données
+Author: Auteur
+Logged at: Modifié le
+Deleted: Supprimé
