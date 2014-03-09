@@ -88,7 +88,7 @@
 
                 {% if form.vars.value.groups|length != 0 %}
                 <li>
-                    {{ 'groups'|trans|capitalize }}:
+                    {{ 'Groups'|trans|capitalize }}:
                     {% for group in form.vars.value.groups %}
                         <a id="group-products-{{ group.id }}" href="#"
                         {% if group.type.isVariant %}
