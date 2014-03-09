@@ -349,7 +349,6 @@ Title:      Title
 
 # Page titles
 pim_title:
-    dashboard:     Dashboard
     attribute_group:
         create:    Attribute groups | Create
         edit:      Attribute groups %group.label% | Edit
@@ -388,6 +387,7 @@ pim_title:
     mass_edit_action:
         choose:    Mass Edit | Choose
         configure: Mass Edit | Configure
+    dashboard:     Dashboard
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
