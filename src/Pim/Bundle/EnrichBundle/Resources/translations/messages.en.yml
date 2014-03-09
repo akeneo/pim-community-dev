@@ -265,6 +265,7 @@ Edit:                          Edit
 Remove:                        Remove
 Delete:                        Delete
 Parameters:                    Parameters
+System:                        System
 Values:                        Values
 General parameters:            General parameters
 Backend parameters:            Backend parameters
@@ -601,3 +602,59 @@ popin.create:
 'Available Columns': Available Columns
 'Displayed Columns': Displayed Columns
 'Is associated': Is associated
+Complete: Complete
+"Created At": "Created at"
+"Updated At": "Updated at"
+Enabled: Enabled
+Disabled: Disabled
+Status: Status
+
+# Versioning / history
+Change History: Change history
+Data Audit: Data audit
+Data Audit - System: 'Data audit - system'
+Action: Action
+Version: Version
+Entity type: Entity type
+Entity name: Entity name
+Entity id: Entity id
+Data: Data
+Author: Author
+Logged at: Logged at
+Deleted: Deleted
+Old values: Old values
+New values: New values
+
+# Configuration
+System configuration: System configuration
+General setup: General setup
+Localization: Localization
+Localization options: Localization options
+Locale: Locale
+Location: Location
+Format address by address country: Format address by address country
+Language: Language
+Timezone: Timezone
+Currency: Currency
+oro.locale:
+    address_format:
+        region_name_type:
+            parish: "parish"
+            state: "state"
+            island: "island"
+            county: "county"
+            area: "area"
+            prefecture: "prefecture"
+            do_si: "do_si"
+            department: "department"
+            district: "district"
+            province: "province"
+
+    form:
+        tooltip:
+            locale: "Select the locale option used to format numbers, addresses, names and dates"
+            location: " Location will be used to format addresses when 'Format address by address country' option is disabled"
+            format_address_by_address_country: "Selecting this option will enabled addresses to be formatted by the country they are in. Disabeling this option will cause the addresses to be formatted in your location address format"
+            language: "Select the system language you wish to use"
+            timezone: "Select the timezone for displaying date and time"
+            currency: "Select the default currency"

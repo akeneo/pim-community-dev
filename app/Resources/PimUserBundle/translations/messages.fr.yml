@@ -1,0 +1,86 @@
+oro.user.grid.users.columns:
+    username: Utilisateur
+    email: E-mail
+    firstName: Prénom
+    lastName: Nom
+    createdAt: Créé à
+    updatedAt: Mis à jour à
+    enabled: Activé
+oro.user.grid.roles.columns:
+    label: Nom
+oro.user.grid.groups.columns:
+    name: Nom
+oro.user.controller:
+    group:
+        message:
+            saved: "Groupe enregistré"
+    role:
+        message:
+            saved: "Role enregistré"
+    user:
+        message:
+            saved: "Utilisateur enregistré"
+    status:
+        message:
+            saved: "Statut enregistré"
+Users Management: Gestion des utilisateurs
+Create user: Créer utilisateur
+New user: Nouvel utilisateur
+Additional: Additionel
+Groups and Roles: Groupes et Roles
+Username: Nom d'utilisateur
+Password: Mot de passe
+Re-enter password: Confirmer le mot de passe
+Name prefix: Préfixe
+First name: Prénom
+Middle name: Surnom
+Last name: Nom
+Name suffix: Suffixe
+Date of birth: Date de naissance
+Avatar: Avatar
+Additional emails: E-mails additionnels
+Add another email: Ajouter un autre email
+Catalog locale: Locale catalogue
+Catalog scope: Portée catalogue
+Default tree: Arbre par défaut
+Business Units: Unités
+Email synchronization settings: Paramètrage E-mail
+Host: Hote
+Port: Port
+Ssl: Ssl
+Last logged in: Dernière connexion
+Login count: Nombre de connexions
+Additional Information: Information additionnelles
+Basic Information: Informations basiques
+Contact Information: Informations de contact
+User name: Nom utilisateur
+Birthday: Data d'anniversaire
+API key: "Clé d'API"
+Primary: principale
+Generate key: Générer clé
+Role: Role
+Owner: Propriétaire
+General: Général
+Entity: Entité
+Capabilities: Droits
+Save and close: Enregistrer et fermer
+Has role : A un role
+(default): Permissions par défaut
+VIEW: Consulter
+CREATE: Créer
+EDIT: Editer
+DELETE: Supprimer
+ASSIGN: Assigné
+SHARE: Partager
+oro:
+    security:
+        access-level:
+            BASIC: Utilisateur
+            LOCAL: Business Unit
+            DEEP: Division
+            GLOBAL: Organisation
+            SYSTEM: Système
+            NONE: Non
+Create group: Créer un groupe
+Has group: A un groupe
+Save and Close: Enregistrer et fermer
