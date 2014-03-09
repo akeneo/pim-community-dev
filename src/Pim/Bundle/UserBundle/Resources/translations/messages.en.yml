@@ -1,8 +1,91 @@
-oro.user.grid.users.columns:
-    username: User name
-    email: E-mail
-    firstName: First name
-    lastName: Last name
-    createdAt: Created at
-    updatedAt: Updated at
-    enabled: Enabled
+# user grids
+oro:
+    user:
+        controller:
+            group:
+                message:
+                    saved: "Group saved"
+            role:
+                message:
+                    saved: "Role saved"
+            user:
+                message:
+                    saved: "User saved"
+            status:
+                message:
+                    saved: "Status saved"
+        grid:
+            users:
+                columns:
+                    username:    "Username"
+                    email:       "Email"
+                    firstName:   "First name"
+                    lastName:    "Last name"
+                    createdAt:   "Created at"
+                    updatedAt:   "Updated at"
+                    enabled:     "Status"
+
+            roles:
+                columns:
+                    label:       "Label"
+
+            groups:
+                columns:
+                    name:       "Name"
+# User
+Create user: Create user
+New user: New user
+Additional: Additional
+Groups and Roles: Groups and Roles
+Username: Username
+Password: Password
+Re-enter password: Re-enter password
+Name prefix: Name prefix
+First name: First name
+Middle name: Middle name
+Last name: Last name
+Name suffix: Name suffix
+Date of birth: Date of birth
+Avatar: Avatar
+Additional emails: Additional emails
+Add another email: Add another email
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
+Default tree: Catalog tree
+Business Units: Business Units
+Email synchronization settings: Email synchronization settings
+Host: Host
+Port: Port
+Ssl: Ssl
+
+# Role
+Role: Role
+Owner: Owner
+General: General
+Entity: Entity
+Capabilities: Capabilities
+Save and close: Save and close
+Has role : Has role
+
+# Security
+(default): Default permission on entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share
+oro:
+    security:
+        access-level:
+            BASIC: User
+            LOCAL: Business Unit
+            DEEP: Division
+            GLOBAL: Organization
+            SYSTEM: System
+            NONE: None
+
+# User Group
+Create group: Create group
+Has group: Has group
+Save and Close: Save and close
