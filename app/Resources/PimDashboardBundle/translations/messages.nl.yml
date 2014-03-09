@@ -1,39 +1,22 @@
 ---
-pim_dashboard:
-  menu:
-    label:
-      collect: Verzamelen
-      enrich: Verrijken
-      spread: Verspreiden
-      settings: Instellingen
-  link:
-    label:
-      import_profile: Importprofielen beheren
-      import_report: Importgeschiedenis
-      product: Producten beheren
-      category: Categorieën beheren
-      variant: Variantgroepen beheren
-      group: Groepen beheren
-      channel: Kanalen beheren
-      export_profile: Exportprofielen beheren
-      export_report: Exportgeschiedenis
-      attribute: Kenmerken beheren
-      family: Families beheren
-  quick_launchpad: Snelstarten
-  widget:
-    error:
-      title: Fout tijdens het laden van widget
-      message: 'Widget "%alias%" bestaat niet'
-    completeness:
-      title: Volledigheid over kanalen en lokalisaties
-    last_operations:
-      title: Laatste bewerkingen
-      empty: Geen bewerkingen gevonden
-      status: Status
-      date: Datum
-      type: Type
-      profile name: Profielnaam
-      details: Details
-      job_type:
-        import: Importeren
-        export: Exporteren
+pim_dashboard.link.label:
+  product: Producten beheren
+  category: Categorieën beheren
+  attribute: Kenmerken beheren
+  family: Families beheren
+pim_dashboard.widget.error:
+  title: Fout tijdens het laden van widget
+  message: "Widget '%alias%' bestaat niet"
+pim_dashboard.widget.completeness:
+  title: Volledigheid over kanalen en lokalisaties
+pim_dashboard.widget.last_operations:
+  title: Laatste bewerkingen
+  empty: Geen bewerkingen gevonden
+  status: Status
+  date: Datum
+  type: Type
+  profile name: Profielnaam
+  details: Details
+  job_type:
+    import: Importeren
+    export: Exporteren

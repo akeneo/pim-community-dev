@@ -17,7 +17,7 @@ SQUARE_METER: Mètre carré
 SQUARE_MIL: Mil carré
 SQUARE_MILE: Mile carré
 SQUARE_MILLIMETER: Millimètre carré
-SQUARE_YARD: Yard carré
+SQUARE_YARD: Yard carrée
 Binary: Binaire
 BIT: Bit
 BYTE: Octet
@@ -31,7 +31,7 @@ KILOHERTZ: Kilohertz
 MEGAHERTZ: Mégahertz
 TERAHERTZ: Térahertz
 HERTZ: Hertz
-Length: Longueur
+Length: Distance
 CENTIMETER: Centimètre
 CHAIN: Chaîne
 DECIMETER: Décimètre

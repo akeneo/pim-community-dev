@@ -1,25 +1,26 @@
-pim_dashboard:
-    title: Dashboard
-    link:
-        label:
-            product: Manage Products
-            category: Manage Categories
-            attribute: Manage Attributes
-            family: Manage Families
-    widget:
-        error:
-            title:   Error while loading widget
-            message: Widget "%alias%" does not exist
-        completeness:
-            title: Completeness Over Channels and Locales
-        last_operations:
-            title:        Last operations
-            empty:        No operations found
-            status:       Status
-            date:         Date
-            type:         Type
-            profile name: Profile name
-            details:      Details
-            job_type:
-                import: Import
-                export: Export
+pim_dashboard.title: "Dashboard"
+
+pim_dashboard.link.label:
+    product: "Manage Products"
+    category: "Manage Categories"
+    attribute: "Manage Attributes"
+    family: "Manage Families"
+
+pim_dashboard.widget.error:
+    title:   "Error while loading widget"
+    message: "Widget '%alias%' does not exist"
+
+pim_dashboard.widget.completeness:
+    title: "Completeness Over Channels and Locales"
+
+pim_dashboard.widget.last_operations:
+    title: "Last operations"
+    empty: "No operations found"
+    status: "Status"
+    date: "Date"
+    type: "Type"
+    "profile name": "Profile name"
+    details: "Details"
+    job_type:
+        import: "Import"
+        export: "Export"

@@ -1,37 +1,28 @@
 # user grids
-oro:
-    user:
-        controller:
-            group:
-                message:
-                    saved: "Group saved"
-            role:
-                message:
-                    saved: "Role saved"
-            user:
-                message:
-                    saved: "User saved"
-            status:
-                message:
-                    saved: "Status saved"
-        grid:
-            users:
-                columns:
-                    username:    "Username"
-                    email:       "Email"
-                    firstName:   "First name"
-                    lastName:    "Last name"
-                    createdAt:   "Created at"
-                    updatedAt:   "Updated at"
-                    enabled:     "Status"
+oro.user.controller:
+    group.message.saved: "Group saved"
+    role.message.saved: "Role saved"
+    user.message.saved: "User saved"
+    status.message.saved: "Status saved"
 
-            roles:
-                columns:
-                    label:       "Label"
+oro.user.grid.users:
+    columns:
+        username: "Username"
+        email: "Email"
+        firstName: "First name"
+        lastName: "Last name"
+        createdAt: "Created at"
+        updatedAt: "Updated at"
+        enabled: "Status"
 
-            groups:
-                columns:
-                    name:       "Name"
+oro.user.grid.roles:
+    columns:
+        label: "Label"
+
+oro.user.grid.groups:
+    columns:
+        name: "Name"
+
 # User
 Users Management: Users Management
 Create user: Create user
