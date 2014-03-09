@@ -1,0 +1,23 @@
+---
+pim_flexibleentity_boolean: Ja/Nein
+pim_flexibleentity_text: Textfeld
+pim_flexibleentity_textarea: Textbereich
+pim_flexibleentity_date: Datum
+pim_flexibleentity_datetime: Datum/Uhrzeit
+pim_flexibleentity_integer: Ganzzahl
+pim_flexibleentity_money: Geld
+pim_flexibleentity_number: Nummer
+pim_flexibleentity_multiselect: Mehrfachauswahl
+pim_flexibleentity_simpleselect: Einfachauswahl
+pim_flexibleentity_metric: Maßeinheit
+pim_flexibleentity_file: Dateiupload
+pim_flexibleentity_image: Bildupload
+pim_flexibleentity_fileurl: Datei-URL
+pim_flexibleentity_imageurl: Bild-URL
+pim_flexibleentity_email: E-Mail
+pim_flexibleentity_url: URL
+pim_flexibleentity_multicheckbox: Checkboxen
+pim_flexibleentity_simpleradio: Radio
+pim_flexibleentity_price: Preis
+pim_flexibleentity_phone_collection: Sammlung von Telefonnummern
+pim_flexibleentity_email_collection: Sammlung von E-Mails

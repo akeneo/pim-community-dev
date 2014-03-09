@@ -1,0 +1,45 @@
+---
+Close: Fermer
+Update: Mettre à jour
+Selected Rows: Lignes sélectionnées
+Yes: Oui
+Yes, Delete: Oui, supprimer
+Yes, I Agree: "Oui, je suis d'accord"
+Yes, do it: Oui, le faire
+No: Non
+Ok, got it.: OK, compris.
+Cancel: Annuler
+Delete Confirmation: Confirmation de la suppression
+Edit: Modifier
+Unexpected error occured. Please contact system administrator.: "Une erreur s'est produite. Contactez l'administrateur système."
+Now: Maintenant
+Prev: Préc
+Next: Suivant
+Today: "Aujourd'hui"
+Wk: Semaine
+Done: Fait
+AM: AM
+A: A
+PM: PM
+P: P
+Choose Time: "Choisir l'heure"
+Time: Temps
+Hour: Heure
+Minute: Minute
+Second: Seconde
+Millisecond: Milliseconde
+Microsecond: Microseconde
+Time Zone: Fuseau horaire
+Localized value: Valeur localisée
+Export CSV: Export de CSV
+Columns: Colonnes
+Datagrid Configuration: Configuration du tableau
+Apply: Appliquer
+Action: Action
+Unit: Unité
+Currency: Devise
+jstree:
+  all: Tous les produits
+  unclassified: Produits non classifiés
+  no_tree: "Pas d'arborescence disponible"
+  include_sub: Inclure les sous-catégories

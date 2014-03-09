@@ -1,0 +1,23 @@
+---
+pim_flexibleentity_boolean: Да/Нет
+pim_flexibleentity_text: Строка
+pim_flexibleentity_textarea: Текст
+pim_flexibleentity_date: Дата
+pim_flexibleentity_datetime: Дата время
+pim_flexibleentity_integer: Целое число
+pim_flexibleentity_money: Деньги
+pim_flexibleentity_number: Число
+pim_flexibleentity_multiselect: Множественный выбор
+pim_flexibleentity_simpleselect: Простой выбор
+pim_flexibleentity_metric: Метрика
+pim_flexibleentity_file: Загрузка файла
+pim_flexibleentity_image: Загрузка изображения
+pim_flexibleentity_fileurl: URL-адрес файла
+pim_flexibleentity_imageurl: URL-адрес изображения
+pim_flexibleentity_email: E-mail
+pim_flexibleentity_url: URL-адрес
+pim_flexibleentity_multicheckbox: Чекбоксы
+pim_flexibleentity_simpleradio: Радиокнопка
+pim_flexibleentity_price: Цена
+pim_flexibleentity_phone_collection: Список телефонов
+pim_flexibleentity_email_collection: Список e-mail

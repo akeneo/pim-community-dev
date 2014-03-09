@@ -1,0 +1,39 @@
+---
+pim_dashboard:
+  menu:
+    label:
+      collect: Собрать
+      enrich: Расширить
+      spread: Распространить
+      settings: Параметры
+  link:
+    label:
+      import_profile: Управление профилями импорта
+      import_report: История импорта
+      product: Управление продуктами
+      category: Управление категориями
+      variant: Управление вариативными группами
+      group: Управление группами
+      channel: Управление каналами
+      export_profile: Управление профилями экспорта
+      export_report: История экспорта
+      attribute: Управление атрибутами
+      family: Управление семействами
+  quick_launchpad: Панель быстрого запуска
+  widget:
+    error:
+      title: Ошибка при загрузке виджета
+      message: 'Виджет «%alias%» не существует'
+    completeness:
+      title: Полнота по каналам и языковым стандартам
+    last_operations:
+      title: Последние операции
+      empty: Операции не найдены
+      status: Статус
+      date: Дата
+      type: Тип
+      profile name: Имя профиля
+      details: Подробная информация
+      job_type:
+        import: Импорт
+        export: Экспорт
