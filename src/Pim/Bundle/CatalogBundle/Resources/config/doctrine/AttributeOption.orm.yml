@@ -34,4 +34,5 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
             cascade:
                 - persist
+                - remove
             mappedBy: option

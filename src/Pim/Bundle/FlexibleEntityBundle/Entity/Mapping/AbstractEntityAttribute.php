@@ -117,6 +117,11 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
     protected $options;
 
     /**
+     * @ORM\Column(name="properties", type="array", nullable=true)
+     */
+    protected $properties;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -128,6 +133,7 @@ abstract class AbstractEntityAttribute extends AbstractAttribute
         $this->searchable   = false;
         $this->localizable  = false;
         $this->scopable     = false;
+        $this->properties   = array();
     }
 
     /**

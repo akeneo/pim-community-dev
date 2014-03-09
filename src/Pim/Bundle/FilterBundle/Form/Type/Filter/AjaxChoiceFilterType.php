@@ -20,7 +20,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     const NAME = 'pim_type_ajax_choice_filter';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -28,7 +28,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -36,7 +36,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -45,7 +45,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -55,7 +55,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {

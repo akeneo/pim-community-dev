@@ -162,6 +162,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $category
+     *
+     * @Given /^I expand the "([^"]*)" attribute$/
+     */
+    public function iExpandTheAttribute($attribute)
+    {
+        $this->getCurrentPage()->expandAttribute($attribute);
+    }
+
+    /**
      * @param string $category1
      * @param string $category2
      *
@@ -349,6 +359,15 @@ class WebUser extends RawMinkContext
         if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
             throw $this->createExpectationException('The option should not be removable.');
         }
+    }
+
+    /**
+     * @param string $optionName
+     * @Then /^I remove the "([^"]*)" option$/
+     */
+    public function iRemoveTheOption($optionName)
+    {
+        $this->getCurrentPage()->removeOption($optionName);
     }
 
     /**

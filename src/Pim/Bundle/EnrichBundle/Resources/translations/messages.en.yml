@@ -402,7 +402,6 @@ pim_catalog_date:             Date
 pim_catalog_metric:           Metric
 
 # Locales
-Fallback:  Fallback
 Activated: Activated
 Edit:      Edit
 Disable:   Disable

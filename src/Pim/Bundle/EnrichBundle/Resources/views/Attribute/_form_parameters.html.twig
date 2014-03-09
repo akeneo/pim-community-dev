@@ -37,6 +37,10 @@
     'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
     'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
 
+    {% for property in form.vars.value.properties|keys %}
+        {% set optionalFields = optionalFields|merge([property]) %}
+    {% endfor %}
+
     {% for field in optionalFields %}
         {% if form[field] is defined %}
             {{ form_row(form[field]) }}

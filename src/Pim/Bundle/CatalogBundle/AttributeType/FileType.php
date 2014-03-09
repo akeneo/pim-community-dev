@@ -19,56 +19,26 @@ class FileType extends FlexFileType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return parent::defineCustomAttributeProperties($attribute) + [
+            'maxFileSize' => [
                 'name'      => 'maxFileSize',
                 'fieldType' => 'number',
-                'options'   => array(
+                'options'   => [
                     'precision' => 2
-                )
-            ),
-            array(
+                ]
+            ],
+            'allowedExtensions' => [
                 'name'    => 'allowedExtensions',
                 'data'    => implode(',', $attribute->getAllowedExtensions()),
-                'options' => array(
+                'options' => [
                     'by_reference' => false,
                     'select2'      => true,
-                    'attr'         => array(
+                    'attr'         => [
                         'data-tags' => 'doc,docx,rtf,txt,csv,ppt,pptx,mp3,wav,svg,pdf'
-                    )
-                )
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
-                )
-            )
-        );
-
-        return $properties;
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**

@@ -84,19 +84,4 @@ class LocaleManager
             $this->getActiveLocales()
         );
     }
-
-    /**
-     * Get the list of available fallback locales
-     *
-     * @return string[]
-     */
-    public function getFallbackCodes()
-    {
-        return array_map(
-            function ($locale) {
-                return $locale->getCode();
-            },
-            $this->repository->getAvailableFallbacks()
-        );
-    }
 }
