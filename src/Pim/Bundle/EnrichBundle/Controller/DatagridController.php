@@ -167,7 +167,13 @@ class DatagridController extends AbstractDoctrineController
                 $em->flush();
             }
 
-            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
+            return $this->redirectToRoute(
+                'pim_enrich_product_index',
+                [
+                    'dataLocale' => $request->get('dataLocale'),
+                    'gridView'   => $datagridView->getId()
+                ]
+            );
         }
 
         $views = $this->getRepository('PimEnrichBundle:DatagridView')->findBy(['datagridAlias' => $alias]);
@@ -179,7 +185,8 @@ class DatagridController extends AbstractDoctrineController
                 'views'      => $views,
                 'columns'    => $columns,
                 'form'       => $form->createView(),
-                'dataLocale' => $request->get('dataLocale')
+                'dataLocale' => $request->get('dataLocale'),
+                'gridView'   => $request->get('gridView', null)
             ]
         );
     }
