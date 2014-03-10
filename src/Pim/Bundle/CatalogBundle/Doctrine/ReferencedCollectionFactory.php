@@ -33,8 +33,16 @@ class ReferencedCollectionFactory
      *
      * @return ReferencedCollection
      */
-    public function create($entityClass, array $identifiers)
+    public function create($entityClass, $identifiers)
     {
+        if (null === $identifiers) {
+            $identifiers = [];
+        }
+
+        if (!is_array($identifiers)) {
+            throw new \InvalidArgumentException('Expecting identifiers to be null or type array, got "%s"');
+        }
+
         return new ReferencedCollection(
             $entityClass, $identifiers, $this->objectManager
         );

@@ -7,7 +7,7 @@ parameters:
     pim_catalog.event_listener.mongodb.scopable.class:              Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
     pim_catalog.event_listener.mongodb.collection.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\CollectionListener
     pim_catalog.doctrine.mongodb.flexible_query_builder.class:      Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
-    pim_catalog.event_listener.mongodb.entity_collection.class:     Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityCollectionSubscriber
+    pim_catalog.event_listener.mongodb.entity_collection.class:     Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityReferenceSubscriber
 
 services:
     pim_catalog.object_manager.product:

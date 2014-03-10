@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 
-class EntityCollectionSubscriberSpec extends ObjectBehavior
+class EntityReferenceSubscriberSpec extends ObjectBehavior
 {
     function let(ReferencedCollectionFactory $factory)
     {

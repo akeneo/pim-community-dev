@@ -9,14 +9,19 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 
 /**
  * Convert identifiers collection into lazy entity collection
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityCollectionSubscriber implements EventSubscriber
+class EntityReferenceSubscriber implements EventSubscriber
 {
+    /** @var ReferencedCollectionFactory */
     protected $factory;
 
+    /**
+     * @param ReferencedCollectionFactory $factory
+     */
     public function __construct(ReferencedCollectionFactory $factory)
     {
         $this->factory = $factory;
@@ -30,6 +35,9 @@ class EntityCollectionSubscriber implements EventSubscriber
         return [Events::postLoad];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -48,7 +56,7 @@ class EntityCollectionSubscriber implements EventSubscriber
 
                 $metadata->reflFields[$field]->setValue(
                     $entity,
-                    $this->factory->create($mapping['targetEntity'], $metadata->reflFields[$field]->getValue($entity))
+                    $this->factory->create($mapping['targetEntity'], $metadata->reflFields[$field]->getValue($entity) ?: [])
                 );
             }
         }

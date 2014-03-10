@@ -40,7 +40,7 @@ class PimCatalogBundle extends Bundle
 
     public function __construct()
     {
-        Type::registerType('entities', 'Pim\Bundle\CatalogBundle\MongoDB\Type\EntityCollection');
+        Type::registerType('entities', 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities');
     }
 
     /**
