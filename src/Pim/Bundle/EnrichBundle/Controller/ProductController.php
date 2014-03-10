@@ -15,7 +15,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -24,8 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -72,21 +69,6 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
-     * @var MassActionParametersParser
-     */
-    protected $parametersParser;
-
-    /**
-     * @var MassActionDispatcher
-     */
-    protected $massActionDispatcher;
-
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
-    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -114,9 +96,6 @@ class ProductController extends AbstractDoctrineController
      * @param UserContext                $userContext
      * @param AuditManager               $auditManager
      * @param SecurityFacade             $securityFacade
-     * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,
@@ -131,10 +110,7 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         UserContext $userContext,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade,
-        MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher,
-        SerializerInterface $serializer
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -152,9 +128,6 @@ class ProductController extends AbstractDoctrineController
         $this->userContext          = $userContext;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
-        $this->parametersParser     = $parametersParser;
-        $this->massActionDispatcher = $massActionDispatcher;
-        $this->serializer           = $serializer;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -170,74 +143,10 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        if ('csv' === $request->getRequestFormat()) {
-            // Export time execution depends on entities exported
-            ignore_user_abort(false);
-            set_time_limit(0);
-
-            $parameters  = $this->parametersParser->parse($request);
-            $requestData = array_merge($request->query->all(), $request->request->all());
-
-            $qb = $this->massActionDispatcher->dispatch(
-                $requestData['gridName'],
-                $requestData['actionName'],
-                $parameters,
-                $requestData
-            );
-
-            $dateTime = new \DateTime();
-            $fileName = sprintf(
-                'products_export_%s_%s_%s.csv',
-                $this->getDataLocale(),
-                $this->productManager->getScope(),
-                $dateTime->format('Y-m-d_H:i:s')
-            );
-
-            // prepare response
-            $response = new StreamedResponse();
-            $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-            $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set('Content-Disposition', $attachment);
-            $response->setCallback($this->quickExportCallback($qb));
-
-            return $response->send();
-        }
-
         return array(
             'locales'    => $this->userContext->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
-    }
-
-    /**
-     * Quick export callback
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return \Closure
-     */
-    protected function quickExportCallback(QueryBuilder $qb)
-    {
-        return function () use ($qb) {
-            flush();
-
-            $format  = 'csv';
-            $context = [
-                'withHeader'    => true,
-                'heterogeneous' => true
-            ];
-
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->resetDQLPart('from');
-            $qb->select($rootAlias);
-            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
-
-            $results = $qb->getQuery()->execute();
-            echo $this->serializer->serialize($results, $format, $context);
-
-            flush();
-        };
     }
 
     /**

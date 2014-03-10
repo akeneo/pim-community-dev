@@ -16,3 +16,9 @@ pim_enrich_datagrid_view_remove:
     requirements:
         id: \d+
     methods: [DELETE]
+
+pim_enrich_datagrid_export:
+    path: /export
+    defaults: { _controller: pim_enrich.controller.datagrid:exportAction }
+    requirements:
+        _method: GET|POST

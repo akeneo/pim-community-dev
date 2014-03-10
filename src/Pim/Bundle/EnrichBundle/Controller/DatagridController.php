@@ -11,13 +11,24 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use Doctrine\ORM\QueryBuilder;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Datagrid configuration controller
@@ -28,21 +39,39 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
  */
 class DatagridController extends AbstractDoctrineController
 {
-    /** @var DatagridManager */
+    /** @var DatagridManager $manager */
     protected $manager;
+
+    /** @var MassActionParametersParser $parametersParser */
+    protected $parametersParser;
+
+    /** @var MassActionDispatcher $massActionDispatcher */
+    protected $massActionDispatcher;
+
+    /** @var SerializerInterface $serializer */
+    protected $serializer;
+
+    /** @var ProductManager $productManager */
+    protected $productManager;
+
+    /** @var UserContext $userContext */
+    protected $userContext;
 
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param DatagridManager          $manager
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param RegistryInterface          $doctrine
+     * @param DatagridManager            $manager
+     * @param MassActionParametersParset $parametersParser
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,
@@ -53,7 +82,12 @@ class DatagridController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridManager $manager
+        DatagridManager $manager,
+        MassActionParametersParser $parametersParser,
+        MassActionDispatcher $massActionDispatcher,
+        SerializerInterface $serializer,
+        ProductManager $productManager,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -67,6 +101,14 @@ class DatagridController extends AbstractDoctrineController
         );
 
         $this->manager = $manager;
+
+        $this->productManager = $productManager;
+        $this->userContext          = $userContext;
+        $this->parametersParser     = $parametersParser;
+        $this->massActionDispatcher = $massActionDispatcher;
+        $this->serializer           = $serializer;
+
+        $this->productManager->setLocale($this->getDataLocale());
     }
 
     /**
@@ -75,7 +117,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $alias)
     {
@@ -129,7 +171,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewsAction(Request $request, $alias)
     {
@@ -222,6 +264,78 @@ class DatagridController extends AbstractDoctrineController
     }
 
     /**
+     * Call export action
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function exportAction(Request $request)
+    {
+        // Export time execution depends on entities exported
+        ignore_user_abort(false);
+        set_time_limit(0);
+
+        $parameters  = $this->parametersParser->parse($request);
+        $requestData = array_merge($request->query->all(), $request->request->all());
+
+        $qb = $this->massActionDispatcher->dispatch(
+            $requestData['gridName'],
+            $requestData['actionName'],
+            $parameters,
+            $requestData
+        );
+
+        $dateTime = new \DateTime();
+        $fileName = sprintf(
+            'products_export_%s_%s_%s.csv',
+            $this->getDataLocale(),
+            $this->productManager->getScope(),
+            $dateTime->format('Y-m-d_H:i:s')
+        );
+
+        // prepare response
+        $response = new StreamedResponse();
+        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', $attachment);
+        $response->setCallback($this->quickExportCallback($qb));
+
+        return $response->send();
+    }
+
+    /**
+     * Quick export callback
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return \Closure
+     */
+    protected function quickExportCallback(QueryBuilder $qb)
+    {
+        return function () use ($qb) {
+            flush();
+
+            $format  = 'csv';
+            $context = [
+                'withHeader'    => true,
+                'heterogeneous' => true
+            ];
+
+            $rootAlias = $qb->getRootAlias();
+            $qb->resetDQLPart('select');
+            $qb->resetDQLPart('from');
+            $qb->select($rootAlias);
+            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
+
+            $results = $qb->getQuery()->execute();
+            echo $this->serializer->serialize($results, $format, $context);
+
+            flush();
+        };
+    }
+
+    /**
      * Sort an array by key given an other array values
      *
      * @param array $array
@@ -287,5 +401,17 @@ class DatagridController extends AbstractDoctrineController
                     'user'          => $user,
                 ]
             );
+    }
+
+    /**
+     * Get data locale code
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocaleCode();
     }
 }
