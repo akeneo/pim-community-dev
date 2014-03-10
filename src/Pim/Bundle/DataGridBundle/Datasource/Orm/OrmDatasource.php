@@ -99,6 +99,7 @@ class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
     public function setParameters($parameters)
     {
         $this->parameters = $parameters;
+        $this->qb->setParameters($parameters);
 
         return $this;
     }
