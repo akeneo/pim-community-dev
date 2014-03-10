@@ -95,7 +95,7 @@ class DatagridController extends AbstractDoctrineController
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
                 'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_edit',
+                    'pim_enrich_datagrid_edit',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale')
@@ -147,7 +147,7 @@ class DatagridController extends AbstractDoctrineController
             $datagridView,
             [
                 'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_views',
+                    'pim_enrich_datagrid_views',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale')
