@@ -37,7 +37,6 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(functi
             completeness[channelCode][locale] = {};
             completeness[channelCode][locale].requirementsCount = channel.requirements.length;
             completeness[channelCode][locale].filledCount = 0;
-            completeness[channelCode][locale].missingAttributes = [];
         }
     }
 

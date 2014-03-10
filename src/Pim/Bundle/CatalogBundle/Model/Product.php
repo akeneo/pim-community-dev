@@ -566,6 +566,30 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     }
 
     /**
+     * Set product completenesses
+     *
+     * @param ArrayCollection $completenesses
+     *
+     * @return Product
+     */
+    public function setCompletenesses(ArrayCollection $completenesses)
+    {
+        $this->completenesses = $completenesses;
+
+        return $this;
+    }
+
+    /**
+     * Get product completenesses
+     *
+     * @return ArrayCollection
+     */
+    public function getCompletenesses()
+    {
+        return $this->completenesses;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getReference()
