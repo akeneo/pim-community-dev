@@ -1,0 +1,18 @@
+pim_enrich_datagrid_view_index:
+    path: /{alias}
+    defaults: { _controller: pim_enrich.controller.datagrid_view:indexAction }
+    requirements:
+        _method: GET|POST
+
+pim_enrich_datagrid_view_configure:
+    path: /{alias}/{id}/configure
+    defaults: { _controller: pim_enrich.controller.datagrid_view:configureAction }
+    requirements:
+        _method: GET|POST
+
+pim_enrich_datagrid_view_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.datagrid_view:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]

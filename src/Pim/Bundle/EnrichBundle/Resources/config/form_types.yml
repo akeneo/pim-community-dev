@@ -178,10 +178,10 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_image }
 
-    pim_enrich.form.type.datagrid_configuration:
-        class: %pim_enrich.form.type.datagrid_configuration.class%
+    pim_enrich.form.type.datagrid_view_configuration:
+        class: %pim_enrich.form.type.datagrid_view_configuration.class%
         tags:
-            - { name: form.type, alias: pim_enrich_datagrid_configuration }
+            - { name: form.type, alias: pim_enrich_datagrid_view_configuration }
 
     pim_enrich.form.type.datagrid_view:
         class: %pim_enrich.form.type.datagrid_view.class%

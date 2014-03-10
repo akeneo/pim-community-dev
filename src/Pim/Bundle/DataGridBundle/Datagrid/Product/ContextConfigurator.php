@@ -50,6 +50,11 @@ class ContextConfigurator implements ConfiguratorInterface
     const GRID_VIEW_FILTERS_KEY = '[options][view_filters]';
 
     /**
+     * @var string
+     */
+    const GRID_VIEW_ID_KEY = '[options][configureColumns][viewId]';
+
+    /**
      * @var DatagridConfiguration
      */
     protected $configuration;
@@ -209,14 +214,15 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridColumns()
     {
-        $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
-        $alias = $this->configuration->offsetGetByPath($path);
-        if (!$alias) {
-            $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
-        }
-
         $gridView = $this->request->get('gridView', null);
+
         if ($gridView) {
+            $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
+            $alias = $this->configuration->offsetGetByPath($path);
+            if (!$alias) {
+                $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
+            }
+
             $view = $this->flexibleManager
                 ->getEntityManager()
                 ->getRepository('PimEnrichBundle:DatagridView')
@@ -224,18 +230,10 @@ class ContextConfigurator implements ConfiguratorInterface
 
             if ($view) {
                 $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
+                $this->configuration->offsetSetByPath(self::GRID_VIEW_ID_KEY, $view->getId());
 
-                return $view->getColumns();
+                return $view->getDisplayedColumns($this->getUser());
             }
-        }
-
-        $configuration = $this->flexibleManager
-            ->getEntityManager()
-            ->getRepository('PimEnrichBundle:DatagridConfiguration')
-            ->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
-
-        if ($configuration) {
-            return $configuration->getColumns();
         }
     }
 

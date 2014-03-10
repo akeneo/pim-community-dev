@@ -7,13 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Datagrid configuration form type
+ * Datagrid view configuration form type
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatagridConfigurationType extends AbstractType
+class DatagridViewConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,7 @@ class DatagridConfigurationType extends AbstractType
     {
         $builder
             ->add(
-                'columns',
+                'configuredColumns',
                 'choice',
                 [
                     'multiple' => true,
@@ -40,7 +40,7 @@ class DatagridConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration',
+                'data_class' => 'Pim\Bundle\EnrichBundle\Entity\DatagridView',
                 'columns'    => [],
             ]
         );
@@ -51,6 +51,6 @@ class DatagridConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_datagrid_configuration';
+        return 'pim_enrich_datagrid_view_configuration';
     }
 }

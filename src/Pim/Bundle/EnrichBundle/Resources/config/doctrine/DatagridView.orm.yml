@@ -1,23 +1,26 @@
 Pim\Bundle\EnrichBundle\Entity\DatagridView:
-    type: entity
+    type:  entity
     table: pim_enrich_datagrid_view
     fields:
         id:
             type: integer
-            id: true
+            id:   true
             generator:
                 strategy: AUTO
         label:
-            type:   string
-            length: 100
-            unique: true
+            type:     string
+            length:   100
+            unique:   true
+            nullable: true
         datagridAlias:
-            type: string
+            type:   string
             column: datagrid_alias
         columns:
             type: array
+        configuredColumns:
+            type: array
         filters:
-            type: text
+            type:     text
             nullable: true
 
     manyToOne:
@@ -26,4 +29,4 @@ Pim\Bundle\EnrichBundle\Entity\DatagridView:
             joinColumns:
                 owner_id:
                     referencedColumnName: id
-                    onDelete: 'CASCADE'
+                    onDelete:             CASCADE

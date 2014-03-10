@@ -567,7 +567,6 @@ pim_enrich:
             create: Create an association type
             edit: Edit an association type
             remove: Remove an association type
-    datagrid_configuration.columns.min_message: You must select at least one datagrid column to display
 
 # Menu entries
 pim_menu:
@@ -627,12 +626,18 @@ Disabled: Disabled
 Status: Status
 
 # Datagrid views
-datagrid.view:
+datagrid_view:
+    default:       Default
     create:        Add
     none_selected: No view selected
     none_exist:    No views exist
     placeholder:   Name of new view
     remove:        Delete this view
+    columns:
+        min_message: You must select at least one datagrid column to display
+    label:
+        unique_message:    The label must be unique
+        not_blank_message: The label must not be blank
 
 # Versioning / history
 Change History: Change history

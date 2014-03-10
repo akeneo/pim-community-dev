@@ -14,6 +14,8 @@ define(
 
             locale: null,
 
+            viewId: null,
+
             label: __('Columns'),
 
             icon: 'th',
@@ -41,6 +43,7 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
+                this.viewId = options.viewId;
                 this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
@@ -66,7 +69,7 @@ define(
 
             execute: function(event) {
                 event.preventDefault();
-                var url = Routing.generate('pim_enrich_datagrid_edit', { alias: this.gridName, dataLocale: this.locale });
+                var url = Routing.generate('pim_enrich_datagrid_view_configure', { alias: this.gridName, dataLocale: this.locale, id: this.viewId });
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
@@ -100,9 +103,11 @@ define(
         ConfigureColumnsAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var options = metadata.options || {};
-            new ConfigureColumnsAction(
-                _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
-            );
+            if (options.configureColumns && _.has(options.configureColumns, 'viewId')) {
+                new ConfigureColumnsAction(
+                    _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
+                );
+            }
         };
 
         return ConfigureColumnsAction;
