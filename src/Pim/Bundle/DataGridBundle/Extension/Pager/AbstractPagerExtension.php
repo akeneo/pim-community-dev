@@ -67,6 +67,11 @@ abstract class AbstractPagerExtension extends AbstractExtension
         $this->pager->setQueryBuilder($datasource->getQueryBuilder());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
         $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
+
+        foreach ($datasource->getParameters() as $paramName => $paramValue) {
+            $this->pager->setParameter($paramName, $paramValue);
+        }
+
         $this->pager->init();
     }
 
