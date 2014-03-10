@@ -45,11 +45,11 @@ Feature: Edit common attributes of many products at once
     And I should not see available attributes Side view and Top view in group "Media"
     And I should not see available attribute Lace color in group "Colors"
     And I should not see available attributes Heel height and Weight in group "Other"
-    
+
   @jira https://akeneo.atlassian.net/browse/PIM-2182
   Scenario: Allow edition only common attribute to product values
     Given the following attributes:
-      | code          | label         | unique |
+      | code          | label         | unique    |
       | sole_color    | Sole          | no        |
       | fur           | Fur           | no        |
       | serial_number | Serial number | yes       |
@@ -63,15 +63,18 @@ Feature: Edit common attributes of many products at once
       | highheels | serial_number | 987654321             |
     When I mass-edit products boots and highheels
     And I choose the "Edit attributes" operation
-    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
-    And I should see available attributes Price and Rating in group "Marketing"
-    And I should see available attribute Size in group "Sizes"
-    And I should see available attribute Color in group "Colors"
-    And I should see available attribute Comment in group "Other"
-    And I should not see available attribute SKU and Weather condition in group "Product information"
-    And I should not see available attributes Side view and Top view in group "Media"
-    And I should not see available attribute Lace color in group "Colors"
-    And I should not see available attributes Heel height, Sole color, Fur, Serial number and Weight in group "Other"
+    Then I should see available attribute Comment in group "Other"
+    And I should not see available attributes Sole color, Fur and Serial number in group "Other"
+
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-2183
+  Scenario: Allow edition on common attributes with value not in family and no value on family
+    Given the following attribute:
+      | code       | label | families   |
+      | sole_color | Sole  | high_heels |
+    And the following product values:
+      | product   | attribute  | value |
+      | boots     | sole_color | Blue  |
+    Then I should see available attribute Sole in group "Other"
 
   Scenario: Succesfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
