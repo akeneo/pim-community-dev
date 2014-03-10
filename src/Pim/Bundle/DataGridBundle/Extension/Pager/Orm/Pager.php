@@ -18,19 +18,6 @@ class Pager extends OroPager
     /**
      * {@inheritdoc}
      */
-    public function init()
-    {
-        $qb = $this->getQueryBuilder();
-        if (count($this->getParameters()) > 0) {
-            $qb->setParameters($this->getParameters());
-        }
-
-        return parent::init();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function computeNbResult()
     {
         $qb = clone $this->getQueryBuilder();
