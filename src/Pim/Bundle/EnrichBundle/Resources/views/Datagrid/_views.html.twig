@@ -14,7 +14,7 @@
 </select>
 
 {% if activeView and activeView.owner.id == app.user.id %}
-    <a {{ elements.deleteLinkAttributes(
+    <a class="muted" {{ elements.deleteLinkAttributes(
         path('pim_enrich_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
         path('pim_enrich_product_index', { dataLocale: dataLocale }),
         'confirmation.remove.datagrid view'|trans({'%name%': activeView.label}),
