@@ -19,7 +19,6 @@ class FieldSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
         $datasource->getQueryBuilder()->addOrderBy($field, $direction);
     }
 }

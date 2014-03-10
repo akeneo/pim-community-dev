@@ -98,7 +98,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
         foreach ($data->offsetGetOr('columns', []) as $key => $column) {
             if (isset($column['name']) && isset($sorters[$column['name']])) {
                 $data->offsetSetByPath(sprintf('[columns][%s][sortable]', $key), true);
-                $proceed [] = $column['name'];
+                $proceed[] = $column['name'];
             }
         }
 

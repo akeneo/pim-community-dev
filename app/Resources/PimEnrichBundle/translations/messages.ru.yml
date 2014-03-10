@@ -205,6 +205,56 @@ color:
   orange: Оранжевый
   magenta: Пурпурный
   violet: Фиолетовый
+  blue: Синий
+  cyan: Голубой
+Options: Параметры
+Created at: Создано
+Updated at: Обновлено
+Created: Создано
+Updated: Обновлено
+Last update: Последнее обновление
+by: Создано
+N/A: Н/Д
+Add an option: Добавить свойство
+Manage products: Управление продуктами
+Manage groups: Управление группами
+Code: Код
+Name: Имя
+Type: Тип
+Scope: Область
+Required: Обязательно
+Unique: Уникальный
+Not required: Не обязательно
+Translatable: Переводимое
+Scopable: Область назначаема
+Localizable: Локализуемые
+Unique value: Уникальное значение
+Attribute group: Группа атрибутов
+Other: Другие
+Variants behavior when edited: Варианты поведения при редактировании
+Edit: Редактировать
+Remove: Удалить
+Delete: Удалить
+Parameters: Параметры
+Values: Значения
+General parameters: Общие параметры
+Backend parameters: Параметры базы данных
+Label: Метка
+Default label: Метка по умолчанию
+Default value: Значение по умолчанию
+Attributetype: Тип атрибута
+Attribute type: Тип атрибута
+Searchable: Для поиска
+Defaultvalue: Значение по умолчанию
+Variant: Вариант
+Smart: Smart
+Useable as grid column: Может использоваться как столбец таблицы
+Useable as grid filter: Может использоваться как фильтр таблицы
+Family: Семейство
+Available locales: Доступные локали
+Locale specific: Специфично для локали
+default: По умолчанию
+Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
 Yes: "1"
@@ -226,6 +276,7 @@ General Properties: Общие свойства
 Group values: Значения группы
 New group: Новая группа
 Groups overview: Обзор групп
+"Y-m-d h:i:s": d-m-Y H:i:s
 Max characters: Максимум символов
 Validation rule: Правило проверки
 Validation regexp: Регулярное выражения для правила проверки
@@ -248,9 +299,185 @@ Minimum input length: Минимальная длина ввода
 Default: По умолчанию
 Attributes: Атрибуты
 Title: Название
-pim_title.dashboard: Панель управления
-pim_title.attribute_group.create: Группы атрибутов | Создать
-pim_title.attribute_group.edit: 'Группы атрибутов %group.label% | Редактировать'
-pim_title.category.create: Дерево категорий | Создать
-pim_title.category.edit: 'Дерево категорий %category.label% | Редактировать'
-pim_title.attribute.index: Атрибуты
+pim_catalog_identifier: Идентификатор
+pim_catalog_text: Текст
+pim_catalog_textarea: Текст
+pim_catalog_number: Число
+pim_catalog_price_collection: Цена
+pim_catalog_multiselect: Множественный выбор
+pim_catalog_simpleselect: Простой выбор
+pim_catalog_file: Файл
+pim_catalog_image: Изображение
+pim_catalog_boolean: Да/Нет
+pim_catalog_date: Дата
+pim_catalog_metric: Метрическая
+Activated: Активированный
+Disable: Отключить
+pim_enrich.mass_edit_action:
+  page_title: Продукты
+  page_subtitle: 'Массовое редактирование (1 продукт) |Массовое редактирование (%count% продуктов)'
+  title: Выберите операцию
+  subtitle: 'Выберите операцию, которую вы хотите выполнить на выбранном продукте |Выберите операцию, которую вы хотите выполнить на %count% выбранных продуктах'
+  confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите. |Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+  limit_exceeded: 'Пожалуйста, выберите меньше чем %limit% продуктов для редактирования'
+  change-status:
+    label: Изменить статус (включить / выключить)
+    description: Выбранные продукты будут активированы или деактивированы.
+    success_flash: Статус продукта(ов) был изменен
+  edit-common-attributes:
+    label: Редактировать атрибуты
+    description: Выбранные атрибуты будут изменены для выбранного языка.
+    empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
+    success_flash: Атрибуты товаров были обновлены
+  classify:
+    label: Классифицировать товары в категориях
+    description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
+    success_flash: 'В выбранных категориях товары были классифицированы '
+  change-family:
+    label: Изменить семейство продуктов
+    description: Семейство для выбранных продуктов будет изменено на выбранное семейство
+    success_flash: Семейство для выбранных продуктов успешно изменено
+  add-to-groups:
+    label: Добавить в группы
+    description: Выберите группы, в которые нужно добавить выбранные продукты
+    success_flash: Продукты были успешно добавлены в выбранные группы
+Choose products: Выбрать продукты
+Choose operation: Выберите действие
+Configure: Настроить
+Confirm: Подтвердить
+To enable: Включить
+Select attributes: Выберите атрибуты
+Select: Выбрать
+Remove this attribute: Удалить этот атрибут
+pim_enrich.completeness:
+  progress_bar.title: '%ratio%% выполнено (1 требуемое значение) | %ratio%% выполнено (требуется %count% значений)'
+  subtitle: '{0} Готово|{1} 1 отсутствующее значение|]1, Inf] %count% отсутствующих значений'
+  missing_attributes: Отсутствует значение|Отсутствующие значения
+  legend:
+    locale_not_associated: Локаль, не связана с этим каналом
+pim_enrich.group:
+  axis.help: Оси являются атрибутами, которые определяют вариативность группы. Оси это атрибуты с параметрами, не локализуемые и не определяемые областью. Эту настройку нельзя изменить после создания вариативной группы.
+  type:
+    VARIANT: Вариативная
+    X_SELL: Перекрестные продажи
+    ADDITIONAL: Дополнительные
+    RELATED: Связанные
+pim_enrich.product:
+  no_comparison_locale_available: Нет другой локали для сравнения
+  no_compared_media: Нет медиа доступной для сравнения
+Copy: Копия
+Current tab: Текущая вкладка
+pim_enrich.channel.pick_conversion_unit: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
+Group: Группа
+View group: Посмотреть группу
+Products: Продукты
+pim_enrich:
+  acl:
+    locale.index: Список локалей
+    currency:
+      index: Список валют
+      toggle: Переключение валют
+    product:
+      index: Список продуктов
+      create: Создать продукт
+      edit: Редактировать продукт
+      remove: Удалить продукт
+      add_attribute: Добавить атрибут к продукту
+      remove_attribute: Удалить атрибут из продукта
+      categories_view: Обращение к категории продукта
+      associations_view: Просмотр типов ассоциаций продукта
+      change_family: Изменить семейство продуктов
+      change_state: Изменить статус продукта
+      add_to_groups: Добавление продукта в группы
+      mass_edit: 'Операции массового редактирования продуктов '
+    category:
+      list: Список категорий
+      create: Создать категорию
+      edit: Редактировать категорию
+      remove: Удалить категорию
+      move: Переместить категорию
+      children: Посмотреть дочерние категории
+      products: Посмотреть продукты в категории
+    channel:
+      index: Список каналов
+      create: Создать канал
+      edit: Редактировать канал
+      remove: Удалить канал
+    family:
+      create: Создать семейство
+      edit: Редактировать семейство
+      remove: Удалить семейство
+      add_attribute: Добавить атрибут в семейство
+      remove_attribute: Удалить атрибут из семейства
+    attribute_group:
+      create: Создать группу атрибутов
+      edit: Редактировать группу атрибутов
+      remove: Удалить группу атрибутов
+      sort: Сортировка групп атрибутов
+      add_attribute: Добавление атрибута в группу
+      remove_attribute: Удаление атрибута из группы
+    attribute:
+      index: Список атрибутов
+      create: Создать атрибут
+      edit: Редактировать атрибут
+      remove: Удалить атрибут
+      sort: Сортировка атрибутов внутри группы
+    group:
+      index: Список групп
+      create: Создать группу
+      edit: Редактировать группу
+      remove: Удалить группу
+    group_type:
+      index: Список типов группы
+      create: Создать тип группы
+      edit: Редактировать тип группы
+      remove: Удалить тип группы
+    association_type:
+      index: Список типов ассоциаций
+      create: Создать тип ассоциации
+      edit: Редактировать тип ассоциации
+      remove: Удалить тип ассоциации
+  datagrid_configuration.columns.min_message: Необходимо выбрать по крайней мере один столбец для отображения
+pim_menu:
+  tab:
+    collect: Собрать данные
+    enrich: Дополнить данные
+    settings: Настройки
+    spread: Распространить данные
+  item:
+    association_type: Типы ассоциаций
+    attribute: Атрибуты
+    attribute_group: Группы атрибутов
+    category: Категории
+    channel: Каналы
+    currency: Валюты
+    family: Семейства
+    group: Группы
+    group_type: Типы групп
+    locale: Локали
+    product: Продукты
+    variant_group: Вариативные группы
+Properties: Свойства
+History: Журнал
+pane.accordion:
+  node_values: Значения узлов
+  general_properties: Общие свойства
+  locale_values: Данные локали
+  backend_parameters: Параметры сервера
+  general_parameters: Общие параметры
+  label_translations: Переводы меток
+  options: Параметры
+  group_values: Значения группы
+popin.create:
+  association_type.title: Создать новый тип ассоциации
+  family.title: Создать новое семейство
+  group.title: Создать новую группу
+  group_type.title: Создать новый тип группы
+  product.title: Создать новый продукт
+  variant_group.title: Создать новую вариативную группу
+  option.title: Создать новое свойство
+In group: В группе
+Attribute as label: Атрибут как метка
+Available Columns: Доступные столбцы
+Displayed Columns: Отображаемые столбцы
+Is associated: Связанный

@@ -299,31 +299,42 @@ Minimum input length: Minimale invoerlengte
 Default: Standaard
 Attributes: Attributen
 Title: Titel
-pim_title.dashboard: Dashboard
-pim_title.attribute_group.create: Attribuutgroepen | Aanmaken
-pim_title.attribute_group.edit: 'Attribuutgroepen %group.label% | Bewerken'
-pim_title.category.create: Categoriestructuren | Aanmaken
-pim_title.category.edit: 'Categoriestructuren %category.label% | Bewerken'
-pim_title.attribute.index: Attributen
-pim_title.attribute.create: Attributen | Aanmaken
-pim_title.attribute.edit: 'Attributen %attribute.label% | Bewerken'
-pim_title.product.index: Producten
-pim_title.product.edit: 'Producten %product.sku% | Bewerken'
-pim_title.family.index: Families
-pim_title.family.edit: 'Families %family.label% | Bewerken'
-pim_title.channel.index: Kanalen
-pim_title.channel.create: Kanalen | Aanmaken
-pim_title.channel.edit: 'Kanalen %channel.label% | Bewerken'
-pim_title.currency.index: Valuta
-pim_title.locale.index: Lokalisaties
-pim_title.group.index: Groepen
-pim_title.group.edit: 'Groepen %group.label% | Bewerken'
-pim_title.variant_group.index: Variantgroepen
-pim_title.variant_group.edit: 'Variantgroepen %group.label%|Bewerken'
-pim_title.association_type.index: Associatietypes
-pim_title.association_type.edit: 'Associatietypes %association type.label% | Bewerken'
-pim_title.group_type.index: Groepstypen
-pim_title.group_type.edit: 'Groepstypen %group type.label% | Bewerken'
+pim_title.attribute_group:
+  create: Attribuutgroepen | Aanmaken
+  edit: 'Attribuutgroepen %group.label% | Bewerken'
+pim_title.category:
+  create: Categoriestructuren|Aanmaken
+  edit: 'Categoriestructuren %category.label% | Bewerken'
+pim_title.attribute:
+  index: Attributen
+  create: Attributen | Aanmaken
+  edit: 'Attributen %attribute.label% | Bewerken'
+pim_title.product:
+  index: Producten
+  edit: 'Producten %product.sku% | Bewerken'
+pim_title.family:
+  index: Families
+  edit: 'Families %family.label%|Bewerken'
+pim_title.channel:
+  index: Kanalen
+  create: Kanalen | Aanmaken
+  edit: 'Kanalen %channel.label% | Bewerken'
+pim_title.currency:
+  index: Valuta
+pim_title.locale:
+  index: Lokalisaties
+pim_title.group:
+  index: Groepen
+  edit: 'Groepen %group.label% | Bewerken'
+pim_title.variant_group:
+  index: Variantgroepen
+  edit: 'Variantgroepen %group.label%|Bewerken'
+pim_title.association_type:
+  index: Associatietypes
+  edit: 'Associatietypes %association type.label% | Bewerken'
+pim_title.group_type:
+  index: Groepstypen
+  edit: 'Groupstypen %group type.label% | Bewerken'
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstblok
@@ -336,7 +347,6 @@ pim_catalog_image: Afbeelding
 pim_catalog_boolean: Ja/Nee
 pim_catalog_date: Datum
 pim_catalog_metric: Meeteenheid
-Fallback: Alternatief
 Activated: Geactiveerd
 Disable: Uitschakelen
 pim_enrich.mass_edit_action:

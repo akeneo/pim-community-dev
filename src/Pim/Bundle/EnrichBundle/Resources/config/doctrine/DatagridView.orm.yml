@@ -1,0 +1,29 @@
+Pim\Bundle\EnrichBundle\Entity\DatagridView:
+    type: entity
+    table: pim_enrich_datagrid_view
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type:   string
+            length: 100
+            unique: true
+        datagridAlias:
+            type: string
+            column: datagrid_alias
+        columns:
+            type: array
+        filters:
+            type: text
+            nullable: true
+
+    manyToOne:
+        owner:
+            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    onDelete: 'CASCADE'

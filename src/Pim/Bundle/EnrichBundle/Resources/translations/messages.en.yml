@@ -265,6 +265,7 @@ Edit:                          Edit
 Remove:                        Remove
 Delete:                        Delete
 Parameters:                    Parameters
+System:                        System
 Values:                        Values
 General parameters:            General parameters
 Backend parameters:            Backend parameters
@@ -284,12 +285,12 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 default:                       Default
 Axis:                          Axis
-Add attributes:                Add attributes
-Translate from:                Translate from
-Yes:                           Yes
-No:                            No
+"Add attributes":              "Add attributes"
+"Translate from":              "Translate from"
+Yes:                           "Yes"
+No:                            "No"
 Close:                         Close
-Choose a color:                Choose a color
+"Choose a color":              "Choose a color"
 
 Create:               Create
 Cancel:               Cancel
@@ -347,46 +348,59 @@ Attributes: Attributes
 Title:      Title
 
 # Page titles
-pim_title:
-    dashboard:     Dashboard
-    attribute_group:
-        create:    Attribute groups | Create
-        edit:      Attribute groups %group.label% | Edit
-    category:
-        create:    Category trees | Create
-        edit:      Category trees %category.label% | Edit
-    attribute:
-        index:     Attributes
-        create:    Attributes | Create
-        edit:      Attributes %attribute.label% | Edit
-    product:
-        index:     Products
-        edit:      Products %product.sku% | Edit
-    family:
-        index:     Families
-        edit:      Families %family.label% | Edit
-    channel:
-        index:     Channels
-        create:    Channels | Create
-        edit:      Channels %channel.label% | Edit
-    currency:
-        index:     Currencies
-    locale.index:  Locales
-    group:
-        index:     Groups
-        edit:      Groups %group.label% | Edit
-    variant_group:
-        index:     Variant groups
-        edit:      Variant groups %group.label% | Edit
-    association_type:
-        index:     Association types
-        edit:      Association types %association type.label% | Edit
-    group_type:
-        index:     Group types
-        edit:      Group types %group type.label% | Edit
-    mass_edit_action:
-        choose:    Mass Edit | Choose
-        configure: Mass Edit | Configure
+pim_title.attribute_group:
+    create: "Attribute groups | Create"
+    edit: "Attribute groups %group.label% | Edit"
+
+pim_title.category:
+    create: "Category trees | Create"
+    edit: "Category trees %category.label% | Edit"
+
+pim_title.attribute:
+    index: "Attributes"
+    create: "Attributes | Create"
+    edit: "Attributes %attribute.label% | Edit"
+
+pim_title.product:
+    index: "Products"
+    edit: "Products %product.sku% | Edit"
+
+pim_title.family:
+    index: "Families"
+    edit: "Families %family.label% | Edit"
+
+pim_title.channel:
+    index: "Channels"
+    create: "Channels | Create"
+    edit: "Channels %channel.label% | Edit"
+
+pim_title.currency:
+    index: "Currencies"
+
+pim_title.locale:
+    index: "Locales"
+
+pim_title.group:
+    index: "Groups"
+    edit: "Groups %group.label% | Edit"
+
+pim_title.variant_group:
+    index: "Variant groups"
+    edit: "Variant groups %group.label% | Edit"
+
+pim_title.association_type:
+    index: "Association types"
+    edit: "Association types %association type.label% | Edit"
+
+pim_title.group_type:
+    index: "Group types"
+    edit: "Group types %group type.label% | Edit"
+
+pim_title.mass_edit_action:
+    choose: "Mass Edit | Choose"
+    configure: "Mass Edit | Configure"
+
+pim_title.dashboard: "Dashboard"
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
@@ -397,7 +411,7 @@ pim_catalog_multiselect:      Multi select
 pim_catalog_simpleselect:     Simple select
 pim_catalog_file:             File
 pim_catalog_image:            Image
-pim_catalog_boolean:          Yes/No
+pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
 
@@ -596,8 +610,71 @@ popin.create:
     option.title: Create a new option
 
 # Datagrid contents
-'In group': In group
-'Attribute as label': Attribute as label
-'Available Columns': Available Columns
-'Displayed Columns': Displayed Columns
-'Is associated': Is associated
+In group: In group
+Attribute as label: Attribute as label
+Available Columns: Available Columns
+Displayed Columns: Displayed Columns
+Is associated: Is associated
+Complete: Complete
+Created At: Created at
+Updated At: Updated at
+Enabled: Enabled
+Disabled: Disabled
+Status: Status
+
+# Datagrid views
+datagrid.view:
+    create:        Add
+    none_selected: No view selected
+    none_exist:    No views exist
+    placeholder:   Name of new view
+
+# Versioning / history
+Change History: Change history
+Data Audit: Data audit
+Data Audit - System: 'Data audit - system'
+Action: Action
+Version: Version
+Entity type: Entity type
+Entity name: Entity name
+Entity id: Entity id
+Data: Data
+Author: Author
+Logged at: Logged at
+Deleted: Deleted
+Old values: Old values
+New values: New values
+
+# Configuration
+System configuration: System configuration
+General setup: General setup
+Localization: Localization
+Localization options: Localization options
+Locale: Locale
+Location: Location
+Format address by address country: Format address by address country
+Language: Language
+Timezone: Timezone
+Currency: Currency
+oro.locale:
+    address_format:
+        region_name_type:
+            parish: "parish"
+            state: "state"
+            island: "island"
+            county: "county"
+            area: "area"
+            prefecture: "prefecture"
+            do_si: "do_si"
+            department: "department"
+            district: "district"
+            province: "province"
+
+    form:
+        tooltip:
+            locale: "Select the locale option used to format numbers, addresses, names and dates"
+            location: " Location will be used to format addresses when 'Format address by address country' option is disabled"
+            format_address_by_address_country: "Selecting this option will enabled addresses to be formatted by the country they are in. Disabeling this option will cause the addresses to be formatted in your location address format"
+            language: "Select the system language you wish to use"
+            timezone: "Select the timezone for displaying date and time"
+            currency: "Select the default currency"

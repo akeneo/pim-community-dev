@@ -1343,9 +1343,6 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-#pim_catalog_datagrid_configuration {
-  margin-bottom: 0;
-}
 .connectedSortable {
   height: 320px;
   min-height: 15px;
@@ -1361,6 +1358,28 @@ table#progress-table {
   li {
     padding: 5px 0;
     font-size: 13px;
+    cursor: pointer;
+  }
+}
+
+/** datagrid views ***************************************************************************************************/
+input.input-invisible {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  .box-shadow(inset 0 0 0 transparent);
+  &:focus,
+  &:focus:invalid:focus {
+    .box-shadow(none);
+  }
+}
+
+.highlight-hover li {
+  &:hover {
+    background-color: @color-purple_light;
+    color: @backgroundColor-white;
+  }
+  label {
     cursor: pointer;
   }
 }
