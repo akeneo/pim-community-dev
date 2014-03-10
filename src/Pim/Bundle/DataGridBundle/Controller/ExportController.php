@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -25,6 +26,9 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class ExportController
 {
+    /** @var ContainerInterface $container */
+    protected $container;
+
     /** @var DatagridManager $datagridManager */
     protected $datagridManager;
 
@@ -44,7 +48,9 @@ class ExportController
     protected $userContext;
 
     /**
+     * Constructor
      *
+     * @param ContainerInterface $container
      * @param DatagridManager $datagridManager
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher $massActionDispatcher
@@ -53,6 +59,7 @@ class ExportController
      * @param UserContext $userContext
      */
     public function __construct(
+        ContainerInterface $container,
         DatagridManager $datagridManager,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
@@ -60,6 +67,8 @@ class ExportController
         ProductManager $productManager,
         UserContext $userContext
     ) {
+        $this->container = $container;
+
         $this->datagridManager = $datagridManager;
 
         $this->productManager = $productManager;
@@ -83,6 +92,11 @@ class ExportController
         // Export time execution depends on entities exported
         ignore_user_abort(false);
         set_time_limit(0);
+
+        // TODO: $exportAlias must be set in the request
+        $exportAlias = 'pim_datagrid.extension.mass_action.quick_export_csv';
+        $exportAlias = 'pim_datagrid.extension.mass_action.handler.export';
+        $this->container->get($exportAlias);
 
         $parameters  = $this->parametersParser->parse($request);
         $requestData = array_merge($request->query->all(), $request->request->all());

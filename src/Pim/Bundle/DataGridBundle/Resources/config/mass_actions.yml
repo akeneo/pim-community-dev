@@ -28,3 +28,11 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
+
+    pim_datagrid.extension.mass_action.quick_export_csv:
+        class: %pim_datagrid.extension.mass_action.type.export.class%
+        scope: prototype
+        calls:
+            - [ setExportFormat, [ 'csv ' ] ]
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: export }
