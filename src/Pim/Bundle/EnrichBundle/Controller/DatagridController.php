@@ -142,7 +142,9 @@ class DatagridController extends AbstractDoctrineController
             $columns = $baseView->getColumns();
         } else {
             $configuration = $this->getDatagridConfiguration($alias, $user);
-            $columns       = $configuration ? $configuration->getColumns() : array_keys($this->getColumnChoices($alias));
+            $columns       = $configuration ?
+                $configuration->getColumns() :
+                array_keys($this->getColumnChoices($alias));
         }
 
         $datagridView = new DatagridView();
