@@ -1,16 +1,28 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% set activeViewId = gridView ? gridView : 0 %}
-{% set activeViewLabel = null %}
+{% set activeView = null %}
 
 <select id="view-selector" class="hide">
 {% for view in views %}
     <option value="{{ view.id }}">
         {% if view.id == activeViewId %}
-            {% set activeViewLabel = view.label %}
+            {% set activeView = view %}
         {% endif %}
         {{ view.label }}
     </option>
 {% endfor %}
 </select>
+
+{% if activeView and activeView.owner.id == app.user.id %}
+    <a class="muted" {{ elements.deleteLinkAttributes(
+        path('pim_enrich_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
+        path('pim_enrich_product_index', { dataLocale: dataLocale }),
+        'confirmation.remove.datagrid view'|trans({'%name%': activeView.label}),
+        'flash.datagrid view.removed'|trans
+    ) }}>
+        <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid.view.remove'|trans }}"></i>
+    </a>
+{% endif %}
 
 {{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid.view.placeholder'|trans } }) }}
@@ -39,7 +51,7 @@ require(
                 collision: 'none'
             }
         };
-        opts.selectedText = opts.noneSelectedText = {% if activeViewLabel %}'{{ activeViewLabel }}'{% else %}opts.title{% endif %};
+        opts.selectedText = opts.noneSelectedText = {% if activeView %}'{{ activeView.label }}'{% else %}opts.title{% endif %};
 
         $selector.multiselect(opts).multiselectfilter({
             label: false,

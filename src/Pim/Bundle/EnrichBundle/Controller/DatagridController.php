@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -15,6 +16,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
@@ -73,7 +75,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function editAction(Request $request, $alias)
     {
@@ -93,7 +95,7 @@ class DatagridController extends AbstractDoctrineController
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
                 'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_edit',
+                    'pim_enrich_datagrid_edit',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale')
@@ -127,7 +129,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function viewsAction(Request $request, $alias)
     {
@@ -145,7 +147,7 @@ class DatagridController extends AbstractDoctrineController
             $datagridView,
             [
                 'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_views',
+                    'pim_enrich_datagrid_views',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale')
@@ -189,6 +191,38 @@ class DatagridController extends AbstractDoctrineController
                 'gridView'   => $request->get('gridView', null)
             ]
         );
+    }
+
+    /**
+     * Remove a datagrid view
+     *
+     * @param Request      $request
+     * @param DatagridView $view
+     *
+     * @throws DeleteException If the current user doesn't own the view
+     *
+     * @return Response|RedirectResponse
+     */
+    public function removeViewAction(Request $request, DatagridView $view)
+    {
+        if ($view->getOwner() !== $this->getUser()) {
+            throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
+        }
+
+        $em = $this->getManager();
+        $em->remove($view);
+        $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute(
+                'pim_enrich_product_index',
+                [
+                    'dataLocale' => $request->get('dataLocale')
+                ]
+            );
+        }
     }
 
     /**
