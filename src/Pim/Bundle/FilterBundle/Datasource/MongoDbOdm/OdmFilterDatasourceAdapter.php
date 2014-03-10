@@ -40,8 +40,7 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      * Adds a new WHERE or HAVING restriction depends on the given parameters.
      *
      * @param mixed  $restriction The restriction to add.
-     * @param string $condition   The condition.
-     *                            Can be FilterUtility::CONDITION_OR or FilterUtility::CONDITION_AND.
+     * @param string $condition   Can be FilterUtility::CONDITION_OR or FilterUtility::CONDITION_AND.
      * @param bool   $isComputed  Specifies whether the restriction should be added to the HAVING part of a query.
      */
     public function addRestriction($restriction, $condition, $isComputed = false)
