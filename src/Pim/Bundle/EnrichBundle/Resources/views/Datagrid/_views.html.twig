@@ -1,6 +1,12 @@
+{% set activeViewId = gridView ? gridView : 0 %}
+{% set activeViewLabel = null %}
+
 <select id="view-selector" class="hide">
 {% for view in views %}
     <option value="{{ view.id }}">
+        {% if view.id == activeViewId %}
+            {% set activeViewLabel = view.label %}
+        {% endif %}
         {{ view.label }}
     </option>
 {% endfor %}
@@ -13,8 +19,8 @@
 
 <script type="text/javascript">
 require(
-    ['jquery', 'jquery.multiselect', 'jquery.multiselect.filter'],
-    function ($) {
+    ['jquery', 'backbone', 'routing', 'jquery.multiselect', 'jquery.multiselect.filter'],
+    function ($, Backbone, Routing) {
         'use strict';
 
         var $selector = $('#view-selector');
@@ -33,8 +39,7 @@ require(
                 collision: 'none'
             }
         };
-        opts.selectedText = opts.title;
-        opts.noneSelectedText = opts.title;
+        opts.selectedText = opts.noneSelectedText = {% if activeViewLabel %}'{{ activeViewLabel }}'{% else %}opts.title{% endif %};
 
         $selector.multiselect(opts).multiselectfilter({
             label: false,
@@ -78,6 +83,9 @@ require(
                 selectedText: label,
                 noneSelectedText: label
             });
+            var gridViewId = $(this).find('input').val();
+            var url = Routing.generate('pim_enrich_product_index', { gridView: gridViewId, dataLocale: '{{ dataLocale }}' });
+            Backbone.history.navigate('url=' + url, { trigger: true });
         });
 
         $menu.find('input[type="search"]').width(207);
