@@ -14,14 +14,12 @@ Feature: Edit common attributes of many products at once
       | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
       | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
     And the following products:
-      | sku      | family   |
-      | boots    | boots    |
-      | sneakers | sneakers |
-      | sandals  | sandals  |
-      | pump     |          |
-    And the following product:
-      | sku       | family     | comment               |
-      | highheels | high_heels | Comment on high hells |
+      | sku      | family      |
+      | boots    | boots       |
+      | sneakers | sneakers    |
+      | sandals  | sandals     |
+      | pump     |             |
+      | highheels | high_heels |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -35,7 +33,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
 
-  @jira
+  @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
     And I choose the "Edit attributes" operation
@@ -47,6 +45,33 @@ Feature: Edit common attributes of many products at once
     And I should not see available attributes Side view and Top view in group "Media"
     And I should not see available attribute Lace color in group "Colors"
     And I should not see available attributes Heel height and Weight in group "Other"
+    
+  @jira https://akeneo.atlassian.net/browse/PIM-2182
+  Scenario: Allow edition only common attribute to product values
+    Given the following attributes:
+      | code          | label         | unique |
+      | sole_color    | Sole          | no        |
+      | fur           | Fur           | no        |
+      | serial_number | Serial number | yes       |
+    And the following product values:
+      | product   | attribute     | value                 |
+      | boots     | comment       | Comment on boots      |
+      | boots     | fur           | rabbit                |
+      | boots     | serial_number | 123456789             |
+      | highheels | comment       | Comment on high heels |
+      | highheels | sole_color    | Red                   |
+      | highheels | serial_number | 987654321             |
+    When I mass-edit products boots and highheels
+    And I choose the "Edit attributes" operation
+    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
+    And I should see available attributes Price and Rating in group "Marketing"
+    And I should see available attribute Size in group "Sizes"
+    And I should see available attribute Color in group "Colors"
+    And I should see available attribute Comment in group "Other"
+    And I should not see available attribute SKU and Weather condition in group "Product information"
+    And I should not see available attributes Side view and Top view in group "Media"
+    And I should not see available attribute Lace color in group "Colors"
+    And I should not see available attributes Heel height, Sole color, Fur, Serial number and Weight in group "Other"
 
   Scenario: Succesfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
