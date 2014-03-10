@@ -15,15 +15,11 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  * The query builder is built from the object repository (entity or document)
  * The extensions are common or orm/odm specific
  *
- * TODO :
- * - The storage can be configured (orm or mongodb-odm)
- * - Delegate the hydration as grid results
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductDatasource implements DatasourceInterface
+class ProductDatasource implements DatasourceInterface, ParameterizableInterface
 {
     /**
      * @var string
@@ -61,6 +57,9 @@ class ProductDatasource implements DatasourceInterface
 
     /** @var string */
     protected $localeCode = null;
+
+    /** @var array */
+    protected $parameters = array();
 
     /**
      * @param ObjectManager     $om
@@ -121,5 +120,23 @@ class ProductDatasource implements DatasourceInterface
     public function getQueryBuilder()
     {
         return $this->qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
     }
 }
