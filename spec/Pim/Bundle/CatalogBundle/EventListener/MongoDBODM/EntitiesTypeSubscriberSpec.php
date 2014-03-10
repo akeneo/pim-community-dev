@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 
-class EntityReferenceSubscriberSpec extends ObjectBehavior
+class EntitiesTypeSubscriberSpec extends ObjectBehavior
 {
     function let(ReferencedCollectionFactory $factory)
     {
@@ -31,7 +31,7 @@ class EntityReferenceSubscriberSpec extends ObjectBehavior
 
     function it_transforms_values_of_a_entity_collection_field_into_entities(
         LifecycleEventArgs $args,
-        EntityStub $entity,
+        ValuesStub $entity,
         DocumentManager $dm,
         ClassMetadata $documentMetadata,
         \ReflectionProperty $reflBar,
@@ -61,13 +61,9 @@ class EntityReferenceSubscriberSpec extends ObjectBehavior
 
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
-        EntityStub $entity,
+        ValuesStub $entity,
         DocumentManager $dm,
-        ClassMetadata $documentMetadata,
-        \ReflectionProperty $reflBar,
-        BarStub $bar4,
-        BarStub $bar8,
-        BarStub $bar15
+        ClassMetadata $documentMetadata
     ) {
         $args->getEntity()->willReturn($entity->getWrappedObject());
         $args->getDocumentManager()->willReturn($dm);
@@ -83,7 +79,7 @@ class EntityReferenceSubscriberSpec extends ObjectBehavior
     }
 }
 
-class EntityStub
+class ValuesStub
 {
 }
 

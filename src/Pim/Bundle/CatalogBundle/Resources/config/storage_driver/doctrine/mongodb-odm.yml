@@ -7,7 +7,8 @@ parameters:
     pim_catalog.event_listener.mongodb.scopable.class:              Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
     pim_catalog.event_listener.mongodb.collection.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\CollectionListener
     pim_catalog.doctrine.mongodb.flexible_query_builder.class:      Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
-    pim_catalog.event_listener.mongodb.entity_collection.class:     Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityReferenceSubscriber
+    pim_catalog.event_listener.mongodb.entities_type.class:         Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
+    pim_catalog.event_listener.mongodb.entity_type.class:           Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -35,14 +36,20 @@ services:
         class: %pim_catalog.event_listener.mongodb.collection.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
-    pim_catalog.event_listener.mongodb.entity_collection:
-        class: %pim_catalog.event_listener.mongodb.entity_collection.class%
+    pim_catalog.event_listener.mongodb.entities_type:
+        class: %pim_catalog.event_listener.mongodb.entities_type.class%
         arguments:
             - '@pim_catalog.factory.referenced_collection'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.mongodb.entity_type:
+        class: %pim_catalog.event_listener.mongodb.entity_type.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 

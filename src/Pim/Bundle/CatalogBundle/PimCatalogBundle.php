@@ -38,9 +38,16 @@ class PimCatalogBundle extends Bundle
     /** @staticvar string */
     const EXTRA_VERSION = '';
 
+    /** @staticvar string */
+    const ODM_ENTITIES_TYPE = 'entities';
+
+    /** @staticvar string */
+    const ODM_ENTITY_TYPE = 'entity';
+
     public function __construct()
     {
-        Type::registerType('entities', 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities');
+        Type::registerType(self::ODM_ENTITIES_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities');
+        Type::registerType(self::ODM_ENTITY_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity');
     }
 
     /**

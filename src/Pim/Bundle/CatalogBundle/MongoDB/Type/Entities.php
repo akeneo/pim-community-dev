@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 /**
  * Stores a collection of entity identifiers
  *
- * @see Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityReferenceSubscriber
+ * @see Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
