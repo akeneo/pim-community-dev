@@ -69,34 +69,30 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $repository = $this->categoryManager->getEntityRepository();
+        $categoryRepository = $this->categoryManager->getEntityRepository();
+        $productRepository  = $this->productManager->getFlexibleRepository();
         $qb         = $ds->getQueryBuilder();
-        $rootAlias  = $qb->getRootAlias();
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {
             return true;
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $tree = $repository->find($data['treeId']);
+            $tree = $categoryRepository->find($data['treeId']);
             if ($tree) {
                 $productIds = $this->productManager->getProductIdsInCategory($tree, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-
-                $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
-                $qb->andWhere($expression);
+                $productRepository->applyFilterByIds($qb, $productIds, false);
 
                 return true;
             }
         } else {
-            $category = $repository->find($data['categoryId']);
+            $category = $categoryRepository->find($data['categoryId']);
             if (!$category) {
-                $category = $repository->find($data['treeId']);
+                $category = $categoryRepository->find($data['treeId']);
             }
             if ($category) {
                 $productIds = $this->productManager->getProductIdsInCategory($category, $data['includeSub']);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
-
-                $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
-                $qb->andWhere($expression);
+                $productRepository->applyFilterByIds($qb, $productIds, true);
 
                 return true;
             }
