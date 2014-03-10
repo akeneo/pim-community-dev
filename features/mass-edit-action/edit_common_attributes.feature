@@ -6,15 +6,22 @@ Feature: Edit common attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
+    And the following family:
+      | code       | attributes                                                       |
+      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attribute:
-      | code   | label  | type   | metric family | default metric unit | families                 |
-      | weight | Weight | metric | Weight        | GRAM                | boots, sneakers, sandals |
+      | code        | label       | type   | metric family | default metric unit | families                 |
+      | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
+      | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
     And the following products:
-     | sku      | family   |
-     | boots    | boots    |
-     | sneakers | sneakers |
-     | sandals  | sandals  |
-     | pump     |          |
+      | sku      | family   |
+      | boots    | boots    |
+      | sneakers | sneakers |
+      | sandals  | sandals  |
+      | pump     |          |
+    And the following product:
+      | sku       | family     | comment               |
+      | highheels | high_heels | Comment on high hells |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -27,6 +34,19 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Size in group "Sizes"
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
+
+  @jira
+  Scenario: Allow editing only common attributes define from families
+    Given I mass-edit products boots and highheels
+    And I choose the "Edit attributes" operation
+    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
+    And I should see available attributes Price and Rating in group "Marketing"
+    And I should see available attribute Size in group "Sizes"
+    And I should see available attribute Color in group "Colors"
+    And I should not see available attribute SKU and Weather condition in group "Product information"
+    And I should not see available attributes Side view and Top view in group "Media"
+    And I should not see available attribute Lace color in group "Colors"
+    And I should not see available attributes Heel height and Weight in group "Other"
 
   Scenario: Succesfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
