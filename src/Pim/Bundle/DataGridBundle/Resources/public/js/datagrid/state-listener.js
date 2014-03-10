@@ -75,12 +75,16 @@ define(
 
         StateListener.prepareGrid = function (gridName) {
             if (typeof Storage !== 'undefined' && sessionStorage) {
+                var $gridContainer = $('#grid-' + gridName);
+                var metadata       = $gridContainer.data('metadata');
+
+                if (metadata.options.view_filters) {
+                    sessionStorage.setItem(gridName, metadata.options.view_filters);
+                }
+
                 var state = sessionStorage.getItem(gridName);
-
                 if (state) {
-                    var $gridContainer = $('#grid-' + gridName);
-                    var storedState    = new PageableCollection().decodeStateData(state);
-
+                    var storedState = new PageableCollection().decodeStateData(state);
                     $gridContainer.data('metadata').state = storedState;
                 }
             }
