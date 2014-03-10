@@ -24,7 +24,10 @@
     </a>
 {% endif %}
 
-{{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
+{{ form_start(form, {
+    action: path('pim_enrich_datagrid_views', { alias: alias, dataLocale: dataLocale, gridView: gridView }),
+    attr: { class: 'pull-left unspaced hide' }
+}) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid.view.placeholder'|trans } }) }}
     {{ form_widget(form.filters) }}
 {{ form_end(form) }}

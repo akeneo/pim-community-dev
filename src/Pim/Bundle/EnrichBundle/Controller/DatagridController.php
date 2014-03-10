@@ -133,28 +133,24 @@ class DatagridController extends AbstractDoctrineController
      */
     public function viewsAction(Request $request, $alias)
     {
-        $user          = $this->getUser();
-        $configuration = $this->getDatagridConfiguration($alias, $user);
-        $columns       = $configuration ? $configuration->getColumns() : array_keys($this->getColumnChoices($alias));
+        $user       = $this->getUser();
+        $repository = $this->getRepository('PimEnrichBundle:DatagridView');
+        $baseViewId = $request->get('gridView', null);
+
+        $baseView = $baseViewId ? $repository->find($baseViewId) : null;
+        if ($baseView) {
+            $columns = $baseView->getColumns();
+        } else {
+            $configuration = $this->getDatagridConfiguration($alias, $user);
+            $columns       = $configuration ? $configuration->getColumns() : array_keys($this->getColumnChoices($alias));
+        }
 
         $datagridView = new DatagridView();
         $datagridView->setOwner($user);
         $datagridView->setDatagridAlias($alias);
         $datagridView->setColumns($columns);
 
-        $form = $this->createForm(
-            'pim_enrich_datagrid_view',
-            $datagridView,
-            [
-                'action'  => $this->generateUrl(
-                    'pim_enrich_datagrid_views',
-                    [
-                        'alias'      => $alias,
-                        'dataLocale' => $request->get('dataLocale')
-                    ]
-                ),
-            ]
-        );
+        $form = $this->createForm('pim_enrich_datagrid_view', $datagridView);
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -178,7 +174,7 @@ class DatagridController extends AbstractDoctrineController
             );
         }
 
-        $views = $this->getRepository('PimEnrichBundle:DatagridView')->findBy(['datagridAlias' => $alias]);
+        $views = $repository->findBy(['datagridAlias' => $alias]);
 
         return $this->render(
             'PimEnrichBundle:Datagrid:_views.html.twig',
