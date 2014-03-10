@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Type;
 
 use Doctrine\ODM\MongoDB\Types\Type;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Stores a collection of entity identifiers
@@ -21,7 +22,7 @@ class Entities extends Type
      */
     public function convertToDatabaseValue($value)
     {
-        if (!$value instanceof ReferencedCollection) {
+        if (!$value instanceof Collection) {
             throw new \InvalidArgumentException('Expecting instance of Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection');
         }
 

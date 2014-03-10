@@ -30,8 +30,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             type: string
         scope:
             type: string
-        attributeId:
-            type: int
+        attribute:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
         option:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
