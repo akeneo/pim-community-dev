@@ -11,8 +11,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -28,21 +30,21 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
  */
 class DatagridController extends AbstractDoctrineController
 {
-    /** @var DatagridManager */
+    /** @var DatagridManager $manager */
     protected $manager;
 
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param DatagridManager          $manager
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param RegistryInterface          $doctrine
+     * @param DatagridManager            $manager
      */
     public function __construct(
         Request $request,
@@ -75,7 +77,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $alias)
     {
@@ -129,7 +131,7 @@ class DatagridController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewsAction(Request $request, $alias)
     {
