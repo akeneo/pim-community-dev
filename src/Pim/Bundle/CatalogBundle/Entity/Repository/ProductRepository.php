@@ -252,22 +252,6 @@ class ProductRepository extends FlexibleEntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByIds(QueryBuilder $qb, $productIds, $include)
-    {
-        $rootAlias  = $qb->getRootAlias();
-        if ($include) {
-            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
-            $qb->andWhere($expression);
-
-        } else {
-            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
-            $qb->andWhere($expression);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByReference($code)
     {
         return $this->createQueryBuilder('p')
@@ -625,5 +609,21 @@ SQL;
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByIds($qb, $productIds, $include)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        if ($include) {
+            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+
+        } else {
+            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+        }
     }
 }
