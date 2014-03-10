@@ -136,8 +136,6 @@ class ExportController
     /**
      * Get data locale code
      *
-     * @throws \Exception
-     *
      * @return string
      */
     protected function getDataLocale()
