@@ -9,6 +9,7 @@
 - Fixed verbose option always used
 - Fixed issue on attribute option removal
 - Fixed identifier is required attribute
+- Fixed get common attributes with common values
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
