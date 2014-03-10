@@ -422,7 +422,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Get options, used for multi select to retrieve many options
      *
-     * @return array
+     * @return Arraycollection
      */
     public function getOptions()
     {
