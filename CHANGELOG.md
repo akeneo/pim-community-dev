@@ -1,7 +1,7 @@
 # 1.1.0 -
 
 ## Features
-- Implement saving and applying datagrid views
+- Implement saving, applying and removing datagrid views
 
 ## Improvements
 - Removed useless ```app/entities``` directory
