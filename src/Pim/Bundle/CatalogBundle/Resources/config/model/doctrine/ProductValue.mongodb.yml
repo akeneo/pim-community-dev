@@ -37,8 +37,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         #optionId:
         #    type: int
         # References ORM AttributeOption code for multi selects
-        #options:
-        #    type: collection
+        options:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
         media:
             embedded: true
             type: one
