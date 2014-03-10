@@ -1,4 +1,4 @@
-<?php                                                                           
+<?php
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
@@ -11,46 +11,53 @@ use Prophecy\Argument;
 
 class ReferencedCollectionSpec extends ObjectBehavior
 {
-    protected $criteria;
-
-    function let (
+    function let(
         ObjectManager $objectManager,
         ObjectRepository $repository,
         ClassMetadata $classMetadata
     ) {
-        $itemIds = array(1, 2, 3);
-        $itemClass = 'MyItemClass';
-        $identifier = 'id';
-        $this->criteria = array( $identifier => $itemIds);
+        $objectManager->getRepository('MyItemClass')->willReturn($repository);
+        $objectManager->getClassMetadata('MyItemClass')->willReturn($classMetadata);
 
-        $repository->findBy($this->criteria)->willReturn(array())->shouldBeCalled();
-
-        $classMetadata->getIdentifier()->willReturn($identifier);
-
-        $objectManager->getRepository($itemClass)->willReturn($repository);
-        $objectManager->getClassMetadata($itemClass)->willReturn($classMetadata);
-
-        $this->beConstructedWith("MyItemClass", $itemIds, $objectManager);
+        $this->beConstructedWith('MyItemClass', [4, 8, 15], $objectManager);
     }
 
-    function it_initializes()
+    function it_is_a_collection()
     {
-        $this->isInitialized()->shouldReturn(false);
-        $this->initialize();
-        $this->isInitialized()->shouldReturn(true);
+        $this->shouldImplement('Doctrine\Common\Collections\Collection');
     }
 
-    function it_sets_initialized(ObjectRepository $repository)
+    function it_holds_an_initialization_state()
     {
-        $repository->findBy($this->criteria)->shouldNotBeCalled();
-        $this->isInitialized()->shouldReturn(false);
+        $this->shouldNotBeInitialized();
         $this->setInitialized(true);
-        $this->isInitialized()->shouldReturn(true);
+        $this->shouldBeInitialized();
     }
 
-    function it_counts()
-    {
-        $this->count();
+    function it_loads_entities_whenever_trying_to_access_the_collection(
+        ObjectRepository $repository,
+        ClassMetadata $classMetadata,
+        EntityStub $entity4,
+        EntityStub $entity8,
+        EntityStub $entity15
+    ) {
+        $classMetadata->getIdentifier()->willReturn(['id']);
+        $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
+
+        $this->toArray()->shouldReturn([$entity4, $entity8, $entity15]);
+    }
+
+    function it_throws_exception_when_entity_class_uses_a_composite_key(
+        ObjectRepository $repository,
+        ClassMetadata $classMetadata
+    ) {
+        $classMetadata->getIdentifier()->willReturn(['id', 'code']);
+
+        $exception = new \LogicException('The configured entity uses a composite key which is not supported by the collection');
+        $this->shouldThrow($exception)->duringToArray();
     }
 }
 
+class EntityStub
+{
+}

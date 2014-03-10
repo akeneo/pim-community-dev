@@ -9,9 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use \Closure;
 
 /**
- * Provides a collection lazy loaded from the object manager.
- * The content of the collection is defined by the ids and
- * the class name.
+ * An ArrayCollection decorator of entity identifiers that are lazy loaded
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -19,55 +17,33 @@ use \Closure;
  */
 class ReferencedCollection implements Collection
 {
-    /**
-     * Object manager that will be used to get items from storage
-     *
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $objectManager;
 
-    /**
-     * Class name of item to load from storage
-     *
-     * @var string
-     */
-    protected $itemClass;
+    /** @var string */
+    protected $entityClass;
 
-    /**
-     * Array of item ids
-     *
-     * @var array
-     */
-    protected $itemIds;
+    /** @var array */
+    protected $identifiers;
 
-    /**
-     * Array of items
-     *
-     * @var ArrayCollection
-     */
-    protected $items;
+    /** @var ArrayCollection */
+    protected $entities;
 
-    /**
-     * Whether the collection has already been initialized.
-     *
-     * @var boolean
-     */
+    /** @var boolean */
     protected $initialized = true;
 
     /**
-     * Constructor
-     *
-     * @param string        $itemClass
-     * @param array         $itemIds
+     * @param string        $entityClass
+     * @param array         $identifiers
      * @param ObjectManager $objectManager
      */
-    public function __construct($itemClass, $itemIds, ObjectManager $objectManager)
+    public function __construct($entityClass, $identifiers, ObjectManager $objectManager)
     {
         $this->initialized   = false;
-        $this->items         = new ArrayCollection();
-        $this->itemClass     = $itemClass;
-        $this->itemIds       = $itemIds;
+        $this->identifiers   = $identifiers;
+        $this->entityClass   = $entityClass;
         $this->objectManager = $objectManager;
+        $this->items         = new ArrayCollection();
     }
 
     /**
@@ -93,43 +69,12 @@ class ReferencedCollection implements Collection
     }
 
     /**
-     * Get object class identifier from the repository
-     *
-     * @param mixed $itemRepository
-     *
-     * @return string
-     */
-    protected function getClassIdentifier()
-    {
-        $classMetadata = $this->objectManager->getClassMetadata($this->itemClass);
-        return $classMetadata->getIdentifier();
-    }
-
-    /**
-     * Initializes the collection by loading its contents from the database
-     * if the collection is not yet initialized.
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        if ($this->initialized || empty($this->itemIds) || empty($this->itemClass)) {
-            return;
-        }
-        $itemRepository = $this->objectManager->getRepository($this->itemClass);
-        $criteria = array($this->getClassIdentifier() => $this->itemIds);
-
-        $this->items = new ArrayCollection($itemRepository->findBy($criteria));
-
-        $this->initialized = true;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function add($element)
     {
         $this->initialize();
+
         return $this->items->add($element);
     }
 
@@ -148,6 +93,7 @@ class ReferencedCollection implements Collection
     public function contains($element)
     {
         $this->initialize();
+
         return $this->items->contains($element);
     }
 
@@ -157,6 +103,7 @@ class ReferencedCollection implements Collection
     public function isEmpty()
     {
         $this->initialize();
+
         return $this->items->isEmpty();
     }
 
@@ -166,6 +113,7 @@ class ReferencedCollection implements Collection
     public function remove($key)
     {
         $this->initialize();
+
         return $this->items->remove($key);
     }
 
@@ -175,6 +123,7 @@ class ReferencedCollection implements Collection
     public function removeElement($element)
     {
         $this->initialize();
+
         return $this->items->removeElement($element);
     }
 
@@ -184,6 +133,7 @@ class ReferencedCollection implements Collection
     public function containsKey($key)
     {
         $this->initialize();
+
         return $this->items->containKeys($key);
     }
 
@@ -193,6 +143,7 @@ class ReferencedCollection implements Collection
     public function get($key)
     {
         $this->initialize();
+
         return $this->items->get($key);
     }
 
@@ -202,6 +153,7 @@ class ReferencedCollection implements Collection
     public function getKeys()
     {
         $this->initialize();
+
         return $this->items->getKeys();
     }
 
@@ -211,6 +163,7 @@ class ReferencedCollection implements Collection
     public function getValues()
     {
         $this->initialize();
+
         return $this->items->getValues();
     }
 
@@ -220,6 +173,7 @@ class ReferencedCollection implements Collection
     public function set($key, $value)
     {
         $this->initialize();
+
         $this->items->set($key, $value);
     }
 
@@ -229,6 +183,7 @@ class ReferencedCollection implements Collection
     public function toArray()
     {
         $this->initialize();
+
         return $this->items->toArray();
     }
 
@@ -238,6 +193,7 @@ class ReferencedCollection implements Collection
     public function first()
     {
         $this->initialize();
+
         return $this->items->first();
     }
 
@@ -247,6 +203,7 @@ class ReferencedCollection implements Collection
     public function last()
     {
         $this->initialize();
+
         return $this->items->last();
     }
 
@@ -256,6 +213,7 @@ class ReferencedCollection implements Collection
     public function key()
     {
         $this->initialize();
+
         return $this->items->key();
     }
 
@@ -265,6 +223,7 @@ class ReferencedCollection implements Collection
     public function current()
     {
         $this->initialize();
+
         return $this->items->current();
     }
 
@@ -274,6 +233,7 @@ class ReferencedCollection implements Collection
     public function next()
     {
         $this->initialize();
+
         return $this->items->next();
     }
 
@@ -283,6 +243,7 @@ class ReferencedCollection implements Collection
     public function exists(Closure $p)
     {
         $this->initialize();
+
         return $this->items->exists($p);
     }
 
@@ -292,6 +253,7 @@ class ReferencedCollection implements Collection
     public function filter(Closure $p)
     {
         $this->initialize();
+
         return $this->items->filter($p);
     }
 
@@ -301,6 +263,7 @@ class ReferencedCollection implements Collection
     public function forAll(Closure $p)
     {
         $this->initialize();
+
         return $this->items->forAll($p);
     }
 
@@ -310,6 +273,7 @@ class ReferencedCollection implements Collection
     public function map(Closure $p)
     {
         $this->initialize();
+
         return $this->items->map($p);
     }
 
@@ -319,6 +283,7 @@ class ReferencedCollection implements Collection
     public function partition(Closure $p)
     {
         $this->initialize();
+
         return $this->items->partition($p);
     }
 
@@ -328,6 +293,7 @@ class ReferencedCollection implements Collection
     public function indexOf($element)
     {
         $this->initialize();
+
         return $this->items->indexOf($element);
     }
 
@@ -337,6 +303,7 @@ class ReferencedCollection implements Collection
     public function slice($offset, $length = null)
     {
         $this->initialize();
+
         return $this->items->slice($offset, $length);
     }
 
@@ -346,6 +313,7 @@ class ReferencedCollection implements Collection
     public function count()
     {
         $this->initialize();
+
         return $this->items->count();
     }
 
@@ -355,6 +323,7 @@ class ReferencedCollection implements Collection
     public function getIterator()
     {
         $this->initialize();
+
         return $this->items->getIterator();
     }
 
@@ -364,6 +333,7 @@ class ReferencedCollection implements Collection
     public function offsetExists($offset)
     {
         $this->initialize();
+
         return $this->items->offsetExists($offset);
     }
 
@@ -373,6 +343,7 @@ class ReferencedCollection implements Collection
     public function offsetGet($offset)
     {
         $this->initialize();
+
         return $this->items->offsetGet($offset);
     }
 
@@ -382,6 +353,7 @@ class ReferencedCollection implements Collection
     public function offsetSet($offset, $value)
     {
         $this->initialize();
+
         return $this->items->offsetSet($offset, $value);
     }
 
@@ -391,6 +363,48 @@ class ReferencedCollection implements Collection
     public function offsetUnset($offset)
     {
         $this->initialize();
+
         return $this->items->offsetSet($offset);
     }
+
+    /**
+     * Initializes the collection by loading its contents from the database
+     * if the collection is not yet initialized.
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+        if ($this->initialized || empty($this->identifiers) || empty($this->entityClass)) {
+            return;
+        }
+
+        $classIdentifier = $this->getClassIdentifier();
+        if (count($classIdentifier) > 1) {
+            throw new \LogicException('The configured entity uses a composite key which is not supported by the collection');
+        }
+
+        $this->initialized = true;
+        $this->items       = new ArrayCollection(
+            $this
+                ->objectManager
+                ->getRepository($this->entityClass)
+                ->findBy([$classIdentifier[0] => $this->identifiers])
+        );
+    }
+
+    /**
+     * Get object class identifier from the repository
+     *
+     * @param mixed $itemRepository
+     *
+     * @return string
+     */
+    protected function getClassIdentifier()
+    {
+        $classMetadata = $this->objectManager->getClassMetadata($this->entityClass);
+
+        return $classMetadata->getIdentifier();
+    }
+
 }
