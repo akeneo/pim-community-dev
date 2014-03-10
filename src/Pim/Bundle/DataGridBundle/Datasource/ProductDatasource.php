@@ -136,6 +136,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     public function setParameters($parameters)
     {
         $this->parameters = $parameters;
+        if (method_exists($this->qb, 'setParameters')) {
+            $this->qb->setParameters($parameters);
+        }
 
         return $this;
     }
