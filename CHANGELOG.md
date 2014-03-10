@@ -1,17 +1,22 @@
-# 1.1.0 - 
+# 1.1.0 -
 
 ## Features
+- Implement saving, applying and removing datagrid views
 
 ## Improvements
-Removed useless ```app/entities``` directory
+- Removed useless ```app/entities``` directory
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 
 ## Bug fixes
-Fixed verbose option always used
-Fixed issue on attribute option removal
-Fixed identifier is required attribute
+- Fixed verbose option always used
+- Fixed issue on attribute option removal
+- Fixed identifier is required attribute
+- Fixed get common attributes with common values
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
+- Remove deprecated fallback property of Locale entity
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 

@@ -1,32 +1,33 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     localhost
-    database_port:     ~
-    database_name:     akeneo_pim
-    database_user:     akeneo_pim
-    database_password: akeneo_pim
+    database_driver:      pdo_mysql
+    database_host:        localhost
+    database_port:        ~
+    database_unix_socket: /var/run/mysqld/mysqld.sock
+    database_name:        akeneo_pim
+    database_user:        akeneo_pim
+    database_password:    akeneo_pim
 
-    mailer_transport:  smtp
-    mailer_host:       localhost
-    mailer_user:       ~
-    mailer_password:   ~
+    mailer_transport:     smtp
+    mailer_host:          localhost
+    mailer_user:          ~
+    mailer_password:      ~
 
     # WebSocket server config
-    websocket_host:    "127.0.0.1"
-    websocket_port:    8080
+    websocket_host:       "127.0.0.1"
+    websocket_port:       8080
 
-    session_handler:   ~
+    session_handler:      ~
 
-    locale:            en_US
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    locale:               en_US
+    secret:               ThisTokenIsNotSoSecretChangeIt
 
-    upload_dir:        %kernel.root_dir%/uploads/product
-    archive_dir:       %kernel.root_dir%/archive
+    upload_dir:           %kernel.root_dir%/uploads/product
+    archive_dir:          %kernel.root_dir%/archive
 
-    installed:         ~
+    installed:            ~
 
-    installer_data:    PimInstallerBundle:icecat_demo_dev
+    installer_data:       PimInstallerBundle:icecat_demo_dev
     # use PimInstallerBundle:minimal for minimal data set
 
-    uservoice_key: ~
-    mass_edit_limit: 1000
+    uservoice_key:        ~
+    mass_edit_limit:      1000

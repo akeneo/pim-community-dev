@@ -1,0 +1,82 @@
+---
+oro.user.controller:
+  group.message.saved: Groupe enregistré
+  role.message.saved: Rôle enregistré
+  user.message.saved: Utilisateur enregistré
+  status.message.saved: Statut enregistré
+oro.user.grid.users:
+  columns:
+    username: "Nom d'utilisateur"
+    email: Email
+    firstName: Prénom
+    lastName: Nom
+    createdAt: Crée le
+    updatedAt: Mis à jour le
+    enabled: Statut
+oro.user.grid.roles:
+  columns:
+    label: Libellé
+oro.user.grid.groups:
+  columns:
+    name: Nom
+Users Management: Gestion des Utilisateurs
+Create user: Créer un utilisateur
+New user: Nouvel utilisateur
+Additional: Supplémentaire
+Groups and Roles: Groupes et rôles
+Username: "Nom d'utilisateur"
+Password: Mot de passe
+Re-enter password: Confirmer le mot de passe
+Name prefix: Particule
+First name: Prénom
+Middle name: Deuxième prénom
+Last name: Nom
+Name suffix: Suffixe de nom
+Date of birth: Date de naissance
+Avatar: Photo
+Additional emails: E-mails supplémentaires
+Add another email: Ajouter un autre email
+Catalog locale: Locale du catalogue
+Catalog scope: Portée du catalogue
+Default tree: Arbre par défaut
+Business Units: Entité commerciale
+Email synchronization settings: Paramètres de synchronisation de messagerie
+Host: Hôte
+Port: Port
+Ssl: SSL
+Last logged in: Dernière connexion
+Login count: Nombre de connexion
+Additional Information: Informations complémentaires
+Basic Information: Informations générale
+Contact Information: Information Contact
+User name: "Nom d'utilisateur"
+Birthday: Date d’anniversaire
+API key: Clé API
+Generate key: Générer une clé
+Primary: principal
+Role: Rôle
+Owner: Propriétaire
+General: Général
+Entity: Entité
+Capabilities: Capacités
+Save and close: Enregistrer et fermer
+Has role: A un rôle
+(default): Autorisations par défaut sur les entités
+VIEW: Voir
+CREATE: Créer
+EDIT: Editer
+DELETE: Supprimer
+ASSIGN: Assigner
+SHARE: Partager
+oro:
+  security:
+    access-level:
+      BASIC: Utilisateur
+      LOCAL: Entité commerciale
+      DEEP: Division
+      GLOBAL: Organisation
+      SYSTEM: Système
+      NONE: Aucun
+Create group: Créer un groupe
+Has group: A un groupe
+Save and Close: Enregistrer et fermer

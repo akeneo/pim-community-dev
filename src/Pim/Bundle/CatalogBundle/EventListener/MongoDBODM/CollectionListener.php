@@ -4,10 +4,9 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Doctrine\ORM\PersistentCollection;
+use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Aims to convert ArrayCollection to collection

@@ -1,4 +1,6 @@
 parameters:
+    pim_filter.datasource.orm_adapter.class: Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
+
     pim_filter.scope_filter.class:        Pim\Bundle\FilterBundle\Filter\ScopeFilter
     pim_filter.category_filter.class:     Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter

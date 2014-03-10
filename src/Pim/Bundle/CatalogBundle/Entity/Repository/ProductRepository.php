@@ -365,7 +365,7 @@ SQL;
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
                 '%product_table%'       => $this->getClassMetadata()->getTableName(),
                 '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $valueMetadata->getTableName()
+                '%attribute_table%'     => $attributeMetadata->getTableName()
             ]
         );
     }
@@ -610,5 +610,21 @@ SQL;
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByIds($qb, $productIds, $include)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        if ($include) {
+            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+
+        } else {
+            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+        }
     }
 }

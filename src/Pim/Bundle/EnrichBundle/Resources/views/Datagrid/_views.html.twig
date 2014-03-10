@@ -1,0 +1,128 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% set activeViewId = gridView ? gridView : 0 %}
+{% set activeView = null %}
+
+<select id="view-selector" class="hide">
+{% for view in views %}
+    <option value="{{ view.id }}">
+        {% if view.id == activeViewId %}
+            {% set activeView = view %}
+        {% endif %}
+        {{ view.label }}
+    </option>
+{% endfor %}
+</select>
+
+{% if activeView and activeView.owner.id == app.user.id %}
+    <a class="muted" {{ elements.deleteLinkAttributes(
+        path('pim_enrich_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
+        path('pim_enrich_product_index', { dataLocale: dataLocale }),
+        'confirmation.remove.datagrid view'|trans({'%name%': activeView.label}),
+        'flash.datagrid view.removed'|trans
+    ) }}>
+        <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid.view.remove'|trans }}"></i>
+    </a>
+{% endif %}
+
+{{ form_start(form, {
+    action: path('pim_enrich_datagrid_views', { alias: alias, dataLocale: dataLocale, gridView: gridView }),
+    attr: { class: 'pull-left unspaced hide' }
+}) }}
+    {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid.view.placeholder'|trans } }) }}
+    {{ form_widget(form.filters) }}
+{{ form_end(form) }}
+
+<script type="text/javascript">
+require(
+    ['jquery', 'backbone', 'routing', 'jquery.multiselect', 'jquery.multiselect.filter'],
+    function ($, Backbone, Routing) {
+        'use strict';
+
+        var $selector = $('#view-selector');
+
+        var opts = {
+            title: '{{ 'datagrid.view.none_selected'|trans }}',
+            placeholder: '{{ 'Search'|trans }}',
+            emptyText: '{{ 'datagrid.view.none_exist'|trans }}',
+            header: '',
+            height: 175,
+            minWidth: 225,
+            classes: 'pimmultiselect',
+            position: {
+                my: 'right top',
+                at: 'right bottom',
+                collision: 'none'
+            }
+        };
+        opts.selectedText = opts.noneSelectedText = {% if activeView %}'{{ activeView.label }}'{% else %}opts.title{% endif %};
+
+        $selector.multiselect(opts).multiselectfilter({
+            label: false,
+            placeholder: opts.placeholder
+        });
+
+        var $menu = $('.ui-multiselect-menu.pimmultiselect').addClass('highlight-hover').appendTo($('#container'));
+        $menu.find('input[type=checkbox]').addClass('hide');
+
+        var $footerContainer = $('<div>').addClass('ui-multiselect-footer pull-left fullwidth').css({
+            'background-color': '#f6f6f6'
+        }).appendTo($menu);
+        $('#{{ form.vars.id }}').appendTo($footerContainer).removeClass('hide').find('input[type=text]').css({
+            'margin-top': '3px',
+            'margin-left': '5px'
+        });
+        var $saveButton = $('<button>').addClass('btn btn-small btn-primary pull-right').css({
+            'margin': '5px'
+        }).html('{{ 'datagrid.view.create'|trans }}').on('click', function () {
+            if (!$('#{{ form.label.vars.id }}').val()) {
+                return;
+            }
+            $('#{{ form.filters.vars.id }}').val(sessionStorage.getItem('{{ alias }}'));
+            $selector.multiselect('close');
+            $('#{{ form.vars.id }}').submit()
+        }).appendTo($footerContainer);
+
+
+        var $openButton = $('button.pimmultiselect').addClass('btn btn-group').css({
+            'margin-top': '-6px',
+            'margin-left': '10px'
+        }).prepend($('<span>', { 'text': '{{ 'Views'|trans }}', 'class': 'pull-left buffer-small-right' }).css({
+            'margin-right': '10px',
+            'border-right': '1px solid #ccc'
+        }));
+        $openButton.append($('<span>', { 'class': 'caret pull-right' }));
+
+        $menu.on('click', 'li', function() {
+            var label = $(this).text().trim();
+            $selector.multiselect({
+                selectedText: label,
+                noneSelectedText: label
+            });
+            var gridViewId = $(this).find('input').val();
+            var url = Routing.generate('pim_enrich_product_index', { gridView: gridViewId, dataLocale: '{{ dataLocale }}' });
+            Backbone.history.navigate('url=' + url, { trigger: true });
+        });
+
+        $menu.find('input[type="search"]').width(207);
+
+        $('#{{ form.label.vars.id }}').on('keypress', function(e) {
+            if ((e.keyCode || e.which) == 13) {
+                e.preventDefault();
+                $saveButton.trigger('click');
+            }
+        });
+
+        var $content = $menu.find('.ui-multiselect-checkboxes');
+        if (!$content.html()) {
+            $content.html(
+                $('<span>', { html: opts.emptyText, css: {
+                    'position': 'absolute',
+                    'color': '#999',
+                    'padding': '15px',
+                    'font-size': '13px'
+                }})
+            );
+        }
+    }
+);
+</script>
