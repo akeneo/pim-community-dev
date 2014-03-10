@@ -610,17 +610,24 @@ popin.create:
     option.title: Create a new option
 
 # Datagrid contents
-'In group': In group
-'Attribute as label': Attribute as label
-'Available Columns': Available Columns
-'Displayed Columns': Displayed Columns
-'Is associated': Is associated
+In group: In group
+Attribute as label: Attribute as label
+Available Columns: Available Columns
+Displayed Columns: Displayed Columns
+Is associated: Is associated
 Complete: Complete
-"Created At": "Created at"
-"Updated At": "Updated at"
+Created At: Created at
+Updated At: Updated at
 Enabled: Enabled
 Disabled: Disabled
 Status: Status
+
+# Datagrid views
+datagrid.view:
+    create:        Add
+    none_selected: No view selected
+    none_exist:    No views exist
+    placeholder:   Name of new view
 
 # Versioning / history
 Change History: Change history
