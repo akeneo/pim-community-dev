@@ -357,6 +357,7 @@ SQL;
         $valueMetadata = $this->getEntityManager()->getClassMetadata($valueMapping['targetEntity']);
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(
             $sql,
