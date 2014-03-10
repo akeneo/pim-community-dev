@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -14,8 +12,6 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -23,6 +19,7 @@ use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
  * Datagrid configuration controller
