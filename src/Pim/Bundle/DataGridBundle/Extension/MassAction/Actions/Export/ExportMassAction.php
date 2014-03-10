@@ -26,7 +26,7 @@ class ExportMassAction extends WidgetMassAction
         $options['frontend_type'] = 'export';
 
         if (empty($options['route'])) {
-            $options['route'] = 'pim_enrich_datagrid_export';
+            $options['route'] = 'pim_datagrid_export_index';
         }
 
         if (empty($options['route_parameters'])) {

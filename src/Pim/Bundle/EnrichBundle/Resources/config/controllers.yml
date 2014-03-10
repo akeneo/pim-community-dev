@@ -177,8 +177,3 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@oro_datagrid.datagrid.manager'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - '@oro_datagrid.mass_action.dispatcher'
-            - '@pim_serializer'
-            - '@pim_catalog.manager.product'
-            - '@pim_user.context.user'

@@ -1,0 +1,13 @@
+parameters:
+    pim_datagrid.controller.export.class: Pim\Bundle\DataGridBundle\Controller\ExportController
+
+services:
+    pim_datagrid.controller.export:
+        class: %pim_datagrid.controller.export.class%
+        arguments:
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@oro_datagrid.mass_action.dispatcher'
+            - '@pim_serializer'
+            - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
