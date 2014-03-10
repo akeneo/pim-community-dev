@@ -218,9 +218,9 @@ interface ProductRepositoryInterface
     /**
      * Apply a filter by product ids
      *
-     * @param QueryBuilder $qb         query builder to update
-     * @param array        $productIds product ids
-     * @param boolean      $include    true for in, false for not in
+     * @param mixed   $qb         query builder to update
+     * @param array   $productIds product ids
+     * @param boolean $include    true for in, false for not in
      */
-    public function applyFilterByIds(QueryBuilder $qb, $productIds, $include);
+    public function applyFilterByIds($qb, $productIds, $include);
 }
