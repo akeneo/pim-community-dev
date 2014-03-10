@@ -116,6 +116,7 @@ confirmation:
         association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
         user:             Are you sure you want to delete the user %name%?
+        datagrid view:    Are you sure you want to delete the datagrid view %name%?
     attribute group:
         remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
     family:
@@ -193,6 +194,9 @@ flash:
         removed: Association type successfully removed
     user:
         removed: User successfully removed
+    datagrid view:
+        removed:       Datagrid view successfully removed
+        not removable: You don't have the rights to remove this view
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -628,6 +632,7 @@ datagrid.view:
     none_selected: No view selected
     none_exist:    No views exist
     placeholder:   Name of new view
+    remove:        Delete this view
 
 # Versioning / history
 Change History: Change history

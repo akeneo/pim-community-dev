@@ -1,7 +1,7 @@
 # 1.1.0 -
 
 ## Features
-- Implement saving and applying datagrid views
+- Implement saving, applying and removing datagrid views
 
 ## Improvements
 - Removed useless ```app/entities``` directory
@@ -11,6 +11,7 @@
 - Fixed verbose option always used
 - Fixed issue on attribute option removal
 - Fixed identifier is required attribute
+- Fixed get common attributes with common values
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)

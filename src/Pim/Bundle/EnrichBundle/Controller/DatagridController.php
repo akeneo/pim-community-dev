@@ -5,16 +5,20 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
@@ -26,21 +30,21 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
  */
 class DatagridController extends AbstractDoctrineController
 {
-    /** @var DatagridManager */
+    /** @var DatagridManager $manager */
     protected $manager;
 
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param DatagridManager          $manager
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param RegistryInterface          $doctrine
+     * @param DatagridManager            $manager
      */
     public function __construct(
         Request $request,
@@ -93,7 +97,7 @@ class DatagridController extends AbstractDoctrineController
             [
                 'columns' => $this->sortArrayByArray($columns, $configuration->getColumns()),
                 'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_edit',
+                    'pim_enrich_datagrid_edit',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale')
@@ -131,28 +135,26 @@ class DatagridController extends AbstractDoctrineController
      */
     public function viewsAction(Request $request, $alias)
     {
-        $user          = $this->getUser();
-        $configuration = $this->getDatagridConfiguration($alias, $user);
-        $columns       = $configuration ? $configuration->getColumns() : array_keys($this->getColumnChoices($alias));
+        $user       = $this->getUser();
+        $repository = $this->getRepository('PimEnrichBundle:DatagridView');
+        $baseViewId = $request->get('gridView', null);
+
+        $baseView = $baseViewId ? $repository->find($baseViewId) : null;
+        if ($baseView) {
+            $columns = $baseView->getColumns();
+        } else {
+            $configuration = $this->getDatagridConfiguration($alias, $user);
+            $columns       = $configuration ?
+                $configuration->getColumns() :
+                array_keys($this->getColumnChoices($alias));
+        }
 
         $datagridView = new DatagridView();
         $datagridView->setOwner($user);
         $datagridView->setDatagridAlias($alias);
         $datagridView->setColumns($columns);
 
-        $form = $this->createForm(
-            'pim_enrich_datagrid_view',
-            $datagridView,
-            [
-                'action'  => $this->generateUrl(
-                    'pim_catalog_datagrid_views',
-                    [
-                        'alias'      => $alias,
-                        'dataLocale' => $request->get('dataLocale')
-                    ]
-                ),
-            ]
-        );
+        $form = $this->createForm('pim_enrich_datagrid_view', $datagridView);
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -176,7 +178,7 @@ class DatagridController extends AbstractDoctrineController
             );
         }
 
-        $views = $this->getRepository('PimEnrichBundle:DatagridView')->findBy(['datagridAlias' => $alias]);
+        $views = $repository->findBy(['datagridAlias' => $alias]);
 
         return $this->render(
             'PimEnrichBundle:Datagrid:_views.html.twig',
@@ -189,6 +191,38 @@ class DatagridController extends AbstractDoctrineController
                 'gridView'   => $request->get('gridView', null)
             ]
         );
+    }
+
+    /**
+     * Remove a datagrid view
+     *
+     * @param Request      $request
+     * @param DatagridView $view
+     *
+     * @throws DeleteException If the current user doesn't own the view
+     *
+     * @return Response|RedirectResponse
+     */
+    public function removeViewAction(Request $request, DatagridView $view)
+    {
+        if ($view->getOwner() !== $this->getUser()) {
+            throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
+        }
+
+        $em = $this->getManager();
+        $em->remove($view);
+        $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute(
+                'pim_enrich_product_index',
+                [
+                    'dataLocale' => $request->get('dataLocale')
+                ]
+            );
+        }
     }
 
     /**

@@ -357,6 +357,7 @@ SQL;
         $valueMetadata = $this->getEntityManager()->getClassMetadata($valueMapping['targetEntity']);
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(
             $sql,
@@ -364,7 +365,7 @@ SQL;
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
                 '%product_table%'       => $this->getClassMetadata()->getTableName(),
                 '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $valueMetadata->getTableName()
+                '%attribute_table%'     => $attributeMetadata->getTableName()
             ]
         );
     }
