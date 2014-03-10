@@ -285,12 +285,12 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 default:                       Default
 Axis:                          Axis
-Add attributes:                Add attributes
-Translate from:                Translate from
-Yes:                           Yes
-No:                            No
+"Add attributes":              "Add attributes"
+"Translate from":              "Translate from"
+Yes:                           "Yes"
+No:                            "No"
 Close:                         Close
-Choose a color:                Choose a color
+"Choose a color":              "Choose a color"
 
 Create:               Create
 Cancel:               Cancel
@@ -348,46 +348,59 @@ Attributes: Attributes
 Title:      Title
 
 # Page titles
-pim_title:
-    dashboard:     Dashboard
-    attribute_group:
-        create:    Attribute groups | Create
-        edit:      Attribute groups %group.label% | Edit
-    category:
-        create:    Category trees | Create
-        edit:      Category trees %category.label% | Edit
-    attribute:
-        index:     Attributes
-        create:    Attributes | Create
-        edit:      Attributes %attribute.label% | Edit
-    product:
-        index:     Products
-        edit:      Products %product.sku% | Edit
-    family:
-        index:     Families
-        edit:      Families %family.label% | Edit
-    channel:
-        index:     Channels
-        create:    Channels | Create
-        edit:      Channels %channel.label% | Edit
-    currency:
-        index:     Currencies
-    locale.index:  Locales
-    group:
-        index:     Groups
-        edit:      Groups %group.label% | Edit
-    variant_group:
-        index:     Variant groups
-        edit:      Variant groups %group.label% | Edit
-    association_type:
-        index:     Association types
-        edit:      Association types %association type.label% | Edit
-    group_type:
-        index:     Group types
-        edit:      Group types %group type.label% | Edit
-    mass_edit_action:
-        choose:    Mass Edit | Choose
-        configure: Mass Edit | Configure
+pim_title.attribute_group:
+    create: "Attribute groups | Create"
+    edit: "Attribute groups %group.label% | Edit"
+
+pim_title.category:
+    create: "Category trees | Create"
+    edit: "Category trees %category.label% | Edit"
+
+pim_title.attribute:
+    index: "Attributes"
+    create: "Attributes | Create"
+    edit: "Attributes %attribute.label% | Edit"
+
+pim_title.product:
+    index: "Products"
+    edit: "Products %product.sku% | Edit"
+
+pim_title.family:
+    index: "Families"
+    edit: "Families %family.label% | Edit"
+
+pim_title.channel:
+    index: "Channels"
+    create: "Channels | Create"
+    edit: "Channels %channel.label% | Edit"
+
+pim_title.currency:
+    index: "Currencies"
+
+pim_title.locale:
+    index: "Locales"
+
+pim_title.group:
+    index: "Groups"
+    edit: "Groups %group.label% | Edit"
+
+pim_title.variant_group:
+    index: "Variant groups"
+    edit: "Variant groups %group.label% | Edit"
+
+pim_title.association_type:
+    index: "Association types"
+    edit: "Association types %association type.label% | Edit"
+
+pim_title.group_type:
+    index: "Group types"
+    edit: "Group types %group type.label% | Edit"
+
+pim_title.mass_edit_action:
+    choose: "Mass Edit | Choose"
+    configure: "Mass Edit | Configure"
+
+pim_title.dashboard: "Dashboard"
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
@@ -398,7 +411,7 @@ pim_catalog_multiselect:      Multi select
 pim_catalog_simpleselect:     Simple select
 pim_catalog_file:             File
 pim_catalog_image:            Image
-pim_catalog_boolean:          Yes/No
+pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
 
