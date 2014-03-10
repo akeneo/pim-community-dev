@@ -16,6 +16,9 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
 {
     function let(ReferencedCollectionFactory $factory)
     {
+        if (!extension_loaded('mongo')) {
+            throw new \PhpSpec\Exception\Example\SkippingException('Mongo ext is not loaded');
+        }
         $this->beConstructedWith($factory);
     }
 

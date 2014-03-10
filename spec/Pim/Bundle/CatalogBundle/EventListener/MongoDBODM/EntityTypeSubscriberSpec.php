@@ -14,6 +14,9 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
 {
     function let(EntityManager $entityManager)
     {
+        if (!extension_loaded('mongo')) {
+            throw new \PhpSpec\Exception\Example\SkippingException('Mongo ext is not loaded');
+        }
         $this->beConstructedWith($entityManager);
     }
 
