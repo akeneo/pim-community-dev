@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository
@@ -610,6 +611,38 @@ SQL;
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByAttribute(QueryBuilder $qb, Attribute $attribute, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByField(QueryBuilder $qb, $field, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByAttribute(QueryBuilder $qb, Attribute $attribute, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField(QueryBuilder $qb, $field, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
