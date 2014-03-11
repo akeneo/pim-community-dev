@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository interface
@@ -223,4 +224,42 @@ interface ProductRepositoryInterface
      * @param boolean $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, $productIds, $include);
+
+    /**
+     * Apply a filter by attribute value
+     *
+     * @param mixed        $qb             query builder to update
+     * @param Attribute    $attribute      attribute
+     * @param string|array $attributeValue value(s) used to filter
+     * @param string       $operator       operator to use
+     */
+    public function applyFilterByAttribute($qb, Attribute $attribute, $attributeValue, $operator = '=');
+
+    /**
+     * Apply a filter by a field value
+     *
+     * @param mixed        $qb       query builder to update
+     * @param string       $field    the field
+     * @param string|array $value    value(s) used to filter
+     * @param string       $operator operator to use
+     */
+    public function applyFilterByField($qb, $field, $value, $operator = '=');
+
+    /**
+     * Apply a sort by attribute value
+     *
+     * @param mixed     $qb        query builder to update
+     * @param Attribute $attribute attribute
+     * @param string    $direction direction to use
+     */
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction);
+
+    /**
+     * Apply a sort by field value
+     *
+     * @param mixed     $qb        query builder to update
+     * @param Attribute $attribute attribute
+     * @param string    $direction direction to use
+     */
+    public function applySorterByField($qb, $field, $direction);
 }
