@@ -44,12 +44,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     protected $categories;
 
     /**
-     * @var array $groupIds Ids of groups
-     * linked to the products
-     */
-    protected $categoriesIds;
-
-    /**
      * @var boolean $enabled
      */
     protected $enabled = true;
@@ -58,12 +52,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      * @var ArrayCollection $groups
      */
     protected $groups;
-
-    /**
-     * @var array $groupIds Ids of groups
-     * linked to the products
-     */
-    protected $groupIds;
 
     /**
      * @var ArrayCollection $associations
@@ -270,30 +258,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     }
 
     /**
-     * Get the product categories ids
-     *
-     * @return array
-     */
-    public function getCategoryIds()
-    {
-        return $this->categoryIds;
-    }
-
-    /**
-     * Set the product categories ids
-     *
-     * @param array $categoryIds
-     *
-     * @return Product
-     */
-    public function setCategoryIds($categoryIds)
-    {
-        $this->categoryIds = $categoryIds;
-
-        return $this;
-    }
-
-    /**
      * Add a category
      * @param CategoryInterface $category
      *
@@ -412,30 +376,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     public function getGroups()
     {
         return $this->groups;
-    }
-
-    /**
-     * Get the product groups ids
-     *
-     * @return array
-     */
-    public function getGroupIds()
-    {
-        return $this->groupIds;
-    }
-
-    /**
-     * Set the product groups ids
-     *
-     * @param array $groupIds
-     *
-     * @return Product
-     */
-    public function setGroupIds($groupIds)
-    {
-        $this->groupIds = $groupIds;
-
-        return $this;
     }
 
     /**
