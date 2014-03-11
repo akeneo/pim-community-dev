@@ -50,6 +50,20 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    )
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildByScope($scope)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
