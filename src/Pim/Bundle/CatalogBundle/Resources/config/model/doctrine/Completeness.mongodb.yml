@@ -1,0 +1,25 @@
+Pim\Bundle\CatalogBundle\Model\Completeness:
+    type: embeddedDocument
+    indexes:
+        completeness_idx:
+            options:
+                unique: true
+            keys:
+                channel:
+                locale:
+    fields:
+        id:
+            id: true
+        ratio:
+            type: int
+        missingCount:
+            type: int
+        requiredCount:
+            type: int
+        channel:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+        locale:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+
