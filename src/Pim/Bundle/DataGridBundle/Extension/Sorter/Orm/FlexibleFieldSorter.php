@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Flexible field sorter
@@ -18,14 +19,21 @@ class FlexibleFieldSorter implements SorterInterface
     /**
      * @var ProductRepositoryInterface
      */
-    protected $repository;
+    protected $productRepository;
 
     /**
-     * @param ProductRepositoryInterface $repository
+     * @var AttributeRepository
      */
-    public function __construct(ProductRepositoryInterface $repository)
+    protected $attributeRepository;
+
+    /**
+     * @param ProductRepositoryInterface $productRepository
+     * @param AttributeRepository        $attributeRepository
+     */
+    public function __construct(ProductRepositoryInterface $prodRepository, AttributeRepository $attRepository)
     {
-        $this->repository = $repository;
+        $this->productRepository   = $prodRepository;
+        $this->attributeRepository = $attRepository;
     }
 
     /**
@@ -33,7 +41,8 @@ class FlexibleFieldSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
+        $attribute = $this->attributeRepository->findOneByCode($field);
         $qb = $datasource->getQueryBuilder();
-        $this->repository->applySorterByAttribute($qb, $field, $direction);
+        $this->productRepository->applySorterByAttribute($qb, $attribute, $direction);
     }
 }

@@ -58,6 +58,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var string */
     protected $localeCode = null;
 
+    /** @var string */
+    protected $scopeCode = null;
+
     /** @var array */
     protected $parameters = array();
 
@@ -77,7 +80,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     public function process(DatagridInterface $grid, array $config)
     {
         $this->configuration = $config;
-
         if (!isset($config['entity'])) {
             throw new \Exception(get_class($this).' expects to be configured with entity');
         }
@@ -94,6 +96,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
         $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
 
+        $scopeKey = ContextConfigurator::DISPLAYED_SCOPE_KEY;
+        $this->scopeCode = isset($config[$scopeKey]) ? $config[$scopeKey] : null;
+
         $grid->setDatasource(clone $this);
     }
 
@@ -104,6 +109,7 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     {
         $options = [
             'locale_code'              => $this->localeCode,
+            'scope_code'               => $this->scopeCode,
             'attributes_configuration' => $this->configuration['attributes_configuration']
         ];
 
