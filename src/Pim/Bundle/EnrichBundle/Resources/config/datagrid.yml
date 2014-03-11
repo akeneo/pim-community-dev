@@ -318,14 +318,18 @@ datagrid:
                     empty_selection: No products selected
                 launcherOptions:
                     icon: trash
-            export:
+
+            quick_export:
                 type: export
                 label: Export CSV
                 icon: download
                 data_identifier: p
-                frontend_type: export
+                format: csv
+                content_type: text/csv
                 messages:
                     empty_selection: No products selected
+                handler: pim_datagrid.extension.mass_action.handler.export
+
             mass_edit:
                 type: redirect
                 label: Mass Edit
