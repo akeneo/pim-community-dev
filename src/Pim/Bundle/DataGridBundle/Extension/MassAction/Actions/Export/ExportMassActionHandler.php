@@ -15,11 +15,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 class ExportMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var string $exportFormat
-     */
-    protected $exportFormat;
-
-    /**
      * Return the datagrid QueryBuilder to use for quick export
      *
      * @param MassActionMediatorInterface $mediator
@@ -29,11 +24,6 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     public function handle(MassActionMediatorInterface $mediator)
     {
         $qb = $mediator->getResults()->getSource();
-
-        $rootAlias = current($qb->getRootAliases());
-        $qb
-            ->resetDQLPart('select')
-            ->select($rootAlias);
 
         return $qb->getQuery()->execute();
     }
