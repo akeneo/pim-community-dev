@@ -34,6 +34,8 @@ class PimDataGridExtension extends Extension
         $loader->load('mass_actions.yml');
         $loader->load('event_listeners.yml');
         $loader->load('attribute_types.yml');
+        $loader->load('form_types.yml');
+        $loader->load('repositories.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

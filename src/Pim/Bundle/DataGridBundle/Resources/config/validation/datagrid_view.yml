@@ -1,4 +1,4 @@
-Pim\Bundle\EnrichBundle\Entity\DatagridView:
+Pim\Bundle\DataGridBundle\Entity\DatagridView:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [label]

@@ -23,7 +23,7 @@
 
 {% if not activeView.default and activeView.owner.id == app.user.id %}
     <a class="muted" {{ elements.deleteLinkAttributes(
-        path('pim_enrich_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
+        path('pim_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
         path('pim_enrich_product_index', { dataLocale: dataLocale }),
         'confirmation.remove.datagrid view'|trans({'%name%': activeView.label}),
         'flash.datagrid view.removed'|trans
@@ -33,7 +33,7 @@
 {% endif %}
 
 {{ form_start(form, {
-    action: path('pim_enrich_datagrid_view_index', { alias: alias, dataLocale: dataLocale, gridView: activeView.id }),
+    action: path('pim_datagrid_view_index', { alias: alias, dataLocale: dataLocale, gridView: activeView.id }),
     attr: { class: 'pull-left unspaced hide' }
 }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
@@ -106,7 +106,7 @@ require(
                 noneSelectedText: label
             });
             var gridViewId = $(this).find('input').val();
-            var url = Routing.generate('pim_enrich_datagrid_view_change', { alias: '{{ alias }}', id: gridViewId, dataLocale: '{{ dataLocale }}' });
+            var url = Routing.generate('pim_datagrid_view_change', { alias: '{{ alias }}', id: gridViewId, dataLocale: '{{ dataLocale }}' });
             Backbone.history.navigate('url=' + url, { trigger: true });
         });
 

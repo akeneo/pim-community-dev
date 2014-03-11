@@ -1,7 +1,7 @@
-Pim\Bundle\EnrichBundle\Entity\DatagridView:
+Pim\Bundle\DataGridBundle\Entity\DatagridView:
     type:  entity
-    table: pim_enrich_datagrid_view
-    repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\DatagridViewRepository
+    table: pim_datagrid_view
+    repositoryClass: Pim\Bundle\DataGridBundle\Entity\Repository\DatagridViewRepository
     fields:
         id:
             type: integer

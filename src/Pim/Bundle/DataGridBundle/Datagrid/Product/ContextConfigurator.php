@@ -256,7 +256,7 @@ class ContextConfigurator implements ConfiguratorInterface
 
             $view = $this->flexibleManager
                 ->getEntityManager()
-                ->getRepository('PimEnrichBundle:DatagridView')
+                ->getRepository('PimDataGridBundle:DatagridView')
                 ->findOneBy(['datagridAlias' => $alias, 'id' => $gridView]);
 
             if ($view) {

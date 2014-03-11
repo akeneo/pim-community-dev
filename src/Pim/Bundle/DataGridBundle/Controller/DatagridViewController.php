@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller;
+namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\EnrichBundle\Entity\DatagridView;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
@@ -79,7 +79,7 @@ class DatagridViewController extends AbstractDoctrineController
     public function indexAction(Request $request, $alias)
     {
         $user         = $this->getUser();
-        $repository   = $this->getRepository('PimEnrichBundle:DatagridView');
+        $repository   = $this->getRepository('PimDataGridBundle:DatagridView');
         $activeViewId = $request->get('gridView', null);
 
         $activeView = $activeViewId ? $repository->find($activeViewId) : null;
@@ -92,7 +92,7 @@ class DatagridViewController extends AbstractDoctrineController
         $datagridView->setDatagridAlias($alias);
         $datagridView->setColumns($activeView->getColumns());
 
-        $form = $this->createForm('pim_enrich_datagrid_view', $datagridView);
+        $form = $this->createForm('pim_datagrid_view', $datagridView);
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -117,7 +117,7 @@ class DatagridViewController extends AbstractDoctrineController
         $views = $repository->findAllForUser($alias, $user);
 
         return $this->render(
-            'PimEnrichBundle:Datagrid:_views.html.twig',
+            'PimDataGridBundle:Datagrid:_views.html.twig',
             [
                 'alias'      => $alias,
                 'views'      => $views,
@@ -171,12 +171,12 @@ class DatagridViewController extends AbstractDoctrineController
         $columns = $this->getColumnChoices($alias);
 
         $form = $this->createForm(
-            'pim_enrich_datagrid_view_configuration',
+            'pim_datagrid_view_configuration',
             $view,
             [
                 'columns' => $this->sortArrayByArray($columns, $view->getColumns()),
                 'action'  => $this->generateUrl(
-                    'pim_enrich_datagrid_view_configure',
+                    'pim_datagrid_view_configure',
                     [
                         'alias'      => $alias,
                         'dataLocale' => $request->get('dataLocale'),
@@ -206,7 +206,7 @@ class DatagridViewController extends AbstractDoctrineController
             );
         }
 
-        return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('PimDataGridBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -295,7 +295,7 @@ class DatagridViewController extends AbstractDoctrineController
     protected function getDefaultDatagridView($alias, User $user)
     {
         $view = $this
-            ->getRepository('PimEnrichBundle:DatagridView')
+            ->getRepository('PimDataGridBundle:DatagridView')
             ->findOneBy(
                 [
                     'datagridAlias' => $alias,
@@ -333,7 +333,7 @@ class DatagridViewController extends AbstractDoctrineController
         }
 
         $customView = $this
-            ->getRepository('PimEnrichBundle:DatagridView')
+            ->getRepository('PimDataGridBundle:DatagridView')
             ->findOneBy(
                 [
                     'datagridAlias' => $view->getDatagridAlias(),

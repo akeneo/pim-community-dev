@@ -1,0 +1,26 @@
+pim_datagrid_view_index:
+    path: /{alias}
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:indexAction }
+    requirements:
+        _method: GET|POST
+
+pim_datagrid_view_change:
+    path: /{alias}/{id}
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:changeViewAction }
+    requirements:
+        id: \d+
+    requirements:
+        _method: GET
+
+pim_datagrid_view_configure:
+    path: /{alias}/{id}/configure
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:configureAction }
+    requirements:
+        _method: GET|POST
+
+pim_datagrid_view_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]

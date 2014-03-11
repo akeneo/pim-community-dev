@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Entity\Repository;
+namespace Pim\Bundle\DataGridBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\EnrichBundle\Entity\DatagridView;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * Datagrid view repository

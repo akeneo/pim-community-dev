@@ -1,6 +1,6 @@
 services:
-    pim_enrich.repository.orm.datagrid_view:
+    pim_datagrid.repository.orm.datagrid_view:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [Pim\Bundle\EnrichBundle\Entity\DatagridView]
+        arguments: [Pim\Bundle\DataGridBundle\Entity\DatagridView]

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Entity;
+namespace Pim\Bundle\DataGridBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\User;
 

@@ -69,7 +69,7 @@ define(
 
             execute: function(event) {
                 event.preventDefault();
-                var url = Routing.generate('pim_enrich_datagrid_view_configure', { alias: this.gridName, dataLocale: this.locale, id: this.viewId });
+                var url = Routing.generate('pim_datagrid_view_configure', { alias: this.gridName, dataLocale: this.locale, id: this.viewId });
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
