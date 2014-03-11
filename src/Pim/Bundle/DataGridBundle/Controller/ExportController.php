@@ -93,18 +93,6 @@ class ExportController
         ignore_user_abort(false);
         set_time_limit(0);
 
-        // TODO: Move in quickExportCallback method
-        $parameters  = $this->parametersParser->parse($request);
-        $requestData = array_merge($request->query->all(), $request->request->all());
-
-        $qb = $this->massActionDispatcher->dispatch(
-            $requestData['gridName'],
-            $requestData['actionName'],
-            $parameters,
-            $requestData
-        );
-        // --END TODO --
-
         // TODO: Move in FileNameBuilder or method
         $dateTime = new \DateTime();
         $fileName = sprintf(
@@ -119,7 +107,7 @@ class ExportController
         $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', $attachment);
-        $response->setCallback($this->quickExportCallback($qb));
+        $response->setCallback($this->quickExportCallback($request));
 
         return $response->send();
     }
@@ -127,13 +115,11 @@ class ExportController
     /**
      * Quick export callback
      *
-     * @param QueryBuilder $qb
-     *
      * @return \Closure
      */
-    protected function quickExportCallback(QueryBuilder $qb)
+    protected function quickExportCallback(Request $request)
     {
-        return function () use ($qb) {
+        return function () use ($request) {
             flush();
 
             $format  = 'csv';
@@ -141,6 +127,16 @@ class ExportController
                 'withHeader'    => true,
                 'heterogeneous' => true
             ];
+
+            $parameters  = $this->parametersParser->parse($request);
+            $requestData = array_merge($request->query->all(), $request->request->all());
+
+            $qb = $this->massActionDispatcher->dispatch(
+                $requestData['gridName'],
+                $requestData['actionName'],
+                $parameters,
+                $requestData
+            );
 
             $rootAlias = $qb->getRootAlias();
             $qb->resetDQLPart('select');
