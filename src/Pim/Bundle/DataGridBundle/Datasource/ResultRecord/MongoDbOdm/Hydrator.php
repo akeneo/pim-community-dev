@@ -36,7 +36,7 @@ class Hydrator implements HydratorInterface
             unset($result['_id']);
             $result['dataLocale']= $localeCode;
             foreach ($result['values'] as $value) {
-                $attribute = $attributes[$value['attributeId']];
+                $attribute = $attributes[$value['attribute']];
                 $value['attribute']= $attribute;
                 $result[$attribute['code']]= $value;
             }

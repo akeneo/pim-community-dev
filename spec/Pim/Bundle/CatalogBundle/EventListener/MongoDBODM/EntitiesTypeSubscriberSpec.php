@@ -26,6 +26,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
 
     /**
      * @require extension mongo
+     * @require class Doctrine\ODM\MongoDB\Events
      */
     function it_subscribes_to_postLoad_event()
     {
@@ -34,6 +35,9 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
 
     /**
      * @require extension mongo
+     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+     * @require class Doctrine\ODM\MongoDB\DocumentManager
+     * @require class Doctrine\ODM\MongoDB\Mapping\ClassMetadata
      */
     function it_transforms_values_of_an_entity_collection_field_into_entities(
         LifecycleEventArgs $args,
@@ -67,6 +71,9 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
 
     /**
      * @require extension mongo
+     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+     * @require class Doctrine\ODM\MongoDB\DocumentManager
+     * @require class Doctrine\ODM\MongoDB\Mapping\ClassMetadata
      */
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
