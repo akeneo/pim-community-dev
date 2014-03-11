@@ -156,7 +156,7 @@ class ExportController
      */
     protected function getContext()
     {
-        $exportMassAction = $this->getMassActionByNames(
+        $exportMassAction = $this->massActionDispatcher->getMassActionByNames(
             $this->request->get('actionName'),
             $this->request->get('gridName')
         );
