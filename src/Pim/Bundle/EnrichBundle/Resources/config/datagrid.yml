@@ -232,7 +232,7 @@ datagrid:
                 - pim/datagrid/configure-columns-action
                 - pim/datagrid/state-listener
             exportAction:
-                label: Export CSV
+                label: Quick Export
                 icon:  download
         source:
             acl_resource:      pim_enrich_product_index
