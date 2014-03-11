@@ -93,23 +93,36 @@ class ExportController
         ignore_user_abort(false);
         set_time_limit(0);
 
-        // TODO: Move in FileNameBuilder or method
+        return $this->createStreamedResponse($request)->send();
+    }
+
+    protected function createStreamedResponse(Request $request)
+    {
+        $filename = $this->createFilename();
+
+        $response = new StreamedResponse();
+        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', $attachment);
+        $response->setCallback($this->quickExportCallback($request));
+
+        return $response;
+    }
+
+    /**
+     * Create filename
+     * @return string
+     */
+    protected function createFilename()
+    {
         $dateTime = new \DateTime();
-        $fileName = sprintf(
+
+        return sprintf(
             'products_export_%s_%s_%s.csv',
             $this->getDataLocale(),
             $this->productManager->getScope(),
             $dateTime->format('Y-m-d_H:i:s')
         );
-
-        // prepare response
-        $response = new StreamedResponse();
-        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', $attachment);
-        $response->setCallback($this->quickExportCallback($request));
-
-        return $response->send();
     }
 
     /**
