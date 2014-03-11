@@ -381,7 +381,9 @@ class ReferencedCollection implements Collection
 
         $classIdentifier = $this->getClassIdentifier();
         if (count($classIdentifier) > 1) {
-            throw new \LogicException('The configured entity uses a composite key which is not supported by the collection');
+            throw new \LogicException(
+                'The configured entity uses a composite key which is not supported by the collection'
+            );
         }
 
         $this->initialized = true;
@@ -406,5 +408,4 @@ class ReferencedCollection implements Collection
 
         return $classMetadata->getIdentifier();
     }
-
 }
