@@ -305,6 +305,24 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
     {
+        /*
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->_em->getRepository($attributeName);
+        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
+         */
+
+        if (true) {
+            $attributeBackend = 'varchar'; //$attribute->getBackendType();
+            $attributeId      = 1 ; //$attribute->getId();
+            // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+            $attributeValue = str_replace('%', '', $attributeValue);
+            $qb
+                ->field("values.".$attributeBackend)->equals($attributeValue) // TODO locale and scope ? operator etc
+                ->field("values.attributeId")->equals($attributeId);
+
+        } else {
+            // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
         // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
