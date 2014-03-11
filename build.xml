@@ -183,7 +183,7 @@
     </target>
 
     <target name="phpspec" description="Run specs with PhpSpec Pretty formatter">
-        <exec executable="phpspec-fix" />
+        <exec executable="./phpspec-fix" />
     </target>
 
     <target name="phpspec-junit" description="Run specs with PhpSpec JUnit formatter">
