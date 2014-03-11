@@ -64,18 +64,10 @@ class ExportController
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
-//         $this->container = $container;
-
-//         $this->datagridManager = $datagridManager;
-
-//         $this->productManager = $productManager;
-//         $this->userContext          = $userContext;
+        $this->request = $request;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer           = $serializer;
-
-        $this->request = $request;
-
     }
 
     /**
@@ -123,7 +115,7 @@ class ExportController
         $dateTime = new \DateTime();
 
         return sprintf(
-            'export_%s_%s_%s.csv',
+            'export_%s.csv',
             $dateTime->format('Y-m-d_H:i:s')
         );
     }
