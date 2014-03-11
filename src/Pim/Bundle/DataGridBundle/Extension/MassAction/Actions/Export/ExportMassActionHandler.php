@@ -32,9 +32,8 @@ class ExportMassActionHandler implements MassActionHandlerInterface
 
         $rootAlias = current($qb->getRootAliases());
         $qb
-            ->resetDQLParts(array('select', 'from'))
-            ->select($rootAlias)
-            ->from('Pim\Bundle\CatalogBundle\Model\Product', $rootAlias);
+            ->resetDQLPart('select')
+            ->select($rootAlias);
 
         return $qb->getQuery()->execute();
     }
