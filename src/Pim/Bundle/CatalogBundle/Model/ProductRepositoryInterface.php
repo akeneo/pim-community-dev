@@ -66,6 +66,35 @@ interface ProductRepositoryInterface
     public function setScope($code);
 
     /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    );
+
+    /**
+     * Load a flexible entity with related attribute values
+     *
+     * @param integer $id
+     *
+     * @return AbstractFlexible|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneByWithValues($id);
+
+    /**
      * @param string $scope
      *
      * @return QueryBuilder
