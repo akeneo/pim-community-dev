@@ -37,6 +37,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const DISPLAYED_SCOPE_KEY = 'scope_code';
+
+    /**
+     * @var string
+     */
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
     /**
@@ -109,6 +114,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $this->addProductStorage();
         $this->addLocaleCode();
+        $this->addScopeCode();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
@@ -160,6 +166,17 @@ class ContextConfigurator implements ConfiguratorInterface
         $path = $this->getSourcePath(self::DISPLAYED_LOCALE_KEY);
         $this->configuration->offsetSetByPath($path, $localeCode);
     }
+
+    /**
+     * Inject current scope code in the datagrid configuration
+     */
+    protected function addScopeCode()
+    {
+        $scopeCode = $this->getCurrentScopeCode();
+        $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
+        $this->configuration->offsetSetByPath($path, $scopeCode);
+    }
+
 
     /**
      * Inject displayed columns in the datagrid configuration
@@ -214,6 +231,23 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * Get current scope from datagrid parameters, then user config
+     *
+     * @return string
+     */
+    protected function getCurrentScopeCode()
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
+            return $filterValues['scope']['value'];
+        } else {
+            $channel = $this->getUser()->getCatalogScope();
+
+            return $channel->getCode();
+        }
     }
 
     /**
