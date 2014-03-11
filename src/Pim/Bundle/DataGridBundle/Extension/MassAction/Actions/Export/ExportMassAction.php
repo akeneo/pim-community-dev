@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExportMassAction extends WidgetMassAction
+class ExportMassAction extends WidgetMassAction implements ExportMassActionInterface
 {
     /** @var array */
     protected $requiredOptions = ['route', 'frontend_type', 'handler'];
@@ -46,7 +46,7 @@ class ExportMassAction extends WidgetMassAction
     }
 
     /**
-     * Get export context for serializer
+     * {@inheritdoc}
      */
     public function getExportContext()
     {
