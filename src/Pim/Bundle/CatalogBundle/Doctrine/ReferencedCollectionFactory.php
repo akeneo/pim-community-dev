@@ -44,7 +44,9 @@ class ReferencedCollectionFactory
         }
 
         return new ReferencedCollection(
-            $entityClass, $identifiers, $this->objectManager
+            $entityClass,
+            $identifiers,
+            $this->objectManager
         );
     }
 }

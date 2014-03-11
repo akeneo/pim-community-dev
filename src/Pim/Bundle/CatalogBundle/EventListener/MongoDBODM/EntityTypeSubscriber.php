@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 
 /**
@@ -32,7 +31,7 @@ class EntityTypeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return [Events::postLoad];
+        return ['postLoad'];
     }
 
     /**
