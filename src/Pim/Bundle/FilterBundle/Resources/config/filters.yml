@@ -1,11 +1,13 @@
 parameters:
     pim_filter.datasource.orm_adapter.class: Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
+    pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
 
-    pim_filter.scope_filter.class:        Pim\Bundle\FilterBundle\Filter\ScopeFilter
-    pim_filter.category_filter.class:     Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
-    pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
+    pim_filter.product_scope_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
+    pim_filter.category_filter.class:             Pim\Bundle\FilterBundle\Filter\CategoryFilter
+    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\ProductGroupsFilter
+    pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter
 
     pim_filter.flexible_string.class:     Pim\Bundle\FilterBundle\Filter\Flexible\StringFilter
     pim_filter.flexible_choice.class:     Pim\Bundle\FilterBundle\Filter\Flexible\ChoiceFilter
@@ -17,19 +19,30 @@ parameters:
     pim_filter.flexible_metric.class:     Pim\Bundle\FilterBundle\Filter\Flexible\MetricFilter
     pim_filter.flexible_price.class:      Pim\Bundle\FilterBundle\Filter\Flexible\PriceFilter
 
-    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\ProductGroupsFilter
-    pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter
 
 services:
-    pim_filter.scope_filter:
-        class: %pim_filter.scope_filter.class%
+    pim_filter.flexible_utility:
+        class: %pim_filter.flexible_utility.class%
+        arguments:
+            - '@pim_flexibleentity.registry'
+
+    pim_filter.ajax_choice_filter:
+        class: %pim_filter.ajax_choice_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
+
+    pim_filter.product_scope_filter:
+        class: %pim_filter.product_scope_filter.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: scope }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_scope }
 
     pim_filter.category_filter:
         class: %pim_filter.category_filter.class%
@@ -41,18 +54,22 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: category }
 
-    pim_filter.ajax_choice_filter:
-        class: %pim_filter.ajax_choice_filter.class%
+    pim_filter.product_groups:
+        class: %pim_filter.product_groups.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_groups }
 
-    pim_filter.flexible_utility:
-        class: %pim_filter.flexible_utility.class%
+    pim_filter.product_completeness_filter:
+        class: %pim_filter.product_completeness_filter.class%
         arguments:
-            - '@pim_flexibleentity.registry'
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }
 
     pim_filter.flexible_string:
         class: %pim_filter.flexible_string.class%
@@ -131,19 +148,3 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
 
-    pim_filter.product_groups:
-        class: %pim_filter.product_groups.class%
-        arguments:
-            - '@form.factory'
-            - '@oro_filter.filter_utility'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: product_groups }
-
-    pim_filter.product_completeness_filter:
-        class: %pim_filter.product_completeness_filter.class%
-        arguments:
-            - '@form.factory'
-            - '@oro_filter.filter_utility'
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }

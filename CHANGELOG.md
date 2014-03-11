@@ -21,6 +21,9 @@
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
+- Move src/Pim/Bundle/FilterBundle/Filter/ScopeFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/ScopeFilter.php
+- Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js
+
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
