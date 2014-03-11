@@ -30,11 +30,13 @@ class Hydrator implements HydratorInterface
             unset($result[0]);
             $otherFields = $result;
             $result = $entityFields + $otherFields;
-            $values = $result['values'];
-            foreach ($values as $value) {
-                $result[$value['attribute']['code']]= $value;
+            if (isset($result['values'])) {
+                $values = $result['values'];
+                foreach ($values as $value) {
+                    $result[$value['attribute']['code']]= $value;
+                }
+                unset($result['values']);
             }
-            unset($result['values']);
             $result['dataLocale']= $localeCode;
 
             $rows[] = new ResultRecord($result);
