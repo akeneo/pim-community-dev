@@ -14,9 +14,10 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
  */
 class ExportMassAction extends WidgetMassAction implements ExportMassActionInterface
 {
-    /** @var array */
+    /** @var array $requiredOptions */
     protected $requiredOptions = ['route', 'frontend_type', 'handler', 'context'];
 
+    /** @var array $requiredRouteParams */
     protected $requiredRouteParams = ['_format', '_contentType'];
 
     /**
