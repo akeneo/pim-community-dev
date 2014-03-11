@@ -44,13 +44,14 @@ class ExportController
     protected $userContext;
 
     /**
+     * Constructor
      *
-     * @param DatagridManager $datagridManager
+     * @param DatagridManager            $datagridManager
      * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher $massActionDispatcher
-     * @param SerializerInterface $serializer
-     * @param ProductManager $productManager
-     * @param UserContext $userContext
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
+     * @param ProductManager             $productManager
+     * @param UserContext                $userContext
      */
     public function __construct(
         DatagridManager $datagridManager,

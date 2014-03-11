@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
