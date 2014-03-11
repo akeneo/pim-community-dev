@@ -287,6 +287,23 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getFlexibleQueryBuilder($qb)
+    {
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
