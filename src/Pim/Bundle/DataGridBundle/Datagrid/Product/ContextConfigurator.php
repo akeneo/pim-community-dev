@@ -27,6 +27,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const PRODUCT_STORAGE_KEY = 'product_storage';
+
+    /**
+     * @var string
+     */
     const DISPLAYED_LOCALE_KEY = 'locale_code';
 
     /**
@@ -107,6 +112,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $this->addProductStorage();
         $this->addLocaleCode();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
@@ -141,6 +147,16 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
+     * Inject used product storage in the datagrid configuration
+     */
+    protected function addProductStorage()
+    {
+        $storage = $this->getProductStorage();
+        $path = $this->getSourcePath(self::PRODUCT_STORAGE_KEY);
+        $this->configuration->offsetSetByPath($path, $storage);
+    }
+
+    /**
      * Inject current locale code in the datagrid configuration
      */
     protected function addLocaleCode()
@@ -170,6 +186,21 @@ class ContextConfigurator implements ConfiguratorInterface
         $attributes = $this->getAttributesConfig();
 
         $this->configuration->offsetSetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+    }
+
+    /**
+     * Get product storage (ORM/MongoDBODM)
+     *
+     * @return string
+     */
+    protected function getProductStorage()
+    {
+        $om = $this->flexibleManager->getObjectManager();
+        if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
+            return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_ORM;
+        } else {
+             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_MONGODB_ODM;
+        }
     }
 
     /**

@@ -35,12 +35,14 @@ class Hydrator implements HydratorInterface
             $result['id']= $result['_id']->__toString();
             unset($result['_id']);
             $result['dataLocale']= $localeCode;
-            foreach ($result['values'] as $value) {
-                $attribute = $attributes[$value['attributeId']];
-                $value['attribute']= $attribute;
-                $result[$attribute['code']]= $value;
+            if (isset($result['values'])) {
+                foreach ($result['values'] as $value) {
+                    $attribute = $attributes[$value['attribute']];
+                    $value['attribute']= $attribute;
+                    $result[$attribute['code']]= $value;
+                }
+                unset($result['values']);
             }
-            unset($result['values']);
             // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
             $result['ratio']= 'temporary';
 
