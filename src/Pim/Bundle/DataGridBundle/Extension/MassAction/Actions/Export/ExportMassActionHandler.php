@@ -30,16 +30,4 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     {
         return $mediator->getResults()->getSource();
     }
-
-    public function setExportFormat($exportFormat)
-    {
-        $this->exportFormat = $exportFormat;
-
-        return $this;
-    }
-
-    public function setContentType($contentType)
-    {
-
-    }
 }
