@@ -35,16 +35,34 @@ class ExportMassAction extends WidgetMassAction
             );
         }
 
+        if (empty($options['context'])) {
+            $options['context'] = array(
+                'withHeader'    => true,
+                'heterogeneous' => true
+            );
+        }
+
         return parent::setOptions($options);
     }
 
+    /**
+     *
+     */
     public function getFormat()
     {
         return $this->options['route_parameters']['_format'];
     }
 
+    /**
+     *
+     */
     public function getContentType()
     {
         return 'text/csv';
+    }
+
+    public function getExportContext()
+    {
+        return $this->options['context'];
     }
 }

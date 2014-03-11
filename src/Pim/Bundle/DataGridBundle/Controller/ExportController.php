@@ -86,6 +86,7 @@ class ExportController
 
     /**
      * Create filename
+     *
      * @return string
      */
     protected function createFilename()
@@ -130,9 +131,9 @@ class ExportController
      * Get asked content type for streamed response
      *
      * @return string
-     * TODO: Mocked for now
+     * TODO: Mocked for now. Get from request parameter
      */
-    protected function getResponseContentType()
+    protected function getContentType()
     {
         return 'text/csv';
     }
@@ -141,7 +142,7 @@ class ExportController
      * Get asked format type for exported file
      *
      * @return string
-     * TODO: Mocked for now
+     * TODO: Mocked for now. Get from request parameter
      */
     protected function getFormat()
     {
@@ -152,13 +153,14 @@ class ExportController
      * Get context for serializer
      *
      * @return array
-     * TODO: Mocked for now
      */
     protected function getContext()
     {
-        return [
-            'withHeader'    => true,
-            'heterogeneous' => true
-        ];
+        $exportMassAction = $this->getMassActionByNames(
+            $this->request->get('actionName'),
+            $this->request->get('gridName')
+        );
+
+        return $exportMassAction->getExportContext();
     }
 }

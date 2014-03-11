@@ -59,10 +59,11 @@ class FlexibleExportController extends ExportController
         $dateTime = new \DateTime();
 
         return sprintf(
-            'products_export_%s_%s_%s.csv',
+            'products_export_%s_%s_%s.%s',
             $this->getDataLocale(),
             $this->productManager->getScope(),
-            $dateTime->format('Y-m-d_H-i-s')
+            $dateTime->format('Y-m-d_H-i-s'),
+            $this->getFormat()
         );
     }
 
