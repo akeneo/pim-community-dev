@@ -59,25 +59,23 @@ class ExportController
      * @param UserContext $userContext
      */
     public function __construct(
-        ContainerInterface $container,
-        DatagridManager $datagridManager,
+        Request $request,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        SerializerInterface $serializer,
-        ProductManager $productManager,
-        UserContext $userContext
+        SerializerInterface $serializer
     ) {
-        $this->container = $container;
+//         $this->container = $container;
 
-        $this->datagridManager = $datagridManager;
+//         $this->datagridManager = $datagridManager;
 
-        $this->productManager = $productManager;
-        $this->userContext          = $userContext;
+//         $this->productManager = $productManager;
+//         $this->userContext          = $userContext;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer           = $serializer;
 
-        $this->productManager->setLocale($this->getDataLocale());
+        $this->request = $request;
+
     }
 
     /**
@@ -96,6 +94,13 @@ class ExportController
         return $this->createStreamedResponse($request)->send();
     }
 
+    /**
+     * Create a streamed response containing a file
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
     protected function createStreamedResponse(Request $request)
     {
         $filename = $this->createFilename();
@@ -118,15 +123,14 @@ class ExportController
         $dateTime = new \DateTime();
 
         return sprintf(
-            'products_export_%s_%s_%s.csv',
-            $this->getDataLocale(),
-            $this->productManager->getScope(),
+            'export_%s_%s_%s.csv',
             $dateTime->format('Y-m-d_H:i:s')
         );
     }
 
     /**
-     * Quick export callback
+     * Callback for streamed response
+     * dispatch mass action and returning result as a file
      *
      * @return \Closure
      */
@@ -155,15 +159,5 @@ class ExportController
 
             flush();
         };
-    }
-
-    /**
-     * Get data locale code
-     *
-     * @return string
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocaleCode();
     }
 }
