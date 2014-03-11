@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Doctrine\ODM\MongoDB\Types\Type;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
@@ -46,8 +45,10 @@ class PimCatalogBundle extends Bundle
 
     public function __construct()
     {
-        Type::registerType(self::ODM_ENTITIES_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities');
-        Type::registerType(self::ODM_ENTITY_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity');
+        if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
+            \Doctrine\ODM\MongoDB\Types\Type::registerType(self::ODM_ENTITIES_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities');
+            \Doctrine\ODM\MongoDB\Types\Type::registerType(self::ODM_ENTITY_TYPE, 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity');
+        }
     }
 
     /**
