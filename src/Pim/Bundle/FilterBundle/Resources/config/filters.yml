@@ -7,7 +7,7 @@ parameters:
     pim_filter.product_scope_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
     pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
     pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
-    pim_filter.category_filter.class:             Pim\Bundle\FilterBundle\Filter\CategoryFilter
+    pim_filter.product_category_filter.class:     Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter
 
     pim_filter.flexible_string.class:     Pim\Bundle\FilterBundle\Filter\Flexible\StringFilter
     pim_filter.flexible_choice.class:     Pim\Bundle\FilterBundle\Filter\Flexible\ChoiceFilter
@@ -44,15 +44,15 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_scope }
 
-    pim_filter.category_filter:
-        class: %pim_filter.category_filter.class%
+    pim_filter.product_category_filter:
+        class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: category }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_category }
 
     pim_filter.product_groups:
         class: %pim_filter.product_groups.class%

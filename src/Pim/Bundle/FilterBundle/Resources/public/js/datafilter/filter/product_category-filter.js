@@ -10,7 +10,7 @@ define(
          * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
          * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
          *
-         * @export  oro/datafilter/category-filter
+         * @export  oro/datafilter/product-category-filter
          * @class   oro.datafilter.CategoryFilter
          * @extends oro.datafilter.NumberFilter
          */
