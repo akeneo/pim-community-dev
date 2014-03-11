@@ -28,6 +28,14 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
-        return $mediator->getResults()->getSource();
+        $qb = $mediator->getResults()->getSource();
+
+        $rootAlias = current($qb->getRootAliases());
+        $qb
+            ->resetDQLParts(array('select', 'from'))
+            ->select($rootAlias)
+            ->from('Pim\Bundle\CatalogBundle\Model\Product', $rootAlias);
+
+        return $qb->getQuery()->execute();
     }
 }

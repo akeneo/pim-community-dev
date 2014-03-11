@@ -131,20 +131,13 @@ class ExportController
             $parameters  = $this->parametersParser->parse($request);
             $requestData = array_merge($request->query->all(), $request->request->all());
 
-            $qb = $this->massActionDispatcher->dispatch(
+            $results = $this->massActionDispatcher->dispatch(
                 $requestData['gridName'],
                 $requestData['actionName'],
                 $parameters,
                 $requestData
             );
 
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->resetDQLPart('from');
-            $qb->select($rootAlias);
-            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
-
-            $results = $qb->getQuery()->execute();
             echo $this->serializer->serialize($results, $format, $context);
 
             flush();
