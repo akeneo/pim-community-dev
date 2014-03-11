@@ -46,21 +46,8 @@ class ExportMassAction extends WidgetMassAction
     }
 
     /**
-     *
+     * Get export context for serializer
      */
-    public function getFormat()
-    {
-        return $this->options['route_parameters']['_format'];
-    }
-
-    /**
-     *
-     */
-    public function getContentType()
-    {
-        return 'text/csv';
-    }
-
     public function getExportContext()
     {
         return $this->options['context'];

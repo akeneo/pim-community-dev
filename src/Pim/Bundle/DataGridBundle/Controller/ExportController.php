@@ -32,6 +32,9 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
+    /** @var \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction */
+    protected $exportMassAction;
+
     /**
      * Constructor
      *
@@ -46,7 +49,7 @@ class ExportController
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
-        $this->request = $request;
+        $this->request              = $request;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer           = $serializer;
@@ -131,22 +134,20 @@ class ExportController
      * Get asked content type for streamed response
      *
      * @return string
-     * TODO: Mocked for now. Get from request parameter
      */
     protected function getContentType()
     {
-        return 'text/csv';
+        return $this->request->get('_contentType');
     }
 
     /**
      * Get asked format type for exported file
      *
      * @return string
-     * TODO: Mocked for now. Get from request parameter
      */
     protected function getFormat()
     {
-        return 'csv';
+        return $this->request->get('_format');
     }
 
     /**
@@ -156,11 +157,22 @@ class ExportController
      */
     protected function getContext()
     {
-        $exportMassAction = $this->massActionDispatcher->getMassActionByNames(
-            $this->request->get('actionName'),
-            $this->request->get('gridName')
-        );
+        return $this->getExportMassAction()->getExportContext();
+    }
 
-        return $exportMassAction->getExportContext();
+    /**
+     * TODO: Get from datagrid builder ?
+     * @return \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+     */
+    protected function getExportMassAction()
+    {
+        if ($this->exportMassAction === null) {
+            $this->exportMassAction = $this->massActionDispatcher->getMassActionByNames(
+                $this->request->get('actionName'),
+                $this->request->get('gridName')
+            );
+        }
+
+        return $this->exportMassAction;
     }
 }
