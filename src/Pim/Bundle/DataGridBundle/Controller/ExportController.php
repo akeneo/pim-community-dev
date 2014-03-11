@@ -77,7 +77,7 @@ class ExportController
 
         $response = new StreamedResponse();
         $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
-        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Type', 'text/csv'); //TODO: content type must be defined in export mass action
         $response->headers->set('Content-Disposition', $attachment);
         $response->setCallback($this->quickExportCallback());
 
@@ -92,6 +92,7 @@ class ExportController
     {
         $dateTime = new \DateTime();
 
+        // TODO: csv format must be defined in export mass action
         return sprintf(
             'export_%s.csv',
             $dateTime->format('Y-m-d_H:i:s')
@@ -109,18 +110,20 @@ class ExportController
         return function () {
             flush();
 
+            // TODO: Must be defined in export mass action
             $format  = 'csv';
             $context = [
                 'withHeader'    => true,
                 'heterogeneous' => true
             ];
+            // --END TODO--
 
             $parameters  = $this->parametersParser->parse($this->request);
             $requestData = array_merge($this->request->query->all(), $this->request->request->all());
 
             $results = $this->massActionDispatcher->dispatch(
-                $requestData['gridName'],
-                $requestData['actionName'],
+                $this->request->get('gridName'),
+                $this->request->get('actionName'),
                 $parameters,
                 $requestData
             );
