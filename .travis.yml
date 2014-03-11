@@ -19,4 +19,4 @@ before_script:
 
 script:
     - phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
-    - bin/phpspec run -fdot -v
+    - ./phpspec-fix
