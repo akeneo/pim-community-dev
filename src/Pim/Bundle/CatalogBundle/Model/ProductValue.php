@@ -181,7 +181,12 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function getPrices()
     {
-        return $this->prices;
+        $prices = [];
+        foreach ($this->prices as $price) {
+            $prices[$price->getCurrency()] = $price;
+        }
+
+        return $prices;
     }
 
     /**
@@ -205,10 +210,9 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function setPrices($prices)
     {
-        if (null === $prices) {
-            $prices = array();
+        foreach ($prices as $price) {
+            $this->addPrice($price);
         }
-        $this->prices = $prices;
 
         return $this;
     }
@@ -234,10 +238,13 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @param string $currency
      *
      * @return ProductPrice
+     *
+     * @deprecated This method will be removed in 1.2, use ProductBuilder::addPriceForCurrency() instead
      */
     public function addPriceForCurrency($currency)
     {
-        if (!isset($this->prices[$currency])) {
+        $prices = $this->getPrices();
+        if (!isset($prices[$currency])) {
             $this->addPrice(new ProductPrice(null, $currency));
         }
 
@@ -254,38 +261,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     public function removePrice(ProductPrice $price)
     {
         $this->prices->remove($price->getCurrency());
-
-        return $this;
-    }
-
-    /**
-     * Add missing prices
-     *
-     * @param array $activeCurrencies the active currency codes
-     *
-     * @return ProductValue
-     */
-    public function addMissingPrices($activeCurrencies)
-    {
-        array_walk($activeCurrencies, array($this, 'addPriceForCurrency'));
-
-        return $this;
-    }
-
-    /**
-     * Remove disabled prices
-     *
-     * @param array $activeCurrencies the active currency codes
-     *
-     * @return ProductValue
-     */
-    public function removeDisabledPrices($activeCurrencies)
-    {
-        foreach ($this->getPrices() as $currency => $price) {
-            if (!in_array($currency, $activeCurrencies)) {
-                $this->removePrice($price);
-            }
-        }
 
         return $this;
     }
