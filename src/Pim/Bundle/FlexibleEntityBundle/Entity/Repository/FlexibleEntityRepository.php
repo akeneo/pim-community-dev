@@ -152,48 +152,6 @@ class FlexibleEntityRepository extends EntityRepository implements
     }
 
     /**
-     * Apply a filter by attribute value
-     *
-     * @param QueryBuilder $qb             query builder to update
-     * @param string       $attributeCode  attribute code
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
-     */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
-    {
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
-
-        if ($attribute) {
-            $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $attributeValue);
-
-        } else {
-            $this->getFlexibleQueryBuilder($qb)->addFieldFilter($attributeCode, $operator, $attributeValue);
-        }
-    }
-
-    /**
-     * Apply a sort by attribute value
-     *
-     * @param QueryBuilder $qb            query builder to update
-     * @param string       $attributeCode attribute code
-     * @param string       $direction     direction to use
-     */
-    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
-    {
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->_em->getRepository($attributeName);
-        $attribute = $attributeRepo->findOneByEntityAndCode($this->_entityName, $attributeCode);
-
-        if ($attribute) {
-            $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-        } else {
-            $this->getFlexibleQueryBuilder($qb)->addFieldSorter($attributeCode, $direction);
-        }
-    }
-
-    /**
      * Load a flexible entity with its attribute values
      *
      * @param integer $id
