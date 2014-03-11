@@ -296,28 +296,35 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Apply a filter by attribute value
-     *
-     * @param QueryBuilder $qb             query builder to update
-     * @param string       $attributeCode  attribute code
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
+     * {@inheritdoc}
      */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    public function applyFilterByAttribute(QueryBuilder $qb, Attribute $attribute, $value, $operator = '=')
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
 
     /**
-     * Apply a sort by attribute value
-     *
-     * @param QueryBuilder $qb            query builder to update
-     * @param string       $attributeCode attribute code
-     * @param string       $direction     direction to use
+     * {@inheritdoc}
      */
-    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    public function applyFilterByField(QueryBuilder $qb, $field, $value, $operator = '=')
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByAttribute(QueryBuilder $qb, Attribute $attribute, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField(QueryBuilder $qb, $field, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
