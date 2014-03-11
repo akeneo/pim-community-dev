@@ -93,11 +93,7 @@ class ExportController
         ignore_user_abort(false);
         set_time_limit(0);
 
-        // TODO: $exportAlias must be set in the request
-        $exportAlias = 'pim_datagrid.extension.mass_action.quick_export_csv';
-        $exportAlias = 'pim_datagrid.extension.mass_action.handler.export';
-        $this->container->get($exportAlias);
-
+        // TODO: Move in quickExportCallback method
         $parameters  = $this->parametersParser->parse($request);
         $requestData = array_merge($request->query->all(), $request->request->all());
 
@@ -107,7 +103,9 @@ class ExportController
             $parameters,
             $requestData
         );
+        // --END TODO --
 
+        // TODO: Move in FileNameBuilder or method
         $dateTime = new \DateTime();
         $fileName = sprintf(
             'products_export_%s_%s_%s.csv',
