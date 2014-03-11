@@ -96,7 +96,7 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(functi
             completeness[channelCode][locale].ratio = (filledCount / requirementsCount)*100;
         }
     }
- 
+
     product.completeness = completeness;
     db.pim_catalog_product.save(product);
 });

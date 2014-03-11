@@ -36,15 +36,15 @@ class DatagridController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param EngineInterface            $templating
-     * @param RouterInterface            $router
-     * @param SecurityContextInterface   $securityContext
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param RegistryInterface          $doctrine
-     * @param DatagridManager            $manager
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param RegistryInterface        $doctrine
+     * @param DatagridManager          $manager
      */
     public function __construct(
         Request $request,

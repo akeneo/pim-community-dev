@@ -9,9 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use \Closure;
 
 /**
- * Provides a collection lazy loaded from the object manager.
- * The content of the collection is defined by the ids and
- * the class name.
+ * An ArrayCollection decorator of entity identifiers that are lazy loaded
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -19,55 +17,33 @@ use \Closure;
  */
 class ReferencedCollection implements Collection
 {
-    /**
-     * Object manager that will be used to get items from storage
-     *
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $objectManager;
 
-    /**
-     * Class name of item to load from storage
-     *
-     * @var string
-     */
-    protected $itemClass;
+    /** @var string */
+    protected $entityClass;
 
-    /**
-     * Array of item ids
-     *
-     * @var array
-     */
-    protected $itemIds;
+    /** @var array */
+    protected $identifiers;
 
-    /**
-     * Array of items
-     *
-     * @var ArrayCollection
-     */
-    protected $items;
+    /** @var ArrayCollection */
+    protected $entities;
 
-    /**
-     * Whether the collection has already been initialized.
-     *
-     * @var boolean
-     */
+    /** @var boolean */
     protected $initialized = true;
 
     /**
-     * Constructor
-     *
-     * @param string        $itemClass
-     * @param array         $itemIds
+     * @param string        $entityClass
+     * @param array         $identifiers
      * @param ObjectManager $objectManager
      */
-    public function __construct($itemClass, $itemIds, ObjectManager $objectManager)
+    public function __construct($entityClass, $identifiers, ObjectManager $objectManager)
     {
         $this->initialized   = false;
-        $this->items         = new ArrayCollection();
-        $this->itemClass     = $itemClass;
-        $this->itemIds       = $itemIds;
+        $this->identifiers   = $identifiers;
+        $this->entityClass   = $entityClass;
         $this->objectManager = $objectManager;
+        $this->items         = new ArrayCollection();
     }
 
     /**
@@ -90,37 +66,6 @@ class ReferencedCollection implements Collection
     public function isInitialized()
     {
         return $this->initialized;
-    }
-
-    /**
-     * Get object class identifier from the repository
-     *
-     * @return string
-     */
-    protected function getClassIdentifier()
-    {
-        $classMetadata = $this->objectManager->getClassMetadata($this->itemClass);
-
-        return $classMetadata->getIdentifier();
-    }
-
-    /**
-     * Initializes the collection by loading its contents from the database
-     * if the collection is not yet initialized.
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        if ($this->initialized || empty($this->itemIds) || empty($this->itemClass)) {
-            return;
-        }
-        $itemRepository = $this->objectManager->getRepository($this->itemClass);
-        $criteria = array($this->getClassIdentifier() => $this->itemIds);
-
-        $this->items = new ArrayCollection($itemRepository->findBy($criteria));
-
-        $this->initialized = true;
     }
 
     /**
@@ -228,6 +173,7 @@ class ReferencedCollection implements Collection
     public function set($key, $value)
     {
         $this->initialize();
+
         $this->items->set($key, $value);
     }
 
@@ -419,5 +365,47 @@ class ReferencedCollection implements Collection
         $this->initialize();
 
         return $this->items->offsetSet($offset);
+    }
+
+    /**
+     * Initializes the collection by loading its contents from the database
+     * if the collection is not yet initialized.
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+        if ($this->initialized || empty($this->identifiers) || empty($this->entityClass)) {
+            return;
+        }
+
+        $classIdentifier = $this->getClassIdentifier();
+        if (count($classIdentifier) > 1) {
+            throw new \LogicException(
+                'The configured entity uses a composite key which is not supported by the collection'
+            );
+        }
+
+        $this->initialized = true;
+        $this->items       = new ArrayCollection(
+            $this
+                ->objectManager
+                ->getRepository($this->entityClass)
+                ->findBy([$classIdentifier[0] => $this->identifiers])
+        );
+    }
+
+    /**
+     * Get object class identifier from the repository
+     *
+     * @param mixed $itemRepository
+     *
+     * @return string
+     */
+    protected function getClassIdentifier()
+    {
+        $classMetadata = $this->objectManager->getClassMetadata($this->entityClass);
+
+        return $classMetadata->getIdentifier();
     }
 }
