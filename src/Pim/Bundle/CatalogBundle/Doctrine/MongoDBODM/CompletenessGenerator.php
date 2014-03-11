@@ -4,8 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -20,6 +22,21 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
  */
 class CompletenessGenerator implements CompletenessGeneratorInterface
 {
+    /**
+     * @var DocumentManager;
+     */
+    protected $documentManager;
+
+    /**
+     * Constructor
+     *
+     * @param DocumentManager $documentManager
+     */
+    public function __construct(DocumentManager $documentManager)
+    {
+        $this->documentManager = $documentManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -40,23 +57,23 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
             if (!isset($channels[$channel])) {
                 $channels[$channel] = array();
-                $channelObject[$channel] = $req->getChannel();
+                $channelObjects[$channel] = $req->getChannel();
             }
 
             foreach ($locales as $locale) {
                 if (!isset($channels[$channel][$locale->getCode()])) {
-                    $channels[$channel][$locale] = array();
-                    $channels[$channel][$locale]['missing_count'] = 0;
-                    $channels[$channel][$locale]['required_count'] = 0;
-                    $localeObject[$locale] = $req->getLocale();
+                    $channels[$channel][$locale->getCode()] = array();
+                    $channels[$channel][$locale->getCode()]['missing_count'] = 0;
+                    $channels[$channel][$locale->getCode()]['required_count'] = 0;
+                    $localeObjects[$locale->getCode()] = $locale;
                 }
 
-                $channels[$channel][$locale]['required_count']++;
+                $channels[$channel][$locale->getCode()]['required_count']++;
 
-                $value = $product->getValue($req->getAttribute()->getCode, $locale, $scope);
+                $value = $product->getValue($req->getAttribute()->getCode(), $locale->getCode(), $channel);
                 if (($value === null) || ($value->getData() === null)) {
-                    $channels[$channel][$locale]['missing_count'] ++;
-                } elseif ($attribute->getBackend() == "prices") {
+                    $channels[$channel][$locale->getCode()]['missing_count'] ++;
+                } elseif ($attribute->getBackendType() == "prices") {
                     $filledPrice = true;
                     foreach ($currencies as $currency) {
                         $priceFound = false;
@@ -83,12 +100,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
                 $completeness->setMissingCount($data['missing_count']);
                 $completeness->setRequiredCount($data['required_count']);
-                $completeness->setRatio(($data['required_count'] - $data['missing_count'])/$data['required_count']);
+                $completeness->setRatio(($data['required_count'] - $data['missing_count'])/$data['required_count']*100);
 
                 $completenesses->add($completeness);
             }
         }
         $product->setCompletenesses($completenesses);
+
+        $this->documentManager->flush($product);
 
     }
 
