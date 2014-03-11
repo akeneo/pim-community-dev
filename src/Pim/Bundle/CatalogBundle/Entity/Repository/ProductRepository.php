@@ -816,7 +816,7 @@ SQL;
                 if ($attribute) {
                     $this->applySorterByAttribute($qb, $attribute, $direction);
                 } else {
-                    $this->applyFilterByField($qb, $attCode, $direction);
+                    $this->applySorterByField($qb, $attCode, $direction);
                 }
             }
         }
