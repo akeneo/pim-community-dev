@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Value for an attribute
