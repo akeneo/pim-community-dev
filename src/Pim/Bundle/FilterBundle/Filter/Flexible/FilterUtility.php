@@ -73,11 +73,18 @@ class FilterUtility extends BaseFilterUtility
         $value,
         $operator
     ) {
-        /** @var $entityRepository FlexibleEntityRepository */
-        $entityRepository = $this->getFlexibleManager($flexibleEntityName)
-            ->getFlexibleRepository();
 
-        /** @var OrmFilterDatasourceAdapter $ds */
-        $entityRepository->applyFilterByAttribute($ds->getQueryBuilder(), $field, $value, $operator);
+        $manager = $this->getFlexibleManager($flexibleEntityName);
+
+        $attributeName = $this->flexibleConfig['attribute_class'];
+        $attributeRepo = $this->manager->getAttributeRepository();
+        $attribute = $attributeRepo->findOneByEntityAndCode($flexibleEntityName, $attributeCode);
+
+        $repository = $manager->getFlexibleRepository();
+        if ($attribute) {
+            $repository->applyFilterByAttribute($ds->getQueryBuilder(), $attribute, $value, $operator);
+        } else {
+            $repository->applyFilterByField($ds->getQueryBuilder(), $field, $value, $operator);
+        }
     }
 }
