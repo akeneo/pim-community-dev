@@ -5,9 +5,9 @@ parameters:
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
     pim_filter.product_scope_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
+    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
+    pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
     pim_filter.category_filter.class:             Pim\Bundle\FilterBundle\Filter\CategoryFilter
-    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\ProductGroupsFilter
-    pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter
 
     pim_filter.flexible_string.class:     Pim\Bundle\FilterBundle\Filter\Flexible\StringFilter
     pim_filter.flexible_choice.class:     Pim\Bundle\FilterBundle\Filter\Flexible\ChoiceFilter
