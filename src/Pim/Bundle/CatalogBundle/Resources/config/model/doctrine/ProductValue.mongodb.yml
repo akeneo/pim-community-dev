@@ -30,15 +30,15 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             type: string
         scope:
             type: string
-        # References ORM AbstractAttribute code
-        attributeId:
-            type: int
-        # References ORM AttributeOption code for single select
-        #optionId:
-        #    type: int
-        # References ORM AttributeOption code for multi selects
-        #options:
-        #    type: collection
+        attribute:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
+        option:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+        options:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
         media:
             embedded: true
             type: one

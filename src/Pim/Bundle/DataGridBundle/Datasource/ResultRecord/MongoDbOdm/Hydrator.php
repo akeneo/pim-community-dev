@@ -41,6 +41,9 @@ class Hydrator implements HydratorInterface
                 $result[$attribute['code']]= $value;
             }
             unset($result['values']);
+            // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+            $result['ratio']= 'temporary';
+
             $rows[] = new ResultRecord($result);
         }
 

@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
+    pim_catalog.factory.referenced_collection.class: Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory
 
 services:
     pim_catalog.factory.family:
@@ -12,3 +13,8 @@ services:
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
+
+    pim_catalog.factory.referenced_collection:
+        class: %pim_catalog.factory.referenced_collection.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'

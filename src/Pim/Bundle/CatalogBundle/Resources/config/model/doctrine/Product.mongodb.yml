@@ -13,15 +13,15 @@ Pim\Bundle\CatalogBundle\Model\Product:
             type: date
         updated:
             type: date
-        # Family references ORM family code
-        familyId:
-            type: int
-        # Collection to references ORM groups code
-        groupIds:
-            type: collection
-        # Collection to references ORM categories code
-        categoryIds:
-            type: collection
+        family:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+        groups:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+        categories:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
         associations:
             embedded: true
             type: many
@@ -33,5 +33,4 @@ Pim\Bundle\CatalogBundle\Model\Product:
         values:
             embedded: true
             type: many
-#            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValue
