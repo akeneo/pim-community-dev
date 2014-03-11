@@ -324,6 +324,12 @@ datagrid:
                 label: Export CSV
                 icon: download
                 data_identifier: p
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
+                    heterogeneous: true
                 messages:
                     empty_selection: No products selected
 
