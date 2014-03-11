@@ -16,9 +16,6 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
 {
     function let(ReferencedCollectionFactory $factory)
     {
-        if (!extension_loaded('mongo')) {
-            throw new \PhpSpec\Exception\Example\SkippingException('Mongo ext is not loaded');
-        }
         $this->beConstructedWith($factory);
     }
 
@@ -27,12 +24,18 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->shouldImplement('Doctrine\Common\EventSubscriber');
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_subscribes_to_postLoad_event()
     {
         $this->getSubscribedEvents()->shouldReturn([Events::postLoad]);
     }
 
-    function it_transforms_values_of_a_entity_collection_field_into_entities(
+    /**
+     * @require extension mongo
+     */
+    function it_transforms_values_of_an_entity_collection_field_into_entities(
         LifecycleEventArgs $args,
         ValuesStub $entity,
         DocumentManager $dm,
@@ -62,6 +65,9 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
         ValuesStub $entity,

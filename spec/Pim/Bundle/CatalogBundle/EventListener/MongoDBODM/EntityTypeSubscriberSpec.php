@@ -14,9 +14,6 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
 {
     function let(EntityManager $entityManager)
     {
-        if (!extension_loaded('mongo')) {
-            throw new \PhpSpec\Exception\Example\SkippingException('Mongo ext is not loaded');
-        }
         $this->beConstructedWith($entityManager);
     }
 
@@ -25,11 +22,17 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->shouldImplement('Doctrine\Common\EventSubscriber');
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_subscribes_to_postLoad_event()
     {
         $this->getSubscribedEvents()->shouldReturn([Events::postLoad]);
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_transforms_value_of_a_entity_field_into_lazy_reference_to_an_entity (
         LifecycleEventArgs $args,
         ValueStub $entity,
@@ -57,6 +60,9 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_does_not_convert_value_if_initial_value_is_null(
         LifecycleEventArgs $args,
         ValueStub $entity,
@@ -81,6 +87,9 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
+    /**
+     * @require extension mongo
+     */
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
         ValueStub $entity,
