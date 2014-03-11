@@ -15,34 +15,58 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 class ExportMassAction extends WidgetMassAction implements ExportMassActionInterface
 {
     /** @var array */
-    protected $requiredOptions = ['route', 'frontend_type', 'handler'];
+    protected $requiredOptions = ['route', 'frontend_type', 'handler', 'context'];
+
+    protected $requiredRouteParams = ['_format', '_contentType'];
 
     /**
      * {@inheritdoc}
      */
     public function setOptions(ActionConfiguration $options)
     {
-        $options['handler']       = 'pim_datagrid.extension.mass_action.handler.export';
-        $options['frontend_type'] = 'export';
-
-        if (empty($options['route'])) {
-            $options['route'] = 'pim_datagrid_export_flexible_index';
+        if (empty($options['frontend_type'])) {
+            $options['frontend_type'] = 'export';
         }
 
-        if (empty($options['route_parameters'])) {
-            $options['route_parameters'] = array(
-                '_format' => 'csv'
-            );
+        if (empty($options['route'])) {
+            $options['route'] = 'pim_datagrid_export_index';
         }
 
         if (empty($options['context'])) {
-            $options['context'] = array(
-                'withHeader'    => true,
-                'heterogeneous' => true
-            );
+            $options['context'] = array();
         }
 
         return parent::setOptions($options);
+    }
+
+    /**
+     * Add method to assert required route parameters
+     */
+    protected function assertHasRequiredOptions()
+    {
+        parent::assertHasRequiredOptions();
+
+        $this->assertRequiredRouteParameters();
+    }
+
+    /**
+     * Check if route parameters are well defined
+     *
+     * @throws \LogicException
+     */
+    protected function assertRequiredRouteParameters()
+    {
+        foreach ($this->requiredRouteParams as $requiredRouteParam) {
+            if (!isset($this->options['route_parameters'][$requiredRouteParam])) {
+                throw new \LogicException(
+                    sprintf(
+                        'There is no route_parameter named "%s" for action "%s"',
+                        $requiredRouteParam,
+                        $this->getName()
+                    )
+                );
+            }
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    /** @var \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction */
+    /** @var ExportMassAction $exportMassAction */
     protected $exportMassAction;
 
     /**
