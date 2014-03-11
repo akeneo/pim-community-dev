@@ -37,4 +37,14 @@ class ExportMassAction extends WidgetMassAction
 
         return parent::setOptions($options);
     }
+
+    public function getFormat()
+    {
+        return $this->options['route_parameters']['_format'];
+    }
+
+    public function getContentType()
+    {
+        return 'text/csv';
+    }
 }

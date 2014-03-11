@@ -77,7 +77,7 @@ class ExportController
 
         $response = new StreamedResponse();
         $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
-        $response->headers->set('Content-Type', 'text/csv'); //TODO: content type must be defined in export mass action
+        $response->headers->set('Content-Type', $this->getContentType());
         $response->headers->set('Content-Disposition', $attachment);
         $response->setCallback($this->quickExportCallback());
 
@@ -92,10 +92,10 @@ class ExportController
     {
         $dateTime = new \DateTime();
 
-        // TODO: csv format must be defined in export mass action
         return sprintf(
-            'export_%s.csv',
-            $dateTime->format('Y-m-d_H:i:s')
+            'export_%s.%s',
+            $dateTime->format('Y-m-d_H-i-s'),
+            $this->getFormat()
         );
     }
 
@@ -110,14 +110,6 @@ class ExportController
         return function () {
             flush();
 
-            // TODO: Must be defined in export mass action
-            $format  = 'csv';
-            $context = [
-                'withHeader'    => true,
-                'heterogeneous' => true
-            ];
-            // --END TODO--
-
             $parameters  = $this->parametersParser->parse($this->request);
             $requestData = array_merge($this->request->query->all(), $this->request->request->all());
 
@@ -128,9 +120,45 @@ class ExportController
                 $requestData
             );
 
-            echo $this->serializer->serialize($results, $format, $context);
+            echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
 
             flush();
         };
+    }
+
+    /**
+     * Get asked content type for streamed response
+     *
+     * @return string
+     * TODO: Mocked for now
+     */
+    protected function getResponseContentType()
+    {
+        return 'text/csv';
+    }
+
+    /**
+     * Get asked format type for exported file
+     *
+     * @return string
+     * TODO: Mocked for now
+     */
+    protected function getFormat()
+    {
+        return 'csv';
+    }
+
+    /**
+     * Get context for serializer
+     *
+     * @return array
+     * TODO: Mocked for now
+     */
+    protected function getContext()
+    {
+        return [
+            'withHeader'    => true,
+            'heterogeneous' => true
+        ];
     }
 }

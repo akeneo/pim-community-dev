@@ -62,7 +62,7 @@ class FlexibleExportController extends ExportController
             'products_export_%s_%s_%s.csv',
             $this->getDataLocale(),
             $this->productManager->getScope(),
-            $dateTime->format('Y-m-d_H:i:s')
+            $dateTime->format('Y-m-d_H-i-s')
         );
     }
 
