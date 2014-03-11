@@ -73,12 +73,10 @@ class FilterUtility extends BaseFilterUtility
         $value,
         $operator
     ) {
-
         $manager = $this->getFlexibleManager($flexibleEntityName);
 
-        $attributeName = $this->flexibleConfig['attribute_class'];
-        $attributeRepo = $this->manager->getAttributeRepository();
-        $attribute = $attributeRepo->findOneByEntityAndCode($flexibleEntityName, $attributeCode);
+        $attributeRepo = $manager->getAttributeRepository();
+        $attribute = $attributeRepo->findOneByEntityAndCode($flexibleEntityName, $field);
 
         $repository = $manager->getFlexibleRepository();
         if ($attribute) {
