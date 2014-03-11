@@ -39,10 +39,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         options:
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-        media:
-            embedded: true
-            type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Media
         metric:
             embedded: true
             type: one
@@ -53,3 +49,8 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPrice
 #            orderBy:
 #                currency: ASC
+    referenceOne:
+        media:
+            simple: true
+            cascade: all
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Media

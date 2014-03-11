@@ -1,5 +1,6 @@
 parameters:
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
+    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
 
 services:
     pim_catalog.repository.association:

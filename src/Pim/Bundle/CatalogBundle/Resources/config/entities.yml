@@ -19,3 +19,4 @@ parameters:
     pim_catalog.entity.job_instance.class:           Akeneo\Bundle\BatchBundle\Entity\JobInstance
     pim_catalog.entity.currency.class:               Pim\Bundle\CatalogBundle\Entity\Currency
     pim_catalog.entity.locale.class:                 Pim\Bundle\CatalogBundle\Entity\Locale
+    pim_catalog.entity.media.class:                  Pim\Bundle\CatalogBundle\Model\Media
