@@ -616,7 +616,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute(QueryBuilder $qb, Attribute $attribute, $value, $operator = '=')
+    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
         $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
@@ -624,7 +624,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByField(QueryBuilder $qb, $field, $value, $operator = '=')
+    public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
         $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
     }
@@ -632,7 +632,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute(QueryBuilder $qb, Attribute $attribute, $direction)
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
     {
         $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
@@ -640,7 +640,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applySorterByField(QueryBuilder $qb, $field, $direction)
+    public function applySorterByField($qb, $field, $direction)
     {
         $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
