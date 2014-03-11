@@ -4,6 +4,14 @@ pim_enrich_datagrid_view_index:
     requirements:
         _method: GET|POST
 
+pim_enrich_datagrid_view_change:
+    path: /{alias}/{id}
+    defaults: { _controller: pim_enrich.controller.datagrid_view:changeViewAction }
+    requirements:
+        id: \d+
+    requirements:
+        _method: GET
+
 pim_enrich_datagrid_view_configure:
     path: /{alias}/{id}/configure
     defaults: { _controller: pim_enrich.controller.datagrid_view:configureAction }

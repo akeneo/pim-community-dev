@@ -13,11 +13,29 @@ use Oro\Bundle\UserBundle\Entity\User;
  */
 class DatagridView
 {
+    /** @staticvar string */
+    const TYPE_DEFAULT = 'default';
+
+    /** @staticvar string */
+    const TYPE_PUBLIC = 'public';
+
+    /** @staticvar string */
+    const TYPE_CUSTOM = 'custom';
+
     /** @var integer */
     protected $id;
 
     /** @var string */
     protected $label;
+
+    /**
+     * - self::TYPE_DEFAULT for the default user's view
+     * - self::TYPE_PUBLIC for a public view
+     * - self::TYPE_CUSTOM for the custom view (modified and unsaved another user's view)
+     *
+     * @var string
+     */
+    protected $type = self::TYPE_PUBLIC;
 
     /** @var User */
     protected $owner;
@@ -36,13 +54,32 @@ class DatagridView
 
     /**
      * Indicates whether the view is the default view of the user
-     * The default view doesn't have a label
      *
      * @return boolean
      */
     public function isDefault()
     {
-        return !(bool) $this->label;
+        return $this->type === self::TYPE_DEFAULT;
+    }
+
+    /**
+     * Indicates whether the view is the custom view of the user
+     *
+     * @return boolean
+     */
+    public function isCustom()
+    {
+        return $this->type === self::TYPE_CUSTOM;
+    }
+
+    /**
+     * Indicates whether a view can be seen by users who don't own it
+     *
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->type === self::TYPE_PUBLIC;
     }
 
     /**
@@ -99,6 +136,30 @@ class DatagridView
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return DatagridView
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

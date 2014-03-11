@@ -28,7 +28,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 class DatagridViewController extends AbstractDoctrineController
 {
     /** @var DatagridManager */
-    protected $manager;
+    protected $datagridManager;
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ class DatagridViewController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridManager          $manager
+     * @param DatagridManager          $datagridManager
      */
     public function __construct(
         Request $request,
@@ -52,7 +52,7 @@ class DatagridViewController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridManager $manager
+        DatagridManager $datagridManager
     ) {
         parent::__construct(
             $request,
@@ -65,7 +65,93 @@ class DatagridViewController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->manager = $manager;
+        $this->datagridManager = $datagridManager;
+    }
+
+    /**
+     * Display or save datagrid views
+     *
+     * @param Request $request
+     * @param string  $alias
+     *
+     * @return Response
+     */
+    public function indexAction(Request $request, $alias)
+    {
+        $user         = $this->getUser();
+        $repository   = $this->getRepository('PimEnrichBundle:DatagridView');
+        $activeViewId = $request->get('gridView', null);
+
+        $activeView = $activeViewId ? $repository->find($activeViewId) : null;
+        if (!$activeView) {
+            $activeView = $this->getDefaultDatagridView($alias, $user);
+        }
+
+        $datagridView = new DatagridView();
+        $datagridView->setOwner($user);
+        $datagridView->setDatagridAlias($alias);
+        $datagridView->setColumns($activeView->getColumns());
+
+        $form = $this->createForm('pim_enrich_datagrid_view', $datagridView);
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            $violations = $this->validator->validate($datagridView, ['Default', 'Creation']);
+            if ($violations->count()) {
+                foreach ($violations as $violation) {
+                    $this->addFlash('error', $violation->getMessage());
+                }
+            } else {
+                $this->persist($datagridView);
+            }
+
+            return $this->redirectToRoute(
+                'pim_enrich_product_index',
+                [
+                    'dataLocale' => $request->get('dataLocale'),
+                    'gridView'   => $datagridView->getId()
+                ]
+            );
+        }
+
+        $views = $repository->findAllForUser($alias, $user);
+
+        return $this->render(
+            'PimEnrichBundle:Datagrid:_views.html.twig',
+            [
+                'alias'      => $alias,
+                'views'      => $views,
+                'activeView' => $activeView,
+                'form'       => $form->createView(),
+                'dataLocale' => $request->get('dataLocale')
+            ]
+        );
+    }
+
+    /**
+     * Change to a different datagrid view
+     * Makes sure that the view is in a clean state
+     *
+     * @param Request      $request
+     * @param string       $alias
+     * @param DatagridView $view
+     *
+     * @return Response
+     */
+    public function changeViewAction(Request $request, $alias, DatagridView $view)
+    {
+        if ($view->getOwner() === $this->getUser()) {
+            $view->setConfiguredColumns($view->getColumns());
+            $this->persist($view);
+        }
+
+        return $this->redirectToRoute(
+            'pim_enrich_product_index',
+            [
+                'dataLocale' => $request->get('dataLocale'),
+                'gridView'   => $view->getId()
+            ]
+        );
     }
 
     /**
@@ -79,7 +165,9 @@ class DatagridViewController extends AbstractDoctrineController
      */
     public function configureAction(Request $request, $alias, DatagridView $view)
     {
-        $user    = $this->getUser();
+        $user = $this->getUser();
+        $view = $this->getEditableDatagridView($view, $user);
+
         $columns = $this->getColumnChoices($alias);
 
         $form = $this->createForm(
@@ -106,9 +194,7 @@ class DatagridViewController extends AbstractDoctrineController
                     $this->addFlash('error', $violation->getMessage());
                 }
             } else {
-                $em = $this->getManager();
-                $em->persist($view);
-                $em->flush();
+                $this->persist($view);
             }
 
             return $this->redirectToRoute(
@@ -121,72 +207,6 @@ class DatagridViewController extends AbstractDoctrineController
         }
 
         return $this->render('PimEnrichBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
-     * Display or save datagrid views
-     *
-     * @param Request $request
-     * @param string  $alias
-     *
-     * @return Response
-     */
-    public function indexAction(Request $request, $alias)
-    {
-        $user       = $this->getUser();
-        $repository = $this->getRepository('PimEnrichBundle:DatagridView');
-        $baseViewId = $request->get('gridView', null);
-
-        $baseView = $baseViewId ? $repository->find($baseViewId) : null;
-        if ($baseView) {
-            $columns = $baseView->getColumns();
-        } else {
-            $view    = $this->getDatagridView($alias, $user);
-            $columns = $view ? $view->getColumns() : array_keys($this->getColumnChoices($alias));
-        }
-
-        $datagridView = new DatagridView();
-        $datagridView->setOwner($user);
-        $datagridView->setDatagridAlias($alias);
-        $datagridView->setColumns($columns);
-
-        $form = $this->createForm('pim_enrich_datagrid_view', $datagridView);
-
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            $violations = $this->validator->validate($datagridView, ['Default', 'Creation']);
-            if ($violations->count()) {
-                foreach ($violations as $violation) {
-                    $this->addFlash('error', $violation->getMessage());
-                }
-            } else {
-                $em = $this->getManager();
-                $em->persist($datagridView);
-                $em->flush();
-            }
-
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                [
-                    'dataLocale' => $request->get('dataLocale'),
-                    'gridView'   => $datagridView->getId()
-                ]
-            );
-        }
-
-        $views = $repository->findBy(['datagridAlias' => $alias]);
-
-        return $this->render(
-            'PimEnrichBundle:Datagrid:_views.html.twig',
-            [
-                'alias'      => $alias,
-                'views'      => $views,
-                'columns'    => $columns,
-                'form'       => $form->createView(),
-                'dataLocale' => $request->get('dataLocale'),
-                'gridView'   => $request->get('gridView', null)
-            ]
-        );
     }
 
     /**
@@ -212,12 +232,7 @@ class DatagridViewController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                [
-                    'dataLocale' => $request->get('dataLocale')
-                ]
-            );
+            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
         }
     }
 
@@ -254,7 +269,7 @@ class DatagridViewController extends AbstractDoctrineController
         $choices = array();
 
         $columnsConfig = $this
-            ->manager
+            ->datagridManager
             ->getDatagrid($alias)
             ->getAcceptor()
             ->getConfig()
@@ -270,14 +285,14 @@ class DatagridViewController extends AbstractDoctrineController
     }
 
     /**
-     * Retrieve datagrid view from datagrid alias and user
+     * Get or create default datagrid view from datagrid alias and user
      *
      * @param string $alias
      * @param User   $user
      *
      * @return DatagridView
      */
-    protected function getDatagridView($alias, User $user)
+    protected function getDefaultDatagridView($alias, User $user)
     {
         $view = $this
             ->getRepository('PimEnrichBundle:DatagridView')
@@ -285,20 +300,74 @@ class DatagridViewController extends AbstractDoctrineController
                 [
                     'datagridAlias' => $alias,
                     'owner'         => $user,
+                    'type'          => DatagridView::TYPE_DEFAULT
                 ]
             );
 
         if (!$view) {
             $view = new DatagridView();
-            $view->setOwner($user);
-            $view->setDatagridAlias($alias);
-            $view->setColumns(array_keys($this->getColumnChoices($alias)));
+            $view
+                ->setType(DatagridView::TYPE_DEFAULT)
+                ->setOwner($user)
+                ->setDatagridAlias($alias)
+                ->setColumns(array_keys($this->getColumnChoices($alias)));
 
-            $em = $this->getManager();
-            $em->persist($view);
-            $em->flush();
+            $this->persist($view);
         }
 
         return $view;
+    }
+
+    /**
+     * Check if the view can be edited by the current user, if not - return the custom view
+     *
+     * @param DatagridView $view
+     * @param User         $user
+     *
+     * @return DatagridView
+     */
+    protected function getEditableDatagridView(DatagridView $view, User $user)
+    {
+        if ($view->getOwner() === $user) {
+            return $view;
+        }
+
+        $customView = $this
+            ->getRepository('PimEnrichBundle:DatagridView')
+            ->findOneBy(
+                [
+                    'datagridAlias' => $view->getDatagridAlias(),
+                    'owner'         => $user,
+                    'type'          => DatagridView::TYPE_CUSTOM
+                ]
+            );
+
+        if (!$customView) {
+            $customView = clone $view;
+        }
+
+        $customView
+            ->setOwner($user)
+            ->setLabel(null)
+            ->setType(DatagridView::TYPE_CUSTOM)
+            ->setColumns($view->getColumns())
+            ->setFilters($view->getFilters())
+            ->setConfiguredColumns([]);
+
+        $this->persist($customView);
+
+        return $customView;
+    }
+
+    /**
+     * Persist a view
+     *
+     * @param object $entity
+     */
+    protected function persist($entity)
+    {
+        $em = $this->getManager();
+        $em->persist($entity);
+        $em->flush();
     }
 }

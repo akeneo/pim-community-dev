@@ -628,9 +628,8 @@ Status: Status
 # Datagrid views
 datagrid_view:
     default:       Default
+    custom:        Custom
     create:        Add
-    none_selected: No view selected
-    none_exist:    No views exist
     placeholder:   Name of new view
     remove:        Delete this view
     columns:

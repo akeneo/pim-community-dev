@@ -1,19 +1,27 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% set activeViewId = gridView ? gridView : 0 %}
-{% set activeView = null %}
+
+{% macro viewLabel(view, showModified) %}
+    {% if showModified %}
+        {{- view.modified ? '* ' : '' -}}
+    {% endif %}
+    {% if view.default %}
+        {{- 'datagrid_view.default'|trans -}}
+    {% elseif view.custom %}
+        {{- 'datagrid_view.custom'|trans -}}
+    {% else %}
+        {{- view.label -}}
+    {% endif %}
+{% endmacro %}
 
 <select id="view-selector" class="hide">
 {% for view in views %}
     <option value="{{ view.id }}">
-        {% if view.id == activeViewId %}
-            {% set activeView = view %}
-        {% endif %}
-        {{ view.default ? 'datagrid_view.default'|trans : view.label }}
+        {{ _self.viewLabel(view) }}
     </option>
 {% endfor %}
 </select>
 
-{% if activeView and not activeView.default and activeView.owner.id == app.user.id %}
+{% if not activeView.default and activeView.owner.id == app.user.id %}
     <a class="muted" {{ elements.deleteLinkAttributes(
         path('pim_enrich_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
         path('pim_enrich_product_index', { dataLocale: dataLocale }),
@@ -25,7 +33,7 @@
 {% endif %}
 
 {{ form_start(form, {
-    action: path('pim_enrich_datagrid_view_index', { alias: alias, dataLocale: dataLocale, gridView: gridView }),
+    action: path('pim_enrich_datagrid_view_index', { alias: alias, dataLocale: dataLocale, gridView: activeView.id }),
     attr: { class: 'pull-left unspaced hide' }
 }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
@@ -41,9 +49,8 @@ require(
         var $selector = $('#view-selector');
 
         var opts = {
-            title: '{{ 'datagrid_view.none_selected'|trans }}',
+            title: '{{ _self.viewLabel(activeView) }}',
             placeholder: '{{ 'Search'|trans }}',
-            emptyText: '{{ 'datagrid_view.none_exist'|trans }}',
             header: '',
             height: 175,
             minWidth: 225,
@@ -54,7 +61,7 @@ require(
                 collision: 'none'
             }
         };
-        opts.selectedText = opts.noneSelectedText = {% if activeView %}'{{ (activeView.modified ? '* ' : '') ~ (activeView.default ? 'datagrid_view.default'|trans : activeView.label) }}'{% else %}opts.title{% endif %};
+        opts.selectedText = opts.noneSelectedText = '{{ _self.viewLabel(activeView, true) }}';
 
         $selector.multiselect(opts).multiselectfilter({
             label: false,
@@ -99,7 +106,7 @@ require(
                 noneSelectedText: label
             });
             var gridViewId = $(this).find('input').val();
-            var url = Routing.generate('pim_enrich_product_index', { gridView: gridViewId, dataLocale: '{{ dataLocale }}' });
+            var url = Routing.generate('pim_enrich_datagrid_view_change', { alias: '{{ alias }}', id: gridViewId, dataLocale: '{{ dataLocale }}' });
             Backbone.history.navigate('url=' + url, { trigger: true });
         });
 
@@ -111,18 +118,6 @@ require(
                 $saveButton.trigger('click');
             }
         });
-
-        var $content = $menu.find('.ui-multiselect-checkboxes');
-        if (!$content.html()) {
-            $content.html(
-                $('<span>', { html: opts.emptyText, css: {
-                    'position': 'absolute',
-                    'color': '#999',
-                    'padding': '15px',
-                    'font-size': '13px'
-                }})
-            );
-        }
     }
 );
 </script>

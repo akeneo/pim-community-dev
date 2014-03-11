@@ -1,6 +1,7 @@
 Pim\Bundle\EnrichBundle\Entity\DatagridView:
     type:  entity
     table: pim_enrich_datagrid_view
+    repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\DatagridViewRepository
     fields:
         id:
             type: integer
@@ -11,6 +12,10 @@ Pim\Bundle\EnrichBundle\Entity\DatagridView:
             type:     string
             length:   100
             unique:   true
+            nullable: true
+        type:
+            type:     string
+            length:   10
             nullable: true
         datagridAlias:
             type:   string
