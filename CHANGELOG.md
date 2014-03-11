@@ -19,6 +19,8 @@
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
 - Remove deprecated fallback property of Locale entity
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
+- Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
+- Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
