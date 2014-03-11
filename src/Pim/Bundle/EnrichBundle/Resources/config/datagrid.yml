@@ -324,11 +324,8 @@ datagrid:
                 label: Export CSV
                 icon: download
                 data_identifier: p
-                format: csv
-                content_type: text/csv
                 messages:
                     empty_selection: No products selected
-                handler: pim_datagrid.extension.mass_action.handler.export
 
             mass_edit:
                 type: redirect
