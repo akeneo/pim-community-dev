@@ -3,19 +3,33 @@
 namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-
-use Pim\Bundle\UserBundle\Context\UserContext;
-
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-
 use Symfony\Component\Serializer\SerializerInterface;
-
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Pim\Bundle\UserBundle\Context\UserContext;
+
+/**
+ * Override ExportController for flexible exports
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class FlexibleExportController extends ExportController
 {
+    /**
+     * Constructor
+     *
+     * @param Request $request
+     * @param MassActionParametersParser $parametersParser
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface $serializer
+     * @param ProductManager $productManager
+     * @param UserContext $userContext
+     */
     public function __construct(
         Request $request,
         MassActionParametersParser $parametersParser,
@@ -24,7 +38,12 @@ class FlexibleExportController extends ExportController
         ProductManager $productManager,
         UserContext $userContext
     ) {
-        parent::__construct($request, $parametersParser, $massActionDispatcher, $serializer);
+        parent::__construct(
+            $request,
+            $parametersParser,
+            $massActionDispatcher,
+            $serializer
+        );
 
         $this->productManager = $productManager;
         $this->userContext    = $userContext;
@@ -33,18 +52,7 @@ class FlexibleExportController extends ExportController
     }
 
     /**
-     * Get data locale code
-     *
-     * @return string
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocaleCode();
-    }
-
-    /**
-     * Create filename
-     * @return string
+     * {@inheritdoc}
      */
     protected function createFilename()
     {
@@ -56,5 +64,15 @@ class FlexibleExportController extends ExportController
             $this->productManager->getScope(),
             $dateTime->format('Y-m-d_H:i:s')
         );
+    }
+
+    /**
+     * Get data locale code
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocaleCode();
     }
 }

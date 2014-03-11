@@ -2,20 +2,14 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Doctrine\ORM\QueryBuilder;
-
-use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Datagrid controller for export action
@@ -26,11 +20,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class ExportController
 {
-    /** @var ContainerInterface $container */
-    protected $container;
-
-    /** @var DatagridManager $datagridManager */
-    protected $datagridManager;
+    /** @var Request $request */
+    protected $request;
 
     /** @var MassActionParametersParser $parametersParser */
     protected $parametersParser;
@@ -41,22 +32,13 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    /** @var ProductManager $productManager */
-    protected $productManager;
-
-    /** @var UserContext $userContext */
-    protected $userContext;
-
     /**
      * Constructor
      *
-     * @param ContainerInterface $container
-     * @param DatagridManager $datagridManager
+     * @param Request $request
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher $massActionDispatcher
      * @param SerializerInterface $serializer
-     * @param ProductManager $productManager
-     * @param UserContext $userContext
      */
     public function __construct(
         Request $request,
@@ -71,29 +53,25 @@ class ExportController
     }
 
     /**
-     * Call export action
-     *
-     * @param Request $request
+     * Data export action
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         // Export time execution depends on entities exported
         ignore_user_abort(false);
         set_time_limit(0);
 
-        return $this->createStreamedResponse($request)->send();
+        return $this->createStreamedResponse()->send();
     }
 
     /**
      * Create a streamed response containing a file
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    protected function createStreamedResponse(Request $request)
+    protected function createStreamedResponse()
     {
         $filename = $this->createFilename();
 
@@ -101,7 +79,7 @@ class ExportController
         $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', $attachment);
-        $response->setCallback($this->quickExportCallback($request));
+        $response->setCallback($this->quickExportCallback());
 
         return $response;
     }
@@ -122,13 +100,13 @@ class ExportController
 
     /**
      * Callback for streamed response
-     * dispatch mass action and returning result as a file
+     * Dispatch mass action and returning result as a file
      *
      * @return \Closure
      */
-    protected function quickExportCallback(Request $request)
+    protected function quickExportCallback()
     {
-        return function () use ($request) {
+        return function () {
             flush();
 
             $format  = 'csv';
@@ -137,8 +115,8 @@ class ExportController
                 'heterogeneous' => true
             ];
 
-            $parameters  = $this->parametersParser->parse($request);
-            $requestData = array_merge($request->query->all(), $request->request->all());
+            $parameters  = $this->parametersParser->parse($this->request);
+            $requestData = array_merge($this->request->query->all(), $this->request->request->all());
 
             $results = $this->massActionDispatcher->dispatch(
                 $requestData['gridName'],
