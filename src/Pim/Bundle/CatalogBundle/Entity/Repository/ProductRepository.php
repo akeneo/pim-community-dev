@@ -401,6 +401,20 @@ SQL;
     }
 
     /**
+     * Returns the Attribute
+     *
+     * @param string $code
+     *
+     * @return Attribute
+     */
+    protected function getAttributeByCode($code)
+    {
+        $repository = $this->getEntityManager()->getRepository($this->getAttributeClass());
+
+        return $repository->findOneByCode($code);
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -788,12 +802,22 @@ SQL;
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
-                $this->applyFilterByAttribute($qb, $attCode, $attValue);
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                } else {
+                    $this->applyFilterByField($qb, $attCode, $attValue);
+                }
             }
         }
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
-                $this->applySorterByAttribute($qb, $attCode, $direction);
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                } else {
+                    $this->applyFilterByField($qb, $attCode, $direction);
+                }
             }
         }
 
