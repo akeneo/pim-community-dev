@@ -42,65 +42,28 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
-        $requirements = $product->getFamily()->getAttributeRequirements();
+        $stats = $this->collectCompletenessStats($product);
 
         $completenesses = new ArrayCollection();
-        $channels = array();
-        $channelObjects = array();
-        $localeObjects = array();
 
-        foreach ($requirements as $req) {
-            $channel = $req->getChannel()->getCode();
-            $locales = $req->getChannel()->getLocales();
-            $currencies = $req->getChannel()->getCurrencies();
-            $attribute = $req->getAttribute();
+        foreach ($stats as $channelStats) {
+            $channel = $channelStats['object'];
+            $channelData = $channelStats['data'];
 
-            if (!isset($channels[$channel])) {
-                $channels[$channel] = array();
-                $channelObjects[$channel] = $req->getChannel();
-            }
+            foreach ($channelData as $localeStats) {
+                $locale = $localeStats['object'];
+                $localeData = $localeStats['data'];
 
-            foreach ($locales as $locale) {
-                if (!isset($channels[$channel][$locale->getCode()])) {
-                    $channels[$channel][$locale->getCode()] = array();
-                    $channels[$channel][$locale->getCode()]['missing_count'] = 0;
-                    $channels[$channel][$locale->getCode()]['required_count'] = 0;
-                    $localeObjects[$locale->getCode()] = $locale;
-                }
-
-                $channels[$channel][$locale->getCode()]['required_count']++;
-
-                $value = $product->getValue($req->getAttribute()->getCode(), $locale->getCode(), $channel);
-                if (($value === null) || ($value->getData() === null)) {
-                    $channels[$channel][$locale->getCode()]['missing_count'] ++;
-                } elseif ($attribute->getBackendType() == "prices") {
-                    $filledPrice = true;
-                    foreach ($currencies as $currency) {
-                        $priceFound = false;
-                        foreach ($value-getData() as $price) {
-                            if ($price->getCurrency() === $currency) {
-                                $priceFound = true;
-                            }
-                        }
-                        if (!$priceFound) {
-                            $filledPrice = false;
-                        }
-                    }
-                    $channels[$channel][$locale]['missing_count'] ++;
-                }
-
-            }
-        }
-
-        foreach ($channels as $channel=>$locales) {
-            foreach ($locales as $locale => $data) {
                 $completeness = new Completeness();
-                $completeness->setChannel($channelObjects[$channel]);
-                $completeness->setLocale($localeObjects[$locale]);
+                $completeness->setChannel($channel);
+                $completeness->setLocale($locale);
 
-                $completeness->setMissingCount($data['missing_count']);
-                $completeness->setRequiredCount($data['required_count']);
-                $completeness->setRatio(($data['required_count'] - $data['missing_count'])/$data['required_count']*100);
+                $completeness->setMissingCount($localeData['missing_count']);
+                $completeness->setRequiredCount($localeData['required_count']);
+                $completeness->setRatio(
+                    ($localeData['required_count'] - $localeData['missing_count'])
+                    /$localeData['required_count']*100
+                );
 
                 $completenesses->add($completeness);
             }
@@ -108,7 +71,89 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $product->setCompletenesses($completenesses);
 
         $this->documentManager->flush($product);
+    }
 
+    /**
+     * Generate statistics on the product completeness
+     *
+     * @param ProductInterface $product
+     * @param ArrayCollection  $attributeRequirements
+     *
+     * @return array $stats
+     */
+    protected function collectStats(ProductInterface $product)
+    {
+        $stats = array();
+
+        $requirements = $product->getFamily()->getAttributeRequirements();
+
+        foreach ($requirements as $req) {
+            $channel = $req->getChannel()->getCode();
+            $locales = $req->getChannel()->getLocales();
+            $currencies = $req->getChannel()->getCurrencies();
+            $attribute = $req->getAttribute();
+
+            if (!isset($stats[$channel])) {
+                $stats[$channel]['object'] = $req->getChannel();
+                $stats[$channel]['data'] = array();
+            }
+
+            foreach ($locales as $localeObject) {
+                $locale = $localeObject->getCode();
+                if (!isset($stats[$channel]['data'][$locale])) {
+                    $stats[$channel]['data'][$locale] = array();
+                    $stats[$channel]['data'][$locale]['object'] = $localeObject;
+                    $stats[$channel]['data'][$locale]['data'] = array();
+                    $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
+                    $stats[$channel]['data'][$locale]['data']['required_count'] = 0;
+                }
+
+                $stats[$channel]['data'][$locale]['data']['required_count']++;
+
+                $value = $product->getValue($req->getAttribute()->getCode(), $locale->getCode(), $channel);
+
+                if (($value === null) || ($value->getData() === null)) {
+
+                    $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
+
+                } elseif (($attribute->getBackendType() == "prices") &&
+                    (!$this->isPriceComplete($value, $currencies))) {
+
+                    $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Determine if the value price provided is complete, i.e. a price
+     * exists for all currencies provided
+     *
+     * @param ProductValueInterface $value
+     * @param ArrayCollection       $currencies
+     *
+     * @return boolean
+     */
+    protected function isPriceComplete(ProductValueInterface $value, ArrayCollection $currencies)
+    {
+        $completePrice = true;
+
+        foreach ($currencies as $currency) {
+            $priceFound = false;
+
+            foreach ($value->getData() as $price) {
+                if ($price->getCurrency() === $currency) {
+                    $priceFound = true;
+                }
+            }
+            if (!$priceFound) {
+                $completePrice = false;
+            }
+        }
+
+        return $completePrice;
     }
 
     /**
@@ -125,7 +170,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function schedule(ProductInterface $product)
     {
-        // @TODO Not implemented yet
-        return;
+        $product->setCompletenesses(new ArrayCollection());
+
+        $this->documentManager->flush($product);
     }
 }
