@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
@@ -72,10 +72,10 @@ class FiltersConfigurator implements ConfiguratorInterface
 
                 $filterConfig = $attributeTypeConf['filter'];
                 $filterConfig = $filterConfig + array(
-                    FilterUtility::FEN_KEY       => $this->flexibleEntity,
-                    FilterUtility::DATA_NAME_KEY => $attributeCode,
-                    'label'                      => $attribute['label'],
-                    'enabled'                    => ($attributeType === 'pim_catalog_identifier')
+                    ProductFilterUtility::FEN_KEY       => $this->flexibleEntity,
+                    ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
+                    'label'                             => $attribute['label'],
+                    'enabled'                           => ($attributeType === 'pim_catalog_identifier')
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {

@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Flexible filter
@@ -29,13 +30,13 @@ class ChoiceFilter extends AjaxChoiceFilter
      * Constructor
      *
      * @param FormFactoryInterface $factory
-     * @param FilterUtility        $util
+     * @param ProductFilterUtility $util
      * @param UserContext          $userContext
      * @param string               $optionRepositoryClass
      */
     public function __construct(
         FormFactoryInterface $factory,
-        FilterUtility $util,
+        ProductFilterUtility $util,
         UserContext $userContext,
         $optionRepositoryClass
     ) {
@@ -57,11 +58,11 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $fen = $this->get(FilterUtility::FEN_KEY);
+        $fen = $this->get(ProductFilterUtility::FEN_KEY);
         $this->util->applyFlexibleFilter(
             $ds,
             $fen,
-            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
             $operator
         );
@@ -97,8 +98,8 @@ class ChoiceFilter extends AjaxChoiceFilter
     protected function getChoiceUrlParams()
     {
         if (null === $this->attributeId) {
-            $filedName       = $this->get(FilterUtility::DATA_NAME_KEY);
-            $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
+            $filedName       = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+            $flexibleManager = $this->util->getFlexibleManager($this->get(ProductFilterUtility::FEN_KEY));
 
             $attribute = $flexibleManager->getAttributeRepository()->findOneBy(
                 ['entityType' => $flexibleManager->getFlexibleName(), 'code' => $filedName]

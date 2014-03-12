@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Flexible filter
@@ -25,8 +26,8 @@ class BooleanFilter extends OroBooleanFilter
 
         $this->util->applyFlexibleFilter(
             $ds,
-            $this->get(FilterUtility::FEN_KEY),
-            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->get(ProductFilterUtility::FEN_KEY),
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
             '='
         );

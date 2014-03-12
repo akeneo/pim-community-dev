@@ -12,6 +12,7 @@ use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Metric filter related to flexible entities
@@ -46,14 +47,14 @@ class MetricFilter extends OroNumberFilter
      * Constructor
      *
      * @param FormFactoryInterface $factory
-     * @param FilterUtility        $util
+     * @param ProductFilterUtility $util
      * @param TranslatorInterface  $translator
      * @param MeasureManager       $measureManager
      * @param MeasureConverter     $converter
      */
     public function __construct(
         FormFactoryInterface $factory,
-        FilterUtility $util,
+        ProductFilterUtility $util,
         TranslatorInterface $translator,
         MeasureManager $measureManager,
         MeasureConverter $converter
@@ -102,8 +103,8 @@ class MetricFilter extends OroNumberFilter
 
         $this->util->applyFlexibleFilter(
             $ds,
-            $this->get(FilterUtility::FEN_KEY),
-            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->get(ProductFilterUtility::FEN_KEY),
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $baseValue,
             $operator
         );

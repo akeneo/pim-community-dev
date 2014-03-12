@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Flexible filter
@@ -36,7 +37,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
             $ds,
             $dateStartValue,
             $dateEndValue,
-            $this->get(FilterUtility::DATA_NAME_KEY)
+            $this->get(ProductFilterUtility::DATA_NAME_KEY)
         );
 
         return true;
@@ -118,6 +119,6 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
      */
     protected function getFEN()
     {
-        return $this->get(FilterUtility::FEN_KEY);
+        return $this->get(ProductFilterUtility::FEN_KEY);
     }
 }
