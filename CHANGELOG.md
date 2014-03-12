@@ -30,6 +30,10 @@
 - Move src/Pim/Bundle/FilterBundle/Filter/CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CategoryFilter.php
 - Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
 
+# 1.0.1
+## Bug Fixes
+- Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
+
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
 ## Features
