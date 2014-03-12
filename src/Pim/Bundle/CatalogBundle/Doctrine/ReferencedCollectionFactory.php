@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -44,7 +43,9 @@ class ReferencedCollectionFactory
         }
 
         return new ReferencedCollection(
-            $entityClass, $identifiers, $this->objectManager
+            $entityClass,
+            $identifiers,
+            $this->objectManager
         );
     }
 }

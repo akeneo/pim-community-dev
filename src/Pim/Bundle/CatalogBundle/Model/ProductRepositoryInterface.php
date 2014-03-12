@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository interface
@@ -63,6 +64,35 @@ interface ProductRepositoryInterface
      * @return FlexibleEntityRepository
      */
     public function setScope($code);
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    );
+
+    /**
+     * Load a flexible entity with related attribute values
+     *
+     * @param integer $id
+     *
+     * @return AbstractFlexible|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneByWithValues($id);
 
     /**
      * @param string $scope
@@ -223,4 +253,42 @@ interface ProductRepositoryInterface
      * @param boolean $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, $productIds, $include);
+
+    /**
+     * Apply a filter by attribute value
+     *
+     * @param mixed        $qb             query builder to update
+     * @param Attribute    $attribute      attribute
+     * @param string|array $attributeValue value(s) used to filter
+     * @param string       $operator       operator to use
+     */
+    public function applyFilterByAttribute($qb, Attribute $attribute, $attributeValue, $operator = '=');
+
+    /**
+     * Apply a filter by a field value
+     *
+     * @param mixed        $qb       query builder to update
+     * @param string       $field    the field
+     * @param string|array $value    value(s) used to filter
+     * @param string       $operator operator to use
+     */
+    public function applyFilterByField($qb, $field, $value, $operator = '=');
+
+    /**
+     * Apply a sort by attribute value
+     *
+     * @param mixed     $qb        query builder to update
+     * @param Attribute $attribute attribute
+     * @param string    $direction direction to use
+     */
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction);
+
+    /**
+     * Apply a sort by field value
+     *
+     * @param mixed     $qb        query builder to update
+     * @param Attribute $attribute attribute
+     * @param string    $direction direction to use
+     */
+    public function applySorterByField($qb, $field, $direction);
 }

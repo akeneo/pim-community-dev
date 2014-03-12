@@ -13,6 +13,7 @@ services:
         class: %pim_datagrid.extension.sorter.orm.flexible_field_sorter.class%
         arguments:
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_datagrid.extension.sorter, type: flexible_field }
 

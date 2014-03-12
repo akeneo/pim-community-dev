@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository
@@ -45,6 +46,19 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * @param FlexibleQueryBuilder
      */
     protected $flexibleQB;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 
     /**
      * {@inheritdoc}
@@ -286,6 +300,23 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getFlexibleQueryBuilder($qb)
+    {
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -296,28 +327,35 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Apply a filter by attribute value
-     *
-     * @param QueryBuilder $qb             query builder to update
-     * @param string       $attributeCode  attribute code
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
+     * {@inheritdoc}
      */
-    public function applyFilterByAttribute(QueryBuilder $qb, $attributeCode, $attributeValue, $operator = '=')
+    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
 
     /**
-     * Apply a sort by attribute value
-     *
-     * @param QueryBuilder $qb            query builder to update
-     * @param string       $attributeCode attribute code
-     * @param string       $direction     direction to use
+     * {@inheritdoc}
      */
-    public function applySorterByAttribute(QueryBuilder $qb, $attributeCode, $direction)
+    public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField($qb, $field, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

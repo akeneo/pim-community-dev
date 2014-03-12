@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Type;
 
 use Doctrine\ODM\MongoDB\Types\Type;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -33,7 +32,7 @@ class Entities extends Type
 
         return $value
             ->map(
-                function($val) {
+                function ($val) {
                     return $val->getId();
                 }
             )
