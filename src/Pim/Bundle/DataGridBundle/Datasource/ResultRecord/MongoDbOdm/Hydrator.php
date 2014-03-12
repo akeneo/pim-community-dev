@@ -20,6 +20,7 @@ class Hydrator implements HydratorInterface
     public function hydrate($queryBuilder, $options)
     {
         $localeCode = $options['locale_code'];
+        $scopeCode  = $options['scope_code'];
         $config     = $options['attributes_configuration'];
 
         $query = $queryBuilder->hydrate(false)->getQuery();
@@ -37,9 +38,13 @@ class Hydrator implements HydratorInterface
             $result['dataLocale']= $localeCode;
             if (isset($result['values'])) {
                 foreach ($result['values'] as $value) {
-                    $attribute = $attributes[$value['attribute']];
-                    $value['attribute']= $attribute;
-                    $result[$attribute['code']]= $value;
+                    $filterValueLocale = isset($value['locale']) && ($value['locale'] !== $localeCode);
+                    $filterValueScope = isset($value['scope']) && ($value['scope'] !== $scopeCode);
+                    if (!$filterValueLocale && !$filterValueScope) {
+                        $attribute = $attributes[$value['attribute']];
+                        $value['attribute']= $attribute;
+                        $result[$attribute['code']]= $value;
+                    }
                 }
                 unset($result['values']);
             }
