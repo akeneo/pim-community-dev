@@ -25,10 +25,12 @@ define(
             originalButton: null,
 
             template: _.template(
-                '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
-                    '<i class="icon-<%= icon %>"></i>' +
-                    '<%= label %>' +
-                '</a>'
+                '<div class="btn-group">' +
+                    '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
+                        '<i class="icon-<%= icon %>"></i>' +
+                        '<%= label %>' +
+                    '</a>' +
+                '</div>'
             ),
 
             initialize: function (options) {
@@ -65,9 +67,14 @@ define(
                             label: this.label
                         })
                     )
-                    .on('click', '.export-actions-panel a.btn.action', _.bind(this.execute, this));
+                    .find('div')
+                    .on('click', 'a.btn.action', _.bind(this.execute, this));
 
-                this.originalButton = this.$gridContainer.find(this.originalButtonSelector).find('.icon-' + this.originalButtonIcon).parent();
+                this.originalButton = this.$gridContainer
+                    .find(this.originalButtonSelector)
+                    .find('.icon-' + this.originalButtonIcon)
+                    .parent();
+                
                 this.originalButton.hide();
             },
 
@@ -94,7 +101,10 @@ define(
             if (ExportAction.exportPanelCreated == false) {
                 $gridContainer
                     .find('div.grid-toolbar>.pull-left')
-                    .append('<div class="export-actions-panel btn-group buffer-left"></div>');
+                    .append(
+                        '<div class="export-actions-panel btn-group buffer-left">' +
+                        '</div>'
+                    );
             }
 
             ExportAction.exportPanelCreated = true;
