@@ -27,10 +27,8 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $fen = $this->get(ProductFilterUtility::FEN_KEY);
         $this->util->applyFlexibleFilter(
             $ds,
-            $fen,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
             $operator

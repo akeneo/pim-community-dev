@@ -5,7 +5,6 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FilterBundle\Filter\EntityFilter as OroEntityFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -42,7 +41,6 @@ class EntityFilter extends OroEntityFilter
 
         $this->util->applyFlexibleFilter(
             $ds,
-            $this->get(ProductFilterUtility::FEN_KEY),
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $this->extractIds($data['value']),
             $operator
@@ -60,8 +58,7 @@ class EntityFilter extends OroEntityFilter
      */
     protected function getClassName()
     {
-        /** @var FlexibleManager $fm */
-        $flexibleManager = $this->util->getFlexibleManager($this->get(ProductFilterUtility::FEN_KEY));
+        $flexibleManager = $this->util->getProductManeger();
         $valueName       = $flexibleManager->getFlexibleValueName();
         $valueMetadata   = $flexibleManager->getStorageManager()
             ->getMetadataFactory()

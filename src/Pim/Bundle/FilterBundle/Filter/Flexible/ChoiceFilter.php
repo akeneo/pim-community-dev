@@ -58,10 +58,8 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $fen = $this->get(ProductFilterUtility::FEN_KEY);
         $this->util->applyFlexibleFilter(
             $ds,
-            $fen,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
             $operator
@@ -98,15 +96,11 @@ class ChoiceFilter extends AjaxChoiceFilter
     protected function getChoiceUrlParams()
     {
         if (null === $this->attributeId) {
-            $filedName       = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-            $flexibleManager = $this->util->getFlexibleManager($this->get(ProductFilterUtility::FEN_KEY));
-
-            $attribute = $flexibleManager->getAttributeRepository()->findOneBy(
-                ['entityType' => $flexibleManager->getFlexibleName(), 'code' => $filedName]
-            );
+            $fieldName       = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+            $attribute = $this->util->getAttribute($fieldName);
 
             if (!$attribute) {
-                throw new \LogicException(sprintf('There is no flexible attribute with name %s.', $filedName));
+                throw new \LogicException(sprintf('There is no flexible attribute with name %s.', $fieldName));
             }
 
             $this->attributeId = $attribute->getId();

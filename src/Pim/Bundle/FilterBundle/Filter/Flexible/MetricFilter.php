@@ -103,7 +103,6 @@ class MetricFilter extends OroNumberFilter
 
         $this->util->applyFlexibleFilter(
             $ds,
-            $this->get(ProductFilterUtility::FEN_KEY),
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $baseValue,
             $operator
