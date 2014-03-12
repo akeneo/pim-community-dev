@@ -19,7 +19,7 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      *
      * @param MassActionMediatorInterface $mediator
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return mixed
      */
     public function handle(MassActionMediatorInterface $mediator)
     {

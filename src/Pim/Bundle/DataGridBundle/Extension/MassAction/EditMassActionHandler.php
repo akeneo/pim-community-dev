@@ -16,6 +16,8 @@ class EditMassActionHandler implements MassActionHandlerInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
