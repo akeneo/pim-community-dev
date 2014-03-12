@@ -423,14 +423,6 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $qb
-            ->addSelect('p')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
-
         return $qb;
     }
 
@@ -443,10 +435,6 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
         $isCheckedExpr =
             'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
@@ -456,7 +444,6 @@ SQL;
         $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
 
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($inGroupExpr.' AS in_group');
 
@@ -484,8 +471,6 @@ SQL;
             ->from($this->_entityName, 'p', 'p.id');
 
         $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin(
                 'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
@@ -502,7 +487,6 @@ SQL;
         $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
 
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
