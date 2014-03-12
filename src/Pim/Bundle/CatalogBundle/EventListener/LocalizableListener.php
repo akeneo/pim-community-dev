@@ -1,20 +1,21 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Aims to inject selected scope into loaded product
+ * Aims to inject selected locale into loaded product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopableListener implements EventSubscriber
+class LocalizableListener implements EventSubscriber
 {
     /**
      * @var ContainerInterface $container
@@ -26,9 +27,9 @@ class ScopableListener implements EventSubscriber
      *
      * @param ContainerInterface $container
      *
-     * @return ScopableListener
+     * @return LocalizableListener
      */
-    public function setContainer($container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
 
@@ -42,9 +43,7 @@ class ScopableListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            'postLoad'
-        );
+        return ['postLoad'];
     }
 
     /**
@@ -53,11 +52,12 @@ class ScopableListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $object = $args->getObject();
 
-        if ($entity instanceof Product) {
-            $productManager = $this->container->get('pim_catalog.manager.product');
-            $entity->setScope($productManager->getScope());
+        if (!$object instanceof ProductInterface && !$object instanceof AttributeOption) {
+            return;
         }
+
+        $object->setLocale($this->container->get('pim_catalog.manager.product')->getLocale());
     }
 }
