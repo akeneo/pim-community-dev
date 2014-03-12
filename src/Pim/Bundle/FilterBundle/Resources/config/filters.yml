@@ -141,4 +141,3 @@ services:
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
-
