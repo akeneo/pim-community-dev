@@ -56,8 +56,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         array $orderBy = null,
         $limit = null,
         $offset = null
-    )
-    {
+    ) {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
