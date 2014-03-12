@@ -51,7 +51,7 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function groupBy($_)
+    public function groupBy($groupBy)
     {
         // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
@@ -59,7 +59,7 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroupBy($_)
+    public function addGroupBy($group)
     {
         // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
