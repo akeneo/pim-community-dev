@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
-
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 
 /**
  * Handler for mass edit action
