@@ -22,9 +22,18 @@ services:
 
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
+        
+    pim_datagrid.extension.mass_action.handler.edit:
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
 
     pim_datagrid.extension.mass_action.type.export:
         class: %pim_datagrid.extension.mass_action.type.export.class%
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
+
+    pim_datagrid.extension.mass_action.type.edit:
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassAction
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: edit }
