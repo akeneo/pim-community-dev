@@ -22,6 +22,13 @@
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
+- Move src/Pim/Bundle/FilterBundle/Filter/ScopeFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/ScopeFilter.php
+- Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js
+- Move src/Pim/Bundle/FilterBundle/Filter/ProductCompletenessFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CompletenessFilter.php
+- Move src/Pim/Bundle/FilterBundle/Filter/ProductGroupsFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/GroupsFilter.php
+- Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/category-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_category-filter.js
+- Move src/Pim/Bundle/FilterBundle/Filter/CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CategoryFilter.php
+- Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 

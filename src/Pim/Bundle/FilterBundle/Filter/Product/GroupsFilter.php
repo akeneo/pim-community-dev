@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
@@ -12,7 +12,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductGroupsFilter extends ChoiceFilter
+class GroupsFilter extends ChoiceFilter
 {
     /**
      * {@inheritdoc}

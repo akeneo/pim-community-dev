@@ -7,20 +7,19 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 
 class DateRangeFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
         $this->init(
             'date_filter',
             [
-                FilterUtility::FEN_KEY       => 'fen_key',
-                FilterUtility::DATA_NAME_KEY => 'data_name_key',
+                ProductFilterUtility::DATA_NAME_KEY => 'data_name_key',
             ]
         );
     }
@@ -230,7 +229,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -255,7 +254,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', ['from' => '1987-05-14', 'to' => '2014-01-23'], ['from' => '<', 'to' => '>'])->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['from' => '1987-05-14', 'to' => '2014-01-23'], ['from' => '<', 'to' => '>'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -280,7 +279,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', '2014-01-23', '<')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', '2014-01-23', '<')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -305,7 +304,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', '1987-05-14', '>')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', '1987-05-14', '>')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -345,7 +344,6 @@ class DateRangeFilterSpec extends ObjectBehavior
             'label'                 => 'Date_filter',
             'choices'               => ['a', 'b', 'c'],
             'enabled'               => true,
-            'flexible_entity_name'  => 'fen_key',
             'data_name'             => 'data_name_key',
             'typeValues'            => ['foo', 'bar'],
             'externalWidgetOptions' => ['boo' => 'far'],

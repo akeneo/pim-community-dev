@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Price filter related to flexible entities
@@ -36,8 +37,7 @@ class PriceFilter extends OroNumberFilter
 
         $this->util->applyFlexibleFilter(
             $ds,
-            $this->get(FilterUtility::FEN_KEY),
-            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
             sprintf('%s %s', $data['value'], $data['currency']),
             $this->getOperator($data['type'])
         );

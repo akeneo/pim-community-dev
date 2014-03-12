@@ -400,14 +400,14 @@ datagrid:
                                 1: Enabled
                                 0: Disabled
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
                 category:
-                    type:      category
+                    type:      product_category
                     label:     Category
                     data_name: category
                 completeness:
@@ -537,7 +537,7 @@ datagrid:
                     label: Updated At
                     filter_by_having: true
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
@@ -655,7 +655,7 @@ datagrid:
                     label: Updated At
                     filter_by_having: true
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
@@ -1073,7 +1073,7 @@ datagrid:
                     data_name:        p.updated
                     filter_by_having: true
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
