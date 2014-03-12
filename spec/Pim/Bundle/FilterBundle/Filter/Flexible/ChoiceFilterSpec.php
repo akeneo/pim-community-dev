@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
@@ -17,15 +17,14 @@ Use Pim\Bundle\UserBundle\Context\UserContext;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility, UserContext $userContext)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext)
     {
         $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass');
 
         $this->init(
             'foo',
             [
-                FilterUtility::FEN_KEY       => 'fen_key',
-                FilterUtility::DATA_NAME_KEY => 'data_name_key',
+                ProductFilterUtility::DATA_NAME_KEY => 'data_name_key',
             ]
         );
     }
@@ -44,7 +43,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -62,7 +61,7 @@ class ChoiceFilterSpec extends ObjectBehavior
     ) {
         $collection->count()->willReturn(2);
         $collection->getValues()->willReturn(['foo', 'bar']);
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -77,7 +76,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -92,7 +91,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter($datasource, 'fen_key', 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -114,11 +113,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         $utility,
         $factory
     ) {
-        $utility->getFlexibleManager('fen_key')->willReturn($flexibleManager);
-        $flexibleManager->getAttributeRepository()->willReturn($attributeRepository);
-        $flexibleManager->getFlexibleName()->willReturn('foo');
-
-        $attributeRepository->findOneBy(['entityType' => 'foo', 'code' => 'data_name_key'])->willReturn($attribute);
+        $utility->getAttribute('data_name_key')->willReturn($attribute);
 
         $factory->create(AjaxChoiceFilterType::NAME, [], [
             'csrf_protection' => false,

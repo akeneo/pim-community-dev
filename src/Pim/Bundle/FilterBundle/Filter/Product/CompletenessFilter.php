@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Product;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCompletenessFilter extends BooleanFilter
+class CompletenessFilter extends BooleanFilter
 {
     /**
      * @var ProductRepositoryInterface

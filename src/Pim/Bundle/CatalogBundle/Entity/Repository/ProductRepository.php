@@ -4,13 +4,16 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository
@@ -23,6 +26,11 @@ class ProductRepository extends FlexibleEntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
+    /**
+     * @param FlexibleQueryBuilder
+     */
+    protected $flexibleQB;
+
     /**
      * @var string
      */
@@ -393,6 +401,20 @@ SQL;
     }
 
     /**
+     * Returns the Attribute
+     *
+     * @param string $code
+     *
+     * @return Attribute
+     */
+    protected function getAttributeByCode($code)
+    {
+        $repository = $this->getEntityManager()->getRepository($this->getAttributeClass());
+
+        return $repository->findOneByCode($code);
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -615,6 +637,38 @@ SQL;
     /**
      * {@inheritdoc}
      */
+    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByField($qb, $field, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField($qb, $field, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function applyFilterByIds($qb, $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -626,5 +680,155 @@ SQL;
             $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * Set flexible query builder
+     *
+     * @param FlexibleQueryBuilder $flexibleQB
+     *
+     * @return FlexibleEntityRepository
+     */
+    public function setFlexibleQueryBuilder($flexibleQB)
+    {
+        $this->flexibleQB = $flexibleQB;
+
+        return $this;
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        return $this
+            ->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Load a flexible entity with its attribute values
+     *
+     * @param integer $id
+     *
+     * @return AbstractFlexible|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneByWithValues($id)
+    {
+        $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
+        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
+        $qb->addSelect('Value');
+        $qb->addSelect('Attribute');
+        $qb->addSelect('AttributeTranslations');
+        $qb->addSelect('AttributeLocales');
+        $qb->leftJoin('Attribute.group', 'AttributeGroup');
+        $qb->addSelect('AttributeGroup');
+        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
+        $qb->addSelect('AGroupTranslations');
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return FlexibleQueryBuilder
+     */
+    protected function getFlexibleQueryBuilder($qb)
+    {
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
+    }
+
+    /**
+     * Add join to values tables
+     *
+     * @param QueryBuilder $qb
+     */
+    protected function addJoinToValueTables(QueryBuilder $qb)
+    {
+        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
+            ->leftJoin('Value.attribute', 'Attribute')
+            ->leftJoin('Value.options', 'ValueOption')
+            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    protected function findAllByAttributesQB(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        $qb = $this->createQueryBuilder('Entity');
+        $this->addJoinToValueTables($qb);
+
+        if (!is_null($criteria)) {
+            foreach ($criteria as $attCode => $attValue) {
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                } else {
+                    $this->applyFilterByField($qb, $attCode, $attValue);
+                }
+            }
+        }
+        if (!is_null($orderBy)) {
+            foreach ($orderBy as $attCode => $direction) {
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                } else {
+                    $this->applySorterByField($qb, $attCode, $direction);
+                }
+            }
+        }
+
+        // use doctrine paginator to avoid count problem with left join of values
+        if (!is_null($offset) and !is_null($limit)) {
+            $qb->setFirstResult($offset)->setMaxResults($limit);
+            $paginator = new Paginator($qb->getQuery());
+
+            return $paginator;
+        }
+
+        return $qb;
     }
 }
