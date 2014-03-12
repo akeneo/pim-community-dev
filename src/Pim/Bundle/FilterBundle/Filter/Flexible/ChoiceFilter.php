@@ -96,7 +96,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     protected function getChoiceUrlParams()
     {
         if (null === $this->attributeId) {
-            $fieldName       = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+            $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
             $attribute = $this->util->getAttribute($fieldName);
 
             if (!$attribute) {
