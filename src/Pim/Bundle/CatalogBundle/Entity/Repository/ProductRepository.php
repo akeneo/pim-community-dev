@@ -31,7 +31,7 @@ class ProductRepository extends FlexibleEntityRepository implements
      */
     protected $flexibleQB;
 
-   /**
+    /**
      * @var string
      */
     private $identifierCode;
