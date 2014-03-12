@@ -72,7 +72,6 @@ class FiltersConfigurator implements ConfiguratorInterface
 
                 $filterConfig = $attributeTypeConf['filter'];
                 $filterConfig = $filterConfig + array(
-                    ProductFilterUtility::FEN_KEY       => $this->flexibleEntity,
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
                     'enabled'                           => ($attributeType === 'pim_catalog_identifier')
