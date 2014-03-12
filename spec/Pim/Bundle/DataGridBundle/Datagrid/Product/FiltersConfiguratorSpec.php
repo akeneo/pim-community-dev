@@ -46,7 +46,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
         $expectedConf = [
             0 => "identifier_config",
-            "flexible_entity_name" => "Pim/Catalog/Product",
             "data_name" => "sku",
             "label" => "Sku",
             "enabled" => true
@@ -55,7 +54,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'name');
         $expectedConf = [
             0 => "text_config",
-            "flexible_entity_name" => "Pim/Catalog/Product",
             "data_name" => "name",
             "label" => "Name",
             "enabled" => false
@@ -89,7 +87,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
         $expectedConf = [
             0 => "identifier_config",
-            "flexible_entity_name" => "Pim/Catalog/Product",
             "data_name" => "sku",
             "label" => "Sku",
             "enabled" => true
@@ -98,7 +95,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'name');
         $expectedConf = [
             0 => "text_config",
-            "flexible_entity_name" => "Pim/Catalog/Product",
             "data_name" => "name",
             "label" => "Name",
             "enabled" => false
