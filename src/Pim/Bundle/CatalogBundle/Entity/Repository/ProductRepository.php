@@ -667,6 +667,28 @@ SQL;
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByGroupIds($qb, $groupIds)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        $groupAlias = 'filterGroups';
+        $qb->leftJoin($rootAlias.'.groups', $groupAlias);
+        $qb->andWhere($qb->expr()->in($groupAlias.'.id', $groupIds));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByFamilyIds($qb, $familyIds)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        $familyAlias = 'filterFamily';
+        $qb->leftJoin($rootAlias.'.family', $familyAlias);
+        $qb->andWhere($qb->expr()->in($familyAlias.'.id', $familyIds));
+    }
+
+    /**
      * Set flexible query builder
      *
      * @param FlexibleQueryBuilder $flexibleQB

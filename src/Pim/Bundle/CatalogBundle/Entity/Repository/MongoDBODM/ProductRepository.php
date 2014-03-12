@@ -365,4 +365,20 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     {
         // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByGroupIds($qb, $groupIds)
+    {
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByFamilyIds($qb, $familyIds)
+    {
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
