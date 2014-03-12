@@ -16,7 +16,7 @@ define(
 
             icon: 'download',
 
-            target: 'div.grid-toolbar>.pull-left',
+            target: 'div#export-actions-panel',
 
             originalButtonSelector: 'div.grid-toolbar .mass-actions-panel .action.btn',
 
@@ -25,12 +25,10 @@ define(
             originalButton: null,
 
             template: _.template(
-                '<div class="btn-group">' +
-                    '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
-                        '<i class="icon-<%= icon %>"></i>' +
-                        '<%= label %>' +
-                    '</a>' +
-                '</div>'
+                '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
+                    '<i class="icon-<%= icon %>"></i>' +
+                    '<%= label %>' +
+                '</a>'
             ),
 
             initialize: function (options) {
@@ -51,6 +49,8 @@ define(
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
 
+                ExportAction.createPanel(this.$gridContainer);
+
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
                 this.render();
@@ -58,7 +58,7 @@ define(
 
             render: function () {
                 this.$gridContainer
-                    .find(this.target)
+                    .find('div.export-actions-panel')
                     .append(
                         this.template({
                             icon: this.icon,
@@ -77,31 +77,29 @@ define(
         });
 
         ExportAction.init = function ($gridContainer, gridName) {
-            console.log('ExportAction::init()');
             var metadata = $gridContainer.data('metadata');
             var actions   = metadata.massActions;
 
             for (var key in actions) {
                 var action = actions[key];
                 if (action.type == 'export') {
-                    ExportAction.createPanel($gridContainer);
                     new ExportAction(
                         _.extend({ $gridContainer: $gridContainer, gridName: gridName }, action)
                     );
                 }
             }
         };
-        
+
         ExportAction.createPanel = function ($gridContainer) {
             if (ExportAction.exportPanelCreated == false) {
                 $gridContainer
                     .find('div.grid-toolbar>.pull-left')
-                    .append('<div id="export-actions-panel" class="export-actions-panel btn-group buffer-left"></div>');
+                    .append('<div class="export-actions-panel btn-group buffer-left"></div>');
             }
 
             ExportAction.exportPanelCreated = true;
         };
-        
+
         ExportAction.exportPanelCreated = false;
 
         return ExportAction;
