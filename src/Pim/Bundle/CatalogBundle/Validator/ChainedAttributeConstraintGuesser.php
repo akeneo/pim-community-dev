@@ -22,7 +22,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return $attribute instanceof Attribute;
+        return true;
     }
 
     /**
