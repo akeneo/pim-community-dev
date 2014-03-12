@@ -379,13 +379,13 @@ datagrid:
                 family:
                     type:      choice
                     label:     Family
-                    data_name: family
+                    data_name: p.family
                     options:
                         field_options:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
-                    type:      choice
+                    type:      product_groups
                     label:     Groups
                     data_name: groups
                     options:
