@@ -318,7 +318,7 @@ datagrid:
 
             quick_export:
                 type: export
-                label: Export CSV
+                label: Quick Export
                 icon: download
                 data_identifier: p
                 route: pim_datagrid_export_flexible_index

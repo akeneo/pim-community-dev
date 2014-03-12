@@ -12,7 +12,7 @@ define(
          */
         var ExportAction = Backbone.View.extend({
 
-            label: __('Export CSV'),
+            label: __('Quick Export'),
 
             icon: 'download',
 
