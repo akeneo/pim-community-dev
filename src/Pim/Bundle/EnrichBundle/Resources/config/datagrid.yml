@@ -697,7 +697,6 @@ datagrid:
                     data_name: f.code
                 label:
                     data_name: familyLabel
-                    sorter:    product_family
                 attributeAsLabel:
                     data_name: f.attributeAsLabel
             default:
