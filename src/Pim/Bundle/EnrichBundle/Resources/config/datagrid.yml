@@ -238,12 +238,13 @@ datagrid:
             repository_method: createDatagridQueryBuilder
         columns:
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -342,6 +343,7 @@ datagrid:
             columns:
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -356,7 +358,7 @@ datagrid:
         filters:
             columns:
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -366,7 +368,7 @@ datagrid:
                 groups:
                     type:      product_groups
                     label:     Groups
-                    data_name: filterGroups
+                    data_name: groups
                     options:
                         field_options:
                             multiple: true
@@ -398,12 +400,12 @@ datagrid:
                 created:
                     type:             date
                     data_name:        p.created
-                    label: Created At
+                    label:            Created At
                     filter_by_having: true
                 updated:
                     type:             date
                     data_name:        p.updated
-                    label: Updated At
+                    label:            Updated At
                     filter_by_having: true
 
     product-group-grid:
@@ -436,12 +438,13 @@ datagrid:
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -468,6 +471,7 @@ datagrid:
                     data_name: in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -487,7 +491,7 @@ datagrid:
                     data_name: in_group
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -554,12 +558,13 @@ datagrid:
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -586,6 +591,7 @@ datagrid:
                     data_name: in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -605,7 +611,7 @@ datagrid:
                     data_name: in_group
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -974,12 +980,13 @@ datagrid:
                 frontend_type: html
                 editable:      true
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -1006,6 +1013,7 @@ datagrid:
                     data_name: is_associated
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -1025,7 +1033,7 @@ datagrid:
                     data_name:        is_associated
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:

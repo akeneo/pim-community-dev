@@ -38,10 +38,10 @@ class ExportController
     /**
      * Constructor
      *
-     * @param Request $request
+     * @param Request                    $request
      * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher $massActionDispatcher
-     * @param SerializerInterface $serializer
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,

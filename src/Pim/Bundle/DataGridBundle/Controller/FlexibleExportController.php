@@ -23,12 +23,12 @@ class FlexibleExportController extends ExportController
     /**
      * Constructor
      *
-     * @param Request $request
+     * @param Request                    $request
      * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher $massActionDispatcher
-     * @param SerializerInterface $serializer
-     * @param ProductManager $productManager
-     * @param UserContext $userContext
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
+     * @param ProductManager             $productManager
+     * @param UserContext                $userContext
      */
     public function __construct(
         Request $request,
