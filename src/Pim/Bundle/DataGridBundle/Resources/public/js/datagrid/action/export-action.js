@@ -74,7 +74,7 @@ define(
                     .find(this.originalButtonSelector)
                     .find('.icon-' + this.originalButtonIcon)
                     .parent();
-                
+
                 this.originalButton.hide();
             },
 
