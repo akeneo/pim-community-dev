@@ -177,7 +177,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->configuration->offsetSetByPath($path, $scopeCode);
     }
 
-
     /**
      * Inject displayed columns in the datagrid configuration
      */

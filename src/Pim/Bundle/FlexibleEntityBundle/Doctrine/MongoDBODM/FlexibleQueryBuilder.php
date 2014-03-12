@@ -99,7 +99,20 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $attributeType = $attribute->getAttributeType();
+        // TODO : filter the allowed operator as in ORM FQB
+        // TODO : implement custom filters
+        $customFilters = [];
+        if (isset($customFilters[$attributeType])) {
+            $filterClass = $customFilters[$attributeType];
+        } else {
+            $filterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
+        }
+
+        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter->add($attribute, $operator, $value);
+
+        return $this;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Product;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
