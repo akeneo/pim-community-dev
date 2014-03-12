@@ -7,14 +7,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Doctrine\ORM\QueryBuilder;
-
-use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Datagrid controller for export action
@@ -25,8 +20,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class ExportController
 {
-    /** @var DatagridManager $datagridManager */
-    protected $datagridManager;
+    /** @var Request $request */
+    protected $request;
 
     /** @var MassActionParametersParser $parametersParser */
     protected $parametersParser;
@@ -37,120 +32,147 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    /** @var ProductManager $productManager */
-    protected $productManager;
-
-    /** @var UserContext $userContext */
-    protected $userContext;
+    /** @var ExportMassAction $exportMassAction */
+    protected $exportMassAction;
 
     /**
      * Constructor
      *
-     * @param DatagridManager            $datagridManager
+     * @param Request $request
      * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
-     * @param ProductManager             $productManager
-     * @param UserContext                $userContext
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface $serializer
      */
     public function __construct(
-        DatagridManager $datagridManager,
+        Request $request,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        SerializerInterface $serializer,
-        ProductManager $productManager,
-        UserContext $userContext
+        SerializerInterface $serializer
     ) {
-        $this->datagridManager = $datagridManager;
-
-        $this->productManager = $productManager;
-        $this->userContext          = $userContext;
+        $this->request              = $request;
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer           = $serializer;
-
-        $this->productManager->setLocale($this->getDataLocale());
     }
 
     /**
-     * Call export action
-     *
-     * @param Request $request
+     * Data export action
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         // Export time execution depends on entities exported
         ignore_user_abort(false);
         set_time_limit(0);
 
-        $parameters  = $this->parametersParser->parse($request);
-        $requestData = array_merge($request->query->all(), $request->request->all());
-
-        $qb = $this->massActionDispatcher->dispatch(
-            $requestData['gridName'],
-            $requestData['actionName'],
-            $parameters,
-            $requestData
-        );
-
-        $dateTime = new \DateTime();
-        $fileName = sprintf(
-            'products_export_%s_%s_%s.csv',
-            $this->getDataLocale(),
-            $this->productManager->getScope(),
-            $dateTime->format('Y-m-d_H:i:s')
-        );
-
-        // prepare response
-        $response = new StreamedResponse();
-        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', $attachment);
-        $response->setCallback($this->quickExportCallback($qb));
-
-        return $response->send();
+        return $this->createStreamedResponse()->send();
     }
 
     /**
-     * Quick export callback
+     * Create a streamed response containing a file
      *
-     * @param QueryBuilder $qb
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    protected function createStreamedResponse()
+    {
+        $filename = $this->createFilename();
+
+        $response = new StreamedResponse();
+        $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+        $response->headers->set('Content-Type', $this->getContentType());
+        $response->headers->set('Content-Disposition', $attachment);
+        $response->setCallback($this->quickExportCallback());
+
+        return $response;
+    }
+
+    /**
+     * Create filename
+     *
+     * @return string
+     */
+    protected function createFilename()
+    {
+        $dateTime = new \DateTime();
+
+        return sprintf(
+            'export_%s.%s',
+            $dateTime->format('Y-m-d_H-i-s'),
+            $this->getFormat()
+        );
+    }
+
+    /**
+     * Callback for streamed response
+     * Dispatch mass action and returning result as a file
      *
      * @return \Closure
      */
-    protected function quickExportCallback(QueryBuilder $qb)
+    protected function quickExportCallback()
     {
-        return function () use ($qb) {
+        return function () {
             flush();
 
-            $format  = 'csv';
-            $context = [
-                'withHeader'    => true,
-                'heterogeneous' => true
-            ];
+            $parameters  = $this->parametersParser->parse($this->request);
+            $requestData = array_merge($this->request->query->all(), $this->request->request->all());
 
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->resetDQLPart('from');
-            $qb->select($rootAlias);
-            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
+            $results = $this->massActionDispatcher->dispatch(
+                $this->request->get('gridName'),
+                $this->request->get('actionName'),
+                $parameters,
+                $requestData
+            );
 
-            $results = $qb->getQuery()->execute();
-            echo $this->serializer->serialize($results, $format, $context);
+            echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
 
             flush();
         };
     }
 
     /**
-     * Get data locale code
+     * Get asked content type for streamed response
      *
      * @return string
      */
-    protected function getDataLocale()
+    protected function getContentType()
     {
-        return $this->userContext->getCurrentLocaleCode();
+        return $this->request->get('_contentType');
+    }
+
+    /**
+     * Get asked format type for exported file
+     *
+     * @return string
+     */
+    protected function getFormat()
+    {
+        return $this->request->get('_format');
+    }
+
+    /**
+     * Get context for serializer
+     *
+     * @return array
+     */
+    protected function getContext()
+    {
+        return $this->getExportMassAction()->getExportContext();
+    }
+
+    /**
+     * TODO: Get from datagrid builder ?
+     * @return \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+     */
+    protected function getExportMassAction()
+    {
+        if ($this->exportMassAction === null) {
+            $this->exportMassAction = $this->massActionDispatcher->getMassActionByNames(
+                $this->request->get('actionName'),
+                $this->request->get('gridName')
+            );
+        }
+
+        return $this->exportMassAction;
     }
 }
