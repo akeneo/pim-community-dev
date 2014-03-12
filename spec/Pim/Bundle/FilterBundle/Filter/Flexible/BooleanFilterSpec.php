@@ -10,14 +10,14 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
-        $this->init('foo', [FilterUtility::FEN_KEY => 'baz', FilterUtility::DATA_NAME_KEY => 'bar']);
+        $this->init('foo', [ProductFilterUtility::FEN_KEY => 'baz', ProductFilterUtility::DATA_NAME_KEY => 'bar']);
     }
 
     function it_is_an_oro_boolean_filter()

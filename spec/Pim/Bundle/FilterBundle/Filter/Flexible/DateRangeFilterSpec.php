@@ -7,20 +7,20 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 
 class DateRangeFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
         $this->init(
             'date_filter',
             [
-                FilterUtility::FEN_KEY       => 'fen_key',
-                FilterUtility::DATA_NAME_KEY => 'data_name_key',
+                ProductFilterUtility::FEN_KEY       => 'fen_key',
+                ProductFilterUtility::DATA_NAME_KEY => 'data_name_key',
             ]
         );
     }
