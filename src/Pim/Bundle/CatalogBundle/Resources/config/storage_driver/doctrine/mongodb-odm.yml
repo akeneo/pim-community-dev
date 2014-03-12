@@ -19,6 +19,7 @@ services:
         class: %pim_catalog.doctrine.completeness_generator.class%
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_catalog.factory.completeness'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%

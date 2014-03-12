@@ -3,8 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
+use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -28,13 +32,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $documentManager;
 
     /**
+     * @var CompletenessFactory
+     */
+    protected $completenessFactory;
+
+    /**
      * Constructor
      *
      * @param DocumentManager $documentManager
      */
-    public function __construct(DocumentManager $documentManager)
+    public function __construct(DocumentManager $documentManager, CompletenessFactory $completenessFactory)
     {
         $this->documentManager = $documentManager;
+        $this->completenessFactory = $completenessFactory;
     }
 
     /**
@@ -42,9 +52,25 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
-        $stats = $this->collectCompletenessStats($product);
+        $completenesses = $this->buildProductCompletenesses($product);
 
-        $completenesses = new ArrayCollection();
+        $product->setCompletenesses(new ArrayCollection($completenesses));
+
+        $this->documentManager->flush($product);
+    }
+
+    /**
+     * Build the completeness for the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    public function buildProductCompletenesses(ProductInterface $product)
+    {
+        $completenesses = array();
+
+        $stats = $this->collectStats($product);
 
         foreach ($stats as $channelStats) {
             $channel = $channelStats['object'];
@@ -54,23 +80,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $locale = $localeStats['object'];
                 $localeData = $localeStats['data'];
 
-                $completeness = new Completeness();
-                $completeness->setChannel($channel);
-                $completeness->setLocale($locale);
-
-                $completeness->setMissingCount($localeData['missing_count']);
-                $completeness->setRequiredCount($localeData['required_count']);
-                $completeness->setRatio(
-                    ($localeData['required_count'] - $localeData['missing_count'])
-                    /$localeData['required_count']*100
+                $completeness = $this->completenessFactory->build(
+                    $channel,
+                    $locale,
+                    $localeData['missing_count'],
+                    $localeData['required_count']
                 );
 
-                $completenesses->add($completeness);
+                $completenesses[] = $completeness;
             }
         }
-        $product->setCompletenesses($completenesses);
 
-        $this->documentManager->flush($product);
+        return $completenesses;
     }
 
     /**
@@ -90,7 +111,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($requirements as $req) {
             $channel = $req->getChannel()->getCode();
             $locales = $req->getChannel()->getLocales();
-            $currencies = $req->getChannel()->getCurrencies();
             $attribute = $req->getAttribute();
 
             if (!isset($stats[$channel])) {
@@ -110,14 +130,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
                 $stats[$channel]['data'][$locale]['data']['required_count']++;
 
-                $value = $product->getValue($req->getAttribute()->getCode(), $locale->getCode(), $channel);
+                $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 
-                if (($value === null) || ($value->getData() === null)) {
+                if ($attribute->getBackendType() === "prices") {
 
-                    $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
+                    if (!$this->isPriceComplete($value, $req->getChannel())) {
+                        $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
+                    }
 
-                } elseif (($attribute->getBackendType() == "prices") &&
-                    (!$this->isPriceComplete($value, $currencies))) {
+                } elseif (($value === null) ||
+                    ($value->getData() === null) ||
+                    (is_array($value->getData()) && count($value->getData()) === 0)) {
 
                     $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
                 }
@@ -132,19 +155,22 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * exists for all currencies provided
      *
      * @param ProductValueInterface $value
-     * @param ArrayCollection       $currencies
+     * @param Channel               $channel
      *
      * @return boolean
      */
-    protected function isPriceComplete(ProductValueInterface $value, ArrayCollection $currencies)
+    protected function isPriceComplete(ProductValueInterface $value, Channel $channel)
     {
         $completePrice = true;
+        $currencies = $channel->getCurrencies();
 
         foreach ($currencies as $currency) {
             $priceFound = false;
 
-            foreach ($value->getData() as $price) {
-                if ($price->getCurrency() === $currency) {
+            foreach ($value->getPrices() as $price) {
+
+                if (($price->getCurrency()->getCode() === $currency->getCode())&&
+                    ($price->getData() !== null)) {
                     $priceFound = true;
                 }
             }
