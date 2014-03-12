@@ -363,7 +363,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByIds($qb, $productIds, $include)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        if ($include) {
+            $qb->addAnd($qb->expr()->field('id')->in($productIds));
+        } else {
+            $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
+        }
     }
 
     /**
@@ -371,7 +375,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByGroupIds($qb, $groupIds)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb->addAnd($qb->expr()->field('groups')->in($groupIds));
     }
 
     /**
@@ -379,6 +383,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByFamilyIds($qb, $familyIds)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb->addAnd($qb->expr()->field('family')->in($familyIds));
     }
 }
