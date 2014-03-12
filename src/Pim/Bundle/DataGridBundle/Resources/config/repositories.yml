@@ -1,6 +1,10 @@
+parameters:
+    pim_datagrid.entity.datagrid_view.class:     Pim\Bundle\DataGridBundle\Entity\DatagridView
+    pim_datagrid.repository.datagrid_view.class: Pim\Bundle\DataGridBundle\Entity\Repository\DatagridViewRepository
+
 services:
     pim_datagrid.repository.orm.datagrid_view:
-        class: Doctrine\ORM\EntityRepository
+        class: %pim_datagrid.repository.datagrid_view.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [Pim\Bundle\DataGridBundle\Entity\DatagridView]
+        arguments: [%pim_datagrid.entity.datagrid_view.class%]

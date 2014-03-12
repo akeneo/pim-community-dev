@@ -78,14 +78,9 @@ define(
                 var $gridContainer = $('#grid-' + gridName);
                 var metadata       = $gridContainer.data('metadata');
 
-                if (metadata.options.view_filters) {
-                    sessionStorage.setItem(gridName, metadata.options.view_filters);
-                }
-
-                var state = sessionStorage.getItem(gridName);
-                if (state) {
-                    var storedState = new PageableCollection().decodeStateData(state);
-                    $gridContainer.data('metadata').state = storedState;
+                var view = metadata.options ? metadata.options.view : null;
+                if (view && view.id) {
+                    sessionStorage.setItem(gridName + '.view', view.id);
                 }
             }
         };

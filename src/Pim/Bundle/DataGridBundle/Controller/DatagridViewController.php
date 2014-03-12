@@ -11,12 +11,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 
 /**
  * Datagrid view controller
@@ -27,8 +26,8 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
  */
 class DatagridViewController extends AbstractDoctrineController
 {
-    /** @var DatagridManager */
-    protected $datagridManager;
+    /** @var DatagridViewManager */
+    protected $datagridViewManager;
 
     /**
      * Constructor
@@ -41,7 +40,7 @@ class DatagridViewController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridManager          $datagridManager
+     * @param DatagridViewManager      $datagridViewManager
      */
     public function __construct(
         Request $request,
@@ -52,7 +51,7 @@ class DatagridViewController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridManager $datagridManager
+        DatagridViewManager $datagridViewManager
     ) {
         parent::__construct(
             $request,
@@ -65,7 +64,7 @@ class DatagridViewController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridManager = $datagridManager;
+        $this->datagridViewManager = $datagridViewManager;
     }
 
     /**
@@ -84,7 +83,7 @@ class DatagridViewController extends AbstractDoctrineController
 
         $activeView = $activeViewId ? $repository->find($activeViewId) : null;
         if (!$activeView) {
-            $activeView = $this->getDefaultDatagridView($alias, $user);
+            $activeView = $this->datagridViewManager->getDefaultDatagridView($alias, $user);
         }
 
         $datagridView = new DatagridView();
@@ -165,10 +164,8 @@ class DatagridViewController extends AbstractDoctrineController
      */
     public function configureAction(Request $request, $alias, DatagridView $view)
     {
-        $user = $this->getUser();
-        $view = $this->getEditableDatagridView($view, $user);
-
-        $columns = $this->getColumnChoices($alias);
+        $view    = $this->datagridViewManager->getEditableDatagridView($view);
+        $columns = $this->datagridViewManager->getColumnChoices($alias);
 
         $form = $this->createForm(
             'pim_datagrid_view_configuration',
@@ -255,108 +252,6 @@ class DatagridViewController extends AbstractDoctrineController
         }
 
         return $ordered + $array;
-    }
-
-    /**
-     * Get datagrid columns as choices
-     *
-     * @param string $alias
-     *
-     * @return array
-     */
-    protected function getColumnChoices($alias)
-    {
-        $choices = array();
-
-        $columnsConfig = $this
-            ->datagridManager
-            ->getDatagrid($alias)
-            ->getAcceptor()
-            ->getConfig()
-            ->offsetGetByPath(sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY));
-
-        if ($columnsConfig) {
-            foreach ($columnsConfig as $code => $meta) {
-                $choices[$code] = $meta['label'];
-            }
-        }
-
-        return $choices;
-    }
-
-    /**
-     * Get or create default datagrid view from datagrid alias and user
-     *
-     * @param string $alias
-     * @param User   $user
-     *
-     * @return DatagridView
-     */
-    protected function getDefaultDatagridView($alias, User $user)
-    {
-        $view = $this
-            ->getRepository('PimDataGridBundle:DatagridView')
-            ->findOneBy(
-                [
-                    'datagridAlias' => $alias,
-                    'owner'         => $user,
-                    'type'          => DatagridView::TYPE_DEFAULT
-                ]
-            );
-
-        if (!$view) {
-            $view = new DatagridView();
-            $view
-                ->setType(DatagridView::TYPE_DEFAULT)
-                ->setOwner($user)
-                ->setDatagridAlias($alias)
-                ->setColumns(array_keys($this->getColumnChoices($alias)));
-
-            $this->persist($view);
-        }
-
-        return $view;
-    }
-
-    /**
-     * Check if the view can be edited by the current user, if not - return the custom view
-     *
-     * @param DatagridView $view
-     * @param User         $user
-     *
-     * @return DatagridView
-     */
-    protected function getEditableDatagridView(DatagridView $view, User $user)
-    {
-        if ($view->getOwner() === $user) {
-            return $view;
-        }
-
-        $customView = $this
-            ->getRepository('PimDataGridBundle:DatagridView')
-            ->findOneBy(
-                [
-                    'datagridAlias' => $view->getDatagridAlias(),
-                    'owner'         => $user,
-                    'type'          => DatagridView::TYPE_CUSTOM
-                ]
-            );
-
-        if (!$customView) {
-            $customView = clone $view;
-        }
-
-        $customView
-            ->setOwner($user)
-            ->setLabel(null)
-            ->setType(DatagridView::TYPE_CUSTOM)
-            ->setColumns($view->getColumns())
-            ->setFilters($view->getFilters())
-            ->setConfiguredColumns([]);
-
-        $this->persist($customView);
-
-        return $customView;
     }
 
     /**

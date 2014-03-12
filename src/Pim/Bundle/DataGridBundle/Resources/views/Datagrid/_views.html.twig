@@ -106,6 +106,12 @@ require(
                 noneSelectedText: label
             });
             var gridViewId = $(this).find('input').val();
+
+            if (typeof Storage !== 'undefined' && sessionStorage) {
+                sessionStorage.removeItem('{{ alias }}');
+                sessionStorage.setItem('{{ alias }}.view', gridViewId);
+            }
+
             var url = Routing.generate('pim_datagrid_view_change', { alias: '{{ alias }}', id: gridViewId, dataLocale: '{{ dataLocale }}' });
             Backbone.history.navigate('url=' + url, { trigger: true });
         });

@@ -52,12 +52,12 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
-    const GRID_VIEW_FILTERS_KEY = '[options][view_filters]';
+    const GRID_VIEW_FILTERS_KEY = '[options][view][filters]';
 
     /**
      * @var string
      */
-    const GRID_VIEW_ID_KEY = '[options][configureColumns][viewId]';
+    const GRID_VIEW_ID_KEY = '[options][view][id]';
 
     /**
      * @var DatagridConfiguration
@@ -245,7 +245,8 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridColumns()
     {
-        $gridView = $this->request->get('gridView', null);
+        $params = $this->request->get('params', []);
+        $gridView = isset($params['gridView']) ? $params['gridView'] : null;
 
         if ($gridView) {
             $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);

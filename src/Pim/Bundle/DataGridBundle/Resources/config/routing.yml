@@ -1,3 +1,7 @@
+datagrid:
+    resource: '@PimDataGridBundle/Resources/config/routing/datagrid.yml'
+    prefix: /datagrid
+
 datagrid_export:
     resource: '@PimDataGridBundle/Resources/config/routing/export.yml'
     prefix: /datagrid/export

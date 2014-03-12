@@ -43,7 +43,7 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
-                this.viewId = options.viewId;
+                this.viewId = options.view.id;
                 this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
@@ -103,9 +103,9 @@ define(
         ConfigureColumnsAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var options = metadata.options || {};
-            if (options.configureColumns && _.has(options.configureColumns, 'viewId')) {
+            if (options.view && _.has(options.view, 'id')) {
                 new ConfigureColumnsAction(
-                    _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
+                    _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options)
                 );
             }
         };
