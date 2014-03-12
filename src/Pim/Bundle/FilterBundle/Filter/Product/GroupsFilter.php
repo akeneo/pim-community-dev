@@ -19,11 +19,16 @@ class GroupsFilter extends ChoiceFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $qb         = $ds->getQueryBuilder();
-        $rootAlias  = $qb->getRootAlias();
-        $groupAlias = $this->get('data_name');
-        $qb->leftJoin($rootAlias.'.groups', $groupAlias);
+        $data = $this->parseData($data);
+        if (!$data) {
+            return false;
+        }
 
-        return parent::apply($ds, $data);
+        $qb = $ds->getQueryBuilder();
+        $ids = $data['value'];
+        $repository = $this->util->getProductRepository();
+        $repository->applyFilterByGroupIds($qb, $ids);
+
+        return true;
     }
 }
