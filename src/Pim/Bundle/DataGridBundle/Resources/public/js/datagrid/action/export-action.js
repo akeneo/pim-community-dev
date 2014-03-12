@@ -12,7 +12,7 @@ define(
          */
         var ExportAction = Backbone.View.extend({
 
-            label: __('Export CSV'),
+            label: __('Quick Export'),
 
             icon: 'download',
 
@@ -80,9 +80,12 @@ define(
 
         ExportAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
-            var options = metadata.options || {};
-            if (options.exportAction) {
-                new ExportAction(_.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.exportAction));
+            var action   = metadata.massActions.quick_export;
+
+            if (action.type == 'export') {
+                new ExportAction(
+                    _.extend({ $gridContainer: $gridContainer, gridName: gridName }, action)
+                );
             }
         };
 
