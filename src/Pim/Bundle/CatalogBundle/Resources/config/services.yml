@@ -18,6 +18,7 @@ services:
             - '@akeneo_measure.manager'
         tags:
             - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
 
     # Validators
     pim_catalog.form.validator.metric:
