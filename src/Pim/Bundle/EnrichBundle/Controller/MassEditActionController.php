@@ -313,7 +313,7 @@ class MassEditActionController extends AbstractDoctrineController
 
             $qb = $this->massActionDispatcher->dispatch(
                 $requestData['gridName'],
-                'export',
+                $requestData['actionName'],
                 $parameters,
                 $requestData
             );
