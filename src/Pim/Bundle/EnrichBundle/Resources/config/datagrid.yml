@@ -231,9 +231,6 @@ datagrid:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
                 - pim/datagrid/state-listener
-            exportAction:
-                label: Export CSV
-                icon:  download
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
@@ -321,23 +318,7 @@ datagrid:
 
             quick_export:
                 type: export
-                label: Export CSV
-                icon: download
-                data_identifier: p
-                route: pim_datagrid_export_flexible_index
-                route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                context:
-                    withHeader: true
-                    heterogeneous: true
-                handler: pim_datagrid.extension.mass_action.handler.export
-                messages:
-                    empty_selection: No products selected
-
-            quick_export_2:
-                type: export
-                label: Export CSV
+                label: Quick Export
                 icon: download
                 data_identifier: p
                 route: pim_datagrid_export_flexible_index
