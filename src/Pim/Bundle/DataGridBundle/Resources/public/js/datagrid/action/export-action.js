@@ -79,15 +79,32 @@ define(
         });
 
         ExportAction.init = function ($gridContainer, gridName) {
+            console.log('ExportAction::init()');
             var metadata = $gridContainer.data('metadata');
-            var action   = metadata.massActions.quick_export;
+            var actions   = metadata.massActions;
 
-            if (action.type == 'export') {
-                new ExportAction(
-                    _.extend({ $gridContainer: $gridContainer, gridName: gridName }, action)
-                );
+            for (var key in actions) {
+                var action = actions[key];
+                if (action.type == 'export') {
+                    ExportAction.createPanel($gridContainer);
+                    new ExportAction(
+                        _.extend({ $gridContainer: $gridContainer, gridName: gridName }, action)
+                    );
+                }
             }
         };
+        
+        ExportAction.createPanel = function ($gridContainer) {
+            if (ExportAction.exportPanelCreated == false) {
+                $gridContainer
+                    .find('div.grid-toolbar>.pull-left')
+                    .append('<div id="export-actions-panel" class="export-actions-panel btn-group buffer-left"></div>');
+            }
+
+            ExportAction.exportPanelCreated = true;
+        };
+        
+        ExportAction.exportPanelCreated = false;
 
         return ExportAction;
     }
