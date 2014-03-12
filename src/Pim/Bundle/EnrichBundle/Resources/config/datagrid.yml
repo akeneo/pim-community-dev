@@ -318,19 +318,45 @@ datagrid:
                     empty_selection: No products selected
                 launcherOptions:
                     icon: trash
-            export:
+
+            quick_export:
                 type: export
                 label: Export CSV
                 icon: download
                 data_identifier: p
-                frontend_type: export
+                route: pim_datagrid_export_flexible_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
+                    heterogeneous: true
+                handler: pim_datagrid.extension.mass_action.handler.export
                 messages:
                     empty_selection: No products selected
+
+            quick_export_2:
+                type: export
+                label: Export CSV
+                icon: download
+                data_identifier: p
+                route: pim_datagrid_export_flexible_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
+                    heterogeneous: true
+                handler: pim_datagrid.extension.mass_action.handler.export
+                messages:
+                    empty_selection: No products selected
+
             mass_edit:
-                type: redirect
+                type: edit
                 label: Mass Edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
+                data_identifier: p
         sorters:
             columns:
                 family:
