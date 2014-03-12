@@ -231,9 +231,6 @@ datagrid:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
                 - pim/datagrid/state-listener
-            exportAction:
-                label: Export CSV
-                icon:  download
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
