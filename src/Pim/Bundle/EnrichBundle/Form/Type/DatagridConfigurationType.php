@@ -51,6 +51,6 @@ class DatagridConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalog_datagrid_configuration';
+        return 'pim_enrich_datagrid_configuration';
     }
 }

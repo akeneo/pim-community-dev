@@ -10,14 +10,14 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, FilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
-        $this->init('foo', [FilterUtility::FEN_KEY => 'baz', FilterUtility::DATA_NAME_KEY => 'bar']);
+        $this->init('foo', [ProductFilterUtility::DATA_NAME_KEY => 'bar']);
     }
 
     function it_is_an_oro_boolean_filter()
@@ -64,7 +64,7 @@ class BooleanFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter($datasource, 'baz', 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
+        $utility->applyFlexibleFilter($datasource, 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
 
         $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
     }
@@ -129,7 +129,6 @@ class BooleanFilterSpec extends ObjectBehavior
                     ]
                 ],
                 'enabled'              => true,
-                'flexible_entity_name' => 'baz',
                 'data_name'            => 'bar',
                 'contextSearch'        => false,
                 'populateDefault'      => true,

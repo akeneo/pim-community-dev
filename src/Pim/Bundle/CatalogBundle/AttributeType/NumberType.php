@@ -25,66 +25,41 @@ class NumberType extends FlexNumberType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name'      => 'defaultValue',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMax' => [
                 'name'      => 'numberMax',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            'negativeAllowed' => [
                 'name'      => 'negativeAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            'searchable' => [
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+            ]
+        ];
+
+        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
     }

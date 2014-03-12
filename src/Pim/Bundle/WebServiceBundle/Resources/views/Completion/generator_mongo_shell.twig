@@ -1,0 +1,102 @@
+db = db.getSiblingDB("akeneo_pim");
+
+var familyRequirement = {
+   "ecommerce": {
+        "locales": ["fr_FR", "en_US"],
+        "requirements":[
+            {"attributeId": 1, "backend": "varchar"},
+            {"attributeId": 2, "backend": "varchar"},
+            {"attributeId": 3, "backend": "varchar"},
+            {"attributeId": 4, "backend": "varchar"},
+            {"attributeId": 5, "backend": "varchar"}
+        ],
+        "currencies": ["USD","EUR"]
+   },
+   "mobile" : {
+        "locales": ["fr_FR", "en_US"],
+        "requirements":[
+            {"attributeId": 1, "backend": "varchar"},
+            {"attributeId": 4, "backend": "varchar"},
+            {"attributeId": 5, "backend": "varchar"}
+        ],
+        "currencies": ["EUR"]
+   }
+};
+
+var familyId = 1;
+
+db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(function(product) {
+    var completeness = {};
+
+    for (channelCode in familyRequirement) {
+        channel = familyRequirement[channelCode];
+
+        completeness[channelCode] = {};
+        for (i = 0; i < channel.locales.length; i++) {
+            locale = channel.locales[i];
+            completeness[channelCode][locale] = {};
+            completeness[channelCode][locale].requirementsCount = channel.requirements.length;
+            completeness[channelCode][locale].filledCount = 0;
+            completeness[channelCode][locale].missingAttributes = [];
+        }
+    }
+
+    product.values.forEach(function(value) {
+        for (channelCode in familyRequirement) {
+            channel = familyRequirement[channelCode];
+            requirements = channel.requirements;
+
+            for (i = 0; i < requirements.length; i++) {
+                attributeId = requirements[i].attributeId;
+
+                if (value.attributeId == attributeId) {
+                    backend = requirements[i].backend;
+                    for (j = 0; j < channel.locales.length; j++) {
+                        locale = channel.locales[j];
+
+                        if (backend in value) {
+                            if (backend == "prices") {
+                                priceFilled = true;
+
+                                currencies = channel.currencies;
+
+                                for (c = 0; (c < currencies.length && priceFilled); c++) {
+                                    currency = currencies[i];
+                                    if (!(currency in value.prices)) {
+                                        priceFilled = false;
+                                    }
+                                }
+
+                                if (priceFilled) {
+                                    completeness[channelCode][locale].filledCount++;
+                                }
+                                else {
+                                    completeness[channelCode][locale].missingAttributes.push(attributeId);
+                                }
+                            } else {
+                                completeness[channelCode][locale].filledCount++;
+                            }
+                        } else {
+                            completeness[channelCode][locale].missingAttributes.push(attributeId);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    for (channelCode in familyRequirement) {
+        channel = familyRequirement[channelCode];
+
+        for (i = 0; i < channel.locales.length; i++) {
+            locale = channel.locales[i];
+            requirementsCount =  completeness[channelCode][locale].requirementsCount;
+            filledCount =  completeness[channelCode][locale].filledCount;
+            completeness[channelCode][locale].missingCount = requirementsCount - filledCount;
+            completeness[channelCode][locale].ratio = (filledCount / requirementsCount)*100;
+        }
+    }
+
+    product.completeness = completeness;
+    db.pim_catalog_product.save(product);
+});

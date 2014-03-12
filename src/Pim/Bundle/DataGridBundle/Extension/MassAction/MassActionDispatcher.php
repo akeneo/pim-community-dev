@@ -56,6 +56,18 @@ class MassActionDispatcher extends OroMassActionDispatcher
     }
 
     /**
+     * Get mass action from mass action and datagrid names
+     *
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     */
+    public function getMassActionByNames($actionName, $datagridName)
+    {
+        $datagrid = $this->manager->getDatagrid($datagridName);
+
+        return parent::getMassActionByName($actionName, $datagrid);
+    }
+
+    /**
      * Override to ensure a not indexed hydration
      *
      * {@inheritdoc}

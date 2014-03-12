@@ -1,0 +1,58 @@
+---
+confirmation:
+  remove:
+    item: Êtes-vous certain de vouloir supprimer cet élément?
+    association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
+    attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
+    family: Êtes-vous sûr de que vouloir supprimer cette famille ?
+    product: Êtes-vous sûr de que vouloir supprimer ce produit ?
+    channel: Êtes-vous sûr de que vouloir supprimer ce canal ?
+    group: Êtes-vous sûr de vouloir supprimer ce groupe?
+    variant group: Êtes-vous sûr de que vouloir supprimer ce groupe de variantes ?
+    group type: Êtes-vous sûr de que vouloir supprimer ce type de groupe ?
+    import profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'import ?"
+    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export?"
+    user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+    role: Êtes-vous sûr de vouloir supprimer ce rôle?
+flash:
+  item:
+    removed: Elément supprimé avec succès
+  association type:
+    removed: "Le type d'association a bien été supprimé"
+  attribute:
+    removed: "L'attribut a bien été supprimé"
+  family:
+    removed: La famille a bien été supprimée
+  product:
+    removed: Le produit a bien été supprimé
+  channel:
+    removed: Le canal a bien été supprimé
+  group:
+    removed: Le groupe a bien été supprimé
+  variant group:
+    removed: Le groupe de variantes a bien été supprimé
+  group type:
+    removed: Le type de groupe a bien été supprimé
+  import profile:
+    removed: "Le profil d'import a bien été supprimé"
+  export profile:
+    removed: "Le profil d'export a bien été supprimé"
+  user:
+    removed: "L'utilisateur a bien été supprimé"
+  role:
+    removed: Le rôle a bien été supprimé
+error:
+  removing:
+    item: Impossible de supprimer cet élément
+    association type: "Impossible de supprimer ce type d'association"
+    attribute: Impossible de supprimer cet attribut
+    family: Impossible de supprimer cette famille
+    product: Impossible de supprimer ce produit
+    channel: Impossible de supprimer ce canal
+    group: Impossible de supprimer ce groupe
+    variant group: Impossible de supprimer ce groupe de variantes
+    group type: Impossible de supprimer ce type de groupe
+    import profile: "Impossible de supprimer ce profil d'import"
+    export profile: "Impossible de supprimer ce profil d'export"
+    user: Impossible de supprimer cet utilisateur
+    role: Impossible de supprimer ce rôle

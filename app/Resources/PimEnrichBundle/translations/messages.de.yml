@@ -299,31 +299,42 @@ Minimum input length: Minimale Eingabelänge
 Default: Standard
 Attributes: Attribute
 Title: Titel
-pim_title.dashboard: Dashboard
-pim_title.attribute_group.create: Attributgruppen | Anlegen
-pim_title.attribute_group.edit: 'Attributgruppen %group.label% | Bearbeiten'
-pim_title.category.create: Kategorie-Strukturbäume | Anlegen
-pim_title.category.edit: 'Kategorie-Strukturbäume %category.label% | Bearbeiten'
-pim_title.attribute.index: Attribute
-pim_title.attribute.create: Attribute | Anlegen
-pim_title.attribute.edit: 'Attribute %attribute.label% | Bearbeiten'
-pim_title.product.index: Produkte
-pim_title.product.edit: 'Produkte %product.sku% | Bearbeiten'
-pim_title.family.index: Produktfamilien
-pim_title.family.edit: 'Produktfamilien %family.label% | Bearbeiten'
-pim_title.channel.index: Ausgabekanäle
-pim_title.channel.create: Ausgabekanäle | Anlegen
-pim_title.channel.edit: 'Ausgabekanäle %channel.label% | Bearbeiten'
-pim_title.currency.index: Währungen
-pim_title.locale.index: Gebietsschemata
-pim_title.group.index: Gruppen
-pim_title.group.edit: 'Gruppen %group.label% | Bearbeiten'
-pim_title.variant_group.index: Variantengruppen
-pim_title.variant_group.edit: 'Variantengruppen %group.label% | Bearbeiten'
-pim_title.association_type.index: Verbindungstypen
-pim_title.association_type.edit: 'Verbindungstypen %association type.label% | Bearbeiten'
-pim_title.group_type.index: Gruppentypen
-pim_title.group_type.edit: 'Gruppentypen %group type.label% | Bearbeiten'
+pim_title.attribute_group:
+  create: Attributgruppen | Anlegen
+  edit: 'Attributgruppen %group.label% | Bearbeiten'
+pim_title.category:
+  create: Kategorie-Strukturbäume | Anlegen
+  edit: 'Kategorie-Strukturbäume %category.label% | Bearbeiten'
+pim_title.attribute:
+  index: Attribute
+  create: Attribute | Anlegen
+  edit: 'Attributee %attribute.label% | Bearbeiten'
+pim_title.product:
+  index: Produkte
+  edit: 'Produkte %product.sku% | Bearbeiten'
+pim_title.family:
+  index: Produktfamilien
+  edit: 'Produktfamilien %family.label% | Bearbeiten'
+pim_title.channel:
+  index: Ausgabekanäle
+  create: Ausgabekanäle | Anlegen
+  edit: 'Ausgabekanäle %channel.label% | Bearbeiten'
+pim_title.currency:
+  index: Währungen
+pim_title.locale:
+  index: Gebietsschemata
+pim_title.group:
+  index: Gruppen
+  edit: 'Gruppen %group.label% | Bearbeiten'
+pim_title.variant_group:
+  index: Variantengruppen
+  edit: 'Variantengruppen %group.label% | Bearbeiten'
+pim_title.association_type:
+  index: Verbindungstypen
+  edit: 'Verbindungstypen %association type.label% | Bearbeiten'
+pim_title.group_type:
+  index: Gruppentypen
+  edit: 'Gruppentypen %group type.label% | Bearbeiten'
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -336,7 +347,6 @@ pim_catalog_image: Abbildung
 pim_catalog_boolean: Ja/Nein
 pim_catalog_date: Datum
 pim_catalog_metric: Maßeinheit
-Fallback: Fallback-Sprache
 Activated: Aktiviert
 Disable: Deaktivieren
 pim_enrich.mass_edit_action:

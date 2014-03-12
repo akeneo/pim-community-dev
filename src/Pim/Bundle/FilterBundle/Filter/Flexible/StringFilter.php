@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Flexible filter
@@ -26,11 +27,9 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $fen = $this->get(FilterUtility::FEN_KEY);
         $this->util->applyFlexibleFilter(
             $ds,
-            $fen,
-            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
             $operator
         );

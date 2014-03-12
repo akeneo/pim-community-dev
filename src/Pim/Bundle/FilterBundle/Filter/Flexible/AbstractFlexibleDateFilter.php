@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Filter\Flexible;
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Flexible filter
@@ -36,7 +37,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
             $ds,
             $dateStartValue,
             $dateEndValue,
-            $this->get(FilterUtility::DATA_NAME_KEY)
+            $this->get(ProductFilterUtility::DATA_NAME_KEY)
         );
 
         return true;
@@ -72,7 +73,6 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
         if ($dateStartValue && $dateEndValue) {
             $this->util->applyFlexibleFilter(
                 $ds,
-                $this->getFEN(),
                 $fieldName,
                 array($dateStartValue, $dateEndValue),
                 'BETWEEN'
@@ -85,7 +85,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
      */
     protected function applyFlexibleFilterLessMore($ds, $dateValue, $fieldName, $isLess)
     {
-        $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateValue, $isLess ? '<' : '>');
+        $this->util->applyFlexibleFilter($ds, $fieldName, $dateValue, $isLess ? '<' : '>');
     }
 
     /**
@@ -107,17 +107,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
         }
 
         if ($values && $operators) {
-            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $values, $operators);
+            $this->util->applyFlexibleFilter($ds, $fieldName, $values, $operators);
         }
-    }
-
-    /**
-     * Returns flexible entity name
-     *
-     * @return string
-     */
-    protected function getFEN()
-    {
-        return $this->get(FilterUtility::FEN_KEY);
     }
 }

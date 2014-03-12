@@ -1,0 +1,8 @@
+Pim\Bundle\EnrichBundle\Entity\DatagridView:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
+    properties:
+        label:
+            - NotBlank: ~
+            - Length:
+                max: 100

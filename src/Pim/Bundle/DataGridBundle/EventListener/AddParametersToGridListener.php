@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -57,9 +56,7 @@ class AddParametersToGridListener
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource || $datasource instanceof ProductDatasource) {
             $queryParameters = $this->prepareParameters();
-            /** @var QueryBuilder $query */
-            $queryBuilder = $datasource->getQueryBuilder();
-            $queryBuilder->setParameters($queryParameters);
+            $datasource->setParameters($queryParameters);
         }
     }
 

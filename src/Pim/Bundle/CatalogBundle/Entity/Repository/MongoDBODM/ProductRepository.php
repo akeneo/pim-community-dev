@@ -3,7 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -11,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product repository
@@ -44,6 +46,19 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * @param FlexibleQueryBuilder
      */
     protected $flexibleQB;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 
     /**
      * {@inheritdoc}
@@ -105,7 +120,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
@@ -113,7 +128,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
         return;
     }
@@ -282,5 +297,72 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
 
         return $this;
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFlexibleQueryBuilder($qb)
+    {
+        if (!$this->flexibleQB) {
+            throw new \LogicException('Flexible query builder must be configured');
+        }
+
+        $this->flexibleQB
+            ->setQueryBuilder($qb)
+            ->setLocale($this->getLocale())
+            ->setScope($this->getScope());
+
+        return $this->flexibleQB;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder();
+
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByField($qb, $field, $value, $operator = '=')
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField($qb, $field, $direction)
+    {
+        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByIds($qb, $productIds, $include)
+    {
+        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

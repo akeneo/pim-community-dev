@@ -16,7 +16,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 class Configuration extends OroConfiguration
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {

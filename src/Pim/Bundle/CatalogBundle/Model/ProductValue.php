@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Value for an attribute
@@ -19,16 +18,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
-    /**
-     * @var AbstractAttribute $attribute
-     */
-    protected $attribute;
-
-    /**
-     * @var integer
-     */
-    protected $attributeId;
-
     /**
      * @var ProductInterface $entity
      */
@@ -119,47 +108,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
         parent::__construct();
 
         $this->prices = new ArrayCollection();
-    }
-
-    /**
-     * Set Attribute id
-     *
-     * @param integer $attributeId
-     *
-     * @return ProductValue
-     */
-    public function setAttributeId($attributeId)
-    {
-        $this->attributeId = $attributeId;
-
-        return $this;
-    }
-
-    /**
-     * Get attribute id
-     *
-     * @return int
-     */
-    public function getAttributeId()
-    {
-        return $this->attributeId;
-    }
-
-    /**
-     * Set attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return ProductValue
-     */
-    public function setAttribute(AbstractAttribute $attribute = null)
-    {
-        if (null !== $attribute) {
-            $this->attributeId = $attribute->getId();
-        }
-        $this->attribute = $attribute;
-
-        return $this;
     }
 
     /**

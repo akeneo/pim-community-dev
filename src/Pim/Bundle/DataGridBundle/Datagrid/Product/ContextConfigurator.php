@@ -27,7 +27,17 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const PRODUCT_STORAGE_KEY = 'product_storage';
+
+    /**
+     * @var string
+     */
     const DISPLAYED_LOCALE_KEY = 'locale_code';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_SCOPE_KEY = 'scope_code';
 
     /**
      * @var string
@@ -43,6 +53,11 @@ class ContextConfigurator implements ConfiguratorInterface
      * @var string
      */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
+
+    /**
+     * @var string
+     */
+    const GRID_VIEW_FILTERS_KEY = '[options][view_filters]';
 
     /**
      * @var DatagridConfiguration
@@ -97,7 +112,9 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
+        $this->addProductStorage();
         $this->addLocaleCode();
+        $this->addScopeCode();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
@@ -118,8 +135,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addAttributesIds()
     {
-        $userConfig     = $this->getUserGridConfig();
-        $attributeCodes = $userConfig ? $userConfig->getColumns() : null;
+        $attributeCodes = $this->getUserGridColumns();
         $repository     = $this->flexibleManager->getAttributeRepository();
         $flexibleEntity = $this->flexibleManager->getFlexibleName();
         $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
@@ -129,6 +145,16 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
+    }
+
+    /**
+     * Inject used product storage in the datagrid configuration
+     */
+    protected function addProductStorage()
+    {
+        $storage = $this->getProductStorage();
+        $path = $this->getSourcePath(self::PRODUCT_STORAGE_KEY);
+        $this->configuration->offsetSetByPath($path, $storage);
     }
 
     /**
@@ -142,14 +168,24 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
+     * Inject current scope code in the datagrid configuration
+     */
+    protected function addScopeCode()
+    {
+        $scopeCode = $this->getCurrentScopeCode();
+        $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
+        $this->configuration->offsetSetByPath($path, $scopeCode);
+    }
+
+    /**
      * Inject displayed columns in the datagrid configuration
      */
     protected function addDisplayedColumnCodes()
     {
-        $userConfig = $this->getUserGridConfig();
-        if ($userConfig) {
+        $userColumns = $this->getUserGridColumns();
+        if ($userColumns) {
             $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
-            $this->configuration->offsetSetByPath($path, $userConfig->getColumns());
+            $this->configuration->offsetSetByPath($path, $userColumns);
         }
     }
 
@@ -161,6 +197,21 @@ class ContextConfigurator implements ConfiguratorInterface
         $attributes = $this->getAttributesConfig();
 
         $this->configuration->offsetSetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+    }
+
+    /**
+     * Get product storage (ORM/MongoDBODM)
+     *
+     * @return string
+     */
+    protected function getProductStorage()
+    {
+        $om = $this->flexibleManager->getObjectManager();
+        if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
+            return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_ORM;
+        } else {
+             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_MONGODB_ODM;
+        }
     }
 
     /**
@@ -182,6 +233,23 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
+     * Get current scope from datagrid parameters, then user config
+     *
+     * @return string
+     */
+    protected function getCurrentScopeCode()
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
+            return $filterValues['scope']['value'];
+        } else {
+            $channel = $this->getUser()->getCatalogScope();
+
+            return $channel->getCode();
+        }
+    }
+
+    /**
      * Get attributes configuration for attribute that can be used in grid (as column or filter)
      *
      * @return array
@@ -199,11 +267,11 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Get user datagrid configuration
+     * Get user configured datagrid columns
      *
-     * @return null|DatagridConfiguration
+     * @return null|string[]
      */
-    protected function getUserGridConfig()
+    protected function getUserGridColumns()
     {
         $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
         $alias = $this->configuration->offsetGetByPath($path);
@@ -211,11 +279,28 @@ class ContextConfigurator implements ConfiguratorInterface
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        $repository = $this->flexibleManager
-            ->getEntityManager()
-            ->getRepository('PimEnrichBundle:DatagridConfiguration');
+        $gridView = $this->request->get('gridView', null);
+        if ($gridView) {
+            $view = $this->flexibleManager
+                ->getEntityManager()
+                ->getRepository('PimEnrichBundle:DatagridView')
+                ->findOneBy(['datagridAlias' => $alias, 'id' => $gridView]);
 
-        return $repository->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
+            if ($view) {
+                $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
+
+                return $view->getColumns();
+            }
+        }
+
+        $configuration = $this->flexibleManager
+            ->getEntityManager()
+            ->getRepository('PimEnrichBundle:DatagridConfiguration')
+            ->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
+
+        if ($configuration) {
+            return $configuration->getColumns();
+        }
     }
 
     /**

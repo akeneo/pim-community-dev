@@ -15,15 +15,11 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  * The query builder is built from the object repository (entity or document)
  * The extensions are common or orm/odm specific
  *
- * TODO :
- * - The storage can be configured (orm or mongodb-odm)
- * - Delegate the hydration as grid results
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductDatasource implements DatasourceInterface
+class ProductDatasource implements DatasourceInterface, ParameterizableInterface
 {
     /**
      * @var string
@@ -62,6 +58,12 @@ class ProductDatasource implements DatasourceInterface
     /** @var string */
     protected $localeCode = null;
 
+    /** @var string */
+    protected $scopeCode = null;
+
+    /** @var array */
+    protected $parameters = array();
+
     /**
      * @param ObjectManager     $om
      * @param HydratorInterface $hydrator
@@ -78,7 +80,6 @@ class ProductDatasource implements DatasourceInterface
     public function process(DatagridInterface $grid, array $config)
     {
         $this->configuration = $config;
-
         if (!isset($config['entity'])) {
             throw new \Exception(get_class($this).' expects to be configured with entity');
         }
@@ -95,6 +96,9 @@ class ProductDatasource implements DatasourceInterface
         $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
         $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
 
+        $scopeKey = ContextConfigurator::DISPLAYED_SCOPE_KEY;
+        $this->scopeCode = isset($config[$scopeKey]) ? $config[$scopeKey] : null;
+
         $grid->setDatasource(clone $this);
     }
 
@@ -105,6 +109,7 @@ class ProductDatasource implements DatasourceInterface
     {
         $options = [
             'locale_code'              => $this->localeCode,
+            'scope_code'               => $this->scopeCode,
             'attributes_configuration' => $this->configuration['attributes_configuration']
         ];
 
@@ -121,5 +126,26 @@ class ProductDatasource implements DatasourceInterface
     public function getQueryBuilder()
     {
         return $this->qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+        if (method_exists($this->qb, 'setParameters')) {
+            $this->qb->setParameters($parameters);
+        }
+
+        return $this;
     }
 }

@@ -49,13 +49,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
-    pim_catalog.validator.valid_locale_fallback:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidLocaleFallbackValidator
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_catalog.validator.valid_locale_fallback_validator }
-
     pim_catalog.validator.immutable:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
         arguments:

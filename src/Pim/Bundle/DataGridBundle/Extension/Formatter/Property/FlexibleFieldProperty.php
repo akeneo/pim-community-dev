@@ -33,7 +33,12 @@ class FlexibleFieldProperty extends FieldProperty
     protected function getBackendData($value)
     {
         $backend = $value['attribute']['backendType'];
-        $value   = $value[$backend];
+
+        if (isset($value[$backend])) {
+            $value = $value[$backend];
+        } else {
+            $value = null;
+        }
 
         return $value;
     }

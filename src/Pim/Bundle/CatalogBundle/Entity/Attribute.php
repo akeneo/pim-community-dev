@@ -35,91 +35,58 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $options;
 
+    /** @var integer $sortOrder */
     protected $sortOrder = 0;
 
-    /**
-     * @var AttributeGroup
-     */
+    /** @var AttributeGroup $group */
     protected $group;
 
-    /**
-     * @var boolean $useableAsGridColumn
-     */
+    /** @var boolean $useableAsGridColumn */
     protected $useableAsGridColumn;
 
-    /**
-     * @var boolean $useableAsGridFilter
-     */
+    /** @var boolean $useableAsGridFilter */
     protected $useableAsGridFilter;
 
-    /**
-     * @var $availableLocales ArrayCollection
-     */
+    /** @var ArrayCollection $availableLocales */
     protected $availableLocales;
 
-    /**
-     * @var $families ArrayCollection
-     */
+    /** @var ArrayCollection $families */
     protected $families;
 
-    /**
-     * @var integer $maxCharacters
-     */
+    /** @var integer $maxCharacters */
     protected $maxCharacters;
 
-    /**
-     * @var string $validationRule
-     */
+    /** @var string $validationRule */
     protected $validationRule;
 
-    /**
-     * @var string $validationRegexp
-     */
+    /** @var string $validationRegexp */
     protected $validationRegexp;
 
-    /**
-     * @var boolean $wysiwygEnabled
-     */
+    /** @var boolean $wysiwygEnabled */
     protected $wysiwygEnabled;
 
-    /**
-     * @var decimal $numberMin
-     */
+    /** @var decimal $numberMin */
     protected $numberMin;
 
-    /**
-     * @var decimal $numberMax
-     */
+    /** @var decimal $numberMax */
     protected $numberMax;
 
-    /**
-     * @var boolean $decimalsAllowed
-     */
+    /** @var boolean $decimalsAllowed */
     protected $decimalsAllowed;
 
-    /**
-     * @var boolean $negativeAllowed
-     */
+    /** @var boolean $negativeAllowed */
     protected $negativeAllowed;
 
-    /**
-     * @var datetime $dateMin
-     */
+    /** @var datetime $dateMin */
     protected $dateMin;
 
-    /**
-     * @var datetime $dateMax
-     */
+    /** @var datetime $dateMax */
     protected $dateMax;
 
-    /**
-     * @var string $metricFamily
-     */
+    /** @var string $metricFamily */
     protected $metricFamily;
 
-    /**
-     * @var string $defaultMetricUnit
-     */
+    /** @var string $defaultMetricUnit */
     protected $defaultMetricUnit;
 
     /**
@@ -128,14 +95,10 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $maxFileSize;
 
-    /**
-     * @var array $allowedExtensions
-     */
+    /** @var array $allowedExtensions */
     protected $allowedExtensions;
 
-    /**
-     * @var integer
-     */
+    /** @var integer $minimumInputLength */
     protected $minimumInputLength = 0;
 
     /**
@@ -146,22 +109,29 @@ class Attribute extends AbstractEntityAttribute implements
      */
     protected $locale;
 
-    /**
-     * @var ArrayCollection $translations
-     */
+    /** @var ArrayCollection $translations */
     protected $translations;
 
+    /** @var boolean $required */
     protected $required;
 
+    /** @var boolean $unique */
     protected $unique;
 
+    /** @var mixed $defaultValue */
     protected $defaultValue;
 
+    /** @var boolean $searchable */
     protected $searchable;
 
+    /** @var boolean $localizable */
     protected $localizable;
 
+    /** @var boolean $scopable */
     protected $scopable;
+
+    /** @var array $properties */
+    protected $properties;
 
     /**
      * Constructor
@@ -181,6 +151,7 @@ class Attribute extends AbstractEntityAttribute implements
         $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
+        $this->properties          = array();
     }
 
     /**
@@ -1003,5 +974,19 @@ class Attribute extends AbstractEntityAttribute implements
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeType($type)
+    {
+        parent::setAttributeType($type);
+
+        if ($this->attributeType === 'pim_catalog_identifier') {
+            $this->required = true;
+        }
+
+        return $this;
     }
 }

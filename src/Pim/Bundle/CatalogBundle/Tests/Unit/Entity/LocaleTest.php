@@ -65,19 +65,6 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for fallback property
-     */
-    public function testGetSetFallback()
-    {
-        $this->assertEmpty($this->locale->getFallback());
-
-        // change value and assert new
-        $newFallback = 'fr_FR';
-        $this->assertEntity($this->locale->setFallback($newFallback));
-        $this->assertEquals($newFallback, $this->locale->getFallback());
-    }
-
-    /**
      * Test for __toString method
      */
     public function testToString()
