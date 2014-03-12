@@ -4,7 +4,7 @@ parameters:
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
     pim_filter.product_scope_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
-    pim_filter.product_groups.class:              Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
+    pim_filter.product_groups_filter.class:       Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
     pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
     pim_filter.product_category_filter.class:     Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter
 
@@ -48,8 +48,8 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }
 
-    pim_filter.product_groups:
-        class: %pim_filter.product_groups.class%
+    pim_filter.product_groups_filter:
+        class: %pim_filter.product_groups_filter.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
