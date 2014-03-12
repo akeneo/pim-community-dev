@@ -1,0 +1,8 @@
+parameters:
+    pim_filter.product_utility.class: Pim\Bundle\FilterBundle\Filter\ProductFilterUtility
+
+services:
+    pim_filter.product_utility:
+        class: %pim_filter.product_utility.class%
+        arguments:
+            - '@pim_flexibleentity.registry'

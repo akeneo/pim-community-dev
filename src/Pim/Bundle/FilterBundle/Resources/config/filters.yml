@@ -1,6 +1,5 @@
 parameters:
     pim_filter.datasource.orm_adapter.class: Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
-    pim_filter.flexible_utility.class:    Pim\Bundle\FilterBundle\Filter\Flexible\FilterUtility
 
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
@@ -21,11 +20,6 @@ parameters:
 
 
 services:
-    pim_filter.flexible_utility:
-        class: %pim_filter.flexible_utility.class%
-        arguments:
-            - '@pim_flexibleentity.registry'
-
     pim_filter.ajax_choice_filter:
         class: %pim_filter.ajax_choice_filter.class%
         arguments:
@@ -75,7 +69,7 @@ services:
         class: %pim_filter.flexible_string.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_string }
 
@@ -83,7 +77,7 @@ services:
         class: %pim_filter.flexible_choice.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
             - '@pim_user.context.user'
             - %pim_catalog.entity.attribute_option.class%
         tags:
@@ -93,7 +87,7 @@ services:
         class: %pim_filter.flexible_number.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }
 
@@ -101,7 +95,7 @@ services:
         class: %pim_filter.flexible_entity.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_entity }
 
@@ -109,7 +103,7 @@ services:
         class: %pim_filter.flexible_date.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
 
@@ -117,7 +111,7 @@ services:
         class: %pim_filter.flexible_datetime.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }
 
@@ -125,7 +119,7 @@ services:
         class: %pim_filter.flexible_boolean.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_boolean }
 
@@ -133,7 +127,7 @@ services:
         class: %pim_filter.flexible_metric.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
             - '@translator'
             - '@akeneo_measure.manager'
             - '@akeneo_measure.measure_converter'
@@ -144,7 +138,7 @@ services:
         class: %pim_filter.flexible_price.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.flexible_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
 
