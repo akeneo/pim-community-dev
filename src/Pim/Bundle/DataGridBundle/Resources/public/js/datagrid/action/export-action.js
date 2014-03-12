@@ -25,13 +25,11 @@ define(
             originalButton: null,
 
             template: _.template(
-                '<div class="export-actions-panel btn-group buffer-left">' +
-                    '<div class="btn-group">' +
-                        '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
-                            '<i class="icon-<%= icon %>"></i>' +
-                            '<%= label %>' +
-                        '</a>' +
-                    '</div>' +
+                '<div class="btn-group">' +
+                    '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
+                        '<i class="icon-<%= icon %>"></i>' +
+                        '<%= label %>' +
+                    '</a>' +
                 '</div>'
             ),
 
