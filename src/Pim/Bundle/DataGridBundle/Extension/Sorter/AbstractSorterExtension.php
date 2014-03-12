@@ -48,7 +48,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function processConfigs(DatagridConfiguration $config)
     {
@@ -87,7 +87,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
@@ -122,7 +122,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPriority()
     {

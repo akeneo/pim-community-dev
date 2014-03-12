@@ -56,7 +56,7 @@ abstract class AbstractFilterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {
@@ -70,7 +70,7 @@ abstract class AbstractFilterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function processConfigs(DatagridConfiguration $config)
     {
@@ -82,7 +82,7 @@ abstract class AbstractFilterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
@@ -107,7 +107,7 @@ abstract class AbstractFilterExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
