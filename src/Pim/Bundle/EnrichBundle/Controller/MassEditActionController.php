@@ -291,6 +291,7 @@ class MassEditActionController extends AbstractDoctrineController
         $params = $this->parametersParser->parse($request);
 
         $params['gridName']   = $request->get('gridName');
+        $params['actionName'] = $request->get('actionName');
         $params['values']     = implode(',', $params['values']);
         $params['filters']    = json_encode($params['filters']);
         $params['dataLocale'] = $request->get('dataLocale', null);
