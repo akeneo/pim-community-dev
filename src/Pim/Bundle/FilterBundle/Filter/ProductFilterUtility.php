@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Product filter utility
@@ -16,18 +16,22 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    const FEN_KEY         = 'flexible_entity_name';
+    /**
+     * @var string
+     */
     const PARENT_TYPE_KEY = 'parent_type';
 
-    /** @var FlexibleManagerRegistry */
-    protected $fmr;
+    /**
+     * @var ProductManager
+     */
+    protected $productManager;
 
     /**
-     * @param FlexibleManagerRegistry $fmr
+     * @param ProductManager $manager
      */
-    public function __construct(FlexibleManagerRegistry $fmr)
+    public function __construct(ProductManager $manager)
     {
-        $this->fmr = $fmr;
+        $this->productManager = $manager;
     }
 
     /**
@@ -39,44 +43,39 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * Gets flexible manager
-     *
-     * @param string $flexibleEntityName
-     *
-     * @throws \LogicException
-     * @return FlexibleManager
+     * @return ProductManager
      */
-    public function getFlexibleManager($flexibleEntityName)
+    public function getProductManager()
     {
-        if (!$flexibleEntityName) {
-            throw new \LogicException('Flexible entity filter must have flexible entity name.');
-        }
+        return $this->productManager;
+    }
 
-        return $this->fmr->getManager($flexibleEntityName);
+    /**
+     * @param string $code
+     *
+     * @return Attribute
+     */
+    public function getAttribute($code)
+    {
+        $attributeRepo = $this->productManager->getAttributeRepository();
+        $attribute     = $attributeRepo->findOneByCode($code);
+
+        return $attribute;
     }
 
     /**
      * Applies filter to query by flexible attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
-     * @param string                           $flexibleEntityName
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
      */
-    public function applyFlexibleFilter(
-        FilterDatasourceAdapterInterface $ds,
-        $flexibleEntityName,
-        $field,
-        $value,
-        $operator
-    ) {
-        $manager = $this->getFlexibleManager($flexibleEntityName);
+    public function applyFlexibleFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    {
 
-        $attributeRepo = $manager->getAttributeRepository();
-        $attribute = $attributeRepo->findOneByEntityAndCode($flexibleEntityName, $field);
-
-        $repository = $manager->getFlexibleRepository();
+        $attribute  = $this->getAttribute($field);
+        $repository = $this->productManager->getFlexibleRepository();
         if ($attribute) {
             $repository->applyFilterByAttribute($ds->getQueryBuilder(), $attribute, $value, $operator);
         } else {
