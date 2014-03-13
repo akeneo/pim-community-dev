@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'oro/pageable-collection'],
-    function(_, mediator, AbstractListener, PageableCollection) {
+    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'pim/datagrid/state'],
+    function(_, mediator, AbstractListener, DatagridState) {
         'use strict';
 
         /**
@@ -21,9 +21,7 @@ define(
                 this.gridName       = options.gridName;
                 this.$gridContainer = options.$gridContainer;
 
-                if (typeof Storage !== 'undefined' && sessionStorage) {
-                    this.subscribe();
-                }
+                this.subscribe();
             },
 
             subscribe: function () {
@@ -60,7 +58,7 @@ define(
                     }
 
                     var encodedStateData = collection.encodeStateData(collection.state);
-                    sessionStorage.setItem(this.gridName + '.filters', encodedStateData);
+                    DatagridState.set(this.gridName, 'filters', encodedStateData);
                 }
             },
 

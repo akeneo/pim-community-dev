@@ -8,6 +8,8 @@
 {% endfor %}
 </select>
 
+<button id="update-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_changes'|trans }}</button>
+
 {{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
     {{ form_widget(form.filters) }}
@@ -16,8 +18,8 @@
 
 <script type="text/javascript">
 require(
-    ['jquery', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter', 'bootstrap'],
-    function ($, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
+    ['jquery', 'underscore', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter', 'bootstrap'],
+    function ($, _, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
         'use strict';
 
         var reloadPage = function(id) {
@@ -29,7 +31,7 @@ require(
         var activateView = function(viewId) {
             var $viewItem = $selector.find('option[value="' + viewId + '"]');
             DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
-        }
+        };
 
         var activeViewId = DatagridState.get('{{ alias }}', 'view');
         var $activeView  = $selector.find('option[value="'+activeViewId+'"]');
@@ -90,6 +92,19 @@ require(
         $menu.find('input[type=checkbox]').addClass('hide');
         $menu.find('input[type="search"]').width(207);
 
+        var sendForm = function(url) {
+            $.post(url, $('#{{ form.vars.id }}').serialize(), function(response) {
+                if (response && response.errors && response.errors.length) {
+                    _.each(response.errors, function(error) {
+                        messenger.notificationFlashMessage('error', error);
+                    })
+                } else if (response && response.id) {
+                    DatagridState.set('{{ alias }}', 'view', response.id);
+                    reloadPage(response.id);
+                }
+            });
+        };
+
         var $footerContainer = $('<div>').addClass('ui-multiselect-footer pull-left fullwidth').css({
             'background-color': '#f6f6f6'
         }).appendTo($menu);
@@ -106,18 +121,8 @@ require(
             $('#{{ form.filters.vars.id }}').val(DatagridState.get('{{ alias }}', 'filters'));
             $('#{{ form.order.vars.id }}').val(DatagridState.get('{{ alias }}', 'columns'));
             $selector.multiselect('close');
-            $.post('{{ path('pim_datagrid_view_index', { alias: alias }) }}', $('#{{ form.vars.id }}').serialize(), function(response) {
-                if (response && response.errors && response.errors.length) {
-                    _.each(response.errors, function(error) {
-                        messenger.notificationFlashMessage('error', error);
-                    })
-                } else if (response && response.id) {
-                    DatagridState.set('{{ alias }}', 'view', response.id);
-                    reloadPage(response.id);
-                }
-            });
+            sendForm('{{ path('pim_datagrid_view_index', { alias: alias }) }}');
         }).appendTo($footerContainer);
-
 
         var $openButton = $('button.pimmultiselect').addClass('btn btn-group').css({
             'margin-top': '-6px',
@@ -127,6 +132,40 @@ require(
             'border-right': '1px solid #ccc'
         }));
         $openButton.append($('<span>', { 'class': 'caret pull-right' }));
+
+        var $updateButtton = $('#update-view');
+        $updateButtton.on('click', function() {
+            var state = DatagridState.get('{{ alias }}', ['view', 'columns', 'filters']);
+            $('#{{ form.filters.vars.id }}').val(state.filters);
+            $('#{{ form.order.vars.id }}').val(state.columns);
+
+            sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}', id: state.view }));
+        });
+
+        var setTitle = function(title) {
+            $selector.multiselect({
+                title: title,
+                selectedText: title,
+                noneSelectedText: title
+            });
+        };
+
+        var handleStateChange = function() {
+            var cleanState = { 'filters': $activeView.data('filters'), 'columns': $activeView.data('columns') };
+            var currentState = DatagridState.get('{{ alias }}', ['filters', 'columns']);
+
+            if (_.isEqual(currentState, cleanState)) {
+                setTitle(activeViewLabel);
+                $updateButtton.hide()
+            } else {
+                setTitle(activeViewLabel + ' *');
+                $updateButtton.show()
+            }
+        };
+
+        handleStateChange();
+
+        mediator.bind('grid:{{ alias }}:state_changed', handleStateChange);
 
         $menu.on('click', 'li', function() {
             var gridViewId = $(this).find('input').val();

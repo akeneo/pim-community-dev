@@ -1,15 +1,9 @@
 define(
-    ['underscore', 'oro/mediator', 'oro/pageable-collection'],
-    function(_, mediator, PageableCollection) {
+    ['underscore', 'oro/mediator'],
+    function(_, mediator) {
         'use strict';
 
         var storageEnabled = typeof Storage !== 'undefined' && sessionStorage;
-
-        var _set = function (alias, key, value) {
-            if (storageEnabled) {
-                sessionStorage.setItem(alias + '.' + key, value);
-            }
-        };
 
         var _get = function (alias, key) {
             if (storageEnabled) {
@@ -17,9 +11,27 @@ define(
             }
         };
 
+        var _set = function (alias, key, value) {
+            if (storageEnabled) {
+                var oldValue = _get(alias, key);
+                if (oldValue !== value) {
+                    sessionStorage.setItem(alias + '.' + key, value);
+                    if (oldValue === null) {
+                        mediator.trigger('grid:' + alias + ':state_set', { 'item': key, 'newValue': value });
+                    } else {
+                        mediator.trigger('grid:' + alias + ':state_changed', { 'item': key, 'oldValue': oldValue, 'newValue': value });
+                    }
+                }
+            }
+        };
+
         var _remove = function (alias, key) {
             if (storageEnabled) {
-                sessionStorage.removeItem(alias + '.' + key);
+                var value = _get(alias, key);
+                if (value !== null) {
+                    sessionStorage.removeItem(alias + '.' + key);
+                    mediator.trigger('grid:' + alias + ':state_reset', { 'item': key, 'oldValue': value });
+                }
             }
         };
 

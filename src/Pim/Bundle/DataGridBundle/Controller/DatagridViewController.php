@@ -71,25 +71,27 @@ class DatagridViewController extends AbstractDoctrineController
     /**
      * Display or save datagrid views
      *
-     * @param Request $request
-     * @param string  $alias
+     * @param Request           $request
+     * @param string            $alias
+     * @param DatagridView|null $view
      *
      * @return Response|JsonResponse
      */
-    public function indexAction(Request $request, $alias)
+    public function indexAction(Request $request, $alias, DatagridView $view = null)
     {
-        $user         = $this->getUser();
-        $repository   = $this->getRepository('PimDataGridBundle:DatagridView');
+        $user = $this->getUser();
 
-        $datagridView = new DatagridView();
-        $datagridView->setOwner($user);
-        $datagridView->setDatagridAlias($alias);
+        if (!$view || $view->getOwner() !== $user) {
+            $view = new DatagridView();
+            $view->setOwner($user);
+            $view->setDatagridAlias($alias);
+        }
 
-        $form = $this->createForm('pim_datagrid_view', $datagridView);
+        $form = $this->createForm('pim_datagrid_view', $view);
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $violations = $this->validator->validate($datagridView, ['Default', 'Creation']);
+            $violations = $this->validator->validate($view, $view->getId() ? ['Default'] : ['Default', 'Creation']);
             if ($violations->count()) {
                 $messages = [];
                 foreach ($violations as $violation) {
@@ -98,13 +100,13 @@ class DatagridViewController extends AbstractDoctrineController
 
                 return new JsonResponse(['errors' => $messages]);
             } else {
-                $this->persist($datagridView);
+                $this->persist($view);
 
-                return new JsonResponse(['id' => $datagridView->getId()]);
+                return new JsonResponse(['id' => $view->getId()]);
             }
         }
 
-        $views = $repository->findAllForUser($alias, $user);
+        $views = $this->getRepository('PimDataGridBundle:DatagridView')->findAllForUser($alias, $user);
 
         return $this->render(
             'PimDataGridBundle:Datagrid:_views.html.twig',

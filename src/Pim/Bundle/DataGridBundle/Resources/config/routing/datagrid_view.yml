@@ -1,8 +1,9 @@
 pim_datagrid_view_index:
-    path: /{alias}
-    defaults: { _controller: pim_datagrid.controller.datagrid_view:indexAction }
+    path: /{alias}/{id}
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:indexAction, id: ~ }
     requirements:
         _method: GET|POST
+        id: \d+
 
 pim_datagrid_view_list_columns:
     path: /{alias}/columns
