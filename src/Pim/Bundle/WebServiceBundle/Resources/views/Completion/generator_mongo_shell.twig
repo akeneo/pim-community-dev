@@ -113,7 +113,7 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(100000).forEach(funct
             completenesses.push(completeness);
         }
     }
- 
+
     product.completenesses = completenesses;
     db.pim_catalog_product.save(product);
 });
