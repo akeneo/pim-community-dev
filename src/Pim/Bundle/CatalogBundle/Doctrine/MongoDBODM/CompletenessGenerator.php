@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
