@@ -19,6 +19,8 @@
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
 - Remove deprecated fallback property of Locale entity
+- Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
+- Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
