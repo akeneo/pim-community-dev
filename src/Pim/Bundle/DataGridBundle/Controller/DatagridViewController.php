@@ -129,9 +129,7 @@ class DatagridViewController extends AbstractDoctrineController
      */
     public function listColumnsAction($alias)
     {
-        $columns = $this->datagridViewManager->getColumnChoices($alias);
-
-        return new JsonResponse($columns);
+        return new JsonResponse($this->datagridViewManager->getColumnChoices($alias));
     }
 
     /**

@@ -7,7 +7,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Entity\Repository\DatagridViewRepository;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 
 /**
@@ -19,9 +18,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
  */
 class DatagridViewManager
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
     /** @var EntityManager */
     protected $entityManager;
 
@@ -34,18 +30,15 @@ class DatagridViewManager
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param EntityManager            $entityManager
-     * @param DatagridManager          $datagridManager
-     * @param DatagridViewRepository   $repository
+     * @param EntityManager          $entityManager
+     * @param DatagridManager        $datagridManager
+     * @param DatagridViewRepository $repository
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
         EntityManager $entityManager,
         DatagridManager $datagridManager,
         DatagridViewRepository $repository
     ) {
-        $this->securityContext = $securityContext;
         $this->entityManager   = $entityManager;
         $this->datagridManager = $datagridManager;
         $this->repository      = $repository;
@@ -109,23 +102,5 @@ class DatagridViewManager
         }
 
         return $choices;
-    }
-
-    /**
-     * Get the current user from the Security Context
-     *
-     * @return User|null
-     */
-    protected function getUser()
-    {
-        if (null === $token = $this->securityContext->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
     }
 }
