@@ -11,6 +11,10 @@
 <button id="update-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_changes'|trans }}</button>
 <button id="clone-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_view'|trans }}</button>
 
+<a id="remove-view" class="muted hide" style="cursor:pointer;">
+    <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.remove'|trans }}"></i>
+</a>
+
 {{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
     {{ form_widget(form.filters) }}
@@ -19,7 +23,7 @@
 
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter', 'bootstrap'],
+    ['jquery', 'underscore', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter'],
     function ($, _, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
         'use strict';
 
@@ -45,11 +49,9 @@ require(
 
         var activeViewLabel = $activeView.text();
 
+        var $removeLink = $('#remove-view');
         if ($activeView.data('removable')) {
-            var $removeIcon = $('<i>', { 'class': 'icon-trash', 'data-toggle': 'tooltip', 'data-placement': 'right', 'data-original-title': '{{ 'datagrid_view.remove'|trans }}' }).tooltip();
-            var $removeLink = $('<a>', { 'class': 'muted', 'css': { 'cursor': 'pointer' } }).html($removeIcon).insertAfter($selector);
-
-            $removeLink.on('click', function() {
+            $removeLink.removeClass('hide').on('click', function() {
                 Dialog.confirm('{{ 'confirmation.remove.datagrid view'|trans }}', '{{ 'confirmation.delete'|trans }}', function() {
                     $.ajax({
                         url: Routing.generate('pim_datagrid_view_remove', { id: activeViewId }),
