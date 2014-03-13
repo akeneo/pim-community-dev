@@ -17,9 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /**
-     * @var SerializerInterface
-     */
+    /** @var SerializerInterface */
     protected $serializer;
 
     /**
