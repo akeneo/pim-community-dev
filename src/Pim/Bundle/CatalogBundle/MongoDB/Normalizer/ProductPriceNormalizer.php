@@ -4,8 +4,6 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize a product price collection to store it as bson
@@ -14,11 +12,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductPriceNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductPriceNormalizer implements NormalizerInterface
 {
-    /** @var SerializerInterface */
-    protected $serializer;
-
     /**
      * {@inheritdoc}
      */
@@ -38,13 +33,5 @@ class ProductPriceNormalizer implements NormalizerInterface, SerializerAwareInte
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductPrice && 'bson' === $format;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
     }
 }

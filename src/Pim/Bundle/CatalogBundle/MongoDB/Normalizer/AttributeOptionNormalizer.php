@@ -4,8 +4,6 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize an attribute option to store it as bson
@@ -14,11 +12,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface
+class AttributeOptionNormalizer implements NormalizerInterface
 {
-    /** @var SerializerInterface */
-    protected $serializer;
-
     /**
      * {@inheritdoc}
      */
@@ -38,13 +33,5 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeOption && 'bson' === $format;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
     }
 }
