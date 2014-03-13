@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
