@@ -17,17 +17,17 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 class ProductNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var Router
+     * @var Router $router
      */
     protected $router;
 
     /**
-     * @var Channel
+     * @var Channel $channel
      */
     protected $channel;
 

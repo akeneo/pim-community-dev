@@ -15,12 +15,12 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class GroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
     protected $transNormalizer;
 

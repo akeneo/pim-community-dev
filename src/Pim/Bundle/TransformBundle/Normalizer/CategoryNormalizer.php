@@ -15,12 +15,12 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
     protected $transNormalizer;
 

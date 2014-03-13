@@ -15,12 +15,12 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 class AssociationTypeNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
     protected $transNormalizer;
 

@@ -24,12 +24,12 @@ class AttributeNormalizer implements NormalizerInterface
     const ALL_LOCALES         = 'All';
 
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
     protected $transNormalizer;
 
