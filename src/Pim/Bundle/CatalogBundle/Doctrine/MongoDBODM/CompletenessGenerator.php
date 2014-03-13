@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
@@ -111,7 +112,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($requirements as $req) {
             $channel = $req->getChannel()->getCode();
             $locales = $req->getChannel()->getLocales();
-            $attribute = $req->getAttribute();
 
             if (!isset($stats[$channel])) {
                 $stats[$channel]['object'] = $req->getChannel();
@@ -132,22 +132,43 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
                 $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 
-                if ($attribute->getBackendType() === "prices") {
-
-                    if (!$this->isPriceComplete($value, $req->getChannel())) {
-                        $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
-                    }
-
-                } elseif (($value === null) ||
-                    ($value->getData() === null) ||
-                    (is_array($value->getData()) && count($value->getData()) === 0)) {
-
+                if ($this->isValueMissing($req, $value)) {
                     $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
                 }
             }
         }
 
         return $stats;
+    }
+
+    /**
+     * Apply rules defining if a value is missing.
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return boolean $valueMissing
+     */
+    protected function isValueMissing(
+        AttributeRequirement $req,
+        ProductValueInterface $value = null
+    ) {
+        $valueMissing = false;
+        $attribute = $req->getAttribute();
+
+        if ($attribute->getBackendType() === "prices") {
+
+            if (!$this->isPriceComplete($value, $req->getChannel())) {
+                $valueMissing = true;
+            }
+
+        } elseif (($value === null) ||
+            ($value->getData() === null) ||
+            (is_array($value->getData()) && count($value->getData()) === 0)) {
+
+            $valueMissing = true;
+        }
+
+        return $valueMissing;
     }
 
     /**
