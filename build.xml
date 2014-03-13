@@ -259,7 +259,7 @@
             <arg value="akeneo_ci_pim_pr_behat_" />
             <!-- Profile Prefix -->
             <arg value="jenkins-coverage-" />
-            <arg value="${basedir}/bin/behat --ansi" />
+            <arg value="${basedir}/bin/behat --ansi --strict" />
         </exec>
     </target>
 
