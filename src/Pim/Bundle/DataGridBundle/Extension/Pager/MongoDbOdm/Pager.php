@@ -4,8 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
 /**
  * MongoDB ODM pager
@@ -22,22 +21,15 @@ class Pager extends AbstractPager implements PagerInterface
     protected $qb;
 
     /**
-     * @var AclHelper
-     */
-    protected $aclHelper;
-
-    /**
      * Constructor
      *
-     * @param AclHelper    $aclHelper
      * @param integer      $maxPerPage
      * @param QueryBuilder $qb
      */
-    public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
-        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -45,23 +37,31 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->setNbResults($this->computeNbResult());
+
+        $query = $this->getQueryBuilder();
+        $query->limit(null)->skip(null);
+
+        if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
+            $this->setLastPage(0);
+        } else {
+            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
+            $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+            $query->limit($this->getMaxPerPage())->skip($offset);
+        }
     }
 
     /**
-     * {@inheritdoc}
+     * Calculates count
+     *
+     * @return int
      */
-    public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
+    public function computeNbResult()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
+        $qb = clone $this->getQueryBuilder();
+        $count = $qb->getQuery()->execute()->count();
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function retrieveObject($offset)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $count;
     }
 
     /**

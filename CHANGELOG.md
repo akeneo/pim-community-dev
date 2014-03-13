@@ -8,6 +8,7 @@
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
+- MongoDB support (WIP)
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -32,6 +33,7 @@
 - Move src/Pim/Bundle/FilterBundle/Filter/CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CategoryFilter.php
 - Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
 - Add methods applyFilterByGroupIds and applyFilterByFamilyIds in ProductRepositoryInterface
+- Remove the AclHelper $aclHelper argument from the src/Pim/Bundle/DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 
 # 1.0.1
 ## Bug Fixes
