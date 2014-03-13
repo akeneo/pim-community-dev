@@ -57,12 +57,17 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
-    const GRID_VIEW_FILTERS_KEY = '[options][view][filters]';
+    const GRID_VIEW_ID_KEY = '[options][view][id]';
 
     /**
      * @var string
      */
-    const GRID_VIEW_ID_KEY = '[options][view][id]';
+    const GRID_VIEW_COLUMNS_KEY = '[options][view][columns]';
+
+    /**
+     * @var string
+     */
+    const GRID_VIEW_FILTERS_KEY = '[options][view][filters]';
 
     /**
      * @var DatagridConfiguration
@@ -278,7 +283,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridColumns()
     {
-        $params = $this->request->get('params', []);
+        $params = $this->request->get('params', $this->request->get('product-grid'));
         $gridView = isset($params['gridView']) ? $params['gridView'] : null;
 
         if ($gridView) {
@@ -294,10 +299,13 @@ class ContextConfigurator implements ConfiguratorInterface
                 ->findOneBy(['datagridAlias' => $alias, 'id' => $gridView]);
 
             if ($view) {
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_ID_KEY, $view->getId());
+                $columns = $view->getDisplayedColumns($this->getUser());
 
-                return $view->getDisplayedColumns($this->getUser());
+                $this->configuration->offsetSetByPath(self::GRID_VIEW_ID_KEY, $view->getId());
+                $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
+                $this->configuration->offsetSetByPath(self::GRID_VIEW_COLUMNS_KEY, $columns);
+
+                return $columns;
             }
         }
     }

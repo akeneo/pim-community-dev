@@ -10,25 +10,40 @@
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
-            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection'],
-            function ($, Routing, datagridBuilder, PageableCollection) {
+            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state'],
+            function ($, Routing, datagridBuilder, PageableCollection, DatagridState) {
                 'use strict';
                 $(function() {
                     var urlParams = {
                         alias: '{{ name }}',
                         params: {{ params|json_encode|raw }}
                     };
-                    if (typeof Storage !== 'undefined' && sessionStorage) {
-                        urlParams.params.gridView = sessionStorage.getItem('{{ name }}.view');
-                        var state = sessionStorage.getItem('{{ name }}');
-                        if (state) {
-                            var collection = new PageableCollection();
-                            state = collection.decodeStateData(state);
-                            collection.processFiltersParams(urlParams, state, '{{ name }}[_filter]');
-                        }
+
+                    var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+
+                    if (state.view) {
+                        urlParams.params.gridView = state.view;
+                    }
+
+                    if (state.filters) {
+                        var collection = new PageableCollection();
+                        var filters = collection.decodeStateData(state.filters);
+                        collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+                    }
+
+                    if (state.columns) {
+                        urlParams.params.columns = state.columns;
                     }
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
+                        var view = resp.metadata.options.view;
+                        if (view) {
+                            var currentView = DatagridState.get('{{ name }}', 'view');
+                            if (!currentView || currentView != view.id) {
+                                DatagridState.set('{{ name }}', { 'view': view.id, 'columns': view.columns, 'filters': view.filters });
+                            }
+                        }
+
                         $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                         require(resp.metadata.requireJSModules, function () {

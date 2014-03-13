@@ -60,7 +60,7 @@ define(
                     }
 
                     var encodedStateData = collection.encodeStateData(collection.state);
-                    sessionStorage.setItem(this.gridName, encodedStateData);
+                    sessionStorage.setItem(this.gridName + '.filters', encodedStateData);
                 }
             },
 
@@ -71,18 +71,6 @@ define(
 
         StateListener.init = function ($gridContainer, gridName) {
             new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
-        };
-
-        StateListener.prepareGrid = function (gridName) {
-            if (typeof Storage !== 'undefined' && sessionStorage) {
-                var $gridContainer = $('#grid-' + gridName);
-                var metadata       = $gridContainer.data('metadata');
-
-                var view = metadata.options ? metadata.options.view : null;
-                if (view && view.id) {
-                    sessionStorage.setItem(gridName + '.view', view.id);
-                }
-            }
         };
 
         return StateListener;

@@ -15,7 +15,7 @@
 
 <select id="view-selector" class="hide">
 {% for view in views %}
-    <option value="{{ view.id }}">
+    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}">
         {{ _self.viewLabel(view) }}
     </option>
 {% endfor %}
@@ -42,8 +42,8 @@
 
 <script type="text/javascript">
 require(
-    ['jquery', 'backbone', 'routing', 'jquery.multiselect', 'jquery.multiselect.filter'],
-    function ($, Backbone, Routing) {
+    ['jquery', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'jquery.multiselect', 'jquery.multiselect.filter'],
+    function ($, Backbone, Routing, mediator, DatagridState) {
         'use strict';
 
         var $selector = $('#view-selector');
@@ -68,6 +68,10 @@ require(
             placeholder: opts.placeholder
         });
 
+        mediator.once('hash_navigation_request:start', function() {
+            $selector.multiselect('destroy').hide();
+        });
+
         var $menu = $('.ui-multiselect-menu.pimmultiselect').addClass('highlight-hover').appendTo($('#container'));
         $menu.find('input[type=checkbox]').addClass('hide');
 
@@ -84,7 +88,7 @@ require(
             if (!$('#{{ form.label.vars.id }}').val()) {
                 return;
             }
-            $('#{{ form.filters.vars.id }}').val(sessionStorage.getItem('{{ alias }}'));
+            $('#{{ form.filters.vars.id }}').val(DatagridState.get('{{ alias }}', 'filters'));
             $selector.multiselect('close');
             $('#{{ form.vars.id }}').submit()
         }).appendTo($footerContainer);
@@ -107,13 +111,11 @@ require(
             });
             var gridViewId = $(this).find('input').val();
 
-            if (typeof Storage !== 'undefined' && sessionStorage) {
-                sessionStorage.removeItem('{{ alias }}');
-                sessionStorage.setItem('{{ alias }}.view', gridViewId);
-            }
+            var $viewItem = $selector.find('option[value="' + gridViewId + '"]');
+            DatagridState.set('{{ alias }}', { 'view': gridViewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
 
-            var url = Routing.generate('pim_datagrid_view_change', { alias: '{{ alias }}', id: gridViewId, dataLocale: '{{ dataLocale }}' });
-            Backbone.history.navigate('url=' + url, { trigger: true });
+            console.log('view set to', gridViewId);
+            Backbone.history.navigate(window.location.hash + '&v=' + gridViewId, true);
         });
 
         $menu.find('input[type="search"]').width(207);

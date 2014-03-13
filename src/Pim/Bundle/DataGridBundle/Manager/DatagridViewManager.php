@@ -115,8 +115,7 @@ class DatagridViewManager
             ->setLabel(null)
             ->setType(DatagridView::TYPE_CUSTOM)
             ->setColumns($view->getColumns())
-            ->setFilters($view->getFilters())
-            ->setConfiguredColumns([]);
+            ->setFilters($view->getFilters());
 
         $this->entityManager->persist($customView);
         $this->entityManager->flush();

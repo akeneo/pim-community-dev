@@ -128,32 +128,6 @@ class DatagridViewController extends AbstractDoctrineController
     }
 
     /**
-     * Change to a different datagrid view
-     * Makes sure that the view is in a clean state
-     *
-     * @param Request      $request
-     * @param string       $alias
-     * @param DatagridView $view
-     *
-     * @return Response
-     */
-    public function changeViewAction(Request $request, $alias, DatagridView $view)
-    {
-        if ($view->getOwner() === $this->getUser()) {
-            $view->setConfiguredColumns($view->getColumns());
-            $this->persist($view);
-        }
-
-        return $this->redirectToRoute(
-            'pim_enrich_product_index',
-            [
-                'dataLocale' => $request->get('dataLocale'),
-                'gridView'   => $view->getId()
-            ]
-        );
-    }
-
-    /**
      * Display or configure datagrid view columns
      *
      * @param Request      $request
