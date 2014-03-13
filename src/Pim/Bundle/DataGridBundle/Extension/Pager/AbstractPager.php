@@ -94,7 +94,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
             $begin = $tmp > $limit ? $limit : $tmp;
         }
 
-        $i = (int)$begin;
+        $i = (int) $begin;
         while ($i < $begin + $nb_links && $i <= $this->lastPage) {
             $links[] = $i++;
         }
@@ -124,7 +124,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
      */
     public function getNbResults()
     {
-        return (int)$this->nbResults;
+        return (int) $this->nbResults;
     }
 
     /**
