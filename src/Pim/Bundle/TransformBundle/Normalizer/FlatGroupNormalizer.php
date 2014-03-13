@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class FlatGroupNormalizer extends GroupNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 

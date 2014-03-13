@@ -14,7 +14,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 class FlatJobInstanceNormalizer extends JobInstanceNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 
