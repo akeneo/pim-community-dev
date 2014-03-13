@@ -22,16 +22,16 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * @var TranslationNormalizer
      */
-    protected $translationNormalizer;
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -44,7 +44,7 @@ class FamilyNormalizer implements NormalizerInterface
             'attributes'       => $this->normalizeAttributes($object),
             'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($object),
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

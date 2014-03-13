@@ -22,16 +22,16 @@ class AssociationTypeNormalizer implements NormalizerInterface
     /**
      * @var TranslationNormalizer
      */
-    protected $translationNormalizer;
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -41,7 +41,7 @@ class AssociationTypeNormalizer implements NormalizerInterface
     {
         return array(
             'code'  => $object->getCode()
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
