@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Events;
-use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,28 +30,52 @@ class SetProductNormalizedDataSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return [Events::preUpdate];
+        return ['prePersist', 'preUpdate'];
     }
 
     /**
-     * Set product normalized data before updating it
+     * Set product normalized data before inserting it
      *
-     * @param PreUpdateEventArgs $args
+     * @param LifecycleEventArgs $args
      */
-    public function preUpdate(PreUpdateEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args)
     {
         $document = $args->getDocument();
         if (!$document instanceof ProductInterface) {
             return;
         }
 
-        $document->setNormalizedData(
-            $this->normalizer->normalize($document, 'bson')
-        );
+        $this->updateNormalizedData($document);
+    }
+
+    /**
+     * Set product normalized data before updating it
+     *
+     * @param LifecycleEventArgs $args
+     */
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $document = $args->getDocument();
+        if (!$document instanceof ProductInterface) {
+            return;
+        }
+
+        $this->updateNormalizedData($document);
 
         $dm = $args->getDocumentManager();
         $class = $dm->getClassMetadata(get_class($document));
         $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($class, $document);
     }
-}
 
+    /**
+     * Update product normalized data
+     *
+     * @param LifecycleEventArgs $args
+     */
+    protected function updateNormalizedData(ProductInterface $product)
+    {
+        $product->setNormalizedData(
+            $this->normalizer->normalize($product, 'bson')
+        );
+    }
+}

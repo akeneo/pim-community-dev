@@ -6,7 +6,7 @@ parameters:
     pim_catalog.event_listener.mongodb.scopable.class:               Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
-    pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductDocumentNormalizedDataSubscriber
+    pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductNormalizedDataSubscriber
     pim_catalog.mongodb.normalizer.family.class:                     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
     pim_catalog.mongodb.normalizer.product.class:                    Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
     pim_catalog.doctrine.mongodb.flexible_query_builder.class:       Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
@@ -34,7 +34,6 @@ services:
 
     pim_catalog.event_listener.mongodb.normalize_product_data:
         class: %pim_catalog.event_listener.mongodb.normalize_product_data.class%
-        class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductDocumentNormalizedDataSubscriber
         arguments:
             - '@pim_serializer'
         tags:
