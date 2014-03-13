@@ -74,23 +74,16 @@ class DatagridViewController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $alias
      *
-     * @return Response
+     * @return Response|JsonResponse
      */
     public function indexAction(Request $request, $alias)
     {
         $user         = $this->getUser();
         $repository   = $this->getRepository('PimDataGridBundle:DatagridView');
-        $activeViewId = $request->get('gridView', null);
-
-        $activeView = $activeViewId ? $repository->find($activeViewId) : null;
-        if (!$activeView) {
-            $activeView = $this->datagridViewManager->getDefaultDatagridView($alias, $user);
-        }
 
         $datagridView = new DatagridView();
         $datagridView->setOwner($user);
         $datagridView->setDatagridAlias($alias);
-        $datagridView->setColumns($activeView->getColumns());
 
         $form = $this->createForm('pim_datagrid_view', $datagridView);
 
@@ -98,20 +91,17 @@ class DatagridViewController extends AbstractDoctrineController
             $form->submit($request);
             $violations = $this->validator->validate($datagridView, ['Default', 'Creation']);
             if ($violations->count()) {
+                $messages = [];
                 foreach ($violations as $violation) {
-                    $this->addFlash('error', $violation->getMessage());
+                    $messages[] = $this->getTranslator()->trans($violation->getMessage());
                 }
+
+                return new JsonResponse(['errors' => $messages]);
             } else {
                 $this->persist($datagridView);
-            }
 
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                [
-                    'dataLocale' => $request->get('dataLocale'),
-                    'gridView'   => $datagridView->getId()
-                ]
-            );
+                return new JsonResponse(['id' => $datagridView->getId()]);
+            }
         }
 
         $views = $repository->findAllForUser($alias, $user);
@@ -119,11 +109,9 @@ class DatagridViewController extends AbstractDoctrineController
         return $this->render(
             'PimDataGridBundle:Datagrid:_views.html.twig',
             [
-                'alias'      => $alias,
-                'views'      => $views,
-                'activeView' => $activeView,
-                'form'       => $form->createView(),
-                'dataLocale' => $request->get('dataLocale')
+                'alias' => $alias,
+                'views' => $views,
+                'form'  => $form->createView(),
             ]
         );
     }
@@ -133,7 +121,7 @@ class DatagridViewController extends AbstractDoctrineController
      *
      * @param string $alias
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function listColumnsAction($alias)
     {
@@ -150,11 +138,11 @@ class DatagridViewController extends AbstractDoctrineController
      *
      * @throws DeleteException If the current user doesn't own the view
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, DatagridView $view)
     {
-        if ($view->getOwner() !== $this->getUser()) {
+        if ($view->getOwner() !== $this->getUser() || $view->isDefault()) {
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 
@@ -162,11 +150,9 @@ class DatagridViewController extends AbstractDoctrineController
         $em->remove($view);
         $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_product_index', ['dataLocale' => $request->get('dataLocale')]);
-        }
+        $this->addFlash('success', 'flash.datagrid view.removed');
+
+        return new Response('', 204);
     }
 
     /**

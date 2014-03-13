@@ -50,8 +50,14 @@ define(
 
                 return this;
             },
-            remove: function() {
-                _remove.apply(this, arguments);
+            remove: function(alias, keys) {
+                if (_.isArray(keys)) {
+                    _.each(keys, function(key) {
+                        _remove(alias, key);
+                    });
+                } else {
+                    _remove.apply(this, arguments);
+                }
 
                 return this;
             }

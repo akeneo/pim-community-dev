@@ -1,32 +1,14 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% macro viewLabel(view) %}
-    {{- view.default ? 'datagrid_view.default'|trans : view.label -}}
-{% endmacro %}
-
 <select id="view-selector" class="hide">
 {% for view in views %}
-    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}">
-        {{ _self.viewLabel(view) }}
+    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}"{{ view.default ? ' data-default="1"' : '' }}{{ not view.default and view.owner.id == app.user.id ? ' data-removable="1"' : '' }}>
+        {{- view.default ? 'datagrid_view.default'|trans : view.label -}}
     </option>
 {% endfor %}
 </select>
 
-{% if not activeView.default and activeView.owner.id == app.user.id %}
-    <a class="muted" {{ elements.deleteLinkAttributes(
-        path('pim_datagrid_view_remove', { id: activeView.id, dataLocale: dataLocale }),
-        path('pim_enrich_product_index', { dataLocale: dataLocale }),
-        'confirmation.remove.datagrid view'|trans({'%name%': activeView.label}),
-        'flash.datagrid view.removed'|trans
-    ) }}>
-        <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.remove'|trans }}"></i>
-    </a>
-{% endif %}
-
-{{ form_start(form, {
-    action: path('pim_datagrid_view_index', { alias: alias, dataLocale: dataLocale, gridView: activeView.id }),
-    attr: { class: 'pull-left unspaced hide' }
-}) }}
+{{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
     {{ form_widget(form.filters) }}
     {{ form_widget(form.order) }}
@@ -34,14 +16,49 @@
 
 <script type="text/javascript">
 require(
-    ['jquery', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'jquery.multiselect', 'jquery.multiselect.filter'],
-    function ($, Backbone, Routing, mediator, DatagridState) {
+    ['jquery', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter', 'bootstrap'],
+    function ($, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
         'use strict';
+
+        var reloadPage = function(id) {
+            Backbone.history.navigate(window.location.hash + '&gv=' + id, true);
+        };
 
         var $selector = $('#view-selector');
 
+        var activeViewId = DatagridState.get('{{ alias }}', 'view');
+        var $activeView  = $selector.find('option[value="'+activeViewId+'"]');
+
+        if (!$activeView.length) {
+            $activeView = $selector.find('option[data-default="1"]');
+            activeViewId = $activeView.val();
+            DatagridState.set('{{ alias }}', 'view', activeViewId);
+        }
+
+        var activeViewLabel = $activeView.text();
+
+        if ($activeView.data('removable')) {
+            var $removeIcon = $('<i>', { 'class': 'icon-trash', 'data-toggle': 'tooltip', 'data-placement': 'right', 'data-original-title': '{{ 'datagrid_view.remove'|trans }}' }).tooltip();
+            var $removeLink = $('<a>', { 'class': 'muted', 'css': { 'cursor': 'pointer' } }).html($removeIcon).insertAfter($selector);
+
+            $removeLink.on('click', function() {
+                Dialog.confirm('{{ 'confirmation.remove.datagrid view'|trans }}', '{{ 'confirmation.delete'|trans }}', function() {
+                    $.ajax({
+                        url: Routing.generate('pim_datagrid_view_remove', { id: activeViewId }),
+                        type: 'POST',
+                        headers: { accept:'application/json' },
+                        data: { _method: 'DELETE' },
+                        success: function() {
+                            DatagridState.remove('{{ alias }}', ['view', 'filters', 'columns']);
+                            reloadPage(0);
+                        }
+                    });
+                });
+            });
+        }
+
         var opts = {
-            title: '{{ _self.viewLabel(activeView) }}',
+            title: activeViewLabel,
             placeholder: '{{ 'Search'|trans }}',
             header: '',
             height: 175,
@@ -66,6 +83,7 @@ require(
 
         var $menu = $('.ui-multiselect-menu.pimmultiselect').addClass('highlight-hover').appendTo($('#container'));
         $menu.find('input[type=checkbox]').addClass('hide');
+        $menu.find('input[type="search"]').width(207);
 
         var $footerContainer = $('<div>').addClass('ui-multiselect-footer pull-left fullwidth').css({
             'background-color': '#f6f6f6'
@@ -83,7 +101,16 @@ require(
             $('#{{ form.filters.vars.id }}').val(DatagridState.get('{{ alias }}', 'filters'));
             $('#{{ form.order.vars.id }}').val(DatagridState.get('{{ alias }}', 'columns'));
             $selector.multiselect('close');
-            $('#{{ form.vars.id }}').submit()
+            $.post('{{ path('pim_datagrid_view_index', { alias: alias }) }}', $('#{{ form.vars.id }}').serialize(), function(response) {
+                if (response && response.errors && response.errors.length) {
+                    _.each(response.errors, function(error) {
+                        messenger.notificationFlashMessage('error', error);
+                    })
+                } else if (response && response.id) {
+                    DatagridState.set('{{ alias }}', 'view', response.id);
+                    reloadPage(response.id);
+                }
+            });
         }).appendTo($footerContainer);
 
 
@@ -107,11 +134,8 @@ require(
             var $viewItem = $selector.find('option[value="' + gridViewId + '"]');
             DatagridState.set('{{ alias }}', { 'view': gridViewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
 
-            console.log('view set to', gridViewId);
-            Backbone.history.navigate(window.location.hash + '&v=' + gridViewId, true);
+            reloadPage(gridViewId);
         });
-
-        $menu.find('input[type="search"]').width(207);
 
         $('#{{ form.label.vars.id }}').on('keypress', function(e) {
             if ((e.keyCode || e.which) == 13) {

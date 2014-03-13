@@ -26,7 +26,7 @@ datagrid_view:
         unique_message:    The label must be unique
         not_blank_message: The label must not be blank
 
-confirmation.remove.datagrid view: Are you sure you want to delete the datagrid view %name%?
+confirmation.remove.datagrid view: Are you sure you want to delete this datagrid view?
 
 flash.datagrid view:
     removed:       Datagrid view successfully removed
