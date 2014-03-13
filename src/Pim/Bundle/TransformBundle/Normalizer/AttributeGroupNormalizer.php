@@ -15,23 +15,23 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class AttributeGroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
-    protected $translationNormalizer;
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -43,7 +43,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
             'code'       => $object->getCode(),
             'sortOrder'  => $object->getSortOrder(),
             'attributes' => $this->normalizeAttributes($object)
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

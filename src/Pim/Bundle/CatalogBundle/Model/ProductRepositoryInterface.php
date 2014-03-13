@@ -255,6 +255,22 @@ interface ProductRepositoryInterface
     public function applyFilterByIds($qb, $productIds, $include);
 
     /**
+     * Apply a filter by group ids
+     *
+     * @param mixed $qb       query builder to update
+     * @param array $groupIds group ids
+     */
+    public function applyFilterByGroupIds($qb, $groupIds);
+
+    /**
+     * Apply a filter by family ids
+     *
+     * @param mixed $qb        query builder to update
+     * @param array $familyIds family ids
+     */
+    public function applyFilterByFamilyIds($qb, $familyIds);
+
+    /**
      * Apply a filter by attribute value
      *
      * @param mixed        $qb             query builder to update

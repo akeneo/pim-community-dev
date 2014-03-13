@@ -15,23 +15,23 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
-    protected $translationNormalizer;
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -42,7 +42,7 @@ class CategoryNormalizer implements NormalizerInterface
         return array(
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

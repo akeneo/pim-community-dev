@@ -14,7 +14,7 @@ use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
  */
 class TranslationNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    /** @var array $supportedFormats */
     protected $supportedFormats = array('json', 'xml');
 
     /**

@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 class AttributeOptionNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 

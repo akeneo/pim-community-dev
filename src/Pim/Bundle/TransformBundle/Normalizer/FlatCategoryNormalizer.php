@@ -12,7 +12,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer;
 class FlatCategoryNormalizer extends CategoryNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 }

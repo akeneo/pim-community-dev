@@ -51,6 +51,14 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * @return ProductRepositoryInterface
+     */
+    public function getProductRepository()
+    {
+        return $this->productManager->getFlexibleRepository();
+    }
+
+    /**
      * @param string $code
      *
      * @return Attribute

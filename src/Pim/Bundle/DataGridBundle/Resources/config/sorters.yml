@@ -2,6 +2,7 @@ parameters:
     pim_datagrid.extension.sorter.orm.field_sorter.class:                Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FieldSorter
     pim_datagrid.extension.sorter.orm.flexible_field_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FlexibleFieldSorter
     pim_datagrid.extension.sorter.orm.product_completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductCompletenessSorter
+    pim_datagrid.extension.sorter.orm.product_family_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductFamilySorter
 
 services:
     pim_datagrid.extension.sorter.orm.field_sorter:
@@ -23,3 +24,8 @@ services:
             - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_completeness }
+
+    pim_datagrid.extension.sorter.orm.product_family_sorter:
+        class: %pim_datagrid.extension.sorter.orm.product_family_sorter.class%
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_family }

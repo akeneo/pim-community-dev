@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 class FlatAttributeOptionNormalizer extends AttributeOptionNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 
