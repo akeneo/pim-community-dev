@@ -24,11 +24,6 @@ class Pager extends AbstractPager implements PagerInterface
     protected $qb;
 
     /**
-     * @var array
-     */
-    protected $parameters = [];
-
-    /**
      * Constructor
      *
      * @param integer      $maxPerPage
