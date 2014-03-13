@@ -28,9 +28,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        return [
-            'family' => $this->serializer->normalize($object->getFamily(), $format, $context),
-        ];
+        $data = ['family' => $this->serializer->normalize($object->getFamily(), $format, $context)];
+
+        foreach ($object->getValues() as $value) {
+            $data = array_merge(
+                $data,
+                $this->serializer->normalize($value, $format, $context)
+            );
+        }
+
+        return $data;
     }
 
     /**
