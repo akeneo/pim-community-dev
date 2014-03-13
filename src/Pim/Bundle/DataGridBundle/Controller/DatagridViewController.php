@@ -100,7 +100,9 @@ class DatagridViewController extends AbstractDoctrineController
 
                 return new JsonResponse(['errors' => $messages]);
             } else {
-                $this->persist($view);
+                $em = $this->getManager();
+                $em->persist($entity);
+                $em->flush();
 
                 return new JsonResponse(['id' => $view->getId()]);
             }
@@ -155,38 +157,5 @@ class DatagridViewController extends AbstractDoctrineController
         $this->addFlash('success', 'flash.datagrid view.removed');
 
         return new Response('', 204);
-    }
-
-    /**
-     * Sort an array by key given an other array values
-     *
-     * @param array $array
-     * @param array $orderArray
-     *
-     * @return array
-     */
-    protected function sortArrayByArray(array $array, array $orderArray)
-    {
-        $ordered = [];
-        foreach ($orderArray as $key) {
-            if (array_key_exists($key, $array)) {
-                $ordered[$key] = $array[$key];
-                unset($array[$key]);
-            }
-        }
-
-        return $ordered + $array;
-    }
-
-    /**
-     * Persist a view
-     *
-     * @param object $entity
-     */
-    protected function persist($entity)
-    {
-        $em = $this->getManager();
-        $em->persist($entity);
-        $em->flush();
     }
 }

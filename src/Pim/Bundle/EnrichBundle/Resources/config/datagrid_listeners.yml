@@ -13,6 +13,7 @@ services:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
+            - '@pim_datagrid.manager.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -35,6 +36,7 @@ services:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
+            - '@pim_datagrid.manager.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -58,6 +60,7 @@ services:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
+            - '@pim_datagrid.manager.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]
         tags:
@@ -97,6 +100,7 @@ services:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@security.context'
+            - '@pim_datagrid.manager.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]
         tags:

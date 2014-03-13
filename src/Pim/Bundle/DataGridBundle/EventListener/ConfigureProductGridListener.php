@@ -14,6 +14,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
@@ -51,23 +52,31 @@ class ConfigureProductGridListener
     protected $request;
 
     /**
+     * @var DatagridViewManager
+     */
+    protected $viewManager;
+
+    /**
      * Constructor
      *
      * @param ProductManager           $productManager  product manager
      * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
      * @param RequestParameters        $requestParams   request parameters
      * @param SecurityContextInterface $securityContext the security context
+     * @param DatagridViewManager      $viewManager     datagrid view manager
      */
     public function __construct(
         ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        DatagridViewManager $viewManager
     ) {
         $this->productManager  = $productManager;
         $this->confRegistry    = $confRegistry;
         $this->requestParams   = $requestParams;
         $this->securityContext = $securityContext;
+        $this->viewManager     = $viewManager;
     }
 
     /**
@@ -117,7 +126,8 @@ class ConfigureProductGridListener
             $this->productManager,
             $this->requestParams,
             $this->request,
-            $this->securityContext
+            $this->securityContext,
+            $this->viewManager
         );
     }
 
