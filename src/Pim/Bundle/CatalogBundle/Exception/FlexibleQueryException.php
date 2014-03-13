@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Exception;
+namespace Pim\Bundle\CatalogBundle\Exception;
 
 /**
- * FlexibleQueryException
+ * Query exception
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
