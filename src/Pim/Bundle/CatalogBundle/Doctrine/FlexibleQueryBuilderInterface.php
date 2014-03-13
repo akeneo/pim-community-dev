@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 

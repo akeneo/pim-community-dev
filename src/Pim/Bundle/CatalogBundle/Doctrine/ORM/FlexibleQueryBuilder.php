@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
+use Pim\Bundle\CatalogBundle\Doctrine\FlexibleQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -113,10 +113,10 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         }
 
         $customFilters = [
-            'pim_catalog_multiselect'      => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_simpleselect'     => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_metric'           => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter',
-            'pim_catalog_price_collection' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter'
+            'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
+            'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
         ];
 
         if (isset($customFilters[$attributeType])) {
@@ -150,15 +150,15 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     {
         $attributeType = $attribute->getAttributeType();
         $customSorters = [
-            'pim_catalog_multiselect'  => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_simpleselect' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_metric'       => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter'
+            'pim_catalog_multiselect'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_simpleselect' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_metric'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter'
         ];
 
         if (isset($customSorters[$attributeType])) {
             $sorterClass = $customSorters[$attributeType];
         } else {
-            $sorterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter';
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
         $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);

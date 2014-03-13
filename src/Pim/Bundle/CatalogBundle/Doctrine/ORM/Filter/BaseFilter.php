@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FilterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
  * Base filter
