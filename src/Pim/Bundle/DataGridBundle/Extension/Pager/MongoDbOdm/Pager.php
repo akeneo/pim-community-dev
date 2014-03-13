@@ -45,7 +45,36 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        // throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->resetIterator();
+        $this->setNbResults($this->computeNbResult());
+
+        $query = $this->getQueryBuilder();
+        $query->limit(null)->skip(null);
+
+        if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
+            $this->setLastPage(0);
+        } else {
+            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
+
+            $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+
+            $query
+                ->limit($this->getMaxPerPage())
+                ->skip($offset);
+        }
+    }
+
+    /**
+     * Calculates count
+     *
+     * @return int
+     */
+    public function computeNbResult()
+    {
+        $qb = clone $this->getQueryBuilder();
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
     }
 
     /**
@@ -53,15 +82,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function retrieveObject($offset)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return null;
     }
 
     /**
@@ -82,5 +103,13 @@ class Pager extends AbstractPager implements PagerInterface
     public function getQueryBuilder()
     {
         return $this->qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function retrieveObject($offset)
+    {
+        return null;
     }
 }
