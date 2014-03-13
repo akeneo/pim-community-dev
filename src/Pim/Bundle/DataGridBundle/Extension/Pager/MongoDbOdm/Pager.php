@@ -55,12 +55,8 @@ class Pager extends AbstractPager implements PagerInterface
             $this->setLastPage(0);
         } else {
             $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
-
             $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-
-            $query
-                ->limit($this->getMaxPerPage())
-                ->skip($offset);
+            $query->limit($this->getMaxPerPage())->skip($offset);
         }
     }
 
