@@ -8,6 +8,7 @@
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
+- MongoDB support (WIP)
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -19,6 +20,8 @@
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
 - Remove deprecated fallback property of Locale entity
+- Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
+- Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
@@ -30,6 +33,7 @@
 - Move src/Pim/Bundle/FilterBundle/Filter/CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CategoryFilter.php
 - Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
 - Add methods applyFilterByGroupIds and applyFilterByFamilyIds in ProductRepositoryInterface
+- Remove the AclHelper $aclHelper argument from the src/Pim/Bundle/DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 
 # 1.0.1
 ## Bug Fixes

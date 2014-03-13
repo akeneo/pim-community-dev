@@ -9,6 +9,8 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Product interface
  *
@@ -163,6 +165,22 @@ interface ProductInterface extends FlexibleInterface
      * @return Product
      */
     public function setAssociations(array $associations = array());
+
+    /**
+     * Set product completenesses
+     *
+     * @param ArrayCollection $completenesses
+     *
+     * @return Product
+     */
+    public function setCompletenesses(ArrayCollection $completenesses);
+
+    /**
+     * Get product completenesses
+     *
+     * @return ArrayCollection
+     */
+    public function getCompletenesses();
 
     /**
      * {@inheritdoc}
