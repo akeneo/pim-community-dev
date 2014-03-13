@@ -27,8 +27,10 @@ require(
     function ($, _, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
         'use strict';
 
-        var reloadPage = function(id) {
-            Backbone.history.navigate(window.location.hash + '&gv=' + id, true);
+        var reloadPage = function() {
+            var url = window.location.hash;
+            Backbone.history.navigate(url.substr(0, url.length -1));
+            Backbone.history.navigate(url, true);
         };
 
         var $selector = $('#view-selector');
@@ -60,7 +62,7 @@ require(
                         data: { _method: 'DELETE' },
                         success: function() {
                             DatagridState.remove('{{ alias }}', ['view', 'filters', 'columns']);
-                            reloadPage(0);
+                            reloadPage();
                         }
                     });
                 });
@@ -103,7 +105,7 @@ require(
                     })
                 } else if (response && response.id) {
                     DatagridState.set('{{ alias }}', 'view', response.id);
-                    reloadPage(response.id);
+                    reloadPage();
                 }
             });
         };
@@ -209,7 +211,7 @@ require(
             var gridViewId = $(this).find('input').val();
             activateView(gridViewId);
 
-            reloadPage(gridViewId);
+            reloadPage();
         });
 
         $('#{{ form.label.vars.id }}').on('keypress', function(e) {

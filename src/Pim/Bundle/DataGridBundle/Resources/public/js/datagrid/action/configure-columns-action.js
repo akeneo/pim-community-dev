@@ -149,7 +149,9 @@ define(
                         });
                         if (values.length) {
                             DatagridState.set(this.gridName, 'columns', values.join(','));
-                            Backbone.history.navigate(window.location.hash + '&cc=' + values.length, true);
+                            var url = window.location.hash;
+                            Backbone.history.navigate(url.substr(0, url.length -1));
+                            Backbone.history.navigate(url, true);
                         } else {
                             messenger.notificationFlashMessage('error', __('datagrid_view.columns.min_message'));
                             this.subscribe();

@@ -46,8 +46,6 @@ define(
                 );
 
                 this.$gridContainer.find('.no-data').hide();
-
-                collection.fetch();
             },
 
             saveGridState: function (collection) {
