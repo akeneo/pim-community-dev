@@ -20,12 +20,14 @@ services:
             - @doctrine.orm.entity_manager
             - @translator
 
+    # Handlers
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
 
     pim_datagrid.extension.mass_action.handler.edit:
         class: Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
 
+    # Actions
     pim_datagrid.extension.mass_action.type.export:
         class: %pim_datagrid.extension.mass_action.type.export.class%
         scope: prototype
@@ -33,7 +35,7 @@ services:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
 
     pim_datagrid.extension.mass_action.type.edit:
-        class: Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassAction
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Redirect\EditMassAction
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }

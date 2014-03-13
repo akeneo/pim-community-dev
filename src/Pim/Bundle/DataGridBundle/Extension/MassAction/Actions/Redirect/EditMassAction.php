@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Redirect;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\RedirectMassAction;
