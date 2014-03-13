@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;

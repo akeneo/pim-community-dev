@@ -1,7 +1,8 @@
 parameters:
     pim_datagrid.mass_action.dispatcher.class:               Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.type.export.class:    Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
-    pim_datagrid.extension.mass_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionHandler
+    pim_datagrid.extension.mass_action.handler.edit.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
+    pim_datagrid.extension.mass_action.handler.export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.class: Pim\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
 
 services:
@@ -25,7 +26,7 @@ services:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
 
     pim_datagrid.extension.mass_action.handler.edit:
-        class: Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
+        class: %pim_datagrid.extension.mass_action.handler.edit.class%
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
