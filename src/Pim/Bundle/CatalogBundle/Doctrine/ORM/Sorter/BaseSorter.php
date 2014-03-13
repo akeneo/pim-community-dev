@@ -91,8 +91,6 @@ class BaseSorter implements SorterInterface
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
-     * @throws FlexibleQueryException
-     *
      * @return string
      */
     protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)

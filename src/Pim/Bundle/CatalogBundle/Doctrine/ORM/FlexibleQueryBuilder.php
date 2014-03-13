@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\FlexibleQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 
@@ -106,7 +106,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         $operators = is_array($operator) ? $operator : array($operator);
         foreach ($operators as $key) {
             if (!in_array($key, $allowed)) {
-                throw new FlexibleQueryException(
+                throw new ProductQueryException(
                     sprintf('%s is not allowed for type %s, use %s', $key, $attributeType, implode(', ', $allowed))
                 );
             }
@@ -186,7 +186,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @param string|array $value    the value(s) to filter
      *
      * @return string
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {
@@ -200,7 +200,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param AbstractAttribute $attribute
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return array
      */

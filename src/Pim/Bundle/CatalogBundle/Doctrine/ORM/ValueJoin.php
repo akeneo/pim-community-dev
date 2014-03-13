@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 
 /**
  * Join utils class
@@ -54,7 +54,7 @@ class ValueJoin
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */
@@ -64,13 +64,13 @@ class ValueJoin
 
         if ($attribute->isLocalizable()) {
             if ($this->locale === null) {
-                throw new FlexibleQueryException('Locale must be configured');
+                throw new ProductQueryException('Locale must be configured');
             }
             $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->locale);
         }
         if ($attribute->isScopable()) {
             if ($this->scope === null) {
-                throw new FlexibleQueryException('Scope must be configured');
+                throw new ProductQueryException('Scope must be configured');
             }
             $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->scope);
         }

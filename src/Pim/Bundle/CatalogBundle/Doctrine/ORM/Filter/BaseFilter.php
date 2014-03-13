@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
@@ -86,7 +86,7 @@ class BaseFilter implements FilterInterface
      * @param string|array $value    the value(s) to filter
      *
      * @return string
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
@@ -104,7 +104,7 @@ class BaseFilter implements FilterInterface
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */
@@ -122,14 +122,14 @@ class BaseFilter implements FilterInterface
      * @param array $operator the operator used to filter
      * @param array $value    the value(s) to filter
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */
     protected function prepareMultiCriteriaCondition($field, $operator, $value)
     {
         if (!is_array($value)) {
-            throw new FlexibleQueryException('Values must be array');
+            throw new ProductQueryException('Values must be array');
         }
 
         if (!is_array($field)) {
@@ -143,7 +143,7 @@ class BaseFilter implements FilterInterface
         if (array_diff(array_keys($field), array_keys($operator))
             || array_diff(array_keys($field), array_keys($value))
         ) {
-            throw new FlexibleQueryException('Field, operator and value arrays must have the same keys');
+            throw new ProductQueryException('Field, operator and value arrays must have the same keys');
         }
 
         $conditions = array();
@@ -161,7 +161,7 @@ class BaseFilter implements FilterInterface
      * @param string $operator the operator used to filter
      * @param string $value    the value(s) to filter
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */
@@ -201,6 +201,6 @@ class BaseFilter implements FilterInterface
             );
         }
 
-        throw new FlexibleQueryException('operator '.$operator.' is not supported');
+        throw new ProductQueryException('operator '.$operator.' is not supported');
     }
 }
