@@ -63,6 +63,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      */
     protected $completenesses;
 
+    protected $normData;
+
     /**
      * {@inheritdoc}
      */
@@ -535,5 +537,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     public function getReference()
     {
         return $this->getIdentifier()->getData();
+    }
+
+    public function setNormalizedData($normData)
+    {
+        $this->normData = $normData;
     }
 }
