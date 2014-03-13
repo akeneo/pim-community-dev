@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
+class ProductValueCompleteTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ProductValueNotBlank
@@ -26,7 +26,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->constraint = new ProductValueNotBlank(array('channel' => new Channel()));
+        $this->constraint = new ProductValueComplete(array('channel' => new Channel()));
     }
 
     /**
@@ -42,7 +42,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
      */
     public function testMessages()
     {
-        $this->assertNotNull($this->constraint->messageNotBlank);
+        $this->assertNotNull($this->constraint->messageComplete);
         $this->assertNotNull($this->constraint->messageNotNull);
     }
 
@@ -52,7 +52,7 @@ class ProductValueNotBlankTest extends \PHPUnit_Framework_TestCase
     public function testGetChannel()
     {
         $channel1 = new Channel();
-        $constraint = new ProductValueNotBlank(array('channel' => $channel1));
+        $constraint = new ProductValueComplete(array('channel' => $channel1));
         $this->assertEquals($channel1, $constraint->getChannel());
     }
 }
