@@ -65,7 +65,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_date:
         column:
-            type:          flexible_field
+            type:          flexible_date
             selector:      flexible_values
             frontend_type: date
         filter:
