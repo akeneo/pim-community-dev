@@ -71,18 +71,18 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns an array of page numbers to use in pagination links.
      *
-     * @param integer $nb_links The maximum number of page numbers to return
+     * @param integer $nbLinks The maximum number of page numbers to return
      *
      * @return array
      */
-    public function getLinks($nb_links = null)
+    public function getLinks($nbLinks = null)
     {
-        if ($nb_links == null) {
-            $nb_links = $this->getMaxPageLinks();
+        if ($nbLinks == null) {
+            $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
-        $tmp   = $this->page - floor($nb_links / 2);
-        $check = $this->lastPage - $nb_links + 1;
+        $tmp   = $this->page - floor($nbLinks / 2);
+        $check = $this->lastPage - $nbLinks + 1;
 
         $limit = 1;
         if ($check > 0) {
@@ -94,9 +94,9 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
             $begin = $tmp > $limit ? $limit : $tmp;
         }
 
-        $i = (int) $begin;
-        while ($i < $begin + $nb_links && $i <= $this->lastPage) {
-            $links[] = $i++;
+        $index = (int) $begin;
+        while ($index < $begin + $nbLinks && $index <= $this->lastPage) {
+            $links[] = $index++;
         }
 
         $this->currentMaxLink = 1;
@@ -132,9 +132,9 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
      *
      * @param integer $nb
      */
-    protected function setNbResults($nb)
+    protected function setNbResults($number)
     {
-        $this->nbResults = $nb;
+        $this->nbResults = $number;
     }
 
     /**
