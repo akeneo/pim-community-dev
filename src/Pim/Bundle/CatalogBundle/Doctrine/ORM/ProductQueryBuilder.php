@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\FlexibleQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 
 /**
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
+class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
     /**
      * QueryBuilder
@@ -41,7 +41,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param QueryBuilder $qb
      *
-     * @return FlexibleQueryBuilder
+     * @return ProductQueryBuilder
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {

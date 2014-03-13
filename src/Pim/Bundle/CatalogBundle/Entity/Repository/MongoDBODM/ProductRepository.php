@@ -43,7 +43,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     protected $scope;
 
     /**
-     * @param FlexibleQueryBuilder
+     * @param ProductQueryBuilder
      */
     protected $flexibleQB;
 
@@ -291,7 +291,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function setFlexibleQueryBuilder($flexibleQB)
+    public function setProductQueryBuilder($flexibleQB)
     {
         $this->flexibleQB = $flexibleQB;
 
@@ -302,7 +302,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    protected function getFlexibleQueryBuilder($qb)
+    protected function getProductQueryBuilder($qb)
     {
         if (!$this->flexibleQB) {
             throw new \LogicException('Flexible query builder must be configured');
@@ -331,7 +331,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
 
     /**
@@ -339,7 +339,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
     }
 
     /**
@@ -347,7 +347,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByAttribute($qb, Attribute $attribute, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
@@ -355,7 +355,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByField($qb, $field, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\FlexibleQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\FlexibleQueryBuilderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
+class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
     /**
      * QueryBuilder
@@ -39,7 +39,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param QueryBuilder $qb
      *
-     * @return FlexibleQueryBuilder
+     * @return ProductQueryBuilder
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {
