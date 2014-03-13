@@ -67,7 +67,7 @@ class CompletenessManager
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
-        $this->generator->generate(array('productId' => $product->getId()));
+        $this->generator->generateProductCompletenesses($product);
     }
 
     /**

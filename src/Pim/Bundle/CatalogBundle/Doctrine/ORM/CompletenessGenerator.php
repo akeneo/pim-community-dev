@@ -50,6 +50,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
+    public function generateProductCompletenesses(ProductInterface $product)
+    {
+        $this->generate(array('productId' => $product->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function generate(array $criteria = array(), $limit = null)
     {
         $this->prepareCompletePrices($criteria);
