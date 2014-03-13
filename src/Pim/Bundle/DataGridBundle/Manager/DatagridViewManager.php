@@ -85,45 +85,6 @@ class DatagridViewManager
     }
 
     /**
-     * Check if the view can be edited by the current user, if not - prepare and return the user's custom view
-     *
-     * @param DatagridView $view
-     *
-     * @return DatagridView
-     */
-    public function getEditableDatagridView(DatagridView $view)
-    {
-        $user = $this->getUser();
-        if ($view->getOwner() === $user) {
-            return $view;
-        }
-
-        $customView = $this->repository->findOneBy(
-            [
-                'datagridAlias' => $view->getDatagridAlias(),
-                'owner'         => $user,
-                'type'          => DatagridView::TYPE_CUSTOM
-            ]
-        );
-
-        if (!$customView) {
-            $customView = clone $view;
-        }
-
-        $customView
-            ->setOwner($user)
-            ->setLabel(null)
-            ->setType(DatagridView::TYPE_CUSTOM)
-            ->setColumns($view->getColumns())
-            ->setFilters($view->getFilters());
-
-        $this->entityManager->persist($customView);
-        $this->entityManager->flush();
-
-        return $customView;
-    }
-
-    /**
      * Get datagrid column choices for the provided datagrid alias
      *
      * @param string $alias

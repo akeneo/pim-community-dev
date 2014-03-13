@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -128,56 +129,17 @@ class DatagridViewController extends AbstractDoctrineController
     }
 
     /**
-     * Display or configure datagrid view columns
+     * List available datagrid columns
      *
-     * @param Request      $request
-     * @param string       $alias
-     * @param DatagridView $view
+     * @param string $alias
      *
      * @return Response
      */
-    public function configureAction(Request $request, $alias, DatagridView $view)
+    public function listColumnsAction($alias)
     {
-        $view    = $this->datagridViewManager->getEditableDatagridView($view);
         $columns = $this->datagridViewManager->getColumnChoices($alias);
 
-        $form = $this->createForm(
-            'pim_datagrid_view_configuration',
-            $view,
-            [
-                'columns' => $this->sortArrayByArray($columns, $view->getColumns()),
-                'action'  => $this->generateUrl(
-                    'pim_datagrid_view_configure',
-                    [
-                        'alias'      => $alias,
-                        'dataLocale' => $request->get('dataLocale'),
-                        'id'         => $view->getId()
-                    ]
-                ),
-            ]
-        );
-
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            $violations = $this->validator->validate($view);
-            if ($violations->count()) {
-                foreach ($violations as $violation) {
-                    $this->addFlash('error', $violation->getMessage());
-                }
-            } else {
-                $this->persist($view);
-            }
-
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                [
-                    'dataLocale' => $request->get('dataLocale'),
-                    'gridView'   => $view->getId()
-                ]
-            );
-        }
-
-        return $this->render('PimDataGridBundle:Datagrid:edit.html.twig', ['form' => $form->createView()]);
+        return new JsonResponse($columns);
     }
 
     /**

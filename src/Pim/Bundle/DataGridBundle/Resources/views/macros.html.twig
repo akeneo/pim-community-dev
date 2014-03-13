@@ -22,7 +22,7 @@
                     var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
 
                     if (state.view) {
-                        urlParams.params.gridView = state.view;
+                        urlParams['{{ name }}[_parameters][view][id]'] = state.view;
                     }
 
                     if (state.filters) {
@@ -32,7 +32,7 @@
                     }
 
                     if (state.columns) {
-                        urlParams.params.columns = state.columns;
+                        urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {

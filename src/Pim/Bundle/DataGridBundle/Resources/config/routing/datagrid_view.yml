@@ -4,11 +4,11 @@ pim_datagrid_view_index:
     requirements:
         _method: GET|POST
 
-pim_datagrid_view_configure:
-    path: /{alias}/{id}/configure
-    defaults: { _controller: pim_datagrid.controller.datagrid_view:configureAction }
+pim_datagrid_view_list_columns:
+    path: /{alias}/columns
+    defaults: { _controller: pim_datagrid.controller.datagrid_view:listColumnsAction }
     requirements:
-        _method: GET|POST
+        _method: GET
 
 pim_datagrid_view_remove:
     path: /{id}/remove

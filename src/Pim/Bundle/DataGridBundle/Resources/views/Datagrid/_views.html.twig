@@ -1,16 +1,7 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% macro viewLabel(view, showModified) %}
-    {% if showModified %}
-        {{- view.modified ? '* ' : '' -}}
-    {% endif %}
-    {% if view.default %}
-        {{- 'datagrid_view.default'|trans -}}
-    {% elseif view.custom %}
-        {{- 'datagrid_view.custom'|trans -}}
-    {% else %}
-        {{- view.label -}}
-    {% endif %}
+{% macro viewLabel(view) %}
+    {{- view.default ? 'datagrid_view.default'|trans : view.label -}}
 {% endmacro %}
 
 <select id="view-selector" class="hide">
@@ -38,6 +29,7 @@
 }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
     {{ form_widget(form.filters) }}
+    {{ form_widget(form.order) }}
 {{ form_end(form) }}
 
 <script type="text/javascript">
@@ -61,7 +53,7 @@ require(
                 collision: 'none'
             }
         };
-        opts.selectedText = opts.noneSelectedText = '{{ _self.viewLabel(activeView, true) }}';
+        opts.selectedText = opts.noneSelectedText = opts.title;
 
         $selector.multiselect(opts).multiselectfilter({
             label: false,
@@ -89,6 +81,7 @@ require(
                 return;
             }
             $('#{{ form.filters.vars.id }}').val(DatagridState.get('{{ alias }}', 'filters'));
+            $('#{{ form.order.vars.id }}').val(DatagridState.get('{{ alias }}', 'columns'));
             $selector.multiselect('close');
             $('#{{ form.vars.id }}').submit()
         }).appendTo($footerContainer);

@@ -55,21 +55,6 @@ class ContextConfigurator implements ConfiguratorInterface
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
     /**
-     * @var string
-     */
-    const GRID_VIEW_ID_KEY = '[options][view][id]';
-
-    /**
-     * @var string
-     */
-    const GRID_VIEW_COLUMNS_KEY = '[options][view][columns]';
-
-    /**
-     * @var string
-     */
-    const GRID_VIEW_FILTERS_KEY = '[options][view][filters]';
-
-    /**
      * @var DatagridConfiguration
      */
     protected $configuration;
@@ -283,30 +268,10 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridColumns()
     {
-        $params = $this->request->get('params', $this->request->get('product-grid'));
-        $gridView = isset($params['gridView']) ? $params['gridView'] : null;
+        $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
 
-        if ($gridView) {
-            $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
-            $alias = $this->configuration->offsetGetByPath($path);
-            if (!$alias) {
-                $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
-            }
-
-            $view = $this->flexibleManager
-                ->getEntityManager()
-                ->getRepository('PimDataGridBundle:DatagridView')
-                ->findOneBy(['datagridAlias' => $alias, 'id' => $gridView]);
-
-            if ($view) {
-                $columns = $view->getDisplayedColumns($this->getUser());
-
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_ID_KEY, $view->getId());
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_COLUMNS_KEY, $columns);
-
-                return $columns;
-            }
+        if (isset($params['view']) && isset($params['view']['columns'])) {
+            return explode(',', $params['view']['columns']);
         }
     }
 

@@ -22,8 +22,6 @@ Pim\Bundle\DataGridBundle\Entity\DatagridView:
             column: datagrid_alias
         columns:
             type: array
-        configuredColumns:
-            type: array
         filters:
             type:     text
             nullable: true

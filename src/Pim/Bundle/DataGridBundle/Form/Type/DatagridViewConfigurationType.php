@@ -22,7 +22,7 @@ class DatagridViewConfigurationType extends AbstractType
     {
         $builder
             ->add(
-                'configuredColumns',
+                'columns',
                 'choice',
                 [
                     'multiple' => true,

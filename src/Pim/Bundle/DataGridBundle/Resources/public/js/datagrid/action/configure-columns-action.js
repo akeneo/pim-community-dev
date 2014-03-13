@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/loading-mask', 'backbone/bootstrap-modal'],
-    function($, _, Backbone, __, Routing, LoadingMask) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
+    function($, _, Backbone, __, Routing, LoadingMask, DatagridState) {
         'use strict';
 
         /**
@@ -12,11 +12,11 @@ define(
          */
         var ConfigureColumnsAction = Backbone.View.extend({
 
-            locale: null,
-
-            viewId: null,
-
             label: __('Columns'),
+
+            availableColumnsLabel: __('Available Columns'),
+
+            displayedColumnsLabel: __('Displayed Columns'),
 
             icon: 'th',
 
@@ -27,6 +27,31 @@ define(
                     '<i class="icon-<%= icon %>"></i>' +
                     '<%= label %>' +
                 '</a>'
+            ),
+
+            configureTemplate: _.template(
+                '<div class="row-fluid">' +
+                    '<div class="span6">' +
+                        '<h4><%= availableColumnsLabel %></h4>' +
+                        '<ul id="bucket" class="connectedSortable">' +
+                            '<% _.each(availableColumns, function(label, code) { %>' +
+                                '<li data-value="<%= code %>">' +
+                                    '<i class="icon-reorder"></i><%= label %>' +
+                                '</li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                    '</div>' +
+                    '<div class="span6">' +
+                        '<h4><%= displayedColumnsLabel %></h4>' +
+                        '<ul id="columns" class="connectedSortable">' +
+                            '<% _.each(displayedColumns, function(label, code) { %>' +
+                                '<li data-value="<%= code %>">' +
+                                    '<i class="icon-reorder"></i><%= label %>' +
+                                '</li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                    '</div>' +
+                '</div>'
             ),
 
             initialize: function (options) {
@@ -43,8 +68,6 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
-                this.viewId = options.view.id;
-                this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
@@ -67,14 +90,34 @@ define(
                 $('#configure-columns').one('click', this.execute.bind(this));
             },
 
-            execute: function(event) {
-                event.preventDefault();
-                var url = Routing.generate('pim_datagrid_view_configure', { alias: this.gridName, dataLocale: this.locale, id: this.viewId });
+            execute: function(e) {
+                e.preventDefault();
+                var url = Routing.generate('pim_datagrid_view_list_columns', { alias: this.gridName });
+
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
 
-                $.get(url, _.bind(function (content) {
+                $.get(url, _.bind(function (availableColumns) {
+                    var displayedColumns = {};
+                    var displayedCodes = DatagridState.get(this.gridName, 'columns');
+
+                    if (displayedCodes) {
+                        _.each(displayedCodes.split(','), function(code) {
+                            if (availableColumns[code]) {
+                                displayedColumns[code] = availableColumns[code];
+                                delete availableColumns[code];
+                            }
+                        });
+                    }
+
+                    var content = this.configureTemplate({
+                        availableColumnsLabel: this.availableColumnsLabel,
+                        displayedColumnsLabel: this.displayedColumnsLabel,
+                        availableColumns:      availableColumns,
+                        displayedColumns:      displayedColumns
+                    });
+
                     var modal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         cancelText: __('Cancel'),
@@ -92,10 +135,25 @@ define(
                         'margin-left': '-350px'
                     });
 
+                    $('#columns, #bucket').sortable({
+                        connectWith: '.connectedSortable',
+                        containment: $('#columns').closest('.row-fluid'),
+                        tolerance: 'pointer',
+                        cursor: 'move'
+                    }).disableSelection();
+
                     modal.on('cancel', this.subscribe.bind(this));
-                    modal.on('ok', function() {
-                        modal.$el.find('form').submit();
-                    });
+                    modal.on('ok', _.bind(function(e) {
+                        var values = _.map($('#columns li'), function (el) {
+                            return $(el).data('value');
+                        });
+                        if (values.length) {
+                            DatagridState.set(this.gridName, 'columns', values.join(','));
+                            Backbone.history.navigate(window.location.hash + '&cc=' + values.length, true);
+                        } else {
+                            this.subscribe();
+                        }
+                    }, this));
                 }, this));
             }
         });
@@ -103,11 +161,9 @@ define(
         ConfigureColumnsAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var options = metadata.options || {};
-            if (options.view && _.has(options.view, 'id')) {
-                new ConfigureColumnsAction(
-                    _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options)
-                );
-            }
+            new ConfigureColumnsAction(
+                _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
+            );
         };
 
         return ConfigureColumnsAction;

@@ -22,6 +22,7 @@ class DatagridViewType extends AbstractType
     {
         $builder
             ->add('label', 'text', ['required' => true])
+            ->add('order', 'hidden')
             ->add('filters', 'hidden');
     }
 
