@@ -26,13 +26,18 @@ require(
 
         var $selector = $('#view-selector');
 
+        var activateView = function(viewId) {
+            var $viewItem = $selector.find('option[value="' + viewId + '"]');
+            DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+        }
+
         var activeViewId = DatagridState.get('{{ alias }}', 'view');
         var $activeView  = $selector.find('option[value="'+activeViewId+'"]');
 
         if (!$activeView.length) {
             $activeView = $selector.find('option[data-default="1"]');
             activeViewId = $activeView.val();
-            DatagridState.set('{{ alias }}', 'view', activeViewId);
+            activateView(activeViewId);
         }
 
         var activeViewLabel = $activeView.text();
@@ -124,15 +129,8 @@ require(
         $openButton.append($('<span>', { 'class': 'caret pull-right' }));
 
         $menu.on('click', 'li', function() {
-            var label = $(this).text().trim();
-            $selector.multiselect({
-                selectedText: label,
-                noneSelectedText: label
-            });
             var gridViewId = $(this).find('input').val();
-
-            var $viewItem = $selector.find('option[value="' + gridViewId + '"]');
-            DatagridState.set('{{ alias }}', { 'view': gridViewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+            activateView(gridViewId);
 
             reloadPage(gridViewId);
         });
