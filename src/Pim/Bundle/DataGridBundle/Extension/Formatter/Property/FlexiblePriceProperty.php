@@ -20,7 +20,7 @@ class FlexiblePriceProperty extends FlexibleFieldProperty
 
         $prices = [];
         foreach ($data as $price) {
-            if ($price['data'] !== null) {
+            if (isset($price['data']) && $price['data'] !== null) {
                 $prices[] = $price['data'].' '.$price['currency'];
             }
         }
