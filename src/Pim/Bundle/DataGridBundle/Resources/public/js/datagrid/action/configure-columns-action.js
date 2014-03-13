@@ -4,9 +4,9 @@ define(
         'use strict';
 
         /**
-         * Export action
+         * Configure columns action
          *
-         * @export  pim/datagrid/export-action
+         * @export  pim/datagrid/configure-columns-action
          * @class   pim.datagrid.ConfigureColumnsAction
          * @extends Backbone.View
          */
