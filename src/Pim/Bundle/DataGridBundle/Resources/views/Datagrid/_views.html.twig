@@ -9,6 +9,7 @@
 </select>
 
 <button id="update-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_changes'|trans }}</button>
+<button id="clone-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_view'|trans }}</button>
 
 {{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
     {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
@@ -142,6 +143,35 @@ require(
             sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}', id: state.view }));
         });
 
+        var promptForLabel = function(cb) {
+            var content = '<input id="view-label" type="text" placeholder="{{ 'datagrid_view.placeholder'|trans }}">';
+            var label = null;
+            Dialog.confirm(content, '{{ 'datagrid_view.choose_label'|trans }}', function() {
+                cb(label)
+            });
+            var $input = $('#view-label');
+            var $submitBtn = $input.parent().parent().find('.btn.ok').hide();
+            $input.on('input', function() {
+                label = $input.val();
+                if (!label.length) {
+                    $submitBtn.hide();
+                } else {
+                    $submitBtn.show();
+                }
+            });
+        };
+
+        var $cloneButton = $('#clone-view');
+        $cloneButton.on('click', function() {
+            var state = DatagridState.get('{{ alias }}', ['view', 'columns', 'filters']);
+            $('#{{ form.filters.vars.id }}').val(state.filters);
+            $('#{{ form.order.vars.id }}').val(state.columns);
+            promptForLabel(function(label) {
+                $('#{{ form.label.vars.id }}').val(label);
+                sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}' }));
+            });
+        });
+
         var setTitle = function(title) {
             $selector.multiselect({
                 title: title,
@@ -156,10 +186,16 @@ require(
 
             if (_.isEqual(currentState, cleanState)) {
                 setTitle(activeViewLabel);
-                $updateButtton.hide()
+                $updateButtton.hide();
+                $cloneButton.hide();
+
             } else {
                 setTitle(activeViewLabel + ' *');
-                $updateButtton.show()
+                if (!!$activeView.data('removable') && !$activeView.data('default')) {
+                    $updateButtton.show();
+                } else {
+                    $cloneButton.show();
+                }
             }
         };
 

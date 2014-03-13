@@ -21,6 +21,8 @@ datagrid_view:
     placeholder:   Name of new view
     remove:        Delete this view
     save_changes:  Save changes
+    save_view:     Save view
+    choose_label:  Choose a label for the view
     columns:
         min_message: You must select at least one datagrid column to display
     label:
