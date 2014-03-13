@@ -611,8 +611,6 @@ popin.create:
 # Datagrid contents
 In group: In group
 Attribute as label: Attribute as label
-Available Columns: Available Columns
-Displayed Columns: Displayed Columns
 Is associated: Is associated
 Complete: Complete
 Created At: Created at

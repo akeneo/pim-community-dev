@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
-    function($, _, Backbone, __, Routing, LoadingMask, DatagridState) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery-ui-full'],
+    function($, _, Backbone, __, Routing, LoadingMask, DatagridState, messenger) {
         'use strict';
 
         /**
@@ -151,6 +151,7 @@ define(
                             DatagridState.set(this.gridName, 'columns', values.join(','));
                             Backbone.history.navigate(window.location.hash + '&cc=' + values.length, true);
                         } else {
+                            messenger.notificationFlashMessage('error', __('datagrid_view.columns.min_message'));
                             this.subscribe();
                         }
                     }, this));
