@@ -8,6 +8,7 @@
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
+- MongoDB support (WIP)
 
 ## Bug fixes
 - Fixed verbose option always used
