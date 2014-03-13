@@ -15,18 +15,29 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetProductDocumentNormalizedDataSubscriber implements EventSubscriber
+class SetProductNormalizedDataSubscriber implements EventSubscriber
 {
+    /**
+     * @param NormalizerInterface $normalizer
+     */
     public function __construct(NormalizerInterface $normalizer)
     {
         $this->normalizer = $normalizer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return [Events::preUpdate];
     }
 
+    /**
+     * Set product normalized data before updating it
+     *
+     * @param PreUpdateEventArgs $args
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $document = $args->getDocument();
@@ -35,9 +46,7 @@ class SetProductDocumentNormalizedDataSubscriber implements EventSubscriber
         }
 
         $document->setNormalizedData(
-            [
-                'family' => $this->normalizer->normalize($document->getFamily(), 'bson'),
-            ]
+            $this->normalizer->normalize($document, 'bson')
         );
 
         $dm = $args->getDocumentManager();

@@ -8,6 +8,7 @@ parameters:
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductDocumentNormalizedDataSubscriber
     pim_catalog.mongodb.normalizer.family.class:                     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
+    pim_catalog.mongodb.normalizer.product.class:                    Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
     pim_catalog.doctrine.mongodb.flexible_query_builder.class:       Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
 
 services:
@@ -64,6 +65,12 @@ services:
         class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
 
     # Normalizers
+    pim_catalog.mongodb.normalizer.product:
+        class: %pim_catalog.mongodb.normalizer.product.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
     pim_catalog.mongodb.normalizer.family:
         class: %pim_catalog.mongodb.normalizer.family.class%
         public: false
