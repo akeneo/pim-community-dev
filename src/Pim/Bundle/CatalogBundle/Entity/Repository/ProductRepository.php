@@ -423,14 +423,6 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $qb
-            ->addSelect('p')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
-
         return $qb;
     }
 
@@ -443,10 +435,6 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
         $isCheckedExpr =
             'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
@@ -456,7 +444,6 @@ SQL;
         $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
 
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($inGroupExpr.' AS in_group');
 
@@ -484,8 +471,6 @@ SQL;
             ->from($this->_entityName, 'p', 'p.id');
 
         $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin(
                 'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
@@ -502,7 +487,6 @@ SQL;
         $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
 
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
@@ -680,6 +664,28 @@ SQL;
             $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByGroupIds($qb, $groupIds)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        $groupAlias = 'filterGroups';
+        $qb->leftJoin($rootAlias.'.groups', $groupAlias);
+        $qb->andWhere($qb->expr()->in($groupAlias.'.id', $groupIds));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByFamilyIds($qb, $familyIds)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        $familyAlias = 'filterFamily';
+        $qb->leftJoin($rootAlias.'.family', $familyAlias);
+        $qb->andWhere($qb->expr()->in($familyAlias.'.id', $familyIds));
     }
 
     /**

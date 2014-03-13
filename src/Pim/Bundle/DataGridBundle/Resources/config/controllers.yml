@@ -20,4 +20,3 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'
-    
