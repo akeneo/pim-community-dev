@@ -5,7 +5,6 @@ services:
     pim_datagrid.manager.datagrid_view:
         class: %pim_datagrid.manager.datagrid_view.class%
         arguments:
-            - '@security.context'
             - '@doctrine.orm.entity_manager'
             - '@oro_datagrid.datagrid.manager'
             - '@pim_datagrid.repository.orm.datagrid_view'
