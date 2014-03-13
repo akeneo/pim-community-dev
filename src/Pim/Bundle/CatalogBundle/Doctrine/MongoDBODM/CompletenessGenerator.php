@@ -87,6 +87,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($stats as $channelStats) {
             $channel = $channelStats['object'];
             $channelData = $channelStats['data'];
+            $channelRequiredCount = $channelStats['required_count'];
 
             foreach ($channelData as $localeStats) {
                 $locale = $localeStats['object'];
@@ -96,7 +97,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $channel,
                     $locale,
                     $localeData['missing_count'],
-                    $localeData['required_count']
+                    $channelRequiredCount
                 );
 
                 $completenesses[] = $completeness;
@@ -121,15 +122,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $requirements = $product->getFamily()->getAttributeRequirements();
 
         foreach ($requirements as $req) {
+            if (!$req->isRequired()) {
+                continue;
+            }
             $channel = $req->getChannel()->getCode();
             $locales = $req->getChannel()->getLocales();
 
             if (!isset($stats[$channel])) {
                 $stats[$channel]['object'] = $req->getChannel();
                 $stats[$channel]['data'] = array();
+                $stats[$channel]['required_count'] = 0;
             }
 
             $completeConstraint = new ProductValueComplete(array('channel' => $channel));
+
+            $stats[$channel]['required_count']++;
 
             foreach ($locales as $localeObject) {
                 $locale = $localeObject->getCode();
@@ -138,10 +145,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['object'] = $localeObject;
                     $stats[$channel]['data'][$locale]['data'] = array();
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
-                    $stats[$channel]['data'][$locale]['data']['required_count'] = 0;
                 }
 
-                $stats[$channel]['data'][$locale]['data']['required_count']++;
 
                 $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 

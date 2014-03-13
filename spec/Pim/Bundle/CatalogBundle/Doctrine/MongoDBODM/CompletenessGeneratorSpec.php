@@ -37,6 +37,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         Channel $mobile,
         Locale $enUs,
         Locale $frFr,
+        Locale $nlNl,
         ConstraintViolationListInterface $noViolation,
         ConstraintViolationListInterface $withViolations
     ) {
@@ -46,18 +47,21 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $enUs->getCode()->willReturn('en_US');
         $frFr->getCode()->willReturn('fr_FR');
+        $nlNl->getCode()->willReturn('nl_NL');
 
         $ecommerce->getCode()->willReturn('ecommerce');
-        $ecommerce->getLocales()->willReturn(array($enUs, $frFr));
+        $ecommerce->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
 
         $mobile->getCode()->willReturn('mobile');
-        $mobile->getLocales()->willReturn(array($enUs, $frFr));
+        $mobile->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
 
         $requireVarcharEcommerce->getChannel()->willReturn($ecommerce);
         $requireVarcharEcommerce->getAttribute()->willReturn($varchar);
+        $requireVarcharEcommerce->isRequired()->willReturn(true);
 
         $requireVarcharMobile->getChannel()->willReturn($mobile);
         $requireVarcharMobile->getAttribute()->willReturn($varchar);
+        $requireVarcharMobile->isRequired()->willReturn(true);
 
         $noViolation->count()->willReturn(0);
         $withViolations->count()->willReturn(1);
@@ -89,7 +93,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     /**
      * @require class Doctrine\ODM\MongoDB\DocumentManager
      */
-    public function it_builds_product_completenesses_with_one_channel_and_two_locales (
+    public function it_builds_product_completenesses_with_one_channel_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,
         CompletenessFactory $completenessFactory,
@@ -98,12 +102,13 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         Channel $ecommerce,
         Locale $frFr,
         Locale $enUs,
+        Locale $nlNl,
         ConstraintViolationListInterface $noViolation,
         ConstraintViolationListInterface $withViolations
     ) {
         $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce));
 
-        $violationsList = array($noViolation, $withViolations);
+        $violationsList = array($noViolation, $withViolations, $withViolations);
 
         $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
             return array_shift($violationsList);
@@ -111,6 +116,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
         $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $nlNl, 1, 1)->shouldBeCalled();
 
         $this->buildProductCompletenesses($product);
     }
@@ -118,7 +124,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     /**
      * @require class Doctrine\ODM\MongoDB\DocumentManager
      */
-    public function it_builds_product_completenesses_with_two_channels_and_two_locales (
+    public function it_builds_product_completenesses_with_two_channels_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,
         CompletenessFactory $completenessFactory,
@@ -129,12 +135,13 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         Channel $mobile,
         Locale $frFr,
         Locale $enUs,
+        Locale $nlNl,
         ConstraintViolationListInterface $noViolation,
         ConstraintViolationListInterface $withViolations
     ) {
         $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce, $requireVarcharMobile));
 
-        $violationsList = array($noViolation, $withViolations, $noViolation, $noViolation);
+        $violationsList = array($noViolation, $withViolations, $noViolation, $noViolation, $noViolation, $withViolations);
 
         $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
             return array_shift($violationsList);
@@ -142,8 +149,10 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
         $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $nlNl, 0, 1)->shouldBeCalled();
         $completenessFactory->build($mobile, $enUs, 0, 1)->shouldBeCalled();
         $completenessFactory->build($mobile, $frFr, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($mobile, $nlNl, 1, 1)->shouldBeCalled();
 
         $this->buildProductCompletenesses($product);
     }

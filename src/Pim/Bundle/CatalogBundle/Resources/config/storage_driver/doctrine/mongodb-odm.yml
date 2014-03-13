@@ -23,6 +23,7 @@ services:
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_catalog.factory.completeness'
+            - '@validator'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%
