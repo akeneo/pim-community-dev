@@ -4,8 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
 /**
  * MongoDB ODM pager
@@ -22,22 +21,15 @@ class Pager extends AbstractPager implements PagerInterface
     protected $qb;
 
     /**
-     * @var AclHelper
-     */
-    protected $aclHelper;
-
-    /**
      * Constructor
      *
-     * @param AclHelper    $aclHelper
      * @param integer      $maxPerPage
      * @param QueryBuilder $qb
      */
-    public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
-        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -45,7 +37,6 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function init()
     {
-        $this->resetIterator();
         $this->setNbResults($this->computeNbResult());
 
         $query = $this->getQueryBuilder();
@@ -74,14 +65,6 @@ class Pager extends AbstractPager implements PagerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
-    {
-        return null;
-    }
-
-    /**
      * @param QueryBuilder $qb
      *
      * @return $this
@@ -99,13 +82,5 @@ class Pager extends AbstractPager implements PagerInterface
     public function getQueryBuilder()
     {
         return $this->qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function retrieveObject($offset)
-    {
-        return null;
     }
 }
