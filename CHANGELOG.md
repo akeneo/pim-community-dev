@@ -34,6 +34,7 @@
 - Moved CustomEntityBundle to its own repository
 - Move FlexibleEntityBundle/Doctrine/* -> CatalogBundle/Doctrine/ORM/*, rename FlexibleQueryBuilder* to ProductQueryBuilder* and specialize the implementation
 - Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
+- Move src/Pim/Bundle/FilterBundle/Filter/Flexible/* -> src/Pim/Bundle/FilterBundle/Filter/ProductValue/*
 
 # 1.0.1
 ## Bug Fixes
