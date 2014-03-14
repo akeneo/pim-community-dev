@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
@@ -12,7 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FlexibleQueryBuilderInterface
+interface ProductQueryBuilderInterface
 {
     /**
      * Get locale code
@@ -26,7 +26,7 @@ interface FlexibleQueryBuilderInterface
      *
      * @param string $code
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function setLocale($code);
 
@@ -42,7 +42,7 @@ interface FlexibleQueryBuilderInterface
      *
      * @param string $code
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function setScope($code);
 
@@ -53,7 +53,7 @@ interface FlexibleQueryBuilderInterface
      * @param string|array      $operator  the used operator
      * @param string|array      $value     the value(s) to filter
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
 
@@ -64,7 +64,7 @@ interface FlexibleQueryBuilderInterface
      * @param string $operator the used operator
      * @param string $value    the value to filter
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value);
 
@@ -74,7 +74,7 @@ interface FlexibleQueryBuilderInterface
      * @param AbstractAttribute $attribute the attribute to sort on
      * @param string            $direction the direction to use
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction);
 
@@ -84,7 +84,7 @@ interface FlexibleQueryBuilderInterface
      * @param string $field     the field to sort on
      * @param string $direction the direction to use
      *
-     * @return FlexibleQueryBuilderInterface
+     * @return ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction);
 }

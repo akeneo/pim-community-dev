@@ -22,6 +22,7 @@ class CompletenessNormalizer implements NormalizerInterface
         $normalizedCompleteness = array();
         $code = $object->getChannel()->getCode().'-'.$object->getLocale()->getCode();
         $normalizedCompleteness[$code] = $object->getRatio();
+
         return $normalizedCompleteness;
     }
 

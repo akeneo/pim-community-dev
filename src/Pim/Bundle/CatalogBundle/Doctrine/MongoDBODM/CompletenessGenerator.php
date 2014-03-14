@@ -152,7 +152,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
                 }
 
-
                 $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 
                 if ($this->validator->validateValue($value, $completeConstraint)->count() > 0) {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\SorterInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\SorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
  * Base sorter
@@ -90,8 +90,6 @@ class BaseSorter implements SorterInterface
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
-     *
-     * @throws FlexibleQueryException
      *
      * @return string
      */

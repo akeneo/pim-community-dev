@@ -239,11 +239,11 @@ interface ProductRepositoryInterface
     /**
      * Set flexible query builder
      *
-     * @param FlexibleQueryBuilder $flexibleQB
+     * @param ProductQueryBuilder $productQB
      *
      * @return FlexibleEntityRepository
      */
-    public function setFlexibleQueryBuilder($flexibleQB);
+    public function setProductQueryBuilder($productQB);
 
     /**
      * Apply a filter by product ids

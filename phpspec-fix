@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # PhpSpec run fix that prevent suite containing skipped example to make travis build fail
 

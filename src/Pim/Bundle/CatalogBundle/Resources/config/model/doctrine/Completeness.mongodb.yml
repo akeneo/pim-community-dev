@@ -22,4 +22,3 @@ Pim\Bundle\CatalogBundle\Model\Completeness:
         locale:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
-
