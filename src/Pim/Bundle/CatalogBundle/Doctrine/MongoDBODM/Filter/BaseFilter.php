@@ -62,12 +62,24 @@ class BaseFilter implements FilterInterface
      */
     public function add(AbstractAttribute $attribute, $operator, $value)
     {
-        $field = ProductQueryUtility::getNormalizedValueField($attribute, $this->locale, $this->scope);
+        $field = $this->getNormalizedValueField($attribute);
         if (strpos($value, '/') !== false) {
             $value = new \MongoRegex($value);
         }
-        $this->qb->field(self::NORMALIZED_FIELD.'.'.$field)->equals($value);
+        $this->qb->field($field)->equals($value);
 
         return $this;
+    }
+
+    /**
+     * @param AbstractAttribute $attribute
+     *
+     * @return string
+     */
+    protected function getNormalizedValueField(AbstractAttribute $attribute)
+    {
+        $field = ProductQueryUtility::getNormalizedValueField($attribute, $this->locale, $this->scope);
+
+        return sprintf('%s.%s', self::NORMALIZED_FIELD, $field);
     }
 }
