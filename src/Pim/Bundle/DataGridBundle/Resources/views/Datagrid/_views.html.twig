@@ -197,7 +197,7 @@ require(
 
             } else {
                 setTitle(activeViewLabel + ' *');
-                if (!!$activeView.data('removable') && !$activeView.data('default')) {
+                if (!!$activeView.data('removable') || !!$activeView.data('default')) {
                     $updateButtton.show();
                 } else {
                     $cloneButton.show();
