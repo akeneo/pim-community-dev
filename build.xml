@@ -192,7 +192,6 @@
 
     <target name="phpspec-junit" description="Run specs with PhpSpec JUnit formatter">
         <exec executable="./phpspec-fix" output="app/build/logs/phpspec/junit.xml">
-            <arg value="run" />
             <arg value="-fjunit" />
             <arg value="--no-interaction" />
         </exec>
