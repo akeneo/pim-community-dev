@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
- * Normalize a product price collection to store it as bson
+ * Normalize a product price collection to store it as mongodb_json
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -32,6 +32,6 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductPrice && 'bson' === $format;
+        return $data instanceof ProductPrice && 'mongodb_json' === $format;
     }
 }

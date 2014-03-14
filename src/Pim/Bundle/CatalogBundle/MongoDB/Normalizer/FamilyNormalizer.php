@@ -41,6 +41,6 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Family && 'bson' === $format;
+        return $data instanceof Family && 'mongodb_json' === $format;
     }
 }

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
 /**
  * Manages completeness
@@ -130,7 +130,7 @@ class CompletenessManager
             return $completenesses;
         }
 
-        $allCompletenesses = $this->getCompletenessQB($product)->getQuery()->execute();
+        $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
@@ -169,7 +169,7 @@ class CompletenessManager
         $attribute = $requirement->getAttribute();
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
-            $constraint = new ProductValueNotBlank(array('channel' => $channel));
+            $constraint = new ProductValueComplete(array('channel' => $channel));
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {
@@ -201,23 +201,5 @@ class CompletenessManager
         }
 
         return $valueCode;
-    }
-
-    /**
-     * Returns a query to get the existing completenesses for the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getCompletenessQB(ProductInterface $product)
-    {
-        return $this->doctrine->getRepository($this->class)
-            ->createQueryBuilder('co')
-            ->select('co, lo, ch')
-            ->innerJoin('co.locale', 'lo')
-            ->innerJoin('co.channel', 'ch')
-            ->where('co.product = :product')
-            ->setParameter('product', $product);
     }
 }

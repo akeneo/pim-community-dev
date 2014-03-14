@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Normalize a product value to store it as bson
+ * Normalize a product value to store it as mongodb_json
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -44,7 +44,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'bson' === $format;
+        return $data instanceof ProductValueInterface && 'mongodb_json' === $format;
     }
 
     /**

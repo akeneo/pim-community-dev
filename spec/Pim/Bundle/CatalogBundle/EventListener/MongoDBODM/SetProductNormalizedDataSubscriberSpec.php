@@ -39,7 +39,7 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         UnitOfWork $uow
     ) {
         $args->getDocument()->willReturn($product);
-        $normalizer->normalize($product, 'bson')->willReturn('normalized product');
+        $normalizer->normalize($product, 'mongodb_json')->willReturn('normalized product');
 
         $product->setNormalizedData('normalized product')->shouldBeCalled();
 
@@ -71,7 +71,7 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         UnitOfWork $uow
     ) {
         $args->getDocument()->willReturn($product);
-        $normalizer->normalize($product, 'bson')->willReturn('normalized product');
+        $normalizer->normalize($product, 'mongodb_json')->willReturn('normalized product');
 
         $args->getDocumentManager()->willReturn($dm);
         $dm->getClassMetadata(Argument::any())->willReturn($metadata);

@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNotBlankValidator extends ConstraintValidator
+class ProductValueCompleteValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -51,7 +51,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
 
         if ($data === ''
             || ($data instanceof Collection and count($data) === 0)) {
-            $this->context->addViolation($constraint->messageNotBlank);
+            $this->context->addViolation($constraint->messageComplete);
 
             return;
         }
@@ -104,7 +104,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             foreach ($value->getData() as $price) {
                 if ($price->getCurrency() === $currency) {
                     if ($price->getData() === null) {
-                        $this->context->addViolation($constraint->messageNotBlank);
+                        $this->context->addViolation($constraint->messageComplete);
                     }
                 }
             }
@@ -121,7 +121,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
     {
         $media = $value->getMedia();
         if (!$media || $media->__toString() === '') {
-            $this->context->addViolation($constraint->messageNotBlank);
+            $this->context->addViolation($constraint->messageComplete);
         }
     }
 
@@ -135,7 +135,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
     {
         $metric = $value->getMetric();
         if (!$metric || $metric->getData() === null) {
-            $this->context->addViolation($constraint->messageNotBlank);
+            $this->context->addViolation($constraint->messageComplete);
         }
     }
 }
