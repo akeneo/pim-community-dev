@@ -10,6 +10,8 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+
     <target name="build-behat-10-dev" depends="prepare,composer,vendors,install-all-behat,behat-10-dev"/>
 
     <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
@@ -284,6 +286,16 @@
         </exec>
     </target>
 
+    <target name="require-mongo" description="Require the mongo bundle">
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
+            <arg value="doctrine/mongodb-odm-bundle" />
+            <arg value="3.0.*@dev" />
+        </exec>
+    </target>
+
+
     <target name="vendors" description="Install vendors">
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
@@ -291,6 +303,15 @@
             <arg value="--prefer-dist" />
             <arg value="--optimize-autoloader" />
         </exec>
+    </target>
+
+    <target name="activate-mongo" description="Activate the mongo bundle">
+        <replace
+            file="${basedir}/app/AppKernel.php"
+            token="// new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
+            value="new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
+            failOnNoReplacements="true"
+        />
     </target>
 
     <target name="setupdb" description="Setup db">
