@@ -20,6 +20,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class CompletenessGeneratorSpec extends ObjectBehavior
 {
     public function let(
@@ -71,17 +74,11 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($manager, $completenessFactory, $validator);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     */
     public function it_is_a_completeness_generator()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     */
     public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager)
     {
         $manager->flush($product)->shouldBeCalled();
@@ -90,9 +87,6 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->schedule($product);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     */
     public function it_builds_product_completenesses_with_one_channel_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,
@@ -121,9 +115,6 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->buildProductCompletenesses($product);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     */
     public function it_builds_product_completenesses_with_two_channels_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,
