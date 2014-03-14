@@ -13,7 +13,7 @@ parameters:
     pim_catalog.mongodb.normalizer.product_value.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
     pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
-    pim_catalog.doctrine.mongodb.flexible_query_builder.class:       Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
+    pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -63,9 +63,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
-
-    pim_catalog.doctrine.flexible_query_builder:
-        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
 
     # Normalizers
     pim_catalog.mongodb.normalizer.product:

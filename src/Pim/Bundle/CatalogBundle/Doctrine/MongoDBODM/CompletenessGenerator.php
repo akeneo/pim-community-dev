@@ -64,7 +64,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
+        if (null === $product->getFamily()) {
+            return;
+        }
+
         $completenesses = $this->buildProductCompletenesses($product);
+
 
         $product->setCompletenesses(new ArrayCollection($completenesses));
 
@@ -146,7 +151,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['data'] = array();
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
                 }
-
 
                 $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 

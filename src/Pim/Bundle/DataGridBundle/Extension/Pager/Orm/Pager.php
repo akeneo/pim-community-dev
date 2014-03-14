@@ -6,8 +6,8 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Doctrine ORM pager
@@ -106,7 +106,7 @@ class Pager extends AbstractPager implements PagerInterface
             ->setMaxResults(null)
             ->resetDQLPart('orderBy');
 
-        PimOrmDatasource::removeExtraParameters($qb);
+        QueryBuilderUtility::removeExtraParameters($qb);
 
         $query = $qb->getQuery();
 
