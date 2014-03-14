@@ -32,6 +32,7 @@
 - ProductValueNonBlank renamed to ProductValueComplete
 - Remove the AclHelper $aclHelper argument from the src/Pim/Bundle/DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 - Moved CustomEntityBundle to its own repository
+- Move FlexibleEntityBundle/Doctrine/* -> CatalogBundle/Doctrine/ORM/*, rename FlexibleQueryBuilder* to ProductQueryBuilder* and specialize the implementation
 
 # 1.0.1
 ## Bug Fixes
