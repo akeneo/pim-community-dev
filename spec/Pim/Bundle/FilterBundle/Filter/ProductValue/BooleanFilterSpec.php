@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

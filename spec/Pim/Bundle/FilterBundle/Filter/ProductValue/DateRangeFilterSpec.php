@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,7 +26,7 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_is_a_flexible_date_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\Flexible\AbstractFlexibleDateFilter');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\ProductValue\AbstractFlexibleDateFilter');
     }
 
     function it_has_a_name()
