@@ -11,7 +11,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTimeRangeFilter extends AbstractFlexibleDateFilter
+class DateTimeRangeFilter extends AbstractDateFilter
 {
     /**
      * DateTime object as string format

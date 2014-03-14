@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
+use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -14,7 +14,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
+abstract class AbstractDateFilter extends OroAbstractDateFilter
 {
     /**
      * {@inheritdoc}
