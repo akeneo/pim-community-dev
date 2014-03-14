@@ -37,7 +37,7 @@ class ProductQueryUtility
             $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
         }
 
-        return '.'.$attribute->getCode() . $suffix;
+        return $attribute->getCode() . $suffix;
     }
 
     /**
