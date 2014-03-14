@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Entity;
+namespace Pim\Bundle\DataGridBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -13,11 +13,25 @@ use Oro\Bundle\UserBundle\Entity\User;
  */
 class DatagridView
 {
+    /** @staticvar string */
+    const TYPE_DEFAULT = 'default';
+
+    /** @staticvar string */
+    const TYPE_PUBLIC = 'public';
+
     /** @var integer */
     protected $id;
 
     /** @var string */
     protected $label;
+
+    /**
+     * - self::TYPE_DEFAULT for the default user's view
+     * - self::TYPE_PUBLIC for a public view
+     *
+     * @var string
+     */
+    protected $type = self::TYPE_PUBLIC;
 
     /** @var User */
     protected $owner;
@@ -30,6 +44,26 @@ class DatagridView
 
     /** @var string */
     protected $filters;
+
+    /**
+     * Indicates whether the view is the default view of the user
+     *
+     * @return boolean
+     */
+    public function isDefault()
+    {
+        return $this->type === self::TYPE_DEFAULT;
+    }
+
+    /**
+     * Indicates whether a view can be seen by users who don't own it
+     *
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->type === self::TYPE_PUBLIC;
+    }
 
     /**
      * Get id
@@ -63,6 +97,30 @@ class DatagridView
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return DatagridView
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -135,6 +193,30 @@ class DatagridView
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     * Set column order
+     *
+     * @param string $order
+     *
+     * @return DatagridView
+     */
+    public function setOrder($order)
+    {
+        $this->columns = empty($order) ? [] : explode(',', $order);
+
+        return $this;
+    }
+
+    /**
+     * Get column order
+     *
+     * @return string
+     */
+    public function getOrder()
+    {
+        return join(',', $this->columns);
     }
 
     /**

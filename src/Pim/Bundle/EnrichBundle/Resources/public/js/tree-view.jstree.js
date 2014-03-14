@@ -160,10 +160,10 @@ define(
                     // Tree was switched by user, select the root node
                     selectedNode = 0;
                     selectNode(selectedTree);
+                    triggerUpdate();
                 } else {
                     selectNode(getActiveNode());
                 }
-                triggerUpdate();
 
                 if (!$('#node_'+all).length) {
                     createNode(all, null, 'jstree.all');
