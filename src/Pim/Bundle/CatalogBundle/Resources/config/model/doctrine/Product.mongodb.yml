@@ -26,7 +26,13 @@ Pim\Bundle\CatalogBundle\Model\Product:
             embedded: true
             type: many
             targetDocument: Pim\Bundle\CatalogBundle\Model\Association
+        completenesses:
+            embedded: true
+            type: many
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Completeness
         values:
             embedded: true
             type: many
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValue
+        normalizedData:
+            type: hash

@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 class FlatAssociationTypeNormalizer extends AssociationTypeNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 

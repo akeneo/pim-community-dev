@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 class FlatChannelNormalizer extends ChannelNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 

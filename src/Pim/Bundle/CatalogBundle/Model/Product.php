@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Flexible product
@@ -62,6 +63,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      * @var ArrayCollection $completenesses
      */
     protected $completenesses;
+
+    protected $normalizedData;
 
     /**
      * {@inheritdoc}
@@ -506,10 +509,39 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
     }
 
     /**
+     * Set product completenesses
+     *
+     * @param ArrayCollection $completenesses
+     *
+     * @return Product
+     */
+    public function setCompletenesses(ArrayCollection $completenesses)
+    {
+        $this->completenesses = $completenesses;
+
+        return $this;
+    }
+
+    /**
+     * Get product completenesses
+     *
+     * @return ArrayCollection
+     */
+    public function getCompletenesses()
+    {
+        return $this->completenesses;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getReference()
     {
         return $this->getIdentifier()->getData();
+    }
+
+    public function setNormalizedData($normalizedData)
+    {
+        $this->normalizedData = $normalizedData;
     }
 }
