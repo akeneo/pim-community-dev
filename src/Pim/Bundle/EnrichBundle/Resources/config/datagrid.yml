@@ -230,7 +230,6 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
-                - pim/datagrid/state-listener
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product

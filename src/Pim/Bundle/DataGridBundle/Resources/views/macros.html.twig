@@ -6,7 +6,7 @@
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderGridAsync(name, params = {}, renderParams = {}) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
@@ -46,7 +46,9 @@
 
                         $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
-                        require(resp.metadata.requireJSModules, function () {
+                        var modules = resp.metadata.requireJSModules;
+                        modules.push('pim/datagrid/state-listener');
+                        require(modules, function () {
                             var builders = _.toArray(arguments);
                             $(function () {
                                 datagridBuilder(builders);
