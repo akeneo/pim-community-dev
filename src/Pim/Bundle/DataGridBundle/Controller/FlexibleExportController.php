@@ -20,6 +20,9 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class FlexibleExportController extends ExportController
 {
+    /** @var ProductManager $productManager */
+    protected $productManager;
+
     /**
      * Constructor
      *
@@ -28,15 +31,13 @@ class FlexibleExportController extends ExportController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param SerializerInterface        $serializer
      * @param ProductManager             $productManager
-     * @param UserContext                $userContext
      */
     public function __construct(
         Request $request,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
-        ProductManager $productManager,
-        UserContext $userContext
+        ProductManager $productManager
     ) {
         parent::__construct(
             $request,
@@ -46,7 +47,6 @@ class FlexibleExportController extends ExportController
         );
 
         $this->productManager = $productManager;
-        $this->userContext    = $userContext;
     }
 
     /**
