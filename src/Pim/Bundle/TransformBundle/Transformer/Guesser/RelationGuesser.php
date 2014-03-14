@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
  * Guesser for entity transformer
@@ -42,7 +43,7 @@ class RelationGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         if (!$metadata->hasAssociation($columnInfo->getPropertyPath())) {
             return;
@@ -57,7 +58,7 @@ class RelationGuesser implements GuesserInterface
             $this->transformer,
             array(
                 'class'    => $mapping['targetEntity'],
-                'multiple' => (ClassMetadataInfo::MANY_TO_MANY == $mapping['type'])
+                'multiple' => (ClassMetadataInfo::MANY_TO_MANY === $mapping['type'])
             )
         );
     }

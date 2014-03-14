@@ -29,7 +29,7 @@ services:
     pim_transform.transformer.entity:
         class: %pim_transform.transformer.entity.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - '@property_accessor'
             - '@pim_transform.transformer.guesser'
             - '@pim_transform.transformer.column_info_transformer'
