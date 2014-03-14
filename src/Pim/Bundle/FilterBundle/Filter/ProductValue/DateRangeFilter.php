@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
 /**
- * Flexible filter
+ * Date range filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

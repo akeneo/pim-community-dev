@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\FilterBundle\Filter\EntityFilter as OroEntityFilter;
@@ -8,7 +8,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * Entity filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

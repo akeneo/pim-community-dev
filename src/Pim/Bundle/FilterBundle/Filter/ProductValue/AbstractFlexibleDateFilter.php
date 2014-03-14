@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
@@ -8,7 +8,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * Date filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

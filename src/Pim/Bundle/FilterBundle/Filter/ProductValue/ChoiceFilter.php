@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * Choice filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

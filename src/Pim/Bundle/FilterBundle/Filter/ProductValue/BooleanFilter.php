@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\productValue;
 
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * Boolean filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
