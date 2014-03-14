@@ -122,7 +122,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         if (isset($customFilters[$attributeType])) {
             $filterClass = $customFilters[$attributeType];
         } else {
-            $filterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter';
+            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
         $filter = new $filterClass($this->qb, $this->locale, $this->scope);
