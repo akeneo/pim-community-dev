@@ -78,14 +78,13 @@ define(
             },
 
             execute: function() {
-                console.log('EXECUTE');
                 this.originalButton.click();
             }
         });
 
         ExportAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
-            var actions   = metadata.massActions;
+            var actions  = metadata.massActions;
 
             for (var key in actions) {
                 var action = actions[key];
@@ -98,9 +97,7 @@ define(
         };
 
         ExportAction.createPanel = function ($gridContainer) {
-            console.log('ExportAction::createPanel()')
             if (ExportAction.exportPanelCreated == false) {
-                console.log('ExportAction::createPanel() --> not yet created');
                 $gridContainer
                     .find('div.grid-toolbar>.pull-left')
                     .append(
