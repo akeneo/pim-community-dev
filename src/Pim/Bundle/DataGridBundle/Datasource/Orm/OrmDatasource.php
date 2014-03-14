@@ -67,23 +67,6 @@ class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
         return $rows;
     }
 
-    /**
-     * We update the query to count, get ids and fetch data, so, we can lost expected query builder parameters,
-     * and we have to remove them
-     *
-     * @param QueryBuilder $qb
-     */
-    public static function removeExtraParameters(QueryBuilder $qb)
-    {
-        $parameters    = $qb->getParameters();
-        $dql           = $qb->getDQL();
-        foreach ($parameters as $parameter) {
-            if (strpos($dql, ':'.$parameter->getName()) === false) {
-                $parameters->removeElement($parameter);
-            }
-        }
-        $qb->setParameters($parameters);
-    }
 
     /**
      * {@inheritdoc}
