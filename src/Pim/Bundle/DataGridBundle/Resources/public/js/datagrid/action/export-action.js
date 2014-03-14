@@ -48,8 +48,6 @@ define(
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
 
-                ExportAction.createPanel(this.$gridContainer);
-
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
                 this.render();
@@ -84,6 +82,7 @@ define(
         ExportAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var actions  = metadata.massActions;
+            ExportAction.createPanel($gridContainer);
 
             for (var key in actions) {
                 var action = actions[key];
@@ -97,25 +96,19 @@ define(
 
         /** Create the dropdown panel which contains export buttons */
         ExportAction.createPanel = function ($gridContainer) {
-            if (ExportAction.exportPanelCreated == false) {
-                $gridContainer
-                    .find('div.grid-toolbar>.pull-left')
-                    .append(
-                        '<div class="export-actions-panel btn-group buffer-left">' +
-                            '<a href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
-                                '<i class="icon-download-alt"></i>' +
-                                __('Quick Export') +
-                                '<i class="caret"></i>' +
-                            '</a>' +
-                            '<ul class="dropdown-menu"></ul>' +
-                        '</div>'
-                    );
-
-                ExportAction.exportPanelCreated = true;
-            }
+            $gridContainer
+                .find('div.grid-toolbar>.pull-left')
+                .append(
+                    '<div class="export-actions-panel btn-group buffer-left">' +
+                        '<a href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
+                            '<i class="icon-download-alt"></i>' +
+                            __('Quick Export') +
+                            '<i class="caret"></i>' +
+                        '</a>' +
+                        '<ul class="dropdown-menu"></ul>' +
+                    '</div>'
+                );
         };
-
-        ExportAction.exportPanelCreated = false;
 
         return ExportAction;
     }
