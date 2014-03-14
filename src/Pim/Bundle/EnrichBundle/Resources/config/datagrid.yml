@@ -317,25 +317,9 @@ datagrid:
                 launcherOptions:
                     icon: trash
 
-            quick_export_all_csv:
+            quick_export_csv:
                 type: export
                 label: CSV (all)
-                icon: download
-                data_identifier: p
-                route: pim_datagrid_export_flexible_index
-                route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                context:
-                    withHeader: true
-                    heterogeneous: true
-                handler: pim_datagrid.extension.mass_action.handler.export
-                messages:
-                    empty_selection: No products selected
-
-            quick_export_displayed_csv:
-                type: export
-                label: CSV (display)
                 icon: download
                 data_identifier: p
                 route: pim_datagrid_export_flexible_index
