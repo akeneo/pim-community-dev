@@ -1,7 +1,7 @@
 # 1.1.0 -
 
 ## Features
-- Implement saving, applying and removing datagrid views
+- Implement creating, updating, applying and removing datagrid views
 
 ## Improvements
 - Removed useless ```app/entities``` directory
@@ -33,6 +33,7 @@
 - Remove the AclHelper $aclHelper argument from the src/Pim/Bundle/DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 - Moved CustomEntityBundle to its own repository
 - Move FlexibleEntityBundle/Doctrine/* -> CatalogBundle/Doctrine/ORM/*, rename FlexibleQueryBuilder* to ProductQueryBuilder* and specialize the implementation
+- Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
 
 # 1.0.1
 ## Bug Fixes
