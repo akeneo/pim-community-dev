@@ -20,6 +20,6 @@
 
     {{ elements.page_header(title, buttons) }}
 
-    {{ dataGrid.renderGrid('group-type-grid', { localeCode: locale_code() }) }}
+    {{ dataGrid.renderStatefulGrid('group-type-grid', { localeCode: locale_code() }) }}
 
 {% endblock %}

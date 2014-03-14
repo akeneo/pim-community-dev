@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Pim\Bundle\DataGridBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Datagrid configuration form type
+ * Datagrid view form type
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatagridConfigurationType extends AbstractType
+class DatagridViewType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,16 +21,9 @@ class DatagridConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'columns',
-                'choice',
-                [
-                    'multiple' => true,
-                    'expanded' => true,
-                    'choices'  => $options['columns'],
-                ]
-            )
-            ->add('order', 'hidden');
+            ->add('label', 'text', ['required' => true])
+            ->add('order', 'hidden')
+            ->add('filters', 'hidden');
     }
 
     /**
@@ -40,8 +33,7 @@ class DatagridConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration',
-                'columns'    => [],
+                'data_class' => 'Pim\Bundle\DataGridBundle\Entity\DatagridView'
             ]
         );
     }
@@ -51,6 +43,6 @@ class DatagridConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_datagrid_configuration';
+        return 'pim_datagrid_view';
     }
 }

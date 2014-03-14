@@ -65,5 +65,5 @@
 
     {{ elements.page_header(title, buttons) }}
 
-    {{ dataGrid.renderGrid('attribute-grid', { localeCode: locale_code() }) }}
+    {{ dataGrid.renderStatefulGrid('attribute-grid', { localeCode: locale_code() }) }}
 {% endblock %}

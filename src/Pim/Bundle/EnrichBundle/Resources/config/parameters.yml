@@ -33,9 +33,7 @@ parameters:
     pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
-    pim_enrich.form.type.datagrid_configuration.class: Pim\Bundle\EnrichBundle\Form\Type\DatagridConfigurationType
-    pim_enrich.form.type.datagrid_view.class:          Pim\Bundle\EnrichBundle\Form\Type\DatagridViewType
-    pim_enrich.form.type.light_entity.class:           Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
+    pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
 
     pim_enrich.extension.type.media.class:  Pim\Bundle\EnrichBundle\Form\Type\MediaTypeExtension
     pim_enrich.extension.type.metric.class: Pim\Bundle\EnrichBundle\Form\Type\MetricTypeExtension

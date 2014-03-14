@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -55,11 +56,6 @@ class ContextConfigurator implements ConfiguratorInterface
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
     /**
-     * @var string
-     */
-    const GRID_VIEW_FILTERS_KEY = '[options][view_filters]';
-
-    /**
      * @var DatagridConfiguration
      */
     protected $configuration;
@@ -90,8 +86,6 @@ class ContextConfigurator implements ConfiguratorInterface
      * @param RequestParameters        $requestParams   request parameters
      * @param Request                  $request         request
      * @param SecurityContextInterface $securityContext the security context
-     *
-     * @throws \LogicException
      */
     public function __construct(
         DatagridConfiguration $configuration,
@@ -273,33 +267,25 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getUserGridColumns()
     {
+        $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
+
+        if (isset($params['view']) && isset($params['view']['columns'])) {
+            return explode(',', $params['view']['columns']);
+        }
+
         $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
         $alias = $this->configuration->offsetGetByPath($path);
         if (!$alias) {
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        $gridView = $this->request->get('gridView', null);
-        if ($gridView) {
-            $view = $this->flexibleManager
-                ->getEntityManager()
-                ->getRepository('PimEnrichBundle:DatagridView')
-                ->findOneBy(['datagridAlias' => $alias, 'id' => $gridView]);
-
-            if ($view) {
-                $this->configuration->offsetSetByPath(self::GRID_VIEW_FILTERS_KEY, $view->getFilters());
-
-                return $view->getColumns();
-            }
-        }
-
-        $configuration = $this->flexibleManager
+        $view = $this->flexibleManager
             ->getEntityManager()
-            ->getRepository('PimEnrichBundle:DatagridConfiguration')
-            ->findOneBy(['datagridAlias' => $alias, 'user' => $this->getUser()]);
+            ->getRepository('PimDataGridBundle:DatagridView')
+            ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
 
-        if ($configuration) {
-            return $configuration->getColumns();
+        if ($view) {
+            return $view->getColumns();
         }
     }
 
