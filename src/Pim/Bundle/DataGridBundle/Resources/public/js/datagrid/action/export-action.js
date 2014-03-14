@@ -67,17 +67,18 @@ define(
                             label: this.label
                         })
                     )
-                    .on('click', 'li a', _.bind(this.execute, this));
+                    .on('click', 'li a:contains("'+ this.label +'")', _.bind(this.execute, this));
 
-//                this.originalButton = this.$gridContainer
-//                    .find(this.originalButtonSelector)
-//                    .find('.icon-' + this.originalButtonIcon)
-//                    .parent();
-//
-//                this.originalButton.hide();
+                this.originalButton = this.$gridContainer
+                    .find(this.originalButtonSelector)
+                    .find('.icon-' + this.originalButtonIcon +':contains("'+ this.label +'")')
+                    .parent();
+
+                this.originalButton.hide();
             },
 
             execute: function() {
+                console.log('EXECUTE');
                 this.originalButton.click();
             }
         });
