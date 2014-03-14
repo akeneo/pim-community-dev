@@ -36,14 +36,6 @@
                     }
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
-                        var view = resp.metadata.options.view;
-                        if (view) {
-                            var currentView = DatagridState.get('{{ name }}', 'view');
-                            if (!currentView || currentView != view.id) {
-                                DatagridState.set('{{ name }}', { 'view': view.id, 'columns': view.columns, 'filters': view.filters });
-                            }
-                        }
-
                         $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                         var modules = resp.metadata.requireJSModules;
