@@ -1,6 +1,7 @@
 # 1.0.1
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
+- Removed hardcoded Attribute from ValidMetricValidator
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
