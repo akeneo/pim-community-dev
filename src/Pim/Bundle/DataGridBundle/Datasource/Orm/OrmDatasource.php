@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -66,7 +65,6 @@ class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
 
         return $rows;
     }
-
 
     /**
      * {@inheritdoc}
