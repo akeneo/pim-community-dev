@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -112,6 +113,10 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
             'scope_code'               => $this->scopeCode,
             'attributes_configuration' => $this->configuration['attributes_configuration']
         ];
+
+        if (method_exists($this->qb, 'setParameters')) {
+            QueryBuilderUtility::removeExtraParameters($this->qb);
+        }
 
         $rows = $this->hydrator->hydrate($this->qb, $options);
 
