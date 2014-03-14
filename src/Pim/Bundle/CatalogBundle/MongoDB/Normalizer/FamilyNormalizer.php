@@ -15,9 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
  */
 class FamilyNormalizer implements NormalizerInterface
 {
-    /**
-     * @var TranslationNormalizer
-     */
+    /** @var TranslationNormalizer */
     protected $translationNormalizer;
 
     /**

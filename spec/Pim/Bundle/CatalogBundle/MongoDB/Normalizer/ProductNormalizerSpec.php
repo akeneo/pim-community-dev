@@ -32,6 +32,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->setSerializer($serializer);
 
         $product->getFamily()->willReturn($family);
+        $product->getValues()->willReturn([]);
 
         $serializer->normalize($family, 'mongodb_json', [])->willReturn('family normalization');
 
