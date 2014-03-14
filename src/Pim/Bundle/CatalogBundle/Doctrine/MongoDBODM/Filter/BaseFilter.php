@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 
 /**
  * Base filter
@@ -15,6 +16,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
  */
 class BaseFilter implements FilterInterface
 {
+    /** @var string */
+    const NORMALIZED_FIELD = 'normalizedData';
+
     /**
      * QueryBuilder
      * @var QueryBuilder
@@ -58,25 +62,11 @@ class BaseFilter implements FilterInterface
      */
     public function add(AbstractAttribute $attribute, $operator, $value)
     {
-        // TODO: prepare value
-        $value = str_replace('%', '', $value);
-
-        $elemMatch = $this->qb->expr()
-            ->field('attribute')->equals($attribute->getId())
-            ->field($attribute->getBackendType())->equals($value);
-
-        if ($attribute->isScopable()) {
-            $elemMatch->field('scope')->equals($this->scope);
+        $field = ProductQueryUtility::getNormalizedValueField($attribute, $this->locale, $this->scope);
+        if (strpos($value, '/') !== false) {
+            $value = new \MongoRegex($value);
         }
-        if ($attribute->isLocalizable()) {
-            $elemMatch->field('locale')->equals($this->locale);
-        }
-
-        $expression = $this->qb->expr()
-            ->field('values')
-            ->elemMatch($elemMatch);
-
-        $this->qb->addAnd($expression);
+        $this->qb->field(self::NORMALIZED_FIELD.'.'.$field)->equals($value);
 
         return $this;
     }
