@@ -42,10 +42,13 @@ define(
                     'datagrid_filters:rendered',
                     function (collection) {
                         collection.trigger('updateState', collection);
-                    }
-                );
 
-                this.$gridContainer.find('.no-data').hide();
+                        // We have to use a timeout here because the toolbar is hidden right after triggering this event
+                        setTimeout(_.bind(function() {
+                            this.$gridContainer.find('div.toolbar, div.filter-box').show();
+                        }, this), 20);
+                    }, this
+                );
             },
 
             saveGridState: function (collection) {
