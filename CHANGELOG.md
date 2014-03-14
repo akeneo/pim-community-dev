@@ -27,7 +27,7 @@
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
 - Move src/Pim/Bundle/FilterBundle/Filter/ScopeFilter.php, ProductCompletenessFilter.php, ProductGroupsFilter.php, CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/ScopeFilter.php, CompletenessFilter, GroupsFilter.php, CategoryFilter.php
 - Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js, category-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js, product_category-filter.js
-- Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
+- Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php, remove the flexibleEntityName argument of applyFlexibleFilter, rename applyFlexibleFilter to applyFilterByAttribute
 - Add methods applyFilterByGroupIds and applyFilterByFamilyIds in ProductRepositoryInterface
 - ProductValueNonBlank renamed to ProductValueComplete
 - Remove the AclHelper $aclHelper argument from the src/Pim/Bundle/DataGridBundle/Extension/Pager/Orm/Pager.php constructor
