@@ -100,9 +100,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
-        // TODO : filter the allowed operator as in ORM FQB
         // TODO : implement custom filters
-        $customFilters = [];
+        $customFilters = [
+            'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+            'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+      //      'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
+      //      'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
+        ];
+
         if (isset($customFilters[$attributeType])) {
             $filterClass = $customFilters[$attributeType];
         } else {
