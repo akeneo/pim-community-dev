@@ -1,6 +1,6 @@
 parameters:
     pim_datagrid.controller.export.class: Pim\Bundle\DataGridBundle\Controller\ExportController
-    pim_datagrid.controller.flexible_export.class: Pim\Bundle\DataGridBundle\Controller\FlexibleExportController
+    pim_datagrid.controller.product_export.class: Pim\Bundle\DataGridBundle\Controller\ProductExportController
 
 services:
     pim_datagrid.controller.export:
@@ -13,8 +13,8 @@ services:
             - '@oro_datagrid.mass_action.dispatcher'
             - '@pim_serializer'
 
-    pim_datagrid.controller.flexible_export:
-        class: %pim_datagrid.controller.flexible_export.class%
+    pim_datagrid.controller.product_export:
+        class: %pim_datagrid.controller.product_export.class%
         parent: pim_datagrid.controller.export
         scope: request
         arguments:
