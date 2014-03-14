@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\Completeness;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -26,18 +28,22 @@ class ProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_product(
         SerializerInterface $serializer,
         ProductInterface $product,
-        Family $family
+        Family $family,
+        Completeness $completeness
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
 
         $product->getFamily()->willReturn($family);
         $product->getValues()->willReturn([]);
+        $product->getCompletenesses()->willReturn([$completeness]);
 
         $serializer->normalize($family, 'mongodb_json', [])->willReturn('family normalization');
+        $serializer->normalize($completeness, 'mongodb_json', [])->willReturn(array('completenessCode' => 'completeness normalization'));
 
         $this->normalize($product, 'mongodb_json', [])->shouldReturn([
-            'family' => 'family normalization'
+            ProductNormalizer::FAMILY_FIELD => 'family normalization',
+            ProductNormalizer::COMPLETENESSES_FIELD => array('completenessCode' => 'completeness normalization')
         ]);
     }
 
