@@ -25,12 +25,11 @@ define(
             originalButton: null,
 
             template: _.template(
-                '<div class="btn-group">' +
-                    '<a href="javascript:void(0);" class="action btn no-hash" title="<%= label %>">' +
-                        '<i class="icon-<%= icon %>"></i>' +
+                '<li>' +
+                    '<a href="javascript:void(0);" class="no-hash" title="<%= label %>">' +
                         '<%= label %>' +
                     '</a>' +
-                '</div>'
+                '</li>'
             ),
 
             initialize: function (options) {
@@ -61,21 +60,21 @@ define(
             render: function () {
                 this.$gridContainer
                     .find('div.export-actions-panel')
+                    .find('ul.dropdown-menu')
                     .append(
                         this.template({
                             icon: this.icon,
                             label: this.label
                         })
                     )
-                    .find('div')
-                    .on('click', 'a.btn.action', _.bind(this.execute, this));
+                    .on('click', 'li a', _.bind(this.execute, this));
 
-                this.originalButton = this.$gridContainer
-                    .find(this.originalButtonSelector)
-                    .find('.icon-' + this.originalButtonIcon)
-                    .parent();
-
-                this.originalButton.hide();
+//                this.originalButton = this.$gridContainer
+//                    .find(this.originalButtonSelector)
+//                    .find('.icon-' + this.originalButtonIcon)
+//                    .parent();
+//
+//                this.originalButton.hide();
             },
 
             execute: function() {
@@ -98,16 +97,22 @@ define(
         };
 
         ExportAction.createPanel = function ($gridContainer) {
+            console.log('ExportAction::createPanel()')
             if (ExportAction.exportPanelCreated == false) {
+                console.log('ExportAction::createPanel() --> not yet created');
                 $gridContainer
                     .find('div.grid-toolbar>.pull-left')
                     .append(
                         '<div class="export-actions-panel btn-group buffer-left">' +
+                            '<a href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
+                                '<i class="icon-download-alt"></i>Export<i class="caret"></i>' +
+                            '</a>' +
+                            '<ul class="dropdown-menu"></ul>' +
                         '</div>'
                     );
-            }
 
-            ExportAction.exportPanelCreated = true;
+                ExportAction.exportPanelCreated = true;
+            }
         };
 
         ExportAction.exportPanelCreated = false;
