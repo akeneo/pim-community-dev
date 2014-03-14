@@ -101,14 +101,14 @@ class DatagridViewController extends AbstractDoctrineController
                 return new JsonResponse(['errors' => $messages]);
             } else {
                 $em = $this->getManager();
-                $em->persist($entity);
+                $em->persist($view);
                 $em->flush();
 
                 return new JsonResponse(['id' => $view->getId()]);
             }
         }
 
-        $views = $this->getRepository('PimDataGridBundle:DatagridView')->findAllForUser($alias, $user);
+        $views = $this->datagridViewManager->findAllForUser($alias, $user);
 
         return $this->render(
             'PimDataGridBundle:Datagrid:_views.html.twig',

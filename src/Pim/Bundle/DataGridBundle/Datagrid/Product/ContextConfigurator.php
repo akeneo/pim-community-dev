@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -81,32 +81,24 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $request;
 
     /**
-     * @var DatagridViewManager
-     */
-    protected $viewManager;
-
-    /**
      * @param DatagridConfiguration    $configuration   the grid config
      * @param FlexibleManager          $flexibleManager flexible manager
      * @param RequestParameters        $requestParams   request parameters
      * @param Request                  $request         request
      * @param SecurityContextInterface $securityContext the security context
-     * @param DatagridViewManager      $viewManager     datagrid view manager
      */
     public function __construct(
         DatagridConfiguration $configuration,
         FlexibleManager $flexibleManager,
         RequestParameters $requestParams,
         Request $request,
-        SecurityContextInterface $securityContext,
-        DatagridViewManager $viewManager
+        SecurityContextInterface $securityContext
     ) {
         $this->configuration   = $configuration;
         $this->flexibleManager = $flexibleManager;
         $this->requestParams   = $requestParams;
         $this->request         = $request;
         $this->securityContext = $securityContext;
-        $this->viewManager     = $viewManager;
     }
 
     /**
@@ -185,8 +177,10 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addDisplayedColumnCodes()
     {
         $userColumns = $this->getUserGridColumns();
-        $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
-        $this->configuration->offsetSetByPath($path, $userColumns);
+        if ($userColumns) {
+            $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
+            $this->configuration->offsetSetByPath($path, $userColumns);
+        }
     }
 
     /**
@@ -269,7 +263,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Get user configured datagrid columns
      *
-     * @return string[]
+     * @return null|string[]
      */
     protected function getUserGridColumns()
     {
@@ -285,7 +279,14 @@ class ContextConfigurator implements ConfiguratorInterface
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        return $this->viewManager->getDefaultDatagridView($alias, $this->getUser())->getColumns();
+        $view = $this->flexibleManager
+            ->getEntityManager()
+            ->getRepository('PimDataGridBundle:DatagridView')
+            ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
+
+        if ($view) {
+            return $view->getColumns();
+        }
     }
 
     /**

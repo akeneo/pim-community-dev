@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Bundle\DataGridBundle\Entity\Repository\DatagridViewRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 
 /**
@@ -24,24 +23,16 @@ class DatagridViewManager
     /** @var DatagridManager */
     protected $datagridManager;
 
-    /** @var DatagridViewRepository */
-    protected $repository;
-
     /**
      * Constructor
      *
-     * @param EntityManager          $entityManager
-     * @param DatagridManager        $datagridManager
-     * @param DatagridViewRepository $repository
+     * @param EntityManager   $entityManager
+     * @param DatagridManager $datagridManager
      */
-    public function __construct(
-        EntityManager $entityManager,
-        DatagridManager $datagridManager,
-        DatagridViewRepository $repository
-    ) {
+    public function __construct(EntityManager $entityManager, DatagridManager $datagridManager)
+    {
         $this->entityManager   = $entityManager;
         $this->datagridManager = $datagridManager;
-        $this->repository      = $repository;
     }
 
     /**
@@ -54,7 +45,7 @@ class DatagridViewManager
      */
     public function getDefaultDatagridView($alias, User $user)
     {
-        $view = $this->repository->findOneBy(
+        $view = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
             [
                 'datagridAlias' => $alias,
                 'owner'         => $user,
@@ -75,6 +66,27 @@ class DatagridViewManager
         }
 
         return $view;
+    }
+
+    /**
+     * Returns all public views and the default user's view
+     *
+     * @param string $alias
+     * @param User   $user
+     *
+     * @return DatagridView
+     */
+    public function findAllForUser($alias, User $user)
+    {
+        $views = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findBy(
+            [
+                'datagridAlias' => $alias,
+                'type'          => DatagridView::TYPE_PUBLIC
+            ]
+        );
+        array_unshift($views, $this->getDefaultDatagridView($alias, $user));
+
+        return $views;
     }
 
     /**

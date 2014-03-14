@@ -37,7 +37,9 @@ require(
 
         var activateView = function(viewId) {
             var $viewItem = $selector.find('option[value="' + viewId + '"]');
-            DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+            if ($viewItem.length) {
+                DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+            }
         };
 
         var activeViewId = DatagridState.get('{{ alias }}', 'view');
