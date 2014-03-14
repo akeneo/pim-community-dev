@@ -16,9 +16,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_normalization_in_bson_of_product(ProductInterface $product)
+    function it_supports_normalization_in_mongodb_json_of_product(ProductInterface $product)
     {
-        $this->supportsNormalization($product, 'bson')->shouldBe(true);
+        $this->supportsNormalization($product, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($product, 'json')->shouldBe(false);
         $this->supportsNormalization($product, 'xml')->shouldBe(false);
     }
@@ -33,9 +33,9 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->getFamily()->willReturn($family);
 
-        $serializer->normalize($family, 'bson', [])->willReturn('family normalization');
+        $serializer->normalize($family, 'mongodb_json', [])->willReturn('family normalization');
 
-        $this->normalize($product, 'bson', [])->shouldReturn([
+        $this->normalize($product, 'mongodb_json', [])->shouldReturn([
             'family' => 'family normalization'
         ]);
     }
@@ -46,6 +46,6 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $this->setSerializer($serializer);
 
-        $this->shouldThrow('\LogicException')->duringNormalize($product, 'bson', []);
+        $this->shouldThrow('\LogicException')->duringNormalize($product, 'mongodb_json', []);
     }
 }

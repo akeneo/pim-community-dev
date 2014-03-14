@@ -19,9 +19,9 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_bson_of_family(Family $family)
+    function it_supports_normalization_in_mongodb_json_of_family(Family $family)
     {
-        $this->supportsNormalization($family, 'bson')->shouldBe(true);
+        $this->supportsNormalization($family, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($family, 'json')->shouldBe(false);
         $this->supportsNormalization($family, 'xml')->shouldBe(false);
     }
@@ -31,9 +31,9 @@ class FamilyNormalizerSpec extends ObjectBehavior
         Family $family
     ) {
         $family->getCode()->willReturn('mongo');
-        $normalizer->normalize($family, 'bson', [])->willReturn(['label' => 'translations']);
+        $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['label' => 'translations']);
 
-        $this->normalize($family, 'bson', [])->shouldReturn([
+        $this->normalize($family, 'mongodb_json', [])->shouldReturn([
             'code' => 'mongo',
             'label' => 'translations'
         ]);
