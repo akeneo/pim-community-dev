@@ -72,14 +72,14 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * Applies filter to query by flexible attribute
+     * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
      */
-    public function applyFlexibleFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
 
         $attribute  = $this->getAttribute($field);

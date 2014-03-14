@@ -101,7 +101,7 @@ class MetricFilter extends OroNumberFilter
         $this->converter->setFamily($this->family);
         $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $baseValue,

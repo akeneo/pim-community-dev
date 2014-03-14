@@ -35,7 +35,7 @@ class PriceFilter extends OroNumberFilter
             return;
         }
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             sprintf('%s %s', $data['value'], $data['currency']),

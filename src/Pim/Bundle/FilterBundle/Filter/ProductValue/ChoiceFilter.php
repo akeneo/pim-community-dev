@@ -58,7 +58,7 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
