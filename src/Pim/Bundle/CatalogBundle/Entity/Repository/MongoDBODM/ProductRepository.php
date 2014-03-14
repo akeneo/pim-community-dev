@@ -45,7 +45,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * @param ProductQueryBuilder
      */
-    protected $flexibleQB;
+    protected $productQB;
 
     /**
      * {@inheritdoc}
@@ -291,9 +291,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryBuilder($flexibleQB)
+    public function setProductQueryBuilder($productQB)
     {
-        $this->flexibleQB = $flexibleQB;
+        $this->productQB = $productQB;
 
         return $this;
 
@@ -304,16 +304,16 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     protected function getProductQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
+        if (!$this->productQB) {
             throw new \LogicException('Flexible query builder must be configured');
         }
 
-        $this->flexibleQB
+        $this->productQB
             ->setQueryBuilder($qb)
             ->setLocale($this->getLocale())
             ->setScope($this->getScope());
 
-        return $this->flexibleQB;
+        return $this->productQB;
     }
 
     /**

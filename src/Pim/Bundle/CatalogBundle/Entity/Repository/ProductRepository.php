@@ -29,7 +29,7 @@ class ProductRepository extends FlexibleEntityRepository implements
     /**
      * @param ProductQueryBuilder
      */
-    protected $flexibleQB;
+    protected $productQB;
 
     /**
      * @var string
@@ -691,13 +691,13 @@ SQL;
     /**
      * Set flexible query builder
      *
-     * @param ProductQueryBuilder $flexibleQB
+     * @param ProductQueryBuilder $productQB
      *
      * @return FlexibleEntityRepository
      */
-    public function setProductQueryBuilder($flexibleQB)
+    public function setProductQueryBuilder($productQB)
     {
-        $this->flexibleQB = $flexibleQB;
+        $this->productQB = $productQB;
 
         return $this;
     }
@@ -760,16 +760,16 @@ SQL;
      */
     protected function getProductQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
+        if (!$this->productQB) {
             throw new \LogicException('Flexible query builder must be configured');
         }
 
-        $this->flexibleQB
+        $this->productQB
             ->setQueryBuilder($qb)
             ->setLocale($this->getLocale())
             ->setScope($this->getScope());
 
-        return $this->flexibleQB;
+        return $this->productQB;
     }
 
     /**
