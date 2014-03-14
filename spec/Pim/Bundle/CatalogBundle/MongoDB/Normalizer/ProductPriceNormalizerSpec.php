@@ -13,9 +13,9 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_bson_of_price(ProductPrice $price)
+    function it_supports_normalization_in_mongodb_json_of_price(ProductPrice $price)
     {
-        $this->supportsNormalization($price, 'bson')->shouldBe(true);
+        $this->supportsNormalization($price, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($price, 'json')->shouldBe(false);
         $this->supportsNormalization($price, 'xml')->shouldBe(false);
     }
@@ -25,6 +25,6 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
         $price->getData()->willReturn('12.75');
         $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($price, 'bson', [])->shouldReturn(['data' => '12.75', 'currency' => 'EUR']);
+        $this->normalize($price, 'mongodb_json', [])->shouldReturn(['data' => '12.75', 'currency' => 'EUR']);
     }
 }

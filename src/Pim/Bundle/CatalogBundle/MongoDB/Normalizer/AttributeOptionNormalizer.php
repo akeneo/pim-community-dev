@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
- * Normalize an attribute option to store it as bson
+ * Normalize an attribute option to store it as mongodb_json
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -32,6 +32,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && 'bson' === $format;
+        return $data instanceof AttributeOption && 'mongodb_json' === $format;
     }
 }
