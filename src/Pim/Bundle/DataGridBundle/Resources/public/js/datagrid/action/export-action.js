@@ -80,6 +80,7 @@ define(
             }
         });
 
+        /** init method which create export buttons */
         ExportAction.init = function ($gridContainer, gridName) {
             var metadata = $gridContainer.data('metadata');
             var actions  = metadata.massActions;
@@ -94,6 +95,7 @@ define(
             }
         };
 
+        /** Create the dropdown panel which contains export buttons */
         ExportAction.createPanel = function ($gridContainer) {
             if (ExportAction.exportPanelCreated == false) {
                 $gridContainer
