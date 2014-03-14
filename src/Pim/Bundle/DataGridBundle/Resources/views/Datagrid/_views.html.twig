@@ -8,10 +8,10 @@
 {% endfor %}
 </select>
 
-<button id="update-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_changes'|trans }}</button>
-<button id="clone-view" class="btn btn-small btn-primary" style="display:none;">{{ 'datagrid_view.save_view'|trans }}</button>
+<button id="update-view" class="view-button btn btn-small btn-primary">{{ 'datagrid_view.save_changes'|trans }}</button>
+<button id="clone-view" class="view-button btn btn-small btn-primary">{{ 'datagrid_view.save_view'|trans }}</button>
 
-<a id="remove-view" class="muted hide" style="cursor:pointer;">
+<a id="remove-view" class="muted hide">
     <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.remove'|trans }}"></i>
 </a>
 
