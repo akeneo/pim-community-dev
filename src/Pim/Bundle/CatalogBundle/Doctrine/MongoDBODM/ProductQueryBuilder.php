@@ -128,7 +128,19 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $attributeType = $attribute->getAttributeType();
+        $customSorters = [];
+
+        if (isset($customSorters[$attributeType])) {
+            $sorterClass = $customSorters[$attributeType];
+        } else {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
+        }
+
+        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter->add($attribute, $direction);
+
+        return $this;
     }
 
     /**
