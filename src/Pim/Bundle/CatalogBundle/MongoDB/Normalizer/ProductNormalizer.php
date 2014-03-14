@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Normalize a product to store it as bson
+ * Normalize a product to store it as MongoDB JSON
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -45,7 +45,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'bson' === $format;
+        return $data instanceof ProductInterface && 'mongodb_json' === $format;
     }
 
     /**
