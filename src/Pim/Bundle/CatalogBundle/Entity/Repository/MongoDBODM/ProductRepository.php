@@ -247,19 +247,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $attributeId = $value->getAttribute()->getId();
-        $attributeBackend = $value->getAttribute()->getBackendType();
-        $data = $value->getData();
-
-        $result = $this->createQueryBuilder()
-            ->hydrate(false)
-            ->field("values.".$attributeBackend)->equals($data)
-            ->field("values.attributeId")->equals($attributeId)
-            ->getQuery()
-            ->getSingleResult();
+        $qb = $this->createQueryBuilder();
+        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value);
+        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
         $foundValueId = null;
-
         if ((1 === count($result)) && isset($result['_id'])) {
             $foundValueId = $result['_id']->id;
         }
