@@ -14,10 +14,9 @@
             function ($, Routing, datagridBuilder, PageableCollection, DatagridState) {
                 'use strict';
                 $(function() {
-                    var urlParams = {
-                        alias: '{{ name }}',
-                        params: {{ params|json_encode|raw }}
-                    };
+                    var urlParams = {{ params|json_encode|raw }};
+                    urlParams.alias = '{{ name }}';
+                    urlParams.params = {{ params|json_encode|raw }};
 
                     var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
 
