@@ -9,7 +9,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Set the normalized data of a Product document
+ * Set the normalized data of a Product document. These normalized data
+ * are stored in the product along the "normal" data structure.
+ * They are used for filtering and sorting, as the "normal" data structure
+ * cannot be used for that ($elemMatch work for filtering, but no way to
+ * sort by a embeddedDocument in an array
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -75,7 +79,7 @@ class SetProductNormalizedDataSubscriber implements EventSubscriber
     protected function updateNormalizedData(ProductInterface $product)
     {
         $product->setNormalizedData(
-            $this->normalizer->normalize($product, 'bson')
+            $this->normalizer->normalize($product, 'mongodb_json')
         );
     }
 }
