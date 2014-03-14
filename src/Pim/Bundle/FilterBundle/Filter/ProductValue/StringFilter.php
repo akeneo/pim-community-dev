@@ -20,7 +20,7 @@ class StringFilter extends OroStringFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $data = $this->parseData($data);
+        $data = $this->prepareData($ds, $data);
         if (!$data) {
             return false;
         }
@@ -35,5 +35,24 @@ class StringFilter extends OroStringFilter
         );
 
         return true;
+    }
+
+    /**
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param mixed                            $data
+     *
+     * @return array|bool
+     */
+    protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+            return false;
+        }
+
+        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        $format = $ds->getFormatByComparisonType($data['type']);
+        $data['value'] = sprintf($format, $data['value']);
+
+        return $data;
     }
 }
