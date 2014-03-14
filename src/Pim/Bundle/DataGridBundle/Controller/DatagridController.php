@@ -44,7 +44,7 @@ class DatagridController
             'PimDataGridBundle:Datagrid:load.json.twig',
             [
                 'alias'  => $alias,
-                'params' => $request->get('params')
+                'params' => $request->get('params', [])
             ],
             new JsonResponse()
         );
