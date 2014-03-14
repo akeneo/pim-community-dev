@@ -16,6 +16,6 @@
 
     {{ elements.page_header(title, buttons) }}
 
-    {{ dataGrid.renderGrid('association-type-grid', { localeCode: locale_code() }) }}
+    {{ dataGrid.renderStatefulGrid('association-type-grid', { localeCode: locale_code() }) }}
 
 {% endblock %}
