@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Normalize a product to store it as bson
+ * Normalize a product to store it as MongoDB JSON
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -16,6 +16,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    const FAMILY_FIELD = 'family';
+    const COMPLETENESSES_FIELD = 'completenesses';
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -28,7 +31,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $data = ['family' => $this->serializer->normalize($object->getFamily(), $format, $context)];
+        $data = [self::FAMILY_FIELD => $this->serializer->normalize($object->getFamily(), $format, $context)];
 
         foreach ($object->getValues() as $value) {
             $data = array_merge(
@@ -36,6 +39,15 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 $this->serializer->normalize($value, $format, $context)
             );
         }
+
+        $completenesses = array();
+        foreach ($object->getCompletenesses() as $completeness) {
+            $completenesses = array_merge(
+                $completenesses,
+                $this->serializer->normalize($completeness, $format, $context)
+            );
+        }
+        $data[self::COMPLETENESSES_FIELD] = $completenesses;
 
         return $data;
     }
@@ -45,7 +57,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'bson' === $format;
+        return $data instanceof ProductInterface && 'mongodb_json' === $format;
     }
 
     /**

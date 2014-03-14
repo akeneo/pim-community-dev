@@ -8,11 +8,12 @@ parameters:
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductNormalizedDataSubscriber
     pim_catalog.mongodb.normalizer.family.class:                     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
+    pim_catalog.mongodb.normalizer.completeness.class:               Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
     pim_catalog.mongodb.normalizer.product.class:                    Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
     pim_catalog.mongodb.normalizer.product_value.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
     pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
-    pim_catalog.doctrine.mongodb.flexible_query_builder.class:       Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
+    pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -26,6 +27,7 @@ services:
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_catalog.factory.completeness'
+            - '@validator'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%
@@ -62,9 +64,6 @@ services:
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
-    pim_catalog.doctrine.flexible_query_builder:
-        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
-
     # Normalizers
     pim_catalog.mongodb.normalizer.product:
         class: %pim_catalog.mongodb.normalizer.product.class%
@@ -95,5 +94,11 @@ services:
         public: false
         arguments:
             - '@pim_serializer.normalizer.label_translation'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.completeness:
+        class: %pim_catalog.mongodb.normalizer.completeness.class%
+        public: false
         tags:
             - { name: pim_serializer.normalizer }

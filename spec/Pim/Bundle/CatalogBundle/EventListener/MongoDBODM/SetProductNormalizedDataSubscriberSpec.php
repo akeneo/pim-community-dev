@@ -12,6 +12,9 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+ */
 class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer)
@@ -19,17 +22,11 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     */
     function it_subscribes_to_preUpdate_event()
     {
         $this->getSubscribedEvents()->shouldReturn(['prePersist', 'preUpdate']);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     */
     function it_sets_product_normalize_data_before_inserting_document(
         LifecycleEventArgs $args,
         Product $product,
@@ -39,16 +36,13 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         UnitOfWork $uow
     ) {
         $args->getDocument()->willReturn($product);
-        $normalizer->normalize($product, 'bson')->willReturn('normalized product');
+        $normalizer->normalize($product, 'mongodb_json')->willReturn('normalized product');
 
         $product->setNormalizedData('normalized product')->shouldBeCalled();
 
         $this->prePersist($args);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     */
     function it_does_nothing_before_insert_when_document_is_not_a_product(
         LifecycleEventArgs $args,
         NormalizerInterface $normalizer
@@ -59,9 +53,6 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         $this->prePersist($args);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     */
     function it_sets_product_normalize_data_before_updating_document(
         LifecycleEventArgs $args,
         Product $product,
@@ -71,7 +62,7 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         UnitOfWork $uow
     ) {
         $args->getDocument()->willReturn($product);
-        $normalizer->normalize($product, 'bson')->willReturn('normalized product');
+        $normalizer->normalize($product, 'mongodb_json')->willReturn('normalized product');
 
         $args->getDocumentManager()->willReturn($dm);
         $dm->getClassMetadata(Argument::any())->willReturn($metadata);
@@ -83,9 +74,6 @@ class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
         $this->preUpdate($args);
     }
 
-    /**
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     */
     function it_does_nothing_before_update_when_document_is_not_a_product(
         LifecycleEventArgs $args,
         NormalizerInterface $normalizer
