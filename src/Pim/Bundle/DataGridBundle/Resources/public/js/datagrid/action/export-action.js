@@ -16,8 +16,6 @@ define(
 
             icon: 'download',
 
-            target: 'div#export-actions-panel',
-
             originalButtonSelector: 'div.grid-toolbar .mass-actions-panel .action.btn',
 
             originalButtonIcon: 'download',
