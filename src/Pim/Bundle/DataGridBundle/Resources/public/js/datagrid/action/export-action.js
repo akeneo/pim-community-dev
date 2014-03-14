@@ -103,7 +103,9 @@ define(
                     .append(
                         '<div class="export-actions-panel btn-group buffer-left">' +
                             '<a href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
-                                '<i class="icon-download-alt"></i>Export<i class="caret"></i>' +
+                                '<i class="icon-download-alt"></i>' +
+                                __('Quick Export') +
+                                '<i class="caret"></i>' +
                             '</a>' +
                             '<ul class="dropdown-menu"></ul>' +
                         '</div>'
