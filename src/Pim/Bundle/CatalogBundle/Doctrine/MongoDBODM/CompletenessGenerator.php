@@ -64,7 +64,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateProductCompletenesses(ProductInterface $product)
     {
+        if (null === $product->getFamily()) {
+            return;
+        }
+
         $completenesses = $this->buildProductCompletenesses($product);
+
 
         $product->setCompletenesses(new ArrayCollection($completenesses));
 
