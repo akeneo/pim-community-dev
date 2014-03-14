@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\Filter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 
 /**
  * Base filter

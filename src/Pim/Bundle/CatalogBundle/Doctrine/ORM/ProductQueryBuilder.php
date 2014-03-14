@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -16,7 +16,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
+class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
     /**
      * QueryBuilder
@@ -41,7 +41,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param QueryBuilder $qb
      *
-     * @return FlexibleQueryBuilder
+     * @return ProductQueryBuilder
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {
@@ -106,23 +106,23 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         $operators = is_array($operator) ? $operator : array($operator);
         foreach ($operators as $key) {
             if (!in_array($key, $allowed)) {
-                throw new FlexibleQueryException(
+                throw new ProductQueryException(
                     sprintf('%s is not allowed for type %s, use %s', $key, $attributeType, implode(', ', $allowed))
                 );
             }
         }
 
         $customFilters = [
-            'pim_catalog_multiselect'      => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_simpleselect'     => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_metric'           => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\MetricFilter',
-            'pim_catalog_price_collection' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\PriceFilter'
+            'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
+            'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
         ];
 
         if (isset($customFilters[$attributeType])) {
             $filterClass = $customFilters[$attributeType];
         } else {
-            $filterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Filter\BaseFilter';
+            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
         $filter = new $filterClass($this->qb, $this->locale, $this->scope);
@@ -150,15 +150,15 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
     {
         $attributeType = $attribute->getAttributeType();
         $customSorters = [
-            'pim_catalog_multiselect'  => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_simpleselect' => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_metric'       => 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\MetricSorter'
+            'pim_catalog_multiselect'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_simpleselect' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+            'pim_catalog_metric'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter'
         ];
 
         if (isset($customSorters[$attributeType])) {
             $sorterClass = $customSorters[$attributeType];
         } else {
-            $sorterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter\BaseSorter';
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
         $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
@@ -186,7 +186,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      * @param string|array $value    the value(s) to filter
      *
      * @return string
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {
@@ -200,7 +200,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param AbstractAttribute $attribute
      *
-     * @throws FlexibleQueryException
+     * @throws ProductQueryException
      *
      * @return array
      */
