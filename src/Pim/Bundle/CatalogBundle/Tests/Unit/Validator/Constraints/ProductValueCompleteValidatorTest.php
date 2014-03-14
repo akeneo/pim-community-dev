@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlankValidator;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueCompleteValidator;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
@@ -18,15 +18,15 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
+class ProductValueCompleteValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ProductValueNotBlankValidator
+     * @var ProductValueCompleteValidator
      */
     protected $validator;
 
     /**
-     * @var ProductValueNotBlank
+     * @var ProductValueComplete
      */
     protected $constraint;
 
@@ -35,8 +35,8 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->validator = new ProductValueNotBlankValidator();
-        $this->constraint = new ProductValueNotBlank(array('channel' => $this->getChannel()));
+        $this->validator = new ProductValueCompleteValidator();
+        $this->constraint = new ProductValueComplete(array('channel' => $this->getChannel()));
     }
 
     /**

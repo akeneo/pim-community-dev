@@ -105,7 +105,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getFullProduct($id)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->find($id);
     }
 
     /**

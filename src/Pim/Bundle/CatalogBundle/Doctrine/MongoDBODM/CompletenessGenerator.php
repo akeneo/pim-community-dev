@@ -5,12 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -37,14 +38,25 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $completenessFactory;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * Constructor
      *
-     * @param DocumentManager $documentManager
+     * @param DocumentManager     $documentManager
+     * @param CompletenessFactory $completenessFactory
+     * @param ValidatorInterface  $validator
      */
-    public function __construct(DocumentManager $documentManager, CompletenessFactory $completenessFactory)
-    {
+    public function __construct(
+        DocumentManager $documentManager,
+        CompletenessFactory $completenessFactory,
+        ValidatorInterface $validator
+    ) {
         $this->documentManager = $documentManager;
         $this->completenessFactory = $completenessFactory;
+        $this->validator = $validator;
     }
 
     /**
@@ -75,6 +87,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($stats as $channelStats) {
             $channel = $channelStats['object'];
             $channelData = $channelStats['data'];
+            $channelRequiredCount = $channelStats['required_count'];
 
             foreach ($channelData as $localeStats) {
                 $locale = $localeStats['object'];
@@ -84,7 +97,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $channel,
                     $locale,
                     $localeData['missing_count'],
-                    $localeData['required_count']
+                    $channelRequiredCount
                 );
 
                 $completenesses[] = $completeness;
@@ -109,13 +122,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $requirements = $product->getFamily()->getAttributeRequirements();
 
         foreach ($requirements as $req) {
+            if (!$req->isRequired()) {
+                continue;
+            }
             $channel = $req->getChannel()->getCode();
             $locales = $req->getChannel()->getLocales();
 
             if (!isset($stats[$channel])) {
                 $stats[$channel]['object'] = $req->getChannel();
                 $stats[$channel]['data'] = array();
+                $stats[$channel]['required_count'] = 0;
             }
+
+            $completeConstraint = new ProductValueComplete(array('channel' => $channel));
+
+            $stats[$channel]['required_count']++;
 
             foreach ($locales as $localeObject) {
                 $locale = $localeObject->getCode();
@@ -124,82 +145,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['object'] = $localeObject;
                     $stats[$channel]['data'][$locale]['data'] = array();
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
-                    $stats[$channel]['data'][$locale]['data']['required_count'] = 0;
                 }
 
-                $stats[$channel]['data'][$locale]['data']['required_count']++;
 
                 $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
 
-                if ($this->isValueMissing($req, $value)) {
+                if ($this->validator->validateValue($value, $completeConstraint)->count() > 0) {
                     $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
                 }
             }
         }
 
         return $stats;
-    }
-
-    /**
-     * Apply rules defining if a value is missing.
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean $valueMissing
-     */
-    protected function isValueMissing(
-        AttributeRequirement $req,
-        ProductValueInterface $value = null
-    ) {
-        $valueMissing = false;
-        $attribute = $req->getAttribute();
-
-        if ($attribute->getBackendType() === "prices") {
-
-            if (!$this->isPriceComplete($value, $req->getChannel())) {
-                $valueMissing = true;
-            }
-
-        } elseif (($value === null) ||
-            ($value->getData() === null) ||
-            (is_array($value->getData()) && count($value->getData()) === 0)) {
-
-            $valueMissing = true;
-        }
-
-        return $valueMissing;
-    }
-
-    /**
-     * Determine if the value price provided is complete, i.e. a price
-     * exists for all currencies provided
-     *
-     * @param ProductValueInterface $value
-     * @param Channel               $channel
-     *
-     * @return boolean
-     */
-    protected function isPriceComplete(ProductValueInterface $value, Channel $channel)
-    {
-        $completePrice = true;
-        $currencies = $channel->getCurrencies();
-
-        foreach ($currencies as $currency) {
-            $priceFound = false;
-
-            foreach ($value->getPrices() as $price) {
-
-                if (($price->getCurrency()->getCode() === $currency->getCode())&&
-                    ($price->getData() !== null)) {
-                    $priceFound = true;
-                }
-            }
-            if (!$priceFound) {
-                $completePrice = false;
-            }
-        }
-
-        return $completePrice;
     }
 
     /**

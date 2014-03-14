@@ -16,9 +16,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_bson_of_value(ProductValue $value)
+    function it_supports_normalization_in_mongodb_json_of_value(ProductValue $value)
     {
-        $this->supportsNormalization($value, 'bson')->shouldBe(true);
+        $this->supportsNormalization($value, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($value, 'json')->shouldBe(false);
         $this->supportsNormalization($value, 'xml')->shouldBe(false);
     }
@@ -36,9 +36,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($data);
         $value->getAttribute()->willReturn($attribute);
 
-        $serializer->normalize($data, 'bson', [])->willReturn($data);
+        $serializer->normalize($data, 'mongodb_json', [])->willReturn($data);
 
-        $this->normalize($value, 'bson', [])->shouldReturn(['code' => 'product title']);
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => 'product title']);
     }
 
     function it_normalizes_value_with_collection_data(ProductValue $value, Attribute $attribute, Collection $collection, \Iterator $iterator)
@@ -52,6 +52,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($attribute);
 
-        $this->normalize($value, 'bson', [])->shouldReturn(['code' => []]);
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => []]);
     }
 }

@@ -6,18 +6,18 @@ use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
- * Not Blank constraint for ProductValue
+ * Complete constraint for ProductValue
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNotBlank extends Constraint
+class ProductValueComplete extends Constraint
 {
     /**
      * @var string
      */
-    public $messageNotBlank = 'This value should not be blank';
+    public $messageComplete = 'This value should be complete';
 
     /**
      * @var string

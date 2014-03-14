@@ -14,9 +14,9 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_bson_of_attribute_option(AttributeOption $option)
+    function it_supports_normalization_in_mongodb_json_of_attribute_option(AttributeOption $option)
     {
-        $this->supportsNormalization($option, 'bson')->shouldBe(true);
+        $this->supportsNormalization($option, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($option, 'json')->shouldBe(false);
         $this->supportsNormalization($option, 'xml')->shouldBe(false);
     }
@@ -30,6 +30,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $valueFr->getValue()->willReturn('Rouge');
         $option->getOptionValues()->willReturn([$valueUs, $valueFr]);
 
-        $this->normalize($option, 'bson', [])->shouldReturn(['code' => 'red', 'en_US' => 'Red', 'fr_FR' => 'Rouge']);
+        $this->normalize($option, 'mongodb_json', [])->shouldReturn(['code' => 'red', 'en_US' => 'Red', 'fr_FR' => 'Rouge']);
     }
 }
