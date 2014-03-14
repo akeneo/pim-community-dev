@@ -2,12 +2,12 @@
 
 # PhpSpec run fix that prevent suite containing skipped example to make travis build fail
 
-bin/phpspec run -fdot
+bin/phpspec run $@
 
 PHPSPEC_CODE=$?
 
 # Exit code 2 is the one that state at least one example was skipped
-if [[ $PHPSPEC_CODE == 2 ]]; then
+if [ $PHPSPEC_CODE -eq 2 ]; then
     exit 0
 fi
 

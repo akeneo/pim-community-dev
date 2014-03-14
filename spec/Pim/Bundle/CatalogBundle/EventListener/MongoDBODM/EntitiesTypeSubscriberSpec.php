@@ -12,6 +12,12 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Events
+ * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
+ */
 class EntitiesTypeSubscriberSpec extends ObjectBehavior
 {
     function let(ReferencedCollectionFactory $factory)
@@ -24,21 +30,11 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->shouldImplement('Doctrine\Common\EventSubscriber');
     }
 
-    /**
-     * @require extension mongo
-     * @require class Doctrine\ODM\MongoDB\Events
-     */
     function it_subscribes_to_postLoad_event()
     {
         $this->getSubscribedEvents()->shouldReturn([Events::postLoad]);
     }
 
-    /**
-     * @require extension mongo
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     * @require class Doctrine\ODM\MongoDB\Mapping\ClassMetadata
-     */
     function it_transforms_values_of_an_entity_collection_field_into_entities(
         LifecycleEventArgs $args,
         ValuesStub $entity,
@@ -69,12 +65,6 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    /**
-     * @require extension mongo
-     * @require class Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
-     * @require class Doctrine\ODM\MongoDB\DocumentManager
-     * @require class Doctrine\ODM\MongoDB\Mapping\ClassMetadata
-     */
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
         ValuesStub $entity,
