@@ -47,8 +47,6 @@ class FlexibleExportController extends ExportController
 
         $this->productManager = $productManager;
         $this->userContext    = $userContext;
-
-        $this->productManager->setLocale($this->getDataLocale());
     }
 
     /**
@@ -60,20 +58,10 @@ class FlexibleExportController extends ExportController
 
         return sprintf(
             'products_export_%s_%s_%s.%s',
-            $this->getDataLocale(),
+            $this->productManager->getLocale(),
             $this->productManager->getScope(),
             $dateTime->format('Y-m-d_H-i-s'),
             $this->getFormat()
         );
-    }
-
-    /**
-     * Get data locale code
-     *
-     * @return string
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocaleCode();
     }
 }
