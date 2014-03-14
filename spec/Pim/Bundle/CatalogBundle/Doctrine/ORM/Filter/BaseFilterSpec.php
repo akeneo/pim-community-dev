@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\Sorter;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -8,19 +8,19 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
-class BaseSorterSpec extends ObjectBehavior
+class BaseFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $queryBuilder)
     {
         $this->beConstructedWith($queryBuilder, 'en_US', 'mobile');
     }
 
-    function it_is_a_sorter()
+    function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FlexibleEntityBundle\Doctrine\SorterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FilterInterface');
     }
 
-    function it_adds_a_sorter_in_the_query(QueryBuilder $queryBuilder, Attribute $sku)
+    function it_adds_a_like_filter_in_the_query(QueryBuilder $queryBuilder, Attribute $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -31,15 +31,10 @@ class BaseSorterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
+        $condition = "filtersku1.attribute = 42 AND filtersku1.varchar LIKE 'My Sku'";
 
-        $queryBuilder->getDQLPart('join')->willReturn([]);
-        $queryBuilder->resetDQLPart('join')->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', 'filtersku1', 'WITH', $condition)->shouldBeCalled();
 
-        $condition = "sorterVsku1.attribute = 42";
-        $queryBuilder->leftJoin('p.values', 'sorterVsku1', 'WITH', $condition)->shouldBeCalled();
-        $queryBuilder->addOrderBy('sorterVsku1.varchar', 'DESC')->shouldBeCalled();
-
-        $this->add($sku, 'DESC');
+        $this->add($sku, 'LIKE', 'My Sku');
     }
-
 }
