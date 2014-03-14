@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class FlexibleQueryBuilderSpec extends ObjectBehavior
+class ProductQueryBuilderSpec extends ObjectBehavior
 {
     function it_has_a_locale()
     {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM;
+namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -14,7 +14,7 @@ use Pim\Bundle\FlexibleEntityBundle\Doctrine\FlexibleQueryBuilderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
+class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
     /**
      * QueryBuilder
@@ -39,7 +39,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      *
      * @param QueryBuilder $qb
      *
-     * @return FlexibleQueryBuilder
+     * @return ProductQueryBuilder
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {
@@ -106,7 +106,7 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
         if (isset($customFilters[$attributeType])) {
             $filterClass = $customFilters[$attributeType];
         } else {
-            $filterClass = 'Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
+            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
         $filter = new $filterClass($this->qb, $this->locale, $this->scope);
@@ -128,7 +128,19 @@ class FlexibleQueryBuilder implements FlexibleQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $attributeType = $attribute->getAttributeType();
+        $customSorters = [];
+
+        if (isset($customSorters[$attributeType])) {
+            $sorterClass = $customSorters[$attributeType];
+        } else {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
+        }
+
+        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter->add($attribute, $direction);
+
+        return $this;
     }
 
     /**
