@@ -99,7 +99,7 @@ require(
         $menu.find('input[type=checkbox]').addClass('hide');
         $menu.find('input[type="search"]').width(207);
 
-        var sendForm = function(url) {
+        var sendForm = function(url, cb) {
             $.post(url, $('#{{ form.vars.id }}').serialize(), function(response) {
                 if (response && response.errors && response.errors.length) {
                     _.each(response.errors, function(error) {
@@ -107,7 +107,11 @@ require(
                     })
                 } else if (response && response.id) {
                     DatagridState.set('{{ alias }}', 'view', response.id);
-                    reloadPage();
+                    if (cb) {
+                        cb(response.id);
+                    } else {
+                        reloadPage();
+                    }
                 }
             });
         };
@@ -146,7 +150,12 @@ require(
             $('#{{ form.filters.vars.id }}').val(state.filters);
             $('#{{ form.order.vars.id }}').val(state.columns);
 
-            sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}', id: state.view }));
+            sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}', id: state.view }), function() {
+                $activeView.data('filters', state.filters);
+                $activeView.data('columns', state.columns);
+                handleStateChange();
+                messenger.notificationFlashMessage('success', '{{ 'flash.datagrid view.updated'|trans }}');
+            });
         });
 
         var promptForLabel = function(cb) {
