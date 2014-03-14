@@ -90,8 +90,11 @@ class DatagridViewController extends AbstractDoctrineController
         $form = $this->createForm('pim_datagrid_view', $view);
 
         if ($request->isMethod('POST')) {
-            $form->submit($request);
             $creation = !(bool) $view->getId();
+            if (!$creation) {
+                $form->remove('label');
+            }
+            $form->submit($request);
             $violations = $this->validator->validate($view, $creation ? ['Default', 'Creation'] : ['Default']);
             if ($violations->count()) {
                 $messages = [];
