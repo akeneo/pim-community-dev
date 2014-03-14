@@ -91,7 +91,8 @@ class DatagridViewController extends AbstractDoctrineController
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
-            $violations = $this->validator->validate($view, $view->getId() ? ['Default'] : ['Default', 'Creation']);
+            $creation = !(bool) $view->getId();
+            $violations = $this->validator->validate($view, $creation ? ['Default', 'Creation'] : ['Default']);
             if ($violations->count()) {
                 $messages = [];
                 foreach ($violations as $violation) {
@@ -103,6 +104,10 @@ class DatagridViewController extends AbstractDoctrineController
                 $em = $this->getManager();
                 $em->persist($view);
                 $em->flush();
+
+                if ($creation) {
+                    $this->addFlash('success', 'flash.datagrid view.created');
+                }
 
                 return new JsonResponse(['id' => $view->getId()]);
             }

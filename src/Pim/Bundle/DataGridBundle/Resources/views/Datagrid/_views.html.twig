@@ -183,7 +183,7 @@ require(
             $('#{{ form.order.vars.id }}').val(state.columns);
             promptForLabel(function(label) {
                 $('#{{ form.label.vars.id }}').val(label);
-                sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}' }));
+                $saveButton.trigger('click');
             });
         });
 

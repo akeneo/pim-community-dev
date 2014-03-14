@@ -32,6 +32,7 @@ datagrid_view:
 confirmation.remove.datagrid view: Are you sure you want to delete this datagrid view?
 
 flash.datagrid view:
-    removed:       Datagrid view successfully removed
+    created:       Datagrid view successfully created
     updated:       Datagrid view successfully updated
+    removed:       Datagrid view successfully removed
     not removable: You don't have the rights to remove this view
