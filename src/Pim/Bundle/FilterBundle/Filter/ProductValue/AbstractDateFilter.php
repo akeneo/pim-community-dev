@@ -32,7 +32,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         $dateEndValue = $data['date_end'];
         $type         = $data['type'];
 
-        $this->applyFlexibleDependingOnType(
+        $this->applyFilterDependingOnType(
             $type,
             $ds,
             $dateStartValue,
@@ -46,7 +46,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFlexibleDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFilterDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         switch ($type) {
             case DateRangeFilterType::TYPE_MORE_THAN:

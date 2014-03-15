@@ -131,6 +131,6 @@ class ProductReader extends Reader
      */
     protected function getProductRepository()
     {
-        return $this->productManager->getFlexibleRepository();
+        return $this->productManager->getProductRepository();
     }
 }

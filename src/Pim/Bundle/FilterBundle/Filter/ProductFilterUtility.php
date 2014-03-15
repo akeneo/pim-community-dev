@@ -55,7 +55,7 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function getProductRepository()
     {
-        return $this->productManager->getFlexibleRepository();
+        return $this->productManager->getProductRepository();
     }
 
     /**
@@ -83,7 +83,7 @@ class ProductFilterUtility extends BaseFilterUtility
     {
 
         $attribute  = $this->getAttribute($field);
-        $repository = $this->productManager->getFlexibleRepository();
+        $repository = $this->productManager->getProductRepository();
         if ($attribute) {
             $repository->applyFilterByAttribute($ds->getQueryBuilder(), $attribute, $value, $operator);
         } else {
