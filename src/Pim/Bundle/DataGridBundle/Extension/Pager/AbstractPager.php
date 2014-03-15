@@ -130,7 +130,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the number of results.
      *
-     * @param integer $nb
+     * @param integer $number
      */
     protected function setNbResults($number)
     {

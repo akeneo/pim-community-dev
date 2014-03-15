@@ -302,9 +302,9 @@ interface ProductRepositoryInterface
     /**
      * Apply a sort by field value
      *
-     * @param mixed     $qb        query builder to update
-     * @param Attribute $attribute attribute
-     * @param string    $direction direction to use
+     * @param mixed  $qb        query builder to update
+     * @param string $field     the field to sort by
+     * @param string $direction direction to use
      */
     public function applySorterByField($qb, $field, $direction);
 }

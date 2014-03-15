@@ -115,7 +115,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Generate statistics on the product completeness
      *
      * @param ProductInterface $product
-     * @param ArrayCollection  $attributeRequirements
      *
      * @return array $stats
      */

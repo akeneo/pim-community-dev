@@ -43,6 +43,9 @@ class PimCatalogBundle extends Bundle
     /** @staticvar string */
     const ODM_ENTITY_TYPE = 'entity';
 
+    /**
+     * Register cuctom doctrine types
+     */
     public function __construct()
     {
         if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
