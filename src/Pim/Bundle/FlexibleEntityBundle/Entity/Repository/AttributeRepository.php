@@ -35,29 +35,4 @@ class AttributeRepository extends EntityRepository
 
         return array_keys($result);
     }
-
-    /**
-     * Get ids of attributes useable in grid
-     *
-     * @param string $entityType the entity type
-     *
-     * @return array
-     */
-    public function getAttributeIdsUseableInGrid($entityType)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('att.id')
-            ->from($this->_entityName, 'att', 'att.id')
-            ->where('att.entityType = :entityType');
-
-        $qb->andWhere(
-            "att.useableAsGridColumn = 1 ".
-            "OR att.useableAsGridFilter = 1 ".
-            "OR att.attributeType = 'pim_catalog_simpleselect'"
-        );
-        $parameters = ['entityType' => $entityType];
-        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
-
-        return array_keys($result);
-    }
 }

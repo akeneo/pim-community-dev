@@ -135,7 +135,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
 
         if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+            $attributeIds = $repository->getAttributeIdsUseableInGrid();
         }
 
         $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
@@ -250,10 +250,8 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $flexibleEntity = $this->productManager->getFlexibleName();
         $repository     = $this->productManager->getAttributeRepository();
-
-        $attributeIds  = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+        $attributeIds  = $repository->getAttributeIdsUseableInGrid();
         $currentLocale = $this->getCurrentLocaleCode();
         $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 

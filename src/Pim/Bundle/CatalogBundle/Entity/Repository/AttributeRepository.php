@@ -295,6 +295,27 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
+     * Get ids of attributes useable in grid
+     *
+     * @return array
+     */
+    public function getAttributeIdsUseableInGrid()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id');
+
+        $qb->andWhere(
+            "att.useableAsGridColumn = 1 ".
+            "OR att.useableAsGridFilter = 1 ".
+            "OR att.attributeType = 'pim_catalog_simpleselect'"
+        );
+        $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
