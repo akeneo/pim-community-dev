@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\productValue;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

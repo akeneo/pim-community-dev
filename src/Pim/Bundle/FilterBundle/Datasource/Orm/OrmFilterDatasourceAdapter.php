@@ -18,7 +18,7 @@ class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter
      * Return value format depending on comparison type
      *
      * @param string $comparisonType
-     *      
+     *
      * @return string
      */
     public function getFormatByComparisonType($comparisonType)
