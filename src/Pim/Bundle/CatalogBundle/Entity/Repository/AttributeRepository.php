@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Doctrine\ORM\AbstractQuery;
 
 /**
  * Repository for attribute entity
@@ -311,6 +312,26 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             "OR att.attributeType = 'pim_catalog_simpleselect'"
         );
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
+     * Get ids from codes
+     *
+     * @param mixed $codes the attribute codes
+     *
+     * @return array
+     */
+    public function getAttributeIds($codes)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id')
+            ->andWhere('att.code IN (:codes)');
+
+        $parameters = ['codes' => $codes];
+        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);
     }

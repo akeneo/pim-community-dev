@@ -131,8 +131,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $attributeCodes = $this->getUserGridColumns();
         $repository     = $this->productManager->getAttributeRepository();
-        $flexibleEntity = $this->productManager->getFlexibleName();
-        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
+        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($attributeCodes) : null;
 
         if (!$attributeIds) {
             $attributeIds = $repository->getAttributeIdsUseableInGrid();
