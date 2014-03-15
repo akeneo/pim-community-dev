@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config,
@@ -61,9 +61,9 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $configuration;
 
     /**
-     * @var FlexibleManager
+     * @var ProductManager
      */
-    protected $flexibleManager;
+    protected $productManager;
 
     /**
      * @var RequestParameters
@@ -82,20 +82,20 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * @param DatagridConfiguration    $configuration   the grid config
-     * @param FlexibleManager          $flexibleManager flexible manager
+     * @param ProductManager           $productManager  product manager
      * @param RequestParameters        $requestParams   request parameters
      * @param Request                  $request         request
      * @param SecurityContextInterface $securityContext the security context
      */
     public function __construct(
         DatagridConfiguration $configuration,
-        FlexibleManager $flexibleManager,
+        ProductManager $productManager,
         RequestParameters $requestParams,
         Request $request,
         SecurityContextInterface $securityContext
     ) {
         $this->configuration   = $configuration;
-        $this->flexibleManager = $flexibleManager;
+        $this->productManager  = $productManager;
         $this->requestParams   = $requestParams;
         $this->request         = $request;
         $this->securityContext = $securityContext;
@@ -130,12 +130,11 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesIds()
     {
         $attributeCodes = $this->getUserGridColumns();
-        $repository     = $this->flexibleManager->getAttributeRepository();
-        $flexibleEntity = $this->flexibleManager->getFlexibleName();
-        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($flexibleEntity, $attributeCodes) : null;
+        $repository     = $this->productManager->getAttributeRepository();
+        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($attributeCodes) : null;
 
         if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+            $attributeIds = $repository->getAttributeIdsUseableInGrid();
         }
 
         $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
@@ -200,7 +199,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getProductStorage()
     {
-        $om = $this->flexibleManager->getObjectManager();
+        $om = $this->productManager->getObjectManager();
         if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_ORM;
         } else {
@@ -250,12 +249,10 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $flexibleEntity = $this->flexibleManager->getFlexibleName();
-        $repository     = $this->flexibleManager->getAttributeRepository();
-
-        $attributeIds  = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
+        $repository     = $this->productManager->getAttributeRepository();
+        $attributeIds  = $repository->getAttributeIdsUseableInGrid();
         $currentLocale = $this->getCurrentLocaleCode();
-        $configuration = $repository->getAttributesAsArray($flexibleEntity, true, $currentLocale, $attributeIds);
+        $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
     }
@@ -279,7 +276,7 @@ class ContextConfigurator implements ConfiguratorInterface
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        $view = $this->flexibleManager
+        $view = $this->productManager
             ->getEntityManager()
             ->getRepository('PimDataGridBundle:DatagridView')
             ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);

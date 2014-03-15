@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
 
 /**

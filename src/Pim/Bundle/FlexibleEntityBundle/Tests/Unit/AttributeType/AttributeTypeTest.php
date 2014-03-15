@@ -55,7 +55,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         if (!$this->target) {
             throw new \Exception(sprintf('You must override the setUp() method and provide a $target instance.'));
         }
-        $this->assertInstanceOf('Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType', $this->target);
     }
 
     protected function getFormFactoryMock()

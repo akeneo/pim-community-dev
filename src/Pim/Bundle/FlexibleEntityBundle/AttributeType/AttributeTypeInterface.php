@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
-use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface as NewAttributeTypeInterface;
 
 /**
  * The attribute type interface
@@ -12,33 +10,9 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ *  @deprecated Deprecated since version 1.1, to be removed in 1.2. Use CatalogBundle/AttributeTypeInterface
  */
-interface AttributeTypeInterface
+interface AttributeTypeInterface extends NewAttributeTypeInterface
 {
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Build form type for flexible entity value
-     *
-     * @param FormFactoryInterface   $factory the form factory
-     * @param FlexibleValueInterface $value   the flexible value
-     *
-     * @return FormInterface the form
-     */
-    public function buildValueFormType(FormFactoryInterface $factory, FlexibleValueInterface $value);
-
-    /**
-     * Build form types for custom properties of an attribute
-     *
-     * @param FormFactoryInterface $factory   the form factory
-     * @param AbstractAttribute    $attribute the attribute
-     *
-     * @return FormInterface the form
-     */
-    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute);
 }
