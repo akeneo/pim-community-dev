@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -267,25 +268,103 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Create a product (alias of createFlexible)
+     * Create a product
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     public function createProduct()
     {
-        $product = $this->createFlexible();
+        $class = $this->getProductName();
+        $valueClass = $this->getProductValueName();
+
+        $product = new $class();
+        $product->setLocale($this->getLocale());
+        $product->setScope($this->getScope());
+
+        $product->setValueClass($valueClass);
+
+        $event = new FilterFlexibleEvent($this, $product);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
 
         return $product;
     }
 
     /**
-     * Create a product value (alias of createFlexibleValue)
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
+     */
+    public function createFlexible()
+    {
+        return $this->createProduct();
+    }
+
+    /**
+     * Create a product value
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
     public function createProductValue()
     {
-        return $this->createFlexibleValue();
+        $class = $this->getProductValueName();
+        $value = new $class();
+
+        $event = new FilterFlexibleValueEvent($this, $value);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
+
+        return $value;
+    }
+
+    /**
+     * Create a product value
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
+     */
+    public function createFlexibleValue()
+    {
+        return $this->createProductValue();
+    }
+
+    /**
+     * Get product FQCN
+     *
+     * @return string
+     */
+    public function getProductName()
+    {
+        return $this->flexibleConfig['flexible_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductName
+     */
+    public function getFlexibleName()
+    {
+        return $this->getProductName();
+    }
+
+    /**
+     * Get product value FQCN
+     *
+     * @return string
+     */
+    public function getProductValueName()
+    {
+        return $this->flexibleConfig['flexible_value_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductValueName
+     */
+    public function getFlexibleValueName()
+    {
+        return $this->getProductValueName();
     }
 
     /**
@@ -418,26 +497,6 @@ class ProductManager extends FlexibleManager
     public function getEntityManager()
     {
         return $this->entityManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createFlexible()
-    {
-        $class = $this->getFlexibleName();
-        $valueClass = $this->getFlexibleValueName();
-
-        $flexible = new $class();
-        $flexible->setLocale($this->getLocale());
-        $flexible->setScope($this->getScope());
-
-        $flexible->setValueClass($valueClass);
-
-        $event = new FilterFlexibleEvent($this, $flexible);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
-
-        return $flexible;
     }
 
     /**
