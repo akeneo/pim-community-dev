@@ -82,18 +82,6 @@ services:
         tags:
             - { name: form.type, alias: pim_flexibleentity_metric }
 
-    # Phone collection form type
-    form.type.pim_flexibleentity_phone_collection:
-        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType
-        tags:
-            - { name: form.type, alias: pim_flexibleentity_phone_collection }
-
-    # Email collection form type
-    form.type.pim_flexibleentity_email_collection:
-        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
-        tags:
-            - { name: form.type, alias: pim_flexibleentity_email_collection }
-
     pim_flexibleentity.filterAttributes.twig.extension:
         class: %pim_flexibleentity.filterAttributes.twig.extension.class%
         tags:
