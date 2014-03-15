@@ -100,7 +100,7 @@ class ChoiceFilter extends AjaxChoiceFilter
             $attribute = $this->util->getAttribute($fieldName);
 
             if (!$attribute) {
-                throw new \LogicException(sprintf('There is no flexible attribute with name %s.', $fieldName));
+                throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
             }
 
             $this->attributeId = $attribute->getId();
