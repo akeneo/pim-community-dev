@@ -320,7 +320,7 @@ class ProductManager extends FlexibleManager
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      *
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProductvalue
      */
     public function createFlexibleValue()
     {
