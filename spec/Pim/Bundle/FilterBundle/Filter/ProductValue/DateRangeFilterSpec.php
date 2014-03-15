@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,7 +26,7 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_is_a_flexible_date_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\Flexible\AbstractFlexibleDateFilter');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\ProductValue\AbstractDateFilter');
     }
 
     function it_has_a_name()
@@ -229,7 +229,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
+        $utility->applyFilterByAttribute($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -254,7 +254,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'data_name_key', ['from' => '1987-05-14', 'to' => '2014-01-23'], ['from' => '<', 'to' => '>'])->shouldBeCalled();
+        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['from' => '1987-05-14', 'to' => '2014-01-23'], ['from' => '<', 'to' => '>'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -279,7 +279,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'data_name_key', '2014-01-23', '<')->shouldBeCalled();
+        $utility->applyFilterByAttribute($datasource, 'data_name_key', '2014-01-23', '<')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -304,7 +304,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFlexibleFilter($datasource, 'data_name_key', '1987-05-14', '>')->shouldBeCalled();
+        $utility->applyFilterByAttribute($datasource, 'data_name_key', '1987-05-14', '>')->shouldBeCalled();
 
         $this->apply(
             $datasource,

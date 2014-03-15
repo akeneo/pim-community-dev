@@ -48,7 +48,7 @@ class BaseSorter implements SorterInterface
     public function add(AbstractAttribute $attribute, $direction)
     {
         $sortField = ProductQueryUtility::getNormalizedValueField($attribute, $this->locale, $this->scope);
-        $this->qb->sort(self.NORMALIZED_FIELD.'.'.$sortField, $direction);
+        $this->qb->sort(self::NORMALIZED_FIELD.'.'.$sortField, $direction);
 
         return $this;
     }

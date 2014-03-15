@@ -92,7 +92,7 @@ class ProductController extends FOSRestController
 
         $offset = --$page * $limit;
 
-        $products = $manager->getFlexibleRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
+        $products = $manager->getProductRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
 
         $channels = $this->get('pim_catalog.manager.channel')->getChannels(array('code' => $scope));
         $channel = reset($channels);

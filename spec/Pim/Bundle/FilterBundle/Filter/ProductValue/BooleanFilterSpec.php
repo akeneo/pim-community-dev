@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -64,7 +64,7 @@ class BooleanFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter($datasource, 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
+        $utility->applyFilterByAttribute($datasource, 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
 
         $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
     }
@@ -73,7 +73,7 @@ class BooleanFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFlexibleFilter(Argument::cetera())->shouldNotBeCalled();
+        $utility->applyFilterByAttribute(Argument::cetera())->shouldNotBeCalled();
 
         $this->apply($datasource, array('value' => 'foo'))->shouldReturn(false);
         $this->apply($datasource, array('value' => null))->shouldReturn(false);

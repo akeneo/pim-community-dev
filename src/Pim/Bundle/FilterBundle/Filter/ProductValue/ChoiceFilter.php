@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * Choice filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -58,7 +58,7 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
@@ -100,7 +100,7 @@ class ChoiceFilter extends AjaxChoiceFilter
             $attribute = $this->util->getAttribute($fieldName);
 
             if (!$attribute) {
-                throw new \LogicException(sprintf('There is no flexible attribute with name %s.', $fieldName));
+                throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
             }
 
             $this->attributeId = $attribute->getId();

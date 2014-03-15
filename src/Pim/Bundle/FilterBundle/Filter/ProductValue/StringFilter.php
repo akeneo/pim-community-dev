@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Flexible filter
+ * String filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,14 +20,14 @@ class StringFilter extends OroStringFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $data = $this->parseData($data);
+        $data = $this->prepareData($ds, $data);
         if (!$data) {
             return false;
         }
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
@@ -35,5 +35,24 @@ class StringFilter extends OroStringFilter
         );
 
         return true;
+    }
+
+    /**
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param mixed                            $data
+     *
+     * @return array|bool
+     */
+    protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+            return false;
+        }
+
+        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        $format = $ds->getFormatByComparisonType($data['type']);
+        $data['value'] = sprintf($format, $data['value']);
+
+        return $data;
     }
 }
