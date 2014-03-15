@@ -255,7 +255,7 @@ class ContextConfigurator implements ConfiguratorInterface
 
         $attributeIds  = $repository->getAttributeIdsUseableInGrid($flexibleEntity);
         $currentLocale = $this->getCurrentLocaleCode();
-        $configuration = $repository->getAttributesAsArray($flexibleEntity, true, $currentLocale, $attributeIds);
+        $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
     }

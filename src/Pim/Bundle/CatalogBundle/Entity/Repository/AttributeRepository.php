@@ -257,6 +257,44 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
+     * Get attribute as array indexed by code
+     *
+     * @param boolean $withLabel  translated label should be joined
+     * @param string  $locale     the locale code of the label
+     * @param array   $ids        the attribute ids
+     *
+     * @return array
+     */
+    public function getAttributesAsArray($withLabel = false, $locale = null, array $ids = [])
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att')
+            ->from($this->_entityName, 'att', 'att.code');
+        if (!empty($ids)) {
+            $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+        }
+        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+
+        if ($withLabel) {
+            $labelExpr = 'COALESCE(trans.label, CONCAT(\'[\', att.code, \']\'))';
+            $qb = $this->_em->createQueryBuilder()
+                ->select('att.code', sprintf('%s as label', $labelExpr))
+                ->from($this->_entityName, 'att', 'att.code')
+                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+                ->setParameter('locale', $locale);
+            if (!empty($ids)) {
+                $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+            }
+            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($labels as $code => $data) {
+                $results[$code]['label']= $data['label'];
+            }
+        }
+
+        return $results;
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
