@@ -358,7 +358,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function removeAttributeAction($productId, $attributeId)
     {
-        $product   = $this->findOr404($this->productManager->getFlexibleName(), $productId);
+        $product   = $this->findOr404($this->productManager->getProductName(), $productId);
         $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
 
         if ($product->isAttributeRemovable($attribute)) {

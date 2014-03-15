@@ -61,7 +61,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->method('getProductRepository')
             ->will($this->returnValue($this->flexibleRepository));
         $this->productManager->expects($this->any())
-            ->method('getFlexibleValueName')
+            ->method('getProductValueName')
             ->will($this->returnValue('product_value_class'));
         $this->productManager->expects($this->any())
             ->method('createProductValue')
