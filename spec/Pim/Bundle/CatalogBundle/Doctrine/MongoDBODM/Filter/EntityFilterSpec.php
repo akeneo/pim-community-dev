@@ -7,6 +7,9 @@ use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
 class EntityFilterSpec extends ObjectBehavior
 {
     function let(Builder $queryBuilder)
