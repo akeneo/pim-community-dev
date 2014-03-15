@@ -5,7 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;

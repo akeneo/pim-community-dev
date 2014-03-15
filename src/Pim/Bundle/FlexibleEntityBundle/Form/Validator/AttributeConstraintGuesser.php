@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Form\Validator;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Attribute constraint guesser
