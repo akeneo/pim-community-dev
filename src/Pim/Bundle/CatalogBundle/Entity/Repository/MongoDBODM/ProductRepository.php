@@ -248,7 +248,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value);
+        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
         $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
         $foundValueId = null;

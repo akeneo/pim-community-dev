@@ -70,7 +70,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $completenesses = $this->buildProductCompletenesses($product);
 
-
         $product->setCompletenesses(new ArrayCollection($completenesses));
 
         $this->documentManager->flush($product);

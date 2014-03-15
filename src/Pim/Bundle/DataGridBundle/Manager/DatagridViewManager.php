@@ -36,39 +36,6 @@ class DatagridViewManager
     }
 
     /**
-     * Get or create default datagrid view from datagrid alias and user
-     *
-     * @param string $alias
-     * @param User   $user
-     *
-     * @return DatagridView
-     */
-    public function getDefaultDatagridView($alias, User $user)
-    {
-        $view = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
-            [
-                'datagridAlias' => $alias,
-                'owner'         => $user,
-                'type'          => DatagridView::TYPE_DEFAULT
-            ]
-        );
-
-        if (!$view) {
-            $view = new DatagridView();
-            $view
-                ->setType(DatagridView::TYPE_DEFAULT)
-                ->setOwner($user)
-                ->setDatagridAlias($alias)
-                ->setColumns(array_keys($this->getColumnChoices($alias)));
-
-            $this->entityManager->persist($view);
-            $this->entityManager->flush();
-        }
-
-        return $view;
-    }
-
-    /**
      * Returns all public views and the default user's view
      *
      * @param string $alias
@@ -114,5 +81,38 @@ class DatagridViewManager
         }
 
         return $choices;
+    }
+
+    /**
+     * Get or create default datagrid view from datagrid alias and user
+     *
+     * @param string $alias
+     * @param User   $user
+     *
+     * @return DatagridView
+     */
+    protected function getDefaultDatagridView($alias, User $user)
+    {
+        $view = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
+            [
+                'datagridAlias' => $alias,
+                'owner'         => $user,
+                'type'          => DatagridView::TYPE_DEFAULT
+            ]
+        );
+
+        if (!$view) {
+            $view = new DatagridView();
+            $view
+                ->setType(DatagridView::TYPE_DEFAULT)
+                ->setOwner($user)
+                ->setDatagridAlias($alias)
+                ->setColumns(array_keys($this->getColumnChoices($alias)));
+
+            $this->entityManager->persist($view);
+            $this->entityManager->flush();
+        }
+
+        return $view;
     }
 }

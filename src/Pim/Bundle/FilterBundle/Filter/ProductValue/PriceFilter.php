@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Flexible;
+namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -9,7 +9,7 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Price filter related to flexible entities
+ * Price filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -35,7 +35,7 @@ class PriceFilter extends OroNumberFilter
             return;
         }
 
-        $this->util->applyFlexibleFilter(
+        $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             sprintf('%s %s', $data['value'], $data['currency']),

@@ -114,7 +114,7 @@ class ProductTransformer extends EntityTransformer
      */
     protected function findEntity($class, array $data)
     {
-        return $this->productManager->getFlexibleRepository()->findByReference(
+        return $this->productManager->getProductRepository()->findByReference(
             $data[$this->identifierAttribute->getCode()]
         );
     }
