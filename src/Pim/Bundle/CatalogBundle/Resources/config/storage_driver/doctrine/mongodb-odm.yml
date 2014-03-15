@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
-    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
+    pim_catalog.odm_repository.product.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\HybridProductRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.localizable.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
     pim_catalog.event_listener.mongodb.scopable.class:               Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
@@ -105,3 +106,18 @@ services:
         public: false
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_catalog.odm_repository.product:
+        class: %pim_catalog.odm_repository.product.class%
+        factory_service: pim_catalog.object_manager.product
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.product.class%]
+        calls:
+            - [setFlexibleQueryBuilder, ['@pim_catalog.doctrine.flexible_query_builder']]
+
+    pim_catalog.repository.product:
+        class: %pim_catalog.repository.product.class%
+        arguments:
+            - '@pim_catalog.odm_repository.product'
+            - '@doctrine.orm.entity_manager'
+

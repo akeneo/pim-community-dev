@@ -3,8 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -15,37 +16,40 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
- * Product repository
+ * Hybrid Product repository. This class implements ProductRepositoryInterface
+ * and have access to EntityManager and ODM ProductRepository, as some
+ * functions need to access both worlds
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
+class HybridProductRepository implements ProductRepositoryInterface,
  ReferableEntityRepositoryInterface
 {
     /**
-     * Flexible entity config
-     * @var array
+     * Product repository from ODM
+     *
+     * @var DocumentRepository
      */
-    protected $flexibleConfig;
+    protected $odmRepository;
 
     /**
-     * Locale code
-     * @var string
+     * ORM EntityManager to access ORM entities
+     * 
+     * @var EntityManager
      */
-    protected $locale;
+    protected $entityManager;
 
     /**
-     * Scope code
-     * @var string
+     * @param DocumentRepository $odmRepository
+     * @param EntityManager      $entityManager
      */
-    protected $scope;
-
-    /**
-     * @param FlexibleQueryBuilder
-     */
-    protected $flexibleQB;
+    public function __construct(DocumentRepository $odmRepository, EntityManager $entityManager)
+    {
+        $this->odmRepository = $odmRepository;
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -57,7 +61,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $limit = null,
         $offset = null
     ) {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->findAllByAttributes($attributes, $criteria, $orderBy);
     }
 
     /**
@@ -65,7 +69,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function buildByScope($scope)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->buildByScope($scope);
     }
 
     /**
@@ -73,7 +77,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->buildByChannelAndCompleteness($channel);
     }
 
     /**
@@ -81,7 +85,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByExistingFamily()
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->findByExistingFamily();
     }
 
     /**
@@ -89,7 +93,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByIds(array $ids)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->findByIds($ids);
     }
 
     /**
@@ -97,7 +101,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $this->odmRepository->findByAllForVariantGroup($variantGroup, $criteria);
     }
 
     /**
@@ -105,7 +109,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getFullProduct($id)
     {
-        return $this->find($id);
+        return $this->odmRepository->getFullProduct($id);
     }
 
     /**
@@ -113,8 +117,39 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        //return array();
+        $categories = $product->getCategories();
+        $categoriesIds = array();
+        foreach ($categories as $category) {
+            $categoriesIds[] = $category->getId();
+        }
+
+        //FIXME: use a parametrized category class name
+        $categoryTable = 'pim_catalog_category';
+        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+
+        $categoriesIds = implode(',',$categoriesIds);
+        $sql = "SELECT".
+               "    tree.id AS tree_id,".
+               "    COUNT(category.id) AS product_count".
+               "  FROM $categoryTable tree".
+               "  JOIN $categoryTable category".
+               "    ON category.root = tree.id".
+               " WHERE category.id in ($categoriesIds)".
+               " GROUP BY tree.id";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $productCounts = $stmt->fetchAll();
+        $trees = array();
+        foreach ($productCounts as $productCount) {
+            $tree = array();
+            $tree['productCount'] = $productCount['product_count'];
+            $tree['tree'] = $this->entityManager->getRepository($categoryClass)->find($productCount['tree_id']);
+            $trees[] = $tree;
+        }
+
+        return $trees;
     }
 
     /**
@@ -130,7 +165,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        return;
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
@@ -140,7 +175,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getFlexibleConfig()
     {
-        return $this->flexibleConfig;
+        return $this->odmRepository->getFlexibleConfig();
     }
 
     /**
@@ -152,9 +187,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function setFlexibleConfig($config)
     {
-        $this->flexibleConfig = $config;
-
-        return $this;
+        return $this->odmRepository->setFlexibleConfig($config);
     }
 
     /**
@@ -164,11 +197,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
-        return $this->locale;
+        return $this->odmRepository->getLocale();
     }
 
     /**
@@ -180,9 +209,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function setLocale($code)
     {
-        $this->locale = $code;
-
-        return $this;
+        return $this->odmRepository->setLocale($code);
     }
 
     /**
@@ -192,11 +219,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
-        return $this->scope;
+        return $this->odmRepository->getScope();
     }
 
     /**
@@ -208,9 +231,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function setScope($code)
     {
-        $this->scope = $code;
-
-        return $this;
+        return $this->odmRepository->setScope($code);
     }
 
     /**
@@ -218,10 +239,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findOneByWithValues($id)
     {
-        // FIXME_MONGO Shortcut, but must do the same thing
-        // than the ORM one
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return $this->find($id);
+        return $this->odmRepository->findOneByWithValues($id);
     }
 
     /**
@@ -229,17 +247,16 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return null;
+        return $this->odmRepository->findByReference($code);
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function getReferenceProperties()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        return $this->odmRepository->getReferenceProperties();
     }
 
     /**
@@ -247,19 +264,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value);
-        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
-
-        $foundValueId = null;
-        if ((1 === count($result)) && isset($result['_id'])) {
-            $foundValueId = $result['_id']->id;
-        }
-
-        return (
-            (0 !== count($result)) &&
-            ($value->getId() === $foundValueId)
-        );
+        return $this->odmRepository->valueExists($value);
     }
 
     /**
@@ -267,8 +272,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function countProductsPerChannels()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        return $this->odmRepository->countProductsPerChannels();
     }
 
     /**
@@ -276,8 +280,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function countCompleteProductsPerChannels()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        return $this->odmRepository->countCompleteProductsPerChannels();
     }
 
     /**
@@ -285,9 +288,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function setFlexibleQueryBuilder($flexibleQB)
     {
-        $this->flexibleQB = $flexibleQB;
-
-        return $this;
+        return $this->odmRepository->setFlexibleQueryBuilder($flexibleQB);
 
     }
 
@@ -296,16 +297,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     protected function getFlexibleQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
-            throw new \LogicException('Flexible query builder must be configured');
-        }
-
-        $this->flexibleQB
-            ->setQueryBuilder($qb)
-            ->setLocale($this->getLocale())
-            ->setScope($this->getScope());
-
-        return $this->flexibleQB;
+        return $this->odmRepository->getFlexibleQueryBuilder($qb);
     }
 
     /**
@@ -313,9 +305,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder();
-
-        return $qb;
+        return $this->odmRepository->createDatagridQueryBuilder();
     }
 
     /**
@@ -323,7 +313,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+        return $this->odmRepository->applyFilterByAttribute($qb, $attribute, $value, $operator);
     }
 
     /**
@@ -331,7 +321,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+        return $this->odmRepository->applyFilterByField($qb, $field, $value, $operator);
     }
 
     /**
@@ -339,7 +329,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByAttribute($qb, Attribute $attribute, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+        return $this->odmRepository->applySorterByAttribute($qb, $attribute, $direction);
     }
 
     /**
@@ -347,7 +337,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByField($qb, $field, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+        return $this->odmRepository->applySorterByField($qb, $field, $direction);
     }
 
     /**
@@ -355,11 +345,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByIds($qb, $productIds, $include)
     {
-        if ($include) {
-            $qb->addAnd($qb->expr()->field('id')->in($productIds));
-        } else {
-            $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
-        }
+        return $this->odmRepository->applyFilterByIds($qb, $productIds, $include);
     }
 
     /**
@@ -367,7 +353,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByGroupIds($qb, $groupIds)
     {
-        $qb->addAnd($qb->expr()->field('groups')->in($groupIds));
+        return $this->odmRepository->applyFilterByGroupIds($qb, $groupIds);
     }
 
     /**
@@ -375,6 +361,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByFamilyIds($qb, $familyIds)
     {
-        $qb->addAnd($qb->expr()->field('family')->in($familyIds));
+        return $this->odmRepository->applyFilterByFamilyIds($qb, $familyIds);
     }
 }
