@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Repository for AttributeOption entity

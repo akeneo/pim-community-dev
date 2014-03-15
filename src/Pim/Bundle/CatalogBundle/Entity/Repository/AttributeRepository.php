@@ -260,9 +260,9 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     /**
      * Get attribute as array indexed by code
      *
-     * @param boolean $withLabel  translated label should be joined
-     * @param string  $locale     the locale code of the label
-     * @param array   $ids        the attribute ids
+     * @param boolean $withLabel translated label should be joined
+     * @param string  $locale    the locale code of the label
+     * @param array   $ids       the attribute ids
      *
      * @return array
      */

@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType as NewAbstractA
  *
  * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use CatalogBundle/AttributeType
  */
-class TextAreaType extends AbstractAttributeType
+class TextAreaType extends NewAbstractAttributeType
 {
     /**
      * {@inheritdoc}
