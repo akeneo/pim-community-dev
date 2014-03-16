@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Validator;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\Validator\Constraints;
