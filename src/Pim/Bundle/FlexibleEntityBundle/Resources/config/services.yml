@@ -65,12 +65,6 @@ services:
         tags:
             - { name: form.type, alias: oro_media }
 
-    # Price form type
-    form.type.pim_flexibleentity_price:
-        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PriceType
-        tags:
-            - { name: form.type, alias: pim_flexibleentity_price }
-
     # Metric form type
     form.type.pim_flexibleentity_metric:
         class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType
