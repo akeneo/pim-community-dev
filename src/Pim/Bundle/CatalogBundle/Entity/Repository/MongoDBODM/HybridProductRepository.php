@@ -42,13 +42,25 @@ class HybridProductRepository implements ProductRepositoryInterface,
     protected $entityManager;
 
     /**
+     * Category class
+     *
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
      * @param DocumentRepository $odmRepository
      * @param EntityManager      $entityManager
+     * @param CategoryClass      $categoryClass
      */
-    public function __construct(DocumentRepository $odmRepository, EntityManager $entityManager)
-    {
+    public function __construct(
+        DocumentRepository $odmRepository,
+        EntityManager $entityManager,
+        $categoryClass
+    ) {
         $this->odmRepository = $odmRepository;
         $this->entityManager = $entityManager;
+        $this->categoryClass = $categoryClass;
     }
 
     /**
@@ -123,18 +135,19 @@ class HybridProductRepository implements ProductRepositoryInterface,
             $categoriesIds[] = $category->getId();
         }
 
-        //FIXME: use a parametrized category class name
-        $categoryTable = 'pim_catalog_category';
-        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+        $categoryRepository = $this->entityManager->getRepository($this->categoryClass);
+
+        $categoryTable = $this->entityManager->getClassMetadata($this->categoryClass)->getTableName();
 
         $categoriesIds = implode(',',$categoriesIds);
         $sql = "SELECT".
                "    tree.id AS tree_id,".
                "    COUNT(category.id) AS product_count".
                "  FROM $categoryTable tree".
-               "  JOIN $categoryTable category".
+               "  LEFT JOIN $categoryTable category".
                "    ON category.root = tree.id".
-               " WHERE category.id in ($categoriesIds)".
+               " AND category.id IN ($categoriesIds)".
+               " WHERE tree.parent_id IS NULL".
                " GROUP BY tree.id";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
@@ -145,7 +158,7 @@ class HybridProductRepository implements ProductRepositoryInterface,
         foreach ($productCounts as $productCount) {
             $tree = array();
             $tree['productCount'] = $productCount['product_count'];
-            $tree['tree'] = $this->entityManager->getRepository($categoryClass)->find($productCount['tree_id']);
+            $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
             $trees[] = $tree;
         }
 

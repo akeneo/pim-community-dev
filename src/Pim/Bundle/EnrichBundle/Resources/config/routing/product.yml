@@ -40,7 +40,7 @@ pim_enrich_product_listcategories:
     path: /list-categories/product/{id}/parent/{category_id}.{_format}
     defaults: { _controller: pim_enrich.controller.product:listCategoriesAction }
     requirements:
-        id: \d+
+        id: '[0-9a-f]+'
         category_id: \d+
         _format: json
 

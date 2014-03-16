@@ -120,4 +120,5 @@ services:
         arguments:
             - '@pim_catalog.odm_repository.product'
             - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.category.class%
 
