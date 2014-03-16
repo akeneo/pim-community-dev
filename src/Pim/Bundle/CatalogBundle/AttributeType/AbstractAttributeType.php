@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
@@ -95,7 +95,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildValueFormType(FormFactoryInterface $factory, FlexibleValueInterface $value)
+    public function buildValueFormType(FormFactoryInterface $factory, ProductValueInterface $value)
     {
         $name    = $this->prepareValueFormName($value);
         $type    = $this->prepareValueFormAlias($value);
@@ -144,11 +144,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get the value form type name to use to ensure binding
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
-    protected function prepareValueFormName(FlexibleValueInterface $value)
+    protected function prepareValueFormName(ProductValueInterface $value)
     {
         return $value->getAttribute()->getBackendType();
     }
@@ -156,11 +156,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type alias to use to render value
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
+    protected function prepareValueFormAlias(ProductValueInterface $value)
     {
         return $this->getFormType();
     }
@@ -168,11 +168,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type options to configure the form
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return array
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
         return array(
             'label'           => $value->getAttribute()->getLabel(),
@@ -185,11 +185,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Guess the constraints to apply on the form
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return array
      */
-    protected function prepareValueFormConstraints(FlexibleValueInterface $value)
+    protected function prepareValueFormConstraints(ProductValueInterface $value)
     {
         if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
             return array(
@@ -203,11 +203,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type data
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return mixed
      */
-    protected function prepareValueFormData(FlexibleValueInterface $value)
+    protected function prepareValueFormData(ProductValueInterface $value)
     {
         return is_null($value->getData()) ? $value->getAttribute()->getDefaultValue() : $value->getData();
     }

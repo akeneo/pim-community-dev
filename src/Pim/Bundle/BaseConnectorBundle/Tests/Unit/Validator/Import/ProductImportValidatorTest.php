@@ -177,7 +177,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->assertEquals('scope', $scope);
         if (!isset($this->values[$name])) {
             $this->values[$name] = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-                ->setMethods(array('getData', '__toString'))
+                ->setMethods(array('getData', '__toString', 'getAttribute', 'setData'))
                 ->getMock();
             $this->values[$name]->expects($this->any())
                 ->method('getData')

@@ -39,6 +39,8 @@
 - Replace FlexibleManager by ProductManager in ContextConfigurator constructor arguments
 - Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
 - Replace service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
+- Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
+- Update ProductValueInerface, add getData, setData and getAttribute methods
 
 # 1.0.1
 ## Bug Fixes

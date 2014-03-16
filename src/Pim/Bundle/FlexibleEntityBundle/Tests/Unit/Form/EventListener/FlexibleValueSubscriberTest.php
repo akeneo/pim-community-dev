@@ -128,10 +128,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->once())
             ->method('getAttributeType')
             ->will($this->returnValue($attributeTypeName));
-        $data = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface')
+        $data = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
             ->getMock();
         $data->expects($this->once())
-            ->method('getAttribute')
+            ->method('getAttribute', 'getData', 'setData', '__toString')
             ->will($this->returnValue($attribute));
 
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')

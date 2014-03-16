@@ -112,7 +112,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
         );
 
         $value = $this->getMock(
-            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface'
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface'
         );
 
         $attributeMock = $this->getAttributeMock(
