@@ -35,6 +35,8 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `pim_flexibleentity.attributetype.factory` by `pim_catalog.factory.attribute_type`
  - tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
  - service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
+ - service `oro_media` by `pim_enrich_media`
+ - service `pim_flexibleentity_metric` by `pim_enrich_metric`
 
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 
