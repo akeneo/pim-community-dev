@@ -59,18 +59,6 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
-    # Media form type
-    form.type.oro_media:
-        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType
-        tags:
-            - { name: form.type, alias: oro_media }
-
-    # Metric form type
-    form.type.pim_flexibleentity_metric:
-        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType
-        tags:
-            - { name: form.type, alias: pim_flexibleentity_metric }
-
     pim_flexibleentity.filterAttributes.twig.extension:
         class: %pim_flexibleentity.filterAttributes.twig.extension.class%
         tags:
