@@ -21,7 +21,7 @@ services:
         class: %pim_base_connector.validator.product_import.class%
         parent: pim_base_connector.validator.import
         arguments:
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
 
     pim_base_connector.validator.skip_import:
         class: %pim_base_connector.validator.skip_import.class%

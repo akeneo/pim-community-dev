@@ -4,7 +4,7 @@ services:
         arguments:
             - varchar
             - text
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_identifier, entity: %pim_catalog.entity.product.class% }
 
@@ -13,7 +13,7 @@ services:
         arguments:
             - varchar
             - text
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_text, entity: %pim_catalog.entity.product.class% }
 
@@ -22,7 +22,7 @@ services:
         arguments:
             - text
             - textarea
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_textarea, entity: %pim_catalog.entity.product.class% }
 
@@ -31,7 +31,7 @@ services:
         arguments:
             - options
             - pim_ajax_entity
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_multiselect, entity: %pim_catalog.entity.product.class% }
 
@@ -40,7 +40,7 @@ services:
         arguments:
             - option
             - pim_ajax_entity
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_simpleselect, entity: %pim_catalog.entity.product.class% }
 
@@ -49,7 +49,7 @@ services:
         arguments:
             - prices
             - pim_enrich_price_collection
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
             - '@pim_catalog.manager.currency'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: %pim_catalog.entity.product.class% }
@@ -59,7 +59,7 @@ services:
         arguments:
             - decimal
             - number
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: %pim_catalog.entity.product.class% }
 
@@ -68,7 +68,7 @@ services:
         arguments:
             - boolean
             - switch
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_boolean, entity: %pim_catalog.entity.product.class% }
 
@@ -77,7 +77,7 @@ services:
         arguments:
             - date
             - oro_date
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: %pim_catalog.entity.product.class% }
 
@@ -86,7 +86,7 @@ services:
         arguments:
             - media
             - oro_media
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: %pim_catalog.entity.product.class% }
 
@@ -95,7 +95,7 @@ services:
         arguments:
             - media
             - pim_enrich_image
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_image, entity: %pim_catalog.entity.product.class% }
 
@@ -104,7 +104,7 @@ services:
         arguments:
             - metric
             - pim_flexibleentity_metric
-            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_catalog.validator.attribute_constraint_guesser'
             - '@akeneo_measure.manager'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }
