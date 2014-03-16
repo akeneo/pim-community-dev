@@ -24,6 +24,5 @@ class PimFlexibleEntityBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new AddManagerCompilerPass());
-        $container->addCompilerPass(new AddAttributeTypeCompilerPass());
     }
 }
