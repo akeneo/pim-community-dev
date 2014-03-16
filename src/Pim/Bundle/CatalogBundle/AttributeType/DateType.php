@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\DateType as FlexDateType;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Date attribute type
@@ -12,8 +12,20 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\DateType as FlexDateType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateType extends FlexDateType
+class DateType extends AbstractAttributeType
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    {
+        $options = parent::prepareValueFormOptions($value);
+        $options['widget'] = 'single_text';
+        $options['input'] = 'datetime';
+
+        return $options;
+    }
+
     /**
      * {@inheritdoc}
      */
