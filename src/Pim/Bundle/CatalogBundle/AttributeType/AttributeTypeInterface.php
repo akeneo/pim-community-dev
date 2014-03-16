@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
@@ -26,11 +26,11 @@ interface AttributeTypeInterface
      * Build form type for flexible entity value
      *
      * @param FormFactoryInterface   $factory the form factory
-     * @param FlexibleValueInterface $value   the flexible value
+     * @param ProductValueInterface $value   the flexible value
      *
      * @return FormInterface the form
      */
-    public function buildValueFormType(FormFactoryInterface $factory, FlexibleValueInterface $value);
+    public function buildValueFormType(FormFactoryInterface $factory, ProductValueInterface $value);
 
     /**
      * Build form types for custom properties of an attribute

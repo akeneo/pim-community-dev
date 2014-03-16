@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
@@ -17,7 +17,7 @@ class TextAreaType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormAlias(FlexibleValueInterface $value)
+    protected function prepareValueFormAlias(ProductValueInterface $value)
     {
         if ($value->getAttribute()->isWysiwygEnabled()) {
             return 'pim_wysiwyg';
