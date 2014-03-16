@@ -12,6 +12,8 @@ define(
          */
         var ConfigureColumnsAction = Backbone.View.extend({
 
+            locale: null,
+
             label: __('Columns'),
 
             availableColumnsLabel: __('Available Columns'),
@@ -68,6 +70,7 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
+                this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
@@ -92,7 +95,7 @@ define(
 
             execute: function(e) {
                 e.preventDefault();
-                var url = Routing.generate('pim_datagrid_view_list_columns', { alias: this.gridName });
+                var url = Routing.generate('pim_datagrid_view_list_columns', { alias: this.gridName, dataLocale: this.locale });
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
