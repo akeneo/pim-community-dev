@@ -28,7 +28,7 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }

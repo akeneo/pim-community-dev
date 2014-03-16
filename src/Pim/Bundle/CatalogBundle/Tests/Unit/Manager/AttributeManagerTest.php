@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 
 /**
  * Test related class
