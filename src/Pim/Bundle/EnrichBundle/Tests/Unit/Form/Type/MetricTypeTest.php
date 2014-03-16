@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
+use Pim\Bundle\EnrichBundle\Form\Type\MetricType;
 
 /**
  * Test related class
@@ -36,11 +36,11 @@ class MetricTypeTest extends AbstractFormTypeTest
         $this->assertField('unit', 'choice');
 
         $this->assertEquals(
-            'Pim\Bundle\FlexibleEntityBundle\Entity\Metric',
+            'Pim\Bundle\CatalogBundle\Model\Metric',
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('pim_flexibleentity_metric', $this->form->getName());
+        $this->assertEquals('pim_enrich_metric', $this->form->getName());
     }
 
     /**

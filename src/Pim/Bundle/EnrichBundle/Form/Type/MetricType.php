@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +40,7 @@ class MetricType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class'   => 'Pim\Bundle\FlexibleEntityBundle\Entity\Metric',
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
                 'units'        => array(),
                 'default_unit' => null,
                 'family'       => null
@@ -53,6 +53,6 @@ class MetricType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_flexibleentity_metric';
+        return 'pim_enrich_metric';
     }
 }
