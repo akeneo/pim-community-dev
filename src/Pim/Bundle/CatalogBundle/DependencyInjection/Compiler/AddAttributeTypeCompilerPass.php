@@ -32,7 +32,7 @@ class AddAttributeTypeCompilerPass implements CompilerPassInterface
         $factory = $container->getDefinition(self::FACTORY_ATTRIBUTE_TYPE_KEY);
 
         $types   = array();
-        foreach ($container->findTaggedServiceIds(self::FLEXIBLE_TYPE_TAG) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::ATTRIBUTE_TYPE_TAG) as $id => $attributes) {
             $attributes = current($attributes);
             $alias = $attributes['alias'];
             $entity = $attributes['entity'];
