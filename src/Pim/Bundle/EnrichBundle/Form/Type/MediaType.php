@@ -1,11 +1,9 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -43,7 +41,7 @@ class MediaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\FlexibleEntityBundle\Entity\Media'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Media'
             )
         );
     }
@@ -53,6 +51,6 @@ class MediaType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_media';
+        return 'pim_enrich_media';
     }
 }
