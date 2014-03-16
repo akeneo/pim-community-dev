@@ -25,7 +25,7 @@ interface AttributeTypeInterface
     /**
      * Build form type for flexible entity value
      *
-     * @param FormFactoryInterface   $factory the form factory
+     * @param FormFactoryInterface  $factory the form factory
      * @param ProductValueInterface $value   the flexible value
      *
      * @return FormInterface the form
