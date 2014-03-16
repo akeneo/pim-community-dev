@@ -38,6 +38,7 @@
 - Remove unused FilterBundle/Filter/ProductValue/EntityFilter
 - Replace FlexibleManager by ProductManager in ContextConfigurator constructor arguments
 - Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
+- Replace service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
 
 # 1.0.1
 ## Bug Fixes
