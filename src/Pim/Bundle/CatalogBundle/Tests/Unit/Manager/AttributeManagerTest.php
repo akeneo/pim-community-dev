@@ -76,12 +76,12 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of AttributeTypeFactory
      *
-     * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     * @return Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory
      */
     protected function getAttributeTypeFactoryMock()
     {
         $factory = $this
-            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
         $guesser = new AttributeConstraintGuesser();

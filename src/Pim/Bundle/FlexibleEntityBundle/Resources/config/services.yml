@@ -1,7 +1,6 @@
 parameters:
     pim_flexibleentity.flexible_config:                               ~
     pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    pim_flexibleentity.attributetype.factory.class:                   Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
     pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
     pim_flexibleentity.validator.attribute_constraint_guesser.class:  Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
@@ -17,16 +16,13 @@ services:
         class: %pim_flexibleentity.value_form.value_subscriber.class%
         arguments:
             - '@form.factory'
-            - '@pim_flexibleentity.attributetype.factory'
+            - '@pim_catalog.factory.attribute_type'
             - '@pim_flexibleentity.registry'
 
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
 
-    pim_flexibleentity.attributetype.factory:
-        class: %pim_flexibleentity.attributetype.factory.class%
-        arguments: ['@service_container', ~]
 
     # inject attributes into flexible entity
     pim_flexibleentity.listener.set_value_class:

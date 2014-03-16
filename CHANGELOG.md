@@ -37,6 +37,7 @@
 - Move `FilterBundle/Filter/Flexible/*` -> `FilterBundle/Filter/ProductValue/*`
 - Remove unused FilterBundle/Filter/ProductValue/EntityFilter
 - Replace FlexibleManager by ProductManager in ContextConfigurator constructor arguments
+- Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
 
 # 1.0.1
 ## Bug Fixes
