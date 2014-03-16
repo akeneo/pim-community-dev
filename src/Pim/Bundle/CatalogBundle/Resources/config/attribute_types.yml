@@ -85,7 +85,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\FileType
         arguments:
             - media
-            - oro_media
+            - pim_enrich_media
             - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: %pim_catalog.entity.product.class% }
@@ -103,7 +103,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\MetricType
         arguments:
             - metric
-            - pim_flexibleentity_metric
+            - pim_enrich_metric
             - '@pim_catalog.validator.attribute_constraint_guesser'
             - '@akeneo_measure.manager'
         tags:

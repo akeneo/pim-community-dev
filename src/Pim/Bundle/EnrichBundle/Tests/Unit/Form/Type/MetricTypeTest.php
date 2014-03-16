@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
-
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
+use Pim\Bundle\EnrichBundle\Form\Type\MetricType;
 
 /**
  * Test related class
@@ -13,7 +12,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaTypeTest extends TypeTestCase
+class MetricTypeTest extends AbstractFormTypeTest
 {
     /**
      * {@inheritdoc}
@@ -21,7 +20,9 @@ class MediaTypeTest extends TypeTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->type = new MediaType();
+
+        $this->measureManager = $this->getMock('Akeneo\Bundle\MeasureBundle\Manager\MeasureManager');
+        $this->type = new MetricType('', '', $this->measureManager);
         $this->form = $this->factory->create($this->type);
     }
 
@@ -30,15 +31,16 @@ class MediaTypeTest extends TypeTestCase
      */
     public function testFormCreate()
     {
-        $this->assertField('file', 'file');
-        $this->assertField('removed', 'checkbox');
+        $this->assertField('id', 'hidden');
+        $this->assertField('data', 'number');
+        $this->assertField('unit', 'choice');
 
         $this->assertEquals(
-            'Pim\Bundle\FlexibleEntityBundle\Entity\Media',
+            'Pim\Bundle\CatalogBundle\Model\Metric',
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_media', $this->form->getName());
+        $this->assertEquals('pim_enrich_metric', $this->form->getName());
     }
 
     /**

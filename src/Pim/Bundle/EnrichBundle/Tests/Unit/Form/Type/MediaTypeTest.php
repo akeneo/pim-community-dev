@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\FlexibleEntityBundle\Form\Type\PriceType;
+use Pim\Bundle\EnrichBundle\Form\Type\MediaType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceTypeTest extends TypeTestCase
+class MediaTypeTest extends TypeTestCase
 {
     /**
      * {@inheritdoc}
@@ -20,7 +20,7 @@ class PriceTypeTest extends TypeTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->type = new PriceType();
+        $this->type = new MediaType();
         $this->form = $this->factory->create($this->type);
     }
 
@@ -29,16 +29,15 @@ class PriceTypeTest extends TypeTestCase
      */
     public function testFormCreate()
     {
-        $this->assertField('id', 'hidden');
-        $this->assertField('data', 'number');
-        $this->assertField('currency', 'text');
+        $this->assertField('file', 'file');
+        $this->assertField('removed', 'checkbox');
 
         $this->assertEquals(
-            'Pim\Bundle\FlexibleEntityBundle\Entity\Price',
+            'Pim\Bundle\CatalogBundle\Model\Media',
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('pim_flexibleentity_price', $this->form->getName());
+        $this->assertEquals('pim_enrich_media', $this->form->getName());
     }
 
     /**
