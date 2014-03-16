@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
 use Pim\Bundle\EnrichBundle\Form\Type\MetricType;
 
 /**

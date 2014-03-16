@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
