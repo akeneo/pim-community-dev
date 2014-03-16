@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
+namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 /**
  * The attribute type factory

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -17,19 +17,19 @@ class AddAttributeTypeCompilerPass implements CompilerPassInterface
     /**
      * @var string
      */
-    const FLEXIBLE_TYPE_TAG         = 'pim_flexibleentity.attributetype';
+    const ATTRIBUTE_TYPE_TAG         = 'pim_catalog.attribute_type';
 
     /**
      * @var string
      */
-    const FLEXIBLE_TYPE_FACTORY_KEY = 'pim_flexibleentity.attributetype.factory';
+    const FACTORY_ATTRIBUTE_TYPE_KEY = 'pim_catalog.factory.attribute_type';
 
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        $factory = $container->getDefinition(self::FLEXIBLE_TYPE_FACTORY_KEY);
+        $factory = $container->getDefinition(self::FACTORY_ATTRIBUTE_TYPE_KEY);
 
         $types   = array();
         foreach ($container->findTaggedServiceIds(self::FLEXIBLE_TYPE_TAG) as $id => $attributes) {
