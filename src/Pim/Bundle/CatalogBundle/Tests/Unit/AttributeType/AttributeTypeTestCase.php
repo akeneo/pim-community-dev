@@ -21,7 +21,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->guesser = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
+        $this->guesser = $this->getMock('Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue(true));

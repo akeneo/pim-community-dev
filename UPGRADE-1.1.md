@@ -31,4 +31,44 @@ By introducing the MongoDB support, we decided to make it more specific and so, 
 
 We do our best to let some temporary classes and methods and mark them as deprecated to let you some time to update your customizations.
 
-To be consistent, services aliases have been changed.
+To be consistent, services aliases / tags have been changed, if you use the following ones, please replace :
+ - service `pim_flexibleentity.attributetype.factory` by `pim_catalog.factory.attribute_type`
+ - tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
+ - service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
+
+You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
+
+DataGridBundle
+--------------
+
+The version 1.1 introduces the support to MongoDB storage, the DataGrid bundle design has been re-worked when necessary to add this storage abstraction.
+
+The `attribute_types.yml` file allows to configure column/filter/sorter of product values.
+
+If you use it, please change it as following :
+
+With 1.0 :
+```
+parameters:
+    pim_datagrid.product.attribute_type.pim_catalog_identifier:
+        column:
+            type:        flexible_field
+            selector:    flexible_values
+        filter:
+            type:        flexible_string
+            parent_type: string
+        sorter:          flexible_field
+```
+
+With 1.1 :
+```
+parameters:
+    pim_datagrid.product.attribute_type.pim_catalog_identifier:
+        column:
+            type:        flexible_field
+            selector:    flexible_values
+        filter:
+            type:        product_value_string
+            parent_type: string
+        sorter:          flexible_field
+```

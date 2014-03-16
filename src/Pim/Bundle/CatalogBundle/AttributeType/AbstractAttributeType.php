@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
 /**
  * Abstract attribute type

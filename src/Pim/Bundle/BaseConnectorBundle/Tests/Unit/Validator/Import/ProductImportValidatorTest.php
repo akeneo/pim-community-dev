@@ -28,7 +28,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         parent::setUp();
         $this->values = array();
         $this->constraintGuesser = $this->getMock(
-            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
+            'Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface'
         );
         $this->importValidator = new ProductImportValidator(
             $this->validator,

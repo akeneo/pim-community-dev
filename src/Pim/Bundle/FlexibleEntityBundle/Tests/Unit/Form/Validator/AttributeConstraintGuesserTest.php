@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\Validator\Constraints;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 
 /**
  * Test related class
@@ -23,7 +23,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }

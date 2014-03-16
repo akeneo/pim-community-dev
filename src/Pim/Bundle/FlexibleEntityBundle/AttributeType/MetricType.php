@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType as NewAbstractAttributeType;
 
 /**
