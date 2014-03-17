@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
@@ -21,7 +22,8 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ReferableEntityRepositoryInterface
+class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
+ ReferableEntityRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -45,6 +47,44 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
      * @param ProductQueryBuilder
      */
     protected $productQB;
+
+    /**
+     * ORM EntityManager to access ORM entities
+     *
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * Category class
+     *
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
+     * Set the EntityManager
+     *
+     * @param EntityManager $entityManager
+     *
+     * @return ProductRepository $this
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * Set the Category class
+     *
+     * @param string $categoryClass
+     *
+     * @return ProductRepository $this
+     */
+    public function setCategoryClass($categoryClass)
+    {
+        $this->categoryClass = $categoryClass;
+    }
 
     /**
      * {@inheritdoc}
@@ -105,6 +145,94 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
     public function getFullProduct($id)
     {
         return $this->find($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductCountByTree(ProductInterface $product)
+    {
+        $categories = $product->getCategories();
+        $categoryIds = array();
+        foreach ($categories as $category) {
+            $categoryIds[] = $category->getId();
+        }
+
+        $categoryRepository = $this->entityManager->getRepository($this->categoryClass);
+
+        $categoryTable = $this->entityManager->getClassMetadata($this->categoryClass)->getTableName();
+
+        $categoryIds = implode(',', $categoryIds);
+        $sql = "SELECT".
+               "    tree.id AS tree_id,".
+               "    COUNT(category.id) AS product_count".
+               "  FROM $categoryTable tree".
+               "  LEFT JOIN $categoryTable category".
+               "    ON category.root = tree.id".
+               " AND category.id IN ($categoryIds)".
+               " WHERE tree.parent_id IS NULL".
+               " GROUP BY tree.id";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $productCounts = $stmt->fetchAll();
+        $trees = array();
+        foreach ($productCounts as $productCount) {
+            $tree = array();
+            $tree['productCount'] = $productCount['product_count'];
+            $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
+            $trees[] = $tree;
+        }
+
+        return $trees;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    {
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        $products = $this->odmRepository->getProductIdsInCategories($categoryIds);
+        return array_keys(iterator_to_array($products));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    {
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        return $this->odmRepository->getProductsCountInCategories($categoryIds);
+    }
+
+    /**
+     * Return categories ids provided by the categoryQb or by the provided category
+     *
+     * @param CategoryInterface $category
+     * @param OrmQueryBuilder   $categoryQb
+     *
+     * @return array $categoryIds
+     */
+    protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    {
+        $categoryIds = array();
+
+        if (null !== $categoryQb) {
+            $categoryAlias = $categoryQb->getRootAlias();
+            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+        } else {
+            $categories = array(array('id' => $category->getId()));
+        }
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 
     /**
