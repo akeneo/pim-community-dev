@@ -147,6 +147,7 @@ services:
             - '@liip_imagine'
             - '@liip_imagine.filter.manager'
             - '@liip_imagine.cache.manager'
+            - '@pim_catalog.repository.media'
 
     pim_enrich.controller.variant_group:
         scope: request

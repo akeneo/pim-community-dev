@@ -102,3 +102,9 @@ services:
         public: false
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_catalog.repository.media:
+        class: %doctrine.document_repository.class%
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.media.class%]
