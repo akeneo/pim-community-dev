@@ -14,11 +14,11 @@ Feature: Edit common attributes of many products at once
       | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
       | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
     And the following products:
-      | sku      | family      |
-      | boots    | boots       |
-      | sneakers | sneakers    |
-      | sandals  | sandals     |
-      | pump     |             |
+      | sku       | family     |
+      | boots     | boots      |
+      | sneakers  | sneakers   |
+      | sandals   | sandals    |
+      | pump      |            |
       | highheels | high_heels |
     And I am logged in as "Julia"
     And I am on the products page
