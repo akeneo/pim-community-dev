@@ -293,7 +293,6 @@ class Base extends Page
             throw new \InvalidArgumentException(sprintf('Dropdown button "%s" not found', $button));
         }
         $dropdown->find('css', 'button.dropdown-toggle')->click();
-        sleep(10);
 
         $listItem = $dropdown->find('css', sprintf('li:contains("%s") a', $item));
         if (!$listItem) {
