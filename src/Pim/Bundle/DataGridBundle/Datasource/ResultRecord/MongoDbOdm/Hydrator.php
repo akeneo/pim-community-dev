@@ -81,6 +81,7 @@ class Hydrator implements HydratorInterface
                     $value['attribute']= $attribute;
                     $result[$attributeCode]= $value;
                     $result[$attributeCode]= $this->prepareOptionsData($result, $attribute, $locale, $scope);
+                    $result[$attributeCode]= $this->prepareDateData($result, $attribute);
                 }
             }
 
@@ -157,6 +158,29 @@ class Hydrator implements HydratorInterface
         }
 
         return $result[$attributeCode];
+    }
+
+
+    /**
+     * @param array  $result
+     * @param array  $attribute
+     *
+     * @return array
+     */
+    protected function prepareDateData(array $result, array $attribute)
+    {
+        $attributeCode = $attribute['code'];
+        $backendType = $attribute['backendType'];
+        $value = $result[$attributeCode];
+
+        if ($attribute['attributeType'] === 'pim_catalog_date') {
+            $mongoDate = $value[$backendType];
+            $date = new \DateTime();
+            $date->setTimestamp($mongoDate->sec);
+            $value[$backendType]= $date;
+        }
+
+        return $value;
     }
 
     /**

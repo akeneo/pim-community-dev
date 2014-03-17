@@ -19,11 +19,6 @@ class DateProperty extends FieldProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        if (get_class($result) === 'MongoDate') {
-            $date = new \DateTime();
-            $date->setTimestamp($result->sec);
-            $result = $date;
-        }
 
         return OroFieldProperty::convertValue($result);
     }
