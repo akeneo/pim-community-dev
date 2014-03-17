@@ -42,9 +42,14 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInerface, add getData, setData and getAttribute methods
 
+# 1.0.2
+## Bug Fixes
+- Removed hardcoded attribute table from ORM/CompletenessGenerator.php
+
 # 1.0.1
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
+- Removed hardcoded Attribute from ValidMetricValidator
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 
