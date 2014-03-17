@@ -80,6 +80,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function closeConnection()
     {
         $this->getEntityManager()->getConnection()->close();
+        $this->getDocumentManager()->getConnection()->close();
     }
 
     /**
@@ -112,9 +113,21 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         return $this->getContainer()->get('doctrine')->getManager();
     }
 
+
+    /**
+     * @return ObjectManager
+     */
     public function getDocumentManager()
     {
-        return $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
+        return $this->getContainer()->get('doctrine_mongodb')->getManager();
+    }
+
+    /**
+     * @return Doctrine\Common\Persistence\ManagerRegistry
+     */
+    public function getSmartRegistry()
+    {
+        return $this->getContainer()->get('pim_catalog.doctrine.smart_manager_registry');
     }
 
     /**
