@@ -314,7 +314,7 @@ datagrid:
 
             quick_export_csv:
                 type: export
-                label: CSV (all)
+                label: pim.grid.mass_action.quick_export.csv_all
                 icon: download
                 data_identifier: p
                 route: pim_datagrid_export_product_index
