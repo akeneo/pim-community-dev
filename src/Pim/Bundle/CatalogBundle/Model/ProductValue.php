@@ -181,12 +181,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      */
     public function getPrices()
     {
-        $prices = [];
-        foreach ($this->prices as $price) {
-            $prices[$price->getCurrency()] = $price;
-        }
-
-        return $prices;
+        return $this->prices;
     }
 
     /**
