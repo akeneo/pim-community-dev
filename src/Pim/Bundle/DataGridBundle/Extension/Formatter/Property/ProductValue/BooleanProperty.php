@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\TwigProperty;
-
 /**
  * Boolean field property, able to render boolean attribute type
  *

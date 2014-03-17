@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
-
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroFieldProperty;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 /**
  * Allows to configure a related template for value rendering
@@ -11,7 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroF
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TwigProperty extends OroFieldProperty
+class TwigProperty extends FieldProperty
 {
     /**
      * @var string

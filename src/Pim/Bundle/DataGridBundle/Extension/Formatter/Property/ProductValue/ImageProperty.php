@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\TwigProperty;
-
 /**
  * Image field property, able to render image attribute type
  *

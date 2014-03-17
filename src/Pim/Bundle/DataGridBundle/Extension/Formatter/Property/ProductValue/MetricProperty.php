@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\TwigProperty;
-
 /**
  * Metric field property, able to render metric attribute type
  *
