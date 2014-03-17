@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroFieldProperty;
 
 /**
- * Flexible date property, able to render date value
+ * Able to render date value
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleDateProperty extends FlexibleFieldProperty
+class DateProperty extends FieldProperty
 {
     /**
      * {@inheritdoc}
@@ -25,6 +25,6 @@ class FlexibleDateProperty extends FlexibleFieldProperty
             $result = $date;
         }
 
-        return FieldProperty::convertValue($result);
+        return OroFieldProperty::convertValue($result);
     }
 }

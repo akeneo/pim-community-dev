@@ -1,74 +1,74 @@
 parameters:
-    pim_datagrid.extension.formatter.property.flexible_field_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleFieldProperty
-    pim_datagrid.extension.formatter.property.flexible_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionsProperty
-    pim_datagrid.extension.formatter.property.flexible_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleOptionProperty
-    pim_datagrid.extension.formatter.property.flexible_price_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexiblePriceProperty
-    pim_datagrid.extension.formatter.property.flexible_twig_property.class:    Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleTwigProperty
-    pim_datagrid.extension.formatter.property.flexible_image_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleImageProperty
-    pim_datagrid.extension.formatter.property.flexible_metric_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleMetricProperty
-    pim_datagrid.extension.formatter.property.flexible_boolean_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleBooleanProperty
-    pim_datagrid.extension.formatter.property.flexible_date_property.class:    Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleDateProperty
+    pim_datagrid.extension.formatter.property.product_value.field_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldProperty
+    pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionsProperty
+    pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionProperty
+    pim_datagrid.extension.formatter.property.product_value.price_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty
+    pim_datagrid.extension.formatter.property.product_value.image_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\ImageProperty
+    pim_datagrid.extension.formatter.property.product_value.metric_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty
+    pim_datagrid.extension.formatter.property.product_value.boolean_property.class:           Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\BooleanProperty
+    pim_datagrid.extension.formatter.property.product_value.date_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\DateProperty
+    pim_datagrid.extension.formatter.property.twig_property.class:                            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\TwigProperty
 
 services:
-    pim_datagrid.extension.formatter.property.flexible_field_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_field_property.class%
+    pim_datagrid.extension.formatter.property.product_value.field_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.field_property.class%
         arguments:
             - '@translator'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_field }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_field }
 
-    pim_datagrid.extension.formatter.property.flexible_options_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_options_property.class%
+    pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%
         arguments:
             - '@translator'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_options }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_options }
 
-    pim_datagrid.extension.formatter.property.flexible_option_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_option_property.class%
+    pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class%
         arguments:
             - '@translator'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_option }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_option }
 
-    pim_datagrid.extension.formatter.property.flexible_price_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_price_property.class%
+    pim_datagrid.extension.formatter.property.product_value.price_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.price_property.class%
         arguments:
             - '@translator'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_price }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_price }
 
-    pim_datagrid.extension.formatter.property.flexible_twig_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_twig_property.class%
+    pim_datagrid.extension.formatter.property.product_value.image_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.image_property.class%
         arguments:
             - '@twig'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_twig }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_image }
 
-    pim_datagrid.extension.formatter.property.flexible_image_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_image_property.class%
+    pim_datagrid.extension.formatter.property.product_value.metric_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.metric_property.class%
         arguments:
             - '@twig'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_image }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
 
-    pim_datagrid.extension.formatter.property.flexible_metric_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_metric_property.class%
+    pim_datagrid.extension.formatter.property.product_value.boolean_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.boolean_property.class%
         arguments:
             - '@twig'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_metric }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_boolean }
 
-    pim_datagrid.extension.formatter.property.flexible_boolean_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_boolean_property.class%
-        arguments:
-            - '@twig'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_boolean }
-
-    pim_datagrid.extension.formatter.property.flexible_date_property:
-        class: %pim_datagrid.extension.formatter.property.flexible_date_property.class%
+    pim_datagrid.extension.formatter.property.product_value.date_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.date_property.class%
         arguments:
             - '@translator'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: flexible_date }
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_date }
+
+    pim_datagrid.extension.formatter.property.twig_property:
+        class: %pim_datagrid.extension.formatter.property.twig_property.class%
+        arguments:
+            - '@twig'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: twig }

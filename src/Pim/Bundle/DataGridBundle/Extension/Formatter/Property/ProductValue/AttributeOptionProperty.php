@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 /**
- * Flexible field property, able to render attribute type which use single option as backend
+ * Able to render attribute type which use single option as backend
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleOptionProperty extends FlexibleFieldProperty
+class AttributeOptionProperty extends FieldProperty
 {
     /**
      * {@inheritdoc}

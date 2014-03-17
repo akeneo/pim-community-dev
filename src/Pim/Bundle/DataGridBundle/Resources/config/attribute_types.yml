@@ -1,7 +1,7 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_string
@@ -9,7 +9,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_string
@@ -17,7 +17,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_string
@@ -25,7 +25,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
-            type:        flexible_option
+            type:        product_value_option
             selector:    flexible_option
         filter:
             type:        product_value_choice
@@ -36,7 +36,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
-            type:        flexible_options
+            type:        product_value_options
             selector:    flexible_options
         filter:
             type:        product_value_choice
@@ -47,7 +47,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_number
@@ -55,7 +55,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
-            type:          flexible_boolean
+            type:          product_value_boolean
             selector:      flexible_values
             frontend_type: html
             template:      PimDataGridBundle:Property:boolean.html.twig
@@ -65,7 +65,7 @@ parameters:
         sorter:          flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_date:
         column:
-            type:          flexible_date
+            type:          product_value_date
             selector:      flexible_values
             frontend_type: date
         filter:
@@ -74,20 +74,20 @@ parameters:
         sorter:            flexible_field
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
-            type:          flexible_field
+            type:          product_value_field
             selector:      flexible_media
             frontend_type: string
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
-            type:          flexible_image
+            type:          product_value_image
             selector:      flexible_media
             frontend_type: html
             template:      PimDataGridBundle:Property:pim_catalog_image.html.twig
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
-            type:        flexible_price
+            type:        product_value_price
             selector:    flexible_price
         filter:
             type:        product_value_price
@@ -95,7 +95,7 @@ parameters:
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
-            type:          flexible_metric
+            type:          product_value_metric
             selector:      flexible_metric
             frontend_type: html
             template:      PimDataGridBundle:Property:pim_catalog_metric.html.twig
