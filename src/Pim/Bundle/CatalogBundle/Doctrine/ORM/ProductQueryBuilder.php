@@ -221,7 +221,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         $attributeType = $attribute->getAttributeType();
         if (!isset($operators[$attributeType])) {
-            throw new \LogicalException(
+            throw new \LogicException(
                 sprintf('Attribute type %s is not configured for attribute %s', $attributeType, $attribute->getCode())
             );
         }

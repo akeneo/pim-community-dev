@@ -78,7 +78,7 @@ class BaseFilter implements FilterInterface
      */
     protected function getNormalizedValueField(AbstractAttribute $attribute)
     {
-        $field = ProductQueryUtility::getNormalizedValueField($attribute, $this->locale, $this->scope);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
 
         return sprintf('%s.%s', self::NORMALIZED_FIELD, $field);
     }
