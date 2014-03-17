@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($value, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_value_with_simple_data(SerializerInterface $serializer, ProductValue $value, Attribute $attribute)
+    function it_normalizes_value_with_simple_data(SerializerInterface $serializer, ProductValue $value, AbstractAttribute $attribute)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -41,7 +41,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => 'product title']);
     }
 
-    function it_normalizes_value_with_collection_data(ProductValue $value, Attribute $attribute, Collection $collection, \Iterator $iterator)
+    function it_normalizes_value_with_collection_data(ProductValue $value, AbstractAttribute $attribute, Collection $collection, \Iterator $iterator)
     {
 
         $attribute->getCode()->willReturn('code');

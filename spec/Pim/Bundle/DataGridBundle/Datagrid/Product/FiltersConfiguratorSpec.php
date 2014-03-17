@@ -7,7 +7,6 @@ use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class FiltersConfiguratorSpec extends ObjectBehavior
