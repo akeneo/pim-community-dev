@@ -43,6 +43,9 @@ class PimCatalogBundle extends Bundle
     /** @staticvar string */
     const ODM_ENTITY_TYPE = 'entity';
 
+    /**
+     * Register cuctom doctrine types
+     */
     public function __construct()
     {
         if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
@@ -67,7 +70,8 @@ class PimCatalogBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass());
+            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
+            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'

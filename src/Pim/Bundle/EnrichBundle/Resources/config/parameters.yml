@@ -7,6 +7,8 @@ parameters:
     pim_enrich.form.type.product_value_wysiwyg.class:          Pim\Bundle\EnrichBundle\Form\Type\WysiwygType
     pim_enrich.form.type.product_value_price.class:            Pim\Bundle\EnrichBundle\Form\Type\PriceType
     pim_enrich.form.type.product_value_price_collection.class: Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType
+    pim_enrich.form.type.product_value_metric.class:           Pim\Bundle\EnrichBundle\Form\Type\MetricType
+    pim_enrich.form.type.product_value_media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
@@ -33,12 +35,7 @@ parameters:
     pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
-    pim_enrich.form.type.datagrid_configuration.class: Pim\Bundle\EnrichBundle\Form\Type\DatagridConfigurationType
-    pim_enrich.form.type.datagrid_view.class:          Pim\Bundle\EnrichBundle\Form\Type\DatagridViewType
-    pim_enrich.form.type.light_entity.class:           Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
-
-    pim_enrich.extension.type.media.class:  Pim\Bundle\EnrichBundle\Form\Type\MediaTypeExtension
-    pim_enrich.extension.type.metric.class: Pim\Bundle\EnrichBundle\Form\Type\MetricTypeExtension
+    pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
 
     pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
     pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler

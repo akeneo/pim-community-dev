@@ -398,8 +398,6 @@ class ReferencedCollection implements Collection
     /**
      * Get object class identifier from the repository
      *
-     * @param mixed $itemRepository
-     *
      * @return string
      */
     protected function getClassIdentifier()

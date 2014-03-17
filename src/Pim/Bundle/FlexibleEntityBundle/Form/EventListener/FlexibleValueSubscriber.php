@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Symfony\Component\Form\FormInterface;
 
 /**

@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Orm selector extension
@@ -143,7 +144,7 @@ class OrmSelectorExtension extends AbstractExtension
         $rootField  = $rootAlias.'.id';
         $getIdsQb->add('from', new From($rootEntity, $rootAlias, $rootField), false);
         $getIdsQb->groupBy($rootField);
-        PimOrmDatasource::removeExtraParameters($getIdsQb);
+        QueryBuilderUtility::removeExtraParameters($getIdsQb);
         $results = $getIdsQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($results);

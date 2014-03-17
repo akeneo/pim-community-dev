@@ -22,7 +22,6 @@ class CompletenessFactory
      * @param Locale  $locale
      * @param int     $missingCount
      * @param int     $requiredCount
-     * @param int     $ratio
      *
      * @return Completeness
      */
