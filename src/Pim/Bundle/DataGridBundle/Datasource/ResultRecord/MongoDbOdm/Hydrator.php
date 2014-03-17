@@ -160,10 +160,9 @@ class Hydrator implements HydratorInterface
         return $result[$attributeCode];
     }
 
-
     /**
-     * @param array  $result
-     * @param array  $attribute
+     * @param array $result
+     * @param array $attribute
      *
      * @return array
      */
