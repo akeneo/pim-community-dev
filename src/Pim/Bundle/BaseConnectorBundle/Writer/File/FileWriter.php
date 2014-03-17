@@ -43,6 +43,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
+        $this->resolvedFilePath = null;
 
         return $this;
     }
