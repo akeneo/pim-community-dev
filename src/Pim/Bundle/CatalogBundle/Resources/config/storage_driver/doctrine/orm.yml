@@ -20,6 +20,7 @@ services:
             - '@doctrine'
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.product_value.class%
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.event_listener.orm.inject_product_reference:
         class: %pim_catalog.event_listener.orm.inject_product_reference.class%

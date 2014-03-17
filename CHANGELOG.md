@@ -1,4 +1,7 @@
-# 1.0.1
+# 1.0.2
+## Bug Fixes
+- Removed hardcoded attribute table from ORM/CompletenessGenerator.php
+
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
 - Removed hardcoded Attribute from ValidMetricValidator

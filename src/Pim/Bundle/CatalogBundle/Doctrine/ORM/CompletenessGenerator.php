@@ -34,17 +34,24 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $productValueClass;
 
     /**
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
      * Constructor
      *
      * @param ManagerRegistry $doctrine
      * @param string          $productClass
      * @param string          $productValueClass
+     * @param string          $attributeClass
      */
-    public function __construct(ManagerRegistry $doctrine, $productClass, $productValueClass)
+    public function __construct(ManagerRegistry $doctrine, $productClass, $productValueClass, $attributeClass)
     {
-        $this->doctrine = $doctrine;
-        $this->productClass = $productClass;
+        $this->doctrine          = $doctrine;
+        $this->productClass      = $productClass;
         $this->productValueClass = $productValueClass;
+        $this->attributeClass    = $attributeClass;
     }
 
     /**
@@ -146,7 +153,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         return <<<COMPLETE_PRICES_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
                 FROM pim_catalog_attribute_requirement r
-                JOIN pim_catalog_attribute att ON att.id = r.attribute_id AND att.backend_type = "prices"
+                JOIN %product_attribute% att ON att.id = r.attribute_id AND att.backend_type = "prices"
                 JOIN pim_catalog_channel c ON c.id = r.channel_id %channel_conditions%
                 JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
                 JOIN pim_catalog_locale l ON l.id = cl.locale_id
@@ -329,7 +336,8 @@ MAIN_SQL;
             },
             array(
                 '%product_interface%'       => $this->productClass,
-                '%product_value_interface%' => $this->productValueClass
+                '%product_value_interface%' => $this->productValueClass,
+                '%product_attribute%'       => $this->attributeClass
             )
         );
     }
