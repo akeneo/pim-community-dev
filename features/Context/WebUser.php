@@ -1008,6 +1008,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I choose to download the file$/
+     */
+    public function iChooseToDownloadTheFile()
+    {
+        sleep(5);
+    }
+
+    /**
      * @param string $status
      * @param string $locator
      *
@@ -1426,6 +1434,20 @@ class WebUser extends RawMinkContext
 
         $page->massEdit();
         $this->wait();
+    }
+
+    /**
+     * @param string $products
+     *
+     * @Then /^I select products (.*)$/
+     */
+    public function iSelectProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
     }
 
     /**
