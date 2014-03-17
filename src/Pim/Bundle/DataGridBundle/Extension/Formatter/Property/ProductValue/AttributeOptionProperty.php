@@ -19,7 +19,9 @@ class AttributeOptionProperty extends FieldProperty
         $data = $this->getBackendData($value);
 
         if (isset($data['optionValues']) && count($data['optionValues']) === 1) {
-            return $data['optionValues'][0]['value'];
+            $optionValue = current($data['optionValues']);
+
+            return $optionValue['value'];
         }
 
         return isset($data['code']) ? sprintf('[%s]', $data['code']) : null;
