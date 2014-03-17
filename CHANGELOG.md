@@ -10,6 +10,7 @@
 - Define specific route and configuration for datagrid quick exports
 - MongoDB support (WIP)
 - Allow to add many quick export on datagrids
+- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -43,6 +44,7 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInerface, add getData, setData and getAttribute methods
 - Move mass export in specific controller
+- Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
 
 # 1.0.2
 ## Bug Fixes
