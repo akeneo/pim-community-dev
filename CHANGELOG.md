@@ -1,4 +1,7 @@
-# 1.0.1
+# 1.0.2
+## Bug Fixes
+- Added an option to specify the attribute's class name in completeness generator
+
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
 - Removed hardcoded Attribute from ValidMetricValidator
