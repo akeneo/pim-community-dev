@@ -20,6 +20,7 @@ services:
             - '@akeneo_measure.manager'
         tags:
             - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_listener.localizable:
         class: %pim_catalog.event_listener.localizable.class%
