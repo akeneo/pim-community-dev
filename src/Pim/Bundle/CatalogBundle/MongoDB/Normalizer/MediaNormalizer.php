@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 
-
 /**
  * Skip the normalization of a media or a file when normalize a product value as mongodb_json
  *
