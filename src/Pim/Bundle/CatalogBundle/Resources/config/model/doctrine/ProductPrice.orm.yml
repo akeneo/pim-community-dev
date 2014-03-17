@@ -1,6 +1,11 @@
 Pim\Bundle\CatalogBundle\Model\ProductPrice:
     type: entity
     table: pim_catalog_product_value_price
+    uniqueConstraints:
+        value_currency_idx:
+            columns:
+                - value_id
+                - currency_code
     fields:
         id:
             type: integer
