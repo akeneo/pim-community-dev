@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
+
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
@@ -53,16 +55,28 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     public function handle(MassActionMediatorInterface $mediator)
     {
         $iteration             = 0;
-        $results = $mediator->getDatagrid()->getDatasource()->getQueryBuilder()->getQuery()->execute();
+
+
+        $entityIdsHydrator = new EntityIdsHydrator();
+
+        $datasource = $mediator->getDatagrid()->getDatasource();
+        $datasource->setHydrator($entityIdsHydrator);
+
+        $results = $datasource->getResults();
+
+        var_dump($results);
+
+//         $results = $mediator->getDatagrid()->getDatasource()->getQueryBuilder()->getQuery()->execute();
+
         foreach ($results as $result) {
-            $this->entityManager->remove($result);
+//             $this->entityManager->remove($result);
             $iteration++;
             if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
-                $this->entityManager->flush();
+//                 $this->entityManager->flush();
             }
         }
-        $this->entityManager->flush();
-        $this->entityManager->clear();
+//         $this->entityManager->flush();
+//         $this->entityManager->clear();
 
         return $this->getResponse($mediator, $iteration);
     }
