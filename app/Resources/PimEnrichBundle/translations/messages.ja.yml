@@ -1,0 +1,576 @@
+---
+attribute:
+  overview: 属性の概要
+  create: 属性を作成
+  edit: 属性を編集
+attribute group:
+  overview: 属性グループの概要
+  create: 属性グループを作成
+  edit: 属性グループを編集
+category:
+  overview: カテゴリの概要
+  create: カテゴリを作成
+  edit: カテゴリを編集
+tree:
+  create: ツリーを作成
+  edit: ツリーを編集
+channel:
+  overview: チャンネルの概要
+  create: チャンネルを作成
+  edit: チャンネルを編集
+currency:
+  overview: 通貨の概要
+  create: 通貨を作成
+  edit: 通貨を編集
+family:
+  overview: ファミリーの概要
+  create: ファミリーを作成
+  edit: ファミリーを編集
+locale:
+  overview: ロケールの概要
+  create: ロケールを作成
+  edit: ロケールを編集
+product:
+  overview: 製品の概要
+  create: 製品を作成
+  edit: 製品を編集
+group:
+  overview: グループの概要
+  create: グループを作成
+  edit: グループを編集
+variant group:
+  overview: バリアントグループの概要
+  create: バリアントグループを作成
+  edit: バリアントグループを編集
+association type:
+  overview: 関連タイプの概要
+  create: 関連タイプの作成
+  edit: 関連タイプの編集
+group type:
+  overview: グループタイプの概要
+  create: グループタイプの作成
+  edit: グループタイプの編集
+products: 製品
+btn:
+  create:
+    attribute: 属性を作成
+    attribute group: 属性グループを作成
+    category: カテゴリを作成
+    tree: ツリーを作成
+    channel: チャンネルを作成
+    currency: 通貨を作成
+    family: ファミリーを作成
+    locale: ロケールを作成
+    product: 製品を作成
+    group: グループを作成
+    variant group: バリアントグループを作成
+    association type: 関連タイプ作成
+    group type: グループタイプ作成
+  edit: 編集
+  save: 保存
+  save and back: 保存してグリッドに戻る
+  save and create: 保存して新規作成
+  remove: 削除
+  delete: 削除
+  cancel: キャンセル
+  next: 次
+  back: 戻る
+  confirm: 確認
+  to grid: グリッドに戻る
+  to parent: 親に戻る
+confirmation:
+  delete: 削除の確認
+  leave: このページから移動してもよろしいですか？
+  discard changes: 'このページから移動する場合は %entity% に対する変更が失われます。'
+  remove:
+    item: このアイテムを削除してもよろしいですか?
+    attribute: '属性 %name% を削除してもよろしいですか。'
+    attribute group: '属性グループ %name% を削除してもよろしいですか。'
+    category: 'カテゴリー %name% を削除してもよろしいですか。'
+    family: 'ファミリー %name% を削除してもよろしいですか。'
+    product: '製品 %name% を削除してもよろしいですか。'
+    channel: 'チャンネル %name% を削除してもよろしいですか。'
+    group: 'グループ %name% を削除してもよろしいですか。'
+    variant group: 'バリアント グループ %name% を削除してもよろしいですか。'
+    association type: '関連タイプ %name% を削除してもよろしいですか。'
+    group type: 'グループタイプ %name% を削除してもよろしいですか。'
+    user: 'ユーザー %name% を削除してもよろしいですか。'
+  attribute group:
+    remove attribute: '属性 %name% をこの属性グループから削除してもよろしいですか。'
+  family:
+    remove attribute: '属性 %name% をこのファミリーから削除してもよろしいですか。'
+  product:
+    remove attribute: '属性 %name% この製品から削除してもよろしいですか。'
+flash:
+  entity:
+    removed: 項目が削除されました
+  attribute:
+    created: 属性を作成しました
+    updated: 属性を更新しました
+    removed: 属性を削除しました
+    identifier not removable: 識別子の属性は削除できません
+    used by groups: 'この属性は %count% 件のグループが使用しているために削除できません。'
+    option created: オプションを作成しました
+    error creating option: オプションの保存中にエラーが発生しました、やり直してください
+  attribute group:
+    created: 属性グループを作成しました
+    updated: 属性グループを作成しました
+    removed: 属性グループを削除しました
+    attributes added: 属性を属性グループに追加しました
+    attribute removed: 属性を属性グループから削除しました
+  category:
+    created: カテゴリを作成しました
+    updated: カテゴリを更新しました
+    removed: カテゴリを削除しました
+  tree:
+    created: ツリーを作成しました
+    updated: ツリーを更新しました
+    removed: ツリーを削除しました
+    not removable: チャンネルに接続しているツリーは削除できません。
+  channel:
+    saved: チャンネルを保存しました
+    removed: チャンネルを削除しました
+    not removable: 最後のチャンネルは削除できません
+  currency:
+    updated: 通貨を更新しました
+  family:
+    created: ファミリーを作成しました
+    updated: ファミリーを更新しました
+    removed: ファミリーを削除しました
+    identifier not removable: 識別子属性はファミリーから削除できません
+    label attribute not removable: ファミリーのラベルとして使用されているため、この属性は削除できません
+    attribute not found: この属性はこのファミリーに所属していません
+    attributes added: 属性をファミリーに追加しました
+    attribute removed: 属性をファミリーから削除しました
+  product:
+    created: 製品を作成しました
+    updated: 製品を更新しました
+    removed: 製品を削除しました
+    invalid: 入力内容を確認してやり直してください
+    attributes added: 属性を製品に追加しました
+    attribute removed: 属性を製品から削除しました
+    attribute not removable: この属性をこの製品から削除できません
+  group:
+    created: グループを作成しました
+    updated: グループを更新しました
+    removed: グループを削除しました
+  variant group:
+    created: バリアントグループを作成しました
+    updated: バリアントグループを更新しました
+    removed: バリアントグループを削除しました
+  group type:
+    created: グループタイプを作成しました
+    updated: グループタイプを更新しました
+    removed: グループタイプを削除しました
+    cant remove variant: グループタイプのバリアントを削除できません
+    cant remove used: グループタイプはいくつかのグループで使用されているため削除できません
+  association type:
+    created: 関連タイプを削除しました
+    updated: 関連タイプを更新しました
+    removed: 関連タイプを削除しました
+  user:
+    removed: ユーザーを削除しました
+  error ocurred: アクションに失敗しました。やり直してください。
+info:
+  updated: 保存されていない変更があります。
+  category:
+    remove children: すべてのサブカテゴリが削除されます。
+    keep products: これらのカテゴリの製品は削除されません。
+  product:
+    no available attributes: これ以上追加する属性はありません
+    change family: 製品ファミリーを変更
+    change family to: ファミリーを変更
+    merge attributes: 現在の属性は新しいファミリーのものとマージされます。
+    keep attributes: 削除する属性はありません。
+    number of associations: '%productCount% 件の製品と%groupCount% 件のグループ'
+    enable: 有効
+    enabled: 有効
+    disable: 無効
+    disabled: 無効
+  group:
+    axis: 'バリエーションの基準: %attributes%'
+    select products: このグループに所属するべき製品を選択してください。
+    selectable products: 以下の選択可能な製品は各基準に対する定義済みの値があります。
+    no group types: グループタイプがありません。ここをクリックして作成してください
+  association type:
+    show products: 製品を表示
+    show groups: グループを表示
+    remove from products: '%count% 件の製品から関連タイプを削除します。'
+    none exist: 関連タイプがありません。
+    create one: ここをクリックして作成してください
+color:
+  gray: グレー
+  white: 白
+  yellow: イエロー
+  orange: オレンジ
+  magenta: マゼンタ
+  violet: バイオレット
+  blue: ブルー
+  cyan: シアン
+Options: オプション
+Created at: 作成日
+Updated at: 更新日
+Created: 作成日時
+Updated: 更新日時
+Last update: 最終更新
+by: 投稿
+N/A: N/A
+Add an option: オプションを追加
+Manage products: 商品管理
+Manage groups: グループ管理
+Code: コード
+Name: 名前
+Type: タイプ
+Scope: スコープ
+Required: 必須
+Unique: ユニーク
+Not required: 任意
+Translatable: 翻訳可能
+Scopable: Scopable
+Localizable: ローカライズ可能
+Unique value: ユニーク値
+Attribute group: 属性グループ
+Other: その他
+Variants behavior when edited: 編集時のバリアント動作
+Edit: 編集
+Remove: 削除
+Delete: 削除
+Parameters: パラメータ
+System: システム
+Values: 値
+General parameters: 全般パラメータ
+Backend parameters: バックエンドのパラメーター
+Label: ラベル
+Default label: 標準のラベル
+Default value: 標準の値
+Attributetype: 属性タイプ
+Attribute type: 属性タイプ
+Searchable: 検索可能
+Defaultvalue: 標準の値
+Variant: バリアント
+Smart: スマート
+Useable as grid column: グリッド列として使用可能
+Useable as grid filter: グリッドフィルターとして使用可能
+Family: ファミリー
+Available locales: 使用可能なロケール
+Locale specific: ロケール固有
+default: デフォルト
+Axis: 軸
+Add attributes: 属性を追加
+Translate from: 言語の選択
+Yes: "1"
+No: いいえ
+Close: 閉じる
+Choose a color: 色を選択
+Create: 作成
+Cancel: キャンセル
+Choose a family: ファミリーを選択してください
+Choose a unit: 単位を選択
+No matches found: 一致するものがみつかりません
+Category tree: カテゴリ ツリー
+Completeness: 完全性
+Attribute used as label: ラベルとして使用する属性
+Global: グローバル
+Channel: チャンネル
+Always override: 常に上書き
+Ask: 依頼
+General Properties: 全般プロパティ
+Group values: グループ値
+New group: 新しいグループ
+Groups overview: グループの概要
+"Y-m-d h:i:s": Y-m-d h:i:s
+Max characters: 最大文字数
+Validation rule: 値チェックルール
+Validation regexp: 正規表現による値チェック
+Wysiwyg enabled: WYSIWYGエディタを有効にする
+Number min: 最小数
+Number max: 最大数
+Decimals allowed: 小数点以下の桁数を許可
+Negative allowed: 負の値を許可
+Date min: 最小日
+Date max: 最大日
+Metric family: メトリックファミリー
+Default metric unit: 既定のメトリック単位
+Max file size: 最大ファイル サイズ (MB)
+Allowed extensions: 利用できる拡張子
+None: なし
+E-mail: 電子メール
+URL: URL
+Regular expression: 正規表現
+Minimum input length: 最小文字数
+Default: デフォルト
+Attributes: 属性
+Title: タイトル
+pim_title.attribute_group:
+  create: 属性グループ |作成
+  edit: '属性グループ %group.label% |編集'
+pim_title.category:
+  create: カテゴリ ツリー |作成
+  edit: 'カテゴリツリー %category.label% |編集'
+pim_title.attribute:
+  index: 属性
+  create: 属性 |作成
+  edit: '属性 %attribute.label% |編集'
+pim_title.product:
+  index: 製品
+  edit: '製品 %product.sku% |編集'
+pim_title.family:
+  index: ファミリー
+  edit: 'ファミリー %family.label% |編集'
+pim_title.channel:
+  index: チャンネル
+  create: チャンネル |作成
+  edit: 'チャンネル %channel.label% |編集'
+pim_title.currency:
+  index: 通貨
+pim_title.locale:
+  index: ロケール
+pim_title.group:
+  index: グループ
+  edit: 'グループ %group.label% |編集'
+pim_title.variant_group:
+  index: バリアントグループ
+  edit: 'バリアントグループ %group.label% |編集'
+pim_title.association_type:
+  index: 関連タイプ
+  edit: '関連タイプ %association type.label% |編集'
+pim_title.group_type:
+  index: グループタイプ
+  edit: 'グループタイプ %group type.label% |編集'
+pim_title.mass_edit_action:
+  choose: 一括編集 |選択
+  configure: 一括編集 |構成
+pim_title.dashboard: ダッシュ ボード
+pim_catalog_identifier: 識別子
+pim_catalog_text: テキスト
+pim_catalog_textarea: テキスト エリア
+pim_catalog_number: 数値
+pim_catalog_price_collection: 価格
+pim_catalog_multiselect: 複数選択
+pim_catalog_simpleselect: 単純選択
+pim_catalog_file: ファイル
+pim_catalog_image: イメージ
+pim_catalog_boolean: Yes/No
+pim_catalog_date: 日付
+pim_catalog_metric: メトリック
+Activated: アクティベート
+Disable: 無効
+pim_enrich.mass_edit_action:
+  page_title: 製品
+  page_subtitle: '一括編集(1製品)|一括編集(%count%製品)'
+  title: 操作を選択
+  subtitle: '選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください'
+  confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
+  limit_exceeded: '%limit% 件以下の編集する商品を選択してください'
+  change-status:
+    label: ステータスの変更 (有効/無効)
+    description: 選択した製品は有効または無効になります。
+    success_flash: 製品の状態を変更しました
+  edit-common-attributes:
+    label: 属性を編集
+    description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
+    empty: 編集する属性を選択してください
+    success_flash: 製品属性が更新されました
+  classify:
+    label: 製品をカテゴリに分類
+    description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
+    success_flash: 選択したカテゴリに製品が分類されました
+  change-family:
+    label: 製品のファミリーを変更
+    description: 選択した製品のファミリーを選択したファミリーに変更します
+    success_flash: 選択した製品のファミリーを変更しました
+  add-to-groups:
+    label: グループに追加
+    description: 選択した製品を追加するグループを選択します
+    success_flash: 製品を選択したグループに追加しました
+Choose products: 製品を選択してください
+Choose operation: 操作を選択してください
+Configure: 構成
+Confirm: 確認
+To enable: 有効にするには
+Select attributes: 属性の選択
+Select: 選択
+Remove this attribute: 属性を削除
+pim_enrich.completeness:
+  progress_bar.title: '%ratio%%完了(1件の必須項目)|%ratio%%完了(%count%件の必須項目)'
+  subtitle: '{0} 完了 |{1} 1件の未入力値|]1、Inf] %count%件の未入力値'
+  missing_attributes: 不明な値|不明な値
+  legend:
+    locale_not_associated: このチャンネルに関連付けられていないロケール
+pim_enrich.group:
+  axis.help: 軸はバリアントグループのバリアントを定義する属性です。軸はオプションを持つ属性で、ローカライズとスコープ指定ができません。バリアントグループの作成後は変更できません。
+  type:
+    VARIANT: バリアント
+    X_SELL: クロスセル
+    ADDITIONAL: 追加
+    RELATED: 関連項目
+pim_enrich.product:
+  no_comparison_locale_available: 比較に利用できる他のロケールがありません
+  no_compared_media: 比較に利用できるメディアがありません
+Copy: コピー
+Current tab: 現在のタブ
+pim_enrich.channel.pick_conversion_unit: 製品のエクスポート時に使用する各メトリック属性の変換ユニットを選択します
+Group: グループ
+View group: 表示グループ
+Products: 製品
+pim_enrich:
+  acl:
+    locale.index: ロケール一覧
+    currency:
+      index: 通貨一覧
+      toggle: 通貨切り替え
+    product:
+      index: 製品一覧
+      create: 製品作成
+      edit: 製品編集
+      remove: 製品削除
+      add_attribute: 製品に属性を追加
+      remove_attribute: 製品から属性を削除
+      categories_view: 製品のカテゴリを参照
+      associations_view: 製品の関連タイプを表示
+      change_family: 製品ファミリーを変更
+      change_state: 製品状態を変更
+      add_to_groups: 製品をグループに追加
+      mass_edit: 製品一括編集操作
+    category:
+      list: カテゴリリスト
+      create: カテゴリ作成
+      edit: カテゴリ編集
+      remove: カテゴリ編集
+      move: カテゴリを移動
+      children: サブカテゴリを見る
+      products: カテゴリの商品を見る
+    channel:
+      index: チャンネル一覧
+      create: チャンネル作成
+      edit: チャンネル編集
+      remove: チャンネル削除
+    family:
+      create: ファミリーを作成
+      edit: ファミリー編集
+      remove: ファミリー削除
+      add_attribute: ファミリーに属性を追加
+      remove_attribute: 属性をファミリーから削除
+    attribute_group:
+      create: 属性グループを作成
+      edit: 属性グループを編集
+      remove: 属性グループを削除
+      sort: 属性グループをソート
+      add_attribute: 属性をグループに追加
+      remove_attribute: グループから属性を削除
+    attribute:
+      index: 属性リスト
+      create: 属性を作成
+      edit: 属性を編集
+      remove: 属性を削除
+      sort: 属性グループ内での属性ソート順
+    group:
+      index: グループ一覧
+      create: グループ作成
+      edit: グループ編集
+      remove: グループ削除
+    group_type:
+      index: グループタイプ一覧
+      create: グループタイプ作成
+      edit: グループタイプ編集
+      remove: グループタイプ削除
+    association_type:
+      index: 関連タイプ一覧
+      create: 関連タイプ作成
+      edit: 関連タイプ編集
+      remove: 関連タイプ削除
+  datagrid_configuration.columns.min_message: 最低でも1つの表示する列を選択してください
+pim_menu:
+  tab:
+    collect: インポート
+    enrich: マスタ
+    settings: 設定
+    spread: エクスポート
+  item:
+    association_type: 関連タイプ
+    attribute: 属性
+    attribute_group: 属性グループ
+    category: カテゴリ
+    channel: チャンネル
+    currency: 通貨
+    family: ファミリー
+    group: グループ
+    group_type: グループタイプ
+    locale: ロケール
+    product: 製品
+    variant_group: バリアントグループ
+Properties: プロパティ
+History: 履歴
+pane.accordion:
+  node_values: ノードの値
+  general_properties: 全般プロパティ
+  locale_values: ロケールの値
+  backend_parameters: バックエンドのパラメーター
+  general_parameters: 全般パラメータ
+  label_translations: ラベルの翻訳
+  options: オプション
+  group_values: グループ値
+popin.create:
+  association_type.title: 関連タイプを作成
+  family.title: 新しいファミリーを作成
+  group.title: 新しいグループを作成
+  group_type.title: 新しいグループタイプを作成
+  product.title: 新しい製品を作成
+  variant_group.title: バリアントグループを作成
+  option.title: オプションを作成
+In group: グループ内
+Attribute as label: ラベルとしての属性
+Available Columns: 利用可能な列
+Displayed Columns: 表示する列
+Is associated: 関連付け済
+Complete: 網羅率
+Created At: 作成日
+Updated At: 更新日
+Enabled: 有効
+Disabled: 無効
+Status: ステータス
+Change History: 変更履歴
+Data Audit: データ監査
+Data Audit - System: 'データ監査 - システム'
+Action: アクション
+Version: バージョン
+Entity type: エンティティタイプ
+Entity name: エンティティ名
+Entity id: エンティティ id
+Data: データ
+Author: 作成者
+Logged at: ログイン日
+Deleted: 削除済
+Old values: 古い値
+New values: 新しい値
+System configuration: システム設定
+General setup: 全般セットアップ
+Localization: ローカライズ
+Localization options: ローカライズオプション
+Locale: ロケール
+Location: 場所
+Format address by address country: 住所の国で住所をフォーマット
+Language: 言語
+Timezone: タイムゾーン
+Currency: 通貨
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: 教区
+      state: 都道府県
+      island: 島
+      county: 郡
+      area: エリア
+      prefecture: 都道府県
+      do_si: do_si
+      department: 部門
+      district: 地区
+      province: 都道府県
+  form:
+    tooltip:
+      locale: 数値、住所、名前、日付の書式設定に使用するロケール オプションを選択します
+      location: "ロケーションは '住所の国で住所を整形' オプションが無効である場合に住所の整形に使用されます"
+      format_address_by_address_country: このオプションを有効にすると、住所は関連する国に基づいて整形されます。無効にすると、住所はあなたのロケーションに基づいて整形されます。
+      language: 使用したいシステムの言語を選択
+      timezone: 日付と時刻を表示する時間帯を選択
+      currency: 既定の通貨を選択
