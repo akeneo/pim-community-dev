@@ -324,7 +324,6 @@ datagrid:
                 context:
                     withHeader: true
                     heterogeneous: true
-                handler: pim_datagrid.extension.mass_action.handler.export
                 messages:
                     empty_selection: No products selected
 
