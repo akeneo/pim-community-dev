@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Product repository interface
@@ -273,12 +273,12 @@ interface ProductRepositoryInterface
     /**
      * Apply a filter by attribute value
      *
-     * @param mixed        $qb             query builder to update
-     * @param Attribute    $attribute      attribute
-     * @param string|array $attributeValue value(s) used to filter
-     * @param string       $operator       operator to use
+     * @param mixed             $qb             query builder to update
+     * @param AbstractAttribute $attribute      attribute
+     * @param string|array      $attributeValue value(s) used to filter
+     * @param string            $operator       operator to use
      */
-    public function applyFilterByAttribute($qb, Attribute $attribute, $attributeValue, $operator = '=');
+    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $attributeValue, $operator = '=');
 
     /**
      * Apply a filter by a field value
@@ -293,11 +293,11 @@ interface ProductRepositoryInterface
     /**
      * Apply a sort by attribute value
      *
-     * @param mixed     $qb        query builder to update
-     * @param Attribute $attribute attribute
-     * @param string    $direction direction to use
+     * @param mixed             $qb        query builder to update
+     * @param AbstractAttribute $attribute attribute
+     * @param string            $direction direction to use
      */
-    public function applySorterByAttribute($qb, Attribute $attribute, $direction);
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction);
 
     /**
      * Apply a sort by field value

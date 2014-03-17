@@ -5,7 +5,7 @@ namespace Pim\Bundle\FilterBundle\Filter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Product filter utility
@@ -61,7 +61,7 @@ class ProductFilterUtility extends BaseFilterUtility
     /**
      * @param string $code
      *
-     * @return Attribute
+     * @return AbstractAttribute
      */
     public function getAttribute($code)
     {
@@ -81,7 +81,6 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-
         $attribute  = $this->getAttribute($field);
         $repository = $this->productManager->getProductRepository();
         if ($attribute) {

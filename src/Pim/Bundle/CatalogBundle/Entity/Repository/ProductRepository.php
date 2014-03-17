@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Product repository
@@ -405,7 +405,7 @@ SQL;
      *
      * @param string $code
      *
-     * @return Attribute
+     * @return AbstractAttribute
      */
     protected function getAttributeByCode($code)
     {
@@ -621,7 +621,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
+    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
     {
         $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
@@ -637,7 +637,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
