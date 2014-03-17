@@ -1012,7 +1012,7 @@ class WebUser extends RawMinkContext
      */
     public function iChooseToDownloadTheFile()
     {
-        sleep(5);
+        throw new \RuntimeException('Download file is not yet implemented');
     }
 
     /**

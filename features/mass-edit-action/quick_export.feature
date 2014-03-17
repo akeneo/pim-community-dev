@@ -14,6 +14,7 @@ Feature: Quick export many products from datagrid
       | pump     |            | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  |
     And I am logged in as "Julia"
 
+  @skip
   Scenario: Successfully quick export products
     Given I am on the products page
     Then I select products boots and sneakers
