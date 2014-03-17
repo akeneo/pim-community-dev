@@ -74,9 +74,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     public function testChangeFile()
     {
         $this->writer->setFilePath('/test');
-        $this->assertEquals('/test', $this->writer->getFilePath());
+        $this->assertEquals('/test', $this->writer->getPath());
         $this->writer->setFilePath('/test2');
-        $this->assertEquals('/test2', $this->writer->getFilePath());
+        $this->assertEquals('/test2', $this->writer->getPath());
     }
 
     /**
