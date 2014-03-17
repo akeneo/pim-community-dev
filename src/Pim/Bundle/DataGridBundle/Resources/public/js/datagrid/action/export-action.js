@@ -12,7 +12,9 @@ define(
          */
         var ExportAction = Backbone.View.extend({
 
-            label: __('Quick Export'),
+            label: __('pim.grid.mass_action.quick_export'),
+
+            untranslatedLabel: 'pim.grid.mass_action.quick_export',
 
             icon: 'download',
 
@@ -32,6 +34,7 @@ define(
 
             initialize: function (options) {
                 if (_.has(options, 'label')) {
+                    this.untranslatedLabel = options.label;
                     this.label = __(options.label);
                 }
                 if (_.has(options, 'icon')) {
@@ -67,7 +70,7 @@ define(
 
                 this.originalButton = this.$gridContainer
                     .find(this.originalButtonSelector)
-                    .find('.icon-' + this.originalButtonIcon +':contains("'+ this.label +'")')
+                    .find('.icon-' + this.originalButtonIcon +':contains("'+ this.untranslatedLabel +'")')
                     .parent();
 
                 this.originalButton.hide();
