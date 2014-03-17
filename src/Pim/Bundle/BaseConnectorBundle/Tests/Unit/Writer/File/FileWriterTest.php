@@ -71,6 +71,14 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->writer->write(array('foo', 'bar'));
     }
 
+    public function testChangeFile()
+    {
+        $this->writer->setFilePath('/test');
+        $this->assertEquals('/test', $this->writer->getPath());
+        $this->writer->setFilePath('/test2');
+        $this->assertEquals('/test2', $this->writer->getPath());
+    }
+
     /**
      * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
      */
