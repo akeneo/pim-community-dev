@@ -43,6 +43,7 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInerface, add getData, setData and getAttribute methods
 - Move mass export in specific controller
+- Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
 
 # 1.0.2
 ## Bug Fixes
