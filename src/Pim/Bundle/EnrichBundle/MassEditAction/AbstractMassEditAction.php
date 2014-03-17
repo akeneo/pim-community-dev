@@ -29,6 +29,14 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function affectsCompleteness()
+    {
+        return false;
+    }
+
+    /**
      * Get a parameter
      *
      * @param string $key

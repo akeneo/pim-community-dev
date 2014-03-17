@@ -87,6 +87,14 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function affectsCompleteness()
+    {
+        return true;
+    }
+
+    /**
      * Set values
      *
      * @param Collection $values

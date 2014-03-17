@@ -29,11 +29,6 @@ class Association implements ReferableInterface
     protected $associationType;
 
     /**
-     * @var int
-     */
-    protected $associationTypeId;
-
-    /**
      * @var ProductInterface $owner
      */
     protected $owner;
@@ -68,30 +63,6 @@ class Association implements ReferableInterface
     }
 
     /**
-     * Get association type id
-     *
-     * @return integer
-     */
-    public function getAssociationTypeId()
-    {
-        return $this->associationTypeId;
-    }
-
-    /**
-     * Set association type id
-     *
-     * @param integer $associationTypeId
-     *
-     * @return Association
-     */
-    public function setAssociationTypeId($associationTypeId)
-    {
-        $this->associationTypeId = $associationTypeId;
-
-        return $this;
-    }
-
-    /**
      * Set association type
      *
      * @param AssociationType $associationType
@@ -100,7 +71,6 @@ class Association implements ReferableInterface
      */
     public function setAssociationType(AssociationType $associationType)
     {
-        $this->associationTypeId = $associationType->getId();
         $this->associationType = $associationType;
 
         return $this;

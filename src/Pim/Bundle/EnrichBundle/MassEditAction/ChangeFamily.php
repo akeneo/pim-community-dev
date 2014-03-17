@@ -19,6 +19,14 @@ class ChangeFamily extends AbstractMassEditAction
     protected $family;
 
     /**
+     * {@inheritdoc}
+     */
+    public function affectsCompleteness()
+    {
+        return true;
+    }
+
+    /**
      * @param Family $family
      *
      * @return ChangeFamily
