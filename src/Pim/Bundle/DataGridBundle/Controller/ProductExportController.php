@@ -12,14 +12,17 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
- * Override ExportController for flexible exports
+ * Override ExportController for product exports
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleExportController extends ExportController
+class ProductExportController extends ExportController
 {
+    /** @var ProductManager $productManager */
+    protected $productManager;
+
     /**
      * Constructor
      *
@@ -28,15 +31,13 @@ class FlexibleExportController extends ExportController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param SerializerInterface        $serializer
      * @param ProductManager             $productManager
-     * @param UserContext                $userContext
      */
     public function __construct(
         Request $request,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
-        ProductManager $productManager,
-        UserContext $userContext
+        ProductManager $productManager
     ) {
         parent::__construct(
             $request,
@@ -46,9 +47,6 @@ class FlexibleExportController extends ExportController
         );
 
         $this->productManager = $productManager;
-        $this->userContext    = $userContext;
-
-        $this->productManager->setLocale($this->getDataLocale());
     }
 
     /**
@@ -60,20 +58,10 @@ class FlexibleExportController extends ExportController
 
         return sprintf(
             'products_export_%s_%s_%s.%s',
-            $this->getDataLocale(),
+            $this->productManager->getLocale(),
             $this->productManager->getScope(),
             $dateTime->format('Y-m-d_H-i-s'),
             $this->getFormat()
         );
-    }
-
-    /**
-     * Get data locale code
-     *
-     * @return string
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocaleCode();
     }
 }

@@ -312,12 +312,12 @@ datagrid:
                 launcherOptions:
                     icon: trash
 
-            quick_export:
+            quick_export_csv:
                 type: export
-                label: Quick Export
+                label: CSV (all)
                 icon: download
                 data_identifier: p
-                route: pim_datagrid_export_flexible_index
+                route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
