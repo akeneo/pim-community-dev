@@ -73,12 +73,12 @@
     </target>
 
     <target name="check-interfaces" description="Check if the interfaces are being used">
-        <apply executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
+        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
             <arg value="${basedir}/src" />
-        </apply>
-        <apply executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
+        </exec>
+        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
             <arg value="${basedir}/spec" />
-        </apply>
+        </exec>
     </target>
 
     <target name="phploc" description="Measure project size using PHPLOC">
