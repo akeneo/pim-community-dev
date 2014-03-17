@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Product repository
@@ -196,6 +196,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $categoryIds = $this->getCategoryIds($category, $categoryQb);
 
         $products = $this->getProductIdsInCategories($categoryIds);
+
         return array_keys(iterator_to_array($products));
     }
 
@@ -457,7 +458,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
+    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
     {
         $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
@@ -473,7 +474,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, Attribute $attribute, $direction)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }

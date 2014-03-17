@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -377,9 +377,9 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request  $request The request object
-     * @param integer  $id      Product id
-     * @param Category $parent  The parent category
+     * @param Request           $request The request object
+     * @param integer           $id      Product id
+     * @param CategoryInterface $parent  The parent category
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
@@ -388,7 +388,7 @@ class ProductController extends AbstractDoctrineController
      * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
-    public function listCategoriesAction(Request $request, $id, Category $parent)
+    public function listCategoriesAction(Request $request, $id, CategoryInterface $parent)
     {
         $product = $this->findProductOr404($id);
         $categories = null;

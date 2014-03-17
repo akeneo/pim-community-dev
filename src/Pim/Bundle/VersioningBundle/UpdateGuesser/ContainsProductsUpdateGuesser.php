@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Contains product update guesser
@@ -39,7 +39,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
                 $pendings[] = $product;
             }
 
-        } elseif ($entity instanceof Category) {
+        } elseif ($entity instanceof CategoryInterface) {
             $products = $entity->getProducts();
             foreach ($products as $product) {
                 $pendings[] = $product;
