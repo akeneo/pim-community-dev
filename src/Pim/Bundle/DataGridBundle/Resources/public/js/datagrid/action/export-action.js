@@ -102,7 +102,7 @@ define(
                     '<div class="export-actions-panel btn-group buffer-left">' +
                         '<button href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
                             '<i class="icon-download-alt"></i>' +
-                            __('Quick Export') +
+                            __('pim.grid.mass_action.quick_export') +
                             '<i class="caret"></i>' +
                         '</button>' +
                         '<ul class="dropdown-menu"></ul>' +
