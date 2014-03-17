@@ -83,7 +83,7 @@ parameters:
             type:          product_value_image
             selector:      flexible_media
             frontend_type: html
-            template:      PimDataGridBundle:Property:pim_catalog_image.html.twig
+            template:      PimDataGridBundle:Property:image.html.twig
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
@@ -98,7 +98,7 @@ parameters:
             type:          product_value_metric
             selector:      flexible_metric
             frontend_type: html
-            template:      PimDataGridBundle:Property:pim_catalog_metric.html.twig
+            template:      PimDataGridBundle:Property:metric.html.twig
         filter:
             type:          product_value_metric
             parent_type:   metric
