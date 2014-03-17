@@ -260,9 +260,7 @@ datagrid:
                 frontend_type: date
             groups:
                 label:         Groups
-                type:          twig
-                template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
-                frontend_type: html
+                type:          product_groups
                 selector:      product_groups
         properties:
             id: ~
